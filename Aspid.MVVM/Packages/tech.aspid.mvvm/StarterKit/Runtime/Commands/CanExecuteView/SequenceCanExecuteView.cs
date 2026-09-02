@@ -1,4 +1,6 @@
 using System;
+using UnityEngine;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -6,8 +8,8 @@ namespace Aspid.MVVM.StarterKit
     [Serializable]
     public sealed class SequenceCanExecuteView : ICanExecuteView
     {
-        [UnityEngine.SerializeReference] 
-        private ICanExecuteView[] _canExecuteViews;
+        [TypeSelector]
+        [SerializeReference] private ICanExecuteView[] _canExecuteViews;
 
         public SequenceCanExecuteView(params ICanExecuteView[] canExecuteViews)
         {

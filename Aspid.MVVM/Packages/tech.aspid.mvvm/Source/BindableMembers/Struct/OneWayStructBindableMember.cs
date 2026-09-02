@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
+    /// Concrete <see cref="OneWayStructBindableMember{T,TBoxed}"/> that fixes <typeparamref name="TBoxed"/> to <see cref="ValueType"/>
     /// for any value-type payload that does not need a more specific boxing target.
     /// </summary>
     /// <typeparam name="T">The struct type of the bound value.</typeparam>
@@ -73,6 +73,7 @@ namespace Aspid.MVVM
         /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T,TBoxed}"/> class with the specified initial value.
         /// </summary>
         /// <param name="value">The initial value of the bindable member.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         protected OneWayStructBindableMember(T value)
         {
             _value = value;

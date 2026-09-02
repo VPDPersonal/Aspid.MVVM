@@ -1,4 +1,6 @@
 using System;
+using UnityEngine;
+using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -14,8 +16,8 @@ namespace Aspid.MVVM.StarterKit
     public class OrCompositeCollectionFilter<T, TFilter> : ICollectionFilter<T>
         where TFilter : ICollectionFilter<T>
     {
-        [UnityEngine.SerializeReference] 
-        private TFilter[] _filters;
+        [TypeSelector]
+        [SerializeReference] private TFilter[] _filters;
 
         public OrCompositeCollectionFilter(TFilter[] filters)
         {

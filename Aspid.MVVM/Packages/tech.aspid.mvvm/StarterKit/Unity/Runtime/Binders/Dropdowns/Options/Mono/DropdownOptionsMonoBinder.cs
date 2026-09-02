@@ -26,30 +26,59 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public void SetValue(List<string> values)
         {
-            CachedComponent.ClearOptions();
+            var selected = CachedComponent.value;
 
-            if (values is null) return;
-            CachedComponent.AddOptions(values);
+            CachedComponent.ClearOptions();
+            if (values is not null) CachedComponent.AddOptions(values);
+
+            RestoreSelection(selected);
         }
 
         /// <inheritdoc/>
         public void SetValue(List<Sprite> values)
         {
-            CachedComponent.ClearOptions();
+            var selected = CachedComponent.value;
 
-            if (values is null) return;
-            CachedComponent.AddOptions(values);
+            CachedComponent.ClearOptions();
+            if (values is not null) CachedComponent.AddOptions(values);
+
+            RestoreSelection(selected);
         }
 
         /// <inheritdoc/>
         public void SetValue(IEnumerable<TMP_Dropdown.OptionData> values)
         {
+            var selected = CachedComponent.value;
+
             CachedComponent.ClearOptions();
 
-            if (values is null) return;
+            if (values is not null)
+            {
+                foreach (var value in values)
+                    CachedComponent.options.Add(value);
+            }
 
-            foreach (var value in values)
-                CachedComponent.options.Add(value);
+            RestoreSelection(selected);
+        }
+
+
+        /// <summary>
+        /// Rebuilds the option list while keeping the current selection where the new list still has room for it.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="TMP_Dropdown.ClearOptions"/> resets the selection without raising a notification; restoring it
+        /// here keeps the ViewModel in sync. If the new list is shorter and the selection actually changes, this
+        /// binder does not report it — that value channel is <c>DropdownValueMonoBinder</c>.
+        /// </remarks>
+        private void RestoreSelection(int selected)
+        {
+            var dropdown = CachedComponent;
+
+            if (dropdown.options.Count > 0)
+                dropdown.SetValueWithoutNotify(Mathf.Clamp(selected, 0, dropdown.options.Count - 1));
+
+            // Mutating the options list directly leaves the caption showing whatever it showed before.
+            dropdown.RefreshShownValue();
         }
 
         /// <summary>

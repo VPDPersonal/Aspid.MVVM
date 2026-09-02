@@ -18,7 +18,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The type of ViewModel that inherits from <see cref="Component"/> and implements the <see cref="IViewModel"/> interface.</typeparam>
         /// <param name="viewModel">The instance of the ViewModel to be destroyed.</param>
-        /// <returns>The ViewModel <see cref="GameObject"/>, or <c>null</c> if it is destroyed or ViewModel is not a <see cref="Component"/>.</returns>
+        /// <returns>The ViewModel <see cref="GameObject"/>, or <see langword="null"/> if it is destroyed or ViewModel is not a <see cref="Component"/>.</returns>
         public static GameObject? DestroyViewModel<T>(this T viewModel)
             where T : Component, IViewModel
         {
@@ -31,7 +31,7 @@ namespace Aspid.MVVM
         /// Returns the <see cref="IViewModel"/> instance that was bound to the View before its destruction.
         /// </summary>
         /// <param name="viewModel">The instance of the ViewModel to be destroyed.</param>
-        /// <returns>The ViewModel <see cref="GameObject"/>, or <c>null</c> if it is destroyed or ViewModel is not a <see cref="Component"/>.</returns>
+        /// <returns>The ViewModel <see cref="GameObject"/>, or <see langword="null"/> if it is destroyed or ViewModel is not a <see cref="Component"/>.</returns>
         public static GameObject? DestroyViewModel(this IViewModel viewModel)
         {
             switch (viewModel)

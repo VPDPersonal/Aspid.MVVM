@@ -33,7 +33,7 @@ namespace Aspid.MVVM
         private void OnDragUpdated(DragUpdatedEvent evt)
         {
             var best = DragAndDrop.objectReferences
-                .OfType<IMonoBinderValidable>()
+                .OfType<IMonoBinderValidatable>()
                 .Select(b => _field.IsCompatibleBinderWithField(b))
                 .DefaultIfEmpty(CompatibleBinderWithField.None)
                 .Max();
@@ -57,7 +57,7 @@ namespace Aspid.MVVM
         private void OnDragPerformed(DragPerformEvent evt)
         {
             var compatibleBinders = DragAndDrop.objectReferences
-                .OfType<IMonoBinderValidable>()
+                .OfType<IMonoBinderValidatable>()
                 .Where(b => _field.IsCompatibleBinderWithField(b) is not CompatibleBinderWithField.None)
                 .ToArray();
 

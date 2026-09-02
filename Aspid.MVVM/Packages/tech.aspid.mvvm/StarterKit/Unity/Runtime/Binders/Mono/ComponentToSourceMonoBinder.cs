@@ -18,6 +18,9 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public event Action<TComponent> ValueChanged;
 
+        /// <inheritdoc/>
+        protected override BindMode DefaultMode => BindMode.OneWayToSource;
+
         /// <summary>
         /// Called after binding is established.
         /// Raises <see cref="ValueChanged"/> with the cached <typeparamref name="TComponent"/> reference.
@@ -35,9 +38,8 @@ namespace Aspid.MVVM.StarterKit
     /// raising <see cref="ValueChanged"/> with the <see cref="Component"/> reference cast to <see langword="object"/>.
     /// </summary>
     /// <remarks>
-    /// Use with caution: since <see cref="ValueChanged"/> carries a non-generic <see langword="object"/>,
-    /// the type contract between the View and ViewModel is not enforced at compile time.
-    /// A type mismatch will only be detected at runtime.
+    /// <see cref="ValueChanged"/> carries a non-generic <see langword="object"/>, so the type contract between
+    /// the View and ViewModel is not enforced at compile time — a mismatch is only caught at runtime.
     /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/Components/Component To Source Binder")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Component/Component To Source Binder")]

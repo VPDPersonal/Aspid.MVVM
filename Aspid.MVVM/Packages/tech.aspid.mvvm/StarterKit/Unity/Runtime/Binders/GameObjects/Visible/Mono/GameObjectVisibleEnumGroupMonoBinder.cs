@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="EnumGroupMonoBinder{GameObject, bool}"/> that shows or hides each <see cref="GameObject"/>
+    /// <see cref="EnumGroupMonoBinder{T1, T2}">EnumGroupMonoBinder&lt;GameObject, bool&gt;</see> that shows or hides each <see cref="GameObject"/>
     /// in the group based on a value resolved from the bound enum ViewModel value.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/GameObject/GameObject Binder – Visible EnumGroup")]

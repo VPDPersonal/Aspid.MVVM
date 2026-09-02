@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IRelayCommand{T}"/> (with string argument) to a <see cref="TMP_InputField"/> event,
     /// and optionally updates the field's interactability based on <see cref="IRelayCommand.CanExecute()"/>.
     /// </summary>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinder']/*" />
     [Serializable]
     public sealed class InputFieldCommandBinder: TargetBinder<TMP_InputField>, 
         IBinder<IRelayCommand>,
@@ -39,13 +38,11 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             ICanExecuteView customInteractable,
@@ -59,13 +56,11 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             InteractableMode interactableMode,
@@ -83,34 +78,30 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
         
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<string> value) =>
             CommandBinderExtensions.UpdateCommand(ref _stringCommand, value, OnCanExecuteChanged);
 
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears bound commands.
         /// </summary>
-        /// <remarks>
-        /// Commands are nullified to release <see cref="IRelayCommand.CanExecuteChanged"/> subscriptions and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
-            
+
             SetValue((IRelayCommand)null);
             SetValue((IRelayCommand<string>)null);
         }
@@ -159,15 +150,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(Target.text));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -175,7 +159,6 @@ namespace Aspid.MVVM.StarterKit
     /// input field text and <typeparamref name="T"/> as arguments) to a <see cref="TMP_InputField"/> event.
     /// </summary>
     /// <typeparam name="T">The type of the additional command parameter.</typeparam>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinderT']/*" />
     [Serializable]
     public class InputFieldCommandBinder<T>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T>>
     {
@@ -196,7 +179,9 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T> _command;
 
-        /// <summary>Gets or sets the parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T Param
         {
             get => _param;
@@ -211,14 +196,12 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, T param, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param">The parameter passed to the command alongside the input field text.</param>
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T param,
@@ -236,14 +219,12 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param">The parameter passed to the command alongside the input field text.</param>
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T param,
@@ -265,24 +246,19 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<string, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -324,15 +300,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(Target.text, Param));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -341,7 +310,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional command parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional command parameter.</typeparam>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinderT1T2']/*" />
     [Serializable]
     public class InputFieldCommandBinder<T1, T2>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T1, T2>>
     {
@@ -363,14 +331,18 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
@@ -385,15 +357,13 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, T1 param1, T2 param2, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -413,15 +383,13 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -445,24 +413,19 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<string, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -504,15 +467,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(Target.text, Param1, Param2));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -523,7 +479,6 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional command parameter.</typeparam>
     /// <typeparam name="T2">The type of the second additional command parameter.</typeparam>
     /// <typeparam name="T3">The type of the third additional command parameter.</typeparam>
-    /// <include file="XmlExampleDoc-InputField-Command-1.1.0.xml" path="doc//member[@name='InputFieldCommandBinderT1T2T3']/*" />
     [Serializable]
     public class InputFieldCommandBinder<T1, T2, T3>: TargetBinder<TMP_InputField>, IBinder<IRelayCommand<string, T1, T2, T3>>
     {
@@ -548,21 +503,27 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2, T3> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
             set => _param2 = value;
         }
 
-        /// <summary>Gets or sets the third parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the third parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T3 Param3
         {
             get => _param3;
@@ -577,16 +538,14 @@ namespace Aspid.MVVM.StarterKit
         public InputFieldCommandBinder(TMP_InputField target, T1 param1, T2 param2, T3 param3, UpdateInputFieldEvent updateEvent, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, updateEvent, mode) { }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2,T3}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
         /// <param name="param3">The third parameter passed to the command.</param>
         /// <param name="customInteractable">The custom view that reflects whether the command can execute.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -608,16 +567,14 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
         
-        /// <summary>
-        /// Initializes a new instance of <see cref="InputFieldCommandBinder{T1,T2,T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="TMP_InputField"/> to bind.</param>
         /// <param name="param1">The first parameter passed to the command.</param>
         /// <param name="param2">The second parameter passed to the command.</param>
         /// <param name="param3">The third parameter passed to the command.</param>
         /// <param name="interactableMode">Determines how command executability is reflected on the input field. Must not be <see cref="InteractableMode.Custom"/>.</param>
         /// <param name="updateEvent">The input field event that triggers command execution.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public InputFieldCommandBinder(
             TMP_InputField target, 
             T1 param1, 
@@ -643,24 +600,19 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<string, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -702,15 +654,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(Target.text, Param1, Param2, Param3));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }
 #endif

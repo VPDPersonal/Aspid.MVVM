@@ -25,6 +25,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -32,6 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -47,10 +49,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -83,7 +81,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2, T>>,
         IBinder<IRelayCommand<Vector3, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T _param;
 
         [Space]
@@ -105,6 +103,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector2, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -112,6 +111,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector3, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -127,10 +127,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -164,9 +160,9 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2, T1, T2>>,
         IBinder<IRelayCommand<Vector3, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T2 _param2;
 
         [Space]
@@ -197,6 +193,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;Vector2, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -204,6 +201,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;Vector3, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -219,10 +217,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
@@ -257,11 +251,11 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector2, T1, T2, T3>>,
         IBinder<IRelayCommand<Vector3, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Third extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T3 _param3;
 
         [Space]
@@ -301,6 +295,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;Vector2, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector2, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
@@ -308,6 +303,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;Vector3, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<Vector3, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
@@ -323,10 +319,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);

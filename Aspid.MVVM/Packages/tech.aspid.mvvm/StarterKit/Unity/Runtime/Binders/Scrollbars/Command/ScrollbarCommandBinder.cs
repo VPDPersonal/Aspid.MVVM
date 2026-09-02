@@ -8,12 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="TargetBinder{Scrollbar}"/> that executes a command each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value as the command argument.
-    /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see>,
-    /// <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see>,
-    /// <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see>,
-    /// or <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see>.
     /// </summary>
-    /// <include file="XmlExampleDoc-Scrollbar-Command-1.1.0.xml" path="doc//member[@name='ScrollbarCommandBinder']/*" />
     [Serializable]
     public sealed class ScrollbarCommandBinder : TargetBinder<Scrollbar>,
         IBinder<IRelayCommand<int>>,
@@ -22,10 +17,10 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<double>>
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int> _intCommand;
@@ -33,19 +28,14 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<float> _floatCommand;
         private IRelayCommand<double> _doubleCommand;
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
         /// <inheritdoc/>
         public ScrollbarCommandBinder(Scrollbar target, BindMode mode = BindMode.OneWay)
             : this(target, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(Scrollbar target,
             ICanExecuteView customInteractable,
             BindMode mode = BindMode.OneWay)
@@ -56,12 +46,10 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(Scrollbar target,
             InteractableMode interactableMode,
             BindMode mode = BindMode.OneWay)
@@ -70,13 +58,14 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfTwo();
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(interactableMode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
 
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;int&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<int> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
@@ -84,6 +73,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;long&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<long> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
@@ -91,6 +81,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;float&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<float> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
@@ -98,6 +89,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;double&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<double> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -152,27 +144,15 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 
     /// <summary>
     /// <see cref="TargetBinder{Scrollbar}"/> that executes commands with one additional parameter each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value alongside <see cref="Param"/>.
-    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see>,
-    /// or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the scrollbar value when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Scrollbar-Command-1.1.0.xml" path="doc//member[@name='ScrollbarCommandBinder{1}']/*" />
     [Serializable]
     public class ScrollbarCommandBinder<T> : TargetBinder<Scrollbar>,
         IBinder<IRelayCommand<int, T>>,
@@ -180,15 +160,15 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T>>,
         IBinder<IRelayCommand<double, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T _param;
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T> _intCommand;
@@ -205,20 +185,15 @@ namespace Aspid.MVVM.StarterKit
             set => _param = value;
         }
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
         /// <inheritdoc/>
         public ScrollbarCommandBinder(Scrollbar target, T param, BindMode mode = BindMode.OneWay)
             : this(target, param, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder{T}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T param,
@@ -234,13 +209,11 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T param,
@@ -254,13 +227,14 @@ namespace Aspid.MVVM.StarterKit
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(interactableMode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
 
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;int, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/> followed by <see cref="Param"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<int, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
@@ -268,6 +242,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;long, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/> followed by <see cref="Param"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<long, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
@@ -275,6 +250,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;float, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/> followed by <see cref="Param"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<float, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
@@ -282,6 +258,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;double, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/> followed by <see cref="Param"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<double, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -336,28 +313,16 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value, Param));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 
     /// <summary>
     /// <see cref="TargetBinder{Scrollbar}"/> that executes commands with two additional parameters each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value alongside <see cref="Param1"/> and <see cref="Param2"/>.
-    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see>,
-    /// or <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the scrollbar value when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the scrollbar value when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Scrollbar-Command-1.1.0.xml" path="doc//member[@name='ScrollbarCommandBinder{2}']/*" />
     [Serializable]
     public class ScrollbarCommandBinder<T1, T2> : TargetBinder<Scrollbar>,
         IBinder<IRelayCommand<int, T1, T2>>,
@@ -365,17 +330,17 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T1, T2>>,
         IBinder<IRelayCommand<double, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T2 _param2;
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2> _intCommand;
@@ -401,21 +366,16 @@ namespace Aspid.MVVM.StarterKit
             set => _param2 = value;
         }
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
         /// <inheritdoc/>
         public ScrollbarCommandBinder(Scrollbar target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder{T1, T2}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -433,14 +393,12 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder{T1, T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -456,13 +414,14 @@ namespace Aspid.MVVM.StarterKit
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(interactableMode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
 
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;int, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<int, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
@@ -470,6 +429,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;long, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<long, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
@@ -477,6 +437,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;float, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<float, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
@@ -484,6 +445,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;double, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<double, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -538,29 +500,17 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value, Param1, Param2));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 
     /// <summary>
     /// <see cref="TargetBinder{Scrollbar}"/> that executes commands with three additional parameters each time <see cref="Scrollbar.onValueChanged"/> fires,
     /// passing the current scrollbar value alongside <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
-    /// Accepts commands typed as <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see>,
-    /// <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see>,
-    /// or <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see>.
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the scrollbar value when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the scrollbar value when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded alongside the scrollbar value when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-Scrollbar-Command-1.1.0.xml" path="doc//member[@name='ScrollbarCommandBinder{3}']/*" />
     [Serializable]
     public class ScrollbarCommandBinder<T1, T2, T3> : TargetBinder<Scrollbar>,
         IBinder<IRelayCommand<int, T1, T2, T3>>,
@@ -568,19 +518,19 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<float, T1, T2, T3>>,
         IBinder<IRelayCommand<double, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the scrollbar value when the command is executed.")]
+        [Tooltip("Third extra parameter passed with the scrollbar value when the command executes.")]
         [SerializeField] private T3 _param3;
 
         // ReSharper disable once MemberInitializerValueIgnored
         [Space]
-        [Tooltip("Controls how the scrollbar's interactable state reflects the command's CanExecute result.")]
+        [Tooltip("Controls how the scrollbar's interactable state reflects CanExecute.")]
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
-        [Tooltip("The view used to reflect the command's CanExecute state when InteractableMode is Custom.")]
+        [Tooltip("Used to reflect CanExecute state when InteractableMode is Custom.")]
         [SerializeReference] private ICanExecuteView _customInteractable;
 
         private IRelayCommand<int, T1, T2, T3> _intCommand;
@@ -615,9 +565,6 @@ namespace Aspid.MVVM.StarterKit
             set => _param3 = value;
         }
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
         /// <inheritdoc/>
         public ScrollbarCommandBinder(
             Scrollbar target,
@@ -627,15 +574,13 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, InteractableMode.Interactable, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder{T1, T2, T3}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -655,15 +600,13 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollbarCommandBinder{T1, T2, T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="Scrollbar"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scrollbar value when the command is executed.</param>
         /// <param name="interactableMode">Controls how the scrollbar's interactable state reflects CanExecute.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollbarCommandBinder(
             Scrollbar target,
             T1 param1,
@@ -681,13 +624,14 @@ namespace Aspid.MVVM.StarterKit
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(interactableMode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
         }
 
         /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;int, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="int"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<int, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _intCommand, value, OnCanExecuteChanged);
 
@@ -695,6 +639,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;long, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="long"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<long, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _longCommand, value, OnCanExecuteChanged);
 
@@ -702,6 +647,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;float, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value as <see cref="float"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<float, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _floatCommand, value, OnCanExecuteChanged);
 
@@ -709,6 +655,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;double, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="Scrollbar.onValueChanged"/>, the command receives the scrollbar value cast to <see cref="double"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<double, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
@@ -763,14 +710,7 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(value, Param1, Param2, Param3));
         }
 
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Interactable: Target.interactable = isInteractable; break;
-                case InteractableMode.Visible: Target.gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }

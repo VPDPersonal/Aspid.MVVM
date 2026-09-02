@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="ComponentMonoBinder{Toggle}"/> that binds a boolean ViewModel value to <see cref="Toggle.isOn"/>,
     /// supporting all binding modes.
-    /// An optional inversion flag flips the logical value before it is applied to the toggle or propagated back to the source.
+    /// An optional converter transforms the value before it is applied to the toggle or propagated back to the source.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle Binder – IsOn")]
     [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn")]
@@ -17,21 +17,33 @@ namespace Aspid.MVVM.StarterKit
         IBinder<bool>,
         IReverseBinder<bool>
     {
+        [Tooltip("Optional converter applied to the value; runs in reverse only via ITwoWayConverter.")]
+        [SerializeReference] private IConverter<bool, bool> _converter;
+
+        [NonSerialized] private bool _isNotifyValueChanged = true;
+
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
 
-        [SerializeField] private bool _isInvert;
-        [NonSerialized] private bool _isNotifyValueChanged = true;
-
         /// <summary>
-        /// Sets <see cref="Toggle.isOn"/> to the specified value, applying inversion if configured.
+        /// Sets <see cref="Toggle.isOn"/> to the specified value, applying the configured converter if present.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(bool value)
         {
             _isNotifyValueChanged = false;
-            CachedComponent.isOn = _isInvert ? !value : value;
-            _isNotifyValueChanged = true;
+
+            try
+            {
+                CachedComponent.isOn = _converter?.Convert(value) ?? value;
+            }
+            finally
+            {
+                // Without finally, an exception from the setter (e.g. from another onValueChanged listener)
+                // would leave the flag stuck false, permanently killing the View -> ViewModel channel.
+                _isNotifyValueChanged = true;
+            }
         }
 
         /// <summary>
@@ -64,7 +76,7 @@ namespace Aspid.MVVM.StarterKit
         private void OnValueChanged(bool isOn)
         {
             if (!_isNotifyValueChanged) return;
-            ValueChanged?.Invoke(_isInvert ? !isOn : isOn);
+            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(isOn) : isOn);
         }
     }
 }

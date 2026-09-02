@@ -11,9 +11,8 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="IRelayCommand{T}">IRelayCommand&lt;BaseEventData&gt;</see> (receives the event data),
     /// or <see cref="IRelayCommand{T}">IRelayCommand&lt;EventTriggerType&gt;</see> (receives the event type).
     /// </summary>
-    /// <include file="XmlExampleDoc-EventTrigger-Command-1.1.0.xml" path="doc//member[@name='EventTriggerCommandBinder']/*" />
     [Serializable]
-    public sealed class EventTriggerCommandBinder : TargetBinder<EventTrigger>,
+    public sealed partial class EventTriggerCommandBinder : TargetBinder<EventTrigger>,
         IBinder<IRelayCommand>,
         IBinder<IRelayCommand<BaseEventData>>,
         IBinder<IRelayCommand<EventTriggerType>>
@@ -31,13 +30,11 @@ namespace Aspid.MVVM.StarterKit
         private BaseEventData _lastEvent;
         private EventTrigger.Entry _entry;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
-        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public EventTriggerCommandBinder(
             EventTrigger target,
             EventTriggerType eventTriggerType,
@@ -53,6 +50,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Binds an <see cref="IRelayCommand"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -61,6 +59,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;BaseEventData&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<BaseEventData> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
@@ -69,6 +68,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;EventTriggerType&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<EventTriggerType> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithType, value, OnCanExecuteChanged);
@@ -77,10 +77,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -96,11 +92,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -139,7 +130,6 @@ namespace Aspid.MVVM.StarterKit
     /// Because this class is abstract, a concrete sealed subclass is required for use.
     /// </summary>
     /// <typeparam name="T1">The type of the additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-EventTrigger-Command-1.1.0.xml" path="doc//member[@name='EventTriggerCommandBinder{1}']/*" />
     [Serializable]
     public abstract partial class EventTriggerCommandBinder<T1> : TargetBinder<EventTrigger>,
         IBinder<IRelayCommand<T1>>,
@@ -162,23 +152,12 @@ namespace Aspid.MVVM.StarterKit
         private BaseEventData _lastEvent;
         private EventTrigger.Entry _entry;
 
-        /// <summary>
-        /// Gets or sets the additional parameter forwarded when the command is executed.
-        /// </summary>
-        public virtual T1 Param1
-        {
-            get => _param1;
-            set => _param1 = value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
         /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
         /// <param name="param1">The additional parameter forwarded when the command is executed.</param>
-        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1}.CanExecute(T1)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -190,8 +169,18 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
+        /// Gets or sets the additional parameter forwarded when the command is executed.
+        /// </summary>
+        public virtual T1 Param1
+        {
+            get => _param1;
+            set => _param1 = value;
+        }
+
+        /// <summary>
         /// Binds an <see cref="IRelayCommand{T1}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<T1> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -200,6 +189,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;BaseEventData, T1&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event followed by <see cref="Param1"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<BaseEventData, T1> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
@@ -208,6 +198,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;EventTriggerType, T1&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/> followed by <see cref="Param1"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<EventTriggerType, T1> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithType, value, OnCanExecuteChanged);
@@ -216,10 +207,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -235,11 +222,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -279,7 +261,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-EventTrigger-Command-1.1.0.xml" path="doc//member[@name='EventTriggerCommandBinder{2}']/*" />
     [Serializable]
     public abstract partial class EventTriggerCommandBinder<T1, T2> : TargetBinder<EventTrigger>,
         IBinder<IRelayCommand<T1, T2>>,
@@ -304,6 +285,25 @@ namespace Aspid.MVVM.StarterKit
         private BaseEventData _lastEvent;
         private EventTrigger.Entry _entry;
 
+        /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
+        /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
+        /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
+        /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
+        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1,T2}.CanExecute(T1,T2)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+
+            _event = eventTriggerType;
+            _param1 = param1;
+            _param2 = param2;
+
+            _customInteractable = customInteractable;
+        }
+
         /// <summary>
         /// Gets or sets the first additional parameter forwarded when the command is executed.
         /// </summary>
@@ -323,29 +323,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1, T2}"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
-        /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
-        /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
-        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfTwo();
-
-            _event = eventTriggerType;
-            _param1 = param1;
-            _param2 = param2;
-
-            _customInteractable = customInteractable;
-        }
-
-        /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -354,6 +334,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;BaseEventData, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<BaseEventData, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
@@ -362,6 +343,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;EventTriggerType, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<EventTriggerType, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithType, value, OnCanExecuteChanged);
@@ -370,10 +352,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -389,11 +367,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -434,7 +407,6 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-EventTrigger-Command-1.1.0.xml" path="doc//member[@name='EventTriggerCommandBinder{3}']/*" />
     [Serializable]
     public abstract partial class EventTriggerCommandBinder<T1, T2, T3> : TargetBinder<EventTrigger>,
         IBinder<IRelayCommand<T1, T2, T3>>,
@@ -460,6 +432,27 @@ namespace Aspid.MVVM.StarterKit
 
         private BaseEventData _lastEvent;
         private EventTrigger.Entry _entry;
+
+        /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
+        /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
+        /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
+        /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
+        /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
+        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3}.CanExecute(T1,T2,T3)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+
+            _event = eventTriggerType;
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+
+            _customInteractable = customInteractable;
+        }
 
         /// <summary>
         /// Gets or sets the first additional parameter forwarded when the command is executed.
@@ -489,31 +482,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1, T2, T3}"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
-        /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
-        /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
-        /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
-        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfTwo();
-
-            _event = eventTriggerType;
-            _param1 = param1;
-            _param2 = param2;
-            _param3 = param3;
-
-            _customInteractable = customInteractable;
-        }
-
-        /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -522,6 +493,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;BaseEventData, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the <see cref="BaseEventData"/> of the fired event followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<BaseEventData, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithData, value, OnCanExecuteChanged);
@@ -530,6 +502,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;EventTriggerType, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On trigger, the command receives the configured <see cref="EventTriggerType"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<EventTriggerType, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _commandWithType, value, OnCanExecuteChanged);
@@ -538,10 +511,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -557,11 +526,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to all <see cref="SetValue"/> overloads
-        /// to detach command references and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);
@@ -601,7 +565,6 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T2">The type of the second additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded when the command is executed.</typeparam>
     /// <typeparam name="T4">The type of the fourth additional parameter forwarded when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-EventTrigger-Command-1.1.0.xml" path="doc//member[@name='EventTriggerCommandBinder{4}']/*" />
     [Serializable]
     public abstract partial class EventTriggerCommandBinder<T1, T2, T3, T4> : TargetBinder<EventTrigger>,
         IBinder<IRelayCommand<T1, T2, T3, T4>>
@@ -623,6 +586,29 @@ namespace Aspid.MVVM.StarterKit
 
         private EventTrigger.Entry _entry;
         private IRelayCommand<T1, T2, T3, T4> _command;
+
+        /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
+        /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
+        /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
+        /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
+        /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
+        /// <param name="param4">The fourth additional parameter forwarded when the command is executed.</param>
+        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecute(T1,T2,T3,T4)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+            : base(target, mode)
+        {
+            mode.ThrowExceptionIfTwo();
+
+            _event = eventTriggerType;
+            _param1 = param1;
+            _param2 = param2;
+            _param3 = param3;
+            _param4 = param4;
+
+            _customInteractable = customInteractable;
+        }
 
         /// <summary>
         /// Gets or sets the first additional parameter forwarded when the command is executed.
@@ -661,33 +647,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="EventTriggerCommandBinder{T1, T2, T3, T4}"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="EventTrigger"/> to bind.</param>
-        /// <param name="eventTriggerType">The <see cref="EventTriggerType"/> event that triggers command execution.</param>
-        /// <param name="param1">The first additional parameter forwarded when the command is executed.</param>
-        /// <param name="param2">The second additional parameter forwarded when the command is executed.</param>
-        /// <param name="param3">The third additional parameter forwarded when the command is executed.</param>
-        /// <param name="param4">The fourth additional parameter forwarded when the command is executed.</param>
-        /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand.CanExecute(object)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
-        {
-            mode.ThrowExceptionIfTwo();
-
-            _event = eventTriggerType;
-            _param1 = param1;
-            _param2 = param2;
-            _param3 = param3;
-            _param4 = param4;
-
-            _customInteractable = customInteractable;
-        }
-
-        /// <summary>
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}"/> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<T1, T2, T3, T4> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -696,10 +658,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is bound. Creates an <see cref="EventTrigger.Entry"/> for the configured event
         /// and registers it on the target's triggers list.
         /// </summary>
-        /// <remarks>
-        /// A new <see cref="EventTrigger.Entry"/> is created, <see cref="OnTrigger(BaseEventData)"/> is added to its callback,
-        /// and the entry is appended to <see cref="EventTrigger.triggers"/>.
-        /// </remarks>
         protected override void OnBound()
         {
             _entry = new EventTrigger.Entry
@@ -715,11 +673,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Removes the registered entry from the triggers list
         /// and releases the bound command reference.
         /// </summary>
-        /// <remarks>
-        /// Removes the <see cref="EventTrigger.Entry"/> from the triggers list, unsubscribes the callback,
-        /// clears the entry reference, and passes <see langword="null"/> to <see cref="SetValue"/>
-        /// to detach the command reference and unsubscribe from its <see cref="IRelayCommand.CanExecuteChanged"/> event.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.triggers.Remove(_entry);

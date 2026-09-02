@@ -105,7 +105,7 @@ namespace Aspid.MVVM
             if (IsMonoBinderType(fieldType))
             {
                 var binderId = fieldInfo is not null
-                    ? BinderFieldInfoExtensions.GetBinderId(fieldInfo.Name)
+                    ? BinderIdUtility.FromFieldName(fieldInfo.Name)
                     : string.Empty;
 
                 var assemblyQualifiedName = GetAssemblyQualifiedName(fieldInfo);

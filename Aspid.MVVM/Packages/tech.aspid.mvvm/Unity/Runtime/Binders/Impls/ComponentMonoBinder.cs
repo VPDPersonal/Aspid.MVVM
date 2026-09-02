@@ -4,21 +4,25 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base class for <see cref="MonoBinder"/> implementations that operate on a <see cref="Component"/>.
-    /// Provides lazy resolution of the target component — either from the serialized field or via <see cref="Component.GetComponent{T}"/>.
+    /// Abstract base <see cref="MonoBinder"/> that targets a <typeparamref name="TComponent"/>, taken from the
+    /// serialized field or found on the same GameObject.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> this binder targets.</typeparam>
     public abstract class ComponentMonoBinder<TComponent> : MonoBinder
         where TComponent : Component
     {
-        [Tooltip("Target component this binder operates on. Resolved automatically via GetComponent<TComponent> if left empty.")]
+        [Tooltip("Target component. Found on this GameObject when empty.")]
         [SerializeField] private TComponent _component;
 
         private bool _isCached;
 
         /// <summary>
-        /// Gets the target component.
-        /// Returns the serialized value if assigned; otherwise resolves it via <see cref="Component.GetComponent{T}"/> and caches the result.
+        /// Indicates whether binding is allowed: <see langword="false"/> when no target component can be found.
+        /// </summary>
+        public override bool CanBind => IsAssigned(CachedComponent);
+
+        /// <summary>
+        /// Gets the target component: the serialized one if assigned, otherwise the result of <see cref="ResolveComponent"/>, cached.
         /// </summary>
         protected TComponent CachedComponent
         {
@@ -27,25 +31,34 @@ namespace Aspid.MVVM
                 if (_isCached) return _component;
                 _isCached = true;
 
-                if (_component is not null) return _component;
-                return _component = GetComponent<TComponent>();
+                if (IsAssigned(_component)) return _component;
+                return _component = ResolveComponent();
             }
         }
 
         /// <summary>
-        /// Called by Unity in the Editor when a serialized field value changes.
-        /// Automatically resolves and assigns the component if it is not yet set and the application is not playing.
+        /// Called by Unity in the Editor when a serialized value changes. Fills the empty component field outside Play mode.
         /// </summary>
         /// <remarks>
-        /// When overriding this method, always call <c>base.OnValidate()</c> to preserve
-        /// automatic component resolution in the Editor.
+        /// When overriding, always call <c>base.OnValidate()</c>.
         /// </remarks>
         protected virtual void OnValidate()
         {
             if (Application.isPlaying) return;
-            if (_component is not null) return;
+            if (IsAssigned(_component)) return;
 
-            _component = GetComponent<TComponent>();
+            _component = ResolveComponent();
         }
+
+        /// <summary>
+        /// Called when the serialized field is empty to find the target component. Override when the plain
+        /// <see cref="Component.GetComponent{T}"/> is ambiguous, such as for a base type like <see cref="Behaviour"/>.
+        /// </summary>
+        /// <returns>The component to target.</returns>
+        protected virtual TComponent ResolveComponent() =>
+            GetComponent<TComponent>();
+
+        // Unity's bool conversion: a destroyed component is not null to C#.
+        private static bool IsAssigned(TComponent component) => component;
     }
 }

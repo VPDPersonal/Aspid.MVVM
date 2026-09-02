@@ -177,7 +177,7 @@ public partial class ExampleViewModel
 ```csharp
 // Только OneWay и OneTime
 [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
-public class TransformPositionBinder : TargetVector3Binder<Transform>
+public class TransformPositionBinder : TargetBinder<Transform, Vector3>, IVector3Binder
 {
     // TwoWay и OneWayToSource недоступны в Inspector
 }

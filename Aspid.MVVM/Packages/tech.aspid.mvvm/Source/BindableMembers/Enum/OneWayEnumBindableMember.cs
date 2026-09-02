@@ -4,7 +4,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>,
+    /// Concrete <see cref="OneWayStructBindableMember{T,TBoxed}"/> that fixes <typeparamref name="TBoxed"/> to <see cref="Enum"/>,
     /// allowing enum-typed binders (<see cref="IBinder{Enum}"/>) to receive the boxed enum value alongside
     /// the strongly-typed <typeparamref name="T"/>.
     /// </summary>

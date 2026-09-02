@@ -18,7 +18,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The type of View that inherits from <see cref="Component"/> and implements the <see cref="IView"/> interface.</typeparam>
         /// <param name="view">The instance of the View component to be destroyed.</param>
-        /// <returns>The ViewModel that was bound to the View, or <c>null</c> if there was no ViewModel.</returns>
+        /// <returns>The ViewModel that was bound to the View, or <see langword="null"/> if there was no ViewModel.</returns>
         public static IViewModel? DestroyView<T>(this T? view)
             where T : Component, IView
         {
@@ -47,7 +47,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The type of View that inherits from <see cref="Component"/> and implements the <see cref="IView"/> interface.</typeparam>
         /// <param name="view">The instance of the View component to be destroyed.</param>
-        /// <returns>The ViewModel that was bound to the View, or <c>null</c> if there was no ViewModel.</returns>
+        /// <returns>The ViewModel that was bound to the View, or <see langword="null"/> if there was no ViewModel.</returns>
         public static IViewModel? DestroyViewAndGameObject<T>(this T? view)
             where T : Component, IView
         {
@@ -74,7 +74,7 @@ namespace Aspid.MVVM
         /// Returns the <see cref="IViewModel"/> instance that was bound to the View before its destruction.
         /// </summary>
         /// <param name="view">The instance of the View component to be destroyed.</param>
-        /// <returns>The ViewModel that was bound to the View, or <c>null</c> if there was no ViewModel.</returns>
+        /// <returns>The ViewModel that was bound to the View, or <see langword="null"/> if there was no ViewModel.</returns>
         public static IViewModel? DestroyView(this IView? view)
         {
             if (view is Component viewComponent)
@@ -104,7 +104,7 @@ namespace Aspid.MVVM
         /// Returns the <see cref="IViewModel"/> instance that was bound to the View before its destruction.
         /// </summary>
         /// <param name="view">The instance of the View component to be destroyed.</param>
-        /// <returns>The ViewModel that was bound to the View, or <c>null</c> if there was no ViewModel.</returns>
+        /// <returns>The ViewModel that was bound to the View, or <see langword="null"/> if there was no ViewModel.</returns>
         public static IViewModel? DestroyViewAndGameObject(this IView? view)
         {
             if (view is Component viewComponent)

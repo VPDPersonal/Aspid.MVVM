@@ -56,6 +56,125 @@ public partial class MyAlphaBinder : MonoBinder { }
 
 ---
 
+### 1.3 Типизированные базы биндеров заменены интерфейсами биндеров
+
+Базы, существовавшие только ради повторного объявления перегрузок `SetValue`, удалены. Преобразования переехали в
+интерфейсы биндеров как реализации по умолчанию, поэтому биндер называет интерфейс, а не наследует базу.
+
+| 1.0 / ранняя 1.1 | Сейчас |
+|-----|-----|
+| `TargetVector3Binder<T>` | `TargetBinder<T, Vector3>, IVector3Binder` |
+| `TargetVector2Binder<T>` | `TargetBinder<T, Vector2>, IVector2Binder` |
+| `ComponentVector3MonoBinder<T>` | `ComponentMonoBinder<T, Vector3>, IVector3Binder` |
+| `ComponentVector2MonoBinder<T>` | `ComponentMonoBinder<T, Vector2>, IVector2Binder` |
+| `ComponentQuaternionMonoBinder<T>` | `ComponentMonoBinder<T, Quaternion>, IRotationBinder` |
+| `Vector3Binder` / `Vector2Binder` | `Binder<Vector3>, IVector3Binder` / `Binder<Vector2>, IVector2Binder` |
+| `Vector3MonoBinder` / `Vector2MonoBinder` | `MonoBinder<Vector3>, IVector3Binder` / `MonoBinder<Vector2>, IVector2Binder` |
+| `TargetQuaternionBinder<T>` | `TargetBinder<T, Quaternion>, IRotationBinder` |
+| `ComponentColorMonoBinder<T>` | `ComponentMonoBinder<T, Color>, IColorBinder` |
+| `TargetColorBinder<T>` | `TargetBinder<T, Color>, IColorBinder` |
+| `ComponentBoolMonoBinder<T>` / `ComponentStringMonoBinder<T>` | `ComponentMonoBinder<T, bool>` / `ComponentMonoBinder<T, string>` |
+| `ColorMonoBinder` / `QuaternionMonoBinder` | `MonoBinder<Color>, IColorBinder` / `MonoBinder<Quaternion>, IRotationBinder` |
+| `BoolMonoBinder` / `StringMonoBinder` | `MonoBinder<bool>` / `MonoBinder<string>` |
+| `TargetBoolBinder<T>` / `TargetStringBinder<T>` | `TargetBinder<T, bool>` / `TargetBinder<T, string>` |
+
+`.meta` GUID конкретных биндеров не тронуты, поэтому префабы и сцены продолжают работать.
+
+`TargetQuaternionBinder<T>` отвергал `BindMode.TwoWay` в конструкторе — свойство вращения не поднимает событие
+изменения. Теперь эту проверку несёт сам биндер вращения; своему биндеру на удалённой базе нужно добавить
+`mode.ThrowExceptionIfMatches(BindMode.TwoWay);` в собственный конструктор.
+
+Реализация по умолчанию в интерфейсе не является членом класса, поэтому дополнительные точки входа `SetValue`
+доступны только через интерфейс. Местам вызова нужен каст:
+
+```csharp
+// БЫЛО
+vector2Binder.SetValue(5f);
+vector3Binder.SetValue(new Vector2(1f, 2f));
+
+// СТАЛО
+((IBinder<float>)vector2Binder).SetValue(5f);
+((IBinder<Vector2>)vector3Binder).SetValue(new Vector2(1f, 2f));
+```
+
+То же касается числовых баз: `SetValue(int)`, `SetValue(long)`, `SetValue(float)` и `SetValue(double)` теперь приходят
+из `IIntBinder` / `ILongBinder` / `IFloatBinder` / `IDoubleBinder`, а значения вне диапазона насыщаются на границах
+целевого типа, а не переполняются.
+
+---
+
+### 1.4 `TargetBinderWithConverter<T, TProperty>` слит с `TargetBinder<T, TProperty>`
+
+Двухаргументный `TargetBinder` теперь держит конвертер сам — так же, как всегда делали
+`ComponentMonoBinder<T, TProperty>` и `MonoBinder<TProperty>`. `TargetBinderWithConverter<T, TProperty>` и
+`TargetObjectBinderWithConverter<T, TObject>` удалены — переименуйте их в `TargetBinder<T, TProperty>` и
+`TargetObjectBinder<T, TObject>`; больше в этих биндерах ничего не меняется.
+
+Конструктор принимает конвертер между целью и режимом, поэтому биндер, построенный прямо на двухаргументной базе,
+передаёт на один аргумент больше:
+
+```csharp
+// БЫЛО
+public MyBinder(Image target, BindMode mode = BindMode.OneWay)
+    : base(target, mode) { }
+
+// СТАЛО
+public MyBinder(Image target, IConverter<Image.Type, Image.Type>? converter = null, BindMode mode = BindMode.OneWay)
+    : base(target, converter, mode) { }
+```
+
+Вызовы, передававшие режим позиционно вторым аргументом, теперь должны называть его: `new MyBinder(target,
+mode: BindMode.OneWayToSource)`. Биндеры, у которых конвертера не было, получают сериализуемый слот — он пуст и
+ничего не меняет, пока его не заполнили.
+
+---
+
+### 1.5 Методы `BinderMath` называют биндер, за который санируют
+
+`SafeClamp`, `SafeClamp01` и `NonNegative` подменяли нефинитное значение молча — ровно наоборот тому, как
+конвертеры поступают со значением, которое не могут преобразовать. Теперь подмена сообщается, а для этого методу
+нужно знать вызывающего: каждый стал расширением на `IBinder`, с перегрузкой по `Type` для хелпера, который
+сообщает за другой биндер, — той же парой, что даёт `BinderLogger`.
+
+```csharp
+// БЫЛО
+Target.pitch = BinderMath.SafeClamp(value, -3f, 3f);
+
+// СТАЛО — внутри биндера; сериализуемый биндер передаёт свою цель как объект для пинга
+Target.pitch = this.SafeClamp(value, -3f, 3f, Target);
+
+// СТАЛО — внутри статического хелпера
+audioSource.time = BinderMath.SafeClamp(typeof(AudioSourceTimeSetters), value, 0f, end, audioSource);
+```
+
+`BinderMath.IsFinite(float)` остаётся чистым предикатом. Новый `RequireFinite` — его сообщающая форма: возвращает
+`false` и пишет ошибку, заменяя охранник `if (!BinderMath.IsFinite(value)) return;`, который молча гасил запись.
+Перегрузки покрывают `float`, `Vector2`, `Vector3`, `Vector4` и `Rect`, причём вектор сообщается один раз, а не по
+разу на компоненту.
+
+Сообщается только нефинитный путь. Конечное значение вне диапазона по-прежнему насыщается на границе молча — это
+документированный контракт, иначе ползунок, который двигают каждый кадр, забил бы консоль.
+
+---
+
+### 1.6 Переименованные члены биндеров
+
+| 1.1.0-beta | Теперь |
+|---|---|
+| `Binder.IsBind`, `MonoBinder.IsBind` | `CanBind` |
+| `CollectionBinderBase<T>` | `CollectionBinder<T>` |
+| `OnReplace(…)`, `OnMove(…)` в базах коллекционных биндеров | `OnReplaced(…)`, `OnMoved(…)` |
+| `NumberReverseChannel.HasDecimalListeners`, `RaiseDecimals` | `HasFloatingPointListeners`, `RaiseFloatingPoint` |
+| `ObservableListBinder.GetFilterList` | `GetFilteredList` |
+| `EnumCasterParse` | `EnumNameParse` |
+| `IMonoBinderValidable`, `IsMonoExist` | `IMonoBinderValidatable`, `IsMonoAlive` |
+| Параметры конструкторов `Generic*ToSourceBinder` / `GenericTwoWayBinder` `initialize`, `onBoundValueChanged`, `onUnboundValueChanged` | `subscribe`, `getValueOnBound`, `getValueOnUnbinding` |
+| `BinderFieldInfoExtensions.GetBinderId` (runtime-сборка) | `BinderIdUtility.FromFieldName` (Editor-сборка) |
+
+**Влияние на компиляцию:** переопределения `IsBind`, `OnReplace`, `OnMove`, `GetFilterList` и вызовы generic-конструкторов с именованными аргументами перестают компилироваться до переименования. Сериализованные данные не меняются.
+
+---
+
 ## 2. Изменения времени выполнения / поведения
 
 ### 2.1 `MonoView` больше не абстрактный
@@ -106,18 +225,18 @@ view.DestroyViewAndGameObject();
 
 Оба метода теперь безопасны к null/уничтоженным объектам (возвращают `null` вместо исключения) и в редакторе вне play-режима используют `DestroyImmediate`. Та же пара есть для обобщённых перегрузок `DestroyView<T>()` / `DestroyViewAndGameObject<T>()`.
 
-### 2.4 `CollectionBinderBase<T>` пробрасывает гранулярные события изменений
+### 2.4 `CollectionBinder<T>` пробрасывает гранулярные события изменений
 
-В 1.0 `CollectionBinderBase<T>` имел только `OnAdded(IReadOnlyCollection<T>)` и `OnReset()` и не подписывался на `CollectionChanged`. В 1.1 он подписывается на `CollectionChanged` и добавляет шесть новых абстрактных хуков:
+В 1.0 `CollectionBinder<T>` имел только `OnAdded(IReadOnlyCollection<T>)` и `OnReset()` и не подписывался на `CollectionChanged`. В 1.1 он подписывается на `CollectionChanged` и добавляет шесть новых абстрактных хуков:
 
 - `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`
 - `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`
-- `OnReplace(T? oldItem, T? newItem, int newStartingIndex)`
-- `OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
+- `OnReplaced(T? oldItem, T? newItem, int newStartingIndex)`
+- `OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
 
-Пакетные события `Replace` разворачиваются в поэлементные вызовы `OnReplace`.
+Пакетные события `Replace` разворачиваются в поэлементные вызовы `OnReplaced`.
 
-**Влияние на компиляцию:** любой класс-наследник `CollectionBinderBase<T>` обязан реализовать все шесть новых абстрактных методов, иначе он не скомпилируется. Пустые тела сохраняют поведение 1.0. Сам `CollectionMonoBinder<T>` не изменился (по-прежнему только `OnAdded` / `OnReset`).
+**Влияние на компиляцию:** любой класс-наследник `CollectionBinder<T>` обязан реализовать все шесть новых абстрактных методов, иначе он не скомпилируется. Пустые тела сохраняют поведение 1.0. Сам `CollectionMonoBinder<T>` не изменился (по-прежнему только `OnAdded` / `OnReset`).
 
 ### 2.5 Переработка `ViewInitializer`
 
@@ -297,7 +416,7 @@ protected override string? Format(float value) => value.ToString("F2");
 - [ ] Перенести аргументы `[AddPropertyContextMenu(..., "m_Field")]` в `[AddBinderContextMenu(..., serializePropertyNames: "m_Field")]`
 - [ ] Добавить явный `Object.Destroy(view.gameObject)` там, где `view.Dispose()` использовался для освобождения объектов
 - [ ] Заменить `view.DestroyView()` на `view.DestroyViewAndGameObject()` там, где он использовался для уничтожения GameObject-хоста
-- [ ] Реализовать шесть новых абстрактных хуков в любом кастомном наследнике `CollectionBinderBase<T>` (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplace`, `OnMove`)
+- [ ] Реализовать шесть новых абстрактных хуков в любом кастомном наследнике `CollectionBinder<T>` (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
 - [ ] Пересмотреть настройки `ViewInitializer`: разрешение перенесено в `ViewInitializerBase`, `Resolve` контейнера стал `TryResolve`, добавлена стадия `InitializeStage.DiConstructor` (стадия по умолчанию не изменилась — `Awake`)
 - [ ] Перепроверить данные инспектора `ViewInitializer` / `ViewInitializerManual` — сериализуемые компоненты разрешения сменили тип, поэтому существующие настройки разрешения view/viewModel могут не перенестись- [ ] Проверить использования `NumberToBoolConverter` (`Inequality`) и `DynamicViewModel.Create` на исправленное поведение во время выполнения
 - [ ] Прогнать сцены, использующие `ImageSpriteSwitcherBinder`, Addressable-биндеры и `VirtualizedList*`

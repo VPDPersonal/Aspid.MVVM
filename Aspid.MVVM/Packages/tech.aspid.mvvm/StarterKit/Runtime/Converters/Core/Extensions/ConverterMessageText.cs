@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Writes types and values the way they read inside a converter message.
+    /// Writes types and values the way they read inside a logged message.
     /// </summary>
     public static class ConverterMessageText
     {
@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="type">The type to name.</param>
         /// <returns>The readable name.</returns>
-        public static string GetTypeName(Type type)
+        public static string GetTypeName(this Type type)
         {
             if (_keywords.TryGetValue(type, out var keyword)) return keyword;
             if (!type.IsGenericType) return type.Name;

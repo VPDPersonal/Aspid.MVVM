@@ -31,7 +31,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
+            if (!Application.isPlaying || !IsBound) return;
             
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -48,6 +51,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -55,6 +59,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string> value) =>
             CommandBinderExtensions.UpdateCommand(ref _stringCommand, value, OnCanExecuteChanged);
@@ -62,22 +67,16 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears bound commands.
         /// </summary>
-        /// <remarks>
-        /// Commands are nullified to release <see cref="IRelayCommand.CanExecuteChanged"/> subscriptions and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
-            
+
             SetValue((IRelayCommand)null);
             SetValue((IRelayCommand<string>)null);
         }
@@ -126,15 +125,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(CachedComponent.text));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -159,7 +151,9 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T> _command;
 
-        /// <summary>Gets or sets the parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T Param
         {
             get => _param;
@@ -169,7 +163,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
+            if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -184,6 +181,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -191,18 +189,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -244,15 +236,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(CachedComponent.text, Param));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -280,14 +265,18 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
@@ -297,7 +286,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
+            if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -312,6 +304,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -319,18 +312,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -372,15 +359,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(CachedComponent.text, Param1, Param2));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
     
     /// <summary>
@@ -412,21 +392,27 @@ namespace Aspid.MVVM.StarterKit
         
         private IRelayCommand<string, T1, T2, T3> _command;
 
-        /// <summary>Gets or sets the first parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the first parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T1 Param1
         {
             get => _param1;
             set => _param1 = value;
         }
 
-        /// <summary>Gets or sets the second parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the second parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T2 Param2
         {
             get => _param2;
             set => _param2 = value;
         }
 
-        /// <summary>Gets or sets the third parameter passed to the command alongside the input field text.</summary>
+        /// <summary>
+        /// Gets or sets the third parameter passed to the command alongside the input field text.
+        /// </summary>
         public virtual T3 Param3
         {
             get => _param3;
@@ -436,7 +422,10 @@ namespace Aspid.MVVM.StarterKit
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
+
+            // Only while bound — Unbind on an unbound binder returns immediately, so Unsubscribe never runs
+            // and the listener stays on the field.
+            if (!Application.isPlaying || !IsBound) return;
             
             CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
             CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
@@ -451,6 +440,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Assigns the parameterized relay command and subscribes to <see cref="IRelayCommand.CanExecuteChanged"/> notifications.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IRelayCommand<string, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
@@ -458,18 +448,12 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Called when the binder is bound. Subscribes to the configured input field event.
         /// </summary>
-        /// <remarks>
-        /// The specific event subscribed to is determined by the configured <see cref="UpdateInputFieldEvent"/> value.
-        /// </remarks>
         protected override void OnBound() =>
             Subscribe();
 
         /// <summary>
         /// Called when the binder is unbound. Unsubscribes from the input field event and clears the bound command.
         /// </summary>
-        /// <remarks>
-        /// The command is nullified to release the <see cref="IRelayCommand.CanExecuteChanged"/> subscription and prevent stale references.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Unsubscribe();
@@ -511,15 +495,8 @@ namespace Aspid.MVVM.StarterKit
             SetInteractableMode(command.CanExecute(CachedComponent.text, Param1, Param2, Param3));
         }
         
-        private void SetInteractableMode(bool isInteractable)
-        {
-            switch (_interactableMode)
-            {
-                case InteractableMode.Visible: gameObject.SetActive(isInteractable); break;
-                case InteractableMode.Custom: _customInteractable.SetCanExecute(isInteractable); break;
-                case InteractableMode.Interactable: CachedComponent.interactable = isInteractable; break;
-            }
-        }
+        private void SetInteractableMode(bool isInteractable) =>
+            CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }
 #endif

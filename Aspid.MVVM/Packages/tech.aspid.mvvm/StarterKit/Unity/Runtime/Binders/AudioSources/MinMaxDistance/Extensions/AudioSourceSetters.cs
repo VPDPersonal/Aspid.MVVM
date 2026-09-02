@@ -31,6 +31,21 @@ namespace Aspid.MVVM.StarterKit
                 _ => throw new ArgumentOutOfRangeException()
             };
             
+            if (!BinderMath.IsFinite(value.x) || !BinderMath.IsFinite(value.y))
+            {
+                BinderLogger.LogError(typeof(AudioSourceSetters), $"the distance range ({value.x}, {value.y}) is not finite", "The distances are left unchanged.", audioSource);
+                return;
+            }
+
+            // Unity validates neither setter; a negative or inverted pair silences the source.
+            value = new Vector2(Mathf.Max(0f, value.x), Mathf.Max(0f, value.y));
+
+            if (value.x > value.y)
+            {
+                BinderLogger.LogError(typeof(AudioSourceSetters), $"the distance range ({value.x}, {value.y}) is inverted", "The endpoints are swapped.", audioSource);
+                value = new Vector2(value.y, value.x);
+            }
+
             audioSource.minDistance = value.x;
             audioSource.maxDistance = value.y;
         }

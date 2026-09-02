@@ -35,10 +35,10 @@ namespace Aspid.MVVM
         public IReadOnlyDictionary<string, BindablePropertyMeta> MetaById { get; private set; }
             = new Dictionary<string, BindablePropertyMeta>();
 
-        protected ValidableBindersById LastBinders { get; private set; }
+        protected ValidatableBindersById LastBinders { get; private set; }
         
-        public IEnumerable<IMonoBinderValidable> UnassignedBinders => TargetAsView 
-            ? TargetAsView.GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
+        public IEnumerable<IMonoBinderValidatable> UnassignedBinders => TargetAsView 
+            ? TargetAsView.GetComponentsInChildren<IMonoBinderValidatable>(includeInactive: true)
                 .Where(binder =>
                 {
                     switch (binder.View)
@@ -49,7 +49,7 @@ namespace Aspid.MVVM
 
                     return string.IsNullOrWhiteSpace(binder.Id);
                 }) 
-            : Enumerable.Empty<IMonoBinderValidable>();
+            : Enumerable.Empty<IMonoBinderValidatable>();
 
         #region Enable Methods
         protected sealed override void OnEnable()
@@ -62,7 +62,7 @@ namespace Aspid.MVVM
                 
                 BindersList = new BinderListProperty(serializedObject);
                 DesignViewModel = serializedObject.FindProperty("_designViewModel");
-                LastBinders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+                LastBinders = ValidatableBindersById.GetValidatableBindersById(TargetAsView);
                 DesignViewModelAssemblyQualifiedNameProperty = serializedObject.FindProperty("_designViewModelAssemblyQualifiedNames");
                 
                 InitializeShowDesignViewModelAttribute();
@@ -130,7 +130,7 @@ namespace Aspid.MVVM
             // TODO Aspid.MVVM Refactor
             // This is a temp solution.
             {
-                var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+                var binders = ValidatableBindersById.GetValidatableBindersById(TargetAsView);
                 
                 if (LastBinders is null)
                 {
@@ -179,7 +179,7 @@ namespace Aspid.MVVM
 
         protected void ValidateChangedInView()
         {
-            var binders = ValidableBindersById.GetValidableBindersById(TargetAsView);
+            var binders = ValidatableBindersById.GetValidatableBindersById(TargetAsView);
             ViewAndMonoBinderSyncValidator.ValidateViewChanges(TargetAsView, LastBinders, binders);
             LastBinders = binders;
         }
@@ -270,7 +270,7 @@ namespace Aspid.MVVM
             
             foreach (var value in fieldsById.Values.SelectMany(values => values))
             {
-                if (value is IMonoBinderValidable monoBinder)
+                if (value is IMonoBinderValidatable monoBinder)
                     monoBinder.Reset(MonoBinderResetMode.Soft);
             }
             

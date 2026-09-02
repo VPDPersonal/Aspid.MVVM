@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor utility that validates and synchronizes the assignment of <see cref="IMonoBinderValidable"/>
+    /// Editor utility that validates and synchronizes the assignment of <see cref="IMonoBinderValidatable"/>
     /// binders between a view's required binder slots, adding or removing binder references as the inspector changes.
     /// </summary>
     public static class ViewAndMonoBinderSyncValidator
@@ -28,14 +28,14 @@ namespace Aspid.MVVM
             var fields = view.GetRequireBinderFields();
             
             // We get all child views for this view, valid binders that are associated with this view.
-            var bindersOnScene = view.GetComponentsInChildren<IMonoBinderValidable>(includeInactive: true)
+            var bindersOnScene = view.GetComponentsInChildren<IMonoBinderValidatable>(includeInactive: true)
                 .Where(binder => binder.View is Component binderView && binderView == view).ToArray();
             
             foreach (var field in fields)
             {
                 if (!field.IsValidation()) continue;
                 
-                var assignedBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
+                var assignedBinders = field.GetValueAsArray<IMonoBinderValidatable>(field.FieldContainerObj);
                 var binders = bindersOnScene.Where(binder => field.Id == binder.Id).ToArray();
 
                 // If the attached binders and binders on stage do not match, set new attached binders.
@@ -47,7 +47,7 @@ namespace Aspid.MVVM
             ValidateBinderFromView(view);
             return;
 
-            bool EqualsBinders(IMonoBinderValidable[]? array1, IMonoBinderValidable[]? array2)
+            bool EqualsBinders(IMonoBinderValidatable[]? array1, IMonoBinderValidatable[]? array2)
             {
                 if ((array1 is null || array1.Length is 0) && (array2 is null || array2.Length is 0)) return true;
                 if (array1 is null || array2 is null) return false;
@@ -58,7 +58,7 @@ namespace Aspid.MVVM
             }
         }
 
-        public static void ValidateViewChanges(IView view, ValidableBindersById oldBinders, ValidableBindersById newBinders)
+        public static void ValidateViewChanges(IView view, ValidatableBindersById oldBinders, ValidatableBindersById newBinders)
         {
             var changedBinders = ChangedBinders.GetChangedBinders(oldBinders, newBinders);
             
@@ -132,7 +132,7 @@ namespace Aspid.MVVM
                 // If this is not a valid field, then move on.
                 if (!field.IsValidation()) continue;
                 
-                var binders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
+                var binders = field.GetValueAsArray<IMonoBinderValidatable>(field.FieldContainerObj);
 
                 var binderCount = binders.Length;
                 if (binderCount is 0) continue;
@@ -177,7 +177,7 @@ namespace Aspid.MVVM
         #endregion
         
         #region SetBinderIfNotExistInView Methods
-        public static void SetBinderIfNotExistInView(IMonoBinderValidable binder)
+        public static void SetBinderIfNotExistInView(IMonoBinderValidatable binder)
         {
             // If ID is not set, we cannot delete this binder
             // because we don't know what to look for.
@@ -192,12 +192,12 @@ namespace Aspid.MVVM
             SetBinderIfNotExistInView(binder, binder.View, binder.Id);
         }
         
-        public static void SetBinderIfNotExistInView(IMonoBinderValidable binder, IView view, string id)
+        public static void SetBinderIfNotExistInView(IMonoBinderValidatable binder, IView view, string id)
         {
             var field = view.GetRequireBinderFieldById(id);
             if (field is null) throw new NullReferenceException(nameof(field));
 
-            var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
+            var viewBinders = field.GetValueAsArray<IMonoBinderValidatable>(field.FieldContainerObj);
            
             if (viewBinders is null)
             {
@@ -230,7 +230,7 @@ namespace Aspid.MVVM
         #endregion
         
         #region RemoveBinderIfExistInView Methods
-        public static void RemoveBinderIfExistInView(IMonoBinderValidable binder)
+        public static void RemoveBinderIfExistInView(IMonoBinderValidatable binder)
         {
             // If ID is not set, we cannot delete this binder
             // because we don't know what to look for.
@@ -245,12 +245,12 @@ namespace Aspid.MVVM
             RemoveBinderIfExistInView(binder, binder.View, binder.Id);
         }
         
-        public static void RemoveBinderIfExistInView(IMonoBinderValidable binder, IView view, string id)
+        public static void RemoveBinderIfExistInView(IMonoBinderValidatable binder, IView view, string id)
         {
             var field = view.GetRequireBinderFieldById(id);
             if (field is null) throw new NullReferenceException(nameof(field));
             
-            var viewBinders = field.GetValueAsArray<IMonoBinderValidable>(field.FieldContainerObj);
+            var viewBinders = field.GetValueAsArray<IMonoBinderValidatable>(field.FieldContainerObj);
             if (viewBinders is null) return;
             
             if (field.FieldType.IsArray)
@@ -262,7 +262,7 @@ namespace Aspid.MVVM
             {
                 // If the binder is not already installed, do nothing.
                 if (viewBinders.Length is 0 || viewBinders[0] != binder) return;
-                field.SetValueFromCastValueAndSaveView<IMonoBinderValidable>(view, null);
+                field.SetValueFromCastValueAndSaveView<IMonoBinderValidatable>(view, null);
             }
         }
         #endregion
@@ -297,17 +297,17 @@ namespace Aspid.MVVM
         private readonly struct ChangedBinders
         {
             public readonly string Id;
-            public readonly IMonoBinderValidable?[] OldBinders;
-            public readonly IMonoBinderValidable?[] NewBinders;
+            public readonly IMonoBinderValidatable?[] OldBinders;
+            public readonly IMonoBinderValidatable?[] NewBinders;
 
-            private ChangedBinders(string id, IMonoBinderValidable?[] oldBinders, IMonoBinderValidable?[] newBinders)
+            private ChangedBinders(string id, IMonoBinderValidatable?[] oldBinders, IMonoBinderValidatable?[] newBinders)
             {
                 Id = id;
                 OldBinders = oldBinders;
                 NewBinders = newBinders;
             }
 
-            public static ReadOnlySpan<ChangedBinders> GetChangedBinders(ValidableBindersById oldBinders, ValidableBindersById newBinders)
+            public static ReadOnlySpan<ChangedBinders> GetChangedBinders(ValidatableBindersById oldBinders, ValidatableBindersById newBinders)
             {
                 var changedFields = new List<ChangedBinders>(oldBinders.Count);
                 var keys = oldBinders.Keys.Union(newBinders.Keys);
@@ -315,15 +315,15 @@ namespace Aspid.MVVM
                 foreach (var key in keys)
                 {
                     var oldValue = oldBinders.TryGetValue(key, out var oldBinder)
-                        ? oldBinder ?? Array.Empty<IMonoBinderValidable>()
-                        : Array.Empty<IMonoBinderValidable>();
+                        ? oldBinder ?? Array.Empty<IMonoBinderValidatable>()
+                        : Array.Empty<IMonoBinderValidatable>();
                     
                     var newValue = newBinders.TryGetValue(key, out var newBinder)
-                        ? newBinder ?? Array.Empty<IMonoBinderValidable>()
-                        : Array.Empty<IMonoBinderValidable>();
+                        ? newBinder ?? Array.Empty<IMonoBinderValidatable>()
+                        : Array.Empty<IMonoBinderValidatable>();
                     
                     if (oldValue.SequenceEqual(newValue)) continue;
-                    changedFields.Add(new ChangedBinders(BinderFieldInfoExtensions.GetBinderId(key), oldValue, newValue));
+                    changedFields.Add(new ChangedBinders(BinderIdUtility.FromFieldName(key), oldValue, newValue));
                 }
 
                 return changedFields.ToArray().AsSpan();
@@ -334,7 +334,7 @@ namespace Aspid.MVVM
         {
             public bool IsChanged { get; private set; }
 
-            public IMonoBinderValidable?[] Binders { get; private set; }
+            public IMonoBinderValidatable?[] Binders { get; private set; }
 
             public static ValidNewBinders Valid(IView view, in ChangedBinders changedBinder)
             {
@@ -345,7 +345,7 @@ namespace Aspid.MVVM
                 var oldBinders = changedBinder.OldBinders.ToHashSet();
 
                 var validatingBinders = changedBinder.NewBinders.ToArray();
-                var validatedBinders = new HashSet<IMonoBinderValidable>(validatingBinders.Length);
+                var validatedBinders = new HashSet<IMonoBinderValidatable>(validatingBinders.Length);
 
                 for (var i = 0; i < validatingBinders.Length; i++)
                 {
@@ -369,11 +369,11 @@ namespace Aspid.MVVM
                     }
 
                     result.IsChanged = true;
-                    IMonoBinderValidable? candidateBinder = null;
+                    IMonoBinderValidatable? candidateBinder = null;
 
                     if (validatingBinder is Component component)
                     {
-                        candidateBinder = component.GetComponents<IMonoBinderValidable>()
+                        candidateBinder = component.GetComponents<IMonoBinderValidatable>()
                             .FirstOrDefault(candidate =>
                                 (candidate.View != view || candidate.Id != id) &&
                                 field!.IsBinderMatchRequiredType(candidate));

@@ -12,7 +12,6 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TKey">The type of the dictionary key.</typeparam>
     /// <typeparam name="TViewModel">The type of <see cref="IViewModel"/> stored as the dictionary value.</typeparam>
-    /// <include file="XmlExampleDoc-ObservableDictionary-ViewModel-1.1.0.xml" path="doc//member[@name='ObservableDictionaryViewModelBinder{2}']/*" />
     [Serializable]
     public class ObservableDictionaryViewModelBinder<TKey, TViewModel> : ObservableDictionaryViewModelBinder<TKey, TViewModel, MonoView, ViewFactory>
         where TViewModel : IViewModel
@@ -30,31 +29,28 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TViewModel">The type of <see cref="IViewModel"/> stored as the dictionary value.</typeparam>
     /// <typeparam name="TView">The type of <see cref="MonoBehaviour"/> view created for each dictionary entry.</typeparam>
     /// <typeparam name="TViewFactory">The factory type used to create and release view instances keyed by <typeparamref name="TKey"/>.</typeparam>
-    /// <include file="XmlExampleDoc-ObservableDictionary-ViewModel-1.1.0.xml" path="doc//member[@name='ObservableDictionaryViewModelBinder{4}']/*" />
     [Serializable]
     public class ObservableDictionaryViewModelBinder<TKey, TViewModel, TView, TViewFactory> : ObservableDictionaryBinder<TKey, TViewModel>
         where TViewModel : IViewModel
         where TView : MonoBehaviour, IView
         where TViewFactory : IViewFactoryWithKey<TView>
     {
-        [Tooltip("The factory used to create and release view instances keyed by the dictionary key.")]
+        [Tooltip("Creates and releases a view for each entry, keyed by the dictionary key.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
         private Dictionary<TKey, TView> _views;
 
-        private Dictionary<TKey, TView> Views => _views ??= new Dictionary<TKey, TView>();
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ObservableDictionaryViewModelBinder{TKey, TViewModel, TView, TViewFactory}"/>.
-        /// </summary>
         /// <param name="viewFactory">The factory used to create and release view instances for each dictionary entry.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ObservableDictionaryViewModelBinder(TViewFactory viewFactory, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
             mode.ThrowExceptionIfTwo();
             _viewFactory = viewFactory ?? throw new ArgumentNullException(nameof(viewFactory));
         }
+
+        private Dictionary<TKey, TView> Views => _views ??= new Dictionary<TKey, TView>();
 
         protected sealed override void OnAdded(KeyValuePair<TKey, TViewModel> newItem)
         {
@@ -80,7 +76,7 @@ namespace Aspid.MVVM.StarterKit
                 OnRemoved(item);
         }
 
-        protected sealed override void OnReplace(KeyValuePair<TKey, TViewModel> oldItem, KeyValuePair<TKey, TViewModel> newItem)
+        protected sealed override void OnReplaced(KeyValuePair<TKey, TViewModel> oldItem, KeyValuePair<TKey, TViewModel> newItem)
         {
             Views[oldItem.Key].Deinitialize();
 

@@ -8,12 +8,12 @@ using System.Collections.Generic;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherStringMonoBinder{TMP_Text}"/> that switches the localization table entry reference
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;TMP_Text, string&gt;</see> that switches the localization table entry reference
     /// between two values and sets <see cref="TMP_Text.text"/> via a <see cref="LocalizedString"/>.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Text/Text Binder – Localization Entry Switcher")]
     [AddBinderContextMenu(typeof(TMP_Text), serializePropertyNames: "m_text", SubPath = "Switcher")]
-    public class TextLocalizationEntrySwitcherMonoBinder : SwitcherStringMonoBinder<TMP_Text>
+    public class TextLocalizationEntrySwitcherMonoBinder : SwitcherMonoBinder<TMP_Text, string>
     {
         [Tooltip("The localized string reference that provides the localized text.")]
         [SerializeField] private LocalizedString _stringReference = new();
@@ -56,15 +56,16 @@ namespace Aspid.MVVM.StarterKit
             _stringReference.Unsubscribe(UpdateString);
 
         /// <summary>
-        /// Called when the selected entry key is applied.
-        /// Sets the localized string table entry reference.
+        /// Sets the localized string table entry reference to the selected value.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(string value) =>
             _stringReference.TableEntryReference = value;
         
         /// <summary>
         /// Called when the localized string changes. Updates <see cref="TMP_Text.text"/> with the localized value.
         /// </summary>
+        /// <param name="value">The value formatted into the localized string.</param>
         protected virtual void UpdateString(string value) =>
             CachedComponent.text = value;
     }

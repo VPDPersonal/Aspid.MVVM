@@ -4,29 +4,41 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherColorMonoBinder{Renderer}"/> that switches a named color property on all materials of a <see cref="Renderer"/> component
+    /// <see cref="SwitcherMonoBinder{Renderer, Color}"/> that switches a named color property on all materials of a <see cref="Renderer"/> component
     /// between two <see cref="Color"/> values based on the bound boolean ViewModel value.
-    /// The color property name defaults to <c>"_BaseColor"</c> and can be configured in the Inspector.
     /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Renderer/Renderer Binder – MaterialsColor Switcher")]
     [AddBinderContextMenu(typeof(Renderer), serializePropertyNames: "m_Materials", SubPath = "Switcher")]
-    public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherColorMonoBinder<Renderer>
+    public sealed class RendererMaterialsColorSwitcherMonoBinder : SwitcherMonoBinder<Renderer, Color>
     {
-        [Tooltip("The name of the shader color property to set on all materials. Defaults to \"_BaseColor\".")]
+        [Tooltip("The name of the shader color property to set on all materials.")]
         [SerializeField] private string _colorPropertyName = "_BaseColor";
         
-        private int? _colorPropertyId;
+        private ShaderPropertyId _colorPropertyId;
+        private Material[] _materials;
         
-        private int ColorPropertyId => _colorPropertyId ??= Shader.PropertyToID(_colorPropertyName);
+        private int ColorPropertyId => _colorPropertyId.Resolve(_colorPropertyName);
 
         /// <summary>
-        /// Called when applying the selected value to the material color property.
         /// Sets the named color property on all materials of the <see cref="Renderer"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         protected override void SetValue(Color value)
         {
-            foreach (var material in CachedComponent.materials)
+            _materials ??= CachedComponent.materials;
+
+            foreach (var material in _materials)
                 material.SetColor(ColorPropertyId, value);
         }
+
+        /// <summary>
+        /// Called after unbinding. Clears the cached materials array so it is re-fetched on the next bind.
+        /// </summary>
+        protected override void OnUnbound()
+        {
+            _materials = null;
+            base.OnUnbound();
+        }
+
     }
 }

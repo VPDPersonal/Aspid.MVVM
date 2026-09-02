@@ -34,7 +34,7 @@ namespace Aspid.MVVM.StarterKit
         [HideInCallstack]
         public static void Log(Type converterType, string message, Object? context = null)
         {
-            var converterName = ConverterMessageText.GetTypeName(converterType);
+            var converterName = converterType.GetTypeName();
             Debug.Log($"{Prefix}{converterName}: {message}", context);
         }
 
@@ -59,7 +59,7 @@ namespace Aspid.MVVM.StarterKit
         [HideInCallstack]
         public static void LogError(Type converterType, string problem, string consequence, Object? context = null)
         {
-            var converterName = ConverterMessageText.GetTypeName(converterType);
+            var converterName = converterType.GetTypeName();
             Debug.LogError($"{Prefix}{converterName}: {problem}. {consequence}", context);
         }
 
@@ -84,8 +84,8 @@ namespace Aspid.MVVM.StarterKit
         [HideInCallstack]
         public static void LogError(Type converterType, Exception exception, string consequence, Object? context = null)
         {
-            var converterName = ConverterMessageText.GetTypeName(converterType);
-            var exceptionName = ConverterMessageText.GetTypeName(exception.GetType());
+            var converterName = converterType.GetTypeName();
+            var exceptionName = exception.GetType().GetTypeName();
 
             Debug.LogError(
                 message: $"{Prefix}{converterName}: threw {exceptionName} ({exception.Message}). {consequence}\n{exception}",

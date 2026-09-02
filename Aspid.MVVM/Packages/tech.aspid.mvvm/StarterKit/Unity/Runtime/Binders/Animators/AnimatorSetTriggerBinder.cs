@@ -6,21 +6,35 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{Animator}"/> that fires a trigger parameter on a Unity <see cref="Animator"/>
-    /// when the bound ViewModel command or action is invoked.
+    /// Abstract base <see cref="TargetBinder{Animator}"/> that hands the ViewModel one operation on a trigger parameter —
+    /// setting it or resetting it — as an <see cref="Action"/> or an <see cref="IRelayCommand"/>.
     /// </summary>
-    /// <remarks>
-    /// Only <see cref="BindMode.OneWayToSource"/> is supported. When binding is established, the binder
-    /// exposes an internal <c>SetTrigger</c> action to the ViewModel either as a plain <see cref="Action"/>
-    /// or as an <see cref="IRelayCommand"/> whose <c>CanExecute</c> mirrors <see cref="CanExecute()"/>.
-    /// </remarks>
-    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetTriggerBinder']/*" />
     [Serializable]
     [BindModeOverride(BindMode.OneWayToSource)]
-    public class AnimatorSetTriggerBinder : TargetBinder<Animator>,
+    public abstract class AnimatorTriggerBinder : TargetBinder<Animator>,
         IReverseBinder<Action?>,
         IReverseBinder<IRelayCommand?>
     {
+        private IRelayCommand? _command;
+        private AnimatorParameterProbe _probe;
+        private Action<Action?>? _reverseAction;
+        private Action<IRelayCommand?>? _reverseCommand;
+
+        [field: SerializeField]
+        [field: Tooltip("The name of the trigger Animator parameter to fire.")]
+        protected string TriggerName { get; private set; }
+
+        /// <param name="target">The <see cref="Animator"/> whose trigger parameter is fired.</param>
+        /// <param name="triggerName">The name of the trigger Animator parameter.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="target"/> or <paramref name="triggerName"/> is <see langword="null"/>.
+        /// </exception>
+        protected AnimatorTriggerBinder(Animator target, string triggerName)
+            : base(target, BindMode.OneWayToSource)
+        {
+            TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
+        }
+
         event Action<Action?>? IReverseBinder<Action?>.ValueChanged
         {
             add => _reverseAction += value;
@@ -33,54 +47,38 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseCommand -= value;
         }
 
-        private IRelayCommand? _command;
-        private Action<Action?>? _reverseAction;
-        private Action<IRelayCommand?>? _reverseCommand;
-
-        [field: SerializeField]
-        [field: Tooltip("The name of the trigger Animator parameter to fire.")]
-        protected string TriggerName { get; private set; }
-
         /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetTriggerBinder"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="Animator"/> whose trigger parameter is fired.</param>
-        /// <param name="triggerName">The name of the trigger Animator parameter.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="target"/> or <paramref name="triggerName"/> is <see langword="null"/>.
-        /// </exception>
-        public AnimatorSetTriggerBinder(Animator target, string triggerName)
-            : base(target, BindMode.OneWayToSource)
-        {
-            TriggerName = triggerName ?? throw new ArgumentNullException(nameof(triggerName));
-        }
-
-        /// <summary>
-        /// Notifies the bound <see cref="IRelayCommand"/> that its <c>CanExecute</c> state may have changed.
+        /// Notifies the bound <see cref="IRelayCommand"/> that its <see cref="IRelayCommand.CanExecute()"/> state may have changed.
         /// </summary>
         public void NotifyCanExecuteChanged() =>
             _command?.NotifyCanExecuteChanged();
 
-        private void SetTrigger()
+        private void Run()
         {
             if (!CanExecute()) return;
-            Target.SetTrigger(TriggerName);
+            Apply(TriggerName);
         }
 
         /// <summary>
+        /// Performs the operation this binder exposes on <paramref name="triggerName"/>.
+        /// </summary>
+        /// <param name="triggerName">The name of the trigger parameter, already checked to exist.</param>
+        protected abstract void Apply(string triggerName);
+
+        /// <summary>
         /// Called when binding is established.
-        /// Exposes <c>SetTrigger</c> to the ViewModel as an <see cref="IRelayCommand"/> or a plain <see cref="Action"/>.
+        /// Exposes <see cref="Animator.SetTrigger(string)"/> to the ViewModel as an <see cref="IRelayCommand"/> or a plain <see cref="Action"/>.
         /// </summary>
         protected sealed override void OnBound()
         {
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand(SetTrigger, CanExecute);
+                _command = new RelayCommand(Run, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else
             {
-                _reverseAction?.Invoke(SetTrigger);
+                _reverseAction?.Invoke(Run);
             }
         }
 
@@ -97,9 +95,49 @@ namespace Aspid.MVVM.StarterKit
 
         /// <summary>
         /// Determines whether the trigger may be fired.
-        /// Returns <see langword="true"/> when the <see cref="Animator"/>'s <see cref="UnityEngine.GameObject"/> is active in the hierarchy.
+        /// Returns <see langword="true"/> when the <see cref="Animator"/>'s <see cref="UnityEngine.GameObject"/> is
+        /// active in the hierarchy and <see cref="TriggerName"/> names a trigger its controller actually has.
         /// </summary>
+        /// <remarks>
+        /// The activity check comes first because it is the cheaper of the two and because a binder on an inactive
+        /// object has nothing to say about a trigger it is not going to set.
+        /// </remarks>
         protected virtual bool CanExecute() =>
-            Target.gameObject.activeInHierarchy;
+            Target && Target.gameObject.activeInHierarchy &&
+            _probe.IsUsable(Target, TriggerName, AnimatorControllerParameterType.Trigger, this);
+    }
+
+    /// <summary>
+    /// Concrete <see cref="AnimatorTriggerBinder"/> that sets the trigger parameter.
+    /// </summary>
+    [Serializable]
+    public class AnimatorSetTriggerBinder : AnimatorTriggerBinder
+    {
+        /// <inheritdoc/>
+        public AnimatorSetTriggerBinder(Animator target, string triggerName)
+            : base(target, triggerName) { }
+
+        /// <inheritdoc/>
+        protected override void Apply(string triggerName) =>
+            Target.SetTrigger(triggerName);
+    }
+
+    /// <summary>
+    /// Concrete <see cref="AnimatorTriggerBinder"/> that resets the trigger parameter.
+    /// </summary>
+    /// <remarks>
+    /// A trigger that was set and never consumed stays armed, firing the moment its state becomes reachable —
+    /// often much later, in a state nobody connected to it.
+    /// </remarks>
+    [Serializable]
+    public class AnimatorResetTriggerBinder : AnimatorTriggerBinder
+    {
+        /// <inheritdoc/>
+        public AnimatorResetTriggerBinder(Animator target, string triggerName)
+            : base(target, triggerName) { }
+
+        /// <inheritdoc/>
+        protected override void Apply(string triggerName) =>
+            Target.ResetTrigger(triggerName);
     }
 }

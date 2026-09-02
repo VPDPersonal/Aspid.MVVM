@@ -12,25 +12,20 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The source value type produced by the ViewModel binding.</typeparam>
     /// <typeparam name="TTo">The target value type expected by the setter action.</typeparam>
-    /// <remarks>
-    /// Unity-specific variant of <see cref="GenericCasterBinder{TFrom,TTo}"/> that accepts a
-    /// <see cref="UnityAction{T}"/> instead of a plain <see cref="System.Action{T}"/>.
-    /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
-    /// </remarks>
-    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{2}']/*" />
+    [System.Obsolete("Use the GenericCaster binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericCasterBinder<TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly UnityAction<TTo?> _setValue;
         private readonly IConverter<TFrom?, TTo?> _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="UnityGenericCasterBinder{TFrom,TTo}"/>.
-        /// </summary>
         /// <param name="setValue">The <see cref="UnityAction{T}"/> invoked with the converted <typeparamref name="TTo"/> value.</param>
         /// <param name="converter">The converter used to transform a <typeparamref name="TFrom"/> value to <typeparamref name="TTo"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
         /// </exception>
         public UnityGenericCasterBinder(
             UnityAction<TTo?> setValue, 
@@ -60,31 +55,28 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The source value type produced by the ViewModel binding.</typeparam>
     /// <typeparam name="TTo">The target value type expected by the setter action.</typeparam>
     /// <remarks>
-    /// Unity-specific variant of <see cref="GenericCasterBinder{TTarget,TFrom,TTo}"/> that accepts a
-    /// <see cref="UnityAction{T0,T1}"/> instead of a plain <see cref="System.Action{T1,T2}"/>.
     /// Passing the target separately enables method-group-style property setters on Unity components
     /// without capturing them in a closure.
-    /// Only non-two-way bind modes are supported; passing <see cref="BindMode.TwoWay"/> will throw.
     /// </remarks>
-    /// <include file="XmlExampleDoc-UnityGenerics-1.1.0.xml" path="doc//member[@name='UnityGenericCasterBinder{3}']/*" />
+    [System.Obsolete("Use the GenericCaster binder instead: it takes a plain Action, which a UnityAction converts to implicitly. The Unity-flavoured copies exist only for that conversion and will be removed in the next major version.")]
     public class UnityGenericCasterBinder<TTarget, TFrom, TTo> : Binder, IBinder<TFrom>
     {
         private readonly TTarget _target;
         private readonly UnityAction<TTarget, TTo?> _setValue;
         private readonly IConverter<TFrom?, TTo?> _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="UnityGenericCasterBinder{TTarget,TFrom,TTo}"/>.
-        /// </summary>
         /// <param name="target">The target object whose property is updated on each value change.</param>
         /// <param name="setValue">
         /// The <see cref="UnityAction{T0,T1}"/> invoked with the target and the converted <typeparamref name="TTo"/> value.
         /// </param>
         /// <param name="converter">The converter used to transform a <typeparamref name="TFrom"/> value to <typeparamref name="TTo"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="target"/>, <paramref name="setValue"/>, or <paramref name="converter"/>
         /// is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.
         /// </exception>
         public UnityGenericCasterBinder(
             TTarget target,

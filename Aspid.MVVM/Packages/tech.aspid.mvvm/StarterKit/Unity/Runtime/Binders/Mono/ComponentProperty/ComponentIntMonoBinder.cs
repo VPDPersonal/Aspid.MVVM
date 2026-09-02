@@ -1,68 +1,51 @@
-using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="ComponentMonoBinder{TComponent, int, IConverter{int, int}}"/> that binds an <see langword="int"/> property,
-    /// implementing <see cref="INumberBinder"/> to accept all numeric types
+    /// Abstract base <see cref="ComponentMonoBinder{TComponent,TProperty}">ComponentMonoBinder&lt;TComponent, int&gt;</see> that binds an <see langword="int"/> property,
+    /// implementing <see cref="IIntBinder"/> to accept all numeric types
     /// and <see cref="INumberReverseBinder"/> to broadcast to all numeric event types.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="UnityEngine.Component"/> that exposes the target <see langword="int"/> property.</typeparam>
-    public abstract partial class ComponentIntMonoBinder<TComponent> : ComponentMonoBinder<TComponent, int, Converter>,
-        INumberBinder,
+    public abstract partial class ComponentIntMonoBinder<TComponent> : ComponentMonoBinder<TComponent, int>,
+        IIntBinder,
         INumberReverseBinder
         where TComponent : Component
     {
-        /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
+        private NumberReverseChannel _channel;
 
         /// <inheritdoc/>
-        public event Action<long> LongValueChanged;
-
-        /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
-
-        /// <inheritdoc/>
-        public event Action<double> DoubleValueChanged;
-
-        /// <inheritdoc/>
-        [BinderLog]
-        public void SetValue(long value) =>
-            base.SetValue((int)value);
-
-        /// <inheritdoc/>
-        [BinderLog]
-        public void SetValue(float value) =>
-            base.SetValue((int)value);
-
-        /// <inheritdoc/>
-        [BinderLog]
-        public void SetValue(double value) =>
-            base.SetValue((int)value);
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
-        /// Broadcasts the current value to all numeric event types:
-        /// <see cref="IntValueChanged"/>, <see cref="LongValueChanged"/>, <see cref="FloatValueChanged"/>, and <see cref="DoubleValueChanged"/>.
+        /// Broadcasts the current value on every numeric channel.
         /// </summary>
         /// <remarks>
-        /// Also calls the base implementation: a member bound through <see cref="IReverseBinder{T}"/>
-        /// for the property's own type reaches the base <c>ValueChanged</c> event rather than the
-        /// matching <see cref="INumberReverseBinder"/> channel, because a class member outranks the
-        /// implementation the interface carries.
+        /// Also calls the base implementation: <see cref="IReverseBinder{T}"/> bound for the property's own type
+        /// resolves to the base <c>ValueChanged</c> event, not this channel — a class member outranks an interface
+        /// implementation.
         /// </remarks>
         protected override void SendInitialValueToSource()
         {
             base.SendInitialValueToSource();
+            _channel.Raise(GetConvertedBackValue(Property));
+        }
 
-            var value = GetConvertedBackValue(Property);
-
-            IntValueChanged?.Invoke(value);
-            LongValueChanged?.Invoke(value);
-            FloatValueChanged?.Invoke(value);
-            DoubleValueChanged?.Invoke(value);
+        /// <summary>
+        /// Sends <paramref name="value"/> to the ViewModel on every numeric channel this binder exposes.
+        /// </summary>
+        /// <param name="value">The value to send, before conversion.</param>
+        /// <remarks>
+        /// Raising <see cref="ComponentMonoBinder{TComponent,TProperty}.ValueChanged"/> alone would reach an
+        /// <see langword="int"/> field in the ViewModel but leave a <see langword="float"/> one silent, since the
+        /// other three channels are bridged by <see cref="INumberReverseBinder"/> rather than inherited.
+        /// </remarks>
+        protected void RaiseNumberValueChanged(int value)
+        {
+            RaiseValueChanged(value);
+            _channel.Raise(GetConvertedBackValue(value));
         }
     }
 }

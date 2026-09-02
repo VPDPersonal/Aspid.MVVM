@@ -8,23 +8,40 @@ using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
+    /// <summary>
+    /// Concrete <see cref="ObservableListViewModelMonoBinder{T, TViewFactory}"/> that uses <see cref="MonoView"/> as
+    /// the view type and the default <see cref="IViewFactory{T}"/> as the factory.
+    /// </summary>
     [AddComponentMenu("Aspid/MVVM/Binders/Collection/Observable List Binder – ViewModel")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collection/Observable List Binder – ViewModel")]
     public class ObservableListViewModelMonoBinder : ObservableListViewModelMonoBinder<MonoView, ViewFactory> { }
 
-#if UNITY_2023_1_OR_NEWER
-    public abstract class ObservableListViewModelMonoBinder<T> : ObservableListViewModelMonoBinder<T, IViewFactory<T>> 
+    /// <summary>
+    /// <see cref="ObservableListViewModelMonoBinder{T, TViewFactory}"/> that uses <see cref="IViewFactory{T}"/> as
+    /// the factory type.
+    /// </summary>
+    /// <typeparam name="T">The type of <see cref="MonoBehaviour"/> view created for each item in the list.</typeparam>
+    public abstract class ObservableListViewModelMonoBinder<T> : ObservableListViewModelMonoBinder<T, IViewFactory<T>>
         where T : MonoBehaviour, IView { }
-#endif
-    
+
+    /// <summary>
+    /// <see cref="ObservableListMonoBinder{T}"/> that instantiates and releases <typeparamref name="T"/> view
+    /// objects for each <see cref="IViewModel"/> in a bound observable list, with optional filtering and sorting
+    /// support.
+    /// </summary>
+    /// <typeparam name="T">The type of <see cref="MonoBehaviour"/> view created for each item in the list.</typeparam>
+    /// <typeparam name="TViewFactory">The factory type used to create and release view instances.</typeparam>
     public abstract class ObservableListViewModelMonoBinder<T, TViewFactory> : ObservableListMonoBinder<IViewModel>
         where T : MonoBehaviour, IView
         where TViewFactory : IViewFactory<T>
     {
+        [Tooltip("Creates a view per list item. Required — nothing is shown without it.")]
         [SerializeReference] private TViewFactory _viewFactory;
 
+        [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
         
+        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
         [SerializeReference] private Comparer _comparer;
 
         private List<T> _views;
@@ -32,13 +49,22 @@ namespace Aspid.MVVM.StarterKit
         
         private List<T> Views => _views ??= new List<T>();
 
+        /// <summary>
+        /// Called when the binding is released. Disposes the filtered view of the list before the base class
+        /// detaches from it.
+        /// </summary>
+        /// <remarks>
+        /// The order matters: the filtered list subscribes to the source, so disposing it after the base class
+        /// has dropped the source would leave the subscription behind. When overriding, always call the base
+        /// implementation.
+        /// </remarks>
         protected override void OnUnbound()
         {
             DisposeFilteredList();
             base.OnUnbound();
         }
 
-        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilterList(IReadOnlyList<IViewModel> list)
+        protected sealed override IReadOnlyFilteredList<IViewModel> GetFilteredList(IReadOnlyList<IViewModel> list)
         {
             DisposeFilteredList();
 
@@ -57,17 +83,17 @@ namespace Aspid.MVVM.StarterKit
             _filteredList = null;
         }
 
-        protected sealed override void OnAdded(IViewModel newItem, int newStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, newStartingIndex);
+        protected sealed override void OnAdded(IViewModel newItem, int index) =>
+            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, index);
 
-        protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int newStartingIndex)
+        protected sealed override void OnAdded(IReadOnlyList<IViewModel> newItems, int index)
         {
             if (newItems is null) return;
 
             var index = 0;
 
             foreach (var item in newItems)
-                OnAdded(item, newStartingIndex: newStartingIndex + index++);
+                OnAdded(item, index: index + index++);
         }
 
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex) =>
@@ -81,11 +107,11 @@ namespace Aspid.MVVM.StarterKit
                 OnRemoved(item, oldStartingIndex);
         }
 
-        protected sealed override void OnReplace(IViewModel oldItem, IViewModel newItem, int newStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnReplace(Views, newItem, newStartingIndex);
+        protected sealed override void OnReplaced(IViewModel oldItem, IViewModel newItem, int index) =>
+            ObservableListViewModelBinderHelper.OnReplaced(Views, newItem, index);
 
-        protected sealed override void OnMove(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnMove(Views, oldStartingIndex, newStartingIndex);
+        protected sealed override void OnMoved(IViewModel oldItem, IViewModel newItem, int oldStartingIndex, int newStartingIndex) =>
+            ObservableListViewModelBinderHelper.OnMoved(Views, oldStartingIndex, newStartingIndex);
 
         protected sealed override void OnReset() =>
             ObservableListViewModelBinderHelper.OnReset(Views, _viewFactory);

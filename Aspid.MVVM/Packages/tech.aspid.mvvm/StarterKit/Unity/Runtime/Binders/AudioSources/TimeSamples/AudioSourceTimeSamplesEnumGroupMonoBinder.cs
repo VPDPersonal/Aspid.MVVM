@@ -1,0 +1,23 @@
+using UnityEngine;
+
+// ReSharper disable once CheckNamespace
+namespace Aspid.MVVM.StarterKit
+{
+    /// <summary>
+    /// <see cref="EnumGroupMonoBinder{TElement,TValue}">EnumGroupMonoBinder&lt;AudioSource, int&gt;</see> that sets the <see cref="AudioSource.timeSamples"/>
+    /// property on each element based on the bound enum ViewModel value.
+    /// </summary>
+    [AddBinderContextMenu(typeof(AudioSource), SubPath = "EnumGroup")]
+    [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – TimeSamples EnumGroup")]
+    public sealed class AudioSourceTimeSamplesEnumGroupMonoBinder : EnumGroupMonoBinder<AudioSource, int>
+    {
+        /// <summary>
+        /// Called when the bound enum resolves to a value for the specified element.
+        /// Sets <see cref="AudioSource.timeSamples"/> to the resolved value.
+        /// </summary>
+        /// <param name="element">The component this entry of the group writes to.</param>
+        /// <param name="value">The value the bound enum resolved to for this element.</param>
+        protected override void SetValue(AudioSource element, int value) =>
+            element.SetTimeSamples(value);
+    }
+}

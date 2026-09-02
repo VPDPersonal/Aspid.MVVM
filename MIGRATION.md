@@ -56,6 +56,125 @@ If a binder only had `[AddComponentContextMenu(typeof(X), "path")]`, the mechani
 
 ---
 
+### 1.3 Typed binder bases replaced by binder interfaces
+
+The bases that existed only to restate the `SetValue` overloads are gone. The conversions now live in the binder
+interfaces as default interface implementations, so a binder names the interface instead of inheriting a base.
+
+| 1.0 / earlier 1.1 | Now |
+|-----|-----|
+| `TargetVector3Binder<T>` | `TargetBinder<T, Vector3>, IVector3Binder` |
+| `TargetVector2Binder<T>` | `TargetBinder<T, Vector2>, IVector2Binder` |
+| `ComponentVector3MonoBinder<T>` | `ComponentMonoBinder<T, Vector3>, IVector3Binder` |
+| `ComponentVector2MonoBinder<T>` | `ComponentMonoBinder<T, Vector2>, IVector2Binder` |
+| `ComponentQuaternionMonoBinder<T>` | `ComponentMonoBinder<T, Quaternion>, IRotationBinder` |
+| `Vector3Binder` / `Vector2Binder` | `Binder<Vector3>, IVector3Binder` / `Binder<Vector2>, IVector2Binder` |
+| `Vector3MonoBinder` / `Vector2MonoBinder` | `MonoBinder<Vector3>, IVector3Binder` / `MonoBinder<Vector2>, IVector2Binder` |
+| `TargetQuaternionBinder<T>` | `TargetBinder<T, Quaternion>, IRotationBinder` |
+| `ComponentColorMonoBinder<T>` | `ComponentMonoBinder<T, Color>, IColorBinder` |
+| `TargetColorBinder<T>` | `TargetBinder<T, Color>, IColorBinder` |
+| `ComponentBoolMonoBinder<T>` / `ComponentStringMonoBinder<T>` | `ComponentMonoBinder<T, bool>` / `ComponentMonoBinder<T, string>` |
+| `ColorMonoBinder` / `QuaternionMonoBinder` | `MonoBinder<Color>, IColorBinder` / `MonoBinder<Quaternion>, IRotationBinder` |
+| `BoolMonoBinder` / `StringMonoBinder` | `MonoBinder<bool>` / `MonoBinder<string>` |
+| `TargetBoolBinder<T>` / `TargetStringBinder<T>` | `TargetBinder<T, bool>` / `TargetBinder<T, string>` |
+
+`.meta` GUIDs of the concrete binders are untouched, so prefabs and scenes keep working.
+
+`TargetQuaternionBinder<T>` rejected `BindMode.TwoWay` in its constructor — a rotation property raises no change
+event. A rotation binder now carries that check itself; a custom one built on the removed base has to add
+`mode.ThrowExceptionIfMatches(BindMode.TwoWay);` to its own constructor.
+
+A default interface implementation is not a class member, so the extra `SetValue` entry points are reachable only
+through the interface. Call sites that used them directly need a cast:
+
+```csharp
+// BEFORE
+vector2Binder.SetValue(5f);
+vector3Binder.SetValue(new Vector2(1f, 2f));
+
+// AFTER
+((IBinder<float>)vector2Binder).SetValue(5f);
+((IBinder<Vector2>)vector3Binder).SetValue(new Vector2(1f, 2f));
+```
+
+The same applies to the numeric bases: `SetValue(int)`, `SetValue(long)`, `SetValue(float)` and `SetValue(double)`
+now come from `IIntBinder` / `ILongBinder` / `IFloatBinder` / `IDoubleBinder`, and out-of-range values saturate at the
+target type's bounds instead of wrapping.
+
+---
+
+### 1.4 `TargetBinderWithConverter<T, TProperty>` merged into `TargetBinder<T, TProperty>`
+
+The two-argument `TargetBinder` now holds the converter itself, the way `ComponentMonoBinder<T, TProperty>` and
+`MonoBinder<TProperty>` always have. `TargetBinderWithConverter<T, TProperty>` and
+`TargetObjectBinderWithConverter<T, TObject>` are removed — rename them to `TargetBinder<T, TProperty>` and
+`TargetObjectBinder<T, TObject>`; nothing else about those binders changes.
+
+Its constructor takes the converter between the target and the mode, so a binder built directly on the
+two-argument base passes one more argument:
+
+```csharp
+// BEFORE
+public MyBinder(Image target, BindMode mode = BindMode.OneWay)
+    : base(target, mode) { }
+
+// AFTER
+public MyBinder(Image target, IConverter<Image.Type, Image.Type>? converter = null, BindMode mode = BindMode.OneWay)
+    : base(target, converter, mode) { }
+```
+
+Callers that passed the mode positionally as the second argument now have to name it: `new MyBinder(target,
+mode: BindMode.OneWayToSource)`. Binders that had no converter before gain a serialized one, which starts empty
+and changes nothing until it is filled in.
+
+---
+
+### 1.5 `BinderMath` methods name the binder they sanitise for
+
+`SafeClamp`, `SafeClamp01` and `NonNegative` replaced a non-finite value without a word in the console, which is
+the opposite of what the converters do for a value they cannot convert. They now report the replacement, and to do
+that they need to know who is calling: each is an extension on `IBinder`, with a `Type` overload for a helper
+reporting on another binder's behalf — the same pair `BinderLogger` offers.
+
+```csharp
+// BEFORE
+Target.pitch = BinderMath.SafeClamp(value, -3f, 3f);
+
+// AFTER — inside a binder; a serializable binder passes its target as the object to ping
+Target.pitch = this.SafeClamp(value, -3f, 3f, Target);
+
+// AFTER — inside a static helper
+audioSource.time = BinderMath.SafeClamp(typeof(AudioSourceTimeSetters), value, 0f, end, audioSource);
+```
+
+`BinderMath.IsFinite(float)` stays a plain predicate. The new `RequireFinite` is the reporting form of it: it
+returns `false` and logs, and replaces the `if (!BinderMath.IsFinite(value)) return;` guard that silently dropped
+the write. Overloads cover `float`, `Vector2`, `Vector3`, `Vector4` and `Rect`, and a vector is reported once
+rather than once per component.
+
+Only the non-finite path reports. A finite value outside the range still saturates at the bound in silence — that
+is the documented contract, and a slider driven every frame would otherwise fill the console.
+
+---
+
+### 1.6 Renamed binder members
+
+| 1.1.0-beta | Now |
+|---|---|
+| `Binder.IsBind`, `MonoBinder.IsBind` | `CanBind` |
+| `CollectionBinderBase<T>` | `CollectionBinder<T>` |
+| `OnReplace(…)`, `OnMove(…)` on the collection binder bases | `OnReplaced(…)`, `OnMoved(…)` |
+| `NumberReverseChannel.HasDecimalListeners`, `RaiseDecimals` | `HasFloatingPointListeners`, `RaiseFloatingPoint` |
+| `ObservableListBinder.GetFilterList` | `GetFilteredList` |
+| `EnumCasterParse` | `EnumNameParse` |
+| `IMonoBinderValidable`, `IsMonoExist` | `IMonoBinderValidatable`, `IsMonoAlive` |
+| `Generic*ToSourceBinder` / `GenericTwoWayBinder` ctor parameters `initialize`, `onBoundValueChanged`, `onUnboundValueChanged` | `subscribe`, `getValueOnBound`, `getValueOnUnbinding` |
+| `BinderFieldInfoExtensions.GetBinderId` (runtime assembly) | `BinderIdUtility.FromFieldName` (Editor assembly) |
+
+**Compile impact:** overrides of `IsBind`, `OnReplace`, `OnMove`, `GetFilterList` and any named-argument call of the generic constructors stop compiling until renamed. No serialized data changes.
+
+---
+
 ## 2. Runtime / behavioural changes
 
 ### 2.1 `MonoView` is no longer abstract
@@ -106,18 +225,18 @@ view.DestroyViewAndGameObject();
 
 Both methods are now null/destroyed-safe (they return `null` instead of throwing) and, in the Editor outside play mode, use `DestroyImmediate`. The same pair exists for the generic `DestroyView<T>()` / `DestroyViewAndGameObject<T>()` overloads.
 
-### 2.4 `CollectionBinderBase<T>` forwards granular change events
+### 2.4 `CollectionBinder<T>` forwards granular change events
 
-In 1.0, `CollectionBinderBase<T>` exposed only `OnAdded(IReadOnlyCollection<T>)` and `OnReset()`, and did not subscribe to `CollectionChanged`. In 1.1 it subscribes to `CollectionChanged` and adds six new abstract hooks:
+In 1.0, `CollectionBinder<T>` exposed only `OnAdded(IReadOnlyCollection<T>)` and `OnReset()`, and did not subscribe to `CollectionChanged`. In 1.1 it subscribes to `CollectionChanged` and adds six new abstract hooks:
 
 - `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`
 - `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`
-- `OnReplace(T? oldItem, T? newItem, int newStartingIndex)`
-- `OnMove(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
+- `OnReplaced(T? oldItem, T? newItem, int newStartingIndex)`
+- `OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
 
-Batch `Replace` events are unrolled into per-item `OnReplace` calls.
+Batch `Replace` events are unrolled into per-item `OnReplaced` calls.
 
-**Compile impact:** any class deriving from `CollectionBinderBase<T>` must implement all six new abstract methods or it will not compile. Empty bodies preserve the 1.0 behaviour. `CollectionMonoBinder<T>` itself is unchanged (still only `OnAdded` / `OnReset`).
+**Compile impact:** any class deriving from `CollectionBinder<T>` must implement all six new abstract methods or it will not compile. Empty bodies preserve the 1.0 behaviour. `CollectionMonoBinder<T>` itself is unchanged (still only `OnAdded` / `OnReset`).
 
 ### 2.5 `ViewInitializer` overhaul
 
@@ -294,7 +413,7 @@ override existed to change the no-format rendering, it now belongs in the subcla
 - [ ] Move `[AddPropertyContextMenu(..., "m_Field")]` arguments into `[AddBinderContextMenu(..., serializePropertyNames: "m_Field")]`
 - [ ] Add explicit `Object.Destroy(view.gameObject)` where `view.Dispose()` was used to free objects
 - [ ] Replace `view.DestroyView()` with `view.DestroyViewAndGameObject()` where you relied on it to destroy the host GameObject
-- [ ] Implement the six new abstract hooks on any custom `CollectionBinderBase<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplace`, `OnMove`)
+- [ ] Implement the six new abstract hooks on any custom `CollectionBinder<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
 - [ ] Review `ViewInitializer` setups: resolution moved into `ViewInitializerBase`, container `Resolve` became `TryResolve`, and an `InitializeStage.DiConstructor` stage was added (the default stage is unchanged — `Awake`)
 - [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`

@@ -41,17 +41,20 @@ namespace Aspid.MVVM.StarterKit
         /// Gets the color from the <see cref="LineRenderer"/> for the specified <see cref="LineRendererColorMode"/>.
         /// </summary>
         /// <param name="lineRenderer">The <see cref="LineRenderer"/> to read from.</param>
-        /// <param name="mode">The endpoint to read. Must not be <see cref="LineRendererColorMode.StartAndEnd"/>.</param>
-        /// <returns>The <see cref="Color"/> of the specified endpoint.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="mode"/> is <see cref="LineRendererColorMode.StartAndEnd"/> or not a valid value.</exception>
+        /// <param name="mode">The endpoint to read.</param>
+        /// <returns>
+        /// The <see cref="Color"/> of the specified endpoint. For <see cref="LineRendererColorMode.StartAndEnd"/> —
+        /// which writes both endpoints at once — the start color is returned.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="mode"/> is not a valid value.</exception>
         public static Color GetColor(this LineRenderer lineRenderer, LineRendererColorMode mode)
         {
             switch (mode)
             {
-                case LineRendererColorMode.Start: return lineRenderer.startColor;
+                case LineRendererColorMode.Start:
+                case LineRendererColorMode.StartAndEnd: return lineRenderer.startColor;
                 case LineRendererColorMode.End: return lineRenderer.endColor;
 
-                case LineRendererColorMode.StartAndEnd:
                 default: throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
         }

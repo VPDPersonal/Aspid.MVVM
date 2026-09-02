@@ -28,7 +28,7 @@
 | Свойство | Описание |
 |----------|----------|
 | `ParameterName` | Имя bool-параметра в Animator |
-| `_isInvert` | Инвертирует значение |
+| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
 
 ```csharp
 [ViewModel]

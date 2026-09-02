@@ -12,13 +12,11 @@ namespace Aspid.MVVM.StarterKit
 	/// </summary>
 	/// <remarks>
 	/// Only available when <c>ASPID_MVVM_ADDRESSABLES_INTEGRATION</c> is defined.
-	/// When <see cref="_seamlessSwap"/> is enabled, the currently displayed asset is kept on screen
-	/// until the next load completes, providing a seamless swap. Otherwise the asset is immediately
-	/// reset to the default value before the new load starts.
 	/// </remarks>
 	/// <typeparam name="TAsset">The type of Addressable asset to load and apply.</typeparam>
 	public abstract partial class AddressableMonoBinder<TAsset> : MonoBinder, IBinder<string>, IBinder<IKeyEvaluator>
 	{
+		[Tooltip("When enabled, the previous asset stays loaded until the new one is ready.")]
 		[SerializeField] private bool _seamlessSwap;
 
 		private AsyncOperationHandle<TAsset> _currentHandle;
@@ -27,8 +25,13 @@ namespace Aspid.MVVM.StarterKit
 		/// <summary>
 		/// Called when the MonoBehaviour is destroyed. Releases both the current and any pending Addressable asset handles.
 		/// </summary>
-		protected virtual void OnDestroy()
+		/// <remarks>
+		/// Calls <c>base.OnDestroy()</c> so the binder still unbinds from the ViewModel.
+		/// </remarks>
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
 			ReleasePendingHandle();
 			ReleaseCurrentHandle();
 		}
@@ -40,8 +43,7 @@ namespace Aspid.MVVM.StarterKit
 			SetDefault();
 
 		/// <summary>
-		/// Loads a new asset by the given address key. When seamless swap is enabled the currently displayed asset
-		/// is kept on screen until the load completes; otherwise the asset is immediately reset to the default.
+		/// Loads a new asset by the given address key.
 		/// Resets to the default asset if <paramref name="value"/> is <see langword="null"/> or whitespace.
 		/// </summary>
 		/// <param name="value">The Addressable address string.</param>
@@ -59,9 +61,8 @@ namespace Aspid.MVVM.StarterKit
 		}
 
 		/// <summary>
-		/// Loads a new asset using the runtime key from <paramref name="value"/>. When seamless swap is enabled the
-		/// currently displayed asset is kept on screen until the load completes; otherwise the asset is immediately
-		/// reset to the default. Resets to the default asset if <paramref name="value"/> is <see langword="null"/>
+		/// Loads a new asset using the runtime key from <paramref name="value"/>.
+		/// Resets to the default asset if <paramref name="value"/> is <see langword="null"/>
 		/// or its key is <see langword="null"/> or invalid.
 		/// </summary>
 		/// <param name="value">The key evaluator providing the Addressable runtime key.</param>
@@ -163,9 +164,6 @@ namespace Aspid.MVVM.StarterKit
 	/// </summary>
 	/// <remarks>
 	/// Only available when <c>ASPID_MVVM_ADDRESSABLES_INTEGRATION</c> is defined.
-	/// When <see cref="_seamlessSwap"/> is enabled, the currently displayed asset is kept on screen
-	/// until the next load completes, providing a seamless swap. Otherwise the asset is immediately
-	/// reset to the default value before the new load starts.
 	/// </remarks>
 	/// <typeparam name="TAsset">The type of Addressable asset to load.</typeparam>
 	/// <typeparam name="TComponent">The type of <see cref="Component"/> to apply the loaded asset to.</typeparam>
@@ -174,6 +172,7 @@ namespace Aspid.MVVM.StarterKit
 		IBinder<IKeyEvaluator>
 		where TComponent : Component
 	{
+		[Tooltip("When enabled, the previous asset stays loaded until the new one is ready.")]
 		[SerializeField] private bool _seamlessSwap;
 
 		private AsyncOperationHandle<TAsset> _currentHandle;
@@ -182,8 +181,13 @@ namespace Aspid.MVVM.StarterKit
 		/// <summary>
 		/// Called when the MonoBehaviour is destroyed. Releases both the current and any pending Addressable asset handles.
 		/// </summary>
-		protected virtual void OnDestroy()
+		/// <remarks>
+		/// Calls <c>base.OnDestroy()</c> so the binder still unbinds from the ViewModel.
+		/// </remarks>
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
 			ReleasePendingHandle();
 			ReleaseCurrentHandle();
 		}
@@ -195,8 +199,7 @@ namespace Aspid.MVVM.StarterKit
 			SetDefault();
 
 		/// <summary>
-		/// Loads a new asset by the given address key. When seamless swap is enabled the currently displayed asset
-		/// is kept on screen until the load completes; otherwise the asset is immediately reset to the default.
+		/// Loads a new asset by the given address key.
 		/// Resets to the default asset if <paramref name="value"/> is <see langword="null"/> or whitespace.
 		/// </summary>
 		/// <param name="value">The Addressable address string.</param>
@@ -214,9 +217,8 @@ namespace Aspid.MVVM.StarterKit
 		}
 
 		/// <summary>
-		/// Loads a new asset using the runtime key from <paramref name="value"/>. When seamless swap is enabled the
-		/// currently displayed asset is kept on screen until the load completes; otherwise the asset is immediately
-		/// reset to the default. Resets to the default asset if <paramref name="value"/> is <see langword="null"/>
+		/// Loads a new asset using the runtime key from <paramref name="value"/>.
+		/// Resets to the default asset if <paramref name="value"/> is <see langword="null"/>
 		/// or its key is <see langword="null"/> or invalid.
 		/// </summary>
 		/// <param name="value">The key evaluator providing the Addressable runtime key.</param>

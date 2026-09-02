@@ -58,7 +58,7 @@ public partial class FadeViewModel
 
 | Свойство | Описание |
 |----------|----------|
-| `_isInvert` | Инвертирует значение |
+| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
 
 **Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
 
@@ -76,7 +76,7 @@ public partial class FadeViewModel
 
 | Свойство | Описание |
 |----------|----------|
-| `_isInvert` | Инвертирует значение |
+| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
 
 **Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
 

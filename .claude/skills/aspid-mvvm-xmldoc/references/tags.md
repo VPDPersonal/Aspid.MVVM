@@ -45,7 +45,7 @@ Use `<inheritdoc/>` when there is literally nothing to add beyond what the base 
 ```csharp
 // Pass-through constructor — use inheritdoc
 /// <inheritdoc/>
-public AudioSourceVolumeBinder(AudioSource target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
+public LightIntensityBinder(Light target, IConverter<float, float>? converter = null, BindMode mode = BindMode.OneWay)
     : base(target, converter, mode) { }
 
 // Hardcoded argument — document the parameters, not the act of constructing

@@ -10,7 +10,7 @@ namespace Aspid.MVVM.Samples.HelloWorld.MVVM
     public sealed partial class OutView : MonoView
     {
         // RequireBinderAttribute is an optional attribute.
-        // It is only needed to filter binders that implement IMonoBinderValidable.
+        // It is only needed to filter binders that implement IMonoBinderValidatable.
         // In this case, only binders that implement IBinder<string> can be set to this field.
         // A binder is a component that binds a component to data from the ViewModel.
         // It is worth noting that the field must be named exactly the same as the field in the ViewModel,

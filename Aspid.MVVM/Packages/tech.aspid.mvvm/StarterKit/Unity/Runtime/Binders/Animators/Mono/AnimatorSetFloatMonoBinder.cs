@@ -1,19 +1,18 @@
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<float, float>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Concrete <see cref="AnimatorSetParameterMonoBinder{T}"/> that also implements <see cref="INumberBinder"/>,
+    /// Concrete <see cref="AnimatorSetParameterMonoBinder{T}"/> that also implements <see cref="IFloatBinder"/>,
     /// setting a float Animator parameter and accepting <see cref="int"/>, <see cref="long"/>, and <see cref="double"/> values.
     /// </summary>
     [AddBinderContextMenu(typeof(Animator))]
     [AddComponentMenu("Aspid/MVVM/Binders/Animator/Animator Binder – Set Float")]
-    public partial class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, INumberBinder
+    public class AnimatorSetFloatMonoBinder : AnimatorSetParameterMonoBinder<float>, IFloatBinder
     {
-        [Tooltip("Optional converter applied to the bound float value before setting the Animator parameter.")]
-        [SerializeReference] private Converter _converter;
+        [Tooltip("Converts the bound float value before setting the Animator parameter.")]
+        [SerializeReference] private IConverter<float, float> _converter;
 
         /// <summary>
         /// Applies <paramref name="value"/> (optionally converted) to the float Animator parameter.
@@ -27,26 +26,5 @@ namespace Aspid.MVVM.StarterKit
 
             CachedComponent.SetFloat(ParameterName, value);
         }
-
-        /// <summary>
-        /// Forwards <paramref name="value"/> cast to <see cref="float"/>.
-        /// </summary>
-        [BinderLog]
-        public void SetValue(int value) =>
-            base.SetValue(value);
-
-        /// <summary>
-        /// Forwards <paramref name="value"/> cast to <see cref="float"/>.
-        /// </summary>
-        [BinderLog]
-        public void SetValue(long value) =>
-            base.SetValue(value);
-
-        /// <summary>
-        /// Forwards <paramref name="value"/> cast to <see cref="float"/>.
-        /// </summary>
-        [BinderLog]
-        public void SetValue(double value) =>
-            base.SetValue((float)value);
     }
 }

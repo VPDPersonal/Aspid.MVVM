@@ -6,54 +6,30 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="TargetBinder{GameObject}"/> that sets the active state of a <see cref="GameObject"/>
-    /// via <see cref="GameObject.SetActive"/> when the bound ViewModel value changes.
+    /// <see cref="TargetBinder{T1, T2}">TargetBinder&lt;GameObject, bool&gt;</see> that shows or hides the
+    /// bound <see cref="GameObject"/> via <see cref="GameObject.SetActive"/>.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.OneWayToSource"/>: when binding is established, the current
-    /// <see cref="GameObject.activeSelf"/> value is sent back to the ViewModel.
-    /// Supports optional value inversion.
-    /// </remarks>
-    /// <include file="XmlExampleDoc-GameObject-Visible-1.1.0.xml" path="doc//member[@name='GameObjectVisibleBinder']/*" />
     [Serializable]
-    [BindModeOverride(BindMode.OneWay, BindMode.OneTime, BindMode.OneWayToSource)]
-    public sealed class GameObjectVisibleBinder : TargetBinder<GameObject>, 
-        IBinder<bool>,
-        IReverseBinder<bool>
+    public sealed class GameObjectVisibleBinder : TargetBinder<GameObject, bool>
     {
-        /// <inheritdoc/>
-        public event Action<bool>? ValueChanged;
-        
-        [Tooltip("When enabled, inverts the bound bool value before applying it.")]
-        [SerializeField] private bool _isInvert;
-        
-        /// <summary>
-        /// Initializes a new instance of <see cref="GameObjectVisibleBinder"/> targeting the specified <see cref="GameObject"/>.
-        /// </summary>
         /// <param name="target">The <see cref="GameObject"/> whose active state is bound.</param>
-        /// <param name="isInvert">When <see langword="true"/>, the bound boolean value is inverted before being applied.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
-        public GameObjectVisibleBinder(GameObject target, bool isInvert = false, BindMode mode = BindMode.OneWay)
-            : base(target, mode)
+        /// <param name="converter">
+        /// An optional converter applied to the value before it is applied. Pass <see langword="null"/> to use the
+        /// value unchanged. Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
+        /// </param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> — the active state raises no change event to listen to.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/>.</exception>
+        public GameObjectVisibleBinder(GameObject target, IConverter<bool, bool>? converter = null, BindMode mode = BindMode.OneWay)
+            : base(target, converter, mode)
         {
             mode.ThrowExceptionIfMatches(BindMode.TwoWay);
-            _isInvert = isInvert;
         }
 
-        /// <summary>
-        /// Sets the <see cref="GameObject"/> active state to <paramref name="value"/> (optionally inverted).
-        /// </summary>
-        /// <param name="value">The boolean value received from the ViewModel.</param>
-        public void SetValue(bool value) =>
-            Target.SetActive(GetConvertedValue(value));
-        
-        protected override void OnBound()
+        /// <inheritdoc/>
+        protected override bool Property
         {
-            if (Mode is BindMode.OneWayToSource)
-                ValueChanged?.Invoke(GetConvertedValue(Target.activeSelf));
+            get => Target.activeSelf;
+            set => Target.SetActive(value);
         }
-
-        private bool GetConvertedValue(bool value) =>
-            _isInvert ? !value : value;
     }
 }

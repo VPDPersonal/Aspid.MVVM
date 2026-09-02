@@ -44,7 +44,7 @@ namespace Aspid.MVVM
             HeaderGroupEnd = memberInfo.IsDefined(typeof(HeaderGroupEndAttribute));
             
             var bindIdAttribute = memberInfo.GetCustomAttribute<BindIdAttribute>();
-            Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderFieldInfoExtensions.GetBinderId(memberInfo.Name);
+            Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderIdUtility.FromFieldName(memberInfo.Name);
             
             if (memberContainerType.IsInterface)
             {

@@ -11,6 +11,12 @@ namespace Aspid.MVVM
     /// </summary>
     public static class BinderEditorUtilities
     {
+        /// <summary>
+        /// Collects every view on the binder's own GameObject and on each of its ancestors.
+        /// </summary>
+        /// <typeparam name="T">The binder component type.</typeparam>
+        /// <param name="binder">The binder whose parent views are wanted.</param>
+        /// <returns>The views, nearest first; empty when the hierarchy holds none.</returns>
         public static List<BinderViewData> GetViews<T>(T binder)
             where T : Component, IBinder
         {
@@ -25,6 +31,16 @@ namespace Aspid.MVVM
             return result;
         }
         
+        /// <summary>
+        /// Collects the ids of the fields on <paramref name="view"/> that this binder could fill.
+        /// </summary>
+        /// <typeparam name="T">The binder component type.</typeparam>
+        /// <param name="binder">The binder to match against the view's fields.</param>
+        /// <param name="view">The view whose fields are examined.</param>
+        /// <returns>The matching ids; empty when the view has no field this binder fits.</returns>
+        /// <remarks>
+        /// An array field matches when the binder fits its element type, since the binder would be added to it.
+        /// </remarks>
         public static List<BinderIdData> GetIds<T>(T binder, IView view)
             where T : Component, IBinder
         {

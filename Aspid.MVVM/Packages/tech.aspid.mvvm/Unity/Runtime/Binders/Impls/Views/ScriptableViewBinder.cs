@@ -10,25 +10,17 @@ namespace Aspid.MVVM
     public class ScriptableViewBinder<TView> : ViewTargetBinder<TView>
         where TView : ScriptableObject, IView
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScriptableViewBinder{TView}"/> for the specified view target.
-        /// </summary>
-        /// <param name="target">The ScriptableObject view to bind.</param>
-        /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
+        /// <inheritdoc/>
         public ScriptableViewBinder(TView target, BindMode mode = BindMode.OneWay)
             : base(target, mode) { }
     }
 
     /// <summary>
-    /// <see cref="ScriptableViewBinder{TView}"/> specialized for <see cref="ScriptableView"/> assets.
+    /// <see cref="ScriptableViewBinder{TView}"/> for <see cref="ScriptableView"/>.
     /// </summary>
     public class ScriptableViewBinder : ScriptableViewBinder<ScriptableView>
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScriptableViewBinder"/> for the specified <see cref="ScriptableView"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="ScriptableView"/> to bind.</param>
-        /// <param name="mode">The binding mode. Only one-directional modes are supported.</param>
+        /// <inheritdoc/>
         public ScriptableViewBinder(ScriptableView target, BindMode mode = BindMode.OneWay)
             : base(target, mode) { }
     }

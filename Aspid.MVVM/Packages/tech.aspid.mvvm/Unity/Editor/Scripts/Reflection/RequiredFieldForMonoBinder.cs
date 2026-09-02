@@ -73,7 +73,7 @@ namespace Aspid.MVVM
             }
 
             string GetIdFromFieldName() =>
-                BinderFieldInfoExtensions.GetBinderId(field.Name);
+                BinderIdUtility.FromFieldName(field.Name);
 
             IReadOnlyCollection<RequiredFieldForMonoBinder> GetChildren()
             {
@@ -184,19 +184,19 @@ namespace Aspid.MVVM
             }
 
             return !fieldType.IsArray
-                ? typeof(IMonoBinderValidable).IsAssignableFrom(fieldType)
-                : typeof(IMonoBinderValidable[]).IsAssignableFrom(fieldType);
+                ? typeof(IMonoBinderValidatable).IsAssignableFrom(fieldType)
+                : typeof(IMonoBinderValidatable[]).IsAssignableFrom(fieldType);
         }
 
         /// <summary>
         /// Determines whether the given field is a required binder field eligible for validation.
         /// A field qualifies if it is serializable, either public or marked with <c>[SerializeField]</c>,
         /// explicitly decorated with <c>[RequireBinder]</c>, or its type is assignable to one of:
-        /// <c>IMonoBinderValidable</c>, <c>IMonoBinderValidable[]</c>,
-        /// <c>List&lt;IMonoBinderValidable&gt;</c>, or <c>List&lt;IMonoBinderValidable[]&gt;</c>.
+        /// <c>IMonoBinderValidatable</c>, <c>IMonoBinderValidatable[]</c>,
+        /// <c>List&lt;IMonoBinderValidatable&gt;</c>, or <c>List&lt;IMonoBinderValidatable[]&gt;</c>.
         /// </summary>
-        /// <param name="field">The field to inspect, or <c>null</c>.</param>
-        /// <returns><c>true</c> if the field requires a binder to be assigned; otherwise, <c>false</c>.</returns>
+        /// <param name="field">The field to inspect, or <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the field requires a binder to be assigned; otherwise, <see langword="false"/>.</returns>
         public static bool IsRequireBinderField(FieldInfo? field)
         {
             if (field is null) return false;

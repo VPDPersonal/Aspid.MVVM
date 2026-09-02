@@ -2,7 +2,7 @@
 using TMPro;
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<System.Enum, System.Collections.Generic.IEnumerable<TMPro.TMP_Dropdown.OptionData>>;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -15,8 +15,8 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Options By Enum")]
     public class DropdownOptionsByEnumMonoBinder : ComponentMonoBinder<TMP_Dropdown>, IBinder<Enum>
     {
-        [Tooltip("The converter used to transform the enum value to dropdown option data. When null, the default string representation of each enum value is used.")]
-        [SerializeReference] private Converter _converter;
+        [Tooltip("Converts the enum value to option data. Null uses each value's name.")]
+        [SerializeReference] private IConverter<Enum, IEnumerable<TMP_Dropdown.OptionData>> _converter;
 
         private Type _populatedType;
 
@@ -27,10 +27,9 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The bound enum value received from the ViewModel. Pass <see langword="null"/> to clear all options.</param>
         /// <remarks>
-        /// The option set depends on the enum <i>type</i>, not the value, so it is rebuilt only when the
-        /// type changes. The list is cleared directly rather than through
-        /// <see cref="TMPro.TMP_Dropdown.ClearOptions"/>, which resets the selected index and would clobber
-        /// a value binder on the same dropdown — except for a <see langword="null"/> value, which has none.
+        /// The option set depends on the enum <i>type</i>, not the value, so it rebuilds only when the type
+        /// changes. Options are cleared directly rather than via <see cref="TMPro.TMP_Dropdown.ClearOptions"/>,
+        /// which would reset the selected index and disrupt a value binder on the same dropdown.
         /// </remarks>
         public void SetValue(Enum value)
         {

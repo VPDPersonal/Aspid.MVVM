@@ -11,7 +11,6 @@ namespace Aspid.MVVM.StarterKit
     /// Accepts commands typed as <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector2&gt;</see>
     /// or <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector3&gt;</see>.
     /// </summary>
-    /// <include file="XmlExampleDoc-ScrollRect-Command-1.1.0.xml" path="doc//member[@name='ScrollRectCommandBinder']/*" />
     [Serializable]
     public sealed class ScrollRectCommandBinder : TargetBinder<ScrollRect>,
         IBinder<IRelayCommand<Vector2>>,
@@ -23,26 +22,18 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<Vector2> _vector2Command;
         private IRelayCommand<Vector3> _vector3Command;
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(ScrollRect target, ICanExecuteView interactable, BindMode mode = BindMode.OneWay)
             : this(target, mode)
         {
             _interactable = interactable ?? throw new ArgumentNullException(nameof(interactable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder"/>.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollRectCommandBinder(ScrollRect target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -53,6 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives the current <see cref="ScrollRect.normalizedPosition"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
 
@@ -60,6 +52,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T}">IRelayCommand&lt;Vector3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives the current <see cref="ScrollRect.normalizedPosition"/> cast to <see cref="Vector3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
@@ -74,10 +67,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
@@ -106,13 +95,12 @@ namespace Aspid.MVVM.StarterKit
     /// or <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector3, T&gt;</see>.
     /// </summary>
     /// <typeparam name="T">The type of the additional parameter forwarded alongside the scroll position when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-ScrollRect-Command-1.1.0.xml" path="doc//member[@name='ScrollRectCommandBinder{1}']/*" />
     [Serializable]
     public class ScrollRectCommandBinder<T> : TargetBinder<ScrollRect>,
         IBinder<IRelayCommand<Vector2, T>>,
         IBinder<IRelayCommand<Vector3, T>>
     {
-        [Tooltip("The additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T _param;
 
         [Space]
@@ -131,16 +119,10 @@ namespace Aspid.MVVM.StarterKit
             set => _param = value;
         }
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T param,
@@ -151,12 +133,10 @@ namespace Aspid.MVVM.StarterKit
             _interactable = interactable ?? throw new ArgumentNullException(nameof(interactable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param">The additional parameter forwarded alongside the scroll position when the command is executed.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollRectCommandBinder(ScrollRect target, T param, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -168,6 +148,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector2, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives <see cref="ScrollRect.normalizedPosition"/> followed by <see cref="Param"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector2, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
 
@@ -175,6 +156,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2}">IRelayCommand&lt;Vector3, T&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives <see cref="ScrollRect.normalizedPosition"/> cast to <see cref="Vector3"/> followed by <see cref="Param"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector3, T> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
@@ -189,10 +171,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
@@ -222,15 +200,14 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the scroll position when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the scroll position when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-ScrollRect-Command-1.1.0.xml" path="doc//member[@name='ScrollRectCommandBinder{2}']/*" />
     [Serializable]
     public class ScrollRectCommandBinder<T1, T2> : TargetBinder<ScrollRect>,
         IBinder<IRelayCommand<Vector2, T1, T2>>,
         IBinder<IRelayCommand<Vector3, T1, T2>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T2 _param2;
 
         [Space]
@@ -258,17 +235,11 @@ namespace Aspid.MVVM.StarterKit
             set => _param2 = value;
         }
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T1, T2}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T1 param1,
@@ -280,13 +251,11 @@ namespace Aspid.MVVM.StarterKit
             _interactable = interactable ?? throw new ArgumentNullException(nameof(interactable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T1, T2}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollRectCommandBinder(ScrollRect target, T1 param1, T2 param2, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -300,6 +269,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;Vector2, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives <see cref="ScrollRect.normalizedPosition"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector2, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
 
@@ -307,6 +277,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3}">IRelayCommand&lt;Vector3, T1, T2&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives <see cref="ScrollRect.normalizedPosition"/> cast to <see cref="Vector3"/> followed by <see cref="Param1"/> and <see cref="Param2"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector3, T1, T2> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
@@ -321,10 +292,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
@@ -355,17 +322,16 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="T1">The type of the first additional parameter forwarded alongside the scroll position when the command is executed.</typeparam>
     /// <typeparam name="T2">The type of the second additional parameter forwarded alongside the scroll position when the command is executed.</typeparam>
     /// <typeparam name="T3">The type of the third additional parameter forwarded alongside the scroll position when the command is executed.</typeparam>
-    /// <include file="XmlExampleDoc-ScrollRect-Command-1.1.0.xml" path="doc//member[@name='ScrollRectCommandBinder{3}']/*" />
     [Serializable]
     public class ScrollRectCommandBinder<T1, T2, T3> : TargetBinder<ScrollRect>,
         IBinder<IRelayCommand<Vector2, T1, T2, T3>>,
         IBinder<IRelayCommand<Vector3, T1, T2, T3>>
     {
-        [Tooltip("The first additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("First extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T1 _param1;
-        [Tooltip("The second additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Second extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T2 _param2;
-        [Tooltip("The third additional parameter forwarded alongside the scroll position when the command is executed.")]
+        [Tooltip("Third extra parameter passed with the scroll position when the command executes.")]
         [SerializeField] private T3 _param3;
 
         [Space]
@@ -402,18 +368,12 @@ namespace Aspid.MVVM.StarterKit
             set => _param3 = value;
         }
 
-        /// <inheritdoc cref="TargetBinder{TTarget}.IsBind"/>
-        public override bool IsBind => Target is not null;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T1, T2, T3}"/> with a custom interactable view.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T1 param1,
@@ -426,14 +386,12 @@ namespace Aspid.MVVM.StarterKit
             _interactable = interactable ?? throw new ArgumentNullException(nameof(interactable));
         }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="ScrollRectCommandBinder{T1, T2, T3}"/>.
-        /// </summary>
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="param1">The first additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param2">The second additional parameter forwarded alongside the scroll position when the command is executed.</param>
         /// <param name="param3">The third additional parameter forwarded alongside the scroll position when the command is executed.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
+        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public ScrollRectCommandBinder(
             ScrollRect target,
             T1 param1,
@@ -453,6 +411,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;Vector2, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives <see cref="ScrollRect.normalizedPosition"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector2, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector2Command, value, OnCanExecuteChanged);
 
@@ -460,6 +419,7 @@ namespace Aspid.MVVM.StarterKit
         /// Binds an <see cref="IRelayCommand{T1, T2, T3, T4}">IRelayCommand&lt;Vector3, T1, T2, T3&gt;</see> and subscribes to its <see cref="IRelayCommand.CanExecuteChanged"/> event.
         /// On <see cref="ScrollRect.onValueChanged"/>, the command receives <see cref="ScrollRect.normalizedPosition"/> cast to <see cref="Vector3"/> followed by <see cref="Param1"/>, <see cref="Param2"/>, and <see cref="Param3"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(IRelayCommand<Vector3, T1, T2, T3> value) =>
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
@@ -474,10 +434,6 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the binder is unbound. Unsubscribes from <see cref="ScrollRect.onValueChanged"/>
         /// and releases all bound command references.
         /// </summary>
-        /// <remarks>
-        /// Passes <see langword="null"/> to both SetValue overloads to detach command references
-        /// and unsubscribe from their <see cref="IRelayCommand.CanExecuteChanged"/> events.
-        /// </remarks>
         protected override void OnUnbound()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);

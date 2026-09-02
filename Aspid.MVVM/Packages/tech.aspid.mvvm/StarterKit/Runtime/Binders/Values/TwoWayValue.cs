@@ -1,42 +1,60 @@
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/>
-    /// that stores a value of type <typeparamref name="T"/> and synchronises it in both directions between the ViewModel and the View.
+    /// <see cref="Binder"/> implementing <see cref="IBinder{T}"/> and <see cref="IReverseBinder{T}"/> that stores a value
+    /// and synchronises it in both directions. Supports every binding mode; in <see cref="BindMode.OneWayToSource"/>,
+    /// the current value is pushed to the ViewModel on binding.
     /// </summary>
-    /// <typeparam name="T">The type of the bindable value.</typeparam>
-    /// <remarks>
-    /// <para>
-    /// Supports all binding modes (<see cref="BindModeOverrideAttribute"/> with <c>IsAll = true</c>).
-    /// </para>
-    /// <para>
-    /// When a new value arrives from the ViewModel via <see cref="IBinder{T}.SetValue"/>, it is
-    /// optionally passed through an <see cref="IConverter{TFrom,TTo}"/> before being stored, and the
-    /// <see cref="Changed"/> event is raised with the original unconverted value.
-    /// </para>
-    /// <para>
-    /// When <see cref="Value"/> is set from the View side, <see cref="IReverseBinder{T}.ValueChanged"/>
-    /// is raised so the ViewModel receives the update.
-    /// </para>
-    /// <para>
-    /// In <see cref="BindMode.OneWayToSource"/> mode, <see cref="OnBound"/> pushes the current
-    /// <see cref="Value"/> to the ViewModel immediately on binding so that the initial state is synchronised.
-    /// </para>
-    /// <para>
-    /// An implicit conversion operator allows instances to be used directly where a
-    /// <typeparamref name="T"/> value is expected.
-    /// </para>
-    /// </remarks>
-    /// <include file="XmlExampleDoc-Values-1.1.0.xml" path="doc//member[@name='TwoWayValue{1}']/*" />
+    /// <typeparam name="T">The type of the stored value.</typeparam>
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class TwoWayValue<T> : Binder, IBinder<T>, IReverseBinder<T>
     {
+        [Tooltip("Initial value until the ViewModel pushes one.")]
+        [SerializeField] private T? _value;
+
+        [Tooltip("Optional converter applied to the value; empty leaves it as-is. Reverses only via ITwoWayConverter.")]
+        [SerializeReference] private IConverter<T?, T?>? _converter;
+
+        private Action<T?>? _valueChanged;
+
+        /// <param name="mode">The binding mode.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        public TwoWayValue(BindMode mode = BindMode.TwoWay)
+            : this(default, mode) { }
+
+        /// <param name="value">The initial value.</param>
+        /// <param name="mode">The binding mode.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        public TwoWayValue(T? value, BindMode mode = BindMode.TwoWay)
+            : base(mode)
+        {
+            mode.ThrowExceptionIfNone();
+            _value = value;
+        }
+
+        /// <param name="value">The initial value.</param>
+        /// <param name="converter">
+        /// The converter applied to each ViewModel value, or <see langword="null"/> to store it unchanged.
+        /// Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
+        /// </param>
+        /// <param name="mode">The binding mode.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        public TwoWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.TwoWay)
+            : base(mode)
+        {
+            mode.ThrowExceptionIfNone();
+
+            _value = value;
+            _converter = converter;
+        }
+
         /// <summary>
-        /// Raised with the new pre-conversion value when the ViewModel updates <see cref="Value"/> via <see cref="IBinder{T}.SetValue"/>.
+        /// Raised with the unconverted ViewModel value when it updates <see cref="Value"/>.
         /// </summary>
         public event Action<T?>? Changed;
 
@@ -47,18 +65,8 @@ namespace Aspid.MVVM.StarterKit
             remove => _valueChanged -= value;
         }
 
-        [UnityEngine.SerializeField]
-        private T? _value;
-
-        [UnityEngine.SerializeReference]
-        private IConverter<T?, T?>? _converter;
-
-        private Action<T?>? _valueChanged;
-
         /// <summary>
-        /// Gets or sets the current value.
-        /// Setting this property raises <see cref="IReverseBinder{T}.ValueChanged"/> so the ViewModel
-        /// is notified.
+        /// Gets or sets the current value. Setting it notifies the ViewModel through <see cref="IReverseBinder{T}.ValueChanged"/>.
         /// </summary>
         public T? Value
         {
@@ -71,62 +79,21 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="TwoWayValue{T}"/> with the default value.
+        /// Stores the converted <paramref name="value"/> and raises <see cref="Changed"/> with the original one.
         /// </summary>
-        /// <param name="mode">The binding mode to use.</param>
-        public TwoWayValue(BindMode mode = BindMode.TwoWay)
-            : this(default, mode) { }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="TwoWayValue{T}"/> with a pre-set initial value.
-        /// </summary>
-        /// <param name="value">The initial value.</param>
-        /// <param name="mode">The binding mode to use.</param>
-        public TwoWayValue(T? value, BindMode mode = BindMode.TwoWay)
-            : base(mode)
-        {
-            mode.ThrowExceptionIfNone();
-            _value = value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="TwoWayValue{T}"/> with a pre-set initial value and a converter.
-        /// </summary>
-        /// <param name="value">The initial value.</param>
-        /// <param name="converter">
-        /// An optional converter applied to each value received from the ViewModel before it is stored.
-        /// Pass <see langword="null"/> to store values unchanged.
-        /// </param>
-        /// <param name="mode">The binding mode to use.</param>
-        public TwoWayValue(T? value, IConverter<T?, T?>? converter, BindMode mode = BindMode.TwoWay)
-            : base(mode)
-        {
-            mode.ThrowExceptionIfNone();
-
-            _value = value;
-            _converter = converter;
-        }
-
-        /// <summary>
-        /// Stores the incoming ViewModel value (passing it through the converter if one is set)
-        /// and raises <see cref="Changed"/> with the original unconverted value.
-        /// </summary>
-        /// <param name="value">The new value received from the ViewModel.</param>
+        /// <param name="value">The value received from the ViewModel.</param>
+        /// <remarks>
+        /// Writes the field directly: the <see cref="Value"/> setter would echo the update back to the ViewModel.
+        /// </remarks>
         void IBinder<T>.SetValue(T? value)
         {
-            Value = _converter is not null ? _converter.Convert(value) : value;
+            _value = _converter is not null ? _converter.Convert(value) : value;
             Changed?.Invoke(value);
         }
 
         /// <summary>
-        /// Called after binding is established.
-        /// In <see cref="BindMode.OneWayToSource"/> mode, immediately pushes the current <see cref="Value"/>
-        /// to the ViewModel to synchronise the initial state.
+        /// Pushes the current <see cref="Value"/> to the ViewModel in <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
-        /// <remarks>
-        /// The push goes through <see cref="GetConvertedBackValue"/>, so the initial value reaches the
-        /// ViewModel in the same space as every later one.
-        /// </remarks>
         protected override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
@@ -134,27 +101,13 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Implicitly converts a <see cref="TwoWayValue{T}"/> to its current <see cref="Value"/>.
+        /// Returns <see cref="Value"/>.
         /// </summary>
-        /// <param name="binder">The binder whose value is extracted.</param>
-        /// <returns>The current value stored in <paramref name="binder"/>.</returns>
-        public static implicit operator T?(TwoWayValue<T?> binder) => binder.Value;
-        /// <summary>
-        /// Converts a value on its way back to the ViewModel.
-        /// </summary>
-        /// <param name="value">The stored value, which the converter has already shaped.</param>
-        /// <returns>
-        /// The value as the ViewModel expects it: undone by the converter when it offers
-        /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
-        /// </returns>
-        /// <remarks>
-        /// <see cref="Value"/> holds what the converter produced, so raising it unchanged handed the
-        /// ViewModel the View's own presentation — a ViewModel that set X immediately received
-        /// <c>Convert(X)</c> back. Undoing the conversion makes the round trip an identity again for
-        /// a two-way converter, and leaves it as it was for a one-way one.
-        /// </remarks>
+        /// <param name="binder">The binder to read.</param>
+        /// <returns>The current <see cref="Value"/>.</returns>
+        public static implicit operator T?(TwoWayValue<T> binder) => binder.Value;
+
         private T? GetConvertedBackValue(T? value) =>
             _converter is ITwoWayConverter<T?, T?> twoWay ? twoWay.ConvertBack(value) : value;
-
     }
 }

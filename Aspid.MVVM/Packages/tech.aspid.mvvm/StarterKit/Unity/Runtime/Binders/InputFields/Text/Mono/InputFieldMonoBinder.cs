@@ -3,7 +3,6 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Globalization;
-using Converter = Aspid.MVVM.StarterKit.IConverter<string, string>;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -12,13 +11,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="ComponentMonoBinder{TMP_InputField}"/> that binds <see cref="TMP_InputField.text"/>.
-    /// Also implements <see cref="INumberBinder"/> and <see cref="IReverseBinder{T}"/>, allowing numeric
-    /// formatting and bidirectional text binding.
     /// </summary>
-    /// <remarks>
-    /// Supports <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/>: when the configured
-    /// input field event fires, the current text is forwarded to the ViewModel through the corresponding events.
-    /// </remarks>
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – Text")]
     [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Text")]
     [BindModeOverride(IsAll = true)]
@@ -28,47 +21,45 @@ namespace Aspid.MVVM.StarterKit
         INumberReverseBinder,
         IReverseBinder<string>
     { 
-        /// <inheritdoc/>
-        public event Action<string> ValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<int> IntValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<long> LongValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<float> FloatValueChanged;
-        
-        /// <inheritdoc/>
-        public event Action<double> DoubleValueChanged;
-        
         [Tooltip("Determines the culture used when converting numeric values to string.")]
         [SerializeField] private CultureInfoMode _cultureInfoMode = CultureInfoMode.CurrentCulture;
 
         [Tooltip("The input field event that triggers ViewModel notifications.")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
 
-        [Tooltip("Optional converter applied to values before they are set on the input field.")]
-        [SerializeReference] private Converter _converter;
-        
+        [Tooltip("Optional converter applied before setting the input field text.")]
+        [SerializeReference] private IConverter<string, string> _converter;
+
+        private NumberReverseChannel _channel;
         private bool _isNotifyValueChanged = true;
 
+        /// <inheritdoc/>
+        public event Action<string> ValueChanged;
+
+        /// <inheritdoc/>
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
+
+        /// <summary>
+        /// Re-wires the input field subscriptions after the bind mode is changed in the inspector during play mode.
+        /// </summary>
+        /// <remarks>
+        /// Only rewires while the binder is bound. <c>UnityEvent</c> accepts the same listener more than once, so
+        /// resubscribing unconditionally would stack duplicate listeners on repeated inspector edits.
+        /// </remarks>
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (!Application.isPlaying) return;
-            
-            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
-            {
-                CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
-                CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
-                CachedComponent.onSubmit.RemoveListener(OnValueChanged);
-                CachedComponent.onSelect.RemoveListener(OnValueChanged);
-                CachedComponent.onDeselect.RemoveListener(OnValueChanged);
-                
-                Subscribe();
-            }
+            if (!Application.isPlaying || !IsBound) return;
+
+            // Removed unconditionally: switching Mode away from TwoWay/OneWayToSource in the inspector must
+            // also drop the listener registered under the old mode, or it stays subscribed forever.
+            CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
+            CachedComponent.onEndEdit.RemoveListener(OnValueChanged);
+            CachedComponent.onSubmit.RemoveListener(OnValueChanged);
+            CachedComponent.onSelect.RemoveListener(OnValueChanged);
+            CachedComponent.onDeselect.RemoveListener(OnValueChanged);
+
+            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource) Subscribe();
         }
 
         /// <summary>
@@ -104,17 +95,27 @@ namespace Aspid.MVVM.StarterKit
         /// Sets <see cref="TMP_InputField.text"/>, applying the configured converter if present.
         /// Suppresses value change events during assignment.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(string value)
         {
             _isNotifyValueChanged = false;
-            CachedComponent.text = _converter?.Convert(value) ?? value;
-            _isNotifyValueChanged = true;
+
+            try
+            {
+                CachedComponent.text = _converter?.Convert(value) ?? value;
+            }
+            finally
+            {
+                // finally guards against a listener exception (e.g. from onValueChanged) leaving the flag stuck off.
+                _isNotifyValueChanged = true;
+            }
         }
 
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(int value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -122,6 +123,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(long value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -129,6 +131,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(float value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -136,6 +139,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Formats the value using the configured <see cref="CultureInfoMode"/> and sets <see cref="TMP_InputField.text"/>.
         /// </summary>
+        /// <param name="value">The value received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(double value) =>
             SetValue(value.ToCultureString(_cultureInfoMode));
@@ -177,26 +181,23 @@ namespace Aspid.MVVM.StarterKit
                 is not (TMP_InputField.ContentType.IntegerNumber 
                 or TMP_InputField.ContentType.DecimalNumber)) return;
            
-            if (IntValueChanged != null || LongValueChanged != null)
+            if (!_channel.HasIntegerListeners && !_channel.HasFloatingPointListeners) return;
+
+            var culture = _cultureInfoMode.ToCultureInfo();
+            if (!double.TryParse(value, NumberStyles.Any, culture, out var number)) return;
+
+            if (_channel.HasIntegerListeners)
             {
-                if (!long.TryParse(value, NumberStyles.Any, _cultureInfoMode.ToCultureInfo(), out var integerValue)) return;
-
-                if (integerValue is <= int.MaxValue and >= int.MinValue)
-                    IntValueChanged?.Invoke((int)integerValue);
-
-                LongValueChanged?.Invoke(integerValue);
+                // Parsed as a long when it can be: a double holds no long past 2^53 exactly, and the long
+                // channel is there for the numbers that need those bits.
+                if (long.TryParse(value, NumberStyles.Any, culture, out var integerValue))
+                    _channel.RaiseIntegers(integerValue);
+                else _channel.RaiseIntegers(number);
             }
-            
-            if (FloatValueChanged != null || DoubleValueChanged != null)
-            {
-                if (!double.TryParse(value, NumberStyles.Any, _cultureInfoMode.ToCultureInfo(), out var decimalValue)) return;
-                
-                if (decimalValue is <= float.MaxValue and >= float.MinValue)
-                    FloatValueChanged?.Invoke((float)decimalValue);
 
-                DoubleValueChanged?.Invoke(decimalValue);
-            }
+            if (_channel.HasFloatingPointListeners) _channel.RaiseFloatingPoint(number);
         }
+
         /// <summary>
         /// Converts a value on its way back to the ViewModel.
         /// </summary>
@@ -206,14 +207,10 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>, and unchanged when it does not.
         /// </returns>
         /// <remarks>
-        /// A one-way converter cannot be undone, so the raw text is the only honest answer — and it
-        /// must not be the forward-converted one, which would write the View's presentation back
-        /// into the ViewModel. The numeric channels read the same converted-back text, so a field
-        /// whose converter strips a currency symbol parses the number underneath it.
+        /// The numeric channels parse the same converted-back text this method returns.
         /// </remarks>
         private string? GetConvertedBackValue(string? value) =>
             _converter is ITwoWayConverter<string?, string?> twoWay ? twoWay.ConvertBack(value) : value;
-
     }
 }
 #endif

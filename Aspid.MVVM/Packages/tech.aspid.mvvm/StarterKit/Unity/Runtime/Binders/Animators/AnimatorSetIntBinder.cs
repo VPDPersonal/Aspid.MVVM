@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using Converter = Aspid.MVVM.StarterKit.IConverter<int, int>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -10,25 +9,18 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="AnimatorSetParameterBinder{T}"/> that sets an integer parameter on an <see cref="Animator"/>
     /// when the bound ViewModel value changes.
     /// </summary>
-    /// <include file="XmlExampleDoc-Animator-1.1.0.xml" path="doc//member[@name='AnimatorSetIntBinder']/*" />
     [Serializable]
     public class AnimatorSetIntBinder : AnimatorSetParameterBinder<int>
     {
-        [Tooltip("Optional converter applied to the bound integer value before setting the Animator parameter.")]
-        [SerializeReference] private Converter? _converter;
+        [Tooltip("Converts the bound integer value before setting the Animator parameter.")]
+        [SerializeReference] private IConverter<int, int>? _converter;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetIntBinder"/> with no converter.
-        /// </summary>
         /// <param name="animator">The <see cref="Animator"/> whose integer parameter is set.</param>
         /// <param name="parameterName">The name of the integer Animator parameter.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/>.</param>
         public AnimatorSetIntBinder(Animator animator, string parameterName, BindMode mode)
             : this(animator, parameterName, converter: null, mode) { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AnimatorSetIntBinder"/>.
-        /// </summary>
         /// <param name="animator">The <see cref="Animator"/> whose integer parameter is set.</param>
         /// <param name="parameterName">The name of the integer Animator parameter.</param>
         /// <param name="converter">The converter used to transform the bound integer value, or <see langword="null"/> to use the value as-is.</param>
@@ -36,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
         public AnimatorSetIntBinder(
             Animator animator,
             string parameterName,
-            Converter? converter = null,
+            IConverter<int, int>? converter = null,
             BindMode mode = BindMode.OneWay)
             : base(animator, parameterName, mode)
         {
@@ -51,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void SetParameter(int value)
         {
             value = _converter?.Convert(value) ?? value;
-            if (Mathf.Approximately(value, Target.GetInteger(ParameterName))) return;
+            if (value == Target.GetInteger(ParameterName)) return;
 
             Target.SetInteger(ParameterName, value);
         }

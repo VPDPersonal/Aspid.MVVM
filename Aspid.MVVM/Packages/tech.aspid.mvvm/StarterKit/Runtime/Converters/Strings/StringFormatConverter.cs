@@ -26,6 +26,9 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: no format, passing the string through.</remarks>
         public StringFormatConverter() { }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="StringFormatConverter"/> with the specified format.
+        /// </summary>
         /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
         /// <param name="formatEmptyValues">
         /// If <see langword="true"/>, applies the format to a blank value too, reading

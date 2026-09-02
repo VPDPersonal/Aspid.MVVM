@@ -18,14 +18,15 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="values">The materials to assign.</param>
         public static void SetMaterials(this Renderer renderer, IConverter<Material?, Material?>? converter, params Material[]? values)
         {
-            if (converter is null) renderer.materials = values;
+            // Renderer.materials rejects null outright — ArgumentNullException straight from SetMaterialArray.
+            if (converter is null) renderer.materials = values ?? System.Array.Empty<Material>();
             else SetMaterials(renderer, converter, (IReadOnlyCollection<Material>?)values);
         }
 
         /// <summary>
         /// Sets the materials on a <see cref="Renderer"/> from a collection, applying an optional converter to each element.
         /// When the collection is <see langword="null"/> or empty, clears the materials.
-        /// When the collection contains a single element, assigns it via <see cref="Renderer.material"/>.
+        /// When the collection contains a single element, assigns it as a single-element array via <see cref="Renderer.materials"/>.
         /// </summary>
         /// <param name="renderer">The <see cref="Renderer"/> to update.</param>
         /// <param name="converter">The converter applied to each material before assignment, or <see langword="null"/> to use the value as-is.</param>
@@ -34,7 +35,8 @@ namespace Aspid.MVVM.StarterKit
         {
             if (values is null || values.Count is 0)
             {
-                renderer.materials = null;
+                // Renderer.materials rejects null outright — ArgumentNullException straight from SetMaterialArray.
+                renderer.materials = System.Array.Empty<Material>();
             }
             else if (values.Count is 1)
             {
@@ -42,9 +44,8 @@ namespace Aspid.MVVM.StarterKit
 
                 foreach (var value in values)
                     convertedValue = converter?.Convert(value) ?? value;
-                
-                renderer.materials = null;
-                renderer.material = convertedValue;
+
+                renderer.materials = new[] { convertedValue };
             }
             else
             {

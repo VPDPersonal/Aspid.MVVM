@@ -6,16 +6,17 @@ using UnityEngine;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="SwitcherIntMonoBinder{TMP_Dropdown}"/> that switches the <see cref="TMP_Dropdown.value"/>
+    /// <see cref="SwitcherMonoBinder{TComponent,T}">SwitcherMonoBinder&lt;TMP_Dropdown, int&gt;</see> that switches the <see cref="TMP_Dropdown.value"/>
     /// property between two <see cref="int"/> values based on the bound boolean ViewModel value.
     /// </summary>
+    [GenerateSerializableBinder]
     [AddBinderContextMenu(typeof(TMP_Dropdown), SubPath = "Switcher")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value Switcher")]
-    public sealed class DropdownValueSwitcherMonoBinder : SwitcherIntMonoBinder<TMP_Dropdown>
+    public sealed class DropdownValueSwitcherMonoBinder : SwitcherMonoBinder<TMP_Dropdown, int>
     {
         /// <inheritdoc/>
         protected override void SetValue(int value) =>
-            CachedComponent.value = value;
+            CachedComponent.SetValueWithoutNotify(value);
     }
 }
 #endif

@@ -17,7 +17,7 @@
 
 | Свойство | Описание |
 |----------|----------|
-| `_isInvert` | Инвертирует значение: `true` → `SetActive(false)` |
+| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
 
 **Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
 
@@ -38,7 +38,7 @@ public partial class PanelViewModel
 public partial class LoadingViewModel
 {
     [OneWayBind] private bool _isLoading;
-    // isInvert=true → GameObject скрыт при isLoading=true
+    // BoolInvertConverter → GameObject скрыт при isLoading=true
 }
 ```
 

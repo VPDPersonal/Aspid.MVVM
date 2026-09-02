@@ -34,7 +34,7 @@ namespace Aspid.MVVM
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
-                if (binder is null) return;
+                if (IsMissing(binder)) return;
                 binder.Unbind();
             }
         }
@@ -66,13 +66,23 @@ namespace Aspid.MVVM
                     var binder = binders[i];
                     
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
                     }
                     else
                     {
-                        binder.Unbind();
+                        try
+                        {
+                            binder.Unbind();
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("UnbindSafely", i, owner, memberName, exception);
+                        }
                     }
                 }
             }
@@ -104,13 +114,23 @@ namespace Aspid.MVVM
                 {
                     var binder = binders[i];
                     
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
                     }
                     else
                     {
-                        binder.Unbind();
+                        try
+                        {
+                            binder.Unbind();
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("UnbindSafely", i, owner, memberName, exception);
+                        }
                     }
                 }
             }
@@ -141,13 +161,23 @@ namespace Aspid.MVVM
                 var index = 0;
                 foreach (var binder in binders)
                 {
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildUnbindSafelyBinderNullMessage(index, owner, memberName);
                     }
                     else
                     {
-                        binder.Unbind();
+                        try
+                        {
+                            binder.Unbind();
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("UnbindSafely", index, owner, memberName, exception);
+                        }
                     }
                     
                     index++;

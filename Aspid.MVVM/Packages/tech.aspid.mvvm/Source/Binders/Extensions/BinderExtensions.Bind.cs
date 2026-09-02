@@ -123,13 +123,23 @@ namespace Aspid.MVVM
                     var binder = binders[i];
                     
                     // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildBindSafelyBinderNullMessage(i, owner, memberName);
                     }
                     else
                     {
-                        binder.Bind(binderAdder);
+                        try
+                        {
+                            binder.Bind(binderAdder);
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("BindSafely", i, owner, memberName, exception);
+                        }
                     }
                 }
             }
@@ -191,13 +201,23 @@ namespace Aspid.MVVM
                 {
                     var binder = binders[i];
                     
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildBindSafelyBinderNullMessage(i, owner, memberName);
                     }
                     else
                     {
-                        binder.Bind(binderAdder);
+                        try
+                        {
+                            binder.Bind(binderAdder);
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("BindSafely", i, owner, memberName, exception);
+                        }
                     }
                 }
             }
@@ -258,13 +278,23 @@ namespace Aspid.MVVM
                 var index = 0;
                 foreach (var binder in binders)
                 {
-                    if (binder is null)
+                    if (IsMissing(binder))
                     {
                         BuildBindSafelyBinderNullMessage(index, owner, memberName);
                     }
                     else
                     {
-                        binder.Bind(binderAdder);
+                        try
+                        {
+                            binder.Bind(binderAdder);
+                        }
+                        catch (System.Exception exception)
+                        {
+                            // One binder must not take the rest of the collection with it: on Bind that would leave
+                            // the View half-initialised, and on Unbind it would leave the remaining binders
+                            // subscribed to a ViewModel that is going away.
+                            ReportBinderFailure("BindSafely", index, owner, memberName, exception);
+                        }
                     }
                     
                     index++;
@@ -285,20 +315,63 @@ namespace Aspid.MVVM
 #endif
         }
 
-        private static string BuildBinderNullMessage(string operation, int index, object? owner, string? memberName)
+        /// <summary>
+        /// Reports a binder that threw, so the surrounding loop can carry on with the rest.
+        /// </summary>
+        /// <remarks>
+        /// Unlike the null diagnostic this is not <see cref="ConditionalAttribute">[Conditional("DEBUG")]</see>: a
+        /// binder failing in a player build is exactly when the report is needed, and swallowing it silently would
+        /// be worse than the abort it replaces.
+        /// </remarks>
+        private static void ReportBinderFailure(string operation, int index, object? owner, string? memberName, System.Exception exception)
+        {
+            var message = $"{BuildBinderContext(operation, index, owner, memberName)} threw {exception.GetType().Name}: {exception.Message}";
+
+#if UNITY_2020_3_OR_NEWER
+            UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+            UnityEngine.Debug.LogException(exception, owner as UnityEngine.Object);
+#else
+            System.Console.Error.WriteLine(message);
+            System.Console.Error.WriteLine(exception);
+#endif
+        }
+
+        /// <summary>
+        /// Reports whether a slot holds no usable binder.
+        /// </summary>
+        /// <remarks>
+        /// A <c>MonoBinder</c> is a component, so a slot can hold one that has since been destroyed. Its managed
+        /// wrapper is not <see langword="null"/> to C#, so a plain <c>is null</c> lets it through and the loop calls
+        /// <c>Bind</c> on it — which throws from whatever Unity API it touches first. Unity's own conversion is what
+        /// tells the two apart.
+        /// </remarks>
+        private static bool IsMissing<T>(T binder)
+        {
+            if (binder is null) return true;
+
+#if UNITY_2020_3_OR_NEWER
+            if (binder is UnityEngine.Object unityObject) return !unityObject;
+#endif
+            return false;
+        }
+
+        private static string BuildBinderNullMessage(string operation, int index, object? owner, string? memberName) =>
+            $"{BuildBinderContext(operation, index, owner, memberName)} can't be null";
+
+        private static string BuildBinderContext(string operation, int index, object? owner, string? memberName)
         {
             var memberPart = memberName ?? "<unknown>";
 
             if (owner is null)
-                return $"[{operation}] Binder at index {index} '{memberPart}' can't be null";
+                return $"[{operation}] Binder at index {index} '{memberPart}'";
 
             var typeName = owner.GetType().Name;
-            
+
 #if UNITY_2020_3_OR_NEWER
             if (owner is UnityEngine.Object uo)
-                return $"[{typeName}] [{operation}] Binder at index {index} '{memberPart}' of view '{typeName}' (GameObject '{uo.name}') can't be null";
+                return $"[{typeName}] [{operation}] Binder at index {index} '{memberPart}' of view '{typeName}' (GameObject '{uo.name}')";
 #endif
-            return $"[{typeName}] [{operation}] Binder at index {index} '{memberPart}' of view '{typeName}' can't be null";
+            return $"[{typeName}] [{operation}] Binder at index {index} '{memberPart}' of view '{typeName}'";
         }
     }
 }

@@ -10,6 +10,10 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// The Inspector row for one binder field on a view: the property itself, plus the drop target that accepts
+    /// a binder dragged onto it.
+    /// </summary>
     public class MonoBinderPropertyField : VisualElement
     {
         private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinderPropertyField");
@@ -18,6 +22,9 @@ namespace Aspid.MVVM
         private readonly string? _assemblyQualifiedName;
         private readonly MonoBinderHighlightGradient _highlightGradient;
 
+        /// <summary>
+        /// The view field this row edits.
+        /// </summary>
         public SerializedProperty Property { get; }
         
         public MonoBinderPropertyField(
@@ -65,10 +72,19 @@ namespace Aspid.MVVM
             }
         }
 
+        /// <summary>
+        /// Flashes the row in the given colour, to show which field a dropped binder landed in.
+        /// </summary>
+        /// <param name="color">The colour to flash.</param>
         public void AnimateHighlight(Color color) =>
             _highlightGradient.AnimateHighlight(color);
         
-        public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidable binder)
+        /// <summary>
+        /// Reports how well the given binder matches this field.
+        /// </summary>
+        /// <param name="binder">The binder being dragged.</param>
+        /// <returns>The quality of the match; see <see cref="CompatibleBinderWithField"/>.</returns>
+        public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidatable binder)
         {
             var binderType = ((Component)binder).GetType();
             

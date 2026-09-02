@@ -43,7 +43,7 @@ var binder = new GenericOneWayBinder<TMP_Text, string>(
 
 ```csharp
 var binder = new GenericTwoWayBinder<string>(
-    initialize: callback =>
+    subscribe: callback =>
     {
         // Подписаться на изменения UI → вызвать callback(newValue)
         inputField.onEndEdit.AddListener(text => callback(text));
@@ -56,8 +56,8 @@ var binder = new GenericTwoWayBinder<string>(
 ```
 
 Дополнительные параметры:
-- `onBoundValueChanged` — вызывается при привязке, возвращает начальное значение
-- `onUnboundValueChanged` — вызывается при отвязке
+- `getValueOnBound` — вызывается при привязке, возвращает начальное значение
+- `getValueOnUnbinding` — вызывается при отвязке
 
 **Режим:** TwoWay.
 
@@ -69,11 +69,11 @@ var binder = new GenericTwoWayBinder<string>(
 
 ```csharp
 var binder = new GenericOneWayToSourceBinder<float>(
-    initialize: callback =>
+    subscribe: callback =>
     {
         slider.onValueChanged.AddListener(v => callback(v));
     },
-    onBoundValueChanged: () => slider.value  // начальное значение
+    getValueOnBound: () => slider.value  // начальное значение
 );
 ```
 

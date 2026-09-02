@@ -4,6 +4,8 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>13</LangVersion>
+        <!-- The sample has no Unity references, so the generated profiler markers are compiled out. -->
+        <DefineConstants>$(DefineConstants);ASPID_MVVM_UNITY_PROFILER_DISABLED</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

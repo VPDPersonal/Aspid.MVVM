@@ -12,15 +12,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspid.Generators.Helper" Version="0.1.0" />
-        <PackageReference Include="Aspid.Generators.Helper.Unity" Version="0.1.0" />
+        <PackageReference Include="Aspid.Generators.Helper" Version="0.1.0" GeneratePathProperty="true" />
+        <PackageReference Include="Aspid.Generators.Helper.Unity" Version="0.1.0" GeneratePathProperty="true" />
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
         <PackageReference ExcludeAssets="runtime" Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
-        <PackageReference Include="SourceGenerator.Foundations" Version="2.0.13" />
     </ItemGroup>
-    
+
+    <!--
+        Unity consumes a single analyzer DLL, so the helper assemblies are embedded as resources
+        and loaded by EmbeddedAssemblyResolver at runtime.
+    -->
+    <ItemGroup>
+        <EmbeddedResource Include="$(PkgAspid_Generators_Helper)/lib/netstandard2.0/Aspid.Generators.Helper.dll" LogicalName="Aspid.Generators.Helper.dll" Visible="false" />
+        <EmbeddedResource Include="$(PkgAspid_Generators_Helper_Unity)/lib/netstandard2.0/Aspid.Generators.Helper.Unity.dll" LogicalName="Aspid.Generators.Helper.Unity.dll" Visible="false" />
+    </ItemGroup>
+
 </Project>

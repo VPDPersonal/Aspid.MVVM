@@ -49,7 +49,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void AudioLinearToDecibel_RangeThatIsNotARange_ReportsAndUsesTheDefaultRange()
         {
-            LogAssert.Expect(LogType.Error, new Regex("AudioLinearDecibelConverter.*decibel range is not a range"));
+            LogAssert.Expect(LogType.Error, new Regex("AudioLinearDecibelConverter.*is not below full volume"));
 
             Assert.AreEqual(-6.02f, new AudioLinearDecibelConverter(0f, -80f).Convert(0.5f), delta: 0.05f);
         }
@@ -61,8 +61,8 @@ namespace Aspid.MVVM.Tests
         {
             var converter = new AudioLinearDecibelConverter(0f, -80f);
 
-            LogAssert.Expect(LogType.Error, new Regex("AudioLinearDecibelConverter.*decibel range is not a range"));
-            LogAssert.Expect(LogType.Error, new Regex("AudioLinearDecibelConverter.*decibel range is not a range"));
+            LogAssert.Expect(LogType.Error, new Regex("AudioLinearDecibelConverter.*is not below full volume"));
+            LogAssert.Expect(LogType.Error, new Regex("AudioLinearDecibelConverter.*is not below full volume"));
 
             converter.Convert(0.5f);
             converter.Convert(0.25f);

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.Tests
 {
     /// <summary>
     /// Coverage for the color converters added in this wave — <see cref="ColorChannelConverter"/>
-    /// across every <see cref="ChannelOp"/>, every <see cref="ColorChannels"/> mask and the clamp
+    /// across every <see cref="ChannelOperation"/>, every <see cref="ColorChannels"/> mask and the clamp
     /// flag, the <see cref="ColorLerpConverter"/> curve together with its unclamped extrapolation,
     /// and <see cref="ThresholdColorConverter"/> blending over stops authored out of order.
     /// </summary>
@@ -41,7 +41,7 @@ namespace Aspid.MVVM.Tests
             float blue,
             float alpha)
         {
-            var converter = new ColorChannelConverter(ChannelOp.Set, Uniform(0.5f), channels);
+            var converter = new ColorChannelConverter(ChannelOperation.Set, Uniform(0.5f), channels);
 
             AssertColor(new Color(red, green, blue, alpha), converter.Convert(Uniform(0.4f)));
         }
@@ -52,20 +52,20 @@ namespace Aspid.MVVM.Tests
         public void Convert_Set_PairsEachOperandChannelWithItsOwn()
         {
             var operand = new Color(0.1f, 0.2f, 0.3f, 0.4f);
-            var converter = new ColorChannelConverter(ChannelOp.Set, operand, ColorChannels.All);
+            var converter = new ColorChannelConverter(ChannelOperation.Set, operand, ColorChannels.All);
 
             AssertColor(operand, converter.Convert(new Color(0f, 0f, 0f, 0f)));
         }
 
         // 0.8 + 0.5 leaves the unit range, which is the only place the clamp flag is observable for
         // these three operations: Set and Multiply stay inside it for this operand.
-        [TestCase(ChannelOp.Set, true, 0.5f)]
-        [TestCase(ChannelOp.Set, false, 0.5f)]
-        [TestCase(ChannelOp.Multiply, true, 0.4f)]
-        [TestCase(ChannelOp.Multiply, false, 0.4f)]
-        [TestCase(ChannelOp.Add, true, 1f)]
-        [TestCase(ChannelOp.Add, false, 1.3f)]
-        public void Convert_EachOperation_AgainstTheClampFlag(ChannelOp operation, bool clamp, float expected)
+        [TestCase(ChannelOperation.Set, true, 0.5f)]
+        [TestCase(ChannelOperation.Set, false, 0.5f)]
+        [TestCase(ChannelOperation.Multiply, true, 0.4f)]
+        [TestCase(ChannelOperation.Multiply, false, 0.4f)]
+        [TestCase(ChannelOperation.Add, true, 1f)]
+        [TestCase(ChannelOperation.Add, false, 1.3f)]
+        public void Convert_EachOperation_AgainstTheClampFlag(ChannelOperation operation, bool clamp, float expected)
         {
             var converter = new ColorChannelConverter(operation, Uniform(0.5f), ColorChannels.All, clamp);
 
@@ -78,7 +78,7 @@ namespace Aspid.MVVM.Tests
         [TestCase(false, -0.3f)]
         public void Convert_Add_NegativeOperand_ClampFlagDecidesTheFloor(bool clamp, float expected)
         {
-            var converter = new ColorChannelConverter(ChannelOp.Add, Uniform(-0.5f), ColorChannels.All, clamp);
+            var converter = new ColorChannelConverter(ChannelOperation.Add, Uniform(-0.5f), ColorChannels.All, clamp);
 
             AssertColor(Uniform(expected), converter.Convert(Uniform(0.2f)));
         }
@@ -89,7 +89,7 @@ namespace Aspid.MVVM.Tests
         [TestCase(false, 4f)]
         public void Convert_Set_OperandAboveOne_ClampFlagDecidesTheCeiling(bool clamp, float expected)
         {
-            var converter = new ColorChannelConverter(ChannelOp.Set, Uniform(4f), ColorChannels.All, clamp);
+            var converter = new ColorChannelConverter(ChannelOperation.Set, Uniform(4f), ColorChannels.All, clamp);
 
             AssertColor(Uniform(expected), converter.Convert(Uniform(0.2f)));
         }
@@ -98,7 +98,7 @@ namespace Aspid.MVVM.Tests
         public void Convert_Unclamped_MultipliesHdrPastOne()
         {
             var converter = new ColorChannelConverter(
-                ChannelOp.Multiply,
+                ChannelOperation.Multiply,
                 new Color(3f, 3f, 3f, 1f),
                 clamp: false);
 
@@ -113,7 +113,7 @@ namespace Aspid.MVVM.Tests
         public void Convert_Clamped_LeavesUnmaskedHdrChannelsAlone()
         {
             var converter = new ColorChannelConverter(
-                ChannelOp.Multiply,
+                ChannelOperation.Multiply,
                 Color.white,
                 clamp: true);
 
@@ -144,10 +144,10 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_UndeclaredOperation_ReportsItAndLeavesTheChannelsAlone()
         {
-            var converter = new ColorChannelConverter((ChannelOp)42, Color.white, ColorChannels.All);
+            var converter = new ColorChannelConverter((ChannelOperation)42, Color.white, ColorChannels.All);
 
             for (var channel = 0; channel < 4; channel++)
-                LogAssert.Expect(LogType.Error, new Regex("ColorChannelConverter.*not a declared ChannelOp"));
+                LogAssert.Expect(LogType.Error, new Regex("ColorChannelConverter.*not a declared ChannelOperation"));
 
             AssertColor(new Color(2f, 0.5f, 0f, 3f), converter.Convert(new Color(2f, 0.5f, 0f, 3f)));
         }
@@ -157,7 +157,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_UndeclaredOperation_WithNoChannelMasked_ReportsNothing()
         {
-            var converter = new ColorChannelConverter((ChannelOp)42, Color.white, ColorChannels.None);
+            var converter = new ColorChannelConverter((ChannelOperation)42, Color.white, ColorChannels.None);
 
             AssertColor(Color.cyan, converter.Convert(Color.cyan));
         }

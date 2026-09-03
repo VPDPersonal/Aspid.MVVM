@@ -76,8 +76,6 @@ namespace Aspid.MVVM.Tests
         public void Constructor_MaxUnitsBelowOne_Throws(int maxUnits) =>
             Assert.Throws<ArgumentOutOfRangeException>(() => new RelativeTimeConverter(maxUnits));
 
-                    .Convert(DateTime.Now.AddHours(-1).AddMinutes(-5)));
-
         // The largest unit accumulates rather than rolling into months, so forty days is 40d and not
         // "1mo 9d" — the unit names stop at days deliberately.
         [Test]

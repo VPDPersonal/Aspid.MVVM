@@ -20,7 +20,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void ColorTint_ReplaceKeepsTheOriginalAlpha()
         {
-            var result = new ColorTintConverter(Color.red, ColorBlend.Replace).Convert(new Color(0f, 0f, 1f, 0.3f));
+            var result = new ColorTintConverter(Color.red, ColorBlendMode.Replace).Convert(new Color(0f, 0f, 1f, 0.3f));
 
             Assert.AreEqual(1f, result.r, 1e-5f);
             Assert.AreEqual(0.3f, result.a, 1e-5f);

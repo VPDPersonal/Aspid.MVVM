@@ -63,7 +63,7 @@ namespace Aspid.MVVM.StarterKit
         {
             // Unsigned rather than negated: long.MinValue has no positive counterpart.
             var magnitude = value < 0
-                ? unchecked((ulong)-value) 
+                ? unchecked((ulong)-value)
                 : (ulong)value;
 
             var digits = magnitude.ToString(CultureInfo.InvariantCulture);

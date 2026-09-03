@@ -49,11 +49,12 @@ description: Чеклист переноса скриптов StarterKit из `S
 - Недостающие реализации `IBinder<T>` / перегрузки конструктора добавлять (например, параметр `CultureInfoMode culture`).
 - Конструктор по умолчанию: `protected` у не-sealed generic-типов (наследнику нужен доступный базовый ctor для Unity-сериализации), `private` у sealed, если пустой экземпляр = ошибка в runtime; `public` с `<remarks>Default: …</remarks>`, если пустой экземпляр валиден.
 - Общие `New/Helpers/…` и `Converters/Helpers/…` из этого документа читать как `Runtime/Helpers/…` и `Runtime/Converters/Helpers/…`.
+- Пакет требует Unity `6000.0`: гварды `#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION` и define TMP удалены из всего пакета, новые файлы их не получают; условными остаются только `ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION`, `ASPID_MVVM_ZENJECT_INTEGRATION`, `ASPID_MVVM_VCONTAINER_INTEGRATION`, `ASPID_MVVM_ADDRESSABLES_INTEGRATION`, `ASPID_MVVM_UNITASK_INTEGRATION`.
 - Ошибки не глушатся: логировать при каждом появлении, `null` в биндере = сброс состояния.
 
 ### Код и форматирование
 - Никаких `==`/`!=` между `float`/`double` (ReSharper CompareOfFloatsByEqualityOperator): сравнение с нулём через паттерн `value is 0d` / `is not 0f`, целость через `value % 1d is 0d`, равенство двух float через `Mathf.Approximately`.
-- `#nullable enable` первой строкой, если в файле есть `?`-аннотации.
+- `#nullable enable` первой строкой, если в файле есть `?`-аннотации. Исключение: файлы с `MonoBehaviour`-классами (вью, инициализаторы, Mono-биндеры) пишутся без `#nullable enable` и без `?`-аннотаций.
 - Порядок членов: сериализованные поля → обычные поля → автосвойства → конструкторы → события → свойства → методы.
 - Конструктор с 2+ параметрами — параметры **в столбик**, скобка на строке имени. У методов — в столбик только когда сигнатура вылезает за правую границу (120 символов).
 - Короткий guard-`if` с `return` — в одну строку: `if (!IsMissing(value)) return value;`
@@ -62,7 +63,13 @@ description: Чеклист переноса скриптов StarterKit из `S
   string IConverter<int, string>.Convert(int value) =>
       Convert(value);
   ```
-- Тернарий в присваивании `var x = …` или в expression body — в три строки (условие / `? a` / `: b`); внутри аргумента вызова и в `return` остаётся одной строкой.
+- Тернарий в присваивании `var x = …` — в три строки (условие / `? a` / `: b`); внутри аргумента вызова и в `return` остаётся одной строкой.
+- Тернарий как тело expression-bodied члена: условие остаётся на строке с `=>`, ветки на следующих строках с одним отступом (правило «тело на новой строке» здесь не действует):
+  ```csharp
+  public string? Convert(string? value) => string.IsNullOrWhiteSpace(value)
+      ? value
+      : Wrap(value, _color, _includeAlpha);
+  ```
 - Присваивания в теле конструктора — по возрастанию длины строки, самое длинное (`?? throw`) внизу.
 - Цепочка `if … return` над одним значением → `switch`-выражение с реляционными паттернами.
 - Инициализаторы массивов не переносятся ради ширины строки.
@@ -104,7 +111,18 @@ description: Чеклист переноса скриптов StarterKit из `S
 
 Этап 1 закрыт коммитом `d02142514`. Дальше: `StarterKit/Unity/Runtime` (~27 .cs в Converters + биндеры Mono и пр.) переезжает в `StarterKit/Runtime`; при переносе `Unity/Runtime/Converters/*` смотреть, нет ли дубликатов уже перенесённых типов (например `AnyToStringCasterMonoBinder` ↔ `AnyToStringCasterBinder`). Остальное в `Runtime/` и весь `Unity/Runtime` — смотреть `find StarterKit/Runtime StarterKit/Unity/Runtime -name '*.cs'`.
 
+Этап 2, перенесено: остаток `Converters/{Localizations, Materials, RectOffsets, Rects}` → `Runtime/Converters/…` (папка `Unity/Runtime/Converters` пуста); `Converters/Bounds/*` → `Runtime/Converters/Bounds/{ToRect, ToVector}`; `Converters/Textures/*` → `Runtime/Converters/Textures/{корень, ToRect}`; `Converters/Quaternions/*` → `Runtime/Converters/Quaternions/{корень, ToNumber, ToVector}`; `Converters/Assets/*` (90 файлов, структура сохранена) → `Runtime/Converters/Assets/`; `Converters/Colors/*` (18 файлов) → `Runtime/Converters/Colors/{корень, ToVector}` (enum `ChannelOp` → `ChannelOperation`, `ColorBlend` → `ColorBlendMode`); `Converters/Vectors/*` (33 файла) → `Runtime/Converters/Vectors/{корень, Combine, ToNumber, ToQuaternion, ToRectOffset}`; вместе с ними `TransformGettersAndSetters` и anchored-часть `RectTransformGettersAndSetters` → `Runtime/Helpers/Transforms/`, остаток (`SetSizeDelta`) остался в Unity как `RectTransformSizeDeltaExtensions`; переименования: `Vector2Vector3Converter._values` → `_mode`, `_preConvertor/_postConvertor` → `_preConverter/_postConverter`; `Converters/Enums/*` → `Runtime/Converters/Enums/{ToCollection, ToString}` (asmdef: `Unity.TextMeshPro`; `EnumToDropdownOptionDataConverter.Entry` → `OptionEntry`); `Converters/Numbers/*` (19 файлов) → `Runtime/Converters/Numbers/{корень, ToColor, ToQuaternion, ToRectOffset, ToSprite, ToString, ToVector}` и вместе с ними `RectOffsets/RectSides` → `Runtime/Converters/RectOffsets/`, `Quaternions/RotationAxis` → `Runtime/Converters/Quaternions/` (папки под остальные конвертеры уже созданы); `Converters/Strings/*` → `Runtime/Converters/Strings/{LocalizedStringConverter, RichText, ToColor, ToSprite}` и вместе с ним `Colors/ToString/ColorToHtmlStringConverter` → `Runtime/Converters/Colors/ToString/` (взаимные internal-вызовы `Parse`/`Write`); asmdef получил `Unity.Localization` + versionDefine; `Converters/Objects/ToString/ObjectNameConverter` → `Runtime/Converters/Objects/ToString/`; `Components/UI/VirtualizedList` → `Runtime/Components/UI/`; `Utilities/ShaderPropertyId` → `Runtime/Binders/Helpers/`; `Commands/*` (`ColorCanExecuteHandler`, `GameObjectVisibleCanExecuteHandler`, `InteractableMode`) → `Runtime/Commands/{Core/ICanExecuteHandler, Helpers/InteractableMode, CanExecuteHandlers/*}`; `Views/*` → `Runtime/Views/{EventMonoView, Factories/{Core, Prefabs}, Initializers/{Core, Components}}`; asmdef `Aspid.MVVM.StarterKit` получил ссылки `Zenject`, `VContainer`, `Aspid.MVVM.Unity` и versionDefine VContainer (define Zenject задан в ProjectSettings). Editor-скрипты инициализаторов (`Unity/Editor/Views/Initializers`) ещё в старой сборке; Переименовано вместе с редактором: `InitializeComponent.GetComponent()` → `Resolve()`, свойство `Resolve` → `ResolveType`, поле `_resolve` → `_resolveType`, `_mono` → `_component`, enum `ResolveType.{Mono, References}` → `{Component, Reference}`, `ViewInitializerBase.GetFromInitializeComponent` → `Resolve`; `ViewInitializerEditor` сравнивает стадию по `enumNames`, а не по индексам. Редактор по-прежнему читает поля `_resolveType`, `_component`, `_reference`, `_scriptableObject`, `_typeName` по имени.
+
+Следующий шаг этапа 2: `StarterKit/Unity/Runtime/Binders` (единственное, что осталось в `Unity/Runtime` вместе с asmdef и `AssemblyInfo`). Порядок работы тот же; при переносе биндеров учитывать:
+- `BinderMath` (`Unity/Runtime/Binders/Extensions`) и `SizeDeltaMode` тянут за собой `RectTransformSizeDeltaExtensions` (`Unity/Runtime/Binders/Transforms/RectTransforms/Extensions`), который был отделён от `RectTransformGettersAndSetters`; после переезда `BinderMath` их можно снова слить в один файл в `Runtime/Helpers/Transforms`.
+- `ThresholdRichTextColorConverter` уже в `Runtime` и зовёт `RichTextColorConverter.Wrap` внутри одной сборки; `InternalsVisibleTo("Aspid.MVVM.StarterKit.Unity")` в `Runtime/AssemblyInfo.cs` можно будет снять, когда Unity-сборка исчезнет.
+- Биндеры коллекций (`Binders/Collections/*`) используют `IViewFactory`/`IViewFactoryWithKey` и `PrefabViewFactory` из `Runtime/Views`; `VirtualizedListItemSourceMonoBinder` и `VirtualizedListToSourceMonoBinder` ссылаются на `VirtualizedList` из `Runtime/Components/UI`.
+- Editor-скрипты StarterKit (`StarterKit/Unity/Editor`) остаются в своей сборке и ссылаются на `Aspid.MVVM.StarterKit`; после исчезновения `Aspid.MVVM.StarterKit.Unity` убрать её из references обоих Editor-asmdef и Tests-asmdef.
+- MonoBehaviour-файлы переносить без `#nullable enable` и `?`-аннотаций.
+
 Открытые хвосты:
+- `PrefabViewPool` теперь реально прогревает `InitialCount` экземпляров при первом `Create`; проверить в PlayMode.
+- `ViewInitializeComponent` и `ViewModelInitializeComponent` остаются копиями: `[TypeSelector(typeof(T))]` не выразить в generic-базе.
 - `ConverterLogger` и `BinderLogger` — дословные копии; решить, сводить ли к общему писателю.
 - Проверить в Editor, что Unity вызывает `OnAfterDeserialize` у `[SerializeReference]`-конвертера после правки в Inspector (на это полагаются кеши `TrimStringConverter`, `ThousandsSeparatorConverter`, `StringToVector2/3Converter`, `EnumFlagsToStringConverter`); иначе инвалидировать из `OnValidate` биндера.
 - После переименований прогнать инструмент починки сериализованных ссылок (`GenericToStringConverter` → `ValueToStringConverter`, enum `Aggregate` → `AggregateOperation`, `NumberOperation.{Plus,Minus,Division}` → `{Add,Subtract,Divide}`, `EnumMatch` → `EnumMatchMode` с членом `NotEquals` → `NotEqual`, `EnumToValueConverter.Entry` → `LookupEntry`, `IndexMode` → `IndexOutOfRangeMode`, `StringMatch` → `StringMatchMode`, параметр `TimeSpanArithmeticConverter(operandSeconds)` → `operand` (поле `_operandSeconds` → `_operand`); удалён `DecimalFormatConverter`, его роль у `NumberFormatConverter` через `IConverter<decimal, string>`).

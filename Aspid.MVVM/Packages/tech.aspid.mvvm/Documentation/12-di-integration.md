@@ -134,7 +134,7 @@ public class GameLifetimeScope : LifetimeScope
 
 Если DI не используется, применяйте:
 - Bootstrap-паттерн с `view.Initialize(viewModel)` — см. [Быстрый старт](01-getting-started.md)
-- `ViewInitializer` с `ResolveType.Mono` или `ResolveType.ScriptableObject`
+- `ViewInitializer` с `ResolveType.Component` или `ResolveType.ScriptableObject`
 - `ViewInitializerManual` с передачей ViewModel из кода
 
 ---

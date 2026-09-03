@@ -45,11 +45,11 @@ namespace Aspid.MVVM.StarterKit
             Format(value);
 
         /// <inheritdoc cref="IConverter{TFrom,TTo}.Convert"/>
-        public string Convert(double value) => 
+        public string Convert(double value) =>
             Format(value);
 
         /// <inheritdoc cref="IConverter{TFrom,TTo}.Convert"/>
-        public string Convert(int value) => 
+        public string Convert(int value) =>
             Format(value);
 
         /// <inheritdoc cref="IConverter{TFrom,TTo}.Convert"/>

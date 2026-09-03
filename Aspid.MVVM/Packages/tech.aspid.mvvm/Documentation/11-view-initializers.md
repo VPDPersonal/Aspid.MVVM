@@ -135,15 +135,15 @@ public void Hide()
 
 | Тип | Описание |
 |-----|----------|
-| `Mono` | Ссылка на MonoBehaviour в Inspector |
-| `References` | `[SerializeReference]` — для POCO-объектов |
+| `Component` | Ссылка на Component в Inspector |
+| `Reference` | `[SerializeReference]` — для POCO-объектов |
 | `ScriptableObject` | Ссылка на ScriptableObject |
 | `Di` | Разрешение через DI-контейнер (Zenject/VContainer) |
 
 ### ViewModelInitializeComponent
 
 Специализация для ViewModel:
-- `ResolveType.Mono` — указывает на `MonoViewModel` компонент
+- `ResolveType.Component` — указывает на `MonoViewModel` компонент
 - `ResolveType.ScriptableObject` — указывает на `ScriptableViewModel`
 - `ResolveType.Di` — `TypeSelector` для выбора типа ViewModel из контейнера
 

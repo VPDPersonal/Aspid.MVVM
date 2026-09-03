@@ -35,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
 
             switch (resolve)
             {
-                case ResolveType.References:
+                case ResolveType.Reference:
                     {
                         var referencesProperty = GetReferencesProperty(property);
                         return referencesProperty.managedReferenceValue?.GetType().Name ?? string.Empty;
@@ -54,7 +54,7 @@ namespace Aspid.MVVM.StarterKit
                         return Type.GetType(typeNameProperty.stringValue)?.Name ?? string.Empty;
                     }
 #endif
-                case ResolveType.Mono:
+                case ResolveType.Component:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
@@ -72,7 +72,7 @@ namespace Aspid.MVVM.StarterKit
 
             switch (resolve)
             {
-                case ResolveType.References:
+                case ResolveType.Reference:
                     {
                         var referencesProperty = GetReferencesProperty(property);
                         return referencesProperty.managedReferenceValue is not null;
@@ -92,7 +92,7 @@ namespace Aspid.MVVM.StarterKit
                         return !string.IsNullOrWhiteSpace(typeNameProperty.stringValue);
                     }
 #endif
-                case ResolveType.Mono:
+                case ResolveType.Component:
                 default:
                     {
                         var monoProperty = GetMonoProperty(property);
@@ -105,7 +105,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private static SerializedProperty GetMonoProperty(SerializedProperty property) =>
-            property.FindPropertyRelative("_mono");
+            property.FindPropertyRelative("_component");
         
         private static SerializedProperty GetScriptableProperty(SerializedProperty property) =>
             property.FindPropertyRelative("_scriptableObject");
@@ -117,6 +117,6 @@ namespace Aspid.MVVM.StarterKit
             property.FindPropertyRelative("_typeName");
         
         private static ResolveType GetResolve(SerializedProperty property) =>
-            (ResolveType)property.FindPropertyRelative("_resolve").enumValueIndex;
+            (ResolveType)property.FindPropertyRelative("_resolveType").enumValueIndex;
     }
 }

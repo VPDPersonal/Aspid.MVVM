@@ -118,7 +118,7 @@ namespace Aspid.MVVM.StarterKit
                 ? TimeLayout.HoursMinutesSeconds
                 : TimeLayout.MinutesSeconds;
 
-        private string Lead(long value) => _padLeading 
+        private string Lead(long value) => _padLeading
             ? Two(value)
             : value.ToString(CultureInfo.InvariantCulture);
 

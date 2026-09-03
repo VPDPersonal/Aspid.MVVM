@@ -71,7 +71,7 @@ namespace Aspid.MVVM.StarterKit
         string IConverter<long, string>.Convert(long value) =>
             Convert(value);
 
-        string IConverter<float, string>.Convert(float value) => 
+        string IConverter<float, string>.Convert(float value) =>
             Convert(value);
 
         private string Format() => _groupDigits

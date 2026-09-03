@@ -38,16 +38,16 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The number to format.</param>
         /// <returns>The number with its ordinal suffix.</returns>
-        public string Convert(int value) => 
+        public string Convert(int value) =>
             Apply(value);
 
-        string IConverter<long, string>.Convert(long value) => 
+        string IConverter<long, string>.Convert(long value) =>
             Apply(value);
 
-        string IConverter<float, string>.Convert(float value) => 
+        string IConverter<float, string>.Convert(float value) =>
             Apply(NumericSaturation.ToLong(value));
 
-        string IConverter<double, string>.Convert(double value) => 
+        string IConverter<double, string>.Convert(double value) =>
             Apply(NumericSaturation.ToLong(value));
 
         private string Apply(long value)

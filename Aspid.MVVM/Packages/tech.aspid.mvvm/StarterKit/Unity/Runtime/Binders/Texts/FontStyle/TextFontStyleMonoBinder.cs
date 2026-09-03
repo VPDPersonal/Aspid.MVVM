@@ -1,4 +1,3 @@
-#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using UnityEngine;
 
@@ -22,4 +21,3 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
-#endif

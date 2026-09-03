@@ -1,11 +1,7 @@
-#if UNITY_2022_3_OR_NEWER
 using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
-
-#if UNITY_2023_1_OR_NEWER
 using System.Threading;
-#endif // UNITY_2023_1_OR_NEWER
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -276,7 +272,6 @@ namespace Aspid.MVVM
             return operation;
         }
 
-#if UNITY_2023_1_OR_NEWER
         /// <summary>
         /// Asynchronously creates multiple instances of View with the specified parent, position, and rotation, 
         /// and initializes them with the given <see cref="IViewModel"/>. Supports cancellation via <see cref="CancellationToken"/>.
@@ -344,7 +339,5 @@ namespace Aspid.MVVM
             
             return operation;
         }
-#endif // UNITY_2023_1_OR_NEWER
     }
 }
-#endif // UNITY_2022_3_OR_NEWER

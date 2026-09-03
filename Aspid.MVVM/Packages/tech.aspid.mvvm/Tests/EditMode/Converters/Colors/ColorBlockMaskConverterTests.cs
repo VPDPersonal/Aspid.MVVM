@@ -64,8 +64,8 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_DefaultedStatesArgument_MatchesAnExplicitAllMask()
         {
-            var defaulted = new ColorBlockTintConverter(_tint, ColorBlend.Multiply).Convert(Authored());
-            var explicitAll = new ColorBlockTintConverter(_tint, ColorBlend.Multiply, SelectableStates.All).Convert(Authored());
+            var defaulted = new ColorBlockTintConverter(_tint, ColorBlendMode.Multiply).Convert(Authored());
+            var explicitAll = new ColorBlockTintConverter(_tint, ColorBlendMode.Multiply, SelectableStates.All).Convert(Authored());
 
             foreach (var state in _everyState)
                 Assert.AreEqual(ColorOf(explicitAll, state), ColorOf(defaulted, state), $"{state} differs from an explicit All mask.");
@@ -99,7 +99,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_InteractiveMask_LeavesTheDisabledStateExactlyAsAuthored()
         {
-            var result = new ColorBlockTintConverter(_tint, ColorBlend.Multiply, SelectableStates.Interactive).Convert(Authored());
+            var result = new ColorBlockTintConverter(_tint, ColorBlendMode.Multiply, SelectableStates.Interactive).Convert(Authored());
 
             // Bit-identical rather than close: a theme pushed on every notification would drift a
             // "nearly untouched" disabled color a little further off with each push.
@@ -120,7 +120,7 @@ namespace Aspid.MVVM.Tests
         [TestCase(SelectableStates.Disabled, 0.15f)]
         public void TintConverter_SingleStateMask_WritesOnlyThatState(SelectableStates state, float tintedAlpha)
         {
-            var result = new ColorBlockTintConverter(_tint, ColorBlend.Multiply, state).Convert(Authored());
+            var result = new ColorBlockTintConverter(_tint, ColorBlendMode.Multiply, state).Convert(Authored());
 
             Assert.AreEqual(tintedAlpha, ColorOf(result, state).a, Tolerance, $"{state} sits inside the mask and should have been tinted.");
             AssertUntouchedOutside(state, result);
@@ -130,7 +130,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_NoneMask_ChangesNothing()
         {
-            var result = new ColorBlockTintConverter(_tint, ColorBlend.Multiply, SelectableStates.None).Convert(Authored());
+            var result = new ColorBlockTintConverter(_tint, ColorBlendMode.Multiply, SelectableStates.None).Convert(Authored());
 
             AssertUntouchedOutside(SelectableStates.None, result);
         }
@@ -154,7 +154,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_AddBlend_ClampsAndKeepsTheAuthoredAlpha()
         {
-            var result = new ColorBlockTintConverter(_tint, ColorBlend.Add, SelectableStates.Normal).Convert(Authored());
+            var result = new ColorBlockTintConverter(_tint, ColorBlendMode.Add, SelectableStates.Normal).Convert(Authored());
 
             AssertSameColor(new Color(1f, 0.5f, 0.5f, 1f), result.normalColor, "Normal, added");
             AssertUntouchedOutside(SelectableStates.Normal, result);
@@ -165,7 +165,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_LerpBlend_TravelsAllTheWayAtTheDefaultAmount()
         {
-            var result = new ColorBlockTintConverter(_tint, ColorBlend.Lerp, SelectableStates.Highlighted).Convert(Authored());
+            var result = new ColorBlockTintConverter(_tint, ColorBlendMode.Lerp, SelectableStates.Highlighted).Convert(Authored());
 
             AssertSameColor(_tint, result.highlightedColor, "Highlighted, lerped");
             Assert.AreNotEqual(Authored().highlightedColor.a, result.highlightedColor.a, "Lerp should have taken the tint's alpha.");
@@ -174,7 +174,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_ReplaceBlend_KeepsTheAuthoredAlpha()
         {
-            var result = new ColorBlockTintConverter(_tint, ColorBlend.Replace, SelectableStates.Pressed).Convert(Authored());
+            var result = new ColorBlockTintConverter(_tint, ColorBlendMode.Replace, SelectableStates.Pressed).Convert(Authored());
 
             AssertSameColor(new Color(_tint.r, _tint.g, _tint.b, Authored().pressedColor.a), result.pressedColor, "Pressed, replaced");
         }
@@ -186,11 +186,11 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void TintConverter_UndeclaredBlend_ReportsItOnlyForStatesInsideTheMask()
         {
-            const ColorBlend undeclared = (ColorBlend)99;
+            const ColorBlendMode undeclared = (ColorBlendMode)99;
 
             // One report per state inside the mask, so five for the whole block.
             for (var state = 0; state < 5; state++)
-                LogAssert.Expect(LogType.Error, new Regex("ColorBlockTintConverter.*not a declared ColorBlend"));
+                LogAssert.Expect(LogType.Error, new Regex("ColorBlockTintConverter.*not a declared ColorBlendMode"));
 
             var masked = new ColorBlockTintConverter(_tint, undeclared, SelectableStates.All).Convert(Authored());
             AssertSameColor(Authored().pressedColor, masked.pressedColor, "Pressed, left untinted");

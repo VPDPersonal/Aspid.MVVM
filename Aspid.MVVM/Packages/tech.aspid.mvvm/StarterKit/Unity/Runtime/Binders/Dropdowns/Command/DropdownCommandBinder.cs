@@ -1,4 +1,3 @@
-#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 using TMPro;
 using System;
 using UnityEngine;
@@ -584,4 +583,3 @@ namespace Aspid.MVVM.StarterKit
             Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }
-#endif

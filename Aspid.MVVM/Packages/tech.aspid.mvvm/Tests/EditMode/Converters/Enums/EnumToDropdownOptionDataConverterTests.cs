@@ -40,7 +40,7 @@ namespace Aspid.MVVM.Tests
             var converter = new EnumToDropdownOptionDataConverter(
                 new[]
                 {
-                    new EnumToDropdownOptionDataConverter.Entry("Easy", "Casual"),
+                    new EnumToDropdownOptionDataConverter.OptionEntry("Easy", "Casual"),
                 });
 
             var options = new List<TMPro.TMP_Dropdown.OptionData>(converter.Convert(Difficulty2.Easy));
@@ -63,7 +63,7 @@ namespace Aspid.MVVM.Tests
             var converter = new EnumToDropdownOptionDataConverter(
                 new[]
                 {
-                    new EnumToDropdownOptionDataConverter.Entry("Simple", "Casual"),
+                    new EnumToDropdownOptionDataConverter.OptionEntry("Simple", "Casual"),
                 });
 
             var options = new List<TMPro.TMP_Dropdown.OptionData>(converter.Convert(Difficulty2.Easy));
@@ -86,8 +86,8 @@ namespace Aspid.MVVM.Tests
             var converter = new EnumToDropdownOptionDataConverter(
                 new[]
                 {
-                    new EnumToDropdownOptionDataConverter.Entry("Easy", "First"),
-                    new EnumToDropdownOptionDataConverter.Entry("Easy", "Second"),
+                    new EnumToDropdownOptionDataConverter.OptionEntry("Easy", "First"),
+                    new EnumToDropdownOptionDataConverter.OptionEntry("Easy", "Second"),
                 });
 
             var options = new List<TMPro.TMP_Dropdown.OptionData>(converter.Convert(Difficulty2.Easy));

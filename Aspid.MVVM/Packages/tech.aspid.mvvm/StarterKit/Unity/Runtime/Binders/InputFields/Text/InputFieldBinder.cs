@@ -1,4 +1,3 @@
-#if UNITY_2023_1_OR_NEWER || ASPID_MVVM_TEXT_MESH_PRO_INTEGRATION
 #nullable enable
 using TMPro;
 using System;
@@ -190,4 +189,3 @@ namespace Aspid.MVVM.StarterKit
             _converter is ITwoWayConverter<string?, string?> twoWay ? twoWay.ConvertBack(value) : value;
     }
 }
-#endif

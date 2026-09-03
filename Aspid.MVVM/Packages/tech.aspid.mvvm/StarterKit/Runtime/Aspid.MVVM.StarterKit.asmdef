@@ -2,9 +2,15 @@
     "name": "Aspid.MVVM.StarterKit",
     "rootNamespace": "",
     "references": [
+        "Zenject",
+        "VContainer",
         "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.FastTools.Unity",
         "Aspid.Collections.Observable",
-        "Aspid.FastTools.Unity"
+        "Unity.Localization",
+        "Unity.ResourceManager",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -13,6 +19,17 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "jp.hadashikick.vcontainer",
+            "expression": "",
+            "define": "ASPID_MVVM_VCONTAINER_INTEGRATION"
+        },
+        {
+            "name": "com.unity.localization",
+            "expression": "",
+            "define": "ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION"
+        }
+    ],
     "noEngineReferences": false
 }

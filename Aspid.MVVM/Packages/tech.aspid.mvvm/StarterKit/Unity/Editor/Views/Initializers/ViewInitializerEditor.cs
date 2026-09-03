@@ -78,7 +78,7 @@ namespace Aspid.MVVM.StarterKit
                 {
                     EditorGUILayout.PropertyField(_initializeStage);
 
-                    if (_initializeStage.enumValueIndex is 0 or 4)
+                    if (_initializeStage.enumNames[_initializeStage.enumValueIndex] is "Manual" or "DiConstructor")
                     {
                         _isDeinitialize.boolValue = false;
                     }
@@ -165,17 +165,12 @@ namespace Aspid.MVVM.StarterKit
                 initializer = (ViewInitializerBase)target;
                 var initializerType = initializer.GetType();
                     
-                if (initializer is ViewInitializerManual)
+                if (initializer is ViewInitializerManual manual)
                 {
-                    if (initializer.IsInitialized && GUILayout.Button("Reinitialize"))
+                    if (manual.IsInitialized && manual.ViewModel is { } viewModel && GUILayout.Button("Reinitialize"))
                     {
-                        var viewModel = (IViewModel)initializerType
-                            .GetProperty("VeiwModel")!
-                            .GetValue(initializer);
-
-                        initializerType
-                            .GetMethod("Initialize", BindingFlags.NonPublic)!
-                            .Invoke(initializer, new object[] { viewModel });
+                        manual.Deinitialize();
+                        manual.Initialize(viewModel);
                     }
                 }
                 else

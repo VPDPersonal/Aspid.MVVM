@@ -38,11 +38,11 @@ namespace Aspid.MVVM.StarterKit
         {
             (SerializedProperty resolve, SerializedProperty component) properties = default;
 
-            properties.resolve = property.FindPropertyRelative("_resolve");
+            properties.resolve = property.FindPropertyRelative("_resolveType");
 
             switch ((ResolveType)properties.resolve.enumValueIndex)
             {
-                case ResolveType.References:
+                case ResolveType.Reference:
                     properties.component = property.FindPropertyRelative("_reference");
                     break;
 
@@ -56,9 +56,9 @@ namespace Aspid.MVVM.StarterKit
                     break;
 #endif
 
-                case ResolveType.Mono:
+                case ResolveType.Component:
                 default:
-                    properties.component = property.FindPropertyRelative("_mono");
+                    properties.component = property.FindPropertyRelative("_component");
                     break;
             }
 

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -9,10 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Writes a number of seconds as a clock reading.
     /// </summary>
-    /// <remarks>
-    /// A floored timer shows <c>0:00</c> for a whole second before it fires, so a countdown usually
-    /// wants <see cref="RoundMode.Ceil"/> and a stopwatch <see cref="RoundMode.Floor"/>.
-    /// </remarks>
+    /// <remarks>A countdown usually wants <see cref="RoundMode.Ceil"/>, a stopwatch <see cref="RoundMode.Floor"/>.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number/To String",
@@ -41,14 +39,9 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: writing mm:ss.</remarks>
         public SecondsToTimeStringConverter() { }
 
-        /// <param name="layout">
-        /// Which units to show. An undeclared layout is reported as an error and mm:ss is written instead.
-        /// </param>
-        /// <param name="rounding">
-        /// How to drop the fractional second. An undeclared mode is reported as an error and the nearest
-        /// second is used.
-        /// </param>
-        /// <param name="padLeading">When <see langword="true"/>, pads the leading unit to two digits.</param>
+        /// <param name="layout">Which units to show.</param>
+        /// <param name="rounding">How to drop the fractional second.</param>
+        /// <param name="padLeading">If <see langword="true"/>, pads the leading unit to two digits.</param>
         public SecondsToTimeStringConverter(
             TimeLayout layout,
             RoundMode rounding = RoundMode.Ceil,
@@ -70,7 +63,6 @@ namespace Aspid.MVVM.StarterKit
 
         private string Write(double seconds)
         {
-            // Rounded first, so a fraction ceiled up to zero reads as 00:00, not as the negative text.
             var rounded = Round(seconds);
             if (rounded < 0L && !string.IsNullOrWhiteSpace(_negativeText)) return _negativeText;
 
@@ -95,8 +87,9 @@ namespace Aspid.MVVM.StarterKit
 
         private string UndeclaredLayout(long total, long secs)
         {
-            this.LogError($"the layout {_layout.Describe()} is not a declared {nameof(TimeLayout)}",
-                "Writing minutes and seconds.");
+            this.LogError(
+                problem: $"the layout {_layout.Describe()} is not a declared {nameof(TimeLayout)}",
+                consequence: "Writing minutes and seconds.");
 
             return Lead(total / 60L) + _separator + Two(secs);
         }
@@ -112,8 +105,9 @@ namespace Aspid.MVVM.StarterKit
 
         private long UndeclaredRounding(double seconds)
         {
-            this.LogError($"the rounding {_rounding.Describe()} is not a declared {nameof(RoundMode)}",
-                "Rounding to the nearest second.");
+            this.LogError(
+                problem: $"the rounding {_rounding.Describe()} is not a declared {nameof(RoundMode)}",
+                consequence: "Rounding to the nearest second.");
 
             return (long)Math.Round(seconds, MidpointRounding.AwayFromZero);
         }
@@ -124,8 +118,9 @@ namespace Aspid.MVVM.StarterKit
                 ? TimeLayout.HoursMinutesSeconds
                 : TimeLayout.MinutesSeconds;
 
-        private string Lead(long value) =>
-            _padLeading ? Two(value) : value.ToString(CultureInfo.InvariantCulture);
+        private string Lead(long value) => _padLeading 
+            ? Two(value)
+            : value.ToString(CultureInfo.InvariantCulture);
 
         private static string Two(long value) =>
             value.ToString("00", CultureInfo.InvariantCulture);

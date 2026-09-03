@@ -111,11 +111,11 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void OneWayToSourceValue_SendsTheInitialValueBackUndone()
+        public void ValueOneWayToSourceBinder_SendsTheInitialValueBackUndone()
         {
             float? received = null;
             var member = new OneWayToSourceBindableMember<float>(value => received = value);
-            var binder = new OneWayToSourceValue<float>(250f, new ScaleConverter());
+            var binder = new ValueOneWayToSourceBinder<float>(250f, new ScaleConverter());
 
             binder.Bind(member);
 

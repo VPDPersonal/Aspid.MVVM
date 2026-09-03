@@ -4,10 +4,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// The casing <see cref="TextCaseConverter"/> applies.
     /// </summary>
-    /// <remarks>
-    /// Append new members rather than inserting one — the order is the serialized value, so moving
-    /// one silently rewrites every converter already authored in a scene.
-    /// </remarks>
+    /// <remarks>Members are appended, never inserted: the order is the serialized value.</remarks>
     public enum TextCase
     {
         /// <summary>
@@ -31,8 +28,7 @@ namespace Aspid.MVVM.StarterKit
         Title,
 
         /// <summary>
-        /// The first letter of every sentence upper case, the rest lower. A sentence ends at
-        /// <c>.</c>, <c>!</c> or <c>?</c>.
+        /// The first letter of every sentence upper case, the rest lower. A sentence ends at <c>.</c>, <c>!</c> or <c>?</c>.
         /// </summary>
         Sentence,
 

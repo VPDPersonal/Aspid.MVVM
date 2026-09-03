@@ -48,8 +48,8 @@
 - [Коллекции](StarterKit/collection-binders.md) — Observable/Virtualized-биндеры списков
 - [Switcher](StarterKit/switcher-binders.md) — паттерн true/false -> значение
 - [Caster](StarterKit/caster-binders.md) — конвертирующие биндеры
-- [Value](StarterKit/value-binders.md) — OneWayValue, TwoWayValue
-- [Generic](StarterKit/generic-binders.md) — код-биндеры через делегаты
+- [Value](StarterKit/value-binders.md) — ValueOneWayBinder, ValueTwoWayBinder
+- [Delegate](StarterKit/delegate-binders.md) — код-биндеры через делегаты
 - [Debug](StarterKit/debug-binder.md) — DebugLogBinder для отладки
 - [View Factories](StarterKit/view-factories.md) — PrefabViewFactory, PrefabViewPool
 - [Прочие](StarterKit/misc-binders.md) — ObjectNameBinder, ComponentToSourceMonoBinder

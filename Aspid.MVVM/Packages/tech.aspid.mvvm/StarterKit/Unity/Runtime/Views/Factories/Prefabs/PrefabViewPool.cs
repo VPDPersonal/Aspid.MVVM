@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class PrefabViewPool : PrefabViewPool<MonoView>, IViewFactoryMonoView
+    public sealed class PrefabViewPool : PrefabViewPool<MonoView>
     {
         [Obsolete("For Unity Inspector", true)]
         public PrefabViewPool() { }

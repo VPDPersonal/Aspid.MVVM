@@ -1,6 +1,6 @@
+#nullable enable
 using System;
 using UnityEngine;
-using System.Globalization;
 using Aspid.FastTools.Types;
 
 // ReSharper disable once CheckNamespace
@@ -9,10 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Formats a number as an English ordinal: 1 becomes "1st".
     /// </summary>
-    /// <remarks>
-    /// The suffix stays English whichever culture is picked; a <see cref="CultureInfo"/> carries no
-    /// ordinal rules. A float or double input is truncated toward zero before the suffix is picked.
-    /// </remarks>
+    /// <remarks>The suffix stays English whichever culture is picked. A float or double input is truncated.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number/To String",
@@ -24,17 +21,13 @@ namespace Aspid.MVVM.StarterKit
         IConverter<float, string>,
         IConverter<double, string>
     {
-        [Tooltip("The culture the number is written with. It reaches only the negative sign — the " +
-            "digits and the suffix are English either way.")]
+        [Tooltip("The culture the number is written with. Affects only the negative sign.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.InvariantCulture;
 
         /// <remarks>Default: writing invariant digits.</remarks>
         public OrdinalConverter() { }
 
-        /// <param name="culture">
-        /// The culture the number is written with. It reaches only the negative sign: .NET writes ASCII
-        /// digits whatever the culture, and the suffix stays English.
-        /// </param>
+        /// <param name="culture">The culture the number is written with. Affects only the negative sign.</param>
         public OrdinalConverter(CultureInfoMode culture)
         {
             _culture = culture;
@@ -45,21 +38,22 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The number to format.</param>
         /// <returns>The number with its ordinal suffix.</returns>
-        public string Convert(int value) => Apply(value);
+        public string Convert(int value) => 
+            Apply(value);
 
-        string IConverter<long, string>.Convert(long value) => Apply(value);
+        string IConverter<long, string>.Convert(long value) => 
+            Apply(value);
 
-        string IConverter<float, string>.Convert(float value) => Apply(NumericSaturation.ToLong(value));
+        string IConverter<float, string>.Convert(float value) => 
+            Apply(NumericSaturation.ToLong(value));
 
-        string IConverter<double, string>.Convert(double value) => Apply(NumericSaturation.ToLong(value));
+        string IConverter<double, string>.Convert(double value) => 
+            Apply(NumericSaturation.ToLong(value));
 
         private string Apply(long value)
         {
-            // The remainder is taken before the sign is dropped: long.MinValue has no positive
-            // counterpart of its own width, while its last two digits always do.
             var lastTwo = Math.Abs(value % 100);
 
-            // 11th, 12th and 13th break the last-digit rule.
             var suffix = lastTwo is >= 11 and <= 13
                 ? "th"
                 : (lastTwo % 10) switch { 1 => "st", 2 => "nd", 3 => "rd", _ => "th" };

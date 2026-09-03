@@ -34,7 +34,7 @@ ObservableList<IViewModel> (ViewModel)
 |----------|-----|----------|
 | `Factory` | `IViewFactory<MonoView>` | Фабрика для создания View (PrefabViewFactory или PrefabViewPool) |
 | `Filter` | `ICollectionFilter<IViewModel>` | Опциональный фильтр |
-| `Comparer` | `ICollectionComparer<IViewModel>` | Опциональная сортировка |
+| `Order` | `ICollectionOrder<IViewModel>` | Опциональная сортировка |
 
 ### Режим
 
@@ -103,7 +103,7 @@ public partial class ListViewModel
 | Свойство | Описание |
 |----------|----------|
 | `Filter` | `ICollectionFilter<IViewModel>` |
-| `Comparer` | `ICollectionComparer<IViewModel>` |
+| `Order` | `ICollectionOrder<IViewModel>` |
 
 Создаёт внутренний `FilteredList<IViewModel>` при наличии фильтра/сортировки.
 
@@ -150,7 +150,7 @@ Release(view) → Deinitialize() → SetActive(false) → Pool.Release()
 ```csharp
 public interface ICollectionFilter<in T>
 {
-    Predicate<T>? Get();
+    bool Matches(T item);
 }
 ```
 
@@ -160,24 +160,39 @@ public interface ICollectionFilter<in T>
 [Serializable]
 public class CompletedFilter : ICollectionFilter<IViewModel>
 {
-    public Predicate<IViewModel>? Get() =>
-        vm => vm is ItemViewModel item && item.IsCompleted;
+    public bool Matches(IViewModel item) =>
+        item is ItemViewModel viewModel && viewModel.IsCompleted;
 }
 ```
 
-### ICollectionComparer\<T\>
+### ICollectionOrder\<T\>
 
 ```csharp
-public interface ICollectionComparer<in T>
-{
-    IComparer<T>? Get();
-}
+public interface ICollectionOrder<in T> : IComparer<T> { }
 ```
 
-### Составные фильтры
+Реализуйте `Compare`, как у обычного `IComparer<T>`. Пустой слот в Inspector сохраняет порядок исходной коллекции.
 
-- `AndCompositeCollectionFilter` — объединяет фильтры через AND
-- `OrCompositeCollectionFilter` — объединяет фильтры через OR
+### Готовые фильтры
+
+| Фильтр | Поведение |
+|--------|-----------|
+| `AndCollectionFilter<T>` | Проходит элемент, который пропускают все вложенные фильтры |
+| `OrCollectionFilter<T>` | Проходит элемент, который пропускает хотя бы один вложенный фильтр |
+| `NotCollectionFilter<T>` | Инвертирует вложенный фильтр |
+| `ConditionalCollectionFilter<T>` | Применяет вложенный фильтр только при включённом `IsEnabled` |
+| `ConverterCollectionFilter<T>` | Пропускает элемент, для которого `IConverter<T, bool>` вернул `true` |
+| `PredicateCollectionFilter<T>` | Обёртка над `Predicate<T>` для фильтров из кода |
+
+Пустой вложенный слот пропускает всё.
+
+### Готовые сортировки
+
+| Сортировка | Поведение |
+|------------|-----------|
+| `SequenceCollectionOrder<T>` | Применяет вложенные порядки по очереди: решает первый, различивший элементы |
+| `InverseCollectionOrder<T>` | Обращает вложенный порядок |
+| `ComparisonCollectionOrder<T>` | Обёртка над `IComparer<T>` или `Comparison<T>` для сортировок из кода |
 
 ---
 

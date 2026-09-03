@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -21,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         [TypeSelector]
         [SerializeReference] private IConverter<T?, bool>? _match = new EqualityToBoolConverter<T?>();
 
-        [Tooltip("Invert the result — true when no item matches.")]
+        [Tooltip("Invert the result: true when no item matches.")]
         [SerializeField] private bool _isInvert;
 
         /// <remarks>Default: looking for the type default, without inverting.</remarks>
@@ -29,15 +30,17 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="value">The item looked for, by equality.</param>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
-        public CollectionContainsToBoolConverter(T? value, bool isInvert = false)
+        public CollectionContainsToBoolConverter(
+            T? value,
+            bool isInvert = false)
             : this(new EqualityToBoolConverter<T?>(value), isInvert) { }
 
         /// <param name="match">Decides whether an item counts as a match.</param>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="match"/> is <see langword="null"/>.
-        /// </exception>
-        public CollectionContainsToBoolConverter(IConverter<T?, bool> match, bool isInvert = false)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="match"/> is <see langword="null"/>.</exception>
+        public CollectionContainsToBoolConverter(
+            IConverter<T?, bool> match,
+            bool isInvert = false)
         {
             _match = match ?? throw new ArgumentNullException(nameof(match));
             _isInvert = isInvert;
@@ -47,10 +50,7 @@ namespace Aspid.MVVM.StarterKit
         /// Looks for a matching item.
         /// </summary>
         /// <param name="value">The collection to search.</param>
-        /// <returns>
-        /// Whether any item matches, inverted when configured. A missing match converter is reported
-        /// and counts as no match.
-        /// </returns>
+        /// <returns>Whether any item matches, inverted when configured. A missing match converter counts as no match.</returns>
         public bool Convert(IEnumerable<T?>? value)
         {
             if (_match is null)

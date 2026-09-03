@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -6,17 +7,14 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Six words, the widest grammar CLDR declares — Arabic.
+    /// Six words, the widest grammar CLDR declares: Arabic.
     /// </summary>
-    /// <remarks>
-    /// The zero word of <see cref="PluralRule"/> is one of the six here rather than an override, since
-    /// this grammar words a count of none apart in its own right.
-    /// </remarks>
+    /// <remarks>The zero word is one of the six, not an override: this grammar words a count of none apart.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Plural Rule",
         Name = "Arabic",
-        Tooltip = "Six words, the widest grammar CLDR declares — Arabic")]
+        Tooltip = "Six words, the widest grammar CLDR declares: Arabic")]
     public sealed class ArabicPluralRule : PluralRule
     {
         [Tooltip("The word for exactly one.")]
@@ -41,10 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="few">The word for a count whose last two digits are three to ten.</param>
         /// <param name="many">The word for a count whose last two digits are 11 to 99.</param>
         /// <param name="other">The word for the round hundreds and the two counts after each.</param>
-        /// <param name="zero">
-        /// The word for a count of none. When <see langword="null"/>, zero takes
-        /// <paramref name="other"/>, which this grammar does not call for.
-        /// </param>
+        /// <param name="zero">The word for a count of none. When <see langword="null"/>, zero takes <paramref name="other"/>.</param>
         public ArabicPluralRule(
             string one,
             string two,

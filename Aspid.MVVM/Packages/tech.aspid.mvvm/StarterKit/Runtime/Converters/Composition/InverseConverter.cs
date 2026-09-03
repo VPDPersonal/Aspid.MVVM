@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -59,7 +60,7 @@ namespace Aspid.MVVM.StarterKit
         /// </returns>
         public TTo? ConvertBack(TFrom? value)
         {
-            if (_converter is not null) 
+            if (_converter is not null)
                 return _converter.Convert(value);
 
             ReportMissing();

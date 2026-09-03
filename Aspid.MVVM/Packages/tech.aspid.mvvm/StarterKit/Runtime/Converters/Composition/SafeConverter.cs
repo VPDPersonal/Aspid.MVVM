@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -10,13 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
-    /// <remarks>
-    /// Binder dispatch is a bare multicast: an exception from one converter cuts the subscriber list
-    /// and stops the binders queued behind it.
-    /// <para>
-    /// It catches every exception on purpose — a containment boundary, not a filter.
-    /// </para>
-    /// </remarks>
+    /// <remarks>Catches every exception: a throwing converter would stop the binders queued behind it.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Composition",
@@ -24,33 +19,25 @@ namespace Aspid.MVVM.StarterKit
         Tooltip = "Runs another converter and substitutes a fallback value if it throws")]
     public class SafeConverter<TFrom, TTo> : ITwoWayConverter<TFrom?, TTo?>
     {
-        [Tooltip("The converter to run. When empty, each direction returns its fallback.")]
+        [Tooltip("The converter to run. When empty, the fallback is returned.")]
         [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
-        [Tooltip("Returned from Convert when the wrapped converter throws or is empty. Every failure is reported.")]
+        [Tooltip("Returned from Convert when the converter throws or is empty.")]
         [SerializeField] private TTo? _fallback;
 
-        [Tooltip("Returned from Convert Back when the wrapped converter throws, converts one way only, or is empty. " +
-            "Every failure is reported.")]
+        [Tooltip("Returned from Convert Back when the converter throws, is one-way or empty.")]
         [UsedInModes(BindMode.TwoWay, BindMode.OneWayToSource)]
         [SerializeField] private TFrom? _convertBackFallback;
 
         protected SafeConverter() { }
 
         /// <param name="inner">The converter to run.</param>
-        /// <param name="fallback">
-        /// Returned from <see cref="Convert"/> when <paramref name="inner"/> throws. Every failure
-        /// is reported.
-        /// </param>
+        /// <param name="fallback">Returned from <see cref="Convert"/> when <paramref name="inner"/> throws.</param>
         /// <param name="convertBackFallback">
-        /// Returned from <see cref="ConvertBack"/> when <paramref name="inner"/> throws or converts
-        /// one way only. Every failure is reported.
+        /// Returned from <see cref="ConvertBack"/> when <paramref name="inner"/> throws or converts one way only.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="inner"/> is <see langword="null"/>. The empty shape belongs to
-        /// the Inspector, which answers it with the fallback for the direction.
-        /// </exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="inner"/> is <see langword="null"/>.</exception>
         public SafeConverter(
             IConverter<TFrom?, TTo?> inner,
             TTo? fallback = default,
@@ -94,10 +81,7 @@ namespace Aspid.MVVM.StarterKit
         /// converter throws.
         /// </summary>
         /// <param name="value">The value to convert back.</param>
-        /// <returns>
-        /// The value converted back, or the reverse fallback — also returned when the wrapped
-        /// converter converts one way only.
-        /// </returns>
+        /// <returns>The value converted back, or the reverse fallback when the converter throws or converts one way only.</returns>
         public TFrom? ConvertBack(TTo? value)
         {
             if (_inner is null)
@@ -109,7 +93,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (_inner is not ITwoWayConverter<TFrom?, TTo?> inner)
             {
-                var converterName = ConverterMessageText.GetTypeName(_inner.GetType());
+                var converterName = _inner.GetType().GetTypeName();
 
                 return this.UseFallback(
                     fallback: _convertBackFallback,

@@ -5,46 +5,43 @@ using UnityEngine.Events;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="MonoBinder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that parses a bound
-    /// <see cref="string"/> as a <see langword="float"/> and forwards the result to a target <see cref="UnityEvent{T}"/>.
+    /// <see cref="MonoBinder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that converts a bound
+    /// <see cref="string"/> to a <see langword="float"/> with a configurable converter and forwards the result to a target <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// A string that does not parse forwards the fallback value, and so does one that parses to <c>NaN</c> or an
-    /// infinity — those are words float parsing accepts, and a clamp downstream cannot stop them. Failures are not
-    /// logged by default.
+    /// By default, uses <see cref="StringToFloatConverter"/>.
     /// </remarks>
     [AddBinderContextMenuByType(typeof(float))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/String To Float Caster Binder")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Casters/String To Float Caster Binder")]
     public sealed partial class StringToFloatCasterMonoBinder : MonoBinder, IBinder<string>
     {
-        [Tooltip("Invoked with the parsed value.")]
+        [Tooltip("Converter from the bound string to a float.")]
+        [SerializeReference] private IConverter<string, float> _converter = new StringToFloatConverter();
+
+        [Tooltip("Invoked with the converted value.")]
         [SerializeField] private UnityEvent<float> _casted;
 
-        [Tooltip("Value forwarded when the string cannot be parsed.")]
-        [SerializeField] private float _fallback;
-
-        [Tooltip("Logs an error for every string that fails to parse.")]
-        [SerializeField] private bool _logFailures;
+        private void OnValidate() =>
+            _converter ??= new StringToFloatConverter();
 
         /// <summary>
-        /// Parses <paramref name="value"/> and invokes the target <see cref="UnityEvent{T}"/> with the result, or with
-        /// the fallback value when it does not parse.
+        /// Converts <paramref name="value"/> with the configured converter and invokes the target <see cref="UnityEvent{T}"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
+        /// <remarks>
+        /// With no converter assigned, logs an error and forwards nothing.
+        /// </remarks>
         [BinderLog]
         public void SetValue(string value)
         {
-            if (StringNumberParse.TryFloat(value, out var parsed))
+            if (_converter is null)
             {
-                _casted?.Invoke(parsed);
+                this.LogError("no converter is assigned", "The value is not forwarded.");
                 return;
             }
 
-            if (_logFailures)
-                this.LogError(value.Expected("a finite number"), $"Forwarding {_fallback} instead.");
-
-            _casted?.Invoke(_fallback);
+            _casted?.Invoke(_converter.Convert(value));
         }
     }
 }

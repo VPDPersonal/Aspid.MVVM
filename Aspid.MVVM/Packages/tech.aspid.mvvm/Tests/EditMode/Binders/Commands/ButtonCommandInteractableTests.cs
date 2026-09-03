@@ -53,7 +53,7 @@ namespace Aspid.MVVM.Tests
         {
             var (binder, _, _) = Create(InteractableMode.Custom);
 
-            LogAssert.Expect(LogType.Error, new Regex("no ICanExecuteView is assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no ICanExecuteHandler is assigned"));
             Bind(binder, canExecute: false);
         }
 
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.Tests
         public void CustomMode_WithAView_DrivesIt()
         {
             var (binder, _, _) = Create(InteractableMode.Custom);
-            var view = new RecordingCanExecuteView();
+            var view = new RecordingCanExecuteHandler();
 
             SetCustomView(binder, view);
             Bind(binder, canExecute: false);
@@ -101,7 +101,7 @@ namespace Aspid.MVVM.Tests
             serializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        private static void SetCustomView(ButtonCommandMonoBinder binder, ICanExecuteView view)
+        private static void SetCustomView(ButtonCommandMonoBinder binder, ICanExecuteHandler view)
         {
             var serializedObject = new SerializedObject(binder);
 
@@ -117,10 +117,10 @@ namespace Aspid.MVVM.Tests
             ((IBinder<IRelayCommand>)binder).SetValue(new RelayCommand(() => { }, () => canExecute));
 
         /// <summary>
-        /// Records the last <see cref="ICanExecuteView.SetCanExecute"/> call so a test can tell
+        /// Records the last <see cref="ICanExecuteHandler.SetCanExecute"/> call so a test can tell
         /// "the view was driven" from "the view was skipped".
         /// </summary>
-        private sealed class RecordingCanExecuteView : ICanExecuteView
+        private sealed class RecordingCanExecuteHandler : ICanExecuteHandler
         {
             public int Calls { get; private set; }
 

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -8,10 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Converts a 0..1 fraction to a percentage, or the other way round.
     /// </summary>
-    /// <remarks>
-    /// Rounding discards the places below a whole percent, so a TwoWay binding that rounds does not
-    /// round-trip: 0.735 goes out as 74 and comes back as 0.74.
-    /// </remarks>
+    /// <remarks>Rounding breaks the round trip: 0.735 goes out as 74 and comes back as 0.74.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number",
@@ -21,8 +19,7 @@ namespace Aspid.MVVM.StarterKit
         ITwoWayConverter<float, float>,
         ITwoWayConverter<double, double>
     {
-        [Tooltip("Round the percentage to a whole number. A rounded percentage no longer converts " +
-            "back to the fraction it came from.")]
+        [Tooltip("Round the percentage to a whole number. Breaks the round trip.")]
         [SerializeField] private bool _round;
 
         [Tooltip("Convert a percentage to a fraction instead.")]
@@ -31,12 +28,11 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: fraction to percent, keeping the fractional percent.</remarks>
         public NormalizedPercentConverter() { }
 
-        /// <param name="round">
-        /// If <see langword="true"/>, rounds the percentage to a whole number, which no longer converts
-        /// back to the fraction it came from.
-        /// </param>
+        /// <param name="round">If <see langword="true"/>, rounds the percentage to a whole number. Breaks the round trip.</param>
         /// <param name="isInvert">If <see langword="true"/>, converts a percentage to a fraction instead.</param>
-        public NormalizedPercentConverter(bool round, bool isInvert = false)
+        public NormalizedPercentConverter(
+            bool round,
+            bool isInvert = false)
         {
             _round = round;
             _isInvert = isInvert;
@@ -68,18 +64,19 @@ namespace Aspid.MVVM.StarterKit
             ? ToPercent(value)
             : ToFraction(value);
 
-        // Rounding belongs to the percent, whichever direction produces it.
-        private float ToPercent(float value) => (float)ToPercent((double)value);
+        private float ToPercent(float value) =>
+            (float)ToPercent((double)value);
 
-        private static float ToFraction(float value) => value / 100f;
+        private static float ToFraction(float value) =>
+            value / 100f;
 
-        // Math.Round and Mathf.Round both send a half to the even neighbour.
         private double ToPercent(double value)
         {
             var percent = value * 100d;
             return _round ? Math.Round(percent) : percent;
         }
 
-        private static double ToFraction(double value) => value / 100d;
+        private static double ToFraction(double value) =>
+            value / 100d;
     }
 }

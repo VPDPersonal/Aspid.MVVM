@@ -56,32 +56,11 @@ namespace Aspid.MVVM.Tests
                 expected,
                 new DateTimeOffsetFormatConverter(format, offsetOverride: TimeSpan.FromMinutes(345)).Convert(_moment));
 
-        // ToOffset throws past ±14 hours and the offset is typed into the Inspector rather than
-        // picked from a list, so a fat-fingered field has to show the wrong hour, not stop the binder
-        // — and say so on the console, or the wrong hour has no explanation.
-        [TestCase(20, "+14:00")]
-        [TestCase(-20, "-14:00")]
-        public void Convert_AnOverrideBeyondFourteenHours_IsClamped(int hours, string expected)
-        {
-            LogAssert.Expect(LogType.Error, new Regex("past ±14 hours"));
-
-            Assert.AreEqual(
-                expected,
-                new DateTimeOffsetFormatConverter("zzz", offsetOverride: TimeSpan.FromHours(hours)).Convert(_moment));
-        }
-
-        // The clamp is a misconfiguration, so it is reported on every conversion rather than once.
-        [Test]
-        public void Convert_AnOverrideBeyondFourteenHours_LogsOnEveryConversion()
-        {
-            for (var index = 0; index < 3; index++)
-                LogAssert.Expect(LogType.Error, new Regex("past ±14 hours"));
-
-            var converter = new DateTimeOffsetFormatConverter("zzz", offsetOverride: TimeSpan.FromHours(20));
-            converter.Convert(_moment);
-            converter.Convert(_moment);
-            converter.Convert(_moment);
-        }
+        [TestCase(20)]
+        [TestCase(-20)]
+        public void Constructor_AnOverrideBeyondFourteenHours_Throws(int hours) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new DateTimeOffsetFormatConverter("zzz", offsetOverride: TimeSpan.FromHours(hours)));
 
         // The three sources are one field rather than two switches, so an override cannot be asked
         // for alongside local time. (A machine that happens to sit at +05:45 could not tell the two

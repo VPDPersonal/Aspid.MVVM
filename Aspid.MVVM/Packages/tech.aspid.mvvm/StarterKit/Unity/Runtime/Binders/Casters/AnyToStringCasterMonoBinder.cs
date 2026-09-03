@@ -9,7 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// to a <see cref="string"/> using a configurable converter before forwarding it to a target <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// By default, uses <see cref="GenericToStringConverter{T}"/> for the conversion.
+    /// By default, uses <see cref="ValueToStringConverter{T}"/> for the conversion.
     /// A custom <see cref="IConverter{TFrom, TTo}"/> can be supplied for specialized formatting.
     /// </remarks>
     [AddBinderContextMenuByType(typeof(string))]
@@ -18,17 +18,17 @@ namespace Aspid.MVVM.StarterKit
     public sealed partial class AnyToStringCasterMonoBinder : MonoBinder, IAnyBinder
     {
         [Tooltip("The converter used to transform any incoming value to a string.")]
-        [SerializeReference] private IConverter<object, string> _converter = new GenericToStringConverter<object>();
+        [SerializeReference] private IConverter<object, string> _converter = new ValueToStringConverter<object>();
 
         [Tooltip("Invoked with the converted string value.")]
         [SerializeField] private UnityEvent<string> _casted;
 
         /// <summary>
         /// Called by Unity in the Editor when a serialized field value changes.
-        /// Assigns the default <see cref="GenericToStringConverter{T}"/> if no converter is set.
+        /// Assigns the default <see cref="ValueToStringConverter{T}"/> if no converter is set.
         /// </summary>
         private void OnValidate() =>
-            _converter ??= new GenericToStringConverter<object>();
+            _converter ??= new ValueToStringConverter<object>();
 
         /// <summary>
         /// Converts <paramref name="value"/> to a <see cref="string"/> using the configured converter

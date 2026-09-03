@@ -31,11 +31,7 @@ namespace Aspid.MVVM.StarterKit
         public DateTimeOffsetFormatConverter() { }
 
         /// <param name="format">A <see cref="DateTimeOffset"/> format string.</param>
-        /// <param name="offsetSource">
-        /// The offset the moment is shown at. With <see cref="OffsetSource.Override"/> the offset is
-        /// zero; use the <see cref="DateTimeOffsetFormatConverter(string, TimeSpan, CultureInfoMode)"/>
-        /// overload to set one.
-        /// </param>
+        /// <param name="offsetSource">The offset the moment is shown at. <see cref="OffsetSource.Override"/> here means zero.</param>
         /// <param name="culture">The culture the date is formatted with.</param>
         public DateTimeOffsetFormatConverter(
             string format,
@@ -48,10 +44,9 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <param name="format">A <see cref="DateTimeOffset"/> format string.</param>
-        /// <param name="offsetOverride">
-        /// The offset to show the moment at. A value past ±14 hours is clamped and reported as an error.
-        /// </param>
+        /// <param name="offsetOverride">The offset to show the moment at, within ±14 hours.</param>
         /// <param name="culture">The culture the date is formatted with.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="offsetOverride"/> is past ±14 hours.</exception>
         public DateTimeOffsetFormatConverter(
             string format,
             TimeSpan offsetOverride,
@@ -60,42 +55,31 @@ namespace Aspid.MVVM.StarterKit
             _format = format;
             _culture = culture;
             _offsetSource = OffsetSource.Override;
-            _offsetMinutes = (int)Math.Round(offsetOverride.TotalMinutes);
+
+            var minutes = (int)Math.Round(offsetOverride.TotalMinutes);
+            _offsetMinutes = minutes is >= -840 and <= 840 ? minutes : throw new ArgumentOutOfRangeException(nameof(offsetOverride));
         }
 
         /// <summary>
         /// Formats the specified moment.
         /// </summary>
         /// <param name="value">The moment to format.</param>
-        /// <returns>
-        /// The formatted moment, or the default rendering when the format is unusable. An offset
-        /// source that is not a declared value is reported and the moment is shown at the offset it
-        /// arrived with.
-        /// </returns>
+        /// <returns>The formatted moment, or the default rendering when the format is unusable. An undeclared source reports an error and keeps the offset.</returns>
         public string Convert(DateTimeOffset value)
         {
             var moment = At(value);
             var culture = _culture.ToCultureInfo();
 
-            if (string.IsNullOrWhiteSpace(_format)) 
-                return moment.ToString(culture);
-
-            try
-            {
-                return moment.ToString(_format, culture);
-            }
-            catch (FormatException exception)
-            {
-                LogFormatFailure(exception);
-                return moment.ToString(culture);
-            }
+            return string.IsNullOrWhiteSpace(_format)
+                ? moment.ToString(culture)
+                : this.FormatOrGeneral(moment, _format, culture);
         }
 
         private DateTimeOffset At(DateTimeOffset value) => _offsetSource switch
         {
             OffsetSource.AsGiven => value,
             OffsetSource.Local => value.ToLocalTime(),
-            OffsetSource.Override => value.ToOffset(TimeSpan.FromMinutes(ClampedOffsetMinutes())),
+            OffsetSource.Override => value.ToOffset(TimeSpan.FromMinutes(_offsetMinutes)),
             _ => Undeclared(value)
         };
 
@@ -107,24 +91,5 @@ namespace Aspid.MVVM.StarterKit
 
             return value;
         }
-
-        // ToOffset throws past ±14 hours — a bad offset should show the wrong hour, not stop the binder.
-        private int ClampedOffsetMinutes()
-        {
-            if (_offsetMinutes is >= -840 and <= 840) 
-                return _offsetMinutes;
-
-            var clamped = Math.Clamp(_offsetMinutes, -840, 840);
-
-            this.LogError(
-                problem: $"the offset override of {_offsetMinutes} minutes is past ±14 hours",
-                consequence: $"Clamping to {clamped} minutes.");
-
-            return clamped;
-        }
-
-        private void LogFormatFailure(FormatException exception) => this.LogError(
-            problem: $"\"{_format}\" is not a DateTimeOffset format ({exception.Message})", 
-            consequence: "Falling back to the default rendering.");
     }
 }

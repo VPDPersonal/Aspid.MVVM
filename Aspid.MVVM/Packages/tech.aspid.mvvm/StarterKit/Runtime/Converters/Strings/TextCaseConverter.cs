@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Text;
 using UnityEngine;
@@ -29,10 +30,10 @@ namespace Aspid.MVVM.StarterKit
         public TextCaseConverter() { }
 
         /// <param name="textCase">Which casing to apply.</param>
-        /// <param name="culture">
-        /// The culture whose casing rules apply. Turkish and Azeri differ from the rest.
-        /// </param>
-        public TextCaseConverter(TextCase textCase, CultureInfoMode culture = CultureInfoMode.CurrentCulture)
+        /// <param name="culture">The culture whose casing rules apply. Turkish and Azeri differ from the rest.</param>
+        public TextCaseConverter(
+            TextCase textCase,
+            CultureInfoMode culture = CultureInfoMode.CurrentCulture)
         {
             _case = textCase;
             _culture = culture;
@@ -42,9 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// Applies the configured casing.
         /// </summary>
         /// <param name="value">The string to recase.</param>
-        /// <returns>
-        /// The recased string — or the string unchanged when the casing is not a declared value.
-        /// </returns>
+        /// <returns>The recased string. An undeclared casing reports an error and returns the value unchanged.</returns>
         public string? Convert(string? value)
         {
             if (string.IsNullOrWhiteSpace(value)) return value;
@@ -65,13 +64,13 @@ namespace Aspid.MVVM.StarterKit
 
         private string? Undeclared(string? value)
         {
-            this.LogError($"the case {_case.Describe()} is not a declared {nameof(TextCase)}",
-                "Returning the value unchanged.");
+            this.LogError(
+                problem: $"the case {_case.Describe()} is not a declared {nameof(TextCase)}",
+                consequence: "Returning the value unchanged.");
 
             return value;
         }
 
-        // One pass instead of lowering the whole string first: that would allocate a second string.
         private string Sentence(string value, CultureInfo culture)
         {
             var builder = Builder();
@@ -88,7 +87,6 @@ namespace Aspid.MVVM.StarterKit
 
                 builder.Append(char.ToLower(character, culture));
 
-                // A quote or bracket between the stop and the next letter keeps the sentence open.
                 if (character is '.' or '!' or '?') opening = true;
             }
 

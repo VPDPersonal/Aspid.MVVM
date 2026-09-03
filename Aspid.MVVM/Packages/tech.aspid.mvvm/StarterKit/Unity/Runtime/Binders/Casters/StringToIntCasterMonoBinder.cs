@@ -5,45 +5,43 @@ using UnityEngine.Events;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="MonoBinder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that parses a bound
-    /// <see cref="string"/> as an <see langword="int"/> and forwards the result to a target <see cref="UnityEvent{T}"/>.
+    /// <see cref="MonoBinder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that converts a bound
+    /// <see cref="string"/> to an <see langword="int"/> with a configurable converter and forwards the result to a target <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// A string that does not parse forwards the fallback value. Failures are not logged by default: a half-typed
-    /// number is normal while a user is typing, and an error per keystroke would bury the console.
+    /// By default, uses <see cref="StringToIntConverter"/>.
     /// </remarks>
     [AddBinderContextMenuByType(typeof(int))]
     [AddComponentMenu("Aspid/MVVM/Binders/Casters/String To Int Caster Binder")]
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Casters/String To Int Caster Binder")]
     public sealed partial class StringToIntCasterMonoBinder : MonoBinder, IBinder<string>
     {
-        [Tooltip("Invoked with the parsed value.")]
+        [Tooltip("Converter from the bound string to an int.")]
+        [SerializeReference] private IConverter<string, int> _converter = new StringToIntConverter();
+
+        [Tooltip("Invoked with the converted value.")]
         [SerializeField] private UnityEvent<int> _casted;
 
-        [Tooltip("Value forwarded when the string cannot be parsed.")]
-        [SerializeField] private int _fallback;
-
-        [Tooltip("Logs an error for every string that fails to parse.")]
-        [SerializeField] private bool _logFailures;
+        private void OnValidate() =>
+            _converter ??= new StringToIntConverter();
 
         /// <summary>
-        /// Parses <paramref name="value"/> and invokes the target <see cref="UnityEvent{T}"/> with the result, or with
-        /// the fallback value when it does not parse.
+        /// Converts <paramref name="value"/> with the configured converter and invokes the target <see cref="UnityEvent{T}"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
+        /// <remarks>
+        /// With no converter assigned, logs an error and forwards nothing.
+        /// </remarks>
         [BinderLog]
         public void SetValue(string value)
         {
-            if (StringNumberParse.TryInt(value, out var parsed))
+            if (_converter is null)
             {
-                _casted?.Invoke(parsed);
+                this.LogError("no converter is assigned", "The value is not forwarded.");
                 return;
             }
 
-            if (_logFailures)
-                this.LogError(value.Expected("a whole number"), $"Forwarding {_fallback} instead.");
-
-            _casted?.Invoke(_fallback);
+            _casted?.Invoke(_converter.Convert(value));
         }
     }
 }

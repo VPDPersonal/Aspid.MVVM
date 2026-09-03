@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -23,8 +24,6 @@ namespace Aspid.MVVM.StarterKit
         IConverter<float, bool>,
         IConverter<double, bool>
     {
-        // A float carries ~7 significant digits and a double ~15; both tolerances stay an order of
-        // magnitude clear of the last one so that arithmetic noise does not read as a difference.
         private const double FloatTolerance = 1E-06d;
         private const double DoubleTolerance = 1E-12d;
 
@@ -39,7 +38,9 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="comparison">How the bound number is compared with <paramref name="value"/>.</param>
         /// <param name="value">The number the bound one is compared against.</param>
-        public NumberCompareConverter(ComparisonMode comparison, double value)
+        public NumberCompareConverter(
+            ComparisonMode comparison,
+            double value)
         {
             _value = value;
             _comparison = comparison;
@@ -49,10 +50,7 @@ namespace Aspid.MVVM.StarterKit
         /// Compares the bound number with the authored one.
         /// </summary>
         /// <param name="value">The value to compare.</param>
-        /// <returns>
-        /// The result of the comparison. An undeclared comparison reports an error and returns
-        /// <see langword="false"/>.
-        /// </returns>
+        /// <returns>The result. An undeclared comparison reports an error and returns <see langword="false"/>.</returns>
         public bool Convert(float value) =>
             Compare(value, Tolerance(value, relative: FloatTolerance, floor: float.Epsilon * 8d));
 
@@ -61,14 +59,13 @@ namespace Aspid.MVVM.StarterKit
             Compare(value, Tolerance(value, relative: DoubleTolerance, floor: double.Epsilon * 8d));
 
         /// <inheritdoc cref="Convert(float)"/>
-        public bool Convert(int value) => Compare(value);
+        public bool Convert(int value) =>
+            Compare(value);
 
         /// <inheritdoc cref="Convert(float)"/>
-        /// <remarks>
-        /// A long beyond 2^53 loses its last digits on the way to <see cref="double"/>, so two
-        /// neighboring values that far out compare as one.
-        /// </remarks>
-        public bool Convert(long value) => Compare(value);
+        /// <remarks>A long beyond 2^53 loses precision in <see cref="double"/>.</remarks>
+        public bool Convert(long value) =>
+            Compare(value);
 
         private bool Compare(double value, double tolerance = 0d)
         {
@@ -77,7 +74,7 @@ namespace Aspid.MVVM.StarterKit
             return _comparison switch
             {
                 ComparisonMode.Equal => difference <= tolerance,
-                // Negated rather than ">", so a NaN — which loses every comparison — is not equal.
+                // Negated so a NaN, which loses every comparison, reads as not equal.
                 ComparisonMode.NotEqual => !(difference <= tolerance),
                 ComparisonMode.LessThan => value < _value - tolerance,
                 ComparisonMode.GreaterThan => value > _value + tolerance,
@@ -96,8 +93,6 @@ namespace Aspid.MVVM.StarterKit
             return false;
         }
 
-        // Relative to the larger operand, with a floor for the comparison at zero, where the
-        // relative part collapses to nothing.
         private double Tolerance(double value, double relative, double floor) =>
             Math.Max(relative * Math.Max(Math.Abs(value), Math.Abs(_value)), floor);
     }

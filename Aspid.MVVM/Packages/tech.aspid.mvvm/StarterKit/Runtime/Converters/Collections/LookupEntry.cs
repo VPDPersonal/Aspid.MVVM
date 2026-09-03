@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -24,11 +25,13 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         [field: Tooltip("The value returned for the key.")]
         [field: SerializeField]
-        public TValue Value { get; private set; }
+        public TValue? Value { get; private set; }
 
         /// <param name="key">The key this row matches.</param>
         /// <param name="value">The value returned for the key.</param>
-        public LookupEntry(TKey key, TValue value)
+        public LookupEntry(
+            TKey key,
+            TValue? value)
         {
             Key = key;
             Value = value;

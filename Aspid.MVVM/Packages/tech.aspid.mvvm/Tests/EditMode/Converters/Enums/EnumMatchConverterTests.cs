@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
-    /// Coverage for <see cref="EnumMatchConverter{TEnum}"/> — the four <see cref="EnumMatch"/> tests,
+    /// Coverage for <see cref="EnumMatchConverter{TEnum}"/> — the four <see cref="EnumMatchMode"/> tests,
     /// the invert flag and the undeclared-match fallback.
     /// </summary>
     [TestFixture]
@@ -25,17 +25,17 @@ namespace Aspid.MVVM.Tests
             Assert.IsFalse(converter.Convert(Hazard.Fire));
         }
 
-        [TestCase(Hazard.Fire, EnumMatch.Equal, true)]
-        [TestCase(Hazard.Ice, EnumMatch.Equal, false)]
-        [TestCase(Hazard.Ice, EnumMatch.NotEquals, true)]
-        public void Convert_Equality_TestsTheValue(Hazard value, EnumMatch match, bool expected) =>
+        [TestCase(Hazard.Fire, EnumMatchMode.Equal, true)]
+        [TestCase(Hazard.Ice, EnumMatchMode.Equal, false)]
+        [TestCase(Hazard.Ice, EnumMatchMode.NotEqual, true)]
+        public void Convert_Equality_TestsTheValue(Hazard value, EnumMatchMode match, bool expected) =>
             Assert.AreEqual(expected, new EnumMatchConverter<Hazard>(Hazard.Fire, match).Convert(value));
 
-        [TestCase(FireAndIce, EnumMatch.HasAllFlags, true)]
-        [TestCase(Hazard.Fire, EnumMatch.HasAllFlags, false)]
-        [TestCase(Hazard.Fire, EnumMatch.HasAnyFlag, true)]
-        [TestCase(Hazard.Shock, EnumMatch.HasAnyFlag, false)]
-        public void Convert_Flags_TestsTheFlagsAgainstTheTarget(Hazard value, EnumMatch match, bool expected) =>
+        [TestCase(FireAndIce, EnumMatchMode.HasAllFlags, true)]
+        [TestCase(Hazard.Fire, EnumMatchMode.HasAllFlags, false)]
+        [TestCase(Hazard.Fire, EnumMatchMode.HasAnyFlag, true)]
+        [TestCase(Hazard.Shock, EnumMatchMode.HasAnyFlag, false)]
+        public void Convert_Flags_TestsTheFlagsAgainstTheTarget(Hazard value, EnumMatchMode match, bool expected) =>
             Assert.AreEqual(expected, new EnumMatchConverter<Hazard>(FireAndIce, match).Convert(value));
 
         [Test]
@@ -50,10 +50,10 @@ namespace Aspid.MVVM.Tests
         {
             ExpectUndeclaredMatchError();
 
-            Assert.IsFalse(new EnumMatchConverter<Hazard>(Hazard.Fire, (EnumMatch)99, isInvert).Convert(Hazard.Fire));
+            Assert.IsFalse(new EnumMatchConverter<Hazard>(Hazard.Fire, (EnumMatchMode)99, isInvert).Convert(Hazard.Fire));
         }
 
         private static void ExpectUndeclaredMatchError() =>
-            LogAssert.Expect(LogType.Error, new Regex("EnumMatchConverter.*not a declared EnumMatch"));
+            LogAssert.Expect(LogType.Error, new Regex("EnumMatchConverter.*not a declared EnumMatchMode"));
     }
 }

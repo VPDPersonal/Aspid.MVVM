@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector3>>
     {
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2> _vector2Command;
         private IRelayCommand<Vector3> _vector3Command;
@@ -86,7 +86,7 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2, T> _vector2Command;
         private IRelayCommand<Vector3, T> _vector3Command;
@@ -167,7 +167,7 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2, T1, T2> _vector2Command;
         private IRelayCommand<Vector3, T1, T2> _vector3Command;
@@ -260,7 +260,7 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2, T1, T2, T3> _vector2Command;
         private IRelayCommand<Vector3, T1, T2, T3> _vector3Command;

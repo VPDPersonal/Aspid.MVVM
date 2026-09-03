@@ -89,7 +89,7 @@ public partial class DifficultyViewModel
 | `Interactable` | `slider.interactable = canExecute` |
 | `Visible` | `gameObject.SetActive(canExecute)` |
 | `None` | Не реагирует |
-| `Custom` | Вызывает `ICanExecuteView.SetCanExecute(bool)` |
+| `Custom` | Вызывает `ICanExecuteHandler.SetCanExecute(bool)` |
 
 ### Параметризованные варианты
 

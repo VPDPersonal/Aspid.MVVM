@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -20,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
         IConverter<IEnumerable<T?>?, bool>,
         IConverter<IReadOnlyCollection<T?>?, bool>
     {
-        [Tooltip("Invert the result — true when the collection has items.")]
+        [Tooltip("Invert the result: true when the collection has items.")]
         [SerializeField] private bool _isInvert;
 
         /// <remarks>Default: without inverting.</remarks>
@@ -36,9 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// Tests whether the specified collection is empty.
         /// </summary>
         /// <param name="value">The collection to test.</param>
-        /// <returns>
-        /// <see langword="true"/> when it is <see langword="null"/> or empty, inverted when configured.
-        /// </returns>
+        /// <returns><see langword="true"/> when it is <see langword="null"/> or empty, inverted when configured.</returns>
         public bool Convert(IReadOnlyCollection<T?>? value)
         {
             var empty = value is null || value.Count is 0;
@@ -57,7 +56,6 @@ namespace Aspid.MVVM.StarterKit
                 case IReadOnlyCollection<T> collection: return collection.Count is 0;
             }
 
-            // using disposes the enumerator, which a bare MoveNext would not.
             using var enumerator = value.GetEnumerator();
             return !enumerator.MoveNext();
         }

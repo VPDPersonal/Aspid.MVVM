@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM.StarterKit
 {
     [Serializable]
-    public sealed class PrefabViewFactory : PrefabViewFactory<MonoView>, IViewFactoryMonoView
+    public sealed class PrefabViewFactory : PrefabViewFactory<MonoView>
     {
         [Obsolete("For Unity Inspector", true)]
         public PrefabViewFactory() { }

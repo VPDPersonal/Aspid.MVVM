@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -34,12 +35,11 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: showing a plus on positive numbers.</remarks>
         public SignedNumberStringConverter() { }
 
-        /// <param name="format">
-        /// A numeric format string for the magnitude. One .NET refuses falls back to the
-        /// general format and is reported as an error.
-        /// </param>
-        /// <param name="hideZero">When <see langword="true"/>, returns an empty string for zero.</param>
-        public SignedNumberStringConverter(string format, bool hideZero = false)
+        /// <param name="format">A numeric format string for the magnitude. One .NET refuses falls back to the general format.</param>
+        /// <param name="hideZero">If <see langword="true"/>, returns an empty string for zero.</param>
+        public SignedNumberStringConverter(
+            string format,
+            bool hideZero = false)
         {
             _format = format;
             _hideZero = hideZero;
@@ -51,10 +51,10 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The number to format.</param>
         /// <returns>The formatted number, or the general rendering when the format is unusable.</returns>
         public string Convert(float value) =>
-            Write(Math.Abs(value), value < 0f, value == 0f);
+            Write(Math.Abs(value), value < 0f, value is 0f);
 
         string IConverter<double, string>.Convert(double value) =>
-            Write(Math.Abs(value), value < 0d, value == 0d);
+            Write(Math.Abs(value), value < 0d, value is 0d);
 
         string IConverter<int, string>.Convert(int value) =>
             Write(Magnitude(value), value < 0, value == 0);
@@ -62,39 +62,19 @@ namespace Aspid.MVVM.StarterKit
         string IConverter<long, string>.Convert(long value) =>
             Write(Magnitude(value), value < 0L, value == 0L);
 
-        // Taken as unsigned rather than negated: long.MinValue has no positive counterpart.
+        // Unsigned rather than negated: long.MinValue has no positive counterpart.
         private static ulong Magnitude(long value) =>
             value < 0 ? unchecked((ulong)-value) : (ulong)value;
 
-        // Constrained to a struct so the four inputs share one body without boxing the number.
         private string Write<TNumber>(TNumber magnitude, bool negative, bool zero)
             where TNumber : struct, IFormattable
         {
             if (_hideZero && zero) return string.Empty;
 
-            var text = Format(magnitude);
+            var text = this.FormatOrGeneral(magnitude, _format, _culture.ToCultureInfo());
             if (negative) return "-" + text;
 
             return _alwaysShowSign ? "+" + text : text;
-        }
-
-        private string Format<TNumber>(TNumber magnitude)
-            where TNumber : struct, IFormattable
-        {
-            var culture = _culture.ToCultureInfo();
-
-            try
-            {
-                return magnitude.ToString(_format, culture);
-            }
-            catch (FormatException exception)
-            {
-                this.LogError($"{_format.Describe()} is not a numeric format ({exception.Message})",
-                    "Falling back to the general format.");
-
-                // An empty format string is the general format, and IFormattable needs one.
-                return magnitude.ToString(string.Empty, culture);
-            }
         }
     }
 }

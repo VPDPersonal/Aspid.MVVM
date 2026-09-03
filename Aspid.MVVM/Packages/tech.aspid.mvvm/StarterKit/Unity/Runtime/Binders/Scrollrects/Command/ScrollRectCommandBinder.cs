@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<IRelayCommand<Vector3>>
     {
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2> _vector2Command;
         private IRelayCommand<Vector3> _vector3Command;
@@ -25,7 +25,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="target">The <see cref="ScrollRect"/> to bind.</param>
         /// <param name="interactable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
-        public ScrollRectCommandBinder(ScrollRect target, ICanExecuteView interactable, BindMode mode = BindMode.OneWay)
+        public ScrollRectCommandBinder(ScrollRect target, ICanExecuteHandler interactable, BindMode mode = BindMode.OneWay)
             : this(target, mode)
         {
             _interactable = interactable ?? throw new ArgumentNullException(nameof(interactable));
@@ -105,7 +105,7 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2, T> _vector2Command;
         private IRelayCommand<Vector3, T> _vector3Command;
@@ -126,7 +126,7 @@ namespace Aspid.MVVM.StarterKit
         public ScrollRectCommandBinder(
             ScrollRect target,
             T param,
-            ICanExecuteView interactable,
+            ICanExecuteHandler interactable,
             BindMode mode = BindMode.OneWay)
             : this(target, param, mode)
         {
@@ -212,7 +212,7 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2, T1, T2> _vector2Command;
         private IRelayCommand<Vector3, T1, T2> _vector3Command;
@@ -244,7 +244,7 @@ namespace Aspid.MVVM.StarterKit
             ScrollRect target,
             T1 param1,
             T2 param2,
-            ICanExecuteView interactable,
+            ICanExecuteHandler interactable,
             BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, mode)
         {
@@ -336,7 +336,7 @@ namespace Aspid.MVVM.StarterKit
 
         [Space]
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _interactable;
+        [SerializeReference] private ICanExecuteHandler _interactable;
 
         private IRelayCommand<Vector2, T1, T2, T3> _vector2Command;
         private IRelayCommand<Vector3, T1, T2, T3> _vector3Command;
@@ -379,7 +379,7 @@ namespace Aspid.MVVM.StarterKit
             T1 param1,
             T2 param2,
             T3 param3,
-            ICanExecuteView interactable,
+            ICanExecuteHandler interactable,
             BindMode mode = BindMode.OneWay)
             : this(target, param1, param2, param3, mode)
         {

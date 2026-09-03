@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -10,11 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
-    /// <remarks>
-    /// Converters disagree on what a <see langword="null"/> input means — return
-    /// <see langword="null"/>, throw, format it — and the Inspector does not show which; wrapping
-    /// settles it at the point of use.
-    /// </remarks>
+    /// <remarks>Settles what a <see langword="null"/> input means regardless of how the inner converter treats it.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Composition",
@@ -22,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         Tooltip = "Substitutes a fixed result for a null input instead of passing it on")]
     public class NullGuardConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
-        [Tooltip("The converter to run for a non-null value. When empty, the null result is used instead.")]
+        [Tooltip("Run for a non-null value. When empty, the null result is returned.")]
         [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
@@ -33,11 +30,10 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="inner">The converter to run for a non-null value.</param>
         /// <param name="nullResult">Returned when the incoming value is <see langword="null"/>.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="inner"/> is <see langword="null"/>. The empty shape belongs to
-        /// the Inspector, which answers it with the null result.
-        /// </exception>
-        public NullGuardConverter(IConverter<TFrom?, TTo?> inner, TTo? nullResult = default)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="inner"/> is <see langword="null"/>.</exception>
+        public NullGuardConverter(
+            IConverter<TFrom?, TTo?> inner,
+            TTo? nullResult = default)
         {
             _nullResult = nullResult;
             _inner = inner ?? throw new ArgumentNullException(nameof(inner));
@@ -47,10 +43,7 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified value, short-circuiting <see langword="null"/>.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        /// <returns>
-        /// The converted value, or the null result — also returned for a non-null value when the
-        /// inner converter is missing.
-        /// </returns>
+        /// <returns>The converted value, or the null result when the input is <see langword="null"/> or the inner converter is missing.</returns>
         public TTo? Convert(TFrom? value)
         {
             if (value is null) return _nullResult;

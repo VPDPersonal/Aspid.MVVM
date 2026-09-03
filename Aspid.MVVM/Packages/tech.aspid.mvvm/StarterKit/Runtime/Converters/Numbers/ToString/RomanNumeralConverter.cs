@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using System.Text;
@@ -21,9 +22,16 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _lowercase;
 
         private static readonly int[] _values = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+        private static readonly string[] _numerals = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 
-        private static readonly string[] _numerals =
-            { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+        /// <remarks>Default: upper case.</remarks>
+        public RomanNumeralConverter() { }
+
+        /// <param name="lowercase">If <see langword="true"/>, writes the numeral in lower case.</param>
+        public RomanNumeralConverter(bool lowercase)
+        {
+            _lowercase = lowercase;
+        }
 
         /// <summary>
         /// Formats the specified number as a Roman numeral.
@@ -38,11 +46,13 @@ namespace Aspid.MVVM.StarterKit
             var remaining = value;
 
             for (var i = 0; i < _values.Length; i++)
+            {
                 while (remaining >= _values[i])
                 {
                     builder.Append(_numerals[i]);
                     remaining -= _values[i];
                 }
+            }
 
             var text = builder.ToString();
             return _lowercase ? text.ToLowerInvariant() : text;

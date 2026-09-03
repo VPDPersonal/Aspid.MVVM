@@ -21,23 +21,23 @@ namespace Aspid.MVVM.Tests
     [TestFixture]
     public sealed class ArithmeticNumberConverterTests
     {
-        [TestCase(NumberOperation.Plus, 5d)]
-        [TestCase(NumberOperation.Minus, 1d)]
+        [TestCase(NumberOperation.Add, 5d)]
+        [TestCase(NumberOperation.Subtract, 1d)]
         [TestCase(NumberOperation.Multiply, 6d)]
-        [TestCase(NumberOperation.Division, 1.5d)]
+        [TestCase(NumberOperation.Divide, 1.5d)]
         public void Convert_Double_AppliesTheOperation(NumberOperation operation, double expected) =>
             Assert.AreEqual(expected, Double(operation, coefficient: 2).Convert(3d), delta: 1e-12);
 
         [Test]
         public void Convert_DefaultConstructed_IsAnIdentityForPlus() =>
-            Assert.AreEqual(3d, Double(NumberOperation.Plus, coefficient: 0).Convert(3d), delta: 1e-12);
+            Assert.AreEqual(3d, Double(NumberOperation.Add, coefficient: 0).Convert(3d), delta: 1e-12);
 
         [Test]
         public void Convert_Division_ByZeroCoefficient_LogsAndReturnsTheInput()
         {
             LogAssert.Expect(LogType.Error, new Regex("division by zero coefficient"));
 
-            Assert.AreEqual(7d, Double(NumberOperation.Division, coefficient: 0).Convert(7d), delta: 1e-12);
+            Assert.AreEqual(7d, Double(NumberOperation.Divide, coefficient: 0).Convert(7d), delta: 1e-12);
         }
 
         [TestCase(NumberOperation.Modulo, 7d, 3d, 1d)]
@@ -74,7 +74,7 @@ namespace Aspid.MVVM.Tests
 
         [Test]
         public void Convert_WidensIntToDouble() =>
-            Assert.AreEqual(5d, Widen(NumberOperation.Plus, coefficient: 2).Convert(3), delta: 1e-12);
+            Assert.AreEqual(5d, Widen(NumberOperation.Add, coefficient: 2).Convert(3), delta: 1e-12);
 
         [TestCase(5d, 2)]
         [TestCase(-5d, -2)]
@@ -88,26 +88,26 @@ namespace Aspid.MVVM.Tests
 
         [Test]
         public void Convert_NarrowsToFloat_KeepingTheDoubleResult() =>
-            Assert.AreEqual(1.5f, NarrowFloat(NumberOperation.Division, coefficient: 2).Convert(3d), delta: 1e-6f);
+            Assert.AreEqual(1.5f, NarrowFloat(NumberOperation.Divide, coefficient: 2).Convert(3d), delta: 1e-6f);
 
         // The double pipeline cannot represent every long, so a long round-trip is lossy above
         // 2^53 even when the operation is an identity.
         [Test]
         public void Convert_Long_LosesPrecisionAboveTwoToTheFiftyThree() =>
-            Assert.AreEqual(9007199254740992L, Long(NumberOperation.Plus, coefficient: 0).Convert(9007199254740993L));
+            Assert.AreEqual(9007199254740992L, Long(NumberOperation.Add, coefficient: 0).Convert(9007199254740993L));
 
         [Test]
         public void Convert_NarrowsNaNToZero() =>
-            Assert.AreEqual(0, Narrow(NumberOperation.Plus, coefficient: 0).Convert(double.NaN));
+            Assert.AreEqual(0, Narrow(NumberOperation.Add, coefficient: 0).Convert(double.NaN));
 
         [Test]
         public void Convert_NarrowsOverflowToIntMaxValue() =>
-            Assert.AreEqual(int.MaxValue, Narrow(NumberOperation.Plus, coefficient: 0).Convert(1e20d));
+            Assert.AreEqual(int.MaxValue, Narrow(NumberOperation.Add, coefficient: 0).Convert(1e20d));
 
-        [TestCase(NumberOperation.Plus)]
-        [TestCase(NumberOperation.Minus)]
+        [TestCase(NumberOperation.Add)]
+        [TestCase(NumberOperation.Subtract)]
         [TestCase(NumberOperation.Multiply)]
-        [TestCase(NumberOperation.Division)]
+        [TestCase(NumberOperation.Divide)]
         public void ConvertBack_RoundTripsEveryOperation(NumberOperation operation)
         {
             var converter = TwoWay(operation, coefficient: 4);
@@ -128,15 +128,15 @@ namespace Aspid.MVVM.Tests
 
         [Test]
         public void ConvertBack_PlusUndoes() =>
-            Assert.AreEqual(3d, TwoWay(NumberOperation.Plus, 2).ConvertBack(5d), delta: 1e-12);
+            Assert.AreEqual(3d, TwoWay(NumberOperation.Add, 2).ConvertBack(5d), delta: 1e-12);
 
         [Test]
         public void ConvertBack_MinusUndoes() =>
-            Assert.AreEqual(3d, TwoWay(NumberOperation.Minus, 2).ConvertBack(1d), delta: 1e-12);
+            Assert.AreEqual(3d, TwoWay(NumberOperation.Subtract, 2).ConvertBack(1d), delta: 1e-12);
 
         [Test]
         public void ConvertBack_DivisionUndoes() =>
-            Assert.AreEqual(6d, TwoWay(NumberOperation.Division, 2).ConvertBack(3d), delta: 1e-12);
+            Assert.AreEqual(6d, TwoWay(NumberOperation.Divide, 2).ConvertBack(3d), delta: 1e-12);
 
         [Test]
         public void Convert_RoundTripsFloat()
@@ -149,7 +149,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_RoundTripsInt()
         {
-            var converter = (ITwoWayConverter<int, int>)new ArithmeticNumberConverter(NumberOperation.Plus, coefficient: 7);
+            var converter = (ITwoWayConverter<int, int>)new ArithmeticNumberConverter(NumberOperation.Add, coefficient: 7);
 
             Assert.AreEqual(5, converter.ConvertBack(converter.Convert(5)));
         }
@@ -157,7 +157,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_RoundTripsLong()
         {
-            var converter = (ITwoWayConverter<long, long>)new ArithmeticNumberConverter(NumberOperation.Minus, coefficient: 7);
+            var converter = (ITwoWayConverter<long, long>)new ArithmeticNumberConverter(NumberOperation.Subtract, coefficient: 7);
 
             Assert.AreEqual(5L, converter.ConvertBack(converter.Convert(5L)));
         }

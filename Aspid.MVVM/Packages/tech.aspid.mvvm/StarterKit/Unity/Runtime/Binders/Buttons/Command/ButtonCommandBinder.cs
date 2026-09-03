@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand _command;
         
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand.CanExecute()"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ButtonCommandBinder(Button target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)   
+        public ButtonCommandBinder(Button target, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)   
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfTwo();
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
         
         /// <summary>
@@ -104,7 +104,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T> _command;
 
@@ -120,7 +120,7 @@ namespace Aspid.MVVM.StarterKit
         public ButtonCommandBinder(
             Button target,
             T param,
-            ICanExecuteView customInteractable,
+            ICanExecuteHandler customInteractable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -150,7 +150,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2> _command;
 
@@ -237,7 +237,7 @@ namespace Aspid.MVVM.StarterKit
             Button target,
             T1 param1,
             T2 param2,
-            ICanExecuteView customInteractable,
+            ICanExecuteHandler customInteractable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -271,7 +271,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2, T3> _command;
 
@@ -367,7 +367,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3}.CanExecute(T1,T2,T3)"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -398,7 +398,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2, T3, T4> _command;
 
@@ -507,7 +507,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecute(T1,T2,T3,T4)"/> state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+        public ButtonCommandBinder(Button target, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -541,7 +541,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>

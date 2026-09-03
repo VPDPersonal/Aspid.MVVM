@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -20,16 +21,14 @@ namespace Aspid.MVVM.StarterKit
     public class NullCoalesceConverter<T> : IConverter<T?, T?>
         where T : class
     {
-        [Tooltip("Returned when the bound value is null. A missing or destroyed fallback is reported and still returned.")]
+        [Tooltip("Returned instead of a null or destroyed value.")]
         [SerializeField] private T? _fallback;
 
         protected NullCoalesceConverter() { }
 
         /// <param name="fallback">Returned when the bound value is <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="fallback"/> is <see langword="null"/> or a destroyed
-        /// <see cref="UnityEngine.Object"/>. The empty shape belongs to the Inspector, which reports it
-        /// and returns <see langword="null"/>.
+        /// Thrown when <paramref name="fallback"/> is <see langword="null"/> or a destroyed <see cref="UnityEngine.Object"/>.
         /// </exception>
         public NullCoalesceConverter(T fallback)
         {
@@ -43,13 +42,10 @@ namespace Aspid.MVVM.StarterKit
         /// Returns the specified value, or the fallback when it is <see langword="null"/>.
         /// </summary>
         /// <param name="value">The value to check.</param>
-        /// <returns>
-        /// The value, or the fallback. A missing or destroyed fallback is reported and still returned.
-        /// </returns>
-        public T Convert(T? value)
+        /// <returns>The value, or the fallback. A missing or destroyed fallback is reported and still returned.</returns>
+        public T? Convert(T? value)
         {
-            if (!IsMissing(value)) 
-                return value;
+            if (!IsMissing(value)) return value;
 
             if (IsMissing(_fallback))
             {

@@ -30,7 +30,7 @@ object? → IConverter<object?, string?>? → string → (целевой TextBin
 
 ---
 
-## GenericToStringCasterBinder\<T\>
+## ToStringCasterBinder\<T\>
 
 Типизированная версия — принимает конкретный тип `T` и преобразует в `string`:
 
@@ -39,18 +39,6 @@ T? → IConverter<T?, string?>? → string
 ```
 
 Реализует `IBinder<T>`.
-
----
-
-## StringToBoolCasterBinder
-
-Преобразует `string` в `bool`:
-
-```
-string → bool (через bool.TryParse)
-```
-
-Реализует `IBinder<string>`.
 
 ---
 

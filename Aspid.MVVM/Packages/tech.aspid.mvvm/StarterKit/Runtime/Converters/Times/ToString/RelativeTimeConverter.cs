@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Text;
 using UnityEngine;
@@ -8,16 +9,14 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Writes how long ago — or how far ahead — a moment is.
+    /// Writes how long ago, or how far ahead, a moment is.
     /// </summary>
-    /// <remarks>
-    /// With more than one unit the whole quantity arrives as <c>{0}</c> and <c>{1}</c> is empty.
-    /// </remarks>
+    /// <remarks>With more than one unit the whole quantity arrives as <c>{0}</c> and <c>{1}</c> is empty.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Time/To String",
         Name = "Relative Time",
-        Tooltip = "Writes how long ago — or how far ahead — a moment is")]
+        Tooltip = "Writes how long ago, or how far ahead, a moment is")]
     public sealed class RelativeTimeConverter : IConverter<DateTime, string>
     {
         [Tooltip("Names for second, minute, hour, day; longer spans use days.")]
@@ -32,11 +31,11 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Shown when the moment is within a second of now.")]
         [SerializeField] private string _nowText = "now";
 
-        [Tooltip("Compare against UTC rather than local time. Match this to the bound moment.")]
+        [Tooltip("Measure an Unspecified-kind moment against UTC rather than local time.")]
         [SerializeField] private bool _useUtcNow;
 
-        [Tooltip("How many units to write, largest first: 1 gives \"1h\", 2 gives \"1h 5m\". Past 1, {1} is empty.")]
-        [SerializeField] [Min(1)] private int _maxUnits = 1;
+        [Tooltip("How many units to write, largest first: 1 gives \"1h\", 2 gives \"1h 5m\".")]
+        [SerializeField] [Range(1, 4)] private int _maxUnits = 1;
 
         [Tooltip("Placed between the units when there is more than one.")]
         [SerializeField] private string _unitSeparator = " ";
@@ -49,17 +48,10 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: with English defaults.</remarks>
         public RelativeTimeConverter() { }
 
-        /// <param name="maxUnits">
-        /// How many units to write, largest first. The ladder stops at days, so more than 4 writes 4.
-        /// </param>
+        /// <param name="maxUnits">How many units to write, largest first, 1 to 4.</param>
         /// <param name="culture">The culture the amounts are written with.</param>
-        /// <param name="useUtcNow">
-        /// Whether to compare against UTC rather than local time. Match this to the bound moment,
-        /// or the result is out by the time zone.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="maxUnits"/> is below 1.
-        /// </exception>
+        /// <param name="useUtcNow">Whether an <see cref="DateTimeKind.Unspecified"/> moment is measured against UTC rather than local time.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="maxUnits"/> is outside 1..4.</exception>
         public RelativeTimeConverter(
             int maxUnits,
             CultureInfoMode culture = CultureInfoMode.InvariantCulture,
@@ -67,12 +59,9 @@ namespace Aspid.MVVM.StarterKit
         {
             _culture = culture;
             _useUtcNow = useUtcNow;
-            _maxUnits = maxUnits >= 1 ? maxUnits : throw new ArgumentOutOfRangeException(nameof(maxUnits));
+            _maxUnits = maxUnits is >= 1 and <= 4 ? maxUnits : throw new ArgumentOutOfRangeException(nameof(maxUnits));
         }
 
-        // Min cannot fix a value serialized before it was added, and the ladder stops at days.
-        private int MaxUnits => Math.Clamp(_maxUnits, 1, 4);
-        
         /// <summary>
         /// Writes how far the specified moment is from now.
         /// </summary>
@@ -80,18 +69,19 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The description.</returns>
         public string Convert(DateTime value)
         {
-            var now = _useUtcNow ? DateTime.UtcNow : DateTime.Now;
-            var delta = value - now;
+            var delta = value - CurrentTime.For(value, _useUtcNow);
             var magnitude = delta.Duration();
 
             if (magnitude.TotalSeconds < 1d) return _nowText;
 
-            var format = delta.Ticks < 0L ? _pastFormat : _futureFormat;
             var culture = _culture.ToCultureInfo();
-            var maxUnits = MaxUnits;
 
-            return maxUnits > 1
-                ? Several(magnitude, maxUnits, format, culture)
+            var format = delta.Ticks < 0L
+                ? _pastFormat
+                : _futureFormat;
+
+            return _maxUnits > 1
+                ? Several(magnitude, _maxUnits, format, culture)
                 : Single(magnitude, format, culture);
         }
 
@@ -116,23 +106,19 @@ namespace Aspid.MVVM.StarterKit
             for (var index = 3; index >= 0 && written < maxUnits; index--)
             {
                 var amount = Amount(magnitude, index);
-                if (amount == 0L) continue;
+                if (amount is 0L) continue;
 
-                if (written > 0)
-                    _builder.Append(_unitSeparator);
-                
+                if (written > 0) _builder.Append(_unitSeparator);
+
                 _builder.Append(amount.ToString(culture)).Append(Unit(index));
                 written++;
             }
 
-            // Defensive: above a second some component is always non-zero.
-            return written == 0 
-                ? _nowText 
+            return written is 0
+                ? _nowText
                 : string.Format(culture, format, _builder.ToString(), string.Empty);
-
         }
 
-        // Days accumulate; the smaller units are components, so two of them read "1h 5m", not "1h 65m".
         private static long Amount(TimeSpan magnitude, int index) => index switch
         {
             3 => (long)magnitude.TotalDays,

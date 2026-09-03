@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -43,7 +44,6 @@ namespace Aspid.MVVM.StarterKit
                 case IReadOnlyList<T> list: return list.Count > 0 ? list[^1] : _fallback;
             }
 
-            // Starting from the fallback answers the empty sequence as well: nothing overwrites it.
             var last = _fallback;
 
             foreach (var item in value)

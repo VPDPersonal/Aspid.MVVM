@@ -1,158 +1,169 @@
 # DynamicViewModel
 
-DynamicViewModel позволяет создавать ViewModel в runtime без Source Generator. Удобно для прототипирования, простых случаев и тестов.
+`DynamicViewModel` создаёт типизированную ViewModel во время выполнения, без отдельного класса и
+Source Generator. Он предназначен для тестов View, прототипов, отладочных экранов и интерфейсов,
+схема которых определяется конфигурацией.
 
-## Содержание
+Для обычных production-экранов используйте `[ViewModel]`: сгенерированный тип лучше выражает
+фиксированную схему, проверяет идентификаторы во время компиляции и поддерживает `[RelayCommand]`.
 
-- [Обзор](#обзор)
-- [EmptyViewModel](#emptyviewmodel)
-- [Типы динамических свойств](#типы-динамических-свойств)
-- [Создание DynamicViewModel](#создание-dynamicviewmodel)
-- [Фабричные методы Create](#фабричные-методы-create)
-- [Обновление значений](#обновление-значений)
-- [Сравнение с генерируемым ViewModel](#сравнение-с-генерируемым-viewmodel)
+## Быстрый старт
 
----
-
-## Обзор
-
-`DynamicViewModel` хранит словарь `Dictionary<string, IDynamicProperty>`. При запросе привязки ищет свойство по ID в словаре.
-
-**Когда использовать:**
-- Быстрое прототипирование UI
-- Простые экраны с 1-5 свойствами
-- Unit-тесты View
-- Данные, определяемые в runtime (JSON, конфигурации)
-
----
-
-## EmptyViewModel
-
-Заглушка без свойств:
+Метод `Add<T>` возвращает типизированный handle свойства:
 
 ```csharp
-// FindBindableMember всегда возвращает "не найдено"
-IViewModel empty = new EmptyViewModel();
-view.Initialize(empty); // Безопасно — биндеры просто не привяжутся
-```
+var viewModel = new DynamicViewModel();
 
-Используйте как null-safe замену вместо `null`.
-
----
-
-## Типы динамических свойств
-
-| Класс | Режим | Описание |
-|-------|-------|----------|
-| `OneWayDynamicProperty<T>` | OneWay | Только ViewModel → View |
-| `TwoWayDynamicProperty<T>` | TwoWay | Двусторонняя, дедупликация одинаковых значений |
-| `OneTimeDynamicProperty<T>` | OneTime | Устанавливается однократно |
-
-Все реализуют `IDynamicProperty`:
-```csharp
-public interface IDynamicProperty
-{
-    IBinderAdder GetAdder();
-}
-```
-
----
-
-## Создание DynamicViewModel
-
-### Через словарь
-
-```csharp
-var viewModel = new DynamicViewModel(
-    new Dictionary<string, IDynamicProperty>
-    {
-        ["Health"] = new OneWayDynamicProperty<int>(100),
-        ["Name"] = new TwoWayDynamicProperty<string>("Hero"),
-        ["Icon"] = new OneTimeDynamicProperty<Sprite>(heroSprite)
-    }
-);
+IDynamicProperty<int> health = viewModel.Add("Health", 100);
+IDynamicProperty<string> name = viewModel.Add("Name", "Hero", BindMode.TwoWay);
+IDynamicProperty<Sprite> icon = viewModel.Add("Icon", heroSprite, BindMode.OneTime);
 
 view.Initialize(viewModel);
+
+health.Value = 75;             // View получает 75
+Debug.Log(name.Value);         // актуальное значение, включая ввод из View
 ```
 
-### Через неявное приведение
+По умолчанию создаётся `OneWay`-свойство.
+
+## Инициализатор коллекции
+
+`DynamicViewModel` поддерживает компактный синтаксис для случаев, когда handles не нужны:
 
 ```csharp
-DynamicViewModel viewModel = new Dictionary<string, IDynamicProperty>
+var viewModel = new DynamicViewModel
 {
-    ["Title"] = new OneWayDynamicProperty<string>("Settings"),
-    ["Volume"] = new TwoWayDynamicProperty<float>(0.8f)
+    { "Title", "Settings" },
+    { "Volume", 0.8f, BindMode.TwoWay },
+    { "Icon", settingsIcon, BindMode.OneTime }
 };
 ```
 
----
+Количество свойств не ограничено. В отличие от старого `Create<T1, ..., T8>`, новые типы свойств
+не требуют дополнительных перегрузок.
 
-## Фабричные методы Create
+## Чтение и изменение
 
-Типобезопасное создание до 8 свойств за один вызов:
+### Через типизированный handle
 
 ```csharp
-// DynamicPropertyData<T> — описание свойства:
-//   string Id, T Value, BindMode Mode
+var score = viewModel.Add("Score", 0);
 
-var viewModel = DynamicViewModel.Create(
-    new DynamicPropertyData<string>("Title", "Hello", BindMode.OneWay),
-    new DynamicPropertyData<int>("Score", 0, BindMode.OneWay),
-    new DynamicPropertyData<float>("Volume", 0.5f, BindMode.TwoWay)
-);
+score.ValueChanged += value => Debug.Log($"Score: {value}");
+score.Value = 10;
 ```
 
-Перегрузки от 1 до 8 параметров: `Create<T1>`, `Create<T1, T2>`, ..., `Create<T1, ..., T8>`.
+Повторная установка равного значения ничего не отправляет и не вызывает `ValueChanged`.
 
-> **Ограничение:** `DynamicPropertyData` отклоняет `BindMode.None` и `BindMode.OneWayToSource`.
-
----
-
-## Обновление значений
-
-Для обновления значений после создания используйте типизированные свойства:
+### Через ViewModel
 
 ```csharp
-var health = new OneWayDynamicProperty<int>(100);
-var name = new TwoWayDynamicProperty<string>("Hero");
+IDynamicProperty<int> property = viewModel.Get<int>("Score");
+property.Value = 20;
 
+if (viewModel.TryGet<int>("Score", out var scoreProperty))
+    scoreProperty.Value = 30;
+
+viewModel["Score"].UntypedValue = 40;   // без generic-параметра, для config-driven кода
+```
+
+`Get<T>` бросает:
+
+- `KeyNotFoundException`, если ID отсутствует;
+- `ArgumentException`, если свойство существует, но имеет другой тип.
+
+`TryGet<T>` возвращает `false` в обоих случаях.
+
+## Режимы
+
+| Режим | Поведение |
+|---|---|
+| `OneWay` | Начальное значение и последующие изменения передаются из ViewModel во View |
+| `TwoWay` | Значение синхронизируется в обе стороны; `Value` всегда содержит актуальный ввод View |
+| `OneTime` | Каждый новый binder получает текущее значение один раз; уже подключённые binder-ы не обновляются |
+| `OneWayToSource` | Принимает изменения из View, не подписывая View на последующие изменения |
+| `None` | Не поддерживается и отклоняется конструктором |
+
+Режим свойства определяет возможности bindable member. Режим конкретного binder-а по-прежнему
+задаётся в самом binder-е и должен быть совместим с этими возможностями.
+
+## Нетипизированный доступ
+
+Для конфигураций, где тип становится известен только во время выполнения, доступны
+`IDynamicProperty`, `Properties` и индексатор:
+
+```csharp
+foreach (IDynamicProperty property in viewModel.Properties)
+{
+    Debug.Log($"{property.Id}: {property.ValueType.Name} = {property.UntypedValue}");
+}
+
+viewModel["Title"].UntypedValue = "Profile";
+```
+
+Запись значения несовместимого типа бросает `ArgumentException`. Запись `null` устанавливает
+`default(T)`.
+
+Пользовательское свойство можно реализовать через `IDynamicProperty` и добавить тем же методом:
+
+```csharp
+viewModel.Add(customProperty);
+```
+
+## Проверка идентификаторов
+
+Пустые ID и дубликаты отклоняются сразу. По умолчанию регистр учитывается (`StringComparer.Ordinal`),
+но comparer можно заменить:
+
+```csharp
 var viewModel = new DynamicViewModel(
-    new Dictionary<string, IDynamicProperty>
-    {
-        ["Health"] = health,
-        ["Name"] = name
-    }
-);
-
-view.Initialize(viewModel);
-
-// Обновление — биндеры автоматически получат новое значение
-health.Value = 75;
-
-// TwoWay — значение может быть изменено из View
-// name.Value уже содержит актуальное значение из InputField
-Debug.Log(name.Value);
+    idComparer: StringComparer.OrdinalIgnoreCase);
 ```
 
----
+Обычно отсутствующий ID binder-а означает, что привязка просто не создаётся. В тестах и при
+разработке экрана удобно включить строгий режим:
 
-## Сравнение с генерируемым ViewModel
+```csharp
+var viewModel = new DynamicViewModel(throwOnMissingMember: true);
+```
 
-| Аспект | Source Generator | DynamicViewModel |
-|--------|:---:|:---:|
-| Производительность | ✅ Оптимальная (прямые вызовы) | ⚠️ Словарный поиск |
-| Типобезопасность | ✅ Compile-time | ⚠️ Runtime |
-| Boilerplate | ✅ Минимальный (атрибуты) | ⚠️ Ручное создание свойств |
-| Гибкость | ⚠️ Требует перекомпиляции | ✅ Runtime-конфигурация |
-| Тестирование | ✅ Полное | ✅ Полное |
-| OnXxxChanged хуки | ✅ Есть | ❌ Нет |
-| [RelayCommand] | ✅ Есть | ❌ Ручное создание |
+Тогда запрос неизвестного ID бросает `KeyNotFoundException` с именем отсутствующего свойства.
 
-**Рекомендация:** Используйте Source Generator для production-кода. DynamicViewModel — для прототипов, тестов и динамических данных.
+## Добавление свойств и жизненный цикл View
 
----
+Свойства следует добавлять до `view.Initialize(viewModel)`. `Add` после инициализации делает
+свойство доступным для будущих запросов, но уже инициализированная View не выполняет поиск binder-ов
+повторно автоматически.
+
+## Когда использовать
+
+Подходящие сценарии:
+
+- изолированные тесты View;
+- быстрый прототип;
+- debug/admin UI;
+- свойства, составленные из JSON или конфигурации;
+- небольшие переиспользуемые View с runtime-набором полей.
+
+Не используйте `DynamicViewModel` как замену обычной ViewModel с фиксированной схемой. Строковые ID
+переносят часть ошибок из compile time в runtime, а бизнес-логика, команды и зависимости лучше
+выражаются отдельным типом.
+
+## Сравнение со сгенерированной ViewModel
+
+| Аспект | Source Generator | `DynamicViewModel` |
+|---|:---:|:---:|
+| Фиксированная схема | Оптимально | Избыточно |
+| Runtime-схема | Требует нового типа | Поддерживается |
+| Проверка ID при компиляции | Да | Нет |
+| Типизированное чтение значений | Да | Да |
+| Обновление и наблюдение | Да | Да |
+| `[RelayCommand]` и generated hooks | Да | Нет |
+| Разрешение binder-а | Сгенерированный код | Один поиск в словаре |
+
+Словарный поиск выполняется при подключении binder-а, а не при каждом изменении значения.
 
 ## См. также
 
-- [ViewModel](04-viewmodels.md) — генерируемый ViewModel
-- [Режимы привязки](03-binding-modes.md) — OneWay, TwoWay, OneTime
+- [ViewModel](04-viewmodels.md) — сгенерированные ViewModel
+- [Режимы привязки](03-binding-modes.md) — OneWay, TwoWay, OneTime и OneWayToSource

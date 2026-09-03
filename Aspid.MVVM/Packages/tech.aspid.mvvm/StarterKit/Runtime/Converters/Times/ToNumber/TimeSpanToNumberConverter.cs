@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The duration to measure.</param>
         /// <returns>The measurement; total seconds when the unit is not a declared value.</returns>
-        public float Convert(TimeSpan value) => 
+        public float Convert(TimeSpan value) =>
             NumericSaturation.ToFloat(Measure(value));
 
         int IConverter<TimeSpan, int>.Convert(TimeSpan value) =>

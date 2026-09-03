@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -6,50 +7,39 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="GenericToStringConverter{TFrom}"/> for strings, with optional handling of empty values.
+    /// <see cref="ValueToStringConverter{T}"/> for strings, with optional handling of empty values.
     /// </summary>
-    /// <remarks>
-    /// By default a blank input passes through unformatted and <see langword="null"/> stays
-    /// <see langword="null"/>; formatting empty values reads the two as the same empty string.
-    /// </remarks>
+    /// <remarks>By default, a blank input passes through and <see langword="null"/> stays <see langword="null"/>.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/String",
         Name = "Format",
         Tooltip = "Formats a string into a template, skipping empty input by default")]
-    public sealed class StringFormatConverter : GenericToStringConverter<string>
+    public sealed class StringFormatConverter : ValueToStringConverter<string>
     {
-        [Tooltip("Apply the format to a blank or null value too. A null is read as an empty string, " +
-            "so it never comes out null.")]
+        [Tooltip("Apply the format to a blank or null value too, reading null as an empty string.")]
         [SerializeField] private bool _formatEmptyValues;
 
         /// <remarks>Default: no format, passing the string through.</remarks>
         public StringFormatConverter() { }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="StringFormatConverter"/> with the specified format.
-        /// </summary>
-        /// <param name="format">The format string to apply using <see cref="string.Format(string, object)"/>.</param>
-        /// <param name="formatEmptyValues">
-        /// If <see langword="true"/>, applies the format to a blank value too, reading
-        /// <see langword="null"/> as an empty string so it never comes out <see langword="null"/>.
-        /// </param>
-        public StringFormatConverter(string format, bool formatEmptyValues = false)
-            : base(format)
+        /// <param name="format">Composite format string such as <c>"HP: {0}"</c>.</param>
+        /// <param name="formatEmptyValues">If <see langword="true"/>, applies the format to a blank value too, reading <see langword="null"/> as an empty string.</param>
+        /// <param name="culture">The culture the format is applied with.</param>
+        public StringFormatConverter(
+            string format,
+            bool formatEmptyValues = false,
+            CultureInfoMode culture = CultureInfoMode.CurrentCulture)
+            : base(format, culture)
         {
             _formatEmptyValues = formatEmptyValues;
         }
 
         /// <summary>
-        /// Converts the specified string, reading <see langword="null"/> as an empty one when empty
-        /// values are formatted.
+        /// Converts the specified string, reading <see langword="null"/> as an empty one when empty values are formatted.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        /// <returns>
-        /// The formatted string, or the value unchanged when the format does not apply; never
-        /// <see langword="null"/> while empty values are formatted.
-        /// </returns>
-        // The base class short-circuits on null, so covering it takes substituting an empty string.
+        /// <returns>The formatted string, or the value unchanged when the format does not apply.</returns>
         public override string? Convert(string? value) =>
             base.Convert(_formatEmptyValues ? value ?? string.Empty : value);
 
@@ -57,9 +47,10 @@ namespace Aspid.MVVM.StarterKit
         /// Applies the format unless the value is blank and blank values are not being formatted.
         /// </summary>
         /// <param name="value">The non-null value to format.</param>
+        /// <param name="format">The composite format string, never blank.</param>
         /// <returns>The formatted string, or the value unchanged.</returns>
-        protected override string Format(string value) => _formatEmptyValues || !string.IsNullOrWhiteSpace(value)
-            ? base.Format(value)
+        protected override string Format(string value, string format) => _formatEmptyValues || !string.IsNullOrWhiteSpace(value)
+            ? base.Format(value, format)
             : value;
     }
 }

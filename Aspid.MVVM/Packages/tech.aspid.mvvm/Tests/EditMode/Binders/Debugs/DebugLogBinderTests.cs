@@ -35,13 +35,13 @@ namespace Aspid.MVVM.Tests
         {
             LogAssert.Expect(LogType.Log, "SetValue: HP: 42");
 
-            new DebugLogBinder(new GenericToStringConverter<object>("HP: {0}")).SetValue(42);
+            new DebugLogBinder(new ValueToStringConverter<object>("HP: {0}")).SetValue(42);
         }
 
-        // The parameter is documented as "pass null to use GenericToStringConverter", which the
+        // The parameter is documented as "pass null to use ValueToStringConverter", which the
         // constructor used to contradict by overwriting the field initializer with null.
         [Test]
-        public void DefaultConstructed_FallsBackToGenericToStringConverter()
+        public void DefaultConstructed_FallsBackToValueToStringConverter()
         {
             LogAssert.Expect(LogType.Log, "SetValue: 42");
 

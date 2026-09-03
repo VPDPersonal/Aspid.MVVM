@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -8,12 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Converts a number to another numeric type under a chosen overflow policy.
     /// </summary>
-    /// <remarks>
-    /// Defaults to <see cref="OverflowMode.Saturate"/>, the only mode with no undefined result. The
-    /// class is closed over the four numeric types rather than generic because casting an unconstrained
-    /// <c>TFrom</c> would go through <see cref="System.Convert"/>, which boxes on a path that runs per
-    /// notification.
-    /// </remarks>
+    /// <remarks>Widening conversions never overflow, so the mode applies to narrowing ones only.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number",
@@ -31,44 +27,47 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: saturating at the target type's bounds.</remarks>
         public NumericCastConverter() { }
 
-        /// <param name="mode">
-        /// What to do with a value the target type cannot hold. <see cref="OverflowMode.Checked"/>
-        /// throws instead of converting.
-        /// </param>
+        /// <param name="mode">What to do with a value the target type cannot hold. <see cref="OverflowMode.Checked"/> throws.</param>
         public NumericCastConverter(OverflowMode mode)
         {
             _mode = mode;
         }
 
-        #region Narrowing
-        int IConverter<long, int>.Convert(long value) => ToInt(value);
+        int IConverter<long, int>.Convert(long value) =>
+            ToInt(value);
 
-        int IConverter<float, int>.Convert(float value) => ToInt(value);
+        int IConverter<float, int>.Convert(float value) =>
+            ToInt(value);
 
-        int IConverter<double, int>.Convert(double value) => ToInt(value);
+        int IConverter<double, int>.Convert(double value) =>
+            ToInt(value);
 
-        long IConverter<float, long>.Convert(float value) => ToLong(value);
+        long IConverter<float, long>.Convert(float value) =>
+            ToLong(value);
 
-        long IConverter<double, long>.Convert(double value) => ToLong(value);
+        long IConverter<double, long>.Convert(double value) =>
+            ToLong(value);
 
-        float IConverter<double, float>.Convert(double value) => ToFloat(value);
-        #endregion
+        float IConverter<double, float>.Convert(double value) =>
+            ToFloat(value);
 
-        #region Widening
-        // No value of the source type is outside the target's range, so the mode has nothing to
-        // decide. A long or int still rounds on the way to a float — precision, not overflow.
-        long IConverter<int, long>.Convert(int value) => value;
+        long IConverter<int, long>.Convert(int value) =>
+            value;
 
-        float IConverter<int, float>.Convert(int value) => value;
+        float IConverter<int, float>.Convert(int value) =>
+            value;
 
-        float IConverter<long, float>.Convert(long value) => value;
+        float IConverter<long, float>.Convert(long value) =>
+            value;
 
-        double IConverter<int, double>.Convert(int value) => value;
+        double IConverter<int, double>.Convert(int value) =>
+            value;
 
-        double IConverter<long, double>.Convert(long value) => value;
+        double IConverter<long, double>.Convert(long value) =>
+            value;
 
-        double IConverter<float, double>.Convert(float value) => value;
-        #endregion
+        double IConverter<float, double>.Convert(float value) =>
+            value;
 
         private int ToInt(long value) => _mode switch
         {
@@ -102,33 +101,26 @@ namespace Aspid.MVVM.StarterKit
             _ => UndeclaredToFloat(value)
         };
 
-        // Written out rather than left to checked((int)value) so the message names the converter;
-        // the framework's own reads only "Arithmetic operation resulted in an overflow".
         private static int CheckedToInt(long value) =>
             value < int.MinValue || value > int.MaxValue
                 ? throw new OverflowException(
                     $"{nameof(NumericCastConverter)}: {value} is outside the range of an int.")
                 : (int)value;
 
-        // The range is tested by hand rather than left to checked(): conv.ovf behaves differently on
-        // Mono — what the Editor and a Mono player run — than on .NET Core, and Checked is chosen
-        // precisely to be told, not to depend on the runtime the game shipped with.
+        // Tested by hand: conv.ovf on a double behaves differently on Mono and .NET Core.
         private static int CheckedToInt(double value) =>
             double.IsNaN(value) || value < int.MinValue || value > int.MaxValue
                 ? throw new OverflowException(
                     $"{nameof(NumericCastConverter)}: {value} is outside the range of an int.")
                 : (int)value;
 
-        // 2^63 is the first double above the range: long.MaxValue is 2^63 - 1 and no double holds it,
-        // so writing the bound as long.MaxValue would silently round it up.
+        // 2^63 is the first double above the range; long.MaxValue itself rounds up to it.
         private static long CheckedToLong(double value) =>
             double.IsNaN(value) || value < long.MinValue || value >= 9223372036854775808d
                 ? throw new OverflowException(
                     $"{nameof(NumericCastConverter)}: {value} is outside the range of a long.")
                 : (long)value;
 
-        // checked() covers integral conversions only, so the range test is written out: a finite
-        // double that comes back infinite is exactly the one that did not fit.
         private static float CheckedToFloat(double value)
         {
             var result = (float)value;
@@ -138,7 +130,6 @@ namespace Aspid.MVVM.StarterKit
                 $"{nameof(NumericCastConverter)}: {value} is outside the range of a float.");
         }
 
-        // The answer is the default mode's: saturation is the only policy with no undefined result.
         private int UndeclaredToInt(long value)
         {
             LogUndeclaredMode();
@@ -164,7 +155,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void LogUndeclaredMode() => this.LogError(
-            $"the mode {_mode.Describe()} is not a declared {nameof(OverflowMode)}",
-            "Saturating at the target type's bounds.");
+            problem: $"the mode {_mode.Describe()} is not a declared {nameof(OverflowMode)}",
+            consequence: "Saturating at the target type's bounds.");
     }
 }

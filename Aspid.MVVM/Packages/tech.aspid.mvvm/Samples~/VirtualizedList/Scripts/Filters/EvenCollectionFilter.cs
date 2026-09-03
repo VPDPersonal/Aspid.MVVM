@@ -6,23 +6,11 @@ using Aspid.MVVM.StarterKit;
 namespace Aspid.MVVM.Samples.VirtualizedList
 {
     [Serializable]
-    public sealed class EvenCollectionFilter : IViewModelCollectionFilter
+    public sealed class EvenCollectionFilter : ICollectionFilter<IViewModel>
     {
         [SerializeField] private bool _isInvert;
 
-        public Predicate<IViewModel> Get() => viewModel =>
-        {
-            if (viewModel is ItemViewModel itemViewModel)
-            {
-                return (itemViewModel.Number % 2 is 0) switch
-                {
-                    true when !_isInvert => true,
-                    false when _isInvert => true,
-                    _ => false
-                };
-            }
-
-            return false;
-        };
+        public bool Matches(IViewModel item) =>
+            item is ItemViewModel viewModel && (viewModel.Number % 2 is 0) != _isInvert;
     }
 }

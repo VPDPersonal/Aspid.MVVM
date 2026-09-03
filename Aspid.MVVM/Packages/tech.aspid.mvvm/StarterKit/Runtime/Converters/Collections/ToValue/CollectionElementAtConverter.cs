@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -31,14 +32,12 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="index">Which item to take. An index outside a non-empty list is reported.</param>
         /// <param name="fromEnd">Whether to count from the end.</param>
-        /// <param name="fallback">
-        /// Returned when the index is outside the list — silently for a <see langword="null"/> or
-        /// empty list, with an error otherwise.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="index"/> is negative.
-        /// </exception>
-        public CollectionElementAtConverter(int index, bool fromEnd = false, T? fallback = default)
+        /// <param name="fallback">Returned when the index is outside the list.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is negative.</exception>
+        public CollectionElementAtConverter(
+            int index,
+            bool fromEnd = false,
+            T? fallback = default)
         {
             _fromEnd = fromEnd;
             _fallback = fallback;
@@ -49,10 +48,7 @@ namespace Aspid.MVVM.StarterKit
         /// Takes the configured item.
         /// </summary>
         /// <param name="value">The list to read.</param>
-        /// <returns>
-        /// The item, or the fallback when the index is outside the list. A <see langword="null"/> or
-        /// empty list falls back silently; an index outside a non-empty list is reported first.
-        /// </returns>
+        /// <returns>The item, or the fallback when the index is outside the list. Only a non-empty list reports it.</returns>
         public T? Convert(IReadOnlyList<T?>? value)
         {
             if (value is null || value.Count == 0) return _fallback;

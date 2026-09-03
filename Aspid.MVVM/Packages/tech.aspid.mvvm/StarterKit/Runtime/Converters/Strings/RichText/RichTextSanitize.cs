@@ -4,9 +4,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// What <see cref="RichTextSanitizeConverter"/> does with markup it will not let through.
     /// </summary>
-    /// <remarks>
-    /// Append new members rather than inserting one — the order is the serialized value.
-    /// </remarks>
+    /// <remarks>Members are appended, never inserted: the order is the serialized value.</remarks>
     public enum RichTextSanitize
     {
         /// <summary>

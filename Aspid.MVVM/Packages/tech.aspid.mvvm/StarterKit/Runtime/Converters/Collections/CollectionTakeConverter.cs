@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -11,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// The result is one <see cref="List{T}"/> refilled on every call — read it at once, do not cache it.
+    /// The result is one <see cref="List{T}"/> refilled on every call, so read it at once.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(
@@ -20,10 +21,10 @@ namespace Aspid.MVVM.StarterKit
         Tooltip = "Keeps a few items off one end of a sequence")]
     public class CollectionTakeConverter<T> : IConverter<IEnumerable<T?>?, IEnumerable<T?>>
     {
-        [Tooltip("How many items to keep. Zero or fewer keeps none of them.")]
+        [Tooltip("How many items to keep. Zero keeps none.")]
         [SerializeField] [Min(0)] private int _count = 3;
 
-        [Tooltip("Take from the end of the sequence rather than from its start.")]
+        [Tooltip("Take from the end rather than the start.")]
         [SerializeField] private bool _fromEnd;
 
         [NonSerialized] private List<T?> _buffer = new();
@@ -33,10 +34,10 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="count">How many items to keep. Zero keeps none of them.</param>
         /// <param name="fromEnd">Whether to take from the end rather than from the start.</param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="count"/> is negative.
-        /// </exception>
-        public CollectionTakeConverter(int count, bool fromEnd = false)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="count"/> is negative.</exception>
+        public CollectionTakeConverter(
+            int count,
+            bool fromEnd = false)
         {
             _fromEnd = fromEnd;
             _count = count >= 0 ? count : throw new ArgumentOutOfRangeException(nameof(count));
@@ -73,8 +74,6 @@ namespace Aspid.MVVM.StarterKit
                 if (!_fromEnd && _buffer.Count == _count) break;
             }
 
-            // A sequence with no indexer gives no way to know where its last few items begin until it
-            // has been walked, so the tail case buffers all of it and drops the front in one move.
             if (_fromEnd && _buffer.Count > _count)
                 _buffer.RemoveRange(index: 0, count: _buffer.Count - _count);
 

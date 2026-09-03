@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Text;
 using UnityEngine;
@@ -16,7 +17,6 @@ namespace Aspid.MVVM.StarterKit
         Tooltip = "Repeats a piece of text once per count")]
     public sealed class RepeatStringConverter : IConverter<int, string>
     {
-        // With no maximum the count comes from the ViewModel, and a runaway one would build that many.
         private const int CountCeiling = 1000;
 
         [Tooltip("The text repeated once per count.")]
@@ -32,15 +32,13 @@ namespace Aspid.MVVM.StarterKit
         public RepeatStringConverter() { }
 
         /// <param name="unit">The text repeated once per count.</param>
-        /// <param name="max">
-        /// The total number of units, five when left out. Zero means no maximum; the count is then
-        /// capped at 1000 units and the cap is reported as an error.
-        /// </param>
+        /// <param name="max">The total number of units. Zero means no maximum, with the count capped at 1000.</param>
         /// <param name="emptyUnit">The text used for the remainder up to the maximum.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="unit"/> is <see langword="null"/>.
-        /// </exception>
-        public RepeatStringConverter(string unit, int max = 5, string? emptyUnit = "")
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="unit"/> is <see langword="null"/>.</exception>
+        public RepeatStringConverter(
+            string unit,
+            int max = 5,
+            string? emptyUnit = "")
         {
             _max = max;
             _emptyUnit = emptyUnit ?? string.Empty;
@@ -55,10 +53,13 @@ namespace Aspid.MVVM.StarterKit
         public string Convert(int value)
         {
             var bounded = _max > 0;
-            var filled = Math.Max(0, bounded ? Math.Min(value, _max) : Capped(value));
-            var remainder = bounded && !string.IsNullOrEmpty(_emptyUnit) ? _max - filled : 0;
+            var filled = Math.Max(0, bounded
+                ? Math.Min(value, _max)
+                : Capped(value));
+            var remainder = bounded && !string.IsNullOrEmpty(_emptyUnit)
+                ? _max - filled
+                : 0;
 
-            // Counted as a long: an absurd maximum overflows the int product into a negative capacity.
             var capacity = (long)filled * _unit.Length + (long)remainder * _emptyUnit.Length;
             var builder = new StringBuilder((int)Math.Min(capacity, int.MaxValue));
 

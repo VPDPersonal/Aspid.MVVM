@@ -30,7 +30,7 @@ namespace Aspid.MVVM.StarterKit
             this Selectable target,
             InteractableMode mode,
             bool isInteractable,
-            ICanExecuteView customView,
+            ICanExecuteHandler customView,
             object owner)
         {
             switch (mode)
@@ -51,7 +51,7 @@ namespace Aspid.MVVM.StarterKit
                     {
                         BinderLogger.LogError(
                             binderType: owner.GetType(),
-                            problem: $"the mode is {nameof(InteractableMode)}.{nameof(InteractableMode.Custom)} but no {nameof(ICanExecuteView)} is assigned",
+                            problem: $"the mode is {nameof(InteractableMode)}.{nameof(InteractableMode.Custom)} but no {nameof(ICanExecuteHandler)} is assigned",
                             consequence: "The command's CanExecute state is not reflected anywhere.",
                             context: owner as Object);
 

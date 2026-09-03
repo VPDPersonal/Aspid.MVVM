@@ -19,7 +19,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand _command;
         private IRelayCommand<bool> _selectableCommand;
@@ -112,7 +112,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T> _command;
         
@@ -190,7 +190,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2> _command;
         
@@ -280,7 +280,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2, T3> _command;
         
@@ -382,7 +382,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2, T3, T4> _command;
         

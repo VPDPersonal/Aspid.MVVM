@@ -259,10 +259,35 @@ Tooling that searches the Add Component dialog or menu paths by exact string nee
 
 ### 2.8 Behavioural fixes that change runtime output
 
-Two 1.0 bugs were fixed, so the same source now behaves differently at runtime — no recompile needed:
+One 1.0 bug was fixed, so the same source now behaves differently at runtime — no recompile needed:
 
 - **`NumberToBoolConverter` with `Comparisons.Inequality`** returned the same result as `Comparisons.Equal` in 1.0 (the comparison was inverted). It now correctly returns `true` when the values are *not* approximately equal. Review binders configured with `Inequality` and remove any compensating inversion you added downstream.
-- **`DynamicViewModel.Create<…>`** forced every property to `BindMode.OneTime` in 1.0, discarding the configured mode. It now honours each `DynamicPropertyData`'s `BindMode`, so properties created without an explicit mode update live. Pass `BindMode.OneTime` explicitly if you relied on bind-once behaviour.
+
+### 2.9 `DynamicViewModel`
+
+The fixed-arity `DynamicViewModel.Create<...>` API and its `DynamicPropertyData<T>`, `DynamicPropertyFactory`
+and mode-specific property classes were replaced by a single typed property:
+
+```csharp
+var viewModel = new DynamicViewModel();
+DynamicProperty<string> title = viewModel.Add("Title", "Hello");
+DynamicProperty<float> volume = viewModel.Add("Volume", 0.5f, BindMode.TwoWay);
+
+title.Value = "Updated";
+```
+
+When no property handle is needed, use the collection initializer:
+
+```csharp
+var viewModel = new DynamicViewModel
+{
+    { "Title", "Hello" },
+    { "Volume", 0.5f, BindMode.TwoWay }
+};
+```
+
+Replace reads and writes through mode-specific property instances with `Value`, or use
+`GetValue<T>` / `SetValue<T>` by ID. Unlike the old factory, the number of properties is unlimited.
 
 ---
 
@@ -415,7 +440,9 @@ override existed to change the no-format rendering, it now belongs in the subcla
 - [ ] Replace `view.DestroyView()` with `view.DestroyViewAndGameObject()` where you relied on it to destroy the host GameObject
 - [ ] Implement the six new abstract hooks on any custom `CollectionBinder<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
 - [ ] Review `ViewInitializer` setups: resolution moved into `ViewInitializerBase`, container `Resolve` became `TryResolve`, and an `InitializeStage.DiConstructor` stage was added (the default stage is unchanged — `Awake`)
-- [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over- [ ] Review `NumberToBoolConverter` (`Inequality`) and `DynamicViewModel.Create` usages for the corrected runtime behaviour
+- [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over
+- [ ] Replace `DynamicViewModel.Create`, `DynamicPropertyData<T>` and mode-specific dynamic properties with `DynamicViewModel.Add<T>`
+- [ ] Review `NumberToBoolConverter` (`Inequality`) usages for the corrected runtime behaviour
 - [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
 - [ ] Update tests / tooling that look up components by `AddComponentMenu` path
 - [ ] Rename `Values` → `Mode`, `Comparisons.Inequality` → `NotEqual`, `EnumMatch.Equals` → `Equal`, `ToConvert` → `ToConverter`, `WrapMode` → `NumberWrapMode` and `ListToStringConverter` → `CollectionJoinToStringConverter` in your own code (see § 5.1)

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -6,14 +7,14 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// One word for one, another for everything else — English, German, Dutch, Spanish, Italian,
+    /// One word for one, another for everything else: English, German, Dutch, Spanish, Italian,
     /// Swedish, Greek.
     /// </summary>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Plural Rule",
         Name = "English",
-        Tooltip = "One word for one, another for everything else — English, German, Spanish, Italian")]
+        Tooltip = "One word for one, another for everything else: English, German, Spanish, Italian")]
     public sealed class EnglishPluralRule : PluralRule
     {
         [Tooltip("The word for one item.")]
@@ -27,7 +28,10 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="one">The word for one item.</param>
         /// <param name="other">The word for every other count, zero included.</param>
         /// <param name="zero">Written for a count of none, or <see langword="null"/> to word it like any other count.</param>
-        public EnglishPluralRule(string one, string other, string? zero = null)
+        public EnglishPluralRule(
+            string one,
+            string other,
+            string? zero = null)
             : base(zero)
         {
             _one = one;

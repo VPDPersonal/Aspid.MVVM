@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -55,13 +56,9 @@ namespace Aspid.MVVM.StarterKit
         /// Applies the authored mask to the specified value.
         /// </summary>
         /// <param name="value">The value to combine with the mask.</param>
-        /// <returns>
-        /// The combined value, not necessarily a declared member; the fallback on a
-        /// non-<see cref="FlagsAttribute"/> enum or an undeclared <see cref="EnumMaskOperation"/>.
-        /// </returns>
+        /// <returns>The combined value, not necessarily a declared member, or the fallback for a non-flags enum or an undeclared operation.</returns>
         public TEnum Convert(TEnum value)
         {
-            // Masking a non-flags enum would blank it or produce a number no member declares.
             if (!EnumBits<TEnum>.IsFlags)
             {
                 return _fallback.Fail(
@@ -72,8 +69,6 @@ namespace Aspid.MVVM.StarterKit
 
             var comparer = EqualityComparer<TEnum>.Default;
 
-            // The mask and the operation are serialized, so the Inspector can change either
-            // between two pushes of the same value.
             if (_hasCache
                 && _cachedOperation == _operation
                 && comparer.Equals(_cachedValue, value)
@@ -88,17 +83,10 @@ namespace Aspid.MVVM.StarterKit
                 EnumMaskOperation.And => bits & mask,
                 EnumMaskOperation.Or => bits | mask,
                 EnumMaskOperation.Xor => bits ^ mask,
-
-                // The complement sets every bit above the enum's own width, and the AND keeps them
-                // whenever the value carries them too — a member holding the sign bit of a signed
-                // underlying type sign-extends into all of them. FromBits truncates to that width,
-                // which is what makes this safe; the AND alone does not.
                 EnumMaskOperation.Clear => bits & ~mask,
                 _ => null
             };
 
-            // Not cached: the misconfiguration belongs in the console on every push, and the cache
-            // would answer the second one silently.
             if (combined is null)
             {
                 return _fallback.Fail(

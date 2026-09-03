@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -9,42 +10,36 @@ namespace Aspid.MVVM.StarterKit
     /// Routes a value to one of two converters based on a predicate.
     /// </summary>
     /// <typeparam name="T">The type of the value being converted.</typeparam>
-    /// <remarks>
-    /// An empty instance, or a missing branch, passes the value through; a branch with no predicate
-    /// to select it is reported on every push and the value passes through unchanged.
-    /// </remarks>
+    /// <remarks>An empty branch passes the value through; a branch without a predicate is reported.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Composition",
         Name = "Conditional",
         Tooltip = "Routes a value to one of two converters based on a predicate")]
-    public class ConditionalConverter<T> : IConverter<T, T>
+    public class ConditionalConverter<T> : IConverter<T?, T?>
     {
-        [Tooltip("Decides which branch a value takes. Required once a branch is set.")]
+        [Tooltip("Decides which branch a value takes. Required when a branch is set.")]
         [TypeSelector]
-        [SerializeReference] private IConverter<T, bool>? _predicate;
+        [SerializeReference] private IConverter<T?, bool>? _predicate;
 
         [Tooltip("Applied when the predicate is true. When empty, the value passes through.")]
         [TypeSelector]
-        [SerializeReference] private IConverter<T, T>? _then;
+        [SerializeReference] private IConverter<T?, T?>? _then;
 
         [Tooltip("Applied when the predicate is false. When empty, the value passes through.")]
         [TypeSelector]
-        [SerializeReference] private IConverter<T, T>? _else;
+        [SerializeReference] private IConverter<T?, T?>? _else;
 
         protected ConditionalConverter() { }
 
         /// <param name="predicate">Decides which branch a value takes.</param>
         /// <param name="then">Applied when the predicate is <see langword="true"/>. When empty, the value passes through.</param>
         /// <param name="else">Applied when the predicate is <see langword="false"/>. When empty, the value passes through.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="predicate"/> is <see langword="null"/>. The branchless shape
-        /// belongs to the Inspector, which reports it and passes the value through.
-        /// </exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="predicate"/> is <see langword="null"/>.</exception>
         public ConditionalConverter(
-            IConverter<T, bool> predicate,
-            IConverter<T, T>? then,
-            IConverter<T, T>? @else)
+            IConverter<T?, bool> predicate,
+            IConverter<T?, T?>? then,
+            IConverter<T?, T?>? @else)
         {
             _then = then;
             _else = @else;
@@ -55,11 +50,8 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified value using the branch the predicate selects.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        /// <returns>
-        /// The result of the selected branch, or the value unchanged when that branch or the
-        /// predicate is empty. A branch left without a predicate is reported on every push.
-        /// </returns>
-        public T Convert(T value)
+        /// <returns>The result of the selected branch, or the value unchanged when that branch or the predicate is empty.</returns>
+        public T? Convert(T? value)
         {
             if (_predicate is null)
             {

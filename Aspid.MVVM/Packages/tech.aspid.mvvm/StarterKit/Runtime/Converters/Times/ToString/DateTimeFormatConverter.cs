@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -47,27 +48,15 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The formatted date, or the default rendering when the format is unusable.</returns>
         public string Convert(DateTime value)
         {
-            var moment = _toLocalTime 
+            var moment = _toLocalTime
                 ? value.ToLocalTime()
                 : value;
-            
+
             var culture = _culture.ToCultureInfo();
 
-            if (string.IsNullOrWhiteSpace(_format)) 
-                return moment.ToString(culture);
-
-            try
-            {
-                return moment.ToString(_format, culture);
-            }
-            catch (FormatException exception)
-            {
-                this.LogError(
-                    problem: $"\"{_format}\" is not a DateTime format ({exception.Message})",
-                    consequence: "Falling back to the default rendering.");
-                
-                return moment.ToString(culture);
-            }
+            return string.IsNullOrWhiteSpace(_format)
+                ? moment.ToString(culture)
+                : this.FormatOrGeneral(moment, _format, culture);
         }
     }
 }

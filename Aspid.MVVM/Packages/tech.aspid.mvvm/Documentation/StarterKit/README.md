@@ -336,7 +336,7 @@ MonoBinder-кастеры для преобразования типов меж�
 | Компонент | Преобразование | Описание |
 |-----------|---------------|----------|
 | `AnyToStringCasterMonoBinder` | `any` -> `string` | Преобразование любого значения в строку |
-| `GenericToStringCasterMonoBinder` | `T` -> `string` | Типизированное преобразование в строку |
+| `ToStringCasterMonoBinder` | `T` -> `string` | Типизированное преобразование в строку |
 | `StringToBoolCasterMonoBinder` | `string` -> `bool` | Преобразование строки в bool |
 | `TimeSpanToStringCasterMonoBinder` | `TimeSpan` -> `string` | Форматирование TimeSpan в строку |
 | `Vector2ToVector3CasterMonoBinder` | `Vector2` -> `Vector3` | Конвертация 2D-вектора в 3D |
@@ -350,11 +350,11 @@ MonoBinder-кастеры для преобразования типов меж�
 
 | Компонент | Режим | Описание |
 |-----------|-------|----------|
-| `UnityGenericOneWayBinder` | OneWay | Универсальный OneWay-биндер |
-| `UnityGenericOneTimeBinder` | OneTime | Универсальный OneTime-биндер |
-| `UnityGenericOneWayToSourceBinder` | OneWayToSource | Универсальный OneWayToSource-биндер |
-| `UnityGenericTwoWayBinder` | TwoWay | Универсальный TwoWay-биндер |
-| `UnityGenericCasterBinder` | -- | Универсальный кастер типов |
+| `UnityDelegateOneWayBinder` | OneWay | Универсальный OneWay-биндер |
+| `UnityDelegateOneTimeBinder` | OneTime | Универсальный OneTime-биндер |
+| `UnityDelegateOneWayToSourceBinder` | OneWayToSource | Универсальный OneWayToSource-биндер |
+| `UnityDelegateTwoWayBinder` | TwoWay | Универсальный TwoWay-биндер |
+| `UnityCasterBinder` | -- | Универсальный кастер типов |
 
 ---
 

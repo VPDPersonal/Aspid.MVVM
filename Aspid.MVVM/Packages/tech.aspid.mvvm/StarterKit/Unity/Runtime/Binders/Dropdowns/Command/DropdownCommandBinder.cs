@@ -22,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<int> _intCommand;
         private IRelayCommand<long> _longCommand;
@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
         public DropdownCommandBinder(
             TMP_Dropdown target,
-            ICanExecuteView customInteractable,
+            ICanExecuteHandler customInteractable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -59,7 +59,7 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfTwo();
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<int, T> _intCommand;
         private IRelayCommand<long, T> _longCommand;
@@ -166,7 +166,7 @@ namespace Aspid.MVVM.StarterKit
         public DropdownCommandBinder(
             TMP_Dropdown target,
             T param,
-            ICanExecuteView customInteractable,
+            ICanExecuteHandler customInteractable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -196,7 +196,7 @@ namespace Aspid.MVVM.StarterKit
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<int, T1, T2> _intCommand;
         private IRelayCommand<long, T1, T2> _longCommand;
@@ -317,7 +317,7 @@ namespace Aspid.MVVM.StarterKit
             TMP_Dropdown target,
             T1 param1,
             T2 param2,
-            ICanExecuteView customInteractable,
+            ICanExecuteHandler customInteractable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -351,7 +351,7 @@ namespace Aspid.MVVM.StarterKit
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
 
         [Tooltip("Custom view for reflecting command executability.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<int, T1, T2, T3> _intCommand;
         private IRelayCommand<long, T1, T2, T3> _longCommand;
@@ -486,7 +486,7 @@ namespace Aspid.MVVM.StarterKit
             T1 param1,
             T2 param2,
             T3 param3,
-            ICanExecuteView customInteractable,
+            ICanExecuteHandler customInteractable,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -524,7 +524,7 @@ namespace Aspid.MVVM.StarterKit
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
 
         /// <summary>

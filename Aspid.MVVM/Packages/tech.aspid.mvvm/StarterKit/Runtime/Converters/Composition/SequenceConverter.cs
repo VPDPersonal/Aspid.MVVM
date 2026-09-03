@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -25,7 +26,7 @@ namespace Aspid.MVVM.StarterKit
         [UsedInModes(BindMode.TwoWay, BindMode.OneWayToSource)]
         [SerializeField] private ConverterFallback<T?> _convertBackFallback = new(default, ConverterFailureMode.ReturnInput);
 
-        /// <remarks>Default: an empty chain — the value passes through.</remarks>
+        /// <remarks>Default: an empty chain, the value passes through.</remarks>
         public SequenceConverter() { }
 
         /// <param name="converters">The converters to apply in sequence. Empty slots are skipped. The array is copied.</param>
@@ -37,7 +38,9 @@ namespace Aspid.MVVM.StarterKit
         /// When omitted, returns the input value unchanged.
         /// </param>
         /// <param name="converters">The converters to apply in sequence. Empty slots are skipped. The array is copied.</param>
-        public SequenceConverter(ConverterFallback<T?>? convertBackFallback, params IConverter<T?, T?>[]? converters)
+        public SequenceConverter(
+            ConverterFallback<T?>? convertBackFallback,
+            params IConverter<T?, T?>[]? converters)
         {
             _convertBackFallback = convertBackFallback ?? _convertBackFallback;
             _converters = converters is null or { Length: 0 }
@@ -68,7 +71,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to convert back.</param>
         /// <returns>The value with every link undone, or the fallback if any link converts one way only.</returns>
-        /// <remarks>A one-way link is reported and nothing is undone — a partly undone chain is worse.</remarks>
+        /// <remarks>A one-way link is reported and nothing is undone.</remarks>
         public T? ConvertBack(T? value)
         {
             if (_converters is null) return value;
@@ -76,7 +79,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (oneWay is not null)
             {
-                var converterName = ConverterMessageText.GetTypeName(oneWay.GetType());
+                var converterName = oneWay.GetType().GetTypeName();
 
                 return _convertBackFallback.Fail(
                     converter: this,

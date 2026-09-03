@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
@@ -12,9 +13,6 @@ namespace Aspid.MVVM.StarterKit
     /// add, remove, replace, move and reset changes onto a View.
     /// </summary>
     /// <typeparam name="T">The element type of the list.</typeparam>
-    /// <remarks>
-    /// Multi-item <see cref="NotifyCollectionChangedAction.Replace"/> throws <see cref="NotImplementedException"/>.
-    /// </remarks>
     public abstract class ObservableListBinder<T> : Binder,
         IBinder<IReadOnlyList<T>>,
         IBinder<IReadOnlyFilteredList<T>>,
@@ -55,84 +53,6 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeList();
-
-        private void InitializeList(IReadOnlyList<T>? list)
-        {
-            DeinitializeList();
-
-            List = list;
-            if (List is null) return;
-            List = GetFilteredList(list!) ?? list;
-
-            OnAdded(List, index: 0);
-
-            switch (List)
-            {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
-            }
-        }
-
-        private void DeinitializeList()
-        {
-            if (List is null) return;
-
-            switch (List)
-            {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
-            }
-
-            List = null;
-            OnReset();
-        }
-
-        private void OnCollectionChanged()
-        {
-            OnReset();
-            OnAdded(List, index: 0);
-        }
-
-        private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    {
-                        if (e.IsSingleItem) OnAdded(e.NewItem, e.NewStartingIndex);
-                        else OnAdded(e.NewItems, e.NewStartingIndex);
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Remove:
-                    {
-                        if (e.IsSingleItem) OnRemoved(e.OldItem, e.OldStartingIndex);
-                        else OnRemoved(e.OldItems, e.OldStartingIndex);
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Replace:
-                    {
-                        if (e.IsSingleItem) OnReplaced(e.OldItem, e.NewItem, e.OldStartingIndex);
-                        else throw new NotImplementedException();
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Reset:
-                    {
-                        OnReset();
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Move:
-                    {
-                        OnMoved(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
-                    }
-                    break;
-
-                default: throw new ArgumentOutOfRangeException();
-            }
-        }
 
         /// <summary>
         /// Called on binding to optionally wrap the list in a filtered view. Override to add a filter.
@@ -190,5 +110,90 @@ namespace Aspid.MVVM.StarterKit
         /// Called when the list was cleared or replaced; the View should drop every item.
         /// </summary>
         protected abstract void OnReset();
+        
+        private void InitializeList(IReadOnlyList<T>? list)
+        {
+            DeinitializeList();
+
+            List = list;
+            if (list is null) return;
+            List = GetFilteredList(list) ?? list;
+
+            OnAdded(List, index: 0);
+
+            switch (List)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+            }
+        }
+
+        private void DeinitializeList()
+        {
+            if (List is null) return;
+
+            switch (List)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+
+            List = null;
+            OnReset();
+        }
+
+        private void OnCollectionChanged()
+        {
+            OnReset();
+            OnAdded(List, index: 0);
+        }
+
+        private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T?> e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    {
+                        if (e.IsSingleItem) OnAdded(e.NewItem, e.NewStartingIndex);
+                        else OnAdded(e.NewItems, e.NewStartingIndex);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    {
+                        if (e.IsSingleItem) OnRemoved(e.OldItem, e.OldStartingIndex);
+                        else OnRemoved(e.OldItems, e.OldStartingIndex);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Replace:
+                    {
+                        if (e.IsSingleItem)
+                        {
+                            OnReplaced(e.OldItem, e.NewItem, e.OldStartingIndex);
+                        }
+                        else if (e.OldItems is not null && e.NewItems is not null)
+                        {
+                            for (var i = 0; i < e.NewItems.Count; i++)
+                                OnReplaced(e.OldItems[i], e.NewItems[i], e.OldStartingIndex + i);
+                        }
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    {
+                        OnReset();
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Move:
+                    {
+                        OnMoved(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
+                    }
+                    break;
+
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }

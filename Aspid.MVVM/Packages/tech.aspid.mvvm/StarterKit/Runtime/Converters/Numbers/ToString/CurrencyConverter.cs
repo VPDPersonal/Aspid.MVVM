@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -40,11 +41,15 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="symbol">The symbol placed beside the amount.</param>
         /// <param name="position">Which side of the amount the symbol goes on.</param>
         /// <param name="decimals">How many decimals to show.</param>
-        public CurrencyConverter(string symbol, SymbolPosition position = SymbolPosition.Before, int decimals = 0)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="decimals"/> is negative.</exception>
+        public CurrencyConverter(
+            string symbol,
+            SymbolPosition position = SymbolPosition.Before,
+            int decimals = 0)
         {
             _symbol = symbol;
             _position = position;
-            _decimals = decimals;
+            _decimals = decimals >= 0 ? decimals : throw new ArgumentOutOfRangeException(nameof(decimals));
         }
 
         /// <summary>
@@ -54,18 +59,20 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The formatted amount with its symbol; a negative keeps the sign in front.</returns>
         public string Convert(double value)
         {
-            // The magnitude is formatted on its own so that a debt reads as -$5 rather than as $-5.
             var sign = value < 0d ? "-" : string.Empty;
             var text = Math.Abs(value).ToString(Format(), _culture.ToCultureInfo());
 
             return _position is SymbolPosition.Before ? sign + _symbol + text : sign + text + _symbol;
         }
 
-        string IConverter<int, string>.Convert(int value) => Convert(value);
+        string IConverter<int, string>.Convert(int value) =>
+            Convert(value);
 
-        string IConverter<long, string>.Convert(long value) => Convert(value);
+        string IConverter<long, string>.Convert(long value) =>
+            Convert(value);
 
-        string IConverter<float, string>.Convert(float value) => Convert(value);
+        string IConverter<float, string>.Convert(float value) => 
+            Convert(value);
 
         private string Format() => _groupDigits
             ? NumericFormat.Grouped(_decimals)

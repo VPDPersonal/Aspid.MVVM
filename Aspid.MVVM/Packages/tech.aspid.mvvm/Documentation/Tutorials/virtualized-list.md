@@ -144,68 +144,53 @@ public sealed partial class ListView : MonoView
 
 ## Фильтры и компараторы
 
-### IViewModelCollectionFilter
+### ICollectionFilter\<IViewModel\>
 
 Фильтр для коллекционных биндеров, задаётся в Inspector:
 
 ```csharp
 [Serializable]
-public sealed class CompletedCollectionFilter : IViewModelCollectionFilter
+public sealed class CompletedCollectionFilter : ICollectionFilter<IViewModel>
 {
     [SerializeField] private bool _isCompleted;
 
-    public Predicate<IViewModel> Get() => viewModel =>
-    {
-        if (viewModel is ItemViewModel itemViewModel)
-            return itemViewModel.IsCompleted == _isCompleted;
-        return false;
-    };
+    public bool Matches(IViewModel item) =>
+        item is ItemViewModel viewModel && viewModel.IsCompleted == _isCompleted;
 }
 ```
 
 ```csharp
 [Serializable]
-public sealed class EvenCollectionFilter : IViewModelCollectionFilter
+public sealed class EvenCollectionFilter : ICollectionFilter<IViewModel>
 {
     [SerializeField] private bool _isInvert;
 
-    public Predicate<IViewModel> Get() => viewModel =>
-    {
-        if (viewModel is ItemViewModel itemViewModel)
-            return (itemViewModel.Number % 2 is 0) != _isInvert;
-        return false;
-    };
+    public bool Matches(IViewModel item) =>
+        item is ItemViewModel viewModel && (viewModel.Number % 2 is 0) != _isInvert;
 }
 ```
 
-### IViewModelCollectionComparer
+### ICollectionOrder\<IViewModel\>
 
-Сортировка для коллекционных биндеров:
+Сортировка для коллекционных биндеров. Интерфейс наследует `IComparer<T>`:
 
 ```csharp
 [Serializable]
-public sealed class NumberCollectionComparer : IViewModelCollectionComparer
+public sealed class NumberCollectionOrder : ICollectionOrder<IViewModel>
 {
     [SerializeField] private bool _isInvert;
 
-    public IComparer<IViewModel> Get() => new Comparer(_isInvert);
-
-    private class Comparer : IComparer<IViewModel>
+    public int Compare(IViewModel x, IViewModel y)
     {
-        private readonly bool _isInvert;
-        public Comparer(bool isInvert) { _isInvert = isInvert; }
+        if (x is not ItemViewModel itemX || y is not ItemViewModel itemY) return 0;
 
-        public int Compare(IViewModel x, IViewModel y)
-        {
-            if (x is not ItemViewModel itemX || y is not ItemViewModel itemY) return 0;
-            var result = itemX.Number.CompareTo(itemY.Number);
-            return _isInvert ? -result : result;
-        }
+        var result = itemX.Number.CompareTo(itemY.Number);
+        return _isInvert ? -result : result;
     }
 }
 ```
 
-Фильтры и компараторы задаются в Inspector на `VirtualizedListItemSourceMonoBinder` через `[SerializeReference]`.
+Фильтры и сортировки задаются в Inspector на `VirtualizedListItemSourceMonoBinder` через `[SerializeReference]`.
 
 ---
 
@@ -232,8 +217,8 @@ public sealed class NumberCollectionComparer : IViewModelCollectionComparer
 | `FilteredList<T>` | Автоматическая фильтрация коллекции |
 | `IComponentInitializable` | Инициализация ViewModel из Unity-компонента |
 | `[Serializable]` ViewModel | Настройка ViewModel из Inspector |
-| `IViewModelCollectionFilter` | Фильтр на стороне View (Inspector) |
-| `IViewModelCollectionComparer` | Сортировка на стороне View (Inspector) |
+| `ICollectionFilter<IViewModel>` | Фильтр на стороне View (Inspector) |
+| `ICollectionOrder<IViewModel>` | Сортировка на стороне View (Inspector) |
 | Виртуализация | Рендеринг только видимых элементов |
 
 ---

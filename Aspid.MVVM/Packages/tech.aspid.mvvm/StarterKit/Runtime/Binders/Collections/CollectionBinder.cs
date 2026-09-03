@@ -1,7 +1,7 @@
-using System;
+#nullable enable
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using Aspid.Collections.Observable;
+using System.Collections.Specialized;
 using Aspid.Collections.Observable.Filtered;
 
 // ReSharper disable once CheckNamespace
@@ -12,9 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// Observable and filtered lists are followed through their change notifications.
     /// </summary>
     /// <typeparam name="T">The element type of the collection.</typeparam>
-    public abstract class CollectionBinder<T> : Binder,
-        IBinder<IReadOnlyCollection<T>>,
-        IDisposable
+    public abstract class CollectionBinder<T> : Binder, IBinder<IReadOnlyCollection<T>>
     {
         /// <summary>
         /// Gets the bound collection, or <see langword="null"/> when none is set.
@@ -46,7 +44,74 @@ namespace Aspid.MVVM.StarterKit
                 case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
             }
         }
+        
+        /// <summary>
+        /// Unsubscribes from the bound collection.
+        /// </summary>
+        protected override void OnUnbound() =>
+            UnsubscribeFromCollection();
 
+        /// <summary>
+        /// Called with the whole collection on binding and after a filter reset.
+        /// </summary>
+        /// <param name="values">The items to show.</param>
+        protected abstract void OnAdded(IReadOnlyCollection<T>? values);
+
+        /// <summary>
+        /// Called when one item was added.
+        /// </summary>
+        /// <param name="newItem">The added item.</param>
+        protected abstract void OnAdded(T? newItem);
+
+        /// <summary>
+        /// Called when several items were added at once.
+        /// </summary>
+        /// <param name="newItems">The added items.</param>
+        protected abstract void OnAdded(IReadOnlyList<T?>? newItems);
+
+        /// <summary>
+        /// Called when one item was removed.
+        /// </summary>
+        /// <param name="oldItem">The removed item.</param>
+        protected abstract void OnRemoved(T? oldItem);
+
+        /// <summary>
+        /// Called when several items were removed at once.
+        /// </summary>
+        /// <param name="oldItems">The removed items.</param>
+        protected abstract void OnRemoved(IReadOnlyList<T?>? oldItems);
+
+        /// <summary>
+        /// Called when the item at <paramref name="index"/> was replaced.
+        /// </summary>
+        /// <param name="oldItem">The item before replacement.</param>
+        /// <param name="newItem">The item after replacement.</param>
+        /// <param name="index">The index of the replaced item.</param>
+        protected abstract void OnReplaced(T? oldItem, T? newItem, int index);
+
+        /// <summary>
+        /// Called when an item was moved.
+        /// </summary>
+        /// <param name="oldItem">The item at <paramref name="oldStartingIndex"/> before the move.</param>
+        /// <param name="newItem">The item at <paramref name="newStartingIndex"/> after the move.</param>
+        /// <param name="oldStartingIndex">The index before the move.</param>
+        /// <param name="newStartingIndex">The index after the move.</param>
+        protected abstract void OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
+
+        /// <summary>
+        /// Called when the collection was cleared or replaced; the View should drop every item.
+        /// </summary>
+        protected abstract void OnReset();
+
+        private void UnsubscribeFromCollection()
+        {
+            switch (Collection)
+            {
+                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+            }
+        }
+        
         private void OnCollectionChanged()
         {
             OnReset();
@@ -62,13 +127,13 @@ namespace Aspid.MVVM.StarterKit
                 case NotifyCollectionChangedAction.Add:
                     {
                         if (e.IsSingleItem) OnAdded(e.NewItem);
-                        else OnAdded(e.NewItems!);
+                        else OnAdded(e.NewItems);
                     } break;
 
                 case NotifyCollectionChangedAction.Remove:
                     {
                         if (e.IsSingleItem) OnRemoved(e.OldItem);
-                        else OnRemoved(e.OldItems!);
+                        else OnRemoved(e.OldItems);
                     } break;
 
                 case NotifyCollectionChangedAction.Reset:
@@ -97,78 +162,6 @@ namespace Aspid.MVVM.StarterKit
                     {
                         OnMoved(e.OldItem, e.NewItem, e.OldStartingIndex, e.NewStartingIndex);
                     } break;
-            }
-        }
-
-        /// <summary>
-        /// Called with the whole collection on binding and after a filter reset.
-        /// </summary>
-        /// <param name="values">The items to show.</param>
-        protected abstract void OnAdded(IReadOnlyCollection<T> values);
-
-        /// <summary>
-        /// Called when one item was added.
-        /// </summary>
-        /// <param name="newItem">The added item.</param>
-        protected abstract void OnAdded(T? newItem);
-
-        /// <summary>
-        /// Called when several items were added at once.
-        /// </summary>
-        /// <param name="newItems">The added items.</param>
-        protected abstract void OnAdded(IReadOnlyList<T?> newItems);
-
-        /// <summary>
-        /// Called when one item was removed.
-        /// </summary>
-        /// <param name="oldItem">The removed item.</param>
-        protected abstract void OnRemoved(T? oldItem);
-
-        /// <summary>
-        /// Called when several items were removed at once.
-        /// </summary>
-        /// <param name="oldItems">The removed items.</param>
-        protected abstract void OnRemoved(IReadOnlyList<T?> oldItems);
-
-        /// <summary>
-        /// Called when the item at <paramref name="index"/> was replaced.
-        /// </summary>
-        /// <param name="oldItem">The item before replacement.</param>
-        /// <param name="newItem">The item after replacement.</param>
-        /// <param name="index">The index of the replaced item.</param>
-        protected abstract void OnReplaced(T? oldItem, T? newItem, int index);
-
-        /// <summary>
-        /// Called when an item was moved.
-        /// </summary>
-        /// <param name="oldItem">The item at <paramref name="oldStartingIndex"/> before the move.</param>
-        /// <param name="newItem">The item at <paramref name="newStartingIndex"/> after the move.</param>
-        /// <param name="oldStartingIndex">The index before the move.</param>
-        /// <param name="newStartingIndex">The index after the move.</param>
-        protected abstract void OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
-
-        /// <summary>
-        /// Called when the collection was cleared or replaced; the View should drop every item.
-        /// </summary>
-        protected abstract void OnReset();
-
-        /// <summary>
-        /// Unsubscribes from the bound collection.
-        /// </summary>
-        protected override void OnUnbound() =>
-            UnsubscribeFromCollection();
-
-        /// <summary>
-        /// Clears the binding, resetting the View and unsubscribing from the collection.
-        /// </summary>
-        public virtual void Dispose() => SetValue(null);
-
-        private void UnsubscribeFromCollection()
-        {
-            switch (Collection)
-            {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
             }
         }
     }

@@ -73,7 +73,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="value">The value to be provided to the binder.</param>
         /// <returns>A singleton instance of <see cref="OneTimeBindableMember{T}"/> configured with the specified value.</returns>
-        public static OneTimeBindableMember<T> Get(T value)
+        public static OneTimeBindableMember<T> Get(T? value)
         {
 #if PROFILER
             using (_getMarker.Auto())

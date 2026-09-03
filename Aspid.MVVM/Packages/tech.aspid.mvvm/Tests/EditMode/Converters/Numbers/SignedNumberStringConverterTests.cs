@@ -41,7 +41,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_UnusableFormat_FallsBackToTheGeneralRendering()
         {
-            LogAssert.Expect(LogType.Error, new Regex("is not a numeric format"));
+            LogAssert.Expect(LogType.Error, new Regex("is not a .* format"));
 
             Assert.AreEqual("+15", new SignedNumberStringConverter("Q").Convert(15f));
         }

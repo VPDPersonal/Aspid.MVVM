@@ -317,7 +317,7 @@ MonoBehaviour:
   _component: {fileID: 506593844}
   _filter:
     rid: -2
-  _comparer:
+  _order:
     rid: -2
   _isDebug: 0
   _log: []
@@ -498,7 +498,7 @@ MonoBehaviour:
   _component: {fileID: 847237789}
   _filter:
     rid: 9030169415659553746
-  _comparer:
+  _order:
     rid: 7078447094558622478
   _isDebug: 0
   _log: []
@@ -506,7 +506,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 7078447094558622478
-      type: {class: NumberCollectionComparer, ns: Aspid.MVVM.Samples.VirtualizedList, asm: Aspid.MVVM.Samples.VirtualizedList}
+      type: {class: NumberCollectionOrder, ns: Aspid.MVVM.Samples.VirtualizedList, asm: Aspid.MVVM.Samples.VirtualizedList}
       data:
         _isInvert: 1
     - rid: 9030169415659553746
@@ -1665,7 +1665,7 @@ MonoBehaviour:
   _component: {fileID: 1781671046}
   _filter:
     rid: -2
-  _comparer:
+  _order:
     rid: -2
   _isDebug: 0
   _log: []

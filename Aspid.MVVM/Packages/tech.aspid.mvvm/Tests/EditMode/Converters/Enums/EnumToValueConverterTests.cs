@@ -18,7 +18,7 @@ namespace Aspid.MVVM.Tests
         public void Convert_MapsAndFallsBack()
         {
             var converter = new EnumToValueConverter<Weather, Color>(
-                new EnumToValueConverter<Weather, Color>.Entry[]
+                new LookupEntry<Weather, Color>[]
                 {
                     new(Weather.Clear, Color.yellow),
                     new(Weather.Rain, Color.blue),
@@ -46,8 +46,8 @@ namespace Aspid.MVVM.Tests
             var converter = new EnumToValueConverter<Medal, string>(
                 new[]
                 {
-                    new EnumToValueConverter<Medal, string>.Entry(Medal.Bronze, "first"),
-                    new EnumToValueConverter<Medal, string>.Entry(Medal.Bronze, "second"),
+                    new LookupEntry<Medal, string>(Medal.Bronze, "first"),
+                    new LookupEntry<Medal, string>(Medal.Bronze, "second"),
                 },
                 fallback: "none");
 
@@ -61,10 +61,10 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_MapArray_IsCopiedOnConstruction()
         {
-            var entries = new[] { new EnumToValueConverter<Medal, string>.Entry(Medal.Bronze, "before") };
+            var entries = new[] { new LookupEntry<Medal, string>(Medal.Bronze, "before") };
             var converter = new EnumToValueConverter<Medal, string>(entries, fallback: "none");
 
-            entries[0] = new EnumToValueConverter<Medal, string>.Entry(Medal.Bronze, "after");
+            entries[0] = new LookupEntry<Medal, string>(Medal.Bronze, "after");
 
             Assert.AreEqual("before", converter.Convert(Medal.Bronze));
         }

@@ -231,7 +231,7 @@ public sealed class CustomToggleBinder : MonoBinder, IBinder<bool>, IReverseBind
 using Aspid.MVVM.StarterKit;
 
 // Без MonoBehaviour — для привязки из кода
-var binder = new GenericOneWayBinder<string>(value =>
+var binder = new DelegateOneWayBinder<string>(value =>
 {
     Debug.Log($"Значение изменилось: {value}");
 });

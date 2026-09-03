@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Aspid.FastTools.Types;
 
@@ -5,8 +6,7 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Wraps a function — or another converter's <c>Convert</c> — as an
-    /// <see cref="IConverter{TFrom, TTo}"/>.
+    /// Wraps a function, or another converter's <c>Convert</c>, as an <see cref="IConverter{TFrom, TTo}"/>.
     /// </summary>
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>

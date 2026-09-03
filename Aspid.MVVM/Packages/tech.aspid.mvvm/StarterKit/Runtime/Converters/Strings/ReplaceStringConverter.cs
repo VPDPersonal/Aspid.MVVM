@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -16,10 +17,10 @@ namespace Aspid.MVVM.StarterKit
     public sealed class ReplaceStringConverter : IConverter<string?, string?>
     {
         [Tooltip("The text to look for. When empty, the string passes through.")]
-        [SerializeField] private string _search = string.Empty;
+        [SerializeField] private string? _search = string.Empty;
 
         [Tooltip("The text put in its place.")]
-        [SerializeField] private string _replacement = string.Empty;
+        [SerializeField] private string? _replacement = string.Empty;
 
         [Tooltip("Match without regard to case.")]
         [SerializeField] private bool _ignoreCase;
@@ -30,7 +31,10 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="search">The text to look for. When empty, the string passes through.</param>
         /// <param name="replacement">The text put in its place.</param>
         /// <param name="ignoreCase">If <see langword="true"/>, matches without regard to case.</param>
-        public ReplaceStringConverter(string search, string replacement, bool ignoreCase = false)
+        public ReplaceStringConverter(
+            string search,
+            string replacement,
+            bool ignoreCase = false)
         {
             _search = search;
             _replacement = replacement;
@@ -46,7 +50,10 @@ namespace Aspid.MVVM.StarterKit
         {
             if (value is null || string.IsNullOrEmpty(_search)) return value;
 
-            var comparison = _ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            var comparison = _ignoreCase
+                ? StringComparison.OrdinalIgnoreCase
+                : StringComparison.Ordinal;
+
             return value.Replace(_search, _replacement ?? string.Empty, comparison);
         }
     }

@@ -16,19 +16,19 @@ namespace Aspid.MVVM.Tests
     [TestFixture]
     public sealed class TimeSpanArithmeticConverterTests
     {
-        [TestCase(NumberOperation.Plus, 30f, 60d, 90d)]
-        [TestCase(NumberOperation.Minus, 30f, 60d, 30d)]
+        [TestCase(NumberOperation.Add, 30f, 60d, 90d)]
+        [TestCase(NumberOperation.Subtract, 30f, 60d, 30d)]
         // Subtracting past zero is allowed to go negative rather than clamping — a progress ring that
         // overran shows a negative duration, not a frozen one.
-        [TestCase(NumberOperation.Minus, 90f, 60d, -30d)]
+        [TestCase(NumberOperation.Subtract, 90f, 60d, -30d)]
         // The total-minus-elapsed case the class exists for.
         [TestCase(NumberOperation.ReverseSubtract, 30f, 10d, 20d)]
         [TestCase(NumberOperation.ReverseSubtract, 10f, 60d, -50d)]
         // For Multiply and Division the operand is a plain factor, not a number of seconds.
         [TestCase(NumberOperation.Multiply, 2f, 60d, 120d)]
         [TestCase(NumberOperation.Multiply, 0f, 60d, 0d)]
-        [TestCase(NumberOperation.Division, 2f, 60d, 30d)]
-        [TestCase(NumberOperation.Division, -2f, 60d, -30d)]
+        [TestCase(NumberOperation.Divide, 2f, 60d, 30d)]
+        [TestCase(NumberOperation.Divide, -2f, 60d, -30d)]
         [TestCase(NumberOperation.Modulo, 60f, 90d, 30d)]
         [TestCase(NumberOperation.Modulo, 60f, 30d, 30d)]
         // Power and ReverseDivide read the duration as its number of seconds and the result back as
@@ -64,14 +64,14 @@ namespace Aspid.MVVM.Tests
         public void Convert_Plus_KeepsASecondAFloatOfSecondsWouldLose() =>
             Assert.AreEqual(
                 TimeSpan.FromDays(365) + TimeSpan.FromSeconds(1),
-                new TimeSpanArithmeticConverter(NumberOperation.Plus, 1f).Convert(TimeSpan.FromDays(365)));
+                new TimeSpanArithmeticConverter(NumberOperation.Add, 1f).Convert(TimeSpan.FromDays(365)));
 
         // The operand is a number of seconds, not a whole one.
         [Test]
         public void Convert_Plus_KeepsAFractionalOperand() =>
             Assert.AreEqual(
                 TimeSpan.FromSeconds(1.5),
-                new TimeSpanArithmeticConverter(NumberOperation.Plus, 0.5f).Convert(TimeSpan.FromSeconds(1)));
+                new TimeSpanArithmeticConverter(NumberOperation.Add, 0.5f).Convert(TimeSpan.FromSeconds(1)));
 
         // Left to TimeSpan.FromTicks the overflow would wrap into a negative duration, which is wrong
         // in a way that still looks like a plausible reading on a label.
@@ -114,7 +114,7 @@ namespace Aspid.MVVM.Tests
         public void Convert_ADurationNearMaxValue_LosesTicksToTheDoublePipeline() =>
             Assert.AreEqual(
                 9223372036854774784L,
-                new TimeSpanArithmeticConverter(NumberOperation.Plus, 0f).Convert(new TimeSpan(long.MaxValue - 1000L)).Ticks);
+                new TimeSpanArithmeticConverter(NumberOperation.Add, 0f).Convert(new TimeSpan(long.MaxValue - 1000L)).Ticks);
 
         [Test]
         public void Convert_Division_ByAZeroOperand_ReturnsTheDuration()
@@ -123,7 +123,7 @@ namespace Aspid.MVVM.Tests
 
             Assert.AreEqual(
                 TimeSpan.FromSeconds(60),
-                new TimeSpanArithmeticConverter(NumberOperation.Division, 0f).Convert(TimeSpan.FromSeconds(60)));
+                new TimeSpanArithmeticConverter(NumberOperation.Divide, 0f).Convert(TimeSpan.FromSeconds(60)));
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace Aspid.MVVM.Tests
             for (var index = 0; index < 3; index++)
                 LogAssert.Expect(LogType.Error, new Regex("division by a zero operand"));
 
-            var converter = new TimeSpanArithmeticConverter(NumberOperation.Division, 0f);
+            var converter = new TimeSpanArithmeticConverter(NumberOperation.Divide, 0f);
             converter.Convert(TimeSpan.FromSeconds(1));
             converter.Convert(TimeSpan.FromSeconds(2));
             converter.Convert(TimeSpan.FromSeconds(3));

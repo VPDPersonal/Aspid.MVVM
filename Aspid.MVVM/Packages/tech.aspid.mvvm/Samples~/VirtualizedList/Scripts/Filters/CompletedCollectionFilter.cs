@@ -6,16 +6,11 @@ using Aspid.MVVM.StarterKit;
 namespace Aspid.MVVM.Samples.VirtualizedList
 {
     [Serializable]
-    public sealed class CompletedCollectionFilter : IViewModelCollectionFilter
+    public sealed class CompletedCollectionFilter : ICollectionFilter<IViewModel>
     {
         [SerializeField] private bool _isCompleted;
-        
-        public Predicate<IViewModel> Get() => viewModel =>
-        {
-            if (viewModel is ItemViewModel itemViewModel)
-                return itemViewModel.IsCompleted == _isCompleted;
 
-            return false;
-        };
+        public bool Matches(IViewModel item) =>
+            item is ItemViewModel viewModel && viewModel.IsCompleted == _isCompleted;
     }
 }

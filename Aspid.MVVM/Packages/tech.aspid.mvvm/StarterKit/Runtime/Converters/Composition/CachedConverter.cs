@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -12,17 +13,8 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TFrom">The type of the input value.</typeparam>
     /// <typeparam name="TTo">The type of the converted output value.</typeparam>
     /// <remarks>
-    /// Binders push on every notification, not on every change, so an allocating converter allocates
-    /// once per push even while the value stands still.
-    /// <para>
-    /// Only wrap a pure converter — one that also reads outside its input keeps returning what it
-    /// computed when the input last changed. Inputs are compared by default equality, so a
-    /// reference-typed input mutated in place counts as unchanged.
-    /// </para>
-    /// <para>
-    /// The two directions cache separately: converting a value and converting it back is not
-    /// guaranteed to round-trip.
-    /// </para>
+    /// Wrap only a pure converter. Inputs are compared by default equality, so a reference mutated
+    /// in place counts as unchanged. The two directions cache separately.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(
@@ -46,10 +38,7 @@ namespace Aspid.MVVM.StarterKit
         protected CachedConverter() { }
 
         /// <param name="inner">The converter to memoize.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="inner"/> is <see langword="null"/>. The empty shape belongs to
-        /// the Inspector, which reports it and returns the default value.
-        /// </exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="inner"/> is <see langword="null"/>.</exception>
         public CachedConverter(IConverter<TFrom?, TTo?> inner)
         {
             _inner = inner ?? throw new ArgumentNullException(nameof(inner));
@@ -98,7 +87,7 @@ namespace Aspid.MVVM.StarterKit
 
             if (_inner is not ITwoWayConverter<TFrom?, TTo?> inner)
             {
-                var converterName = ConverterMessageText.GetTypeName(_inner.GetType());
+                var converterName = _inner.GetType().GetTypeName();
 
                 this.LogError(
                     problem: $"{converterName} converts one way only, so the conversion cannot be undone",

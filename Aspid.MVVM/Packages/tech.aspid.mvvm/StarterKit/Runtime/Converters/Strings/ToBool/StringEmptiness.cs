@@ -4,10 +4,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// What <see cref="StringEmptyToBoolConverter"/> counts as an absent string.
     /// </summary>
-    /// <remarks>
-    /// <see cref="NullOrEmpty"/> is declared first so that converters serialized before this setting
-    /// existed keep the behavior they were authored with.
-    /// </remarks>
+    /// <remarks>Members are appended, never inserted: the order is the serialized value.</remarks>
     public enum StringEmptiness
     {
         /// <summary>

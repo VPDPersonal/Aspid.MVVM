@@ -1,142 +1,64 @@
 using UnityEditor;
+using UnityEngine;
 using NUnit.Framework;
-using System.Globalization;
 using Aspid.MVVM.StarterKit;
+using UnityEngine.TestTools;
+using System.Reflection;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
-    /// Tests for the casters that parse a bound string: <see cref="StringToIntCasterMonoBinder"/>,
+    /// Tests for the casters that read a bound string through a converter: <see cref="StringToIntCasterMonoBinder"/>,
     /// <see cref="StringToFloatCasterMonoBinder"/> and <see cref="StringToEnumCasterMonoBinder{TEnum}"/>.
     /// </summary>
     [TestFixture]
     public sealed class ParsingCasterTests : SceneFixture
     {
-        #region Parsing itself
         [Test]
-        public void AnInteger_Parses()
-        {
-            Assert.IsTrue(StringNumberParse.TryInt("42", out var parsed));
-            Assert.AreEqual(42, parsed);
-        }
-
-        [Test]
-        public void AHalfTypedNumber_DoesNotParse()
-        {
-            Assert.IsFalse(StringNumberParse.TryInt("-", out _), "A lone minus sign parsed as a number");
-            Assert.IsFalse(StringNumberParse.TryInt(string.Empty, out _), "An empty string parsed as a number");
-            Assert.IsFalse(StringNumberParse.TryInt(null, out _), "null parsed as a number");
-            Assert.IsFalse(StringNumberParse.TryFloat("1,2,3", out _), "Garbage parsed as a number");
-        }
-
-        [Test]
-        public void NullOrWhitespace_FailAndLeaveTheOutParameterAtZero()
-        {
-            Assert.IsFalse(StringNumberParse.TryInt(null, out var intFromNull), "null parsed as an int");
-            Assert.AreEqual(0, intFromNull);
-
-            Assert.IsFalse(StringNumberParse.TryInt("   ", out var intFromWhitespace), "Whitespace parsed as an int");
-            Assert.AreEqual(0, intFromWhitespace);
-
-            Assert.IsFalse(StringNumberParse.TryFloat(null, out var floatFromNull), "null parsed as a float");
-            Assert.AreEqual(0f, floatFromNull);
-
-            Assert.IsFalse(StringNumberParse.TryFloat("   ", out var floatFromWhitespace), "Whitespace parsed as a float");
-            Assert.AreEqual(0f, floatFromWhitespace);
-        }
-
-        /// <summary>
-        /// The invariant form has to parse whatever the current culture is, or a game shipped in a comma-decimal
-        /// locale would refuse the numbers its own code produced.
-        /// </summary>
-        [Test]
-        public void TheInvariantForm_ParsesUnderACommaDecimalCulture()
-        {
-            var previous = CultureInfo.CurrentCulture;
-
-            try
-            {
-                CultureInfo.CurrentCulture = new CultureInfo("ru-RU");
-
-                Assert.IsTrue(StringNumberParse.TryFloat("1.5", out var invariant), "The invariant form did not parse");
-                Assert.AreEqual(1.5f, invariant, 0.001f);
-
-                Assert.IsTrue(StringNumberParse.TryFloat("1,5", out var local), "The local form did not parse");
-                Assert.AreEqual(1.5f, local, 0.001f);
-            }
-            finally
-            {
-                CultureInfo.CurrentCulture = previous;
-            }
-        }
-
-        /// <summary>
-        /// <c>NaN</c> and <c>Infinity</c> are words float parsing accepts, and a clamp downstream cannot stop them —
-        /// every comparison against <c>NaN</c> is false.
-        /// </summary>
-        [Test]
-        public void NaNAndInfinity_AreRefusedEvenThoughTheyParse()
-        {
-            Assert.IsFalse(StringNumberParse.TryFloat("NaN", out _), "NaN passed parsing");
-            Assert.IsFalse(StringNumberParse.TryFloat("Infinity", out _), "Infinity passed parsing");
-        }
-
-        [Test]
-        public void AnEnumName_ParsesCaseInsensitively()
-        {
-            Assert.IsTrue(EnumNameParse.TryName("onetime", out BindMode parsed));
-            Assert.AreEqual(BindMode.OneTime, parsed);
-        }
-
-        /// <summary>
-        /// <see cref="System.Enum.TryParse{TEnum}(string, bool, out TEnum)"/> accepts any number, including one no
-        /// member has — an enum holding an undefined value fails later and elsewhere.
-        /// </summary>
-        [Test]
-        public void ANumericString_IsRefusedAsAnEnum()
-        {
-            Assert.IsFalse(EnumNameParse.TryName("99", out BindMode _), "A number parsed as an enum member");
-            Assert.IsFalse(EnumNameParse.TryName("1", out BindMode _), "A number parsed as an enum member");
-        }
-
-        [Test]
-        public void AnUnknownName_IsRefusedAsAnEnum() =>
-            Assert.IsFalse(EnumNameParse.TryName("Sideways", out BindMode _));
-        #endregion
-
-        #region The Mono binders
-        [Test]
-        public void TheIntCaster_ForwardsTheParsedValue()
+        public void TheIntCaster_ForwardsTheConvertedValue()
         {
             var (binder, received) = NewIntCaster();
 
             ((IBinder<string>)binder).SetValue("17");
 
-            Assert.AreEqual(new List<int> { 17 }, received, "The parsed value did not reach the UnityEvent");
+            Assert.AreEqual(new List<int> { 17 }, received, "The converted value did not reach the UnityEvent");
         }
 
         [Test]
-        public void TheIntCaster_ForwardsTheFallbackWhenItDoesNotParse()
+        public void TheIntCaster_ForwardsTheConverterFallbackWhenTheTextIsNotANumber()
         {
-            var (binder, received) = NewIntCaster(fallback: -1);
+            var (binder, received) = NewIntCaster(new StringToIntConverter(fallback: -1));
 
+            LogAssert.Expect(LogType.Error, new Regex("StringToIntConverter.*a whole number"));
             ((IBinder<string>)binder).SetValue("abc");
 
             Assert.AreEqual(new List<int> { -1 }, received, "The fallback did not reach the UnityEvent");
         }
 
         [Test]
-        public void TheFloatCaster_ForwardsTheFallbackForANonFiniteValue()
+        public void TheIntCaster_WithoutAConverter_LogsAndForwardsNothing()
+        {
+            var (binder, received) = NewIntCaster(converter: null);
+
+            LogAssert.Expect(LogType.Error, new Regex("no converter is assigned"));
+            ((IBinder<string>)binder).SetValue("17");
+
+            Assert.IsEmpty(received, "A value was forwarded without a converter");
+        }
+
+        [Test]
+        public void TheFloatCaster_ForwardsTheConvertedValue()
         {
             var binder = NewBinder<StringToFloatCasterMonoBinder>();
             var received = new List<float>();
 
             Listen<float>(binder, received.Add);
-            ((IBinder<string>)binder).SetValue("Infinity");
+            ((IBinder<string>)binder).SetValue("2.5");
 
-            Assert.AreEqual(new List<float> { 0f }, received, "The non-finite value passed through instead of the fallback");
+            Assert.AreEqual(2.5f, received[0], 0.001f, "The converted value did not reach the UnityEvent");
         }
 
         /// <summary>
@@ -150,11 +72,11 @@ namespace Aspid.MVVM.Tests
             var serializedObject = new SerializedObject(binder);
 
             Assert.IsNotNull(serializedObject.FindProperty("_casted"), "The UnityEvent is not serialized in the closed subclass");
-            Assert.IsNotNull(serializedObject.FindProperty("_fallback"), "The fallback is not serialized in the closed subclass");
+            Assert.IsNotNull(serializedObject.FindProperty("_converter"), "The converter is not serialized in the closed subclass");
         }
 
         [Test]
-        public void TheEnumCaster_ForwardsTheParsedMember()
+        public void TheEnumCaster_ForwardsTheConvertedMember()
         {
             var binder = NewBinder<StringToBindModeCasterMonoBinder>();
             var received = new List<BindMode>();
@@ -162,48 +84,21 @@ namespace Aspid.MVVM.Tests
             Listen<BindMode>(binder, received.Add);
             ((IBinder<string>)binder).SetValue("TwoWay");
 
-            Assert.AreEqual(new List<BindMode> { BindMode.TwoWay }, received, "The parsed member did not reach the UnityEvent");
+            Assert.AreEqual(new List<BindMode> { BindMode.TwoWay }, received, "The converted member did not reach the UnityEvent");
         }
-        #endregion
-
-        #region The serializable twins
-        [Test]
-        public void TheSerializableTwins_ParseAndFallBack()
-        {
-            var ints = new List<int>();
-            var floats = new List<float>();
-            var modes = new List<BindMode>();
-
-            new StringToIntCasterBinder(ints.Add, fallback: 5).SetValue("8");
-            new StringToIntCasterBinder(ints.Add, fallback: 5).SetValue("eight");
-            new StringToFloatCasterBinder(floats.Add, fallback: 0.5f).SetValue("2.5");
-            new StringToEnumCasterBinder<BindMode>(modes.Add, BindMode.OneTime).SetValue("nothing");
-
-            Assert.AreEqual(new List<int> { 8, 5 }, ints, "The int caster parsed or fell back incorrectly");
-            Assert.AreEqual(2.5f, floats[0], 0.001f, "The float caster parsed incorrectly");
-            Assert.AreEqual(new List<BindMode> { BindMode.OneTime }, modes, "The enum caster did not fall back");
-        }
-
-        [Test]
-        public void TheSerializableTwins_RefuseTheReverseModes()
-        {
-            Assert.Throws<System.InvalidOperationException>(
-                () => _ = new StringToIntCasterBinder(_ => { }, mode: BindMode.OneWayToSource));
-        }
-        #endregion
 
         #region Helpers
-        private (StringToIntCasterMonoBinder Binder, List<int> Received) NewIntCaster(int fallback = 0)
+        private (StringToIntCasterMonoBinder Binder, List<int> Received) NewIntCaster(IConverter<string, int> converter)
+        {
+            var (binder, received) = NewIntCaster();
+            Field(binder, "_converter").SetValue(binder, converter);
+            return (binder, received);
+        }
+
+        private (StringToIntCasterMonoBinder Binder, List<int> Received) NewIntCaster()
         {
             var binder = NewBinder<StringToIntCasterMonoBinder>();
             var received = new List<int>();
-
-            if (fallback != 0)
-            {
-                var serializedObject = new SerializedObject(binder);
-                serializedObject.FindProperty("_fallback").intValue = fallback;
-                serializedObject.ApplyModifiedPropertiesWithoutUndo();
-            }
 
             Listen<int>(binder, received.Add);
             return (binder, received);
@@ -215,21 +110,29 @@ namespace Aspid.MVVM.Tests
         /// </summary>
         private static void Listen<T>(MonoBinder binder, UnityEngine.Events.UnityAction<T> listener)
         {
-            var field = binder.GetType().BaseType is { IsGenericType: true }
-                ? binder.GetType().BaseType!.GetField("_casted",
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-                : binder.GetType().GetField("_casted",
-                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            var field = Field(binder, "_casted");
 
-            Assert.IsNotNull(field, "The binder has no _casted field");
-
-            if (field!.GetValue(binder) is not UnityEngine.Events.UnityEvent<T> unityEvent)
+            if (field.GetValue(binder) is not UnityEngine.Events.UnityEvent<T> unityEvent)
             {
                 unityEvent = new UnityEngine.Events.UnityEvent<T>();
                 field.SetValue(binder, unityEvent);
             }
 
             unityEvent.AddListener(listener);
+        }
+
+        /// <summary>
+        /// Finds a private field on the binder or, for a closed generic subclass, on its generic base.
+        /// </summary>
+        private static FieldInfo Field(MonoBinder binder, string name)
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+
+            var type = binder.GetType();
+            var field = type.GetField(name, flags) ?? type.BaseType?.GetField(name, flags);
+
+            Assert.IsNotNull(field, $"The binder has no {name} field");
+            return field!;
         }
 
         private T NewBinder<T>()

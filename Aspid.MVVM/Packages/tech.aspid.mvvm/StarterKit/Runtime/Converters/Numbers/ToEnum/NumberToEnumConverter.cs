@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -10,11 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Converts a number to the enum value it stands for.
     /// </summary>
     /// <typeparam name="TEnum">The enum type being converted to.</typeparam>
-    /// <remarks>
-    /// A number that names no member is refused rather than cast; a <see cref="FlagsAttribute"/> enum
-    /// still accepts any combination of its declared flags. A float or double carrying a fraction names
-    /// nothing and is refused with the rest.
-    /// </remarks>
+    /// <remarks>A number naming no member is refused; a flags enum accepts any combination of declared flags.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number/To Enum",
@@ -27,29 +24,24 @@ namespace Aspid.MVVM.StarterKit
         IConverter<double, TEnum>
         where TEnum : struct, Enum
     {
-        [Tooltip("Read the number as a member's position in the enum instead of its underlying value.")]
+        [Tooltip("Read the number as a member's position instead of its underlying value.")]
         [SerializeField] private bool _byIndexNotValue;
 
-        [Tooltip("Returned for a number that names no member, which is also reported as an error.")]
+        [Tooltip("Returned for a number that names no member.")]
         [SerializeField] private TEnum _fallback;
 
-        // FromNumber reports a refusal by handing back the fallback it was given, which is also a
-        // legal answer. Two probes that differ tell the two apart: a resolved number answers with
-        // the same member whichever probe is passed, a refused one answers with the probe itself.
+        // FromNumber answers a refusal with the fallback it was given; two different probes tell a refusal from a real member.
         private static readonly TEnum _firstProbe;
         private static readonly TEnum _secondProbe = (TEnum)Enum.ToObject(typeof(TEnum), 1);
 
         /// <remarks>Default: reading the underlying value.</remarks>
         public NumberToEnumConverter() { }
 
-        /// <param name="byIndexNotValue">
-        /// If <see langword="true"/>, reads the number as a member's position in the enum rather
-        /// than as an underlying value.
-        /// </param>
-        /// <param name="fallback">
-        /// Returned for a number that names no member, which is also reported as an error.
-        /// </param>
-        public NumberToEnumConverter(bool byIndexNotValue, TEnum fallback = default)
+        /// <param name="byIndexNotValue">If <see langword="true"/>, reads the number as a member's position.</param>
+        /// <param name="fallback">Returned for a number that names no member.</param>
+        public NumberToEnumConverter(
+            bool byIndexNotValue,
+            TEnum fallback = default)
         {
             _fallback = fallback;
             _byIndexNotValue = byIndexNotValue;
@@ -59,27 +51,26 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified number to an enum value.
         /// </summary>
         /// <param name="value">The number to convert.</param>
-        /// <returns>
-        /// The enum value it stands for. A number that names no member reports an error and returns
-        /// the fallback.
-        /// </returns>
-        public TEnum Convert(int value) => Read(value);
+        /// <returns>The enum value, or the fallback for a number that names no member.</returns>
+        public TEnum Convert(int value) =>
+            Read(value);
 
-        TEnum IConverter<long, TEnum>.Convert(long value) => Read(value);
+        TEnum IConverter<long, TEnum>.Convert(long value) =>
+            Read(value);
 
-        TEnum IConverter<float, TEnum>.Convert(float value) => Whole(value);
+        TEnum IConverter<float, TEnum>.Convert(float value) =>
+            Whole(value);
 
-        TEnum IConverter<double, TEnum>.Convert(double value) => Whole(value);
+        TEnum IConverter<double, TEnum>.Convert(double value) =>
+            Whole(value);
 
         private TEnum Read(long value) => _byIndexNotValue
             ? At(value)
             : FromNumber(value);
 
-        // A fraction sits between two members and names neither, and a value past the long range
-        // cannot be read as an underlying number at all. A NaN fails both tests and lands here too.
         private TEnum Whole(double value)
         {
-            if (value is >= long.MinValue and <= long.MaxValue && value == Math.Floor(value))
+            if (value is >= long.MinValue and <= long.MaxValue && value % 1d is 0d)
                 return Read((long)value);
 
             return Refuse(
@@ -94,7 +85,7 @@ namespace Aspid.MVVM.StarterKit
 
             return Refuse(
                 value: value,
-                expected: $"a position between 0 and {EnumMembers<TEnum>.Values.Length - 1}");
+                expected: $"a position between 0 and {EnumBits<TEnum>.Values.Length - 1}");
         }
 
         private TEnum FromNumber(long value)
@@ -102,8 +93,6 @@ namespace Aspid.MVVM.StarterKit
             var comparer = EqualityComparer<TEnum>.Default;
             var resolved = EnumMembers<TEnum>.FromNumber(value, _firstProbe);
 
-            // Only an answer equal to the first probe is in doubt: it is either the refusal or the
-            // member that genuinely holds that number, and the second probe separates the two.
             if (!comparer.Equals(resolved, _firstProbe)) return resolved;
             if (!comparer.Equals(EnumMembers<TEnum>.FromNumber(value, _secondProbe), _secondProbe)) return resolved;
 

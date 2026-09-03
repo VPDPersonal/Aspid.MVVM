@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -10,8 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Reduces a collection of numbers to one.
     /// </summary>
     /// <remarks>
-    /// Computed in <see cref="double"/>; the int and long results truncate and saturate, and a
-    /// collection of long values past 2^53 loses its low digits.
+    /// Computed in <see cref="double"/>: int and long results truncate and saturate, long values past 2^53 lose precision.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         IConverter<IEnumerable<double>?, float>, IConverter<IEnumerable<double>?, double>
     {
         [Tooltip("What to compute.")]
-        [SerializeField] private Aggregate _operation = Aggregate.Sum;
+        [SerializeField] private AggregateOperation _operation = AggregateOperation.Sum;
 
         [Tooltip("Returned for an empty collection.")]
         [SerializeField] private double _emptyResult;
@@ -39,20 +39,21 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="operation">What to compute.</param>
         /// <param name="emptyResult">Returned for an empty collection.</param>
-        public CollectionAggregateConverter(Aggregate operation, double emptyResult = 0d)
+        public CollectionAggregateConverter(
+            AggregateOperation operation,
+            double emptyResult = 0d)
         {
             _operation = operation;
             _emptyResult = emptyResult;
         }
 
-        #region Reduce
         /// <summary>
         /// Reduces the specified collection.
         /// </summary>
         /// <param name="value">The numbers to reduce.</param>
         /// <returns>
         /// The result, always in <see cref="double"/>, or the empty result when there is nothing to
-        /// reduce or the operation is not a declared <see cref="Aggregate"/>.
+        /// reduce or the operation is not a declared <see cref="AggregateOperation"/>.
         /// </returns>
         public double Reduce(IEnumerable<double>? value)
         {
@@ -100,9 +101,7 @@ namespace Aspid.MVVM.StarterKit
 
             return Result(accumulator);
         }
-        #endregion
 
-        #region Return int
         int IConverter<IEnumerable<int>?, int>.Convert(IEnumerable<int>? value) =>
             NumericSaturation.ToInt(Reduce(value));
 
@@ -114,9 +113,7 @@ namespace Aspid.MVVM.StarterKit
 
         int IConverter<IEnumerable<double>?, int>.Convert(IEnumerable<double>? value) =>
             NumericSaturation.ToInt(Reduce(value));
-        #endregion
 
-        #region Return long
         long IConverter<IEnumerable<int>?, long>.Convert(IEnumerable<int>? value) =>
             NumericSaturation.ToLong(Reduce(value));
 
@@ -128,9 +125,7 @@ namespace Aspid.MVVM.StarterKit
 
         long IConverter<IEnumerable<double>?, long>.Convert(IEnumerable<double>? value) =>
             NumericSaturation.ToLong(Reduce(value));
-        #endregion
 
-        #region Return float
         float IConverter<IEnumerable<int>?, float>.Convert(IEnumerable<int>? value) =>
             (float)Reduce(value);
 
@@ -142,9 +137,7 @@ namespace Aspid.MVVM.StarterKit
 
         float IConverter<IEnumerable<double>?, float>.Convert(IEnumerable<double>? value) =>
             (float)Reduce(value);
-        #endregion
 
-        #region Return double
         double IConverter<IEnumerable<int>?, double>.Convert(IEnumerable<int>? value) =>
             Reduce(value);
 
@@ -156,23 +149,22 @@ namespace Aspid.MVVM.StarterKit
 
         double IConverter<IEnumerable<double>?, double>.Convert(IEnumerable<double>? value) =>
             Reduce(value);
-        #endregion
 
         private double Result(in Accumulator accumulator) => accumulator.Count is 0
             ? _emptyResult
             : _operation switch
             {
-                Aggregate.Sum => accumulator.Sum,
-                Aggregate.Average => accumulator.Sum / accumulator.Count,
-                Aggregate.Min => accumulator.Min,
-                Aggregate.Max => accumulator.Max,
+                AggregateOperation.Sum => accumulator.Sum,
+                AggregateOperation.Average => accumulator.Sum / accumulator.Count,
+                AggregateOperation.Min => accumulator.Min,
+                AggregateOperation.Max => accumulator.Max,
                 _ => Undeclared()
             };
 
         private double Undeclared()
         {
             this.LogError(
-                problem: $"the operation {_operation.Describe()} is not a declared {nameof(Aggregate)}",
+                problem: $"the operation {_operation.Describe()} is not a declared {nameof(AggregateOperation)}",
                 consequence: "Returning the authored empty result.");
 
             return _emptyResult;

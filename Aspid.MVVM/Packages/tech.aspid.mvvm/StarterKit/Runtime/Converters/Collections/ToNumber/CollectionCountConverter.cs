@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Aspid.FastTools.Types;
 using System.Collections.Generic;
@@ -28,7 +29,6 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The number of items, or zero when the collection is <see langword="null"/>.</returns>
         public int Convert(IReadOnlyCollection<T?>? value) => value?.Count ?? 0;
 
-        #region Counted collection
         long IConverter<IReadOnlyCollection<T?>?, long>.Convert(IReadOnlyCollection<T?>? value) =>
             Convert(value);
 
@@ -37,37 +37,17 @@ namespace Aspid.MVVM.StarterKit
 
         double IConverter<IReadOnlyCollection<T?>?, double>.Convert(IReadOnlyCollection<T?>? value) =>
             Convert(value);
-        #endregion
 
-        #region Any sequence
         int IConverter<IEnumerable<T?>?, int>.Convert(IEnumerable<T?>? value) =>
-            Count(value);
+            value.CountItems();
 
         long IConverter<IEnumerable<T?>?, long>.Convert(IEnumerable<T?>? value) =>
-            Count(value);
+            value.CountItems();
 
         float IConverter<IEnumerable<T?>?, float>.Convert(IEnumerable<T?>? value) =>
-            Count(value);
+            value.CountItems();
 
         double IConverter<IEnumerable<T?>?, double>.Convert(IEnumerable<T?>? value) =>
-            Count(value);
-        #endregion
-
-        private static int Count(IEnumerable<T?>? value)
-        {
-            switch (value)
-            {
-                case null: return 0;
-                case IReadOnlyCollection<T> collection: return collection.Count;
-                case ICollection<T> collection: return collection.Count;
-            }
-
-            var count = 0;
-
-            foreach (var _ in value)
-                count++;
-
-            return count;
-        }
+            value.CountItems();
     }
 }

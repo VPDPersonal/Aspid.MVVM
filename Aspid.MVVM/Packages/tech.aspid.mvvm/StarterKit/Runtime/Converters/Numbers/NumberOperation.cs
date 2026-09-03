@@ -4,26 +4,23 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// The arithmetic <see cref="ArithmeticNumberConverter"/> can apply.
     /// </summary>
-    /// <remarks>
-    /// New members are appended rather than inserted: the order is the serialized value, so moving
-    /// one silently rewrites every converter already authored in a scene.
-    /// </remarks>
+    /// <remarks>Members are appended, never inserted: the order is the serialized value.</remarks>
     public enum NumberOperation
     {
         /// <summary>
         /// Add the coefficient.
         /// </summary>
-        Plus,
+        Add,
 
         /// <summary>
         /// Subtract the coefficient.
         /// </summary>
-        Minus,
+        Subtract,
 
         /// <summary>
-        /// Divide by the coefficient. A zero coefficient reports an error and falls back.
+        /// Divide by the coefficient. A zero coefficient falls back.
         /// </summary>
-        Division,
+        Divide,
 
         /// <summary>
         /// Multiply by the coefficient.
@@ -31,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
         Multiply,
 
         /// <summary>
-        /// The remainder after dividing by the coefficient, always non-negative. Cannot be undone.
+        /// The non-negative remainder after dividing by the coefficient. Cannot be undone.
         /// </summary>
         Modulo,
 
@@ -41,13 +38,12 @@ namespace Aspid.MVVM.StarterKit
         Power,
 
         /// <summary>
-        /// Subtract from the coefficient — <c>c - x</c>, for "how much is left".
+        /// Subtract from the coefficient: <c>c - x</c>.
         /// </summary>
         ReverseSubtract,
 
         /// <summary>
-        /// Divide the coefficient by the value — <c>c / x</c>. A zero value reports an error and
-        /// falls back.
+        /// Divide the coefficient by the value: <c>c / x</c>. A zero value falls back.
         /// </summary>
         ReverseDivide,
     }

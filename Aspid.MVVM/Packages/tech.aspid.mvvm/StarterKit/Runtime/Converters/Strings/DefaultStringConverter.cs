@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -16,15 +17,13 @@ namespace Aspid.MVVM.StarterKit
     public sealed class DefaultStringConverter : IConverter<string?, string?>
     {
         [Tooltip("Shown when the bound string is blank. A string of spaces counts as blank.")]
-        [SerializeField] private string _fallback = "—";
+        [SerializeField] private string? _fallback = "—";
 
         /// <remarks>Default: with an em dash.</remarks>
         public DefaultStringConverter() { }
 
-        /// <param name="fallback">
-        /// Shown when the bound string is blank. A string of spaces counts as blank.
-        /// </param>
-        public DefaultStringConverter(string fallback)
+        /// <param name="fallback">Shown when the bound string is blank. A string of spaces counts as blank.</param>
+        public DefaultStringConverter(string? fallback)
         {
             _fallback = fallback;
         }
@@ -34,6 +33,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The string to check.</param>
         /// <returns>The string, or the placeholder when the string is blank, spaces included.</returns>
-        public string? Convert(string? value) => string.IsNullOrWhiteSpace(value) ? _fallback : value;
+        public string? Convert(string? value) => string.IsNullOrWhiteSpace(value)
+            ? _fallback
+            : value;
     }
 }

@@ -18,7 +18,7 @@ namespace Aspid.MVVM.Tests
     public sealed class ConverterRenameCompatibilityTests
     {
         [TestCase("SequenceConverter`1")]
-        [TestCase("GenericToStringConverter`1")]
+        [TestCase("ValueToStringConverter`1")]
         public void FrozenConverterTypeName_IsUnchanged(string name)
         {
             var found = typeof(IConverter).Assembly.GetTypes().Any(type => type.Name == name);

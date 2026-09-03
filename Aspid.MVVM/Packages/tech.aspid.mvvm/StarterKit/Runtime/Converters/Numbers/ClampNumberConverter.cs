@@ -8,11 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Keeps a number inside a range.
     /// </summary>
-    /// <remarks>
-    /// The bounds are authored as <see cref="double"/> so an int or long bound is not rounded on the
-    /// way in — a <see cref="float"/> cannot name every <see cref="int"/>. The int and long overloads
-    /// return an in-range value untouched, so no value round-trips through a floating-point number.
-    /// </remarks>
+    /// <remarks>An in-range int or long is returned untouched, so it never round-trips through a floating-point number.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number",
@@ -36,16 +32,13 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: clamping to 0..1.</remarks>
         public ClampNumberConverter() { }
 
-        /// <param name="min">
-        /// The lowest value allowed through. Inverted bounds report an error and are swapped when the
-        /// mode applies both.
-        /// </param>
-        /// <param name="max">
-        /// The highest value allowed through. Inverted bounds report an error and are swapped when the
-        /// mode applies both.
-        /// </param>
+        /// <param name="min">The lowest value allowed through. Inverted bounds report an error and are swapped.</param>
+        /// <param name="max">The highest value allowed through. Inverted bounds report an error and are swapped.</param>
         /// <param name="mode">Which bound to apply.</param>
-        public ClampNumberConverter(double min, double max, ClampMode mode = ClampMode.Both)
+        public ClampNumberConverter(
+            double min,
+            double max,
+            ClampMode mode = ClampMode.Both)
         {
             _min = min;
             _max = max;
@@ -57,15 +50,13 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value to clamp.</param>
         /// <returns>
-        /// The value, held inside the bounds; a NaN passes through. Inverted bounds report an error and
-        /// clamp to the swapped range when the mode applies both; an undeclared mode reports an error
-        /// and leaves the value unclamped.
+        /// The value held inside the bounds; a NaN passes through. Inverted bounds are swapped, an undeclared mode
+        /// leaves the value unclamped, both with an error.
         /// </returns>
         public double Convert(double value)
         {
             var (low, high, min, max) = Bounds();
 
-            // Two comparisons rather than Math.Clamp: a NaN fails both and passes through.
             if (low && value < min) return min;
             if (high && value > max) return max;
 
@@ -73,15 +64,14 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc cref="Convert(double)"/>
-        public float Convert(float value) => NumericSaturation.ToFloat(Convert((double)value));
+        public float Convert(float value) =>
+            NumericSaturation.ToFloat(Convert((double)value));
 
         /// <inheritdoc cref="Convert(double)"/>
         public int Convert(int value)
         {
             var (low, high, min, max) = Bounds();
 
-            // A fractional bound has to round INTO the range: truncating a minimum of 0.5 toward
-            // zero would leave the value below the bound the converter promised to hold it above.
             if (low && value < min) return NumericSaturation.ToInt(Math.Ceiling(min));
             if (high && value > max) return NumericSaturation.ToInt(Math.Floor(max));
 
@@ -99,8 +89,6 @@ namespace Aspid.MVVM.StarterKit
             return value;
         }
 
-        // The swap belongs to Both alone: a single-bound mode never reads the other bound, so a
-        // minimum above an untouched default maximum is authoring rather than a contradiction.
         private (bool Low, bool High, double Min, double Max) Bounds() => _mode switch
         {
             ClampMode.Both => NormalizedBounds(),
@@ -113,15 +101,19 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_min <= _max) return (true, true, _min, _max);
 
-            this.LogError($"the minimum {_min} is above the maximum {_max}",
-                "Clamping to the swapped bounds.");
+            this.LogError(
+                problem: $"the minimum {_min} is above the maximum {_max}",
+                consequence: "Clamping to the swapped bounds.");
+
             return (true, true, _max, _min);
         }
 
         private (bool Low, bool High, double Min, double Max) Undeclared()
         {
-            this.LogError($"the mode {_mode.Describe()} is not a declared {nameof(ClampMode)}",
-                "Letting the value through unclamped.");
+            this.LogError(
+                problem: $"the mode {_mode.Describe()} is not a declared {nameof(ClampMode)}",
+                consequence: "Letting the value through unclamped.");
+
             return (false, false, _min, _max);
         }
     }

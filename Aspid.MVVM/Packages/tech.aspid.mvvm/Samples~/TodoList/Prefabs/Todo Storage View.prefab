@@ -698,7 +698,7 @@ MonoBehaviour:
     rid: 9030169415659553743
   _filter:
     rid: -2
-  _comparer:
+  _order:
     rid: -2
   references:
     version: 2

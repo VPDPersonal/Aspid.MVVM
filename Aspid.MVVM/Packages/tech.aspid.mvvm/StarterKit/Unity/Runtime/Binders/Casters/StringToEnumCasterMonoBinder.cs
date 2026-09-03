@@ -7,47 +7,42 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// Abstract base <see cref="MonoBinder"/> implementing <see cref="IBinder{T}">IBinder&lt;string&gt;</see> that
-    /// parses a bound <see cref="string"/> as <typeparamref name="TEnum"/> and forwards the result to a target
-    /// <see cref="UnityEvent{T}"/>.
+    /// converts a bound <see cref="string"/> to <typeparamref name="TEnum"/> with a configurable converter and forwards
+    /// the result to a target <see cref="UnityEvent{T}"/>.
     /// </summary>
     /// <remarks>
-    /// Names are matched case-insensitively, because a value that came from text rarely matches the C# casing, and a
-    /// numeric string is refused — <see cref="Enum.TryParse{TEnum}(string, bool, out TEnum)"/> accepts any number,
-    /// including one no member has.
-    /// <para/>
-    /// Logs failures by default, unlike the numeric casters.
+    /// By default, uses <see cref="StringToEnumConverter{TEnum}"/>. Close the type over a concrete enum to make it addable as a component.
     /// </remarks>
-    /// <typeparam name="TEnum">The enum type the string is parsed into.</typeparam>
+    /// <typeparam name="TEnum">The enum type the string is converted into.</typeparam>
     public abstract partial class StringToEnumCasterMonoBinder<TEnum> : MonoBinder, IBinder<string>
         where TEnum : struct, Enum
     {
-        [Tooltip("Invoked with the parsed value.")]
+        [Tooltip("Converter from the bound string to the enum.")]
+        [SerializeReference] private IConverter<string, TEnum> _converter = new StringToEnumConverter<TEnum>();
+
+        [Tooltip("Invoked with the converted value.")]
         [SerializeField] private UnityEvent<TEnum> _casted;
 
-        [Tooltip("Value forwarded when the string names no member of the enum.")]
-        [SerializeField] private TEnum _fallback;
-
-        [Tooltip("Logs an error for every string that names no member.")]
-        [SerializeField] private bool _logFailures = true;
+        private void OnValidate() =>
+            _converter ??= new StringToEnumConverter<TEnum>();
 
         /// <summary>
-        /// Parses <paramref name="value"/> as <typeparamref name="TEnum"/> and invokes the target
-        /// <see cref="UnityEvent{T}"/> with the result, or with the fallback value when it names no member.
+        /// Converts <paramref name="value"/> with the configured converter and invokes the target <see cref="UnityEvent{T}"/>.
         /// </summary>
         /// <param name="value">The value received from the ViewModel.</param>
+        /// <remarks>
+        /// With no converter assigned, logs an error and forwards nothing.
+        /// </remarks>
         [BinderLog]
         public void SetValue(string value)
         {
-            if (EnumNameParse.TryName(value, out TEnum parsed))
+            if (_converter is null)
             {
-                _casted?.Invoke(parsed);
+                this.LogError("no converter is assigned", "The value is not forwarded.");
                 return;
             }
 
-            if (_logFailures)
-                this.LogError(value.Expected($"a member of {typeof(TEnum).Name}"), $"Forwarding {_fallback} instead.");
-
-            _casted?.Invoke(_fallback);
+            _casted?.Invoke(_converter.Convert(value));
         }
     }
 }

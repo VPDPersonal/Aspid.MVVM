@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Aspid.FastTools.Types;
 
@@ -7,11 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Converts a number of seconds to a <see cref="TimeSpan"/>.
     /// </summary>
-    /// <remarks>
-    /// A value <see cref="TimeSpan"/> cannot hold — NaN, an infinity, or seconds past its range — is
-    /// reported as an error rather than thrown on. The int and long overloads drop the fraction of a
-    /// second on the way back.
-    /// </remarks>
+    /// <remarks>A value <see cref="TimeSpan"/> cannot hold is reported, not thrown on. Integers drop the fraction on the way back.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number/To Time",
@@ -23,8 +20,7 @@ namespace Aspid.MVVM.StarterKit
         ITwoWayConverter<int, TimeSpan>,
         ITwoWayConverter<long, TimeSpan>
     {
-        // FromSeconds rounds the count before checking its range, so a value a fraction of a
-        // millisecond inside TimeSpan.MaxValue still overflows; the guard mirrors that rounding.
+        // FromSeconds rounds to milliseconds before its range check; the guard mirrors that.
         private const long MinMilliseconds = long.MinValue / TimeSpan.TicksPerMillisecond;
         private const long MaxMilliseconds = long.MaxValue / TimeSpan.TicksPerMillisecond;
 
@@ -32,10 +28,7 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified seconds to a duration.
         /// </summary>
         /// <param name="value">The number of seconds.</param>
-        /// <returns>
-        /// The duration; <see cref="TimeSpan.Zero"/> for a non-finite value, the nearest bound for
-        /// one out of range.
-        /// </returns>
+        /// <returns>The duration; <see cref="TimeSpan.Zero"/> for a non-finite value, the nearest bound for one out of range.</returns>
         public TimeSpan Convert(float value) => ToDuration(value);
 
         /// <inheritdoc cref="Convert(float)"/>
@@ -65,7 +58,6 @@ namespace Aspid.MVVM.StarterKit
         double ITwoWayConverter<double, TimeSpan>.ConvertBack(TimeSpan value) =>
             value.TotalSeconds;
 
-        // A TimeSpan measures more seconds than an int counts, so it saturates instead of wrapping.
         int ITwoWayConverter<int, TimeSpan>.ConvertBack(TimeSpan value) =>
             NumericSaturation.ToInt(value.TotalSeconds);
 
@@ -83,13 +75,14 @@ namespace Aspid.MVVM.StarterKit
                 return TimeSpan.Zero;
             }
 
-            // FromSeconds throws past the TimeSpan range, and the count comes from the ViewModel.
             var milliseconds = value * 1000d + (value < 0d ? -0.5d : 0.5d);
 
-            if (milliseconds < MinMilliseconds) return Clamped(value, TimeSpan.MinValue);
-            if (milliseconds > MaxMilliseconds) return Clamped(value, TimeSpan.MaxValue);
-
-            return TimeSpan.FromSeconds(value);
+            return milliseconds switch
+            {
+                < MinMilliseconds => Clamped(value, bound: TimeSpan.MinValue),
+                > MaxMilliseconds => Clamped(value, bound: TimeSpan.MaxValue),
+                _ => TimeSpan.FromSeconds(value)
+            };
         }
 
         private TimeSpan Clamped(double value, TimeSpan bound)

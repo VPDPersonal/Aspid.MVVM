@@ -25,19 +25,19 @@ namespace Aspid.MVVM.Tests
         [TestCase(-1, "a")]
         [TestCase(99, "c")]
         public void Convert_Clamp_UsesTheNearestEnd(int index, string expected) =>
-            Assert.AreEqual(expected, new IndexToValueConverter<string>(_values, IndexMode.Clamp).Convert(index));
+            Assert.AreEqual(expected, new IndexToValueConverter<string>(_values, IndexOutOfRangeMode.Clamp).Convert(index));
 
         [TestCase(-1, "c")]
         [TestCase(3, "a")]
         [TestCase(4, "b")]
         public void Convert_Wrap_FoldsAroundTheArray(int index, string expected) =>
-            Assert.AreEqual(expected, new IndexToValueConverter<string>(_values, IndexMode.Wrap).Convert(index));
+            Assert.AreEqual(expected, new IndexToValueConverter<string>(_values, IndexOutOfRangeMode.Wrap).Convert(index));
 
         [Test]
         public void Convert_Fallback_ReturnsTheFallbackOutOfRange() =>
             Assert.AreEqual(
                 "z",
-                new IndexToValueConverter<string>(_values, IndexMode.Fallback, "z").Convert(99));
+                new IndexToValueConverter<string>(_values, IndexOutOfRangeMode.Fallback, "z").Convert(99));
 
         [Test]
         public void Convert_EmptyArray_ReportsAndReturnsTheFallback()
@@ -50,18 +50,18 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void Convert_UndeclaredMode_ReportsAndReturnsTheFallback()
         {
-            LogAssert.Expect(LogType.Error, new Regex("IndexToValueConverter.*not a declared IndexMode"));
+            LogAssert.Expect(LogType.Error, new Regex("IndexToValueConverter.*not a declared IndexOutOfRangeMode"));
 
             Assert.AreEqual(
                 "z",
-                new IndexToValueConverter<string>(_values, (IndexMode)99, "z").Convert(99));
+                new IndexToValueConverter<string>(_values, (IndexOutOfRangeMode)99, "z").Convert(99));
         }
 
         // An index inside the array returns before the switch is reached, so a broken mode stays
         // invisible until the first out-of-range value arrives.
         [Test]
         public void Convert_UndeclaredMode_IsNotReachedForAnIndexInsideTheArray() =>
-            Assert.AreEqual("b", new IndexToValueConverter<string>(_values, (IndexMode)99, "z").Convert(1));
+            Assert.AreEqual("b", new IndexToValueConverter<string>(_values, (IndexOutOfRangeMode)99, "z").Convert(1));
 
         [Test]
         public void IndexToValue_Long_PicksTheSameValue() =>
@@ -84,7 +84,7 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(
                 "none",
                 ((IConverter<double, string>)new IndexToValueConverter<string>(
-                    new[] { "a", "b" }, IndexMode.Fallback, "none")).Convert(double.NaN));
+                    new[] { "a", "b" }, IndexOutOfRangeMode.Fallback, "none")).Convert(double.NaN));
         }
 
     }

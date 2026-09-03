@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
-using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
+using Order = Aspid.MVVM.StarterKit.ICollectionOrder<Aspid.MVVM.IViewModel>;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -11,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{VirtualizedList}"/> that sets the item source of a <see cref="VirtualizedList"/>
     /// to the bound <see cref="IReadOnlyList{IViewModel}"/> value.
     /// Supports optional filtering and sorting via <see cref="ICollectionFilter{IViewModel}"/> and
-    /// <see cref="ICollectionComparer{IViewModel}"/>.
+    /// <see cref="ICollectionOrder{IViewModel}"/>.
     /// </summary>
     [GenerateSerializableBinder]
     [AddBinderContextMenu(typeof(VirtualizedList))]
@@ -21,8 +23,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
         
-        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
-        [SerializeReference] private Comparer _comparer;
+        [Tooltip("Optional sort order. Leave empty to keep the collection's own order.")]
+        [FormerlySerializedAs("_comparer")]
+        [SerializeReference] private Order _order;
 
         private FilteredList<IViewModel> _filteredList;
 
@@ -47,12 +50,11 @@ namespace Aspid.MVVM.StarterKit
             
             if (list is not null)
             {
-                var comparer = _comparer?.Get();
-                var filter = _filter?.Get();
+                var filter = _filter is null ? null : new Predicate<IViewModel>(_filter.Matches);
             
-                if (comparer is not null || filter is not null)
+                if (_order is not null || filter is not null)
                 {
-                    _filteredList = new FilteredList<IViewModel>(list, comparer, filter);
+                    _filteredList = new FilteredList<IViewModel>(list, _order, filter);
                     list = _filteredList;
                 }   
             }

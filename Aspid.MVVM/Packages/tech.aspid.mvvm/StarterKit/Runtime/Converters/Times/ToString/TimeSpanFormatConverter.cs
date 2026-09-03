@@ -8,9 +8,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Formats a <see cref="TimeSpan"/> with a real <see cref="TimeSpan"/> format string.
     /// </summary>
-    /// <remarks>
-    /// The pattern is taken directly, the way <see cref="TimeSpan.ToString(string)"/> takes it.
-    /// </remarks>
+    /// <remarks>The pattern is taken directly, the way <see cref="TimeSpan.ToString(string)"/> takes it.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Time/To String",
@@ -29,7 +27,9 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="format">A <see cref="TimeSpan"/> format string.</param>
         /// <param name="culture">The culture the duration is formatted with.</param>
-        public TimeSpanFormatConverter(string format, CultureInfoMode culture = CultureInfoMode.CurrentCulture)
+        public TimeSpanFormatConverter(
+            string format,
+            CultureInfoMode culture = CultureInfoMode.CurrentCulture)
         {
             _format = format;
             _culture = culture;
@@ -40,25 +40,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The duration to format.</param>
         /// <returns>The formatted duration, or the default rendering when the format is unusable.</returns>
-        public string Convert(TimeSpan value)
-        {
-            if (string.IsNullOrWhiteSpace(_format)) 
-                return value.ToString();
-
-            try
-            {
-                return value.ToString(
-                    format: _format,
-                    formatProvider: _culture.ToCultureInfo());
-            }
-            catch (FormatException exception)
-            {
-                this.LogError(
-                    problem: $"\"{_format}\" is not a TimeSpan format ({exception.Message})",
-                    consequence: "Falling back to the default rendering.");
-                
-                return value.ToString();
-            }
-        }
+        public string Convert(TimeSpan value) => string.IsNullOrWhiteSpace(_format)
+            ? value.ToString()
+            : this.FormatOrGeneral(value, _format, _culture.ToCultureInfo());
     }
 }

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -6,16 +7,14 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// A word for one, a word for two to four, a word for the rest — Czech, Slovak.
+    /// A word for one, a word for two to four, a word for the rest: Czech, Slovak.
     /// </summary>
-    /// <remarks>
-    /// The count itself decides, not its last digit, so 22 takes the same word as 5.
-    /// </remarks>
+    /// <remarks>The count itself decides, not its last digit: 22 takes the same word as 5.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Plural Rule",
         Name = "Czech",
-        Tooltip = "A word for one, a word for two to four, a word for the rest — Czech, Slovak")]
+        Tooltip = "A word for one, a word for two to four, a word for the rest: Czech, Slovak")]
     public sealed class CzechPluralRule : PluralRule
     {
         [Tooltip("The word for exactly one.")]
@@ -33,7 +32,11 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="few">The word for two, three and four.</param>
         /// <param name="other">The word for every other count, five and up included.</param>
         /// <param name="zero">Written for a count of none, or <see langword="null"/> to word it like any other count.</param>
-        public CzechPluralRule(string one, string few, string other, string? zero = null)
+        public CzechPluralRule(
+            string one,
+            string few,
+            string other,
+            string? zero = null)
             : base(zero)
         {
             _one = one;

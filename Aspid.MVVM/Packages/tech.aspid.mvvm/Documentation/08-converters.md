@@ -77,7 +77,7 @@ public interface ITwoWayConverter<TFrom, TTo> : IConverter<TFrom, TTo>
 
 > Предупреждение в консоль о назначенном одностороннем конвертере пишут только биндеры, наследующие
 > `TargetBinder` / `ComponentMonoBinder`. Биндеры со своим полем конвертера — `InputField`, `Slider`,
-> `RendererMaterials`, `TwoWayValue` — `ConvertBack` применяют, но молчат: там значение просто
+> `RendererMaterials`, `ValueTwoWayBinder` — `ConvertBack` применяют, но молчат: там значение просто
 > уезжает непреобразованным.
 
 Ожидание к реализации: `ConvertBack(Convert(x)) == x`. Конвертер, который этого не гарантирует, не
@@ -152,7 +152,7 @@ ViewModel; подгруппа `To <тип>` — то, во что оно пре�
 | To Quaternion | `AngleToQuaternionConverter`, `QuaternionSlerpConverter` |
 | To Rect Offset | `IntToRectOffsetConverter` |
 | To Sprite | `NormalizedToSpriteConverter` |
-| To String | `AbbreviatedNumberConverter`, `ByteSizeConverter`, `CurrencyConverter`, `DecimalFormatConverter`, `NumberFormatConverter`, `OrdinalConverter`, `PaddedNumberConverter`, `PluralizeConverter`, `RatioToStringConverter`, `RepeatStringConverter`, `RomanNumeralConverter`, `SecondsToTimeStringConverter`, `SignedNumberStringConverter`, `ThousandsSeparatorConverter`, `ThresholdRichTextColorConverter` |
+| To String | `AbbreviatedNumberConverter`, `ByteSizeConverter`, `CurrencyConverter`, `NumberFormatConverter`, `OrdinalConverter`, `PaddedNumberConverter`, `PluralizeConverter`, `RatioToStringConverter`, `RepeatStringConverter`, `RomanNumeralConverter`, `SecondsToTimeStringConverter`, `SignedNumberStringConverter`, `ThousandsSeparatorConverter`, `ThresholdRichTextColorConverter` |
 | To Time | `SecondsToTimeSpanConverter`, `UnixTimestampToDateTimeConverter` |
 | To Value | `IndexToValueConverter` |
 | To Vector | `FloatToVectorConverter`, `VectorLerpConverter` |
@@ -232,7 +232,7 @@ ViewModel; подгруппа `To <тип>` — то, во что оно пре�
 ### Aspid/Object (4)
 
 `NullCoalesceConverter`; **To Bool**: `EqualityToBoolConverter`;
-**To String**: `GenericToStringConverter`, `ObjectNameConverter`, `ObjectToStringConverter`.
+**To String**: `ValueToStringConverter`, `ObjectNameConverter`, `ObjectToStringConverter`.
 
 > `EqualityToBoolConverter` с пустым операндом работает как проверка «отсутствует ли объект» и
 > считает уничтоженный `UnityEngine.Object` отсутствующим: null-сторона сравнивается через
@@ -433,8 +433,8 @@ true-написаний пуст).
 `[Aspid.MVVM] Конвертер: проблема. Что возвращается вместо результата.` По префиксу `[Aspid.MVVM]`
 ошибки пакета ищутся в консоли; `null` печатается словом `null`, строка — в кавычках, остальные
 значения — как есть; generic-имя конвертера печатается закрытым (`BoolToValueConverter<Sprite>`).
-Само это оформление типов и значений вынесено в `ConverterMessageText`: имя типа пишет
-`ConverterMessageText.GetTypeName`, а значение — extension `value.Describe()`, который
+Само это оформление типов и значений вынесено в `LogMessageText`: имя типа пишет
+`LogMessageText.GetTypeName`, а значение — extension `value.Describe()`, который
 интерполируется прямо в текст сообщения. Так текст внутри сообщения выглядит одинаково и в логе,
 и в исключении. Для сообщений, которые не являются ошибками, у хелпера есть обычный `Log` в том же
 формате. `Debug.Log`/`Debug.LogError` в коде конвертеров живут только внутри `ConverterLogger`.
@@ -449,7 +449,7 @@ true-написаний пуст).
 В коде запасное значение отдаётся одним вызовом — extension
 `this.UseFallback(_fallback, value.Expected("a whole number"))`: он логирует отказ и возвращает
 `_fallback`. Формулировку проблемы вызов приносит готовой; канонную — «expected X but got Y» —
-строит extension `value.Expected("a whole number")` из `ConverterMessageText`, провал конфигурации
+строит extension `value.Expected("a whole number")` из `LogMessageText`, провал конфигурации
 пишет её сам.
 
 У двух конвертеров, у которых есть режим, он лежит вместе со значением в одном поле

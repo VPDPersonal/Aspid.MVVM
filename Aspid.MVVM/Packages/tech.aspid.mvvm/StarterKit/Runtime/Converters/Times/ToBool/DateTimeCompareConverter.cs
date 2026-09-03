@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -8,9 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Compares a <see cref="DateTime"/> with a reference moment.
     /// </summary>
-    /// <remarks>
-    /// The comparison is made in UTC only when both kinds are known; otherwise raw ticks are compared.
-    /// </remarks>
+    /// <remarks>Compared in UTC when both kinds are known; otherwise by raw ticks.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Time/To Bool",
@@ -21,42 +20,33 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("How the bound moment is compared with the reference.")]
         [SerializeField] private ComparisonMode _comparison = ComparisonMode.GreaterThan;
 
-        [Tooltip("What the bound moment is compared against: " +
-            "the fixed moment below, the current local time, or the current UTC time. " +
-            "Match this to the bound moment's kind, or the comparison is out by the time zone.")]
+        [Tooltip("What the bound moment is compared against. Match it to the bound moment's kind.")]
         [SerializeField] private ReferenceSource _referenceSource = ReferenceSource.Now;
 
-        [Tooltip("Ticks of the fixed moment compared against. " +
-            "A value outside the representable range is reported and the comparison answers false.")]
+        [Tooltip("Ticks of the fixed moment compared against.")]
         [SerializeField] private long _referenceTicks;
 
-        [Tooltip("The kind of the fixed moment. The comparison is made in UTC only when this and" +
-            " the bound moment's kind are both known; otherwise raw ticks are compared.")]
+        [Tooltip("The kind of the fixed moment.")]
         [SerializeField] private DateTimeKind _referenceKind = DateTimeKind.Unspecified;
 
         /// <remarks>Default: comparing whether the bound moment is later than now.</remarks>
         public DateTimeCompareConverter() { }
 
         /// <param name="comparison">How the bound moment is compared with the reference.</param>
-        /// <param name="referenceSource">
-        /// What the bound moment is compared against; match it to the bound moment's kind, or the
-        /// comparison is out by the time zone. With <see cref="ReferenceSource.FixedMoment"/> the
-        /// reference is <see cref="DateTime.MinValue"/>; use the
-        /// <see cref="DateTimeCompareConverter(ComparisonMode, DateTime)"/> overload to set one.
-        /// </param>
-        public DateTimeCompareConverter(ComparisonMode comparison, ReferenceSource referenceSource = ReferenceSource.Now)
+        /// <param name="referenceSource">What the bound moment is compared against. Match it to the bound moment's kind.</param>
+        public DateTimeCompareConverter(
+            ComparisonMode comparison,
+            ReferenceSource referenceSource = ReferenceSource.Now)
         {
             _comparison = comparison;
             _referenceSource = referenceSource;
         }
 
         /// <param name="comparison">How the bound moment is compared with the reference.</param>
-        /// <param name="reference">
-        /// The fixed moment compared against. The comparison is made in UTC only when its
-        /// <see cref="DateTime.Kind"/> and the bound moment's kind are both known; otherwise raw
-        /// ticks are compared.
-        /// </param>
-        public DateTimeCompareConverter(ComparisonMode comparison, DateTime reference)
+        /// <param name="reference">The fixed moment compared against.</param>
+        public DateTimeCompareConverter(
+            ComparisonMode comparison,
+            DateTime reference)
         {
             _comparison = comparison;
             _referenceKind = reference.Kind;
@@ -68,15 +58,11 @@ namespace Aspid.MVVM.StarterKit
         /// Compares the specified moment with the reference.
         /// </summary>
         /// <param name="value">The moment to compare.</param>
-        /// <returns>
-        /// The result of the comparison. Reports an error and answers <see langword="false"/> when
-        /// the fixed moment's ticks are outside the representable range, or the reference source or
-        /// comparison is not a declared value.
-        /// </returns>
+        /// <returns>The result. Out-of-range ticks, an undeclared source or comparison report an error and return <see langword="false"/>.</returns>
         public bool Convert(DateTime value)
         {
             DateTime reference;
-            
+
             switch (_referenceSource)
             {
                 case ReferenceSource.FixedMoment:
@@ -103,20 +89,16 @@ namespace Aspid.MVVM.StarterKit
             };
         }
 
-        // _referenceTicks is inspector-editable as a raw long, so a value outside DateTime's range
-        // must be caught rather than throwing out of the binder.
         private bool TryFixedMoment(out DateTime moment)
         {
-            try
+            if (_referenceTicks >= DateTime.MinValue.Ticks && _referenceTicks <= DateTime.MaxValue.Ticks)
             {
                 moment = new DateTime(_referenceTicks, _referenceKind);
                 return true;
             }
-            catch (ArgumentOutOfRangeException)
-            {
-                moment = default;
-                return false;
-            }
+
+            moment = default;
+            return false;
         }
 
         private bool InvalidFixedMoment()
@@ -146,8 +128,6 @@ namespace Aspid.MVVM.StarterKit
             return false;
         }
 
-        // Two moments with known kinds name absolute instants and can be compared in UTC; as soon
-        // as either kind is Unspecified the instant is unknowable, so the ticks are compared as-is.
         private static int Compare(DateTime value, DateTime reference) =>
             value.Kind != DateTimeKind.Unspecified && reference.Kind != DateTimeKind.Unspecified
                 ? value.ToUniversalTime().CompareTo(reference.ToUniversalTime())

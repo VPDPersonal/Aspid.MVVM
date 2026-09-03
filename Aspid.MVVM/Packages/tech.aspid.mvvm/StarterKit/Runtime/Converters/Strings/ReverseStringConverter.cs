@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Text;
 using Aspid.FastTools.Types;
@@ -8,10 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Writes a string back to front.
     /// </summary>
-    /// <remarks>
-    /// Surrogate pairs keep their own order, but combining marks are not regrouped: an accent written
-    /// as its own code point lands on the letter that used to precede it.
-    /// </remarks>
+    /// <remarks>Surrogate pairs keep their order; combining marks are not regrouped.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/String",
@@ -35,7 +33,6 @@ namespace Aspid.MVVM.StarterKit
 
             for (var i = value.Length - 1; i >= 0; i--)
             {
-                // A surrogate pair is one character stored as two, and only means anything in order.
                 if (i > 0 && char.IsLowSurrogate(value[i]) && char.IsHighSurrogate(value[i - 1]))
                 {
                     _builder.Append(value[i - 1]).Append(value[i]);

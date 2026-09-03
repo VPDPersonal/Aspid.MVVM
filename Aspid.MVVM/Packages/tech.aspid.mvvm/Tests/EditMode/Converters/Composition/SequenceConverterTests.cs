@@ -57,7 +57,7 @@ namespace Aspid.MVVM.Tests
         public void ConvertBack_UndoesEveryLinkInReverseOrder()
         {
             var sequence = new SequenceConverter<double>(
-                new ArithmeticNumberConverter(NumberOperation.Plus, 3),
+                new ArithmeticNumberConverter(NumberOperation.Add, 3),
                 new ArithmeticNumberConverter(NumberOperation.Multiply, 2));
 
             Assert.AreEqual(16d, sequence.Convert(5d), delta: 1e-12);
@@ -76,7 +76,7 @@ namespace Aspid.MVVM.Tests
             LogAssert.Expect(LogType.Error, new Regex("OneWayDouble converts one way only"));
 
             var sequence = new SequenceConverter<double>(
-                new ArithmeticNumberConverter(NumberOperation.Plus, 3),
+                new ArithmeticNumberConverter(NumberOperation.Add, 3),
                 new OneWayDouble());
 
             Assert.AreEqual(16d, sequence.ConvertBack(16d), delta: 1e-12);
@@ -86,7 +86,7 @@ namespace Aspid.MVVM.Tests
         public void Convert_NullLinksAreSkippedInBothDirections()
         {
             var sequence = new SequenceConverter<double>(
-                new ArithmeticNumberConverter(NumberOperation.Plus, 3),
+                new ArithmeticNumberConverter(NumberOperation.Add, 3),
                 null);
 
             Assert.AreEqual(8d, sequence.Convert(5d), delta: 1e-12);

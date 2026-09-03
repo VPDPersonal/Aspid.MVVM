@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -9,9 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Groups the digits of a whole number: 1234567 becomes "1,234,567".
     /// </summary>
-    /// <remarks>
-    /// A float or double input is grouped as a whole number: the fraction is truncated toward zero.
-    /// </remarks>
+    /// <remarks>A float or double input is truncated to a whole number.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Number/To String",
@@ -27,12 +26,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Placed between groups of digits. When empty, the culture's own separator is used.")]
         [SerializeField] private string _separator = string.Empty;
 
-        [Tooltip("The culture the number is formatted with. It supplies the separator when that field " +
-            "is empty, and the group size either way.")]
+        [Tooltip("The culture the number is formatted with. Supplies the group size and the default separator.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        // An authored separator means cloning the culture's NumberFormatInfo, and a binder pushes on
-        // every notification. CurrentCulture can change while the game runs, so it stays in the key.
         [NonSerialized] private NumberFormatInfo? _format;
         [NonSerialized] private CultureInfo? _formatCulture;
 
@@ -41,25 +37,30 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="separator">Placed between groups of digits. When empty, the culture's own is used.</param>
         /// <param name="culture">The culture the number is formatted with.</param>
-        public ThousandsSeparatorConverter(string separator, CultureInfoMode culture = CultureInfoMode.CurrentCulture)
+        public ThousandsSeparatorConverter(
+            string separator,
+            CultureInfoMode culture = CultureInfoMode.CurrentCulture)
         {
-            _separator = separator;
             _culture = culture;
+            _separator = separator;
         }
 
         /// <inheritdoc cref="IConverter{TFrom,TTo}.Convert"/>
-        public string Convert(long value) => value.ToString("N0", Format());
+        public string Convert(long value) =>
+            value.ToString("N0", Format());
 
         /// <inheritdoc cref="IConverter{TFrom,TTo}.Convert"/>
-        public string Convert(int value) => value.ToString("N0", Format());
+        public string Convert(int value) =>
+            value.ToString("N0", Format());
 
-        string IConverter<float, string>.Convert(float value) => Convert(NumericSaturation.ToLong(value));
+        string IConverter<float, string>.Convert(float value) =>
+            Convert(NumericSaturation.ToLong(value));
 
-        string IConverter<double, string>.Convert(double value) => Convert(NumericSaturation.ToLong(value));
+        string IConverter<double, string>.Convert(double value) =>
+            Convert(NumericSaturation.ToLong(value));
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
-        // The one moment the authored separator changes: Unity reads the object again after every edit.
         void ISerializationCallbackReceiver.OnAfterDeserialize() =>
             _format = null;
 
@@ -70,7 +71,6 @@ namespace Aspid.MVVM.StarterKit
 
             if (_format is not null && ReferenceEquals(_formatCulture, culture)) return _format;
 
-            // A NumberFormatInfo taken from a culture is read-only; its clone is not.
             var format = (NumberFormatInfo)culture.NumberFormat.Clone();
             format.NumberGroupSeparator = _separator;
 

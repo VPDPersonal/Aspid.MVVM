@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -26,9 +27,6 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>
         /// The culture, or the invariant one when its decimal separator is the separator itself.
         /// </returns>
-        /// <remarks>
-        /// A culture whose decimal separator is the component separator would make the text ambiguous.
-        /// </remarks>
         internal static CultureInfo ComponentCulture(CultureInfo culture, string separator) =>
             string.Equals(culture.NumberFormat.NumberDecimalSeparator, separator, StringComparison.Ordinal)
                 ? CultureInfo.InvariantCulture
@@ -39,10 +37,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The text to look at.</param>
         /// <returns>The first index of the body and the index just past its end.</returns>
-        /// <remarks>
-        /// <see cref="Vector3.ToString()"/> writes <c>"(1.00, 2.00, 3.00)"</c>, so text copied out of a
-        /// log arrives wrapped in brackets.
-        /// </remarks>
+        /// <remarks><see cref="Vector3.ToString()"/> writes <c>"(1.00, 2.00, 3.00)"</c>, so pasted text arrives in brackets.</remarks>
         internal static (int Start, int End) Unwrap(string value)
         {
             var start = 0;
@@ -69,16 +64,11 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="culture">The culture it is written in.</param>
         /// <param name="axis">The number read, or zero when there is none.</param>
         /// <returns><see langword="true"/> when the stretch of text is a number.</returns>
-        /// <remarks>
-        /// Thousands separators are refused: in most cultures the group separator is also the
-        /// separator between components.
-        /// </remarks>
+        /// <remarks>Thousands separators are refused: the group separator is usually the component separator too.</remarks>
         internal static bool TryReadAxis(string value, int start, int length, CultureInfo culture, out float axis)
         {
             axis = 0f;
-            if (length <= 0) return false;
-
-            return float.TryParse(value.Substring(start, length), NumberStyles.Float, culture, out axis);
+            return length > 0 && float.TryParse(value.Substring(start, length), NumberStyles.Float, culture, out axis);
         }
     }
 }

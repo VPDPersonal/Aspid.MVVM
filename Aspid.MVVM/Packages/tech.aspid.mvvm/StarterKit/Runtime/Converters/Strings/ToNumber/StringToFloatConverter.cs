@@ -1,5 +1,5 @@
+#nullable enable
 using System;
-using UnityEngine;
 using System.Globalization;
 using Aspid.FastTools.Types;
 
@@ -9,68 +9,44 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Reads a decimal number out of text.
     /// </summary>
-    /// <remarks>
-    /// The culture decides what a comma means: a German player typing <c>1,5</c> means one and a half,
-    /// while read as invariant it gives fifteen or nothing at all.
-    /// </remarks>
+    /// <remarks>The culture decides what a comma means: <c>1,5</c> is one and a half in German and fifteen in invariant.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/String/To Number",
         Name = "Parse Float",
         Tooltip = "Reads a decimal number out of text")]
-    public sealed class StringToFloatConverter : ITwoWayConverter<string?, float>
+    public sealed class StringToFloatConverter : StringToNumberConverter<float>
     {
-        [Tooltip("Hold the result inside the bounds.")]
-        [SerializeField] private bool _clamp;
-
-        [Tooltip("The lowest value allowed through when clamping.")]
-        [SerializeField] private float _min = float.MinValue;
-
-        [Tooltip("The highest value allowed through when clamping.")]
-        [SerializeField] private float _max = float.MaxValue;
-
-        [Tooltip("The culture the text is read with.")]
-        [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
-
-        [Tooltip("Returned when the text is not a number.")]
-        [UsedInModes(BindMode.OneWay, BindMode.TwoWay, BindMode.OneTime)]
-        [SerializeField] private float _fallback;
+        private const NumberStyles Styles = NumberStyles.Float | NumberStyles.AllowThousands;
 
         /// <remarks>Default: falling back to zero.</remarks>
-        public StringToFloatConverter() { }
+        public StringToFloatConverter()
+            : base(float.MinValue, float.MaxValue) { }
 
-        /// <param name="fallback">Returned when the text is not a number. When omitted, zero.</param>
+        /// <param name="fallback">Returned when the text is not a number.</param>
         /// <param name="culture">The culture the text is read with.</param>
-        public StringToFloatConverter(float fallback = 0, CultureInfoMode culture = CultureInfoMode.CurrentCulture)
-        {
-            _fallback = fallback;
-            _culture = culture;
-        }
+        public StringToFloatConverter(
+            float fallback,
+            CultureInfoMode culture = CultureInfoMode.CurrentCulture)
+            : base(float.MinValue, float.MaxValue, fallback, culture) { }
 
         /// <summary>
-        /// Reads a number out of the specified text.
-        /// </summary>
-        /// <param name="value">The text to read.</param>
-        /// <returns>
-        /// The number, held inside the bounds when clamping, or the fallback when the text is not one.
-        /// </returns>
-        public float Convert(string? value)
-        {
-            // Grouped text — 1,000 in en-US — is a spelling of the number, not a mistake.
-            const NumberStyles styles = NumberStyles.Float | NumberStyles.AllowThousands;
-
-            if (!float.TryParse(value, styles, _culture.ToCultureInfo(), out var parsed))
-                return NumberText.Fallback(value, _fallback, this, "a decimal number");
-
-            // The clamp sits after the parse, so a fallback authored outside the bounds stays outside.
-            return _clamp ? NumberText.Clamp(parsed, _min, _max) : parsed;
-        }
-
-        /// <summary>
-        /// Writes the specified number as text.
+        /// Writes the specified number as text, in the round-trip format.
         /// </summary>
         /// <param name="value">The number to write.</param>
-        /// <returns>The text, in the round-trip format.</returns>
-        public string ConvertBack(float value) => value.ToString("R", _culture.ToCultureInfo());
+        /// <returns>The text.</returns>
+        public override string ConvertBack(float value) =>
+            value.ToString("R", Culture);
+
+        /// <inheritdoc/>
+        protected override string Expected => "a decimal number";
+
+        /// <inheritdoc/>
+        protected override bool TryParse(string? value, CultureInfo culture, out float result) =>
+            float.TryParse(value, Styles, culture, out result);
+
+        /// <inheritdoc/>
+        protected override float Clamp(float value, float min, float max) =>
+            NumberText.Clamp(value, min, max);
     }
 }

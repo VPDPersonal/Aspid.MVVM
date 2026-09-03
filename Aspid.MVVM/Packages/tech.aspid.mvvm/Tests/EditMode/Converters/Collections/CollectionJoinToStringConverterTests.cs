@@ -23,7 +23,7 @@ namespace Aspid.MVVM.Tests
         public void JoinToString_ItemConverter_WritesEachItem() =>
             Assert.AreEqual(
                 "[a], [b], [c]",
-                new CollectionJoinToStringConverter<string>(", ", item: new GenericToStringConverter<string>("[{0}]"))
+                new CollectionJoinToStringConverter<string>(", ", item: new ValueToStringConverter<string>("[{0}]"))
                     .Convert(_three));
 
         [Test]

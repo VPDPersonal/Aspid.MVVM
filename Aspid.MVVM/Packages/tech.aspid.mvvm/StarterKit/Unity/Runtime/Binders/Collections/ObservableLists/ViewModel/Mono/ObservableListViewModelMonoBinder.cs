@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
-using Comparer = Aspid.MVVM.StarterKit.ICollectionComparer<Aspid.MVVM.IViewModel>;
+using Order = Aspid.MVVM.StarterKit.ICollectionOrder<Aspid.MVVM.IViewModel>;
 using ViewFactory = Aspid.MVVM.StarterKit.IViewFactory<Aspid.MVVM.MonoView>;
 
 // ReSharper disable once CheckNamespace
@@ -41,8 +43,9 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional filter for which items are shown. Leave empty to show all.")]
         [SerializeReference] private Filter _filter;
         
-        [Tooltip("Optional comparer for sort order. Leave empty to keep the collection's own order.")]
-        [SerializeReference] private Comparer _comparer;
+        [Tooltip("Optional sort order. Leave empty to keep the collection's own order.")]
+        [FormerlySerializedAs("_comparer")]
+        [SerializeReference] private Order _order;
 
         private List<T> _views;
         private FilteredList<IViewModel> _filteredList;
@@ -68,11 +71,10 @@ namespace Aspid.MVVM.StarterKit
         {
             DisposeFilteredList();
 
-            var comparer = _comparer?.Get();
-            var filter = _filter?.Get();
+            var filter = _filter is null ? null : new Predicate<IViewModel>(_filter.Matches);
 
-            if (comparer is not null || filter is not null)
-                _filteredList = new FilteredList<IViewModel>(list, comparer, filter);
+            if (_order is not null || filter is not null)
+                _filteredList = new FilteredList<IViewModel>(list, _order, filter);
 
             return _filteredList;
         }

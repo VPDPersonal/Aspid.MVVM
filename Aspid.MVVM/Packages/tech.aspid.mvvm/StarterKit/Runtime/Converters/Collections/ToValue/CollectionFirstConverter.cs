@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -10,7 +11,7 @@ namespace Aspid.MVVM.StarterKit
     /// Takes the first item of a sequence.
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
-    /// <remarks>Takes any sequence, indexer or not — an observable set, queue or stack has no index.</remarks>
+    /// <remarks>Takes any sequence, indexer or not.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Collection/To Value",
@@ -43,7 +44,6 @@ namespace Aspid.MVVM.StarterKit
                 case IReadOnlyList<T> list: return list.Count > 0 ? list[0] : _fallback;
             }
 
-            // foreach disposes the enumerator on the way out, which a bare MoveNext would not.
             foreach (var item in value)
                 return item;
 

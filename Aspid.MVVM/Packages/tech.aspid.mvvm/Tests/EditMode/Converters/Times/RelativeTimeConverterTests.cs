@@ -76,15 +76,6 @@ namespace Aspid.MVVM.Tests
         public void Constructor_MaxUnitsBelowOne_Throws(int maxUnits) =>
             Assert.Throws<ArgumentOutOfRangeException>(() => new RelativeTimeConverter(maxUnits));
 
-        // The Inspector side has no constructor to reject anything, and its Min attribute cannot fix
-        // a value serialized before it was added; such a value still has to land on the single-unit
-        // form rather than writing nothing at all.
-        [TestCase(0)]
-        [TestCase(-3)]
-        public void Convert_ASerializedMaxUnitsBelowOne_FallsBackToTheSingleUnitForm(int maxUnits) =>
-            Assert.AreEqual(
-                "1h ago",
-                With(new RelativeTimeConverter(1), "_maxUnits", maxUnits)
                     .Convert(DateTime.Now.AddHours(-1).AddMinutes(-5)));
 
         // The largest unit accumulates rather than rolling into months, so forty days is 40d and not

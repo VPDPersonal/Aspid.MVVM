@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Text;
 using UnityEngine;
@@ -11,10 +12,7 @@ namespace Aspid.MVVM.StarterKit
     /// Names the flags a value carries.
     /// </summary>
     /// <typeparam name="TEnum">The enum type being named.</typeparam>
-    /// <remarks>
-    /// Each named flag consumes its bits, so a composite member is named only when its parts are not
-    /// declared members. On an enum not marked <see cref="FlagsAttribute"/> the value is named whole.
-    /// </remarks>
+    /// <remarks>A composite member is named only when its parts are not declared members. A non-flags enum is named whole.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Enum/To String",
@@ -29,8 +27,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Where the name of each flag comes from.")]
         [SerializeField] private EnumNameSource _source;
 
-        [Tooltip("Shown when the value names no flags. " +
-            "Unused under the Raw source on an enum not marked [Flags], which writes an undeclared value as its number.")]
+        [Tooltip("Shown when the value names no flags.")]
         [SerializeField] private string _noneText = string.Empty;
 
         [NonSerialized] private StringBuilder? _builder;
@@ -47,11 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// Placed between the named flags. Unused on an enum not marked <see cref="FlagsAttribute"/>.
         /// </param>
         /// <param name="source">Where the name of each flag comes from.</param>
-        /// <param name="noneText">
-        /// Shown when the value names no flags. Unused under <see cref="EnumNameSource.Raw"/> on an
-        /// enum not marked <see cref="FlagsAttribute"/>, which writes an undeclared value as its
-        /// number.
-        /// </param>
+        /// <param name="noneText">Shown when the value names no flags.</param>
         public EnumFlagsToStringConverter(
             string separator,
             EnumNameSource source = EnumNameSource.Name,
@@ -66,10 +59,7 @@ namespace Aspid.MVVM.StarterKit
         /// Names the flags the specified value carries.
         /// </summary>
         /// <param name="value">The value to take apart.</param>
-        /// <returns>
-        /// The flag names joined by the separator, or the none text when it carries none. A bit no
-        /// member declares is dropped without a report.
-        /// </returns>
+        /// <returns>The flag names joined by the separator, or the none text. Undeclared bits are dropped.</returns>
         public string Convert(TEnum value)
         {
             if (_hasCache && EqualityComparer<TEnum>.Default.Equals(_cachedValue, value))
@@ -86,7 +76,6 @@ namespace Aspid.MVVM.StarterKit
         {
             var names = Names();
 
-            // Splitting a non-flags enum would name whichever members happen to sit inside its number.
             if (!EnumBits<TEnum>.IsFlags)
             {
                 var single = names.Convert(value);
@@ -105,7 +94,6 @@ namespace Aspid.MVVM.StarterKit
 
             for (var i = 0; i < members.Length; i++)
             {
-                // A zero member would otherwise be named by every value.
                 if (bits[i] == 0) continue;
                 if ((remaining & bits[i]) != bits[i]) continue;
 
@@ -116,7 +104,6 @@ namespace Aspid.MVVM.StarterKit
                 written++;
             }
 
-            // Bits no member declares have no name to give.
             return written == 0
                 ? _noneText
                 : _builder.ToString();

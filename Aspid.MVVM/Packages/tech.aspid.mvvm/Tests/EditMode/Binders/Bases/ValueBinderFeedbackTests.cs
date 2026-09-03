@@ -14,10 +14,10 @@ namespace Aspid.MVVM.Tests
     }
 
     /// <summary>
-    /// Regression tests for <see cref="TwoWayValue{T}"/> feeding ViewModel updates straight back to the ViewModel.
+    /// Regression tests for <see cref="ValueTwoWayBinder{T}"/> feeding ViewModel updates straight back to the ViewModel.
     /// </summary>
     /// <remarks>
-    /// <see cref="TwoWayValue{T}.Value"/> is the View-side entry point: its setter raises the reverse channel, so a
+    /// <see cref="ValueTwoWayBinder{T}.Value"/> is the View-side entry point: its setter raises the reverse channel, so a
     /// write coming from the ViewModel must not go through it.
     /// </remarks>
     [TestFixture]
@@ -26,7 +26,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void SetValue_FromTheViewModel_DoesNotBounceBack()
         {
-            var binder = new TwoWayValue<int>(0);
+            var binder = new ValueTwoWayBinder<int>(0);
 
             var received = new List<int>();
             var member = new OneWayToSourceBindableMember<int>(value => received.Add(value));
@@ -42,7 +42,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void SetValue_WithAConverter_StoresTheConvertedValueWithoutReportingIt()
         {
-            var binder = new TwoWayValue<int>(0, new DoublingConverter(), BindMode.TwoWay);
+            var binder = new ValueTwoWayBinder<int>(0, new DoublingConverter(), BindMode.TwoWay);
 
             var received = new List<int>();
             var member = new OneWayToSourceBindableMember<int>(value => received.Add(value));
@@ -62,7 +62,7 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void SettingValue_FromTheViewSide_StillReachesTheViewModel()
         {
-            var binder = new TwoWayValue<int>(0);
+            var binder = new ValueTwoWayBinder<int>(0);
 
             var received = new List<int>();
             var member = new OneWayToSourceBindableMember<int>(value => received.Add(value));

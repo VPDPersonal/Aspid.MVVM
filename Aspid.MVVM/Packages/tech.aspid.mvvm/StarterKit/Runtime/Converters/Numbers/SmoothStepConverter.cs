@@ -27,10 +27,12 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="from">The value 0 maps to.</param>
         /// <param name="to">The value 1 maps to.</param>
-        public SmoothStepConverter(float from, float to)
+        public SmoothStepConverter(
+            float from,
+            float to)
         {
-            _from = from;
             _to = to;
+            _from = from;
         }
 
         /// <summary>
@@ -38,9 +40,9 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The 0..1 position. A position outside it is held at the nearer end.</param>
         /// <returns>The eased value at that position.</returns>
-        public float Convert(float value) => Mathf.SmoothStep(_from, _to, value);
+        public float Convert(float value) =>
+            Mathf.SmoothStep(_from, _to, value);
 
-        // Unity's own curve, so the double overload runs through it and carries a float's precision.
         double IConverter<double, double>.Convert(double value) =>
             Convert(NumericSaturation.ToFloat(value));
     }

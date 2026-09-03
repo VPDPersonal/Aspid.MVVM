@@ -17,7 +17,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
         
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
         
         private IRelayCommand _command;
         private IRelayCommand<bool> _isOnCommand;
@@ -30,7 +30,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ToggleCommandBinder(Toggle target, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+        public ToggleCommandBinder(Toggle target, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
             mode.ThrowExceptionIfTwo();
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
         
         /// <summary>
@@ -128,7 +128,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
                 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
         
         private IRelayCommand<bool, T> _command;
         
@@ -150,7 +150,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ToggleCommandBinder(Toggle target, T param, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+        public ToggleCommandBinder(Toggle target, T param, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -176,7 +176,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
         
         /// <summary>
@@ -237,7 +237,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
                 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<bool, T1, T2> _command;
         
@@ -269,7 +269,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -302,7 +302,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
         
         /// <summary>
@@ -366,7 +366,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private InteractableMode _interactableMode = InteractableMode.Interactable;
                 
         [Tooltip("View that reflects CanExecute when Interactable Mode is Custom.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<bool, T1, T2, T3> _command;
         
@@ -408,7 +408,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">A custom view that reflects the command's CanExecute state.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable, BindMode mode = BindMode.OneWay)
+        public ToggleCommandBinder(Toggle target, T1 param1, T2 param2, T3 param3, ICanExecuteHandler customInteractable, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -445,7 +445,7 @@ namespace Aspid.MVVM.StarterKit
             
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
-                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteView");
+                : throw new ArgumentOutOfRangeException(nameof(mode), "InteractableMode can't be Custom. Use constructor by ICanExecuteHandler");
         }
         
         /// <summary>

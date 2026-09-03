@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -8,10 +9,7 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// Reads a 2D vector out of text.
     /// </summary>
-    /// <remarks>
-    /// Reads back what a vector's own <see cref="object.ToString"/> writes, brackets and all. A culture
-    /// whose decimal separator is the component separator falls back to invariant.
-    /// </remarks>
+    /// <remarks>Reads back what a vector's own <see cref="object.ToString"/> writes, brackets and all.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/String/To Vector",
@@ -21,12 +19,10 @@ namespace Aspid.MVVM.StarterKit
         ITwoWayConverter<string?, Vector2>,
         ISerializationCallbackReceiver
     {
-        [Tooltip("Placed between the components; the whole text is used — \"; \" works as well as " +
-            "\",\". Left empty, a comma stands in.")]
+        [Tooltip("Placed between the components. Empty stands for a comma.")]
         [SerializeField] private string _separator = ",";
 
-        [Tooltip("The culture the components are read and written with. A culture whose decimal " +
-            "separator is the separator falls back to invariant.")]
+        [Tooltip("The culture the components are read and written with. Falls back to invariant when its decimal separator is the separator.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.InvariantCulture;
 
         [Tooltip("Returned when the text is not a vector.")]
@@ -39,20 +35,17 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>Default: reading comma-separated text.</remarks>
         public StringToVector2Converter() { }
 
-        /// <param name="separator">Placed between the components; left empty, a comma stands in.</param>
+        /// <param name="separator">Placed between the components. Empty stands for a comma.</param>
         /// <param name="fallback">Returned when the text is not a vector. When omitted, a zero vector.</param>
-        /// <param name="culture">
-        /// The culture the components are read and written with. A culture whose decimal separator is
-        /// the separator falls back to invariant.
-        /// </param>
+        /// <param name="culture">The culture the components are read and written with. Falls back to invariant when its decimal separator is the separator.</param>
         public StringToVector2Converter(
             string separator,
             Vector2? fallback = null,
             CultureInfoMode culture = CultureInfoMode.InvariantCulture)
         {
+            _culture = culture;
             _separator = separator;
             _fallback = fallback ?? _fallback;
-            _culture = culture;
         }
 
         /// <summary>
@@ -62,16 +55,18 @@ namespace Aspid.MVVM.StarterKit
         /// <returns>The vector, or the fallback when the text is not one.</returns>
         public Vector2 Convert(string? value)
         {
-            // Blank text is an unfilled field, not a malformed vector.
             if (string.IsNullOrWhiteSpace(value)) return _fallback;
 
-            // Splitting allocates and a binder pushes on every notification, so the last parse is kept.
             if (string.Equals(_parsedText, value, StringComparison.Ordinal)) return _parsed;
 
             var parsed = Parse(value);
 
             if (parsed is null)
-                return this.UseFallback(_fallback, value.Expected(ExpectedText()));
+            {
+                return this.UseFallback(
+                    fallback: _fallback,
+                    problem: value.Expected(ExpectedText()));
+            }
 
             _parsedText = value;
             _parsed = parsed.Value;
@@ -94,8 +89,6 @@ namespace Aspid.MVVM.StarterKit
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
-        // The one moment the authored separator and culture change: Unity reads the object again
-        // after every edit.
         void ISerializationCallbackReceiver.OnAfterDeserialize() =>
             _parsedText = null;
 
@@ -116,6 +109,7 @@ namespace Aspid.MVVM.StarterKit
             return new Vector2(x, y);
         }
 
-        private string ExpectedText() => $"two numbers separated by \"{VectorText.Separator(_separator)}\"";
+        private string ExpectedText() =>
+            $"two numbers separated by \"{VectorText.Separator(_separator)}\"";
     }
 }

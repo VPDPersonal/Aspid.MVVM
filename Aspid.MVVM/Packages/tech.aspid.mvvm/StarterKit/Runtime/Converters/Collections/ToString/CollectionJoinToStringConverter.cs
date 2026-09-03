@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Text;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     /// <remarks>
-    /// A <see langword="null"/> item renders as nothing, leaving a hole between two separators — "a, , b".
+    /// A <see langword="null"/> item renders as nothing: "a, , b".
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(
@@ -26,12 +27,12 @@ namespace Aspid.MVVM.StarterKit
 
         [Tooltip("Writes each item. When empty, the item is written as it is.")]
         [TypeSelector]
-        [SerializeReference] private IConverter<T?, string?>? _item = new GenericToStringConverter<T?>();
+        [SerializeReference] private IConverter<T?, string?>? _item = new ValueToStringConverter<T?>();
 
         [Tooltip("How many items to show. Zero shows all of them.")]
         [SerializeField] [Min(0)] private int _maxItems;
 
-        [Tooltip("Composite format for the overflow: {0} is how many were left out. When blank, nothing is added.")]
+        [Tooltip("Composite format for the hidden count, e.g. \" +{0} more\". Blank adds nothing.")]
         [SerializeField] private string _overflowFormat = " +{0} more";
 
         [Tooltip("Shown when the collection is empty.")]
@@ -100,8 +101,6 @@ namespace Aspid.MVVM.StarterKit
             return Take(_builder);
         }
 
-        // AppendFormat can have written part of the format before the parse fails, so the rollback
-        // point is captured first and the builder is cut back to it on the way out.
         private void AppendOverflow(StringBuilder builder, int hidden)
         {
             var mark = builder.Length;

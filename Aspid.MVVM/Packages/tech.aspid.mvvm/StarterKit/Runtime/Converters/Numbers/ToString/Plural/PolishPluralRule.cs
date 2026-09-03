@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -6,17 +7,14 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Three words where only a bare one is singular — Polish.
+    /// Three words where only a bare one is singular: Polish.
     /// </summary>
-    /// <remarks>
-    /// The singular is claimed by the count 1 alone rather than by any count ending in 1, so 21 takes
-    /// the many word.
-    /// </remarks>
+    /// <remarks>Only the count 1 is singular: 21 takes the many word.</remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Plural Rule",
         Name = "Polish",
-        Tooltip = "Three words where only a bare one is singular — Polish")]
+        Tooltip = "Three words where only a bare one is singular: Polish")]
     public sealed class PolishPluralRule : PluralRule
     {
         [Tooltip("The word for exactly one.")]
@@ -34,7 +32,11 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="few">The word for a count ending in two to four, except in the 12-14 window.</param>
         /// <param name="many">The word for every other count, 21 and 101 included.</param>
         /// <param name="zero">Written for a count of none, or <see langword="null"/> to word it like any other count.</param>
-        public PolishPluralRule(string one, string few, string many, string? zero = null)
+        public PolishPluralRule(
+            string one,
+            string few,
+            string many,
+            string? zero = null)
             : base(zero)
         {
             _one = one;

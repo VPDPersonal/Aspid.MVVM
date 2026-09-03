@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private EventTriggerType _event;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand _command;
         private IRelayCommand<BaseEventData> _commandWithData;
@@ -133,7 +133,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T1 _param1;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1> _command;
         private IRelayCommand<BaseEventData, T1> _commandWithData;
@@ -258,7 +258,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T2 _param2;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2> _command;
         private IRelayCommand<BaseEventData, T1, T2> _commandWithData;
@@ -395,7 +395,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T3 _param3;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2, T3> _command;
         private IRelayCommand<BaseEventData, T1, T2, T3> _commandWithData;
@@ -540,7 +540,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T4 _param4;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private EventTrigger.Entry _entry;
         private IRelayCommand<T1, T2, T3, T4> _command;

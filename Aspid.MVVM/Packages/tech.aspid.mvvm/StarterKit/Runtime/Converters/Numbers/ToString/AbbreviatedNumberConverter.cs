@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using System.Globalization;
@@ -35,7 +36,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("The culture the number is formatted with.")]
         [SerializeField] private CultureInfoMode _culture = CultureInfoMode.CurrentCulture;
 
-        // The separator comes from the culture, so it is cached against the string it came from.
         [NonSerialized] private char[]? _separatorChars;
         [NonSerialized] private string? _separator;
 
@@ -43,13 +43,13 @@ namespace Aspid.MVVM.StarterKit
         public AbbreviatedNumberConverter() { }
 
         /// <param name="decimals">How many decimals to show, shortened or in full.</param>
-        /// <param name="suffixes">
-        /// The suffix for each power of a thousand, starting with none. <see langword="null"/> keeps the
-        /// defaults; an empty array is reported as an error and the number is written in full.
-        /// </param>
-        public AbbreviatedNumberConverter(int decimals, string[]? suffixes = null)
+        /// <param name="suffixes">The suffix for each power of a thousand, starting with none. <see langword="null"/> keeps the defaults.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="decimals"/> is negative.</exception>
+        public AbbreviatedNumberConverter(
+            int decimals,
+            string[]? suffixes = null)
         {
-            _decimals = decimals;
+            _decimals = decimals >= 0 ? decimals : throw new ArgumentOutOfRangeException(nameof(decimals));
             if (suffixes is not null) _suffixes = suffixes;
         }
 
@@ -57,10 +57,7 @@ namespace Aspid.MVVM.StarterKit
         /// Shortens the specified number.
         /// </summary>
         /// <param name="value">The number to shorten.</param>
-        /// <returns>
-        /// The shortened number with its suffix, or the number in full below the threshold and when no
-        /// suffixes are set.
-        /// </returns>
+        /// <returns>The shortened number with its suffix, or the number in full below the threshold or without suffixes.</returns>
         public string Convert(double value)
         {
             var culture = _culture.ToCultureInfo();
@@ -68,7 +65,10 @@ namespace Aspid.MVVM.StarterKit
 
             if (_suffixes is not { Length: > 0 })
             {
-                this.LogError("no suffixes are set", "Writing the number in full.");
+                this.LogError(
+                    problem: "no suffixes are set",
+                    consequence: "Writing the number in full.");
+
                 return Write(value, culture);
             }
 
@@ -81,8 +81,7 @@ namespace Aspid.MVVM.StarterKit
                 tier++;
             }
 
-            // The decimals can carry the magnitude up to the next thousand: 999 999 written with two
-            // of them is 1000.00K, which belongs a tier higher.
+            // Rounding can carry the magnitude to the next tier: 999 999 with two decimals is 1000.00K.
             if (tier < _suffixes.Length - 1 && Rounded(magnitude) >= 1000d)
             {
                 magnitude /= 1000d;
@@ -92,15 +91,17 @@ namespace Aspid.MVVM.StarterKit
             return (value < 0 ? "-" : string.Empty) + Write(magnitude, culture) + _suffixes[tier];
         }
 
-        string IConverter<int, string>.Convert(int value) => Convert(value);
+        string IConverter<int, string>.Convert(int value) =>
+            Convert(value);
 
-        string IConverter<long, string>.Convert(long value) => Convert(value);
+        string IConverter<long, string>.Convert(long value) =>
+            Convert(value);
 
-        string IConverter<float, string>.Convert(float value) => Convert(value);
+        string IConverter<float, string>.Convert(float value) =>
+            Convert(value);
 
-        // Math.Round takes at most 15 places, and the field is authored.
         private double Rounded(double value) =>
-            Math.Round(value, Math.Min(15, Math.Max(0, _decimals)), MidpointRounding.AwayFromZero);
+            Math.Round(value, Math.Min(15, _decimals), MidpointRounding.AwayFromZero);
 
         private string Write(double value, CultureInfo culture)
         {

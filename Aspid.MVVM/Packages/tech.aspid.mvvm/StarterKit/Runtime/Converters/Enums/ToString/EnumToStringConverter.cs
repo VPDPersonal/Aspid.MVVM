@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -21,8 +22,7 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Where the text comes from.")]
         [SerializeField] private EnumNameSource _source;
 
-        [Tooltip("Returned for a value that is not a declared member, a flag combination included. " +
-            "Unused under the Raw source, which writes a combination as its flag names and an undeclared value as its number.")]
+        [Tooltip("Returned for an undeclared member, flag combinations included. Unused under Raw.")]
         [SerializeField] private string _fallback = string.Empty;
 
         /// <remarks>Default: the member name as written in code.</remarks>
@@ -30,11 +30,12 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="source">Where the text comes from.</param>
         /// <param name="fallback">
-        /// Returned for a value that is not a declared member, a flag combination included. Unused
-        /// under <see cref="EnumNameSource.Raw"/>, which writes a combination as its flag names and
-        /// an undeclared value as its number. When omitted, an empty string.
+        /// Returned for an undeclared member, flag combinations included. Unused under <see cref="EnumNameSource.Raw"/>.
+        /// When omitted, an empty string.
         /// </param>
-        public EnumToStringConverter(EnumNameSource source, string? fallback = null)
+        public EnumToStringConverter(
+            EnumNameSource source,
+            string? fallback = null)
         {
             _source = source;
             _fallback = fallback ?? _fallback;
@@ -44,24 +45,20 @@ namespace Aspid.MVVM.StarterKit
         /// Converts the specified enum value to text.
         /// </summary>
         /// <param name="value">The enum value to convert.</param>
-        /// <returns>
-        /// The member's text; the fallback for a value that is not a declared member — a flag
-        /// combination included — except under <see cref="EnumNameSource.Raw"/>, which writes a
-        /// combination as its flag names and an undeclared value as its number.
-        /// </returns>
+        /// <returns>The member's text, or the fallback for an undeclared member. <see cref="EnumNameSource.Raw"/> writes any value as <c>ToString</c> does.</returns>
         public string Convert(TEnum value)
         {
-            // The only source that can name a flag combination or an undeclared number.
-            if (_source is EnumNameSource.Raw)
-                return value.ToString();
+            if (_source is EnumNameSource.Raw) return value.ToString();
 
             var index = EnumMembers<TEnum>.IndexOf(value);
+
             if (index >= 0)
             {
-                return EnumMembers<TEnum>.Label(
-                    index: index,
-                    source: _source,
-                    reporter: this);
+                if (EnumMembers<TEnum>.TryLabel(index, _source, out var label)) return label;
+
+                return this.UseFallback(
+                    fallback: label,
+                    problem: $"the source {_source.Describe()} is not a declared {nameof(EnumNameSource)}");
             }
 
             return this.UseFallback(

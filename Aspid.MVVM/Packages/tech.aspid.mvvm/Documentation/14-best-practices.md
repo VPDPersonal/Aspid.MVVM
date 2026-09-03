@@ -333,9 +333,10 @@ public void Health_ShouldDecrease_WhenDamaged()
 [Test]
 public void View_ShouldBind_WhenInitialized()
 {
-    var vm = DynamicViewModel.Create(
-        new DynamicPropertyData<string>("Name", "Test", BindMode.OneWay)
-    );
+    var vm = new DynamicViewModel
+    {
+        { "Name", "Test" }
+    };
 
     _view.Initialize(vm);
     Assert.IsNotNull(_view.ViewModel);

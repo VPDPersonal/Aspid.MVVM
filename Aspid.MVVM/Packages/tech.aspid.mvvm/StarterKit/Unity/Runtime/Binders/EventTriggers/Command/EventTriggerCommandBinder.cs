@@ -21,7 +21,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private EventTriggerType _event;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand _command;
         private IRelayCommand<BaseEventData> _commandWithData;
@@ -38,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
         public EventTriggerCommandBinder(
             EventTrigger target,
             EventTriggerType eventTriggerType,
-            ICanExecuteView customInteractable = null,
+            ICanExecuteHandler customInteractable = null,
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
@@ -143,7 +143,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T1 _param1;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1> _command;
         private IRelayCommand<BaseEventData, T1> _commandWithData;
@@ -158,7 +158,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1}.CanExecute(T1)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, ICanExecuteHandler customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -276,7 +276,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T2 _param2;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2> _command;
         private IRelayCommand<BaseEventData, T1, T2> _commandWithData;
@@ -292,7 +292,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1,T2}.CanExecute(T1,T2)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, ICanExecuteHandler customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -424,7 +424,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T3 _param3;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private IRelayCommand<T1, T2, T3> _command;
         private IRelayCommand<BaseEventData, T1, T2, T3> _commandWithData;
@@ -441,7 +441,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3}.CanExecute(T1,T2,T3)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, ICanExecuteHandler customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();
@@ -582,7 +582,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private T4 _param4;
 
         [Tooltip("The view used to reflect the command's CanExecute state.")]
-        [SerializeReference] private ICanExecuteView _customInteractable;
+        [SerializeReference] private ICanExecuteHandler _customInteractable;
 
         private EventTrigger.Entry _entry;
         private IRelayCommand<T1, T2, T3, T4> _command;
@@ -596,7 +596,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customInteractable">An optional custom view that reflects the command's <see cref="IRelayCommand{T1,T2,T3,T4}.CanExecute(T1,T2,T3,T4)"/> state. Pass <see langword="null"/> to disable interactable feedback.</param>
         /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
-        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteView customInteractable = null, BindMode mode = BindMode.OneWay)
+        public EventTriggerCommandBinder(EventTrigger target, EventTriggerType eventTriggerType, T1 param1, T2 param2, T3 param3, T4 param4, ICanExecuteHandler customInteractable = null, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfTwo();

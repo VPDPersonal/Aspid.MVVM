@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -26,12 +27,12 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private TEnum _target;
 
         [Tooltip("How the bound value is tested against the target.")]
-        [SerializeField] private EnumMatch _match;
+        [SerializeField] private EnumMatchMode _mode;
 
         [Tooltip("Invert the result.")]
         [SerializeField] private bool _isInvert;
 
-        [Tooltip("Returned, without inverting, when the match is undeclared.")]
+        [Tooltip("Returned, without inverting, when the mode is undeclared.")]
         [SerializeField] private bool _fallback;
 
         [NonSerialized] private ulong _targetBits;
@@ -42,54 +43,47 @@ namespace Aspid.MVVM.StarterKit
         public EnumMatchConverter() { }
 
         /// <param name="target">The enum value the bound one is tested against.</param>
-        /// <param name="match">How the bound value is tested against <paramref name="target"/>.</param>
+        /// <param name="mode">How the bound value is tested against <paramref name="target"/>.</param>
         /// <param name="isInvert">If <see langword="true"/>, inverts the result.</param>
         /// <param name="fallback">
-        /// Returned, without inverting, when the match is undeclared. When omitted, <see langword="false"/>.
+        /// Returned, without inverting, when the mode is undeclared. When omitted, <see langword="false"/>.
         /// </param>
         public EnumMatchConverter(
             TEnum target,
-            EnumMatch match = EnumMatch.Equal,
+            EnumMatchMode mode = EnumMatchMode.Equal,
             bool isInvert = false,
             bool fallback = false)
         {
-            _match = match;
+            _mode = mode;
             _target = target;
             _isInvert = isInvert;
             _fallback = fallback;
         }
 
         /// <summary>
-        /// Tests the specified enum value against zthe authored one.
+        /// Tests the specified enum value against the authored one.
         /// </summary>
         /// <param name="value">The enum value to test.</param>
-        /// <returns>
-        /// The result, inverted when configured; an undeclared <see cref="EnumMatch"/> returns the
-        /// fallback without inverting it.
-        /// </returns>
+        /// <returns>The result, inverted when configured; an undeclared mode returns the fallback without inverting it.</returns>
         public bool Convert(TEnum value)
         {
             var target = TargetBits();
             var actual = EnumBits<TEnum>.BitsOf(value);
 
-            // Testing the bits directly rather than through Enum.HasFlag skips Enum's type check
-            // on every push.
-            bool? matched = _match switch
+            bool? matched = _mode switch
             {
-                EnumMatch.Equal => actual == target,
-                EnumMatch.NotEquals => actual != target,
-                EnumMatch.HasAllFlags => (actual & target) == target,
-                EnumMatch.HasAnyFlag => (actual & target) != 0,
+                EnumMatchMode.Equal => actual == target,
+                EnumMatchMode.NotEqual => actual != target,
+                EnumMatchMode.HasAllFlags => (actual & target) == target,
+                EnumMatchMode.HasAnyFlag => (actual & target) != 0,
                 _ => null
             };
 
-            // Inverting an answer no test produced would turn the report into a true, so the
-            // fallback is returned without inverting it.
             if (matched is null)
             {
                 return this.UseFallback(
                     fallback: _fallback,
-                    problem: $"the match {_match.Describe()} is not a declared {nameof(EnumMatch)}");
+                    problem: $"the mode {_mode.Describe()} is not a declared {nameof(EnumMatchMode)}");
             }
 
             return _isInvert
@@ -97,8 +91,6 @@ namespace Aspid.MVVM.StarterKit
                 : matched.Value;
         }
 
-        // BitsOf boxes, so the target's bits are cached; the target is serialized, so the Inspector
-        // can change it between two pushes.
         private ulong TargetBits()
         {
             if (_hasTargetBits && EqualityComparer<TEnum>.Default.Equals(_cachedTarget, _target))

@@ -259,10 +259,36 @@ view.DestroyViewAndGameObject();
 
 ### 2.8 Исправления поведения, меняющие результат во время выполнения
 
-Исправлены две ошибки 1.0, поэтому тот же код теперь ведёт себя иначе во время выполнения — без перекомпиляции:
+Исправлена одна ошибка 1.0, поэтому тот же код теперь ведёт себя иначе во время выполнения — без перекомпиляции:
 
 - **`NumberToBoolConverter` со `Comparisons.Inequality`** в 1.0 возвращал тот же результат, что и `Comparisons.Equal` (сравнение было инвертировано). Теперь он корректно возвращает `true`, когда значения *не* приблизительно равны. Проверьте биндеры с `Inequality` и уберите компенсирующую инверсию ниже по потоку, если добавляли.
-- **`DynamicViewModel.Create<…>`** в 1.0 принудительно делал каждое свойство `BindMode.OneTime`, игнорируя заданный режим. Теперь учитывается `BindMode` каждого `DynamicPropertyData`, поэтому свойства без явного режима обновляются вживую. Передавайте `BindMode.OneTime` явно, если полагались на разовую привязку.
+
+### 2.9 `DynamicViewModel`
+
+API `DynamicViewModel.Create<...>` с фиксированным числом аргументов, `DynamicPropertyData<T>`,
+`DynamicPropertyFactory` и отдельные классы свойств для каждого режима заменены одним типизированным
+свойством:
+
+```csharp
+var viewModel = new DynamicViewModel();
+DynamicProperty<string> title = viewModel.Add("Title", "Hello");
+DynamicProperty<float> volume = viewModel.Add("Volume", 0.5f, BindMode.TwoWay);
+
+title.Value = "Updated";
+```
+
+Если handle свойства не нужен, используйте инициализатор коллекции:
+
+```csharp
+var viewModel = new DynamicViewModel
+{
+    { "Title", "Hello" },
+    { "Volume", 0.5f, BindMode.TwoWay }
+};
+```
+
+Чтение и запись через отдельные mode-specific классы заменяются на `Value` либо на
+`GetValue<T>` / `SetValue<T>` по ID. В отличие от старой фабрики, количество свойств не ограничено.
 
 ---
 
@@ -418,7 +444,9 @@ protected override string? Format(float value) => value.ToString("F2");
 - [ ] Заменить `view.DestroyView()` на `view.DestroyViewAndGameObject()` там, где он использовался для уничтожения GameObject-хоста
 - [ ] Реализовать шесть новых абстрактных хуков в любом кастомном наследнике `CollectionBinder<T>` (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
 - [ ] Пересмотреть настройки `ViewInitializer`: разрешение перенесено в `ViewInitializerBase`, `Resolve` контейнера стал `TryResolve`, добавлена стадия `InitializeStage.DiConstructor` (стадия по умолчанию не изменилась — `Awake`)
-- [ ] Перепроверить данные инспектора `ViewInitializer` / `ViewInitializerManual` — сериализуемые компоненты разрешения сменили тип, поэтому существующие настройки разрешения view/viewModel могут не перенестись- [ ] Проверить использования `NumberToBoolConverter` (`Inequality`) и `DynamicViewModel.Create` на исправленное поведение во время выполнения
+- [ ] Перепроверить данные инспектора `ViewInitializer` / `ViewInitializerManual` — сериализуемые компоненты разрешения сменили тип, поэтому существующие настройки разрешения view/viewModel могут не перенестись
+- [ ] Заменить `DynamicViewModel.Create`, `DynamicPropertyData<T>` и mode-specific dynamic properties на `DynamicViewModel.Add<T>`
+- [ ] Проверить использования `NumberToBoolConverter` (`Inequality`) на исправленное поведение во время выполнения
 - [ ] Прогнать сцены, использующие `ImageSpriteSwitcherBinder`, Addressable-биндеры и `VirtualizedList*`
 - [ ] Обновить тесты / инструменты, ищущие компоненты по пути `AddComponentMenu`
 - [ ] Переименовать `Values` → `Mode`, `Comparisons.Inequality` → `NotEqual`, `EnumMatch.Equals` → `Equal`, `ToConvert` → `ToConverter`, `WrapMode` → `NumberWrapMode` и `ListToStringConverter` → `CollectionJoinToStringConverter` в своём коде (см. § 5.1)

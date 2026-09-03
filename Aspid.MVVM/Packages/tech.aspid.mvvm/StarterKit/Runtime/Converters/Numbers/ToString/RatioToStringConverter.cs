@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 using Aspid.FastTools.Types;
@@ -37,11 +38,10 @@ namespace Aspid.MVVM.StarterKit
         public RatioToStringConverter() { }
 
         /// <param name="max">The value the number is shown against.</param>
-        /// <param name="format">
-        /// A composite format: <c>{0}</c> is the value, <c>{1}</c> the maximum. One .NET refuses, or
-        /// a blank one, is reported as an error and the two numbers are written with a slash.
-        /// </param>
-        public RatioToStringConverter(float max, string format = DefaultFormat)
+        /// <param name="format">A composite format: <c>{0}</c> is the value, <c>{1}</c> the maximum. A blank or invalid one falls back to a slash.</param>
+        public RatioToStringConverter(
+            float max,
+            string format = DefaultFormat)
         {
             _max = max;
             _format = format;
@@ -56,18 +56,19 @@ namespace Aspid.MVVM.StarterKit
             ? Write(Mathf.RoundToInt(value), Max())
             : Write(value, Max());
 
-        // A whole number needs no rounding, and boxing it as itself keeps every digit.
-        string IConverter<int, string>.Convert(int value) => Write(value, Max());
+        string IConverter<int, string>.Convert(int value) =>
+            Write(value, Max());
 
-        string IConverter<long, string>.Convert(long value) => Write(value, Max());
+        string IConverter<long, string>.Convert(long value) =>
+            Write(value, Max());
 
         string IConverter<double, string>.Convert(double value) => _round
             ? Write(NumericSaturation.ToLong(Math.Round(value)), Max())
             : Write(value, Max());
 
-        // Boxed as a whole number when rounding, so the format sees an int. The cast keeps the
-        // ternary an object: without it the int branch widens to float.
-        private object Max() => _round ? Mathf.RoundToInt(_max) : (object)_max;
+        private object Max() => _round
+            ? Mathf.RoundToInt(_max)
+            : (object)_max;
 
         private string Write(object left, object right)
         {
@@ -87,7 +88,6 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        // string.Format throws on a null format, and an empty one writes nothing at all.
         private string Layout()
         {
             if (!string.IsNullOrWhiteSpace(_format)) return _format;

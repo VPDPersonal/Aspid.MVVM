@@ -22,6 +22,13 @@ StarterKit -- это набор готовых к использованию б�
 | `TextFontSizeSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение размера шрифта |
 | `TextAlignmentBinder` | `TextAlignmentOptions` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.alignment` |
 | `TextAlignmentSwitcherBinder` | `bool` -> `TextAlignmentOptions` | OneWay, OneTime | Переключение выравнивания текста |
+| `TextFontStyleBinder` | `FontStyles` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.fontStyle` |
+| `TextAutoSizeBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.enableAutoSizing` |
+| `TextRichTextBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.richText` |
+| `TextCharacterSpacingBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.characterSpacing` |
+| `TextLineSpacingBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.lineSpacing` |
+| `TextMarginBinder` | `Vector4` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.margin` (left, top, right, bottom) |
+| `TextMaxVisibleCharactersBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `TMP_Text.maxVisibleCharacters` |
 
 ---
 
@@ -40,6 +47,10 @@ StarterKit -- это набор готовых к использованию б�
 | `InputFieldInputTypeSwitcherBinder` | `bool` -> `InputType` | OneWay, OneTime | Переключение типа ввода |
 | `InputFieldLineTypeBinder` | `LineType` | OneWay, OneTime | Тип строки (SingleLine, MultiLine) |
 | `InputFieldLineTypeSwitcherBinder` | `bool` -> `LineType` | OneWay, OneTime | Переключение типа строки |
+| `InputFieldCharacterLimitBinder` | `int` | OneWay, OneTime, OneWayToSource | Лимит символов, `0` без лимита |
+| `InputFieldCaretPositionBinder` | `int` | OneWay, OneTime, OneWayToSource | Позиция каретки |
+| `InputFieldReadOnlyBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `readOnly` |
+| `InputFieldPlaceholderBinder` | `Graphic` | OneWay, OneTime, OneWayToSource | Привязка `placeholder` |
 
 ---
 
@@ -79,7 +90,7 @@ StarterKit -- это набор готовых к использованию б�
 | `ToggleCommandBinder` | `IRelayCommand<bool>` | OneWay, OneTime | Команда для Toggle.onValueChanged |
 | `SliderCommandBinder` | `IRelayCommand<float>` | OneWay, OneTime | Команда для Slider.onValueChanged |
 | `DropdownCommandBinder` | `IRelayCommand<int>` | OneWay, OneTime | Команда для TMP_Dropdown.onValueChanged |
-| `InputFieldCommandBinder` | `IRelayCommand<string>` | OneWay, OneTime | Команда для TMP_InputField |
+| `InputFieldCommandBinder` | `IRelayCommand`, `IRelayCommand<string>` | OneWay, OneTime | Команда для события TMP_InputField (`UpdateInputFieldEvent`) |
 | `ScrollRectCommandBinder` | `IRelayCommand<Vector2>` | OneWay, OneTime | Команда для ScrollRect.onValueChanged |
 | `ScrollbarCommandBinder` | `IRelayCommand<float>` | OneWay, OneTime | Команда для Scrollbar.onValueChanged |
 | `EventTriggerCommandBinder` | `IRelayCommand` | OneWay, OneTime | Команда для EventTrigger |
@@ -116,9 +127,10 @@ StarterKit -- это набор готовых к использованию б�
 |-----------|-----------|--------|----------|
 | `DropdownValueBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка выбранного индекса |
 | `DropdownValueSwitcherBinder` | `bool` -> `int` | OneWay, OneTime | Переключение индекса |
-| `DropdownOptionsBinder` | `List<OptionData>` | OneWay, OneTime | Привязка списка опций |
+| `DropdownOptionsBinder` | `List<string>`, `List<Sprite>`, `IEnumerable<OptionData>` | OneWay, OneTime, OneWayToSource | Привязка списка опций |
 | `DropdownOptionsSwitcherBinder` | `bool` -> `List<OptionData>` | OneWay, OneTime | Переключение списка опций |
-| `DropdownAlphaFadeSpeedBinder` | `float` | OneWay, OneTime | Привязка скорости затухания |
+| `DropdownOptionsByEnumMonoBinder` | `Enum` | OneWay, OneTime | Опции из значений enum-типа |
+| `DropdownAlphaFadeSpeedBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка скорости затухания |
 | `DropdownAlphaFadeSpeedSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение скорости затухания |
 
 ---
@@ -147,12 +159,22 @@ StarterKit -- это набор готовых к использованию б�
 | `TransformRotationSwitcherBinder` | `bool` -> `Quaternion` | OneWay, OneTime | Переключение поворота |
 | `TransformEulerAnglesBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка `localEulerAngles` |
 | `TransformEulerAnglesSwitcherBinder` | `bool` -> `Vector3` | OneWay, OneTime | Переключение углов Эйлера |
-| `TransformScaleBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка `localScale` |
+| `TransformScaleBinder` | `Vector3`, `float` | OneWay, OneTime, OneWayToSource | Привязка `localScale` |
 | `TransformScaleSwitcherBinder` | `bool` -> `Vector3` | OneWay, OneTime | Переключение масштаба |
-| `RectTransformAnchoredPositionBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `anchoredPosition` |
-| `RectTransformAnchoredPositionSwitcherBinder` | `bool` -> `Vector2` | OneWay, OneTime | Переключение якорной позиции |
-| `RectTransformSizeDeltaBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `sizeDelta` |
-| `RectTransformSizeDeltaSwitcherBinder` | `bool` -> `Vector2` | OneWay, OneTime | Переключение размера |
+| `RectTransformAnchoredPositionBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка `anchoredPosition` |
+| `RectTransformAnchoredPositionSwitcherBinder` | `bool` -> `Vector3` | OneWay, OneTime | Переключение якорной позиции |
+| `RectTransformSizeDeltaBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка `sizeDelta` |
+| `RectTransformSizeDeltaSwitcherBinder` | `bool` -> `Vector3` | OneWay, OneTime | Переключение размера |
+| `RectTransformAnchorMinBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `anchorMin` |
+| `RectTransformAnchorMaxBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `anchorMax` |
+| `RectTransformOffsetMinBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `offsetMin` |
+| `RectTransformOffsetMaxBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `offsetMax` |
+| `RectTransformPivotBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `pivot` |
+| `RectTransformAnchorMinSwitcherBinder` | `bool` -> `Vector2` | OneWay, OneTime | Переключение `anchorMin` |
+| `RectTransformAnchorMaxSwitcherBinder` | `bool` -> `Vector2` | OneWay, OneTime | Переключение `anchorMax` |
+| `RectTransformPivotSwitcherBinder` | `bool` -> `Vector2` | OneWay, OneTime | Переключение `pivot` |
+| `TransformParentBinder` | `Transform` | OneWay, OneTime, OneWayToSource | Привязка `Transform.parent` |
+| `TransformSiblingIndexBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка индекса среди соседей |
 
 ---
 
@@ -192,14 +214,19 @@ StarterKit -- это набор готовых к использованию б�
 |-----------|-----------|--------|----------|
 | `GraphicColorBinder` | `Color` | OneWay, OneTime, OneWayToSource | Привязка `Graphic.color` |
 | `GraphicColorSwitcherBinder` | `bool` -> `Color` | OneWay, OneTime | Переключение цвета |
-| `GraphicColorComponentBinder` | `float` | OneWay, OneTime | Привязка компонента цвета (R/G/B/A) |
-| `GraphicColorComponentSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение компонента цвета |
+| `GraphicColorChannelBinder` | `float` | OneWay, OneTime | Привязка выбранных каналов цвета (`ColorChannels`) |
+| `GraphicColorChannelSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение выбранных каналов цвета |
 | `GraphicMaterialBinder` | `Material` | OneWay, OneTime | Привязка `Graphic.material` |
 | `GraphicMaterialSwitcherBinder` | `bool` -> `Material` | OneWay, OneTime | Переключение материала |
-| `RendererMaterialsBinder` | `Material` | OneWay, OneTime | Привязка `Renderer.material` |
-| `RendererMaterialsSwitcherBinder` | `bool` -> `Material` | OneWay, OneTime | Переключение материала рендерера |
-| `RendererMaterialColorBinder` | `Color` | OneWay, OneTime | Привязка цвета материала рендерера |
-| `RendererMaterialColorSwitcherBinder` | `bool` -> `Color` | OneWay, OneTime | Переключение цвета материала |
+| `RendererMaterialsBinder` | `Material`, `IReadOnlyCollection<Material>` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.material` / `materials` |
+| `RendererMaterialsSwitcherBinder` | `bool` -> `Material[]` | OneWay, OneTime | Переключение массива материалов |
+| `RendererMaterialsColorBinder` | `Color` | OneWay, OneTime, OneWayToSource | Цвет shader-свойства на всех материалах |
+| `RendererMaterialsColorSwitcherBinder` | `bool` -> `Color` | OneWay, OneTime | Переключение цвета материалов |
+| `RendererEnabledBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.enabled` |
+| `RendererShadowCastingBinder` | `ShadowCastingMode` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.shadowCastingMode` |
+| `RendererSortingOrderBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.sortingOrder` |
+| `RendererSortingLayerNameBinder` | `string` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.sortingLayerName` |
+| `RendererPropertyBlock{Float, Color, Vector, Texture}MonoBinder` | `float` / `Color` / `Vector4` / `Texture` | OneWay, OneTime | Shader-свойство через `MaterialPropertyBlock` |
 | `LineRendererColorBinder` | `Color` | OneWay, OneTime | Привязка цвета LineRenderer |
 | `LineRendererColorSwitcherBinder` | `bool` -> `Color` | OneWay, OneTime | Переключение цвета LineRenderer |
 
@@ -211,24 +238,24 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `AudioSourceVolumeBinder` | `float` | OneWay, OneTime | Привязка громкости |
-| `AudioSourcePitchBinder` | `float` | OneWay, OneTime | Привязка высоты тона |
-| `AudioSourceClipBinder` | `AudioClip` | OneWay, OneTime | Привязка аудиоклипа |
-| `AudioSourceMuteBinder` | `bool` | OneWay, OneTime | Привязка Mute |
-| `AudioSourceLoopBinder` | `bool` | OneWay, OneTime | Привязка Loop |
-| `AudioSourceTimeBinder` | `float` | OneWay, OneTime | Привязка позиции воспроизведения |
-| `AudioSourceSpatialBlendBinder` | `float` | OneWay, OneTime | Привязка 2D/3D баланса |
-| `AudioSourcePanStereoBinder` | `float` | OneWay, OneTime | Привязка стерео-панорамы |
-| `AudioSourceDopplerLevelBinder` | `float` | OneWay, OneTime | Привязка уровня эффекта Доплера |
-| `AudioSourceMinMaxDistanceBinder` | `Vector2` | OneWay, OneTime | Привязка min/max расстояния |
-| `AudioSourcePriorityBinder` | `int` | OneWay, OneTime | Привязка приоритета |
-| `AudioSourceSpreadBinder` | `float` | OneWay, OneTime | Привязка угла распространения |
-| `AudioSourceOutputAudioMixerGroupBinder` | `AudioMixerGroup` | OneWay, OneTime | Привязка группы микшера |
-| `AudioSourceBypassEffectsBinder` | `bool` | OneWay, OneTime | Привязка bypass-эффектов |
-| `AudioSourceBypassListenerEffectsBinder` | `bool` | OneWay, OneTime | Привязка bypass listener эффектов |
-| `AudioSourceBypassReverbZonesBinder` | `bool` | OneWay, OneTime | Привязка bypass reverb zones |
-| `AudioSourceReverbZoneMixBinder` | `float` | OneWay, OneTime | Привязка reverb zone mix |
-| `AudioSourceTimeSamplesBinder` | `int` | OneWay, OneTime | Привязка позиции в сэмплах |
+| `AudioSourceVolumeBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка громкости |
+| `AudioSourcePitchBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка высоты тона |
+| `AudioSourceClipBinder` | `AudioClip` | OneWay, OneTime, OneWayToSource | Привязка аудиоклипа |
+| `AudioSourceMuteBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка Mute |
+| `AudioSourceLoopBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка Loop |
+| `AudioSourceTimeBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка позиции воспроизведения |
+| `AudioSourceSpatialBlendBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка 2D/3D баланса |
+| `AudioSourcePanStereoBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка стерео-панорамы |
+| `AudioSourceDopplerLevelBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка уровня эффекта Доплера |
+| `AudioSourceMinMaxDistanceBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка min/max расстояния |
+| `AudioSourcePriorityBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка приоритета |
+| `AudioSourceSpreadBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка угла распространения |
+| `AudioSourceOutputAudioMixerGroupBinder` | `AudioMixerGroup` | OneWay, OneTime, OneWayToSource | Привязка группы микшера |
+| `AudioSourceBypassEffectsBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка bypass-эффектов |
+| `AudioSourceBypassListenerEffectsBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка bypass listener эффектов |
+| `AudioSourceBypassReverbZonesBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка bypass reverb zones |
+| `AudioSourceReverbZoneMixBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка reverb zone mix |
+| `AudioSourceTimeSamplesBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка позиции в сэмплах |
 
 ---
 
@@ -238,18 +265,36 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `ColliderEnabledBinder` | `bool` | OneWay, OneTime | Привязка `Collider.enabled` |
-| `ColliderIsTriggerBinder` | `bool` | OneWay, OneTime | Привязка `Collider.isTrigger` |
-| `ColliderMaterialBinder` | `PhysicMaterial` | OneWay, OneTime | Привязка физического материала |
-| `ColliderProvidesContactsBinder` | `bool` | OneWay, OneTime | Привязка `providesContacts` |
-| `BoxColliderCenterBinder` | `Vector3` | OneWay, OneTime | Привязка центра BoxCollider |
-| `BoxColliderSizeBinder` | `Vector3` | OneWay, OneTime | Привязка размера BoxCollider |
-| `SphereColliderCenterBinder` | `Vector3` | OneWay, OneTime | Привязка центра SphereCollider |
-| `SphereColliderRadiusBinder` | `float` | OneWay, OneTime | Привязка радиуса SphereCollider |
-| `CapsuleColliderCenterBinder` | `Vector3` | OneWay, OneTime | Привязка центра CapsuleCollider |
-| `CapsuleColliderRadiusBinder` | `float` | OneWay, OneTime | Привязка радиуса CapsuleCollider |
-| `MeshColliderConvexBinder` | `bool` | OneWay, OneTime | Привязка `MeshCollider.convex` |
-| `MeshColliderMeshBinder` | `Mesh` | OneWay, OneTime | Привязка меша коллайдера |
+| `ColliderEnabledBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Collider.enabled` |
+| `ColliderIsTriggerBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Collider.isTrigger` |
+| `ColliderMaterialBinder` | `PhysicsMaterial` | OneWay, OneTime, OneWayToSource | Привязка физического материала |
+| `ColliderProvidesContactsBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `providesContacts` |
+| `BoxColliderCenterBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка центра BoxCollider |
+| `BoxColliderSizeBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка размера BoxCollider |
+| `SphereColliderCenterBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка центра SphereCollider |
+| `SphereColliderRadiusBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка радиуса SphereCollider |
+| `CapsuleColliderCenterBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | Привязка центра CapsuleCollider |
+| `CapsuleColliderRadiusBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка радиуса CapsuleCollider |
+| `MeshColliderConvexBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `MeshCollider.convex` |
+| `MeshColliderMeshBinder` | `Mesh` | OneWay, OneTime, OneWayToSource | Привязка меша коллайдера |
+| `MeshColliderCookingOptionsBinder` | `MeshColliderCookingOptions` | OneWay, OneTime, OneWayToSource | Привязка `MeshCollider.cookingOptions` |
+| `CapsuleColliderHeightBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка высоты CapsuleCollider |
+| `CapsuleColliderDirectionBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка оси CapsuleCollider (0..2) |
+| `ColliderContactOffsetBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка `Collider.contactOffset` |
+| `ColliderIncludeLayersBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `Collider.includeLayers` |
+| `ColliderExcludeLayersBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `Collider.excludeLayers` |
+
+### Collider2D
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `Collider2DIsTriggerBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Collider2D.isTrigger` |
+| `Collider2DMaterialBinder` | `PhysicsMaterial2D` | OneWay, OneTime, OneWayToSource | Привязка `Collider2D.sharedMaterial` |
+| `Collider2DOffsetBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `Collider2D.offset` |
+| `Collider2DDensityBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка `Collider2D.density` |
+| `BoxCollider2DSizeBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка размера BoxCollider2D |
+| `CapsuleCollider2DSizeBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка размера CapsuleCollider2D |
+| `CircleCollider2DRadiusBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка радиуса CircleCollider2D |
 
 ---
 
@@ -325,7 +370,7 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `ObjectNameBinder` | `string` | OneWay, OneTime | Привязка `Object.name` |
+| `ObjectNameBinder` | `string` | OneWay, OneTime, OneWayToSource | Привязка `Object.name` |
 
 ---
 
@@ -336,9 +381,12 @@ MonoBinder-кастеры для преобразования типов меж�
 | Компонент | Преобразование | Описание |
 |-----------|---------------|----------|
 | `AnyToStringCasterMonoBinder` | `any` -> `string` | Преобразование любого значения в строку |
-| `ToStringCasterMonoBinder` | `T` -> `string` | Типизированное преобразование в строку |
-| `StringToBoolCasterMonoBinder` | `string` -> `bool` | Преобразование строки в bool |
+| `ValueToStringCasterMonoBinder<T>` | `T` -> `string` | Абстрактная база типизированного преобразования в строку |
 | `TimeSpanToStringCasterMonoBinder` | `TimeSpan` -> `string` | Форматирование TimeSpan в строку |
+| `StringToBoolCasterMonoBinder` | `string` -> `bool` | Преобразование строки в bool |
+| `StringToIntCasterMonoBinder` | `string` -> `int` | Разбор строки в int |
+| `StringToFloatCasterMonoBinder` | `string` -> `float` | Разбор строки в float |
+| `StringToEnumCasterMonoBinder<TEnum>` | `string` -> `TEnum` | Абстрактная база разбора строки в enum |
 | `Vector2ToVector3CasterMonoBinder` | `Vector2` -> `Vector3` | Конвертация 2D-вектора в 3D |
 | `Vector3ToVector2CasterMonoBinder` | `Vector3` -> `Vector2` | Конвертация 3D-вектора в 2D |
 
@@ -350,11 +398,11 @@ MonoBinder-кастеры для преобразования типов меж�
 
 | Компонент | Режим | Описание |
 |-----------|-------|----------|
-| `UnityDelegateOneWayBinder` | OneWay | Универсальный OneWay-биндер |
-| `UnityDelegateOneTimeBinder` | OneTime | Универсальный OneTime-биндер |
-| `UnityDelegateOneWayToSourceBinder` | OneWayToSource | Универсальный OneWayToSource-биндер |
-| `UnityDelegateTwoWayBinder` | TwoWay | Универсальный TwoWay-биндер |
-| `UnityCasterBinder` | -- | Универсальный кастер типов |
+| `DelegateOneWayBinder<T>` | OneWay | Универсальный OneWay-биндер поверх `Action<T>` |
+| `DelegateOneTimeBinder<T>` | OneTime | Универсальный OneTime-биндер поверх `Action<T>` |
+| `DelegateOneWayToSourceBinder<T>` | OneWayToSource | Универсальный OneWayToSource-биндер |
+| `DelegateTwoWayBinder<T>` | TwoWay | Универсальный TwoWay-биндер |
+| `CasterBinder<TFrom, TTo>` | OneWay, OneTime | Универсальный кастер типов |
 
 ---
 
@@ -376,6 +424,6 @@ MonoBinder-кастеры для преобразования типов меж�
 |-----------|-----------|--------|----------|
 | `TextLocalizationEntryBinder` | `LocalizedString` | OneWay, OneTime | Привязка локализованной строки к TMP_Text |
 | `TextLocalizationEntrySwitcherBinder` | `bool` -> `LocalizedString` | OneWay, OneTime | Переключение локализованной строки |
-| `LocalizeStringEventEntryBinder` | `TableEntryReference` | OneWay, OneTime | Привязка ключа к LocalizeStringEvent |
-| `LocalizeStringEventEntrySwitcherBinder` | `bool` -> `TableEntryReference` | OneWay, OneTime | Переключение ключа локализации |
-| `LocalizeStringEventVariableBinder` | `string` / `int` / `float` | OneWay, OneTime | Привязка переменной в LocalizeStringEvent |
+| `LocalizeStringEventEntryBinder` | `string` (ключ записи) | OneWay, OneTime, OneWayToSource | Привязка ключа к LocalizeStringEvent |
+| `LocalizeStringEventEntrySwitcherBinder` | `bool` -> `string` | OneWay, OneTime | Переключение ключа локализации |
+| `LocalizeStringEventVariableBinder` | числа, `bool`, `string`, `Object` | OneWay, OneTime | Smart String-переменная в LocalizeStringEvent; создаётся по типу значения |

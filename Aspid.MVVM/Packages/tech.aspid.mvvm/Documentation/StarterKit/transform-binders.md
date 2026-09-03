@@ -60,7 +60,7 @@ public partial class CharacterViewModel
 
 ### TransformScaleBinder
 
-Привязка масштаба `Transform.localScale` (`Vector3`).
+Привязка масштаба `Transform.localScale` (`Vector3`). Число (`INumberBinder`) применяется как равномерный масштаб по трём осям.
 
 **Режимы:** OneWay, OneTime, OneWayToSource.
 
@@ -87,11 +87,20 @@ public partial class UIElementViewModel
 
 ---
 
+### TransformParentBinder и TransformSiblingIndexBinder
+
+| Биндер | Тип данных | Описание |
+|--------|-----------|----------|
+| `TransformParentBinder` | `Transform` | `Transform.parent`; локальные позиция и поворот сохраняются, `null` отцепляет к корню сцены |
+| `TransformSiblingIndexBinder` | `int` | Индекс среди соседей, зажимается в существующий диапазон |
+
+---
+
 ## RectTransform
 
 ### RectTransformAnchoredPositionBinder
 
-Привязка `RectTransform.anchoredPosition` (`Vector2`).
+Привязка `RectTransform.anchoredPosition` / `anchoredPosition3D` (`Vector3`, выбор через `_space`).
 
 **Режимы:** OneWay, OneTime, OneWayToSource.
 
@@ -99,7 +108,7 @@ public partial class UIElementViewModel
 
 ### RectTransformSizeDeltaBinder
 
-Привязка `RectTransform.sizeDelta` (`Vector2`).
+Привязка `RectTransform.sizeDelta` (`Vector3`, оси выбираются через `SizeDeltaMode`). В OneWayToSource размер отдаётся и как `Vector3`, и как `Vector2`.
 
 **Режимы:** OneWay, OneTime, OneWayToSource.
 
@@ -109,8 +118,24 @@ public partial class UIElementViewModel
 
 | Биндер | Описание |
 |--------|----------|
-| `RectTransformAnchoredPositionSwitcherBinder` | `bool` → `Vector2` позиция |
-| `RectTransformSizeDeltaSwitcherBinder` | `bool` → `Vector2` размер |
+| `RectTransformAnchoredPositionSwitcherBinder` | `bool` → `Vector3` позиция |
+| `RectTransformSizeDeltaSwitcherBinder` | `bool` → `Vector3` размер |
+
+---
+
+### Прочие RectTransform-биндеры
+
+| Биндер | Тип данных | Свойство |
+|--------|-----------|----------|
+| `RectTransformAnchorMinBinder` | `Vector2` | `anchorMin` |
+| `RectTransformAnchorMaxBinder` | `Vector2` | `anchorMax` |
+| `RectTransformOffsetMinBinder` | `Vector2` | `offsetMin` |
+| `RectTransformOffsetMaxBinder` | `Vector2` | `offsetMax` |
+| `RectTransformPivotBinder` | `Vector2` | `pivot` |
+
+Все пишут только конечные значения; NaN и бесконечность логируются и пропускаются.
+
+У `AnchorMin`, `AnchorMax` и `Pivot` есть Switcher-, Enum- и EnumGroup-варианты (`RectTransformPivotSwitcherBinder`, `RectTransformPivotEnumMonoBinder`, …).
 
 ---
 

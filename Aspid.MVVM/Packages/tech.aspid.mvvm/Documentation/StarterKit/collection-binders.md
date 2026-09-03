@@ -58,7 +58,7 @@ public partial class TodoListViewModel
 }
 ```
 
-MonoBinder-вариант: `ViewModelObservableListMonoBinder`.
+MonoBinder-вариант: `ObservableListViewModelMonoBinder`.
 
 ---
 

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using System.Collections.Generic;
 using Aspid.Collections.Observable.Filtered;
 using Filter = Aspid.MVVM.StarterKit.ICollectionFilter<Aspid.MVVM.IViewModel>;
@@ -24,7 +23,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Filter _filter;
         
         [Tooltip("Optional sort order. Leave empty to keep the collection's own order.")]
-        [FormerlySerializedAs("_comparer")]
         [SerializeReference] private Order _order;
 
         private FilteredList<IViewModel> _filteredList;

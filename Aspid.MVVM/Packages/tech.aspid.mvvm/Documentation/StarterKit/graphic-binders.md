@@ -32,7 +32,7 @@ public partial class ThemeViewModel
 
 ---
 
-### GraphicColorComponentBinder
+### GraphicColorChannelBinder
 
 Привязка отдельного компонента цвета (`R`, `G`, `B` или `A`) как `float`.
 
@@ -48,7 +48,7 @@ public partial class ThemeViewModel
 public partial class FadeViewModel
 {
     [OneWayBind] private float _alpha;
-    // GraphicColorComponentBinder с ColorComponent.A
+    // GraphicColorChannelBinder с ColorChannels.A
 }
 ```
 
@@ -56,7 +56,7 @@ public partial class FadeViewModel
 
 ---
 
-### GraphicColorComponentSwitcherBinder
+### GraphicColorChannelSwitcherBinder
 
 `bool` → выбор между двумя значениями компонента цвета.
 
@@ -78,7 +78,7 @@ public partial class FadeViewModel
 
 ## Renderer (3D)
 
-### RendererMaterialColorBinder
+### RendererMaterialsColorBinder
 
 Привязка цвета материала `Renderer` через shader-свойство.
 
@@ -87,7 +87,7 @@ public partial class FadeViewModel
 | `_colorPropertyName` | Имя shader-свойства (по умолчанию `"_BaseColor"`) |
 | Converter | `IConverter<Color, Color>` (опционально) |
 
-Устанавливает цвет **всех** материалов `Renderer.materials` одновременно. Используется `Shader.PropertyToID` для кэширования.
+Устанавливает цвет **всех** материалов `Renderer.materials` одновременно (материалы инстанцируются для этого рендерера). Используется `Shader.PropertyToID` для кэширования.
 
 **Режимы:** OneWay, OneTime, OneWayToSource.
 
@@ -96,13 +96,13 @@ public partial class FadeViewModel
 public partial class HighlightViewModel
 {
     [OneWayBind] private Color _highlightColor;
-    // RendererMaterialColorBinder с _colorPropertyName = "_BaseColor"
+    // RendererMaterialsColorBinder с _colorPropertyName = "_BaseColor"
 }
 ```
 
 ---
 
-### RendererMaterialColorSwitcherBinder
+### RendererMaterialsColorSwitcherBinder
 
 `bool` → выбор между двумя цветами для shader-свойства.
 
@@ -110,9 +110,15 @@ public partial class HighlightViewModel
 
 ### RendererMaterialsBinder
 
-Привязка массива материалов `Renderer.materials` (`Material[]`).
+Привязка `Renderer.material` (`Material`) или `Renderer.materials` (`IReadOnlyCollection<Material>`); `null` или пустая коллекция очищает массив. В OneWayToSource отдаёт `sharedMaterial` / `sharedMaterials`.
 
 **Режимы:** OneWay, OneTime, OneWayToSource.
+
+---
+
+### RendererPropertyBlock*MonoBinder
+
+`Float`, `Color`, `Vector`, `Texture`: пишут одно shader-свойство через `MaterialPropertyBlock`, не инстанцируя материалы. Имя свойства задаётся в Inspector; пустое имя логируется и отключает запись до следующего bind.
 
 ---
 

@@ -51,7 +51,20 @@ public partial class FormViewModel
 | `InputFieldInputTypeBinder` | `inputType` | `InputType` |
 | `InputFieldLineTypeBinder` | `lineType` | `LineType` |
 
-Каждый имеет Switcher-вариант (`bool` → выбор между двумя значениями).
+Каждый имеет Switcher-вариант (`bool` → выбор между двумя значениями). После записи вызывается `ForceLabelUpdate`.
+
+| Биндер | Привязывает | Тип |
+|--------|------------|-----|
+| `InputFieldCharacterLimitBinder` | `characterLimit` | `int`, `0` без лимита |
+| `InputFieldCaretPositionBinder` | `caretPosition` | `int`, зажимается в длину текста |
+| `InputFieldReadOnlyBinder` | `readOnly` | `bool` |
+| `InputFieldPlaceholderBinder` | `placeholder` | `Graphic` |
+
+---
+
+## InputFieldCommandBinder
+
+Выполняет команду на выбранном событии поля (`UpdateInputFieldEvent`): `IRelayCommand` без аргументов или `IRelayCommand<string>` с текстом. Варианты `<T>`, `<T1, T2>`, `<T1, T2, T3>` передают после текста дополнительные параметры. `InteractableMode` работает как у `ButtonCommandBinder`.
 
 ---
 

@@ -6,7 +6,7 @@ using Aspid.Collections.Observable;
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
-    /// Tests for <see cref="ObservableListViewModelMonoBinder{TView, TFactory}"/>.
+    /// Tests for <see cref="ObservableListViewModelMonoBinder{TView}"/>.
     /// </summary>
     [TestFixture]
     public sealed class ObservableListBinderTests : SceneFixture
@@ -36,10 +36,10 @@ namespace Aspid.MVVM.Tests
         }
     }
 
-    internal sealed class TestObservableListBinder : ObservableListViewModelMonoBinder<StubView, StubViewFactory>
+    internal sealed class TestObservableListBinder : ObservableListViewModelMonoBinder<StubView>
     {
         public void UseFactory(StubViewFactory factory) =>
-            typeof(ObservableListViewModelMonoBinder<StubView, StubViewFactory>)
+            typeof(ObservableListViewModelMonoBinder<StubView>)
                 .GetField("_viewFactory", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
                 .SetValue(this, factory);
     }

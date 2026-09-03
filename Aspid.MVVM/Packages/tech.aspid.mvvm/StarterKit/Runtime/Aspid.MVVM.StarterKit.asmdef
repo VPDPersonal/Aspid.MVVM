@@ -10,7 +10,8 @@
         "Aspid.Collections.Observable",
         "Unity.Localization",
         "Unity.ResourceManager",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Unity.Addressables"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -29,6 +30,11 @@
             "name": "com.unity.localization",
             "expression": "",
             "define": "ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION"
+        },
+        {
+            "name": "com.unity.addressables",
+            "expression": "",
+            "define": "ASPID_MVVM_ADDRESSABLES_INTEGRATION"
         }
     ],
     "noEngineReferences": false

@@ -53,7 +53,7 @@ public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
 | `SliderMinMaxSwitcherBinder` | двумя min/max | (0,100) / (0,10) |
 | `GraphicColorSwitcherBinder` | двумя цветами | Green / Red |
 | `CanvasGroupAlphaSwitcherBinder` | двумя alpha | 1.0 / 0.3 |
-| `RendererMaterialColorSwitcherBinder` | двумя цветами | Lit / Dark |
+| `RendererMaterialsColorSwitcherBinder` | двумя цветами | Lit / Dark |
 | `SelectableColorBlockSwitcherBinder` | двумя ColorBlock | Normal / Disabled |
 
 ---

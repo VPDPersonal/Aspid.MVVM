@@ -226,11 +226,11 @@ public sealed partial class TodoStorageView : MonoView
 {
     [SerializeField] private MonoBinder _searchInput;
     [SerializeField] private ButtonCommandBinder[] _addTodoCommand;
-    [SerializeField] private ViewModelObservableListMonoBinder _todoItemViewModels;
+    [SerializeField] private ObservableListViewModelMonoBinder _todoItemViewModels;
 }
 ```
 
-`ViewModelObservableListMonoBinder` — коллекционный биндер, создающий/удаляющий View из префабов при изменении списка.
+`ObservableListViewModelMonoBinder` — коллекционный биндер, создающий/удаляющий View из префабов при изменении списка.
 
 ### EditTextDialogView
 

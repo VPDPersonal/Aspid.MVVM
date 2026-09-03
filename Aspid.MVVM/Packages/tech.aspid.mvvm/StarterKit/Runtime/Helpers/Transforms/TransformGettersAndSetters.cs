@@ -34,6 +34,8 @@ namespace Aspid.MVVM.StarterKit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetPosition(this Transform transform, Vector3 value, Space space)
         {
+            if (!BinderMath.RequireFinite(typeof(TransformGettersAndSetters), value, transform)) return;
+
             switch (space)
             {
                 case Space.Self: transform.localPosition = value; break;
@@ -96,6 +98,8 @@ namespace Aspid.MVVM.StarterKit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetEulerAngles(this Transform transform, Vector3 value, Space space)
         {
+            if (!BinderMath.RequireFinite(typeof(TransformGettersAndSetters), value, transform)) return;
+
             switch (space)
             {
                 case Space.Self: transform.localEulerAngles = value; break;

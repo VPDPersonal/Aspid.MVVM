@@ -44,7 +44,7 @@ public partial class LanguageViewModel
 | `IBinder<IEnumerable<TMP_Dropdown.OptionData>>` | Устанавливает опции с полным набором данных |
 | `IReverseBinder<List<TMP_Dropdown.OptionData>>` | Отправляет текущие опции обратно (OneWayToSource) |
 
-При установке значения — старые опции очищаются (`ClearOptions`), затем добавляются новые.
+При установке значения старые опции очищаются, затем добавляются новые; `null` очищает список. Выбранный индекс сохраняется, если новый список его вмещает.
 
 **Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
 
@@ -69,11 +69,17 @@ public partial class LanguageViewModel
 
 ---
 
+## DropdownOptionsByEnumMonoBinder
+
+Заполняет опции значениями enum-типа привязанного значения. Опции перестраиваются только при смене типа; `null` очищает список. Необязательный конвертер `IConverter<Enum, IEnumerable<OptionData>>` (например, `EnumToDropdownOptionDataConverter`) задаёт подписи, без него берутся имена значений.
+
+---
+
 ## DropdownAlphaFadeSpeedBinder
 
 Привязка скорости затухания `TMP_Dropdown.alphaFadeSpeed`.
 
-Значение ограничивается снизу: `Mathf.Max(value, 0)`.
+Отрицательное значение поднимается до 0, NaN логируется.
 
 **Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
 

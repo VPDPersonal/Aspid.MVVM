@@ -10,7 +10,7 @@
 
 | Биндер | Свойство | Тип данных |
 |--------|---------|-----------|
-| `AudioSourceVolumeBinder` | `volume` | `float` (clamp 0-1) |
+| `AudioSourceVolumeBinder` | `volume` | `float` |
 | `AudioSourcePitchBinder` | `pitch` | `float` |
 | `AudioSourceClipBinder` | `clip` | `AudioClip` |
 | `AudioSourceLoopBinder` | `loop` | `bool` |
@@ -37,9 +37,19 @@
 
 Числовые биндеры (`Volume`, `Pitch`, `PanStereo` и др.) реализуют `INumberBinder` и принимают `int`, `float`, `long`, `double`.
 
-Некоторые ограничивают значения:
-- `Volume` — `Mathf.Clamp(value, 0, 1)`
-- Остальные — без ограничений или с конвертером
+Диапазоны, в которые зажимается значение (NaN и бесконечность логируются и заменяются нижней границей):
+
+| Биндер | Диапазон |
+|--------|----------|
+| `Volume`, `SpatialBlend` | 0..1 |
+| `PanStereo` | -1..1 |
+| `Pitch` | -3..3 |
+| `DopplerLevel` | 0..5 |
+| `ReverbZoneMix` | 0..1.1 |
+| `Spread` | 0..360 |
+| `Priority` | 0..256 |
+| `Time`, `TimeSamples` | внутри текущего клипа; без клипа запись пропускается |
+| `MinMaxDistance` | отрицательные поднимаются до 0, перевёрнутая пара меняется местами |
 
 ```csharp
 [ViewModel]

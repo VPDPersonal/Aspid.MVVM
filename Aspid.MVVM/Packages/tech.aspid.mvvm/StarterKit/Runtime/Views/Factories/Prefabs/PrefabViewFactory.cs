@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
@@ -22,7 +21,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Transform? _container;
 
         [Tooltip("Place new views at Sibling Index instead of last.")]
-        [FormerlySerializedAs("_addNewElementOnTop")]
         [SerializeField] private bool _overrideSibling;
 
         [Tooltip("Sibling index of new views when Override Sibling is on.")]

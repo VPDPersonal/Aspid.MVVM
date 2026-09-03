@@ -122,14 +122,15 @@ namespace Aspid.MVVM.Tests
         }
 
         /// <summary>
-        /// Finds a private field on the binder or, for a closed generic subclass, on its generic base.
+        /// Finds a private field on the binder or any of its bases.
         /// </summary>
         private static FieldInfo Field(MonoBinder binder, string name)
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
 
-            var type = binder.GetType();
-            var field = type.GetField(name, flags) ?? type.BaseType?.GetField(name, flags);
+            FieldInfo field = null;
+            for (var type = binder.GetType(); type is not null && field is null; type = type.BaseType)
+                field = type.GetField(name, flags);
 
             Assert.IsNotNull(field, $"The binder has no {name} field");
             return field!;

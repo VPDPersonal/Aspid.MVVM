@@ -10,9 +10,12 @@
 |--------|-----------|----------|
 | `ColliderEnabledBinder` | `bool` | `Collider.enabled` — включение/отключение |
 | `ColliderIsTriggerBinder` | `bool` | `Collider.isTrigger` — режим триггера |
-| `ColliderMaterialBinder` | `PhysicMaterial` | `Collider.material` — физический материал |
-| `ColliderMaterialSwitcherBinder` | `bool` → `PhysicMaterial` | Выбор материала по условию |
+| `ColliderMaterialBinder` | `PhysicsMaterial` | `Collider.material` — физический материал |
+| `ColliderMaterialSwitcherBinder` | `bool` → `PhysicsMaterial` | Выбор материала по условию |
 | `ColliderProvidesContactsBinder` | `bool` | `Collider.providesContacts` |
+| `ColliderContactOffsetBinder` | `float` | `Collider.contactOffset`, минимум 0.0001 |
+| `ColliderIncludeLayersBinder` | `int` | `Collider.includeLayers` |
+| `ColliderExcludeLayersBinder` | `int` | `Collider.excludeLayers` |
 
 ---
 
@@ -21,7 +24,7 @@
 | Биндер | Тип данных | Описание |
 |--------|-----------|----------|
 | `BoxColliderCenterBinder` | `Vector3` | `BoxCollider.center` |
-| `BoxColliderSizeBinder` | `Vector3` | `BoxCollider.size` |
+| `BoxColliderSizeBinder` | `Vector3` | `BoxCollider.size`, отрицательные компоненты поднимаются до 0 |
 
 ---
 
@@ -30,7 +33,9 @@
 | Биндер | Тип данных | Описание |
 |--------|-----------|----------|
 | `CapsuleColliderCenterBinder` | `Vector3` | `CapsuleCollider.center` |
-| `CapsuleColliderRadiusBinder` | `float` | `CapsuleCollider.radius` |
+| `CapsuleColliderRadiusBinder` | `float` | `CapsuleCollider.radius`, не ниже 0 |
+| `CapsuleColliderHeightBinder` | `float` | `CapsuleCollider.height`, не ниже 0 |
+| `CapsuleColliderDirectionBinder` | `int` | `CapsuleCollider.direction`, 0..2 |
 
 ---
 
@@ -39,7 +44,7 @@
 | Биндер | Тип данных | Описание |
 |--------|-----------|----------|
 | `SphereColliderCenterBinder` | `Vector3` | `SphereCollider.center` |
-| `SphereColliderRadiusBinder` | `float` | `SphereCollider.radius` |
+| `SphereColliderRadiusBinder` | `float` | `SphereCollider.radius`, не ниже 0 |
 
 ---
 
@@ -49,12 +54,27 @@
 |--------|-----------|----------|
 | `MeshColliderMeshBinder` | `Mesh` | `MeshCollider.sharedMesh` |
 | `MeshColliderConvexBinder` | `bool` | `MeshCollider.convex` |
+| `MeshColliderCookingOptionsBinder` | `MeshColliderCookingOptions` | `MeshCollider.cookingOptions` |
+
+---
+
+## Collider2D
+
+| Биндер | Тип данных | Описание |
+|--------|-----------|----------|
+| `Collider2DIsTriggerBinder` | `bool` | `Collider2D.isTrigger` |
+| `Collider2DMaterialBinder` | `PhysicsMaterial2D` | `Collider2D.sharedMaterial` |
+| `Collider2DOffsetBinder` | `Vector2` | `Collider2D.offset`, только конечные значения |
+| `Collider2DDensityBinder` | `float` | `Collider2D.density`, не ниже 0; работает при `Rigidbody2D.useAutoMass` |
+| `BoxCollider2DSizeBinder` | `Vector2` | `BoxCollider2D.size`, отрицательные компоненты поднимаются до 0 |
+| `CapsuleCollider2DSizeBinder` | `Vector2` | `CapsuleCollider2D.size`, отрицательные компоненты поднимаются до 0 |
+| `CircleCollider2DRadiusBinder` | `float` | `CircleCollider2D.radius`, не ниже 0 |
 
 ---
 
 ## Поддерживаемые режимы
 
-Все collider-биндеры поддерживают **OneWay** и **OneTime**. TwoWay и OneWayToSource не доступны.
+Все collider-биндеры поддерживают **OneWay**, **OneTime** и **OneWayToSource**. TwoWay не доступен.
 
 ---
 

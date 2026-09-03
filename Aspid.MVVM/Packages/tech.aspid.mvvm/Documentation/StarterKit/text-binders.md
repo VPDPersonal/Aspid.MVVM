@@ -16,7 +16,7 @@
 
 **Типы данных:** `string`, `int`, `float`, `long`, `double` (числа конвертируются через `ToCultureString`).
 
-**Режимы:** OneWay, OneTime.
+**Режимы:** OneWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
@@ -72,6 +72,22 @@ public partial class ScoreViewModel
 |--------|-----------|----------|
 | `TextAlignmentBinder` | `TextAlignmentOptions` | Устанавливает выравнивание |
 | `TextAlignmentSwitcherBinder` | `bool` → `TextAlignmentOptions` | Выбор по условию |
+
+---
+
+## Прочие свойства TMP_Text
+
+| Биндер | Тип данных | Свойство |
+|--------|-----------|----------|
+| `TextFontStyleBinder` | `FontStyles` | `fontStyle` |
+| `TextAutoSizeBinder` | `bool` | `enableAutoSizing` |
+| `TextRichTextBinder` | `bool` | `richText` |
+| `TextCharacterSpacingBinder` | `float` | `characterSpacing` |
+| `TextLineSpacingBinder` | `float` | `lineSpacing` |
+| `TextMarginBinder` | `Vector4` | `margin` (left, top, right, bottom) |
+| `TextMaxVisibleCharactersBinder` | `int` | `maxVisibleCharacters`; `0` скрывает текст, не очищая его |
+
+Числовые биндеры (`FontSize`, `CharacterSpacing`, `LineSpacing`, `Margin`) пишут только конечные значения: NaN логируется и пропускается.
 
 ---
 

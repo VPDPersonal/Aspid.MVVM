@@ -1,11 +1,11 @@
 ---
 name: starterkit-migration
-description: Чеклист переноса скриптов StarterKit из `StarterKit/Runtime` (и позже `StarterKit/Unity/Runtime`) в `StarterKit/New` с одновременным ревью — раскладка папок (Core/General/Helpers), проверка имени против поведения, баги, нулабельность, Tooltip, XML-доки, форматирование. Использовать, когда пользователь присылает путь к папке или файлу внутри `StarterKit/Runtime` для переноса, говорит «переносим», «следующая папка», «продолжаем миграцию StarterKit», или правит перенесённый файл и просит «делай за мной».
+description: Чеклист переноса скриптов StarterKit из `StarterKit/Unity/Runtime` в объединённый `StarterKit/Runtime` (этап 1, Runtime → New → Runtime, завершён) с одновременным ревью — раскладка папок (Core/General/Helpers), проверка имени против поведения, баги, нулабельность, Tooltip, XML-доки, форматирование. Использовать, когда пользователь присылает путь к папке или файлу внутри `StarterKit/Unity/Runtime` (или `StarterKit/Runtime` на ревью), говорит «переносим», «следующая папка», «продолжаем миграцию StarterKit», или правит перенесённый файл и просит «делай за мной».
 ---
 
 # Миграция StarterKit → New
 
-Цель: собрать весь StarterKit в одну сборку. `Runtime` → `New`, затем `Unity/Runtime` → `New`, затем `New` переименовывается в `Runtime`. Каждый файл при переносе проходит полный разбор. Публичное API ломать **можно** (у пользователя есть инструмент починки сериализованных ссылок). Правки вносятся сразу, без вопроса «внести?».
+Цель: собрать весь StarterKit в одну сборку. Этап 1 (готово, коммит `d02142514` в `fix/generator-compiler-hang`): старый `Runtime` перенесён в `New`, `New` переименован обратно в `Runtime`. Этап 2 (текущий): `StarterKit/Unity/Runtime` → `StarterKit/Runtime`, по той же таксономии. Каждый файл при переносе проходит полный разбор. Публичное API ломать **можно** (у пользователя есть инструмент починки сериализованных ссылок). Правки вносятся сразу, без вопроса «внести?».
 
 ## Порядок работы над папкой
 
@@ -48,6 +48,7 @@ description: Чеклист переноса скриптов StarterKit из `S
 - Неиспользуемые члены и дубликаты после рефакторинга — **удалять**, не хранить «ради совместимости» (пример: `internal static Fail(mode, …)` в `ConverterFallback`).
 - Недостающие реализации `IBinder<T>` / перегрузки конструктора добавлять (например, параметр `CultureInfoMode culture`).
 - Конструктор по умолчанию: `protected` у не-sealed generic-типов (наследнику нужен доступный базовый ctor для Unity-сериализации), `private` у sealed, если пустой экземпляр = ошибка в runtime; `public` с `<remarks>Default: …</remarks>`, если пустой экземпляр валиден.
+- Общие `New/Helpers/…` и `Converters/Helpers/…` из этого документа читать как `Runtime/Helpers/…` и `Runtime/Converters/Helpers/…`.
 - Ошибки не глушатся: логировать при каждом появлении, `null` в биндере = сброс состояния.
 
 ### Код и форматирование
@@ -99,9 +100,9 @@ description: Чеклист переноса скриптов StarterKit из `S
 
 ## Что сделано (состояние)
 
-Перенесено в `New`: `Binders/*` (Casters, Collections, Delegates, General, Helpers, Values), `Collections/*`, `Commands/*`, `Converters/{Core, General, Helpers, Bools, Objects, Composition, Collections, Enums, Numbers, Strings, Times}` целиком; базы `Converters/General/Numbers/{NumberConverter, TwoWayNumberConverter}`, `Helpers/{Globalization (+FormatExtensions), Logging, Numeric, Collections, Enums, Time (UnixTime, CurrentTime)}`, `ViewModels/*`.
+Все пути ниже теперь под `StarterKit/Runtime/` (бывший `New`). Перенесено: `Binders/*` (Casters, Collections, Delegates, General, Helpers, Values), `Collections/*`, `Commands/*`, `Converters/{Core, General, Helpers, Bools, Objects, Composition, Collections, Enums, Numbers, Strings, Times}` целиком; базы `Converters/General/Numbers/{NumberConverter, TwoWayNumberConverter}`, `Helpers/{Globalization (+FormatExtensions), Logging, Numeric, Collections, Enums, Time (UnixTime, CurrentTime)}`, `ViewModels/*`.
 
-`Runtime/Converters` перенесена полностью и удалена. Дальше: остальное в `Runtime/` (если есть) и `Unity/Runtime`. Остальное в `Runtime/` и весь `Unity/Runtime` — смотреть `find StarterKit/Runtime StarterKit/Unity/Runtime -name '*.cs'`.
+Этап 1 закрыт коммитом `d02142514`. Дальше: `StarterKit/Unity/Runtime` (~27 .cs в Converters + биндеры Mono и пр.) переезжает в `StarterKit/Runtime`; при переносе `Unity/Runtime/Converters/*` смотреть, нет ли дубликатов уже перенесённых типов (например `AnyToStringCasterMonoBinder` ↔ `AnyToStringCasterBinder`). Остальное в `Runtime/` и весь `Unity/Runtime` — смотреть `find StarterKit/Runtime StarterKit/Unity/Runtime -name '*.cs'`.
 
 Открытые хвосты:
 - `ConverterLogger` и `BinderLogger` — дословные копии; решить, сводить ли к общему писателю.

@@ -1,6 +1,6 @@
 # Transform Binders
 
-Биндеры для компонентов `Transform` и `RectTransform`.
+Binders for the `Transform` and `RectTransform` components.
 
 ---
 
@@ -8,21 +8,21 @@
 
 ### TransformPositionBinder
 
-Привязка позиции `Transform`.
+Binds the `Transform` position.
 
-| Интерфейс | Тип данных |
+| Interface | Data type |
 |-----------|-----------|
-| `IBinder<Vector3>` | Устанавливает позицию |
-| `INumberBinder` | Принимает числовые типы |
+| `IBinder<Vector3>` | Sets the position |
+| `INumberBinder` | Accepts numeric types |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_space` | `Space.World` или `Space.Self` (local) |
-| Converter | `IConverter<Vector3, Vector3>` (опционально) |
+| `_space` | `Space.World` or `Space.Self` (local) |
+| Converter | `IConverter<Vector3, Vector3>` (optional) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
@@ -36,33 +36,33 @@ public partial class CharacterViewModel
 
 ### TransformRotationBinder
 
-Привязка поворота `Transform.rotation` / `Transform.localRotation` (`Quaternion`).
+Binds the rotation, `Transform.rotation` / `Transform.localRotation` (`Quaternion`).
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_space` | `Space.World` (rotation) или `Space.Self` (localRotation) |
+| `_space` | `Space.World` (rotation) or `Space.Self` (localRotation) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ### TransformEulerAnglesBinder
 
-Привязка углов Эйлера `Transform.eulerAngles` / `Transform.localEulerAngles` (`Vector3`).
+Binds the Euler angles, `Transform.eulerAngles` / `Transform.localEulerAngles` (`Vector3`).
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_space` | `Space.World` (eulerAngles) или `Space.Self` (localEulerAngles) |
+| `_space` | `Space.World` (eulerAngles) or `Space.Self` (localEulerAngles) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ### TransformScaleBinder
 
-Привязка масштаба `Transform.localScale` (`Vector3`). Число (`INumberBinder`) применяется как равномерный масштаб по трём осям.
+Binds the scale, `Transform.localScale` (`Vector3`). A number (`INumberBinder`) is applied as a uniform scale on all three axes.
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
@@ -74,25 +74,25 @@ public partial class UIElementViewModel
 
 ---
 
-### Switcher-варианты
+### Switcher variants
 
-Каждый биндер имеет Switcher-вариант (`bool` → выбор между двумя значениями):
+Every binder has a Switcher variant (`bool` → one of two values):
 
-| Биндер | Описание |
+| Binder | Description |
 |--------|----------|
-| `TransformPositionSwitcherBinder` | `bool` → `Vector3` позиция |
-| `TransformRotationSwitcherBinder` | `bool` → `Quaternion` поворот |
-| `TransformEulerAnglesSwitcherBinder` | `bool` → `Vector3` углы Эйлера |
-| `TransformScaleSwitcherBinder` | `bool` → `Vector3` масштаб |
+| `TransformPositionSwitcherBinder` | `bool` → `Vector3` position |
+| `TransformRotationSwitcherBinder` | `bool` → `Quaternion` rotation |
+| `TransformEulerAnglesSwitcherBinder` | `bool` → `Vector3` Euler angles |
+| `TransformScaleSwitcherBinder` | `bool` → `Vector3` scale |
 
 ---
 
-### TransformParentBinder и TransformSiblingIndexBinder
+### TransformParentBinder and TransformSiblingIndexBinder
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
-| `TransformParentBinder` | `Transform` | `Transform.parent`; локальные позиция и поворот сохраняются, `null` отцепляет к корню сцены |
-| `TransformSiblingIndexBinder` | `int` | Индекс среди соседей, зажимается в существующий диапазон |
+| `TransformParentBinder` | `Transform` | `Transform.parent`; local position and rotation are kept, `null` detaches to the scene root |
+| `TransformSiblingIndexBinder` | `int` | Index among siblings, clamped to the existing range |
 
 ---
 
@@ -100,32 +100,32 @@ public partial class UIElementViewModel
 
 ### RectTransformAnchoredPositionBinder
 
-Привязка `RectTransform.anchoredPosition` / `anchoredPosition3D` (`Vector3`, выбор через `_space`).
+Binds `RectTransform.anchoredPosition` / `anchoredPosition3D` (`Vector3`, chosen through `_space`).
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ### RectTransformSizeDeltaBinder
 
-Привязка `RectTransform.sizeDelta` (`Vector3`, оси выбираются через `SizeDeltaMode`). В OneWayToSource размер отдаётся и как `Vector3`, и как `Vector2`.
+Binds `RectTransform.sizeDelta` (`Vector3`, axes chosen through `SizeDeltaMode`). In OneWayToSource the size is handed out both as `Vector3` and as `Vector2`.
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
-### RectTransform Switcher-варианты
+### RectTransform Switcher variants
 
-| Биндер | Описание |
+| Binder | Description |
 |--------|----------|
-| `RectTransformAnchoredPositionSwitcherBinder` | `bool` → `Vector3` позиция |
-| `RectTransformSizeDeltaSwitcherBinder` | `bool` → `Vector3` размер |
+| `RectTransformAnchoredPositionSwitcherBinder` | `bool` → `Vector3` position |
+| `RectTransformSizeDeltaSwitcherBinder` | `bool` → `Vector3` size |
 
 ---
 
-### Прочие RectTransform-биндеры
+### Other RectTransform binders
 
-| Биндер | Тип данных | Свойство |
+| Binder | Data type | Property |
 |--------|-----------|----------|
 | `RectTransformAnchorMinBinder` | `Vector2` | `anchorMin` |
 | `RectTransformAnchorMaxBinder` | `Vector2` | `anchorMax` |
@@ -133,13 +133,13 @@ public partial class UIElementViewModel
 | `RectTransformOffsetMaxBinder` | `Vector2` | `offsetMax` |
 | `RectTransformPivotBinder` | `Vector2` | `pivot` |
 
-Все пишут только конечные значения; NaN и бесконечность логируются и пропускаются.
+All write finite values only; NaN and infinity are logged and skipped.
 
-У `AnchorMin`, `AnchorMax` и `Pivot` есть Switcher-, Enum- и EnumGroup-варианты (`RectTransformPivotSwitcherBinder`, `RectTransformPivotEnumMonoBinder`, …).
+`AnchorMin`, `AnchorMax` and `Pivot` have Switcher, Enum and EnumGroup variants (`RectTransformPivotSwitcherBinder`, `RectTransformPivotEnumMonoBinder`, …).
 
 ---
 
-## См. также
+## See also
 
-- [GameObject Binders](gameobject-binders.md) — видимость, тег
-- [Обзор StarterKit](README.md)
+- [GameObject Binders](gameobject-binders.md), visibility and tag
+- [StarterKit overview](README.md)

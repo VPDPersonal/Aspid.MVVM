@@ -1,29 +1,29 @@
 # Text Binders
 
-Биндеры для управления текстовыми компонентами TextMeshPro.
+Binders for TextMeshPro text components.
 
 ---
 
 ## TextBinder
 
-Основной биндер для `TMP_Text.text`. Принимает `string`, а также числовые типы через `INumberBinder`.
+The main binder for `TMP_Text.text`. Accepts `string` and, through `INumberBinder`, numeric types.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| Target | `TMP_Text` компонент |
-| Converter | `IConverter<string?, string?>` (опционально) |
-| CultureInfoMode | Режим форматирования чисел (`Invariant`, `Current`, `Custom`) |
+| Target | The `TMP_Text` component |
+| Converter | `IConverter<string?, string?>` (optional) |
+| CultureInfoMode | Number formatting mode (`Invariant`, `Current`, `Custom`) |
 
-**Типы данных:** `string`, `int`, `float`, `long`, `double` (числа конвертируются через `ToCultureString`).
+**Data types:** `string`, `int`, `float`, `long`, `double` (numbers go through `ToCultureString`).
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
 public partial class ScoreViewModel
 {
-    [OneWayBind] private int _score;       // TextBinder покажет "1500"
-    [OneWayBind] private string _label;    // TextBinder покажет текст напрямую
+    [OneWayBind] private int _score;       // TextBinder shows "1500"
+    [OneWayBind] private string _label;    // TextBinder shows the text as is
 }
 ```
 
@@ -31,53 +31,53 @@ public partial class ScoreViewModel
 
 ## TextSwitcherBinder
 
-`bool` → выбор между двумя строками.
+`bool` → one of two strings.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| True Value | Текст при `true` |
-| False Value | Текст при `false` |
+| True Value | Text for `true` |
+| False Value | Text for `false` |
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## TextFontBinder / TextFontSwitcherBinder
 
-Привязка шрифта `TMP_FontAsset`:
+Binds the `TMP_FontAsset`:
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
-| `TextFontBinder` | `TMP_FontAsset` | Устанавливает шрифт |
-| `TextFontSwitcherBinder` | `bool` → `TMP_FontAsset` | Выбор шрифта по условию |
+| `TextFontBinder` | `TMP_FontAsset` | Sets the font |
+| `TextFontSwitcherBinder` | `bool` → `TMP_FontAsset` | Picks a font by condition |
 
 ---
 
 ## TextFontSizeBinder / TextFontSizeSwitcherBinder
 
-Привязка размера шрифта:
+Binds the font size:
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
-| `TextFontSizeBinder` | `float` | Устанавливает `fontSize` |
-| `TextFontSizeSwitcherBinder` | `bool` → `float` | Выбор размера по условию |
+| `TextFontSizeBinder` | `float` | Sets `fontSize` |
+| `TextFontSizeSwitcherBinder` | `bool` → `float` | Picks a size by condition |
 
 ---
 
 ## TextAlignmentBinder / TextAlignmentSwitcherBinder
 
-Привязка выравнивания текста:
+Binds the text alignment:
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
-| `TextAlignmentBinder` | `TextAlignmentOptions` | Устанавливает выравнивание |
-| `TextAlignmentSwitcherBinder` | `bool` → `TextAlignmentOptions` | Выбор по условию |
+| `TextAlignmentBinder` | `TextAlignmentOptions` | Sets the alignment |
+| `TextAlignmentSwitcherBinder` | `bool` → `TextAlignmentOptions` | Picks by condition |
 
 ---
 
-## Прочие свойства TMP_Text
+## Other TMP_Text properties
 
-| Биндер | Тип данных | Свойство |
+| Binder | Data type | Property |
 |--------|-----------|----------|
 | `TextFontStyleBinder` | `FontStyles` | `fontStyle` |
 | `TextAutoSizeBinder` | `bool` | `enableAutoSizing` |
@@ -85,27 +85,27 @@ public partial class ScoreViewModel
 | `TextCharacterSpacingBinder` | `float` | `characterSpacing` |
 | `TextLineSpacingBinder` | `float` | `lineSpacing` |
 | `TextMarginBinder` | `Vector4` | `margin` (left, top, right, bottom) |
-| `TextMaxVisibleCharactersBinder` | `int` | `maxVisibleCharacters`; `0` скрывает текст, не очищая его |
+| `TextMaxVisibleCharactersBinder` | `int` | `maxVisibleCharacters`; `0` hides the text without clearing it |
 
-Числовые биндеры (`FontSize`, `CharacterSpacing`, `LineSpacing`, `Margin`) пишут только конечные значения: NaN логируется и пропускается.
+The numeric binders (`FontSize`, `CharacterSpacing`, `LineSpacing`, `Margin`) write finite values only: NaN is logged and skipped.
 
 ---
 
-## Пример: отображение статистики
+## Example: showing stats
 
 ```csharp
 [ViewModel]
 public partial class StatsViewModel
 {
     [OneWayBind] private int _health;    // TextBinder → "100"
-    [OneWayBind] private bool _isAlive;  // TextSwitcherBinder → "Жив" / "Мёртв"
+    [OneWayBind] private bool _isAlive;  // TextSwitcherBinder → "Alive" / "Dead"
 }
 ```
 
 ---
 
-## См. также
+## See also
 
-- [Конвертеры](../08-converters.md) — StringFormatConverter для шаблонов
-- [Switcher](switcher-binders.md) — паттерн Switcher
-- [Обзор StarterKit](README.md)
+- [Converters](../08-converters.md), StringFormatConverter for templates
+- [Switcher](switcher-binders.md), the Switcher pattern
+- [StarterKit overview](README.md)

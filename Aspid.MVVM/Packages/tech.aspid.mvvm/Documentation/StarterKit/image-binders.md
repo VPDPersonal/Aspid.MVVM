@@ -1,34 +1,34 @@
 # Image Binders
 
-Биндеры для `Image` компонента Unity UI.
+Binders for the Unity UI `Image` component.
 
 ---
 
 ## ImageSpriteBinder
 
-Привязка спрайта к `Image.sprite`.
+Binds a sprite to `Image.sprite`.
 
-| Интерфейс | Тип данных |
+| Interface | Data type |
 |-----------|-----------|
-| `IBinder<Sprite?>` | Устанавливает спрайт напрямую |
-| `IBinder<Texture2D?>` | Конвертирует `Texture2D` в `Sprite` через `Sprite.Create` |
+| `IBinder<Sprite?>` | Sets the sprite directly |
+| `IBinder<Texture2D?>` | Converts a `Texture2D` to a `Sprite` through `Sprite.Create` |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_disabledWhenNull` | Отключает `Image` компонент, когда спрайт `null` |
+| `_disabledWhenNull` | Disables the `Image` component when the sprite is `null` |
 
-Спрайт, созданный из `Texture2D`, принадлежит биндеру и уничтожается при отвязке.
+A sprite created from a `Texture2D` belongs to the binder and is destroyed on unbind.
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
 public partial class PlayerViewModel
 {
     [OneWayBind] private Sprite _avatar;
-    [OneWayBind] private Texture2D _downloadedImage;  // Автоконвертация в Sprite
+    [OneWayBind] private Texture2D _downloadedImage;  // Converted to a Sprite automatically
 }
 ```
 
@@ -36,20 +36,20 @@ public partial class PlayerViewModel
 
 ## ImageSpriteSwitcherBinder
 
-`bool` → выбор между двумя спрайтами.
+`bool` → one of two sprites.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| True Value | Спрайт при `true` |
-| False Value | Спрайт при `false` |
+| True Value | Sprite for `true` |
+| False Value | Sprite for `false` |
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## ImageFillBinder
 
-Привязка `Image.fillAmount` (0-1):
+Binds `Image.fillAmount` (0-1):
 
 ```csharp
 [ViewModel]
@@ -59,44 +59,44 @@ public partial class HealthBarViewModel
 }
 ```
 
-Значение clamp-ится в диапазоне [0, 1]. Реализует `INumberBinder` — принимает `int`, `float`, `long`, `double`.
+The value is clamped to [0, 1]. Implements `INumberBinder`: accepts `int`, `float`, `long`, `double`.
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ## ImageFillSwitcherBinder
 
-`bool` → выбор между двумя значениями `fillAmount`.
+`bool` → one of two `fillAmount` values.
 
 ---
 
 ## ImageSpriteAddressableMonoBinder
 
-Загружает `Sprite` по адресу Addressables (`string` или `IKeyEvaluator`) и ставит его в `Image.sprite`. Доступен только с `ASPID_MVVM_ADDRESSABLES_INTEGRATION`.
+Loads a `Sprite` by an Addressables key (`string` or `IKeyEvaluator`) and puts it into `Image.sprite`. Available only with `ASPID_MVVM_ADDRESSABLES_INTEGRATION`.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_defaultSprite` | Показывается во время загрузки и при ошибке |
-| `_disabledWhenNull` | Отключает `Image`, когда спрайт `null` |
-| `_seamlessSwap` | Держать прежний спрайт до окончания загрузки |
+| `_defaultSprite` | Shown while loading and on error |
+| `_disabledWhenNull` | Disables the `Image` when the sprite is `null` |
+| `_seamlessSwap` | Keep the previous sprite until loading completes |
 
 ---
 
-## Прочие свойства Image
+## Other Image properties
 
-| Биндер | Свойство | Тип |
+| Binder | Property | Type |
 |--------|----------|-----|
 | `ImageTypeBinder` | `Image.type` | `Image.Type` |
 | `ImagePreserveAspectBinder` | `preserveAspect` | `bool` |
-| `ImageFillOriginBinder` | `fillOrigin` | `int`, индекс в enum текущего `fillMethod` |
+| `ImageFillOriginBinder` | `fillOrigin` | `int`, an index into the enum of the current `fillMethod` |
 | `ImageFillClockwiseBinder` | `fillClockwise` | `bool` |
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
-## См. также
+## See also
 
-- [Graphic Binders](graphic-binders.md) — цвет и материалы
-- [Обзор StarterKit](README.md)
+- [Graphic Binders](graphic-binders.md), color and materials
+- [StarterKit overview](README.md)

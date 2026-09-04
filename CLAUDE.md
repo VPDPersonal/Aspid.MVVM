@@ -26,7 +26,8 @@ Projects/Aspid.MVVM/
 │       │   │   ├── Commands/          # Command implementations
 │       │   │   └── ViewModels/        # DynamicViewModel
 │       │   ├── Unity/                 # Unity integration layer
-│       │   └── Samples~/              # HelloWorld, Stats, TodoList, VirtualizedList, 01. Counter, 02. Greeter, ExampleScripts (tilde-hidden; imported via Package Manager)
+│       │   ├── Documentation/         # Main docs (Markdown, English) + Documentation/ru/ translation; rendered by Docs/
+│       │   └── Samples~/              # Path 01–06 (Counter, Greeter, BindModes, Stats, TodoList, CustomBinder) + features (VirtualizedList, DynamicViewModel, DiIntegration, ExampleScripts); each README.md is the tutorial, README.ru.md its translation
 │       └── tech.aspid.fasttools/      # Aspid.FastTools (embedded local UPM package)
 ├── Aspid.MVVM.Generators/             # Roslyn source generator (submodule)
 │   ├── Aspid.MVVM.Generators/         # Generator implementation
@@ -35,7 +36,8 @@ Projects/Aspid.MVVM/
 │   ├── Aspid.MVVM.Analyzers/          # Analyzer implementation
 │   └── Aspid.MVVM.Analyzers.Tests/    # Analyzer unit tests
 ├── Aspid.MVVM.Unity.Generators/       # Unity-specific generators (submodule)
-└── Readme.md
+├── Docs/                              # Docusaurus site (GitHub Pages); content lives in the package
+└── README.md
 ```
 
 ## Key Technologies
@@ -92,7 +94,7 @@ The framework uses Source Generators to eliminate boilerplate and reflection:
 - **Generator tests**: `Aspid.MVVM.Generators/Aspid.MVVM.Generators.Tests/`
 - **Analyzer tests**: `Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests/`
 - **Runtime tests**: Unity Test Framework, Zenject integration tests
-- **Manual validation**: Sample projects (HelloWorld, TodoList, Stats, VirtualizedList)
+- **Manual validation**: Sample projects under `Samples~` (each sample's `README.md` is its tutorial)
 
 ## Commands
 
@@ -165,7 +167,7 @@ Submodules:
 
 ## Documentation
 
-- Full docs: https://vpd-inc.gitbook.io/aspid.mvvm/
+- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill `docs-site`
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
 - **XML doc conventions**: skill `aspid-mvvm-xmldoc` in `.claude/skills/` — rules for writing XML documentation comments
 - **Code style**: skill `aspid-code-style` — member ordering, formatting, nullable, comments
@@ -173,7 +175,7 @@ Submodules:
 - **Writing a converter**: skill `starterkit-converter-authoring`
 - **Writing a binder**: skill `starterkit-binder-authoring`
 - Key entry points for new contributors:
-  - `Readme.md` — project overview
-  - `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/HelloWorld/` — minimal examples
+  - `README.md` — project overview
+  - `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/01. Counter/` — minimal example
   - `Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators/Generators/ViewModels/ViewModelGenerator.cs` — source generator pipeline
   - `Source/ViewModels/IViewModel.cs` — core interface

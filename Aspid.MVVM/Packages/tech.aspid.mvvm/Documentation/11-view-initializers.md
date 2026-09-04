@@ -1,24 +1,24 @@
-# ViewInitializer
+# View Initializers
 
-ViewInitializer позволяет инициализировать View через Inspector без написания bootstrap-кода.
+`ViewInitializer` initializes a View from the Inspector, without bootstrap code.
 
-## Содержание
+## Contents
 
-- [Обзор](#обзор)
-- [ViewInitializer](#viewinitializer-1)
+- [Overview](#overview)
+- [ViewInitializer](#viewinitializer)
 - [InitializeStage](#initializestage)
 - [ViewInitializerManual](#viewinitializermanual)
 - [InitializeComponent](#initializecomponent)
-- [Настройка в Inspector](#настройка-в-inspector)
+- [Inspector setup](#inspector-setup)
 
 ---
 
-## Обзор
+## Overview
 
-Вместо написания Bootstrap-скрипта:
+Instead of a Bootstrap script:
 
 ```csharp
-// Без ViewInitializer — нужен скрипт:
+// Without ViewInitializer a script is needed:
 private void Awake()
 {
     var viewModel = new PlayerViewModel();
@@ -26,25 +26,25 @@ private void Awake()
 }
 ```
 
-Используйте компонент ViewInitializer — вся настройка через Inspector:
+use the `ViewInitializer` component and configure everything in the Inspector:
 
-1. Добавьте `ViewInitializer` на GameObject
-2. Укажите View (компонент `MonoView`)
-3. Укажите ViewModel (компонент, ScriptableObject или DI)
-4. Выберите этап инициализации (Awake, Start, OnEnable, Manual, Di)
+1. Add `ViewInitializer` to a GameObject
+2. Set the View (a `MonoView` component)
+3. Set the ViewModel (a component, a ScriptableObject or DI)
+4. Pick the initialization stage (Awake, Start, OnEnable, Manual, Di)
 
 ---
 
 ## ViewInitializer
 
-Полностью автоматическая инициализация:
+Fully automatic initialization:
 
 ```csharp
 public class ViewInitializer : ViewInitializerBase
 {
-    // Сериализованные поля — настраиваются в Inspector:
-    // - View компонент(ы)
-    // - ViewModel источник(и)
+    // Serialized fields, configured in the Inspector:
+    // - View component(s)
+    // - ViewModel source(s)
     // - InitializeStage
     // - _isDisposeViewOnDestroy
     // - _isDisposeViewModelOnDestroy
@@ -55,23 +55,23 @@ public class ViewInitializer : ViewInitializerBase
 
 ## InitializeStage
 
-Определяет момент инициализации:
+Defines when initialization happens:
 
-| Этап | Когда | Деинициализация |
+| Stage | When | Deinitialization |
 |------|-------|-----------------|
-| `Awake` | В `Awake()` | В `OnDestroy()` |
-| `Start` | В `Start()` | В `OnDestroy()` |
-| `OnEnable` | В `OnEnable()` | В `OnDisable()` |
-| `Manual` | При вызове `Initialize()` | При вызове `Deinitialize()` |
-| `DiConstructor` | При inject из DI-контейнера | В `OnDestroy()` |
+| `Awake` | In `Awake()` | In `OnDestroy()` |
+| `Start` | In `Start()` | In `OnDestroy()` |
+| `OnEnable` | In `OnEnable()` | In `OnDisable()` |
+| `Manual` | On `Initialize()` | On `Deinitialize()` |
+| `DiConstructor` | When the DI container injects | In `OnDestroy()` |
 
-### Awake (по умолчанию)
+### Awake (default)
 
-Инициализация в `Awake`. Подходит для большинства случаев.
+Initialization in `Awake`. Fits most cases.
 
 ### OnEnable / OnDisable
 
-Полезно для переключаемых экранов — View инициализируется при активации и деинициализируется при деактивации:
+Handy for screens that are toggled: the View initializes on activation and deinitializes on deactivation:
 
 ```
 GameObject.SetActive(true)  → OnEnable → Initialize
@@ -80,14 +80,14 @@ GameObject.SetActive(false) → OnDisable → Deinitialize
 
 ### Manual
 
-Инициализация управляется из кода:
+Initialization is driven from code:
 
 ```csharp
 [SerializeField] private ViewInitializer _initializer;
 
 public void Show(IViewModel viewModel)
 {
-    _initializer.Initialize(); // Использует ViewModel из Inspector-настроек
+    _initializer.Initialize(); // Uses the ViewModel configured in the Inspector
 }
 
 public void Hide()
@@ -98,13 +98,13 @@ public void Hide()
 
 ### DiConstructor
 
-ViewModel разрешается через DI-контейнер. См. [Интеграция с DI](12-di-integration.md).
+The ViewModel is resolved from a DI container. See [DI Integration](12-di-integration.md).
 
 ---
 
 ## ViewInitializerManual
 
-Упрощённый вариант, требующий явного вызова из кода:
+A simplified variant that needs an explicit call from code:
 
 ```csharp
 [SerializeField] private ViewInitializerManual _initializer;
@@ -120,64 +120,64 @@ public void Hide()
 }
 ```
 
-**Отличия от ViewInitializer:**
-- Нет `InitializeStage` — только ручной вызов
-- ViewModel передаётся в `Initialize(IViewModel)` напрямую
-- Нельзя инициализировать дважды без деинициализации
+**Differences from ViewInitializer:**
+- No `InitializeStage`, manual call only
+- The ViewModel is passed to `Initialize(IViewModel)` directly
+- Cannot be initialized twice without deinitializing
 
 ---
 
 ## InitializeComponent
 
-Компонент настройки View/ViewModel источника в ViewInitializer:
+The View/ViewModel source setting inside ViewInitializer:
 
 ### ResolveType
 
-| Тип | Описание |
+| Type | Description |
 |-----|----------|
-| `Component` | Ссылка на Component в Inspector |
-| `Reference` | `[SerializeReference]` — для POCO-объектов |
-| `ScriptableObject` | Ссылка на ScriptableObject |
-| `Di` | Разрешение через DI-контейнер (Zenject/VContainer) |
+| `Component` | A Component reference in the Inspector |
+| `Reference` | `[SerializeReference]`, for POCO objects |
+| `ScriptableObject` | A ScriptableObject reference |
+| `Di` | Resolution through a DI container (Zenject/VContainer) |
 
 ### ViewModelInitializeComponent
 
-Специализация для ViewModel:
-- `ResolveType.Component` — указывает на `MonoViewModel` компонент
-- `ResolveType.ScriptableObject` — указывает на `ScriptableViewModel`
-- `ResolveType.Di` — `TypeSelector` для выбора типа ViewModel из контейнера
+The ViewModel specialization:
+- `ResolveType.Component` points at a `MonoViewModel` component
+- `ResolveType.ScriptableObject` points at a `ScriptableViewModel`
+- `ResolveType.Di` uses a `TypeSelector` to pick the ViewModel type from the container
 
 ---
 
-## Настройка в Inspector
+## Inspector setup
 
-### Шаг 1: Добавьте ViewInitializer
+### Step 1: Add ViewInitializer
 
-Добавьте компонент `ViewInitializer` на GameObject.
+Add the `ViewInitializer` component to a GameObject.
 
-### Шаг 2: Настройте Stage
+### Step 2: Set the Stage
 
-Выберите `InitializeStage` (по умолчанию Awake).
+Pick the `InitializeStage` (Awake by default).
 
-### Шаг 3: Настройте View
+### Step 3: Set the View
 
-В секции Views добавьте View-компоненты (`MonoView`).
+In the Views section add the View components (`MonoView`).
 
-### Шаг 4: Настройте ViewModel
+### Step 4: Set the ViewModel
 
-В секции ViewModel выберите `ResolveType` и укажите источник:
-- **Mono** — перетащите `MonoViewModel` из Inspector
-- **ScriptableObject** — перетащите `ScriptableViewModel`
-- **Di** — выберите тип для DI-разрешения
+In the ViewModel section pick the `ResolveType` and the source:
+- **Mono**: drag a `MonoViewModel` from the Inspector
+- **ScriptableObject**: drag a `ScriptableViewModel`
+- **Di**: pick the type for DI resolution
 
-### Шаг 5: Опции автоочистки
+### Step 5: Cleanup options
 
-- `_isDisposeViewOnDestroy` — автоматически деинициализировать View при OnDestroy
-- `_isDisposeViewModelOnDestroy` — автоматически вызвать Dispose на ViewModel
+- `_isDisposeViewOnDestroy`: deinitialize the View in OnDestroy
+- `_isDisposeViewModelOnDestroy`: call Dispose on the ViewModel
 
 ---
 
-## См. также
+## See also
 
-- [View](05-views.md) — инициализация из кода
-- [DI интеграция](12-di-integration.md) — DiConstructor с Zenject/VContainer
+- [Views](05-views.md), initialization from code
+- [DI Integration](12-di-integration.md), DiConstructor with Zenject/VContainer

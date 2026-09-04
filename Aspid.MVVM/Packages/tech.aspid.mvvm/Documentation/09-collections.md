@@ -1,10 +1,10 @@
-# Коллекции
+# Collections
 
-Observable-коллекции с уведомлениями об изменениях, потокобезопасностью, фильтрацией и синхронизацией.
+Observable collections with change notifications, thread safety, filtering and synchronization.
 
-## Содержание
+## Contents
 
-- [Обзор](#обзор)
+- [Overview](#overview)
 - [ObservableList\<T\>](#observablelistt)
 - [ObservableDictionary\<TKey, TValue\>](#observabledictionarytkey-tvalue)
 - [ObservableHashSet\<T\>](#observablehashsett)
@@ -13,9 +13,9 @@ Observable-коллекции с уведомлениями об изменен�
 
 ---
 
-## Обзор
+## Overview
 
-Все коллекции из `Aspid.Collections.Observable` реализуют:
+Every collection in `Aspid.Collections.Observable` implements:
 
 ```csharp
 public interface IObservableCollection<T> : IReadOnlyCollection<T>
@@ -25,27 +25,27 @@ public interface IObservableCollection<T> : IReadOnlyCollection<T>
 }
 ```
 
-**Потокобезопасность:** Все мутации защищены `lock(SyncRoot)`.
+**Thread safety:** every mutation is guarded by `lock(SyncRoot)`.
 
 ### NotifyCollectionChangedEventArgs\<T\>
 
-`readonly struct` с информацией об изменении:
+A `readonly struct` describing the change:
 
-| Действие | Описание |
+| Action | Description |
 |----------|----------|
-| `Add` | Элемент(ы) добавлены |
-| `Remove` | Элемент(ы) удалены |
-| `Replace` | Элемент заменён |
-| `Move` | Элемент перемещён |
-| `Reset` | Коллекция очищена |
+| `Add` | Item(s) added |
+| `Remove` | Item(s) removed |
+| `Replace` | Item replaced |
+| `Move` | Item moved |
+| `Reset` | Collection cleared |
 
-Свойства: `NewItem`/`OldItem` (единичный), `NewItems`/`OldItems` (диапазон), `NewStartingIndex`/`OldStartingIndex`.
+Properties: `NewItem`/`OldItem` (single), `NewItems`/`OldItems` (range), `NewStartingIndex`/`OldStartingIndex`.
 
 ---
 
 ## ObservableList\<T\>
 
-Потокобезопасный `IList<T>` с уведомлениями:
+A thread-safe `IList<T>` with notifications:
 
 ```csharp
 var list = new ObservableList<string>();
@@ -66,29 +66,29 @@ list.CollectionChanged += (sender, args) =>
 list.Add("Item 1");
 list.AddRange(new[] { "Item 2", "Item 3" });
 list.Insert(0, "First");
-list.Move(0, 2);       // Переместить элемент
-list.Swap(1, 3);       // Поменять местами
+list.Move(0, 2);       // Move an item
+list.Swap(1, 3);       // Swap two items
 list.RemoveAt(0);
 list.Clear();
 ```
 
-### Методы
+### Methods
 
-| Метод | Описание |
+| Method | Description |
 |-------|----------|
-| `Add(T)` | Добавить элемент |
-| `AddRange(IEnumerable<T>)` | Добавить диапазон |
-| `Insert(int, T)` | Вставить по индексу |
-| `InsertRange(int, IEnumerable<T>)` | Вставить диапазон |
-| `Remove(T)` | Удалить по значению |
-| `RemoveAt(int)` | Удалить по индексу |
-| `Move(int, int)` | Переместить элемент |
-| `Swap(int, int)` | Поменять местами |
-| `Clear()` | Очистить |
+| `Add(T)` | Add an item |
+| `AddRange(IEnumerable<T>)` | Add a range |
+| `Insert(int, T)` | Insert at an index |
+| `InsertRange(int, IEnumerable<T>)` | Insert a range |
+| `Remove(T)` | Remove by value |
+| `RemoveAt(int)` | Remove by index |
+| `Move(int, int)` | Move an item |
+| `Swap(int, int)` | Swap two items |
+| `Clear()` | Clear |
 
-### Виртуальные хуки
+### Virtual hooks
 
-Для наследников:
+For subclasses:
 
 ```csharp
 protected virtual void OnAdded(T item, int index) { }
@@ -102,7 +102,7 @@ protected virtual void OnClearing() { }
 
 ## ObservableDictionary\<TKey, TValue\>
 
-Потокобезопасный словарь:
+A thread-safe dictionary:
 
 ```csharp
 var dict = new ObservableDictionary<string, int>();
@@ -114,44 +114,44 @@ dict["health"] = 80;   // Replace
 dict.Remove("health"); // Remove
 ```
 
-Indexer работает как "replace or add" — если ключ существует, значение заменяется.
+The indexer works as "replace or add": an existing key gets its value replaced.
 
 ---
 
 ## ObservableHashSet\<T\>
 
-Потокобезопасный HashSet:
+A thread-safe HashSet:
 
 ```csharp
 var set = new ObservableHashSet<string>();
 
 set.Add("tag1");     // true
-set.Add("tag1");     // false (уже есть)
+set.Add("tag1");     // false (already present)
 set.Remove("tag1");  // true
 set.Clear();
 ```
 
-Поддерживает set-операции: `IsSubsetOf`, `IsSupersetOf`, `Overlaps` и др.
+Supports set operations: `IsSubsetOf`, `IsSupersetOf`, `Overlaps` and others.
 
 ---
 
 ## FilteredList\<T\>
 
-Фильтрация и сортировка без изменения исходной коллекции:
+Filtering and sorting without touching the source collection:
 
 ```csharp
 var source = new ObservableList<int> { 5, 3, 8, 1, 9, 2 };
 
 var filtered = new FilteredList<int>(source)
 {
-    Filter = x => x > 3,                    // Только > 3
-    Comparer = Comparer<int>.Default         // Сортировка по возрастанию
+    Filter = x => x > 3,                    // Only > 3
+    Comparer = Comparer<int>.Default         // Ascending
 };
 
 // filtered: [5, 8, 9]
 
-source.Add(7);  // filtered автоматически обновляется: [5, 7, 8, 9]
-source.Add(1);  // не проходит фильтр, filtered не меняется
+source.Add(7);  // filtered updates itself: [5, 7, 8, 9]
+source.Add(1);  // fails the filter, filtered is unchanged
 ```
 
 ### API
@@ -159,29 +159,30 @@ source.Add(1);  // не проходит фильтр, filtered не меняе�
 ```csharp
 public sealed class FilteredList<T> : IReadOnlyFilteredList<T>, IDisposable
 {
-    // Фильтр — установка вызывает Update()
+    // Filter; setting it calls Update()
     Predicate<T>? Filter { get; set; }
 
-    // Сортировка — установка вызывает Update()
+    // Sort order; setting it calls Update()
     IComparer<T>? Comparer { get; set; }
 
-    // Количество отфильтрованных элементов
+    // Number of filtered items
     int Count { get; }
 
-    // Доступ по индексу (в отфильтрованном списке)
+    // Index access (into the filtered list)
     T this[int index] { get; }
 
-    // Принудительный пересчёт
+    // Forced recalculation
     void Update();
 
-    // Отписка от исходной коллекции
+    // Unsubscribe from the source collection
     void Dispose();
 }
 ```
 
-> **Важно:** Всегда вызывайте `Dispose()` при завершении работы, чтобы отписаться от событий исходной коллекции.
+> [!IMPORTANT]
+> Always call `Dispose()` when done to unsubscribe from the source collection's events.
 
-### Использование с MVVM
+### With MVVM
 
 ```csharp
 [ViewModel]
@@ -205,23 +206,23 @@ public partial class ListViewModel
 
 ## ObservableListSync
 
-Синхронизирует две коллекции с автоматической конвертацией элементов. Основной паттерн: **Model → ViewModel**.
+Keeps two collections in sync with automatic item conversion. The main pattern is **Model → ViewModel**.
 
 ```csharp
-// Model-коллекция
+// Model collection
 ObservableList<TodoItem> todos = storage.Todos;
 
-// Создаём синхронизированную коллекцию ViewModel-ов
+// A synchronized collection of ViewModels
 IReadOnlyObservableListSync<TodoItemViewModel> todoViewModels =
     todos.CreateSync(item => new TodoItemViewModel(item));
 
-// todoViewModels автоматически зеркалирует все операции:
-// - Add в todos → Add в todoViewModels (с конвертацией)
-// - Remove в todos → Remove в todoViewModels
-// - Replace, Move, Clear — аналогично
+// todoViewModels mirrors every operation:
+// - Add in todos → Add in todoViewModels (converted)
+// - Remove in todos → Remove in todoViewModels
+// - Replace, Move, Clear likewise
 ```
 
-### Пример из TodoList sample
+### Example from the Todo List sample
 
 ```csharp
 [ViewModel]
@@ -244,10 +245,10 @@ public partial class TodoStorageViewModel
 }
 ```
 
-### С очисткой при удалении
+### With cleanup on removal
 
 ```csharp
-// Второй параметр — действие при удалении элемента
+// The second argument runs when an item is removed
 var sync = source.CreateSync(
     converter: model => new ItemViewModel(model),
     remove: vm => vm.Dispose()
@@ -256,22 +257,22 @@ var sync = source.CreateSync(
 
 ---
 
-## Привязка коллекций к View
+## Binding collections to a View
 
-Для отображения коллекций используйте биндеры из StarterKit:
+Use the StarterKit binders to display collections:
 
-| Биндер | Назначение |
+| Binder | Purpose |
 |--------|-----------|
-| `ViewModelObservableListBinder` | Динамический список с фабрикой View |
-| `VirtualizedListItemSourceBinder` | Виртуализированный список |
-| `ViewModelCollectionBinder<T>` | Статическая коллекция (фиксированные элементы) |
+| `ViewModelObservableListBinder` | Dynamic list with a View factory |
+| `VirtualizedListItemSourceBinder` | Virtualized list |
+| `ViewModelCollectionBinder<T>` | Static collection (fixed items) |
 
-Подробнее: [Collection Binders](StarterKit/collection-binders.md).
+More: [Collection Binders](StarterKit/collection-binders.md).
 
 ---
 
-## См. также
+## See also
 
-- [ViewModel](04-viewmodels.md) — привязка коллекций
-- [Collection Binders](StarterKit/collection-binders.md) — биндеры для коллекций
-- [VirtualizedList Tutorial](Tutorials/virtualized-list.md) — пример с виртуализацией
+- [ViewModels](04-viewmodels.md), binding collections
+- [Collection Binders](StarterKit/collection-binders.md), binders for collections
+- [Virtualized List tutorial](../Samples~/VirtualizedList/README.md), a virtualization example

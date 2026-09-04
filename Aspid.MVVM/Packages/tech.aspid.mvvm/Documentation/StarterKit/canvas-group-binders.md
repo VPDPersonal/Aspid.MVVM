@@ -1,27 +1,27 @@
 # Canvas Group Binders
 
-Биндеры для компонента `CanvasGroup`.
+Binders for the `CanvasGroup` component.
 
 ---
 
 ## CanvasGroupAlphaBinder
 
-Привязка прозрачности `CanvasGroup.alpha`.
+Binds the opacity, `CanvasGroup.alpha`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<float>` | Устанавливает alpha |
-| `INumberBinder` | Принимает `int`, `float`, `long`, `double` |
+| `IBinder<float>` | Sets alpha |
+| `INumberBinder` | Accepts `int`, `float`, `long`, `double` |
 
-Значение ограничивается: `Mathf.Clamp01(value)`.
+The value is clamped: `Mathf.Clamp01(value)`.
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| Converter | `IConverter<float, float>` (опционально) |
+| Converter | `IConverter<float, float>` (optional) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
@@ -35,66 +35,66 @@ public partial class FadeViewModel
 
 ## CanvasGroupAlphaSwitcherBinder
 
-`bool` → выбор между двумя значениями alpha.
+`bool` → one of two alpha values.
 
 ```csharp
-// В Inspector: trueValue = 1.0, falseValue = 0.0
-// Аналог показа/скрытия, но с плавным управлением
+// Inspector: trueValue = 1.0, falseValue = 0.0
+// Like show/hide, but with smooth control
 ```
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## CanvasGroupInteractableBinder
 
-Привязка `CanvasGroup.interactable`.
+Binds `CanvasGroup.interactable`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<bool>` | Устанавливает interactable |
+| `IBinder<bool>` | Sets interactable |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
+| `_converter` | Optional value converter (for example `BoolInvertConverter`) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
 ## CanvasGroupBlocksRaycastsBinder
 
-Привязка `CanvasGroup.blocksRaycasts`.
+Binds `CanvasGroup.blocksRaycasts`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<bool>` | Устанавливает blocksRaycasts |
+| `IBinder<bool>` | Sets blocksRaycasts |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
+| `_converter` | Optional value converter (for example `BoolInvertConverter`) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
 ## CanvasGroupIgnoreParentGroupsBinder
 
-Привязка `CanvasGroup.ignoreParentGroups`.
+Binds `CanvasGroup.ignoreParentGroups`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<bool>` | Устанавливает ignoreParentGroups |
+| `IBinder<bool>` | Sets ignoreParentGroups |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
-## Пример: панель с управляемой прозрачностью и интерактивностью
+## Example: a panel with controlled opacity and interactivity
 
 ```csharp
 [ViewModel]
@@ -108,7 +108,7 @@ public partial class ModalViewModel
 
 ---
 
-## См. также
+## See also
 
-- [GameObject Binders](gameobject-binders.md) — альтернатива через SetActive
-- [Обзор StarterKit](README.md)
+- [GameObject Binders](gameobject-binders.md), the SetActive alternative
+- [StarterKit overview](README.md)

@@ -1,29 +1,29 @@
 # Slider Binders
 
-Биндеры для компонента `Slider` Unity UI.
+Binders for the Unity UI `Slider` component.
 
 ---
 
 ## SliderValueBinder
 
-Привязка значения слайдера (`Slider.value`).
+Binds the slider value (`Slider.value`).
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `INumberBinder` | Принимает `int`, `float`, `long`, `double` |
-| `INumberReverseBinder` | Отправляет изменения обратно (events) |
+| `INumberBinder` | Accepts `int`, `float`, `long`, `double` |
+| `INumberReverseBinder` | Sends changes back (events) |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| Converter | `IConverter<float, float>` (опционально) |
+| Converter | `IConverter<float, float>` (optional) |
 
-### Защита от циклов
+### Loop protection
 
-Запись из ViewModel вызывает `onValueChanged` для остальных слушателей, но биндер не отправляет её обратно в ViewModel. Значение clamp-ится к диапазону слайдера; если clamp его изменил, изменённое значение отправляется в ViewModel.
+A write from the ViewModel raises `onValueChanged` for the other listeners, but the binder does not send it back to the ViewModel. The value is clamped to the slider range; if the clamp changed it, the changed value is sent to the ViewModel.
 
-**Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
+**Modes:** OneWay, TwoWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
@@ -37,31 +37,31 @@ public partial class VolumeViewModel
 
 ## SliderMinMaxBinder
 
-Привязка минимального и максимального значений слайдера (`Slider.minValue`, `Slider.maxValue`).
+Binds the slider minimum and maximum (`Slider.minValue`, `Slider.maxValue`).
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
 | `IBinder<Vector2>` | `x` = minValue, `y` = maxValue |
 
-Перевёрнутый диапазон логируется и разворачивается, неконечный — логируется и не применяется.
+An inverted range is logged and swapped, a non-finite one is logged and not applied.
 
 ### SliderRangeMode
 
-Определяет, какую часть min/max обновлять:
+Defines which part of min/max is updated:
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |-------|----------|
-| `Min` | Обновляет только `minValue` |
-| `Max` | Обновляет только `maxValue` |
-| `Range` | Обновляет и `minValue`, и `maxValue` |
+| `Min` | Updates `minValue` only |
+| `Max` | Updates `maxValue` only |
+| `Range` | Updates both `minValue` and `maxValue` |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
 public partial class DifficultyViewModel
 {
-    [OneWayBind] private Vector2 _damageRange;  // (min, max) для слайдера
+    [OneWayBind] private Vector2 _damageRange;  // (min, max) for the slider
 }
 ```
 
@@ -69,41 +69,41 @@ public partial class DifficultyViewModel
 
 ## SliderMinMaxSwitcherBinder
 
-`bool` → выбор между двумя значениями `Vector2` для min/max. Поддерживает `SliderRangeMode`.
+`bool` → one of two `Vector2` values for min/max. Supports `SliderRangeMode`.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## SliderCommandBinder
 
-Привязка `IRelayCommand<float>` к `Slider.onValueChanged`. При изменении значения слайдера вызывает `command.Execute(value)`.
+Binds an `IRelayCommand<float>` to `Slider.onValueChanged`. When the slider value changes it calls `command.Execute(value)`.
 
-Принимает числовые команды: `IRelayCommand<int>`, `IRelayCommand<long>`, `IRelayCommand<float>`, `IRelayCommand<double>`.
+Accepts numeric commands: `IRelayCommand<int>`, `IRelayCommand<long>`, `IRelayCommand<float>`, `IRelayCommand<double>`.
 
 ### InteractableMode
 
-Реакция на `CanExecute` — аналогично `ButtonCommandBinder`:
+The reaction to `CanExecute`, as in `ButtonCommandBinder`:
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |-------|----------|
 | `Interactable` | `slider.interactable = canExecute` |
 | `Visible` | `gameObject.SetActive(canExecute)` |
-| `None` | Не реагирует |
-| `Custom` | Вызывает `ICanExecuteHandler.SetCanExecute(bool)` |
+| `None` | Ignores it |
+| `Custom` | Calls `ICanExecuteHandler.SetCanExecute(bool)` |
 
-### Параметризованные варианты
+### Parameterized variants
 
-| Биндер | Команда | Доп. параметры |
+| Binder | Command | Extra parameters |
 |--------|---------|----------------|
 | `SliderCommandBinder` | `IRelayCommand<float>` | — |
-| `SliderCommandBinder<T>` | `IRelayCommand<float, T>` | 1 параметр |
-| `SliderCommandBinder<T1, T2>` | `IRelayCommand<float, T1, T2>` | 2 параметра |
-| `SliderCommandBinder<T1, T2, T3>` | `IRelayCommand<float, T1, T2, T3>` | 3 параметра |
+| `SliderCommandBinder<T>` | `IRelayCommand<float, T>` | 1 parameter |
+| `SliderCommandBinder<T1, T2>` | `IRelayCommand<float, T1, T2>` | 2 parameters |
+| `SliderCommandBinder<T1, T2, T3>` | `IRelayCommand<float, T1, T2, T3>` | 3 parameters |
 
-Первый параметр команды — всегда текущее значение слайдера.
+The first command parameter is always the current slider value.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ```csharp
 [ViewModel]
@@ -119,12 +119,12 @@ public partial class AudioViewModel
 
 ## SliderToSourceMonoBinder
 
-MonoBinder для OneWayToSource-привязки `Slider` как компонента. Наследует `ComponentToSourceMonoBinder<Slider>`.
+A MonoBinder for OneWayToSource binding of the `Slider` as a component. Inherits `ComponentToSourceMonoBinder<Slider>`.
 
 ---
 
-## См. также
+## See also
 
-- [Toggle Binders](toggle-binders.md) — привязка Toggle
-- [Button Command Binders](button-command-binders.md) — InteractableMode
-- [Обзор StarterKit](README.md)
+- [Toggle Binders](toggle-binders.md), binding a Toggle
+- [Button Command Binders](button-command-binders.md), InteractableMode
+- [StarterKit overview](README.md)

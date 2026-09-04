@@ -1,23 +1,23 @@
-# Лучшие практики
+# Best Practices
 
-Рекомендации по использованию Aspid.MVVM и типичные ошибки.
+Recommendations for using Aspid.MVVM and the mistakes people make most often.
 
-## Содержание
+## Contents
 
-- [Структура проекта](#структура-проекта)
+- [Project structure](#project-structure)
 - [ViewModel](#viewmodel)
-- [Привязки](#привязки)
-- [Команды](#команды)
-- [Коллекции](#коллекции)
-- [Производительность](#производительность)
-- [Типичные ошибки](#типичные-ошибки)
-- [Тестирование](#тестирование)
+- [Bindings](#bindings)
+- [Commands](#commands)
+- [Collections](#collections)
+- [Performance](#performance)
+- [Common mistakes](#common-mistakes)
+- [Testing](#testing)
 
 ---
 
-## Структура проекта
+## Project structure
 
-Рекомендуемая организация:
+Recommended layout:
 
 ```
 Features/
@@ -29,27 +29,27 @@ Features/
     Views/
       PlayerView.cs
       PlayerView.prefab
-    Binders/          (кастомные, если есть)
+    Binders/          (custom ones, if any)
       HealthBarBinder.cs
 ```
 
-Группируйте по функциональности (feature), не по типу (все ViewModel в одной папке).
+Group by feature, not by type (all ViewModels in one folder).
 
 ---
 
 ## ViewModel
 
-### Предпочитайте POCO ViewModel
+### Prefer POCO ViewModels
 
 ```csharp
-// ✅ Хорошо — чистый C# без Unity-зависимостей
+// ✅ Good: plain C# without Unity dependencies
 [ViewModel]
 public partial class PlayerViewModel
 {
     [OneWayBind] private int _health;
 }
 
-// ⚠️ Только если нужна редактируемость в Inspector
+// ⚠️ Only when Inspector editing is needed
 [ViewModel]
 public partial class SettingsViewModel : MonoViewModel
 {
@@ -57,21 +57,21 @@ public partial class SettingsViewModel : MonoViewModel
 }
 ```
 
-### Держите ViewModel чистым
+### Keep the ViewModel clean
 
-ViewModel не должен содержать Unity-специфичную логику:
+A ViewModel should not hold Unity-specific logic:
 
 ```csharp
-// ❌ Плохо — Unity-зависимость в ViewModel
+// ❌ Bad: a Unity dependency in the ViewModel
 [ViewModel]
 public partial class BadViewModel
 {
     [OneWayBind] private string _text;
 
-    public void Update() => Text = Time.deltaTime.ToString(); // НЕ делайте так
+    public void Update() => Text = Time.deltaTime.ToString(); // Do NOT do this
 }
 
-// ✅ Хорошо — бизнес-логика в Model
+// ✅ Good: business logic in the Model
 [ViewModel]
 public partial class GoodViewModel
 {
@@ -84,10 +84,10 @@ public partial class GoodViewModel
 }
 ```
 
-### Используйте `partial void OnXxxChanged` вместо сторонних подписок
+### Use `partial void OnXxxChanged` instead of external subscriptions
 
 ```csharp
-// ✅ Хорошо — реакция на изменение через обработчик
+// ✅ Good: react to a change through the handler
 [ViewModel]
 public partial class SearchViewModel
 {
@@ -102,94 +102,94 @@ public partial class SearchViewModel
 
 ---
 
-## Привязки
+## Bindings
 
-### Выбирайте минимально необходимый режим
+### Pick the least powerful mode that works
 
 ```csharp
-// ✅ OneWay для отображения (не нужна обратная связь)
+// ✅ OneWay for display (no feedback needed)
 [OneWayBind] private int _score;
 
-// ✅ OneTime для статических данных и команд
+// ✅ OneTime for static data and commands
 [OneTimeBind] private IRelayCommand _save;
 [OneTimeBind] private string _title;
 
-// ✅ TwoWay только для интерактивных элементов
+// ✅ TwoWay only for interactive elements
 [TwoWayBind] private string _inputText;
 ```
 
-### Используйте конвертеры вместо изменения ViewModel
+### Use converters instead of changing the ViewModel
 
 ```csharp
-// ❌ Плохо — форматирование в ViewModel
+// ❌ Bad: formatting in the ViewModel
 [OneWayBind] private string _healthText;
 Health = 75;
 HealthText = $"HP: {Health}/100";
 
-// ✅ Хорошо — конвертер на биндере
+// ✅ Good: a converter on the binder
 [OneWayBind] private int _health;
-// В Inspector: TextBinder + StringFormatConverter (Format = "HP: {0}/100")
+// Inspector: TextBinder + StringFormatConverter (Format = "HP: {0}/100")
 ```
 
 ---
 
-## Команды
+## Commands
 
-### Используйте `[RelayCommand]` вместо ручного создания
+### Use `[RelayCommand]` instead of manual creation
 
 ```csharp
-// ✅ Хорошо
+// ✅ Good
 [RelayCommand(CanExecute = nameof(CanSave))]
 private void Save() => _storage.Save();
 private bool CanSave() => _storage.HasChanges;
 
-// ⚠️ Ручное создание — только для особых случаев
+// ⚠️ Manual creation only for special cases
 [Bind] private readonly IRelayCommand _legacyCommand = new RelayCommand(...);
 ```
 
-### Не забывайте `NotifyCanExecuteChanged`
+### Do not forget `NotifyCanExecuteChanged`
 
 ```csharp
 partial void OnIsDirtyChanged(bool newValue)
 {
-    // ✅ Обязательно — иначе кнопка не обновится
+    // ✅ Required, otherwise the button does not update
     SaveCommand.NotifyCanExecuteChanged();
 }
 ```
 
 ---
 
-## Коллекции
+## Collections
 
-### `CreateSync` для Model → ViewModel
+### `CreateSync` for Model → ViewModel
 
 ```csharp
-// ✅ Хорошо — автоматическая синхронизация
+// ✅ Good: automatic synchronization
 _viewModels = _models.CreateSync(model => new ItemViewModel(model));
 
-// ❌ Плохо — ручная синхронизация
+// ❌ Bad: manual synchronization
 _models.CollectionChanged += (_, args) => {
-    // Не делайте так — это долго и подвержено ошибкам
+    // Do not do this: long and error-prone
 };
 ```
 
-### FilteredList вместо LINQ
+### FilteredList instead of LINQ
 
 ```csharp
-// ✅ Хорошо — реактивная фильтрация
+// ✅ Good: reactive filtering
 var filtered = new FilteredList<ItemViewModel>(_items)
 {
     Filter = item => item.IsVisible
 };
 
-// ❌ Плохо — нереактивный LINQ
+// ❌ Bad: non-reactive LINQ
 var filtered = _items.Where(x => x.IsVisible).ToList();
 ```
 
-### Не забывайте Dispose
+### Do not forget Dispose
 
 ```csharp
-// ✅ Обязательно освободить FilteredList
+// ✅ A FilteredList must be disposed
 public void Dispose()
 {
     _filteredList.Dispose();
@@ -198,100 +198,100 @@ public void Dispose()
 
 ---
 
-## Производительность
+## Performance
 
-### `NotifyAll()` при массовых обновлениях
+### `NotifyAll()` for bulk updates
 
 ```csharp
-// ✅ Хорошо — одно уведомление вместо N
+// ✅ Good: one notification instead of N
 _health = data.Health;
 _name = data.Name;
 _level = data.Level;
-NotifyAll(); // Один раз для всех
+NotifyAll(); // Once for everything
 ```
 
-### `PrefabViewPool` для частого создания/удаления
+### `PrefabViewPool` for frequent create/destroy
 
 ```csharp
-// ✅ Хорошо — пул переиспользует объекты
-// В Inspector: ViewModelObservableListBinder → Factory = PrefabViewPool
+// ✅ Good: the pool reuses objects
+// Inspector: ViewModelObservableListBinder → Factory = PrefabViewPool
 
-// ⚠️ PrefabViewFactory — создаёт/уничтожает каждый раз
+// ⚠️ PrefabViewFactory creates/destroys every time
 ```
 
-### `VirtualizedList` для больших списков
+### `VirtualizedList` for large lists
 
 ```csharp
-// ✅ Для сотен/тысяч элементов — VirtualizedList
-// Рендерит только видимые элементы
+// ✅ Hundreds/thousands of items: VirtualizedList
+// Renders only the visible items
 
-// ❌ ViewModelObservableListBinder для 1000+ элементов
-// Создаст 1000 GameObjects
+// ❌ ViewModelObservableListBinder for 1000+ items
+// Creates 1000 GameObjects
 ```
 
 ---
 
-## Типичные ошибки
+## Common mistakes
 
-### 1. Забыли `partial`
+### 1. Missing `partial`
 
 ```csharp
-// ❌ Source Generator не работает
+// ❌ The Source Generator does not run
 [ViewModel]
 public class PlayerViewModel { ... }
 
-// ✅ Исправление
+// ✅ Fix
 [ViewModel]
 public partial class PlayerViewModel { ... }
 ```
 
-**Симптом:** Нет сгенерированных свойств, ошибки компиляции.
+**Symptom:** no generated properties, compile errors.
 
-### 2. Неправильный BindMode
+### 2. Wrong BindMode
 
 ```csharp
-// ❌ TwoWay на readonly данных — View не сможет обновить
+// ❌ TwoWay on readonly data: the View cannot update it
 [TwoWayBind] private readonly string _title;
 
-// ✅ Используйте OneTime для readonly
+// ✅ Use OneTime for readonly
 [OneTimeBind] private readonly string _title;
 ```
 
-### 3. Утечки — не вызван Deinitialize
+### 3. Leaks: Deinitialize was not called
 
 ```csharp
-// ❌ Утечка — биндеры остаются подписаны
+// ❌ Leak: binders stay subscribed
 Destroy(viewGameObject);
 
-// ✅ Сначала деинициализация
+// ✅ Deinitialize first
 _view.DeinitializeView()?.DisposeViewModel();
 Destroy(viewGameObject);
 ```
 
-### 4. Не инициализирован git submodule
+### 4. Git submodule not initialized
 
 ```bash
-# Ошибки компиляции после клонирования
+# Compile errors after cloning
 git submodule update --init --recursive
 ```
 
-### 5. Имя поля View не совпадает с ViewModel
+### 5. View field name does not match the ViewModel
 
 ```csharp
 // ViewModel:
-[OneWayBind] private string _playerName;  // → свойство PlayerName
+[OneWayBind] private string _playerName;  // → property PlayerName
 
 // View:
-[SerializeField] private MonoBinder _name;  // ❌ Ищет "Name", не найдёт "PlayerName"
+[SerializeField] private MonoBinder _name;  // ❌ Looks for "Name", will not find "PlayerName"
 [SerializeField] private MonoBinder _playerName;  // ✅
 ```
 
-### 6. Циклические обновления TwoWay
+### 6. TwoWay update loops
 
-Биндеры из StarterKit содержат защиту от циклов. При создании кастомного TwoWay-биндера:
+StarterKit binders have loop protection. When writing a custom TwoWay binder:
 
 ```csharp
-// ✅ Добавьте флаг
+// ✅ Add a flag
 private bool _isUpdating;
 
 public void SetValue(string value)
@@ -310,9 +310,9 @@ private void OnValueChanged(string value)
 
 ---
 
-## Тестирование
+## Testing
 
-### ViewModel тестируется без Unity
+### A ViewModel is tested without Unity
 
 ```csharp
 [Test]
@@ -327,7 +327,7 @@ public void Health_ShouldDecrease_WhenDamaged()
 }
 ```
 
-### DynamicViewModel для тестов View
+### DynamicViewModel for View tests
 
 ```csharp
 [Test]
@@ -345,8 +345,8 @@ public void View_ShouldBind_WhenInitialized()
 
 ---
 
-## См. также
+## See also
 
-- [Архитектура](02-architecture.md) — общая структура
-- [ViewModel](04-viewmodels.md) — все атрибуты
-- [Анализаторы](13-analyzers.md) — автоматические проверки кода
+- [Architecture](02-architecture.md), the overall structure
+- [ViewModels](04-viewmodels.md), every attribute
+- [Analyzers](13-analyzers.md), automatic code checks

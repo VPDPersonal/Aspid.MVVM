@@ -1,14 +1,14 @@
 # AudioSource Binders
 
-Биндеры для всех свойств компонента `AudioSource`.
+Binders for every property of the `AudioSource` component.
 
 ---
 
-## Обзор
+## Overview
 
-Каждое свойство `AudioSource` имеет отдельный биндер, Switcher-вариант и MonoBinder-обёртки (обычные, Enum, EnumGroup).
+Every `AudioSource` property has its own binder, a Switcher variant and MonoBinder wrappers (plain, Enum, EnumGroup).
 
-| Биндер | Свойство | Тип данных |
+| Binder | Property | Data type |
 |--------|---------|-----------|
 | `AudioSourceVolumeBinder` | `volume` | `float` |
 | `AudioSourcePitchBinder` | `pitch` | `float` |
@@ -29,17 +29,17 @@
 | `AudioSourceBypassReverbZonesBinder` | `bypassReverbZones` | `bool` |
 | `AudioSourceOutputAudioMixerGroupBinder` | `outputAudioMixerGroup` | `AudioMixerGroup` |
 
-**Все биндеры:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**All binders:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
-## Float-биндеры
+## Float binders
 
-Числовые биндеры (`Volume`, `Pitch`, `PanStereo` и др.) реализуют `INumberBinder` и принимают `int`, `float`, `long`, `double`.
+The numeric binders (`Volume`, `Pitch`, `PanStereo` and others) implement `INumberBinder` and accept `int`, `float`, `long`, `double`.
 
-Диапазоны, в которые зажимается значение (NaN и бесконечность логируются и заменяются нижней границей):
+Ranges the value is clamped to (NaN and infinity are logged and replaced with the lower bound):
 
-| Биндер | Диапазон |
+| Binder | Range |
 |--------|----------|
 | `Volume`, `SpatialBlend` | 0..1 |
 | `PanStereo` | -1..1 |
@@ -48,8 +48,8 @@
 | `ReverbZoneMix` | 0..1.1 |
 | `Spread` | 0..360 |
 | `Priority` | 0..256 |
-| `Time`, `TimeSamples` | внутри текущего клипа; без клипа запись пропускается |
-| `MinMaxDistance` | отрицательные поднимаются до 0, перевёрнутая пара меняется местами |
+| `Time`, `TimeSamples` | inside the current clip; without a clip the write is skipped |
+| `MinMaxDistance` | negatives are raised to 0, an inverted pair is swapped |
 
 ```csharp
 [ViewModel]
@@ -65,21 +65,21 @@ public partial class AudioViewModel
 
 ## AudioSourceMinMaxDistanceBinder
 
-Привязка `AudioSource.minDistance` / `AudioSource.maxDistance` через `Vector2` (аналогично `SliderMinMaxBinder`).
+Binds `AudioSource.minDistance` / `AudioSource.maxDistance` through a `Vector2` (like `SliderMinMaxBinder`).
 
 ### AudioSourceDistanceMode
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |-------|----------|
-| `Min` | Обновляет только `minDistance` |
-| `Max` | Обновляет только `maxDistance` |
-| `Range` | Обновляет оба значения |
+| `Min` | Updates `minDistance` only |
+| `Max` | Updates `maxDistance` only |
+| `Range` | Updates both |
 
 ---
 
 ## AudioSourceClipBinder
 
-Привязка `AudioSource.clip` (`AudioClip`).
+Binds `AudioSource.clip` (`AudioClip`).
 
 ```csharp
 [ViewModel]
@@ -91,27 +91,27 @@ public partial class MusicPlayerViewModel
 
 ---
 
-## Switcher-варианты
+## Switcher variants
 
-Каждый биндер имеет Switcher-вариант (`bool` → выбор между двумя значениями):
+Every binder has a Switcher variant (`bool` → one of two values):
 
-- `AudioSourceVolumeSwitcherBinder` — `bool` → `float`
-- `AudioSourcePitchSwitcherBinder` — `bool` → `float`
-- `AudioSourceClipSwitcherBinder` — `bool` → `AudioClip`
-- `AudioSourceMinMaxDistanceSwitcherBinder` — `bool` → `Vector2`
-- `AudioSourceOutputAudioMixerGroupSwitcherBinder` — `bool` → `AudioMixerGroup`
-- и т.д.
+- `AudioSourceVolumeSwitcherBinder`: `bool` → `float`
+- `AudioSourcePitchSwitcherBinder`: `bool` → `float`
+- `AudioSourceClipSwitcherBinder`: `bool` → `AudioClip`
+- `AudioSourceMinMaxDistanceSwitcherBinder`: `bool` → `Vector2`
+- `AudioSourceOutputAudioMixerGroupSwitcherBinder`: `bool` → `AudioMixerGroup`
+- and so on
 
 ---
 
 ## AudioSourceToSourceMonoBinder
 
-MonoBinder для OneWayToSource-привязки `AudioSource` как компонента. Наследует `ComponentToSourceMonoBinder<AudioSource>`.
+A MonoBinder for OneWayToSource binding of the `AudioSource` as a component. Inherits `ComponentToSourceMonoBinder<AudioSource>`.
 
 ---
 
-## См. также
+## See also
 
-- [Slider Binders](slider-binders.md) — аналогичный паттерн с min/max
-- [Switcher Binders](switcher-binders.md) — паттерн Switcher
-- [Обзор StarterKit](README.md)
+- [Slider Binders](slider-binders.md), the same min/max pattern
+- [Switcher Binders](switcher-binders.md), the Switcher pattern
+- [StarterKit overview](README.md)

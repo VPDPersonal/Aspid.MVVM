@@ -1,29 +1,29 @@
 # Toggle Binders
 
-Биндеры для компонента `Toggle` Unity UI.
+Binders for the Unity UI `Toggle` component.
 
 ---
 
 ## ToggleIsOnBinder
 
-Привязка состояния `Toggle.isOn`.
+Binds the `Toggle.isOn` state.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<bool>` | Устанавливает `isOn` из ViewModel |
-| `IReverseBinder<bool>` | Отправляет изменения обратно |
+| `IBinder<bool>` | Sets `isOn` from the ViewModel |
+| `IReverseBinder<bool>` | Sends changes back |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_converter` | Опциональный конвертер значения; в обратную сторону работает через `ITwoWayConverter` |
+| `_converter` | Optional value converter; the reverse direction works through `ITwoWayConverter` |
 
-### Защита от циклов
+### Loop protection
 
-Запись из ViewModel вызывает `onValueChanged` для остальных слушателей, но биндер не отправляет её обратно в ViewModel.
+A write from the ViewModel raises `onValueChanged` for the other listeners, but the binder does not send it back to the ViewModel.
 
-**Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
+**Modes:** OneWay, TwoWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
@@ -38,36 +38,36 @@ public partial class SettingsViewModel
 
 ## ToggleCommandBinder
 
-Привязка команды к `Toggle.onValueChanged`.
+Binds a command to `Toggle.onValueChanged`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<IRelayCommand>` | Вызывает `Execute()` при переключении |
-| `IBinder<IRelayCommand<bool>>` | Вызывает `Execute(isOn)` с текущим состоянием |
+| `IBinder<IRelayCommand>` | Calls `Execute()` on toggle |
+| `IBinder<IRelayCommand<bool>>` | Calls `Execute(isOn)` with the current state |
 
 ### InteractableMode
 
-Реакция на `CanExecute` — аналогично `ButtonCommandBinder`:
+The reaction to `CanExecute`, as in `ButtonCommandBinder`:
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |-------|----------|
 | `Interactable` | `toggle.interactable = canExecute` |
 | `Visible` | `gameObject.SetActive(canExecute)` |
-| `None` | Не реагирует |
-| `Custom` | Вызывает `ICanExecuteHandler.SetCanExecute(bool)` |
+| `None` | Ignores it |
+| `Custom` | Calls `ICanExecuteHandler.SetCanExecute(bool)` |
 
-### Параметризованные варианты
+### Parameterized variants
 
-| Биндер | Команда | Доп. параметры |
+| Binder | Command | Extra parameters |
 |--------|---------|----------------|
 | `ToggleCommandBinder` | `IRelayCommand` / `IRelayCommand<bool>` | — |
-| `ToggleCommandBinder<T>` | `IRelayCommand<bool, T>` | 1 параметр |
-| `ToggleCommandBinder<T1, T2>` | `IRelayCommand<bool, T1, T2>` | 2 параметра |
-| `ToggleCommandBinder<T1, T2, T3>` | `IRelayCommand<bool, T1, T2, T3>` | 3 параметра |
+| `ToggleCommandBinder<T>` | `IRelayCommand<bool, T>` | 1 parameter |
+| `ToggleCommandBinder<T1, T2>` | `IRelayCommand<bool, T1, T2>` | 2 parameters |
+| `ToggleCommandBinder<T1, T2, T3>` | `IRelayCommand<bool, T1, T2, T3>` | 3 parameters |
 
-Первый параметр команды — всегда текущее состояние `isOn`.
+The first command parameter is always the current `isOn` state.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ```csharp
 [ViewModel]
@@ -83,21 +83,21 @@ public partial class SettingsViewModel
 
 ## ToggleIsOnEnumBinder / ToggleIsOnEnumGroupBinder
 
-Устанавливают `isOn` по значению enum через `SetIsOnWithoutNotify`: `Enum`-вариант для одного Toggle, `EnumGroup` для набора Toggle, где каждому члену enum сопоставлен свой элемент.
+Set `isOn` from an enum value through `SetIsOnWithoutNotify`: the `Enum` variant for a single Toggle, `EnumGroup` for a set of Toggles where every enum member maps to its own element.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## ToggleGroupAllowSwitchOffBinder
 
-Привязка `ToggleGroup.allowSwitchOff`. Выключение не выбирает ничего: пустая группа остаётся пустой до нажатия пользователя.
+Binds `ToggleGroup.allowSwitchOff`. Turning it off selects nothing: an empty group stays empty until the user clicks.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
-## Пример: настройки с инверсией
+## Example: inverted settings
 
 ```csharp
 [ViewModel]
@@ -107,12 +107,12 @@ public partial class NotificationViewModel
 }
 ```
 
-В Inspector на `ToggleIsOnBinder` задайте конвертер `BoolInvertConverter`, чтобы Toggle показывал "Уведомления включены" (`!doNotDisturb`).
+In the Inspector set the `BoolInvertConverter` on `ToggleIsOnBinder`, so the Toggle shows "Notifications on" (`!doNotDisturb`).
 
 ---
 
-## См. также
+## See also
 
 - [Slider Binders](slider-binders.md)
-- [Button Command Binders](button-command-binders.md) — InteractableMode
-- [Обзор StarterKit](README.md)
+- [Button Command Binders](button-command-binders.md), InteractableMode
+- [StarterKit overview](README.md)

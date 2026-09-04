@@ -1,22 +1,22 @@
-# View
+# Views
 
-View — MonoBehaviour-компонент, связывающий UI-элементы с данными ViewModel через биндеры. Source Generator автоматически генерирует код инициализации и привязки.
+A View is a MonoBehaviour that connects UI elements to ViewModel data through binders. The Source Generator emits the initialization and binding code.
 
-## Содержание
+## Contents
 
-- [Создание View](#создание-view)
-- [Объявление биндеров](#объявление-биндеров)
-- [Атрибут \[AsBinder\]](#атрибут-asbinder)
-- [Атрибут \[BindId\]](#атрибут-bindid)
-- [Атрибут \[IgnoreBind\]](#атрибут-ignorebind)
-- [Жизненный цикл](#жизненный-цикл)
-- [IView\<T\> — строго типизированный View](#iviewt--строго-типизированный-view)
+- [Creating a View](#creating-a-view)
+- [Declaring binders](#declaring-binders)
+- [The \[AsBinder\] attribute](#the-asbinder-attribute)
+- [The \[BindId\] attribute](#the-bindid-attribute)
+- [The \[IgnoreBind\] attribute](#the-ignorebind-attribute)
+- [Lifecycle](#lifecycle)
+- [IView\<T\>: a strongly typed View](#iviewt-a-strongly-typed-view)
 - [EventMonoView](#eventmonoview)
 - [Instantiate](#instantiate)
 
 ---
 
-## Создание View
+## Creating a View
 
 ```csharp
 using UnityEngine;
@@ -31,44 +31,44 @@ public sealed partial class PlayerView : MonoView
 }
 ```
 
-**Обязательные условия:**
-1. Класс должен быть `partial`
-2. Атрибут `[View]`
-3. Наследование от `MonoView`
+**Requirements:**
+1. The class is `partial`
+2. The `[View]` attribute
+3. Inherits `MonoView`
 
-### Правило именования
+### Naming rule
 
-Имя поля (без префикса `_`, `m_`, `s_`) должно совпадать с именем свойства в ViewModel:
+The field name without the `_`, `m_` or `s_` prefix must match the ViewModel property:
 
-| Поле в View | Привязывается к свойству ViewModel |
+| View field | Bound ViewModel property |
 |---|---|
 | `_health` | `Health` |
 | `_name` | `Name` |
 | `_attackCommand` | `AttackCommand` |
 
-### Одиночный vs массив
+### Single vs array
 
-- `MonoBinder _field` — один биндер. Удобно, когда точно один UI-элемент.
-- `MonoBinder[] _field` — массив биндеров. Позволяет привязать несколько UI-элементов к одному свойству.
+- `MonoBinder _field`: one binder. Handy when there is exactly one UI element.
+- `MonoBinder[] _field`: an array. Several UI elements bind to one property.
 
 ---
 
-## Объявление биндеров
+## Declaring binders
 
-Три способа объявления:
+Three ways:
 
-### 1. Через поля
+### 1. Fields
 
 ```csharp
 [View]
 public partial class ExampleView : MonoView
 {
-    [SerializeField] private MonoBinder _name;        // одиночный
-    [SerializeField] private MonoBinder[] _items;     // массив
+    [SerializeField] private MonoBinder _name;        // single
+    [SerializeField] private MonoBinder[] _items;     // array
 }
 ```
 
-### 2. Через свойства
+### 2. Properties
 
 ```csharp
 [View]
@@ -79,15 +79,15 @@ public partial class ExampleView : MonoView
 }
 ```
 
-### 3. Через [AsBinder]
+### 3. [AsBinder]
 
-Оборачивает Unity-компонент в указанный тип биндера (см. ниже).
+Wraps a Unity component in the given binder type (see below).
 
 ---
 
-## Атрибут [AsBinder]
+## The [AsBinder] attribute
 
-Позволяет использовать Unity-компоненты напрямую как биндеры без добавления отдельного MonoBinder-компонента:
+Lets Unity components act as binders directly, without a separate MonoBinder component:
 
 ```csharp
 using UnityEngine.UI;
@@ -96,35 +96,35 @@ using Aspid.MVVM.StarterKit;
 [View]
 public partial class ExampleView : MonoView
 {
-    // Image оборачивается в ImageSpriteBinder
+    // Image is wrapped in an ImageSpriteBinder
     [AsBinder(typeof(ImageSpriteBinder))]
     private Image _icon;
 
-    // Массив Image оборачивается в ImageSpriteBinder[]
+    // Image[] is wrapped in ImageSpriteBinder[]
     [AsBinder(typeof(ImageSpriteBinder))]
     private Image[] _images;
 }
 ```
 
-Source Generator создаст код, который при инициализации создаёт `ImageSpriteBinder` из компонента `Image`.
+The Source Generator emits code that creates an `ImageSpriteBinder` from the `Image` component at initialization.
 
 ---
 
-## Атрибут [BindId]
+## The [BindId] attribute
 
-Переопределяет ID привязки для поля View:
+Overrides the binding id of a View field:
 
 ```csharp
 [View]
 public partial class ItemView : MonoView
 {
-    // Привязка к свойству "Number" вместо "Name"
+    // Binds to the "Number" property instead of "Name"
     [BindId("Number")]
     [SerializeField] private MonoBinder _name;
 }
 ```
 
-Можно комбинировать с `[AsBinder]`:
+Can be combined with `[AsBinder]`:
 
 ```csharp
 [View]
@@ -138,9 +138,9 @@ public partial class CustomView : MonoView
 
 ---
 
-## Атрибут [IgnoreBind]
+## The [IgnoreBind] attribute
 
-Исключает поле из автоматической привязки:
+Excludes a field from automatic binding:
 
 ```csharp
 [View]
@@ -148,22 +148,22 @@ public partial class MixedView : MonoView
 {
     [SerializeField] private MonoBinder _name;
 
-    // Этот биндер НЕ будет привязан автоматически
+    // This binder is NOT bound automatically
     [IgnoreBind]
     [SerializeField] private MonoBinder _customBinder;
 
     protected override void OnInitializedInternal()
     {
-        // Ручная привязка
+        // Manual binding
     }
 }
 ```
 
 ---
 
-## Жизненный цикл
+## Lifecycle
 
-Source Generator создаёт `partial`-методы для каждого этапа:
+The Source Generator declares `partial` methods for every stage:
 
 ```csharp
 [View]
@@ -171,48 +171,48 @@ public partial class LifecycleView : MonoView
 {
     [SerializeField] private MonoBinder[] _data;
 
-    // ── Инициализация ──
+    // ── Initialization ──
 
-    // Перед привязкой биндеров
+    // Before binders are bound
     partial void OnInitializingInternal() { }
 
-    // После привязки всех биндеров
+    // After every binder is bound
     partial void OnInitializedInternal() { }
 
-    // ── Деинициализация ──
+    // ── Deinitialization ──
 
-    // Перед отвязкой биндеров
+    // Before binders are unbound
     partial void OnDeinitializingInternal() { }
 
-    // После отвязки всех биндеров
+    // After every binder is unbound
     partial void OnDeinitializedInternal() { }
 
-    // ── Создание массива биндеров ──
+    // ── Binder array creation ──
 
-    // Перед кэшированием биндеров
+    // Before binders are cached
     partial void OnInstantiatingBinders() { }
 
-    // После кэширования биндеров
+    // After binders are cached
     partial void OnInstantiatedBinders() { }
 }
 ```
 
-### Порядок вызова
+### Call order
 
-1. `OnInstantiatingBinders()` / `OnInstantiatedBinders()` — однократно при первом Initialize
-2. `OnInitializingInternal()` — перед привязкой
-3. Привязка каждого биндера через `FindBindableMember` + `Bind`
-4. `OnInitializedInternal()` — после привязки
-5. *(работа)*
-6. `OnDeinitializingInternal()` — перед отвязкой
-7. Отвязка каждого биндера через `Unbind`
-8. `OnDeinitializedInternal()` — после отвязки
+1. `OnInstantiatingBinders()` / `OnInstantiatedBinders()`: once, on the first Initialize
+2. `OnInitializingInternal()`: before binding
+3. Every binder is bound through `FindBindableMember` + `Bind`
+4. `OnInitializedInternal()`: after binding
+5. *(running)*
+6. `OnDeinitializingInternal()`: before unbinding
+7. Every binder is unbound through `Unbind`
+8. `OnDeinitializedInternal()`: after unbinding
 
 ---
 
-## IView\<T\> — строго типизированный View
+## IView\<T\>: a strongly typed View
 
-Для типобезопасной инициализации:
+For type-safe initialization:
 
 ```csharp
 [View]
@@ -222,21 +222,21 @@ public partial class StrongView : MonoView, IView<PlayerViewModel>
 
     public void Initialize(PlayerViewModel viewModel)
     {
-        // Source Generator генерирует реализацию
+        // The Source Generator provides the implementation
     }
 }
 ```
 
-Позволяет вызывать `view.Initialize(playerVM)` вместо `view.Initialize((IViewModel)playerVM)`.
+Lets you call `view.Initialize(playerVM)` instead of `view.Initialize((IViewModel)playerVM)`.
 
 ---
 
 ## EventMonoView
 
-Расширение MonoView с UnityEvent-ами для подписки через Inspector:
+A MonoView with UnityEvents for subscribing in the Inspector:
 
 ```csharp
-// В коде — просто наследуйте от EventMonoView
+// Just inherit EventMonoView
 [View]
 public partial class NotifyView : EventMonoView
 {
@@ -244,46 +244,46 @@ public partial class NotifyView : EventMonoView
 }
 ```
 
-В Inspector доступны события:
-- `Initialized(IViewModel)` — вызывается после инициализации
-- `Deinitialized()` — вызывается после деинициализации
+Events available in the Inspector:
+- `Initialized(IViewModel)`: after initialization
+- `Deinitialized()`: after deinitialization
 
 ---
 
 ## Instantiate
 
-Статический helper для создания View из префаба с немедленной инициализацией:
+A static helper that creates a View from a prefab and initializes it at once:
 
 ```csharp
-// Создать и инициализировать View из префаба
+// Create and initialize a View from a prefab
 var view = MonoView.Instantiate(prefab, viewModel);
 
-// С указанием родительского Transform
+// With a parent Transform
 var view = MonoView.Instantiate(prefab, viewModel, parentTransform);
 ```
 
 ---
 
-## Инициализация и деинициализация
+## Initialization and deinitialization
 
-### Из кода (Bootstrap-паттерн)
+### From code (the Bootstrap pattern)
 
 ```csharp
-// Инициализация
+// Initialize
 _view.Initialize(viewModel);
 
-// Деинициализация с освобождением ViewModel
+// Deinitialize and dispose the ViewModel
 _view.DeinitializeView()?.DisposeViewModel();
 ```
 
-### Через ViewInitializer (Inspector)
+### Through ViewInitializer (Inspector)
 
-Без написания кода — через компонент [ViewInitializer](11-view-initializers.md).
+Without code, through the [ViewInitializer](11-view-initializers.md) component.
 
 ---
 
-## См. также
+## See also
 
-- [ViewModel](04-viewmodels.md) — создание ViewModel
-- [Биндеры](06-binders.md) — типы биндеров
-- [ViewInitializer](11-view-initializers.md) — инициализация через Inspector
+- [ViewModels](04-viewmodels.md), creating a ViewModel
+- [Binders](06-binders.md), binder types
+- [View Initializers](11-view-initializers.md), initialization from the Inspector

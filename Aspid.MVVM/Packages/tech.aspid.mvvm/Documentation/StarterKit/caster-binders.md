@@ -1,65 +1,65 @@
 # Caster Binders
 
-Конвертирующие биндеры, которые принимают один тип данных и преобразуют его в другой.
+Converting binders that accept one data type and turn it into another.
 
 ---
 
-## Обзор
+## Overview
 
-Caster-биндеры — это специальные биндеры, которые выполняют приведение типов. В отличие от конвертеров на обычных биндерах, caster-биндеры реализуют интерфейс для **исходного** типа данных.
+Caster binders perform type casts. Unlike converters on regular binders, a caster binder implements the interface of the **source** data type.
 
 ---
 
 ## AnyToStringCasterBinder
 
-Принимает **любой** тип данных и преобразует в `string`:
+Accepts **any** data type and converts it to `string`:
 
 ```
-object? → IConverter<object?, string?>? → string → (целевой TextBinder или другой)
+object? → IConverter<object?, string?>? → string → (a target TextBinder or other)
 ```
 
-Реализует `IAnyBinder` — Source Generator может подключить его к любому свойству ViewModel.
+Implements `IAnyBinder`, so the Source Generator can attach it to any ViewModel property.
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `Converter` | Опциональный `IConverter<object?, string?>` (по умолчанию `ObjectToStringConverter`) |
+| `Converter` | Optional `IConverter<object?, string?>` (default `ObjectToStringConverter`) |
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## ToStringCasterBinder\<T\>
 
-Типизированная версия — принимает конкретный тип `T` и преобразует в `string`:
+The typed version: accepts a concrete `T` and converts it to `string`:
 
 ```
 T? → IConverter<T?, string?>? → string
 ```
 
-Реализует `IBinder<T>`.
+Implements `IBinder<T>`.
 
 ---
 
-## Пример использования
+## Example
 
 ```csharp
 [ViewModel]
 public partial class DebugViewModel
 {
-    [OneWayBind] private Vector3 _position;  // Vector3 → нужно отобразить как текст
+    [OneWayBind] private Vector3 _position;  // Vector3 to be shown as text
 }
 ```
 
-В Inspector:
-1. Добавьте `AnyToStringCasterBinder`
-2. Привяжите к `Position`
-3. Результат: Vector3 преобразуется в строку через `ToString()`
+In the Inspector:
+1. Add `AnyToStringCasterBinder`
+2. Bind it to `Position`
+3. Result: the Vector3 is converted to a string through `ToString()`
 
 ---
 
-## См. также
+## See also
 
-- [Конвертеры](../08-converters.md) — конвертеры на уровне биндера
-- [Обзор StarterKit](README.md)
+- [Converters](../08-converters.md), converters on the binder level
+- [StarterKit overview](README.md)

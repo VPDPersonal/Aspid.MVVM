@@ -15,19 +15,19 @@ namespace Aspid.MVVM.Samples.VirtualizedList
     {
         [SerializeField] [Min(0)] private int _count = 100;
 
-        [OneTimeBind] private readonly FilteredList<ItemViewModel> _isOnTrueItems;
         [OneTimeBind] private readonly ObservableList<ItemViewModel> _items = new();
+
+        // A live view over _items: it follows adds, removes and moves of the source list.
+        [OneTimeBind] private readonly FilteredList<ItemViewModel> _isOnTrueItems;
 
         private int _number;
         
         private int Number => _number++;
         
-        public ListViewModel()
-        {
-            _items = new ObservableList<ItemViewModel>(_items);
-            _isOnTrueItems = new FilteredList<ItemViewModel>(Items, vm => vm.IsCompleted);
-        }
+        public ListViewModel() =>
+            _isOnTrueItems = new FilteredList<ItemViewModel>(_items, vm => vm.IsCompleted);
         
+        // Called by ViewInitializer after the serialized instance is created.
         void IComponentInitializable.Initialize()
         {
             for (var i = 0; i < _count; i++)

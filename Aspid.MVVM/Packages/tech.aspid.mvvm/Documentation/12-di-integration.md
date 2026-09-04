@@ -1,24 +1,24 @@
-# Интеграция с DI
+# DI Integration
 
-Aspid.MVVM поддерживает Zenject и VContainer для автоматического разрешения ViewModel через Dependency Injection.
+Aspid.MVVM supports Zenject and VContainer for resolving ViewModels through Dependency Injection.
 
-## Содержание
+## Contents
 
-- [Обзор](#обзор)
+- [Overview](#overview)
 - [Zenject](#zenject)
 - [VContainer](#vcontainer)
 - [DiConstructor](#diconstructor)
 
 ---
 
-## Обзор
+## Overview
 
-Интеграция с DI позволяет:
-- Разрешать ViewModel из DI-контейнера
-- Инжектировать зависимости в ViewModel
-- Использовать `ViewInitializer` с `InitializeStage.DiConstructor`
+DI integration lets you:
+- Resolve ViewModels from a DI container
+- Inject dependencies into ViewModels
+- Use `ViewInitializer` with `InitializeStage.DiConstructor`
 
-Поддерживаются два DI-фреймворка:
+Two DI frameworks are supported:
 - **Zenject** (Extenject)
 - **VContainer**
 
@@ -26,15 +26,15 @@ Aspid.MVVM поддерживает Zenject и VContainer для автомат�
 
 ## Zenject
 
-### Шаг 1: Определите символ компиляции
+### Step 1: Define the compilation symbol
 
-В `Project Settings → Player → Scripting Define Symbols` добавьте:
+In `Project Settings → Player → Scripting Define Symbols` add:
 
 ```
 ASPID_MVVM_ZENJECT_INTEGRATION
 ```
 
-### Шаг 2: Зарегистрируйте ViewModel в контейнере
+### Step 2: Register the ViewModel in the container
 
 ```csharp
 using Zenject;
@@ -49,16 +49,16 @@ public class GameInstaller : MonoInstaller
 }
 ```
 
-### Шаг 3: Настройте ViewInitializer
+### Step 3: Configure ViewInitializer
 
-1. Добавьте `ViewInitializer` на GameObject
-2. Установите `InitializeStage` → **DiConstructor**
-3. В секции ViewModel выберите `ResolveType` → **Di**
-4. В `TypeSelector` укажите тип ViewModel (например, `PlayerViewModel`)
+1. Add `ViewInitializer` to a GameObject
+2. Set `InitializeStage` → **DiConstructor**
+3. In the ViewModel section set `ResolveType` → **Di**
+4. In `TypeSelector` pick the ViewModel type (for example `PlayerViewModel`)
 
-Zenject автоматически инжектирует контейнер в `ViewInitializerBase` через `[Inject]`.
+Zenject injects the container into `ViewInitializerBase` through `[Inject]`.
 
-### Пример ViewModel с Zenject
+### A ViewModel with Zenject
 
 ```csharp
 [ViewModel]
@@ -69,7 +69,7 @@ public partial class PlayerViewModel
 
     private readonly IPlayerService _playerService;
 
-    // Zenject инжектирует IPlayerService автоматически
+    // Zenject injects IPlayerService
     public PlayerViewModel(IPlayerService playerService)
     {
         _playerService = playerService;
@@ -83,13 +83,13 @@ public partial class PlayerViewModel
 
 ## VContainer
 
-### Шаг 1: Определите символ компиляции
+### Step 1: Define the compilation symbol
 
 ```
 ASPID_MVVM_VCONTAINER_INTEGRATION
 ```
 
-### Шаг 2: Зарегистрируйте ViewModel
+### Step 2: Register the ViewModel
 
 ```csharp
 using VContainer;
@@ -105,42 +105,42 @@ public class GameLifetimeScope : LifetimeScope
 }
 ```
 
-### Шаг 3: Настройте ViewInitializer
+### Step 3: Configure ViewInitializer
 
-Аналогично Zenject — через Inspector с `InitializeStage.DiConstructor`.
+Same as Zenject: in the Inspector with `InitializeStage.DiConstructor`.
 
 ---
 
 ## DiConstructor
 
-`InitializeStage.DiConstructor` — специальный этап, при котором:
+`InitializeStage.DiConstructor` is a special stage where:
 
-1. DI-контейнер инжектирует себя в `ViewInitializerBase`
-2. При инициализации `ViewModelInitializeComponent` с `ResolveType.Di` обращается к контейнеру
-3. Контейнер создаёт ViewModel с разрешением всех зависимостей
-4. View инициализируется полученным ViewModel
+1. The DI container injects itself into `ViewInitializerBase`
+2. On initialization a `ViewModelInitializeComponent` with `ResolveType.Di` asks the container
+3. The container creates the ViewModel with all dependencies resolved
+4. The View is initialized with that ViewModel
 
-### ViewModelInitializeComponent с Di
+### ViewModelInitializeComponent with Di
 
-В Inspector:
+In the Inspector:
 - `ResolveType` → **Di**
-- `TypeSelector` → выберите конкретный тип ViewModel
+- `TypeSelector` → pick the concrete ViewModel type
 
-`TypeSelector` отображает имя типа (строка), по которому контейнер находит нужную регистрацию.
-
----
-
-## Без DI — ручная инициализация
-
-Если DI не используется, применяйте:
-- Bootstrap-паттерн с `view.Initialize(viewModel)` — см. [Быстрый старт](01-getting-started.md)
-- `ViewInitializer` с `ResolveType.Component` или `ResolveType.ScriptableObject`
-- `ViewInitializerManual` с передачей ViewModel из кода
+`TypeSelector` shows the type name (a string) by which the container finds the registration.
 
 ---
 
-## См. также
+## Without DI: manual initialization
 
-- [ViewInitializer](11-view-initializers.md) — подробности об инициализации
-- [ViewModel](04-viewmodels.md) — создание ViewModel
-- [Быстрый старт](01-getting-started.md) — инициализация без DI
+If you do not use DI:
+- The Bootstrap pattern with `view.Initialize(viewModel)`, see [Getting Started](01-getting-started.md)
+- `ViewInitializer` with `ResolveType.Component` or `ResolveType.ScriptableObject`
+- `ViewInitializerManual` with the ViewModel passed from code
+
+---
+
+## See also
+
+- [View Initializers](11-view-initializers.md), initialization details
+- [ViewModels](04-viewmodels.md), creating a ViewModel
+- [Getting Started](01-getting-started.md), initialization without DI

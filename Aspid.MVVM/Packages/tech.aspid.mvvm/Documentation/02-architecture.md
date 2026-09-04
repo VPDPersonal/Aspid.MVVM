@@ -1,45 +1,45 @@
-# Архитектура
+# Architecture
 
-Как устроен Aspid.MVVM: паттерн MVVM в Unity, роль Source Generator и конвейер привязки данных.
+How Aspid.MVVM is built: the MVVM pattern in Unity, the role of the Source Generator and the data binding pipeline.
 
-## Содержание
+## Contents
 
-- [Паттерн MVVM в Unity](#паттерн-mvvm-в-unity)
+- [MVVM in Unity](#mvvm-in-unity)
 - [Source Generation](#source-generation)
-- [Конвейер привязки](#конвейер-привязки)
-- [Обратная привязка](#обратная-привязка)
-- [Архитектурная диаграмма](#архитектурная-диаграмма)
-- [Ключевые интерфейсы](#ключевые-интерфейсы)
+- [Binding pipeline](#binding-pipeline)
+- [Reverse binding](#reverse-binding)
+- [Architecture diagram](#architecture-diagram)
+- [Key interfaces](#key-interfaces)
 
 ---
 
-## Паттерн MVVM в Unity
+## MVVM in Unity
 
-MVVM (Model-View-ViewModel) разделяет приложение на три слоя:
+MVVM (Model-View-ViewModel) splits an application into three layers:
 
-| Слой | Роль | В Aspid.MVVM |
+| Layer | Role | In Aspid.MVVM |
 |------|------|-------------|
-| **Model** | Бизнес-логика и данные | Обычные C#-классы (POCO) |
-| **ViewModel** | Адаптация данных для отображения | Класс с `[ViewModel]` |
-| **View** | Отображение и пользовательский ввод | `MonoView` + биндеры (MonoBehaviour) |
+| **Model** | Business logic and data | Plain C# classes (POCO) |
+| **ViewModel** | Adapts data for presentation | A class with `[ViewModel]` |
+| **View** | Presentation and user input | `MonoView` + binders (MonoBehaviour) |
 
-**Ключевой принцип:** ViewModel не знает о View. View подписывается на изменения ViewModel через систему привязок. Это позволяет:
-- Тестировать ViewModel без Unity
-- Менять View (UI) без изменения логики
-- Нескольким View отображать один ViewModel
+**Key principle:** the ViewModel does not know about the View. The View subscribes to ViewModel changes through the binding system. This makes it possible to:
+- Test the ViewModel without Unity
+- Change the View (UI) without touching the logic
+- Show one ViewModel in several Views
 
 ---
 
 ## Source Generation
 
-Aspid.MVVM использует Roslyn Incremental Source Generators для генерации кода на этапе компиляции. Это обеспечивает **нулевую рефлексию** в runtime.
+Aspid.MVVM uses Roslyn Incremental Source Generators to emit code at compile time. That is what gives **zero reflection** at runtime.
 
-### Что генерируется
+### What is generated
 
-Из `partial`-класса с `[ViewModel]`:
+From a `partial` class with `[ViewModel]`:
 
 ```csharp
-// Ваш код:
+// Your code:
 [ViewModel]
 public sealed partial class PlayerViewModel
 {
@@ -49,10 +49,10 @@ public sealed partial class PlayerViewModel
 }
 ```
 
-Source Generator создаёт:
+The Source Generator produces:
 
 ```csharp
-// Сгенерированный код (упрощённо):
+// Generated code (simplified):
 partial class PlayerViewModel : IViewModel
 {
     private OneWayBindableMember<int> _healthBindableMember;
@@ -62,13 +62,13 @@ partial class PlayerViewModel : IViewModel
     public int Health
     {
         get => _health;
-        private set { /* обновление + уведомление */ }
+        private set { /* update + notify */ }
     }
 
     public string Name
     {
         get => _name;
-        set { /* обновление + уведомление */ }
+        set { /* update + notify */ }
     }
 
     public IRelayCommand AttackCommand => _attackCommand;
@@ -76,21 +76,21 @@ partial class PlayerViewModel : IViewModel
     public FindBindableMemberResult FindBindableMember(
         in FindBindableMemberParameters parameters)
     {
-        // Диспетчеризация по ID — прямые сравнения строк
+        // Dispatch by id: plain string comparisons
         if (parameters.Id == "Health") return new(healthAdder);
         if (parameters.Id == "Name") return new(nameAdder);
         if (parameters.Id == "AttackCommand") return new(attackAdder);
         return default;
     }
 
-    public void NotifyAll() { /* уведомляет все привязки */ }
+    public void NotifyAll() { /* notifies every binding */ }
 }
 ```
 
-### Генерация для View
+### Generation for the View
 
 ```csharp
-// Ваш код:
+// Your code:
 [View]
 public sealed partial class PlayerView : MonoView
 {
@@ -99,27 +99,27 @@ public sealed partial class PlayerView : MonoView
 }
 ```
 
-Source Generator реализует `IView`: методы `Initialize`, `Deinitialize`, перечисление и привязку всех объявленных биндеров.
+The Source Generator implements `IView`: `Initialize`, `Deinitialize`, enumeration and binding of every declared binder.
 
 ---
 
-## Конвейер привязки
+## Binding pipeline
 
-Пошагово, что происходит при вызове `view.Initialize(viewModel)`:
+Step by step, what happens on `view.Initialize(viewModel)`:
 
-### 1. View запрашивает BindableMember
+### 1. The View asks for a BindableMember
 
-Для каждого поля-биндера View вызывает:
+For every binder field the View calls:
 ```csharp
 var result = viewModel.FindBindableMember(
     new FindBindableMemberParameters("Health"));
 ```
 
-`FindBindableMemberParameters` — это `ref struct` (нулевые аллокации).
+`FindBindableMemberParameters` is a `ref struct` (zero allocations).
 
-### 2. ViewModel возвращает IBinderAdder
+### 2. The ViewModel returns an IBinderAdder
 
-`FindBindableMemberResult` содержит `IBinderAdder` — интерфейс для подключения биндера:
+`FindBindableMemberResult` carries an `IBinderAdder`, the interface used to attach a binder:
 
 ```csharp
 public interface IBinderAdder
@@ -129,42 +129,42 @@ public interface IBinderAdder
 }
 ```
 
-### 3. Биндер регистрируется
+### 3. The binder subscribes
 
-`Binder.Bind(IBinderAdder)` вызывает `binderAdder.Add(this)`:
-- Биндер подписывается на событие `Changed` у `BindableMember`
-- Биндер сразу получает текущее значение через `SetValue`
+`Binder.Bind(IBinderAdder)` calls `binderAdder.Add(this)`:
+- The binder subscribes to the `Changed` event of the `BindableMember`
+- The binder immediately receives the current value through `SetValue`
 
-### 4. Обновление данных
+### 4. Data update
 
-При изменении свойства ViewModel:
+When a ViewModel property changes:
 ```
 ViewModel.Health = 50
   → _healthBindableMember.Value = 50
     → Changed?.Invoke(50)
-      → каждый IBinder<int>.SetValue(50)
-        → UI обновляется
+      → every IBinder<int>.SetValue(50)
+        → UI updates
 ```
 
 ---
 
-## Обратная привязка
+## Reverse binding
 
-Для режимов **TwoWay** и **OneWayToSource** данные могут передаваться от View к ViewModel:
+In **TwoWay** and **OneWayToSource** modes data can travel from the View to the ViewModel:
 
 ```
-UI изменяется (пользователь вводит текст)
-  → IReverseBinder<string>.ValueChanged?.Invoke("новый текст")
-    → TwoWayBindableMember.OnValueChanged("новый текст")
-      → _setValue("новый текст")
-        → ViewModel._name = "новый текст"
+UI changes (the user types text)
+  → IReverseBinder<string>.ValueChanged?.Invoke("new text")
+    → TwoWayBindableMember.OnValueChanged("new text")
+      → _setValue("new text")
+        → ViewModel._name = "new text"
 ```
 
-`TwoWayBindableMember` подписывается на `IReverseBinder<T>.ValueChanged` при вызове `Add()`.
+`TwoWayBindableMember` subscribes to `IReverseBinder<T>.ValueChanged` inside `Add()`.
 
 ---
 
-## Архитектурная диаграмма
+## Architecture diagram
 
 ```
 ┌─────────┐     ┌──────────────┐     ┌─────────────────┐     ┌────────┐     ┌────┐
@@ -175,44 +175,44 @@ UI изменяется (пользователь вводит текст)
                                                                   │
                                                           ┌───────┴───────┐
                                                           │ IConverter    │
-                                                          │ (опционально) │
+                                                          │ (optional)    │
                                                           └───────────────┘
 ```
 
-**Поток данных:**
+**Data flow:**
 - **OneWay:** Model → ViewModel → BindableMember → Binder → UI
-- **TwoWay:** То же + UI → Binder → BindableMember → ViewModel
-- **OneTime:** Однократная передача значения при привязке
+- **TwoWay:** the same, plus UI → Binder → BindableMember → ViewModel
+- **OneTime:** a single push of the value when binding
 - **OneWayToSource:** UI → Binder → BindableMember → ViewModel
 
 ---
 
-## Ключевые интерфейсы
+## Key interfaces
 
-| Интерфейс | Назначение |
+| Interface | Purpose |
 |-----------|-----------|
-| `IViewModel` | Единственный метод `FindBindableMember` — точка входа для привязки |
-| `IView` / `IView<T>` | `Initialize(viewModel)`, `Deinitialize()`, `ViewModel` — управление жизненным циклом |
-| `IBinder<T>` | `SetValue(T)` — получение значения от ViewModel |
-| `IReverseBinder<T>` | `ValueChanged` event — отправка значения обратно в ViewModel |
-| `IAnyBinder` | `SetValue<T>(T)` — принимает любой тип (для отладки и универсальных биндеров) |
-| `IBinderAdder` | `Add(IBinder)` — подключение биндера к BindableMember |
-| `IBinderRemover` | `Remove(IBinder)` — отключение биндера |
+| `IViewModel` | A single method, `FindBindableMember`: the entry point of binding |
+| `IView` / `IView<T>` | `Initialize(viewModel)`, `Deinitialize()`, `ViewModel`: lifecycle control |
+| `IBinder<T>` | `SetValue(T)`: receives a value from the ViewModel |
+| `IReverseBinder<T>` | `ValueChanged` event: sends a value back to the ViewModel |
+| `IAnyBinder` | `SetValue<T>(T)`: accepts any type (debugging and generic binders) |
+| `IBinderAdder` | `Add(IBinder)`: attaches a binder to a BindableMember |
+| `IBinderRemover` | `Remove(IBinder)`: detaches a binder |
 
-### BindableMember-ы
+### BindableMembers
 
-| Класс | Режим | Описание |
+| Class | Mode | Description |
 |-------|-------|----------|
-| `OneWayBindableMember<T>` | OneWay | Хранит значение, event `Changed`, push при подписке |
-| `TwoWayBindableMember<T>` | TwoWay | + подписка на `IReverseBinder.ValueChanged` |
-| `OneTimeBindableMember<T>` | OneTime | Singleton-per-T, одноразовый push, `Add` возвращает `null` |
-| `OneWayToSourceBindableMember<T>` | OneWayToSource | Только обратная привязка, нет push в View |
+| `OneWayBindableMember<T>` | OneWay | Stores the value, `Changed` event, push on subscribe |
+| `TwoWayBindableMember<T>` | TwoWay | Plus a subscription to `IReverseBinder.ValueChanged` |
+| `OneTimeBindableMember<T>` | OneTime | Singleton per T, one-shot push, `Add` returns `null` |
+| `OneWayToSourceBindableMember<T>` | OneWayToSource | Reverse binding only, no push to the View |
 
 ---
 
-## См. также
+## See also
 
-- [Быстрый старт](01-getting-started.md) — пример от начала до конца
-- [Режимы привязки](03-binding-modes.md) — подробности о каждом режиме
-- [ViewModel](04-viewmodels.md) — все атрибуты генерации
-- [Биндеры](06-binders.md) — создание кастомных биндеров
+- [Getting Started](01-getting-started.md), an end-to-end example
+- [Binding Modes](03-binding-modes.md), details of each mode
+- [ViewModels](04-viewmodels.md), every generation attribute
+- [Binders](06-binders.md), writing custom binders

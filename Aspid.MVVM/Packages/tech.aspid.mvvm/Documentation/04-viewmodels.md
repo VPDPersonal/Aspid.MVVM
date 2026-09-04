@@ -1,25 +1,25 @@
-# ViewModel
+# ViewModels
 
-ViewModel — центральный элемент Aspid.MVVM. Source Generator автоматически генерирует код привязки для полей, помеченных атрибутами.
+The ViewModel is the centre of Aspid.MVVM. The Source Generator emits the binding code for every field marked with an attribute.
 
-## Содержание
+## Contents
 
-- [Создание ViewModel](#создание-viewmodel)
-- [Атрибут \[Bind\]](#атрибут-bind)
-- [Атрибуты-ярлыки](#атрибуты-ярлыки)
-- [Атрибут \[BindAlso\]](#атрибут-bindalso)
-- [Атрибут \[BindId\]](#атрибут-bindid)
-- [Атрибут \[Access\]](#атрибут-access)
-- [Обработчики изменений](#обработчики-изменений)
+- [Creating a ViewModel](#creating-a-viewmodel)
+- [The \[Bind\] attribute](#the-bind-attribute)
+- [Shorthand attributes](#shorthand-attributes)
+- [The \[BindAlso\] attribute](#the-bindalso-attribute)
+- [The \[BindId\] attribute](#the-bindid-attribute)
+- [The \[Access\] attribute](#the-access-attribute)
+- [Change handlers](#change-handlers)
 - [MonoViewModel](#monoviewmodel)
 - [ScriptableViewModel](#scriptableviewmodel)
 - [NotifyAll](#notifyall)
 
 ---
 
-## Создание ViewModel
+## Creating a ViewModel
 
-Минимальный ViewModel:
+The smallest ViewModel:
 
 ```csharp
 using Aspid.MVVM;
@@ -32,52 +32,51 @@ public partial class PlayerViewModel
 }
 ```
 
-**Обязательные условия:**
-1. Класс должен быть `partial` — Source Generator дополняет его
-2. Атрибут `[ViewModel]` — маркер для генератора
-3. Хотя бы одно поле с `[Bind]`-атрибутом
+**Requirements:**
+1. The class is `partial`: the Source Generator completes it
+2. The `[ViewModel]` attribute marks it for the generator
+3. At least one field with a `[Bind]` attribute
 
-Source Generator реализует интерфейс `IViewModel` и генерирует:
-- Свойства для каждого помеченного поля
-- Методы `SetXxx(value)` для обновления значений
-- `BindableMember<T>` для каждой привязки
-- Метод `FindBindableMember()` для диспетчеризации
-- Метод `NotifyAll()` для массового уведомления
+The Source Generator implements `IViewModel` and emits:
+- A property for every marked field
+- `BindableMember<T>` for every binding
+- `FindBindableMember()` for dispatch
+- `NotifyAll()` for bulk notification
 
-### Три варианта ViewModel
+### Three flavours of ViewModel
 
-| Тип | Базовый класс | Когда использовать |
+| Type | Base class | When to use |
 |-----|--------------|-------------------|
-| **POCO** | Нет | Основной вариант. Чистый C# без Unity-зависимостей |
-| **MonoViewModel** | `MonoBehaviour` | Когда нужна редактируемость в Inspector |
-| **ScriptableViewModel** | `ScriptableObject` | Для разделяемых данных между сценами |
+| **POCO** | None | The default. Plain C# without Unity dependencies |
+| **MonoViewModel** | `MonoBehaviour` | When the ViewModel must be editable in the Inspector |
+| **ScriptableViewModel** | `ScriptableObject` | Data shared between scenes |
 
 ---
 
-## Атрибут [Bind]
+## The [Bind] attribute
 
-Маркирует поле для генерации привязки. Режим определяется автоматически или явно:
+Marks a field for binding generation. The mode is detected or set explicitly:
 
 ```csharp
 [ViewModel]
 public partial class ExampleViewModel
 {
-    // Автоматический режим:
+    // Automatic mode:
     [Bind] private const string Title = "Hello";  // → OneTime (const)
     [Bind] private readonly int _id;                // → OneTime (readonly)
-    [Bind] private string _name;                    // → TwoWay  (мутабельное)
+    [Bind] private string _name;                    // → TwoWay  (mutable)
 
-    // Явный режим:
+    // Explicit mode:
     [Bind(BindMode.OneWay)] private int _score;
     [Bind(BindMode.TwoWay)] private string _input;
 }
 ```
 
-### Правила именования
+### Naming rules
 
-Source Generator поддерживает стили именования полей:
+The Source Generator understands the common field naming styles:
 
-| Поле | Сгенерированное свойство |
+| Field | Generated property |
 |------|------------------------|
 | `_outText` | `OutText` |
 | `m_outText` | `OutText` |
@@ -86,9 +85,9 @@ Source Generator поддерживает стили именования пол
 
 ---
 
-## Атрибуты-ярлыки
+## Shorthand attributes
 
-Сокращённая запись для указания режима:
+A shorter way to set the mode:
 
 ```csharp
 [ViewModel]
@@ -103,9 +102,9 @@ public partial class ShortcutExample
 
 ---
 
-## Атрибут [BindAlso]
+## The [BindAlso] attribute
 
-При изменении поля дополнительно уведомляет указанное свойство. Используется для вычисляемых свойств:
+When the field changes, the named property is notified as well. Used for computed properties:
 
 ```csharp
 [ViewModel]
@@ -118,48 +117,48 @@ public partial class PersonViewModel
     [BindAlso(nameof(FullName))]
     [Bind] private string _family;
 
-    // Вычисляемые свойства — обновляются при изменении _name или _family
+    // Computed properties, refreshed when _name or _family changes
     private string Nickname => Name.ToLower();
     private string FullName => $"{Name} {Family}";
 }
 ```
 
-Когда `Name` изменяется — биндеры, привязанные к `Nickname` и `FullName`, также получают уведомление.
+When `Name` changes, binders attached to `Nickname` and `FullName` are notified too.
 
 ---
 
-## Атрибут [BindId]
+## The [BindId] attribute
 
-Переопределяет ID привязки (по умолчанию — имя сгенерированного свойства):
+Overrides the binding id (by default the generated property name):
 
 ```csharp
 [ViewModel]
 public partial class CustomIdViewModel
 {
-    // Поле _text1 привязывается под ID "Text2"
+    // The _text1 field binds under the id "Text2"
     [BindId("Text2")]
     [Bind] private string _text1;
 
-    // Метод Do привязывается как команда "OtherDoCommand"
+    // The Do method binds as the command "OtherDoCommand"
     [RelayCommand]
     [BindId("OtherDoCommand")]
     private void Do() { }
 }
 ```
 
-Это полезно, когда имя поля в View не совпадает с именем в ViewModel.
+Useful when the View field name does not match the ViewModel member name.
 
 ---
 
-## Атрибут [Access]
+## The [Access] attribute
 
-Управляет видимостью сгенерированного свойства:
+Controls the visibility of the generated property:
 
 ```csharp
 [ViewModel]
 public partial class AccessExample
 {
-    // private string Text1 { get; set; }  (по умолчанию)
+    // private string Text1 { get; set; }  (default)
     [Bind] private string _text1;
 
     // public string Text2 { get; set; }
@@ -184,19 +183,19 @@ public partial class AccessExample
 }
 ```
 
-### Уровни доступа
+### Access levels
 
-- `Access.Private` — по умолчанию для get и set
-- `Access.Protected` — виден в наследниках
-- `Access.Public` — виден всем
+- `Access.Private`: the default for get and set
+- `Access.Protected`: visible to subclasses
+- `Access.Public`: visible to everyone
 
-Независимая настройка `Get` и `Set` позволяет создавать свойства вроде `public get / private set`.
+`Get` and `Set` are configured independently, so properties like `public get / private set` are possible.
 
 ---
 
-## Обработчики изменений
+## Change handlers
 
-Source Generator создаёт `partial`-методы, которые вызываются при изменении свойства:
+The Source Generator declares `partial` methods called when a property changes:
 
 ```csharp
 [ViewModel]
@@ -204,21 +203,21 @@ public partial class HandlerExample
 {
     [Bind] private string _name;
 
-    // Вызывается ПЕРЕД изменением Name
+    // Called BEFORE Name changes
     partial void OnNameChanging(string oldValue, string newValue)
     {
-        // Можно выполнить валидацию или логирование
+        // Validation or logging
     }
 
-    // Вызывается ПОСЛЕ изменения Name
+    // Called AFTER Name changes
     partial void OnNameChanged(string newValue)
     {
-        // Можно обновить зависимые данные
+        // Update dependent data
     }
 }
 ```
 
-### Паттерн: мгновенная реакция на ввод
+### Pattern: react to input immediately
 
 ```csharp
 [ViewModel]
@@ -228,8 +227,8 @@ public partial class MomentSpeakerViewModel
 
     private readonly Speaker _speaker;
 
-    // При каждом изменении текста в InputField —
-    // мгновенно обновляем модель
+    // Every change of the InputField text
+    // updates the model at once
     partial void OnInputTextChanged(string newValue)
     {
         _speaker.Say(newValue);
@@ -241,7 +240,7 @@ public partial class MomentSpeakerViewModel
 
 ## MonoViewModel
 
-Для ViewModel, редактируемых через Inspector:
+For ViewModels edited in the Inspector:
 
 ```csharp
 using UnityEngine;
@@ -255,16 +254,16 @@ public partial class SettingsViewModel : MonoViewModel
 }
 ```
 
-**Особенности:**
-- Наследует `MonoBehaviour`
-- `OnValidate()` вызывает `NotifyAll()` — изменения в Inspector сразу отображаются
-- `Dispose()` вызывает `Destroy(this)`
+**Details:**
+- Inherits `MonoBehaviour`
+- `OnValidate()` calls `NotifyAll()`, so Inspector edits show up immediately
+- `Dispose()` calls `Destroy(this)`
 
 ---
 
 ## ScriptableViewModel
 
-Для ViewModel-ов, общих между сценами:
+For ViewModels shared between scenes:
 
 ```csharp
 using UnityEngine;
@@ -278,16 +277,16 @@ public partial class GameConfigViewModel : ScriptableViewModel
 }
 ```
 
-**Особенности:**
-- Наследует `ScriptableObject`
-- `OnValidate()` вызывает `NotifyAll()`
-- Можно создавать через `CreateAssetMenu`
+**Details:**
+- Inherits `ScriptableObject`
+- `OnValidate()` calls `NotifyAll()`
+- Can be created through `CreateAssetMenu`
 
 ---
 
 ## NotifyAll
 
-Генерируемый метод для уведомления всех привязок о текущих значениях:
+A generated method that pushes the current values to every binding:
 
 ```csharp
 var viewModel = new PlayerViewModel();
@@ -295,20 +294,20 @@ viewModel.Health = 100;
 viewModel.Name = "Hero";
 viewModel.Armor = 50;
 
-// Уведомить все биндеры о текущих значениях разом
+// Notify every binder of the current values at once
 viewModel.NotifyAll();
 ```
 
-**Когда использовать:**
-- После массового обновления нескольких полей
-- После десериализации / загрузки данных
-- В `MonoViewModel.OnValidate()` (вызывается автоматически)
+**When to use:**
+- After a bulk update of several fields
+- After deserialization / loading data
+- In `MonoViewModel.OnValidate()` (called automatically)
 
 ---
 
-## См. также
+## See also
 
-- [Режимы привязки](03-binding-modes.md) — подробности о BindMode
-- [Команды](07-commands.md) — атрибут `[RelayCommand]`
-- [View](05-views.md) — создание View для ViewModel
-- [DynamicViewModel](10-dynamic-viewmodel.md) — ViewModel без кодогенерации
+- [Binding Modes](03-binding-modes.md), details of `BindMode`
+- [Commands](07-commands.md), the `[RelayCommand]` attribute
+- [Views](05-views.md), creating a View for a ViewModel
+- [Dynamic ViewModel](10-dynamic-viewmodel.md), a ViewModel without code generation

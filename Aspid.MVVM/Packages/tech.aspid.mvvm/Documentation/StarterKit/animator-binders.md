@@ -1,41 +1,41 @@
 # Animator Binders
 
-Биндеры для управления параметрами `Animator`.
+Binders that drive `Animator` parameters.
 
 ---
 
-## Общий принцип
+## Common behaviour
 
-Все Animator-биндеры наследуют `AnimatorSetParameterBinder<T>` и:
+Every Animator binder inherits `AnimatorSetParameterBinder<T>` and:
 
-1. Принимают имя параметра Animator (`ParameterName`) в Inspector
-2. Устанавливают параметр через `Animator.SetBool/SetFloat/SetInt`
-3. Проверяют `CanExecute` — по умолчанию `Target.gameObject.activeInHierarchy`
-4. Оптимизируют: не вызывают Set, если текущее значение уже совпадает
+1. Takes the Animator parameter name (`ParameterName`) in the Inspector
+2. Sets the parameter through `Animator.SetBool/SetFloat/SetInt`
+3. Checks `CanExecute`, by default `Target.gameObject.activeInHierarchy`
+4. Skips the Set call when the current value already matches
 
-### Обратная привязка (OneWayToSource)
+### Reverse binding (OneWayToSource)
 
-При OneWayToSource Animator-биндеры предоставляют `Action<T>` или `IRelayCommand<T>` обратно во ViewModel, позволяя вызывать анимации из ViewModel.
+In OneWayToSource the Animator binders hand an `Action<T>` or `IRelayCommand<T>` back to the ViewModel, so animations can be triggered from the ViewModel.
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
 ## AnimatorSetBoolBinder
 
-Привязка `Animator.SetBool`.
+Binds `Animator.SetBool`.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `ParameterName` | Имя bool-параметра в Animator |
-| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
+| `ParameterName` | Name of the bool parameter in the Animator |
+| `_converter` | Optional value converter (for example `BoolInvertConverter`) |
 
 ```csharp
 [ViewModel]
 public partial class CharacterViewModel
 {
     [OneWayBind] private bool _isRunning;
-    // Привяжите к AnimatorSetBoolBinder с ParameterName = "IsRunning"
+    // Bind to AnimatorSetBoolBinder with ParameterName = "IsRunning"
 }
 ```
 
@@ -43,19 +43,19 @@ public partial class CharacterViewModel
 
 ## AnimatorSetFloatBinder
 
-Привязка `Animator.SetFloat`.
+Binds `Animator.SetFloat`.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `ParameterName` | Имя float-параметра в Animator |
-| Converter | `IConverter<float, float>` (опционально) |
+| `ParameterName` | Name of the float parameter in the Animator |
+| Converter | `IConverter<float, float>` (optional) |
 
 ```csharp
 [ViewModel]
 public partial class CharacterViewModel
 {
     [OneWayBind] private float _speed;
-    // Привяжите к AnimatorSetFloatBinder с ParameterName = "Speed"
+    // Bind to AnimatorSetFloatBinder with ParameterName = "Speed"
 }
 ```
 
@@ -63,27 +63,27 @@ public partial class CharacterViewModel
 
 ## AnimatorSetIntBinder
 
-Привязка `Animator.SetInteger`.
+Binds `Animator.SetInteger`.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `ParameterName` | Имя int-параметра в Animator |
-| Converter | `IConverter<int, int>` (опционально) |
+| `ParameterName` | Name of the int parameter in the Animator |
+| Converter | `IConverter<int, int>` (optional) |
 
 ---
 
 ## AnimatorSetTriggerBinder
 
-Привязка `Animator.SetTrigger`. Работает иначе — только **OneWayToSource**. Парный `AnimatorResetTriggerBinder` вызывает `ResetTrigger`: взведённый и не сработавший триггер иначе остаётся активным.
+Binds `Animator.SetTrigger`. Works differently: **OneWayToSource** only. Its pair, `AnimatorResetTriggerBinder`, calls `ResetTrigger`: a trigger that was set but never consumed otherwise stays active.
 
-Предоставляет `Action` или `IRelayCommand` во ViewModel для вызова триггера:
+Hands an `Action` or `IRelayCommand` to the ViewModel for firing the trigger:
 
 ```csharp
 [ViewModel]
 public partial class CharacterViewModel
 {
     [OneWayToSourceBind] private IRelayCommand _jumpTrigger;
-    // или: [OneWayToSourceBind] private Action _jumpTrigger;
+    // or: [OneWayToSourceBind] private Action _jumpTrigger;
 
     public void Jump()
     {
@@ -92,11 +92,11 @@ public partial class CharacterViewModel
 }
 ```
 
-**Режим:** только OneWayToSource.
+**Mode:** OneWayToSource only.
 
 ---
 
-## См. также
+## See also
 
-- [Transform Binders](transform-binders.md) — позиция, поворот, масштаб
-- [Обзор StarterKit](README.md)
+- [Transform Binders](transform-binders.md), position, rotation, scale
+- [StarterKit overview](README.md)

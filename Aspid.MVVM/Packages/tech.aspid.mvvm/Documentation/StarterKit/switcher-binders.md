@@ -1,27 +1,27 @@
 # Switcher Binders
 
-Паттерн Switcher: `bool` → выбор между двумя предустановленными значениями.
+The Switcher pattern: `bool` → one of two preset values.
 
 ---
 
-## Обзор
+## Overview
 
-Switcher-биндер принимает `bool` и возвращает одно из двух значений:
+A Switcher binder takes a `bool` and returns one of two values:
 - `true` → `_trueValue`
 - `false` → `_falseValue`
 
-Это альтернатива конвертерам для простых случаев "если/иначе".
+An alternative to converters for simple "if/else" cases.
 
 ---
 
 ## SwitcherBinder\<T\>
 
-Базовый класс (не MonoBehaviour):
+The base class (not a MonoBehaviour):
 
 ```csharp
 public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
 {
-    // Сериализуются в Inspector:
+    // Serialized in the Inspector:
     protected T _trueValue;
     protected T _falseValue;
 
@@ -34,44 +34,44 @@ public abstract class SwitcherBinder<T> : Binder, IBinder<bool>
 }
 ```
 
-**Режимы:** OneWay, OneTime. TwoWay и OneWayToSource **не поддерживаются**.
+**Modes:** OneWay, OneTime. TwoWay and OneWayToSource are **not supported**.
 
 ---
 
-## Готовые Switcher-биндеры
+## Ready-made Switcher binders
 
-Почти каждый стандартный биндер имеет Switcher-вариант:
+Almost every standard binder has a Switcher variant:
 
-| Switcher-биндер | Выбирает между | Пример |
+| Switcher binder | Picks between | Example |
 |----------------|----------------|--------|
-| `TextSwitcherBinder` | двумя строками | "Активен" / "Неактивен" |
-| `TextFontSwitcherBinder` | двумя шрифтами | Bold / Regular |
-| `TextFontSizeSwitcherBinder` | двумя размерами | 24 / 16 |
-| `TextAlignmentSwitcherBinder` | двумя выравниваниями | Center / Left |
-| `ImageSpriteSwitcherBinder` | двумя спрайтами | CheckOn / CheckOff |
-| `ImageFillSwitcherBinder` | двумя fillAmount | 1.0 / 0.0 |
-| `SliderMinMaxSwitcherBinder` | двумя min/max | (0,100) / (0,10) |
-| `GraphicColorSwitcherBinder` | двумя цветами | Green / Red |
-| `CanvasGroupAlphaSwitcherBinder` | двумя alpha | 1.0 / 0.3 |
-| `RendererMaterialsColorSwitcherBinder` | двумя цветами | Lit / Dark |
-| `SelectableColorBlockSwitcherBinder` | двумя ColorBlock | Normal / Disabled |
+| `TextSwitcherBinder` | two strings | "Active" / "Inactive" |
+| `TextFontSwitcherBinder` | two fonts | Bold / Regular |
+| `TextFontSizeSwitcherBinder` | two sizes | 24 / 16 |
+| `TextAlignmentSwitcherBinder` | two alignments | Center / Left |
+| `ImageSpriteSwitcherBinder` | two sprites | CheckOn / CheckOff |
+| `ImageFillSwitcherBinder` | two fillAmount values | 1.0 / 0.0 |
+| `SliderMinMaxSwitcherBinder` | two min/max pairs | (0,100) / (0,10) |
+| `GraphicColorSwitcherBinder` | two colors | Green / Red |
+| `CanvasGroupAlphaSwitcherBinder` | two alpha values | 1.0 / 0.3 |
+| `RendererMaterialsColorSwitcherBinder` | two colors | Lit / Dark |
+| `SelectableColorBlockSwitcherBinder` | two ColorBlocks | Normal / Disabled |
 
 ---
 
 ## SwitcherMonoBinder
 
-MonoBehaviour-вариант для использования в Inspector:
+The MonoBehaviour variant for the Inspector:
 
 ```csharp
-// Три generic-перегрузки:
-SwitcherMonoBinder<T>                    // без конвертера
-SwitcherMonoBinder<T, TTarget>           // с целевым компонентом
-SwitcherMonoBinder<T, TTarget, TConv>    // с конвертером
+// Three generic overloads:
+SwitcherMonoBinder<T>                    // no converter
+SwitcherMonoBinder<T, TTarget>           // with a target component
+SwitcherMonoBinder<T, TTarget, TConv>    // with a converter
 ```
 
 ---
 
-## Пример использования
+## Example
 
 ### ViewModel
 
@@ -83,36 +83,36 @@ public partial class TaskViewModel
 }
 ```
 
-### В Inspector
+### Inspector
 
-1. Добавьте `TextSwitcherBinder` на объект с TextMeshPro
-2. Установите:
-   - `True Value` = "Выполнено"
-   - `False Value` = "В процессе"
-3. Привяжите к `IsCompleted`
+1. Add `TextSwitcherBinder` to the object with TextMeshPro
+2. Set:
+   - `True Value` = "Done"
+   - `False Value` = "In progress"
+3. Bind to `IsCompleted`
 
-Результат: текст автоматически переключается при изменении `IsCompleted`.
+Result: the text switches whenever `IsCompleted` changes.
 
-### Цвета статуса
+### Status colors
 
-1. Добавьте `GraphicColorSwitcherBinder`
-2. `True Value` = зелёный
-3. `False Value` = красный
+1. Add `GraphicColorSwitcherBinder`
+2. `True Value` = green
+3. `False Value` = red
 
 ---
 
-## Когда использовать Switcher vs Конвертер
+## Switcher vs converter
 
-| Switcher | Конвертер |
+| Switcher | Converter |
 |----------|-----------|
-| Два фиксированных значения | Произвольное преобразование |
-| Настройка в Inspector | Логика в коде |
-| Только `bool` вход | Любой тип входа |
-| Быстрая настройка | Переиспользуемая логика |
+| Two fixed values | Arbitrary transformation |
+| Configured in the Inspector | Logic in code |
+| `bool` input only | Any input type |
+| Quick setup | Reusable logic |
 
 ---
 
-## См. также
+## See also
 
-- [Конвертеры](../08-converters.md) — произвольные преобразования
-- [Обзор StarterKit](README.md) — таблица всех компонентов
+- [Converters](../08-converters.md), arbitrary transformations
+- [StarterKit overview](README.md), every component in one table

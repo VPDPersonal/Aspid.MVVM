@@ -1,36 +1,36 @@
 # InputField Binders
 
-Биндеры для `TMP_InputField` с поддержкой двусторонней привязки, числовых типов и различных событий.
+Binders for `TMP_InputField` with two-way binding, numeric types and the various field events.
 
 ---
 
 ## InputFieldBinder
 
-Основной биндер для ввода текста.
+The main text input binder.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<string?>` | Получает текст от ViewModel |
-| `IReverseBinder<string>` | Отправляет изменения обратно |
-| `INumberBinder` | Принимает числовые типы |
-| `INumberReverseBinder` | Отправляет числа обратно |
+| `IBinder<string?>` | Receives text from the ViewModel |
+| `IReverseBinder<string>` | Sends changes back |
+| `INumberBinder` | Accepts numeric types |
+| `INumberReverseBinder` | Sends numbers back |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| UpdateEvent | Событие обновления: `OnValueChanged`, `OnEndEdit`, `OnSubmit`, `OnSelect`, `OnDeselect` |
-| Converter | `IConverter<string?, string?>` (опционально) |
+| UpdateEvent | Update event: `OnValueChanged`, `OnEndEdit`, `OnSubmit`, `OnSelect`, `OnDeselect` |
+| Converter | `IConverter<string?, string?>` (optional) |
 
-### Защита от циклов
+### Loop protection
 
-Флаг `_isNotifyValueChanged` предотвращает бесконечную рекурсию при TwoWay-привязке: когда ViewModel обновляет InputField, обратное событие блокируется.
+The `_isNotifyValueChanged` flag prevents infinite recursion in TwoWay binding: while the ViewModel updates the InputField, the reverse event is blocked.
 
-### Числовые режимы
+### Numeric modes
 
-При ContentType `IntegerNumber` или `DecimalNumber` — парсит строку в число и отправляет через `INumberReverseBinder`.
+With ContentType `IntegerNumber` or `DecimalNumber` the string is parsed into a number and sent through `INumberReverseBinder`.
 
-**Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
+**Modes:** OneWay, TwoWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
@@ -42,21 +42,21 @@ public partial class FormViewModel
 
 ---
 
-## Дополнительные биндеры
+## Additional binders
 
-| Биндер | Привязывает | Тип |
+| Binder | Binds | Type |
 |--------|------------|-----|
 | `InputFieldCharacterValidationBinder` | `characterValidation` | `CharacterValidation` |
 | `InputFieldContentTypeBinder` | `contentType` | `ContentType` |
 | `InputFieldInputTypeBinder` | `inputType` | `InputType` |
 | `InputFieldLineTypeBinder` | `lineType` | `LineType` |
 
-Каждый имеет Switcher-вариант (`bool` → выбор между двумя значениями). После записи вызывается `ForceLabelUpdate`.
+Each has a Switcher variant (`bool` → one of two values). `ForceLabelUpdate` is called after the write.
 
-| Биндер | Привязывает | Тип |
+| Binder | Binds | Type |
 |--------|------------|-----|
-| `InputFieldCharacterLimitBinder` | `characterLimit` | `int`, `0` без лимита |
-| `InputFieldCaretPositionBinder` | `caretPosition` | `int`, зажимается в длину текста |
+| `InputFieldCharacterLimitBinder` | `characterLimit` | `int`, `0` for no limit |
+| `InputFieldCaretPositionBinder` | `caretPosition` | `int`, clamped to the text length |
 | `InputFieldReadOnlyBinder` | `readOnly` | `bool` |
 | `InputFieldPlaceholderBinder` | `placeholder` | `Graphic` |
 
@@ -64,12 +64,12 @@ public partial class FormViewModel
 
 ## InputFieldCommandBinder
 
-Выполняет команду на выбранном событии поля (`UpdateInputFieldEvent`): `IRelayCommand` без аргументов или `IRelayCommand<string>` с текстом. Варианты `<T>`, `<T1, T2>`, `<T1, T2, T3>` передают после текста дополнительные параметры. `InteractableMode` работает как у `ButtonCommandBinder`.
+Executes a command on the chosen field event (`UpdateInputFieldEvent`): an `IRelayCommand` without arguments or an `IRelayCommand<string>` with the text. The `<T>`, `<T1, T2>`, `<T1, T2, T3>` variants pass extra parameters after the text. `InteractableMode` works as in `ButtonCommandBinder`.
 
 ---
 
-## См. также
+## See also
 
 - [Text Binders](text-binders.md)
-- [Режимы привязки](../03-binding-modes.md) — TwoWay
-- [Обзор StarterKit](README.md)
+- [Binding Modes](../03-binding-modes.md), TwoWay
+- [StarterKit overview](README.md)

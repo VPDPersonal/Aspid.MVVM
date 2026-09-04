@@ -1,19 +1,19 @@
 # Collider Binders
 
-Биндеры для управления свойствами коллайдеров через привязку к ViewModel.
+Binders that drive collider properties from the ViewModel.
 
 ---
 
-## Общие биндеры
+## Common binders
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
-| `ColliderEnabledBinder` | `bool` | `Collider.enabled` — включение/отключение |
-| `ColliderIsTriggerBinder` | `bool` | `Collider.isTrigger` — режим триггера |
-| `ColliderMaterialBinder` | `PhysicsMaterial` | `Collider.material` — физический материал |
-| `ColliderMaterialSwitcherBinder` | `bool` → `PhysicsMaterial` | Выбор материала по условию |
+| `ColliderEnabledBinder` | `bool` | `Collider.enabled` |
+| `ColliderIsTriggerBinder` | `bool` | `Collider.isTrigger` |
+| `ColliderMaterialBinder` | `PhysicsMaterial` | `Collider.material` |
+| `ColliderMaterialSwitcherBinder` | `bool` → `PhysicsMaterial` | Picks a material by condition |
 | `ColliderProvidesContactsBinder` | `bool` | `Collider.providesContacts` |
-| `ColliderContactOffsetBinder` | `float` | `Collider.contactOffset`, минимум 0.0001 |
+| `ColliderContactOffsetBinder` | `float` | `Collider.contactOffset`, minimum 0.0001 |
 | `ColliderIncludeLayersBinder` | `int` | `Collider.includeLayers` |
 | `ColliderExcludeLayersBinder` | `int` | `Collider.excludeLayers` |
 
@@ -21,36 +21,36 @@
 
 ## BoxCollider
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
 | `BoxColliderCenterBinder` | `Vector3` | `BoxCollider.center` |
-| `BoxColliderSizeBinder` | `Vector3` | `BoxCollider.size`, отрицательные компоненты поднимаются до 0 |
+| `BoxColliderSizeBinder` | `Vector3` | `BoxCollider.size`, negative components are raised to 0 |
 
 ---
 
 ## CapsuleCollider
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
 | `CapsuleColliderCenterBinder` | `Vector3` | `CapsuleCollider.center` |
-| `CapsuleColliderRadiusBinder` | `float` | `CapsuleCollider.radius`, не ниже 0 |
-| `CapsuleColliderHeightBinder` | `float` | `CapsuleCollider.height`, не ниже 0 |
+| `CapsuleColliderRadiusBinder` | `float` | `CapsuleCollider.radius`, not below 0 |
+| `CapsuleColliderHeightBinder` | `float` | `CapsuleCollider.height`, not below 0 |
 | `CapsuleColliderDirectionBinder` | `int` | `CapsuleCollider.direction`, 0..2 |
 
 ---
 
 ## SphereCollider
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
 | `SphereColliderCenterBinder` | `Vector3` | `SphereCollider.center` |
-| `SphereColliderRadiusBinder` | `float` | `SphereCollider.radius`, не ниже 0 |
+| `SphereColliderRadiusBinder` | `float` | `SphereCollider.radius`, not below 0 |
 
 ---
 
 ## MeshCollider
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
 | `MeshColliderMeshBinder` | `Mesh` | `MeshCollider.sharedMesh` |
 | `MeshColliderConvexBinder` | `bool` | `MeshCollider.convex` |
@@ -60,25 +60,25 @@
 
 ## Collider2D
 
-| Биндер | Тип данных | Описание |
+| Binder | Data type | Description |
 |--------|-----------|----------|
 | `Collider2DIsTriggerBinder` | `bool` | `Collider2D.isTrigger` |
 | `Collider2DMaterialBinder` | `PhysicsMaterial2D` | `Collider2D.sharedMaterial` |
-| `Collider2DOffsetBinder` | `Vector2` | `Collider2D.offset`, только конечные значения |
-| `Collider2DDensityBinder` | `float` | `Collider2D.density`, не ниже 0; работает при `Rigidbody2D.useAutoMass` |
-| `BoxCollider2DSizeBinder` | `Vector2` | `BoxCollider2D.size`, отрицательные компоненты поднимаются до 0 |
-| `CapsuleCollider2DSizeBinder` | `Vector2` | `CapsuleCollider2D.size`, отрицательные компоненты поднимаются до 0 |
-| `CircleCollider2DRadiusBinder` | `float` | `CircleCollider2D.radius`, не ниже 0 |
+| `Collider2DOffsetBinder` | `Vector2` | `Collider2D.offset`, finite values only |
+| `Collider2DDensityBinder` | `float` | `Collider2D.density`, not below 0; effective with `Rigidbody2D.useAutoMass` |
+| `BoxCollider2DSizeBinder` | `Vector2` | `BoxCollider2D.size`, negative components are raised to 0 |
+| `CapsuleCollider2DSizeBinder` | `Vector2` | `CapsuleCollider2D.size`, negative components are raised to 0 |
+| `CircleCollider2DRadiusBinder` | `float` | `CircleCollider2D.radius`, not below 0 |
 
 ---
 
-## Поддерживаемые режимы
+## Supported modes
 
-Все collider-биндеры поддерживают **OneWay**, **OneTime** и **OneWayToSource**. TwoWay не доступен.
+Every collider binder supports **OneWay**, **OneTime** and **OneWayToSource**. TwoWay is not available.
 
 ---
 
-## Пример использования
+## Example
 
 ```csharp
 [ViewModel]
@@ -89,13 +89,13 @@ public partial class DamageZoneViewModel
 }
 ```
 
-В Inspector:
-- `ColliderEnabledBinder` → привязка к `IsActive`
-- `SphereColliderRadiusBinder` → привязка к `Radius`
+In the Inspector:
+- `ColliderEnabledBinder` → bind to `IsActive`
+- `SphereColliderRadiusBinder` → bind to `Radius`
 
 ---
 
-## См. также
+## See also
 
-- [Биндеры](../06-binders.md) — создание кастомных биндеров
-- [Обзор StarterKit](README.md) — таблица всех компонентов
+- [Binders](../06-binders.md), writing custom binders
+- [StarterKit overview](README.md), every component in one table

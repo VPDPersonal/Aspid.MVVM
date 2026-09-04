@@ -1,6 +1,6 @@
 # Graphic & Renderer Binders
 
-Биндеры для цвета и материалов UI-компонентов (`Graphic`) и 3D-объектов (`Renderer`).
+Binders for the color and materials of UI components (`Graphic`) and 3D objects (`Renderer`).
 
 ---
 
@@ -8,13 +8,13 @@
 
 ### GraphicColorBinder
 
-Привязка `Graphic.color` (`Color`). Работает с любым UI-компонентом, наследующим `Graphic` (Image, Text, RawImage и др.).
+Binds `Graphic.color` (`Color`). Works with any UI component derived from `Graphic` (Image, Text, RawImage and others).
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| Converter | `IConverter<Color, Color>` (опционально) |
+| Converter | `IConverter<Color, Color>` (optional) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
@@ -28,51 +28,51 @@ public partial class ThemeViewModel
 
 ### GraphicColorSwitcherBinder
 
-`bool` → выбор между двумя цветами.
+`bool` → one of two colors.
 
 ---
 
 ### GraphicColorChannelBinder
 
-Привязка отдельного компонента цвета (`R`, `G`, `B` или `A`) как `float`.
+Binds a single color channel (`R`, `G`, `B` or `A`) as a `float`.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_colorComponent` | Компонент цвета: `R`, `G`, `B`, `A` |
-| Converter | `IConverter<float, float>` (опционально) |
+| `_colorComponent` | Color channel: `R`, `G`, `B`, `A` |
+| Converter | `IConverter<float, float>` (optional) |
 
-Удобно для привязки alpha отдельно от остальных компонентов:
+Handy for binding alpha separately from the other channels:
 
 ```csharp
 [ViewModel]
 public partial class FadeViewModel
 {
     [OneWayBind] private float _alpha;
-    // GraphicColorChannelBinder с ColorChannels.A
+    // GraphicColorChannelBinder with ColorChannels.A
 }
 ```
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ### GraphicColorChannelSwitcherBinder
 
-`bool` → выбор между двумя значениями компонента цвета.
+`bool` → one of two channel values.
 
 ---
 
 ### GraphicMaterialBinder
 
-Привязка `Graphic.material` (`Material`).
+Binds `Graphic.material` (`Material`).
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ### GraphicMaterialSwitcherBinder
 
-`bool` → выбор между двумя материалами.
+`bool` → one of two materials.
 
 ---
 
@@ -80,23 +80,23 @@ public partial class FadeViewModel
 
 ### RendererMaterialsColorBinder
 
-Привязка цвета материала `Renderer` через shader-свойство.
+Binds a `Renderer` material color through a shader property.
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_colorPropertyName` | Имя shader-свойства (по умолчанию `"_BaseColor"`) |
-| Converter | `IConverter<Color, Color>` (опционально) |
+| `_colorPropertyName` | Shader property name (default `"_BaseColor"`) |
+| Converter | `IConverter<Color, Color>` (optional) |
 
-Устанавливает цвет **всех** материалов `Renderer.materials` одновременно (материалы инстанцируются для этого рендерера). Используется `Shader.PropertyToID` для кэширования.
+Sets the color on **all** `Renderer.materials` at once (the materials are instanced for this renderer). `Shader.PropertyToID` is used for caching.
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
 public partial class HighlightViewModel
 {
     [OneWayBind] private Color _highlightColor;
-    // RendererMaterialsColorBinder с _colorPropertyName = "_BaseColor"
+    // RendererMaterialsColorBinder with _colorPropertyName = "_BaseColor"
 }
 ```
 
@@ -104,32 +104,32 @@ public partial class HighlightViewModel
 
 ### RendererMaterialsColorSwitcherBinder
 
-`bool` → выбор между двумя цветами для shader-свойства.
+`bool` → one of two colors for the shader property.
 
 ---
 
 ### RendererMaterialsBinder
 
-Привязка `Renderer.material` (`Material`) или `Renderer.materials` (`IReadOnlyCollection<Material>`); `null` или пустая коллекция очищает массив. В OneWayToSource отдаёт `sharedMaterial` / `sharedMaterials`.
+Binds `Renderer.material` (`Material`) or `Renderer.materials` (`IReadOnlyCollection<Material>`); `null` or an empty collection clears the array. In OneWayToSource it hands out `sharedMaterial` / `sharedMaterials`.
 
-**Режимы:** OneWay, OneTime, OneWayToSource.
+**Modes:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ### RendererPropertyBlock*MonoBinder
 
-`Float`, `Color`, `Vector`, `Texture`: пишут одно shader-свойство через `MaterialPropertyBlock`, не инстанцируя материалы. Имя свойства задаётся в Inspector; пустое имя логируется и отключает запись до следующего bind.
+`Float`, `Color`, `Vector`, `Texture`: write a single shader property through a `MaterialPropertyBlock` without instancing materials. The property name is set in the Inspector; an empty name is logged and disables writes until the next bind.
 
 ---
 
 ### RendererMaterialsSwitcherBinder
 
-`bool` → выбор между двумя массивами материалов.
+`bool` → one of two material arrays.
 
 ---
 
-## См. также
+## See also
 
-- [Image Binders](image-binders.md) — спрайт, fillAmount
-- [Canvas Group Binders](canvas-group-binders.md) — alpha через CanvasGroup
-- [Обзор StarterKit](README.md)
+- [Image Binders](image-binders.md), sprite and fillAmount
+- [Canvas Group Binders](canvas-group-binders.md), alpha through CanvasGroup
+- [StarterKit overview](README.md)

@@ -109,6 +109,19 @@ npm run build            # what CI runs; fails on broken links
 
 `onBrokenLinks` and `onBrokenMarkdownLinks` are set to `throw`: a bad relative link breaks the build on purpose.
 
+## Design
+
+The theme is the Ayu palette (Light/Dark) with Inter + JetBrains Mono:
+
+- `Docs/src/css/custom.css`: Infima variables and layout polish. Colours live in `--ayu-*` tokens at the top; change them there, not inline.
+- `Docs/src/prism/ayu.js`: Prism themes for code blocks, same palette.
+- `Docs/src/pages/index.js` + `index.module.css`: the landing page (hero with two code cards, features grid, sample path). All strings go through `<Translate>` so `npm run write-translations` picks them up.
+- `Docs/static/img/logo.svg`: navbar logo and favicon.
+- The version dropdown shows the package version read from `package.json`; `sidebars.js` pins `README.md` as "Introduction" at the top.
+
+Check both themes after a change: build, `npx docusaurus serve`, and screenshot with headless Chrome
+(`--blink-settings=preferredColorScheme=1` forces light).
+
 ## Deploy
 
 `.github/workflows/docs.yml` builds on every push to `main` touching `Docs/`, `Documentation/` or a

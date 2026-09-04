@@ -1,20 +1,281 @@
+/*
+ * Aspid.MVVM docs theme, based on the Ayu palette (Light for light mode, Dark for dark mode).
+ * https://github.com/ayu-theme/ayu-colors
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 :root {
-  --ifm-color-primary: #3d8f5f;
-  --ifm-color-primary-dark: #378156;
-  --ifm-color-primary-darker: #347a51;
-  --ifm-color-primary-darkest: #2b6443;
-  --ifm-color-primary-light: #449d68;
-  --ifm-color-primary-lighter: #48a46d;
-  --ifm-color-primary-lightest: #5fb381;
-  --ifm-code-font-size: 95%;
+  /* Ayu Light */
+  --ayu-bg: #fcfcfc;
+  --ayu-panel: #f3f4f5;
+  --ayu-line: #e7e8e9;
+  --ayu-fg: #5c6166;
+  --ayu-fg-strong: #1f2328;
+  --ayu-muted: #8a9199;
+  --ayu-accent: #f2ae49;
+  --ayu-accent-strong: #ff9940;
+  --ayu-blue: #399ee6;
+  --ayu-green: #86b300;
+  --ayu-purple: #a37acc;
+  --ayu-red: #f07171;
+  --ayu-cyan: #4cbf99;
+  --ayu-orange: #fa8d3e;
+
+  --ifm-color-primary: #e8930f;
+  --ifm-color-primary-dark: #d2840d;
+  --ifm-color-primary-darker: #c67d0c;
+  --ifm-color-primary-darkest: #a3670a;
+  --ifm-color-primary-light: #f09e21;
+  --ifm-color-primary-lighter: #f1a42e;
+  --ifm-color-primary-lightest: #f4b657;
+
+  --ifm-background-color: var(--ayu-bg);
+  --ifm-background-surface-color: var(--ayu-panel);
+  --ifm-font-color-base: var(--ayu-fg-strong);
+  --ifm-font-color-secondary: var(--ayu-fg);
+  --ifm-heading-color: var(--ayu-fg-strong);
+  --ifm-toc-border-color: var(--ayu-line);
+  --ifm-hr-border-color: var(--ayu-line);
+  --ifm-table-border-color: var(--ayu-line);
+  --ifm-table-stripe-background: rgba(0, 0, 0, 0.02);
+  --ifm-color-emphasis-300: var(--ayu-line);
+  --ifm-link-color: var(--ayu-blue);
+  --ifm-link-hover-color: #2a86cc;
+  --ifm-menu-color: var(--ayu-fg);
+  --ifm-menu-color-active: var(--ayu-fg-strong);
+  --ifm-menu-color-background-active: rgba(232, 147, 15, 0.1);
+  --ifm-menu-color-background-hover: rgba(0, 0, 0, 0.04);
+  --ifm-navbar-background-color: rgba(252, 252, 252, 0.85);
+  --ifm-navbar-shadow: 0 1px 0 var(--ayu-line);
+  --ifm-footer-background-color: var(--ayu-panel);
+  --ifm-code-background: rgba(0, 0, 0, 0.045);
+  --ifm-pre-background: #f8f9fa;
+
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-font-size-base: 15px;
+  --ifm-line-height-base: 1.7;
+  --ifm-code-font-size: 88%;
+  --ifm-heading-font-weight: 700;
+  --ifm-global-radius: 8px;
+  --ifm-code-border-radius: 6px;
+  --ifm-pre-border-radius: 10px;
+  --ifm-menu-link-padding-vertical: 0.45rem;
+  --ifm-navbar-height: 3.75rem;
+  --docusaurus-highlighted-code-line-bg: rgba(232, 147, 15, 0.12);
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #5fb381;
-  --ifm-color-primary-dark: #4aa870;
-  --ifm-color-primary-darker: #449d68;
-  --ifm-color-primary-darkest: #378156;
-  --ifm-color-primary-light: #74bd91;
-  --ifm-color-primary-lighter: #7fc29a;
-  --ifm-color-primary-lightest: #9dd0b1;
+  /* Ayu Dark */
+  --ayu-bg: #0b0e14;
+  --ayu-panel: #0f131a;
+  --ayu-line: #1b2028;
+  --ayu-fg: #bfbdb6;
+  --ayu-fg-strong: #e6e1cf;
+  --ayu-muted: #565b66;
+  --ayu-accent: #e6b450;
+  --ayu-accent-strong: #ffb454;
+  --ayu-blue: #59c2ff;
+  --ayu-green: #aad94c;
+  --ayu-purple: #d2a6ff;
+  --ayu-red: #f07178;
+  --ayu-cyan: #95e6cb;
+  --ayu-orange: #ff8f40;
+
+  --ifm-color-primary: #e6b450;
+  --ifm-color-primary-dark: #e2a934;
+  --ifm-color-primary-darker: #dfa426;
+  --ifm-color-primary-darkest: #c08a1c;
+  --ifm-color-primary-light: #eabf6c;
+  --ifm-color-primary-lighter: #ecc47a;
+  --ifm-color-primary-lightest: #f1d3a0;
+
+  --ifm-background-color: var(--ayu-bg);
+  --ifm-background-surface-color: var(--ayu-panel);
+  --ifm-font-color-base: var(--ayu-fg);
+  --ifm-font-color-secondary: #8a9199;
+  --ifm-heading-color: var(--ayu-fg-strong);
+  --ifm-toc-border-color: var(--ayu-line);
+  --ifm-hr-border-color: var(--ayu-line);
+  --ifm-table-border-color: var(--ayu-line);
+  --ifm-table-stripe-background: rgba(255, 255, 255, 0.02);
+  --ifm-color-emphasis-300: var(--ayu-line);
+  --ifm-link-color: var(--ayu-blue);
+  --ifm-link-hover-color: #8ad3ff;
+  --ifm-menu-color: var(--ayu-fg);
+  --ifm-menu-color-active: var(--ayu-accent);
+  --ifm-menu-color-background-active: rgba(230, 180, 80, 0.1);
+  --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.04);
+  --ifm-navbar-background-color: rgba(11, 14, 20, 0.8);
+  --ifm-navbar-shadow: 0 1px 0 var(--ayu-line);
+  --ifm-footer-background-color: var(--ayu-panel);
+  --ifm-code-background: rgba(255, 255, 255, 0.06);
+  --ifm-pre-background: #0d1017;
+  --docusaurus-highlighted-code-line-bg: rgba(230, 180, 80, 0.12);
+}
+
+/* ---------- Layout polish ---------- */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.navbar {
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.navbar__link {
+  font-weight: 500;
+}
+
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+}
+
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ayu-line) !important;
+}
+
+.menu {
+  padding: 1rem 0.75rem !important;
+  font-size: 0.9rem;
+}
+
+.menu__link {
+  border-radius: 6px;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  font-weight: 600;
+}
+
+.menu__list-item-collapsible .menu__link {
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  text-transform: none;
+}
+
+.table-of-contents {
+  font-size: 0.82rem;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* ---------- Content ---------- */
+
+.markdown {
+  --ifm-h1-font-size: 2.25rem;
+  --ifm-h2-font-size: 1.55rem;
+  --ifm-h3-font-size: 1.2rem;
+}
+
+.markdown h1,
+.markdown h2 {
+  letter-spacing: -0.02em;
+}
+
+.markdown h2 {
+  margin-top: 2.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--ayu-line);
+}
+
+.markdown hr {
+  margin: 2.5rem 0;
+}
+
+.markdown code {
+  border: 1px solid transparent;
+  padding: 0.1rem 0.35rem;
+  font-weight: 500;
+}
+
+.theme-code-block {
+  box-shadow: none !important;
+  border: 1px solid var(--ayu-line);
+  border-radius: var(--ifm-pre-border-radius);
+}
+
+[data-theme='dark'] .theme-code-block {
+  border-color: #1e242e;
+}
+
+.prism-code {
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+/* Ligatures turn `=>` into an arrow; keep C# samples literal. */
+code,
+kbd,
+pre {
+  font-variant-ligatures: none;
+}
+
+.markdown table {
+  display: table;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.markdown table th {
+  background: var(--ifm-background-surface-color);
+  font-weight: 600;
+  text-align: left;
+}
+
+.markdown table th,
+.markdown table td {
+  border-color: var(--ayu-line);
+  padding: 0.55rem 0.8rem;
+}
+
+.theme-admonition {
+  border-left-width: 3px;
+  border-radius: var(--ifm-global-radius);
+  box-shadow: none;
+}
+
+.pagination-nav__link {
+  border-color: var(--ayu-line);
+  border-radius: 10px;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: var(--ifm-menu-color-background-active);
+  color: var(--ifm-color-primary);
+}
+
+.footer {
+  border-top: 1px solid var(--ayu-line);
+  padding: 2rem 0;
+}
+
+.footer--dark {
+  --ifm-footer-background-color: var(--ayu-panel);
+  --ifm-footer-color: var(--ifm-font-color-secondary);
+  --ifm-footer-link-color: var(--ifm-font-color-secondary);
+  --ifm-footer-title-color: var(--ifm-heading-color);
+}
+
+::selection {
+  background: rgba(232, 147, 15, 0.25);
+}
+
+[data-theme='dark'] ::selection {
+  background: rgba(230, 180, 80, 0.3);
 }

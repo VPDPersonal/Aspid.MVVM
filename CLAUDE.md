@@ -168,6 +168,10 @@ Submodules:
 - Full docs: https://vpd-inc.gitbook.io/aspid.mvvm/
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
 - **XML doc conventions**: skill `aspid-mvvm-xmldoc` in `.claude/skills/` — rules for writing XML documentation comments
+- **Code style**: skill `aspid-code-style` — member ordering, formatting, nullable, comments
+- **StarterKit layout**: skill `starterkit-layout` — folder taxonomy and naming inside `StarterKit/`
+- **Writing a converter**: skill `starterkit-converter-authoring`
+- **Writing a binder**: skill `starterkit-binder-authoring`
 - Key entry points for new contributors:
   - `Readme.md` — project overview
   - `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/HelloWorld/` — minimal examples

@@ -133,3 +133,14 @@ Before finishing a file with XML docs, verify:
 - [ ] Virtual hooks: `"Called [when]. Override to [purpose]."` (see `references/tags.md`)
 - [ ] Overrides requiring `base.Method()` have a `<remarks>` note
 - [ ] Summary is multiline and ends with a period
+
+## Project-wide rules from the StarterKit review
+
+- `<summary>` is one sentence. Constructors get no `<summary>` at all: only `<param>` (plus `<remarks>` when needed, e.g. `<remarks>Default: 0..1.</remarks>` on a public parameterless constructor with a valid default).
+- Every parameter is documented, including ones added in overrides (`Format(T value, string format)` needs `<param name="format">`).
+- `<remarks>` only where it carries information, kept short and about the type itself: no history, no comparisons with other classes.
+- `<exception>` is one phrase saying when it is thrown, without Inspector explanations.
+- Never combine `<inheritdoc cref>` with added `<param>` elements (CS1573 in Unity); write the full block instead.
+- No em/en dashes in docs: use `:` or `,`.
+- A behavioral caveat stated in a serialized field's `[Tooltip]` is repeated in the `<param>` of the matching constructor parameter, and vice versa.
+- Tooltips and log messages stay short: one or two phrases, no mechanics.

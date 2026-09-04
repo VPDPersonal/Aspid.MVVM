@@ -1,0 +1,60 @@
+name: Docs
+
+# Builds the Docusaurus site in Docs/ and publishes it to GitHub Pages.
+# Content comes from the package (Documentation/ and Samples~/*/README.md),
+# so any change there rebuilds the site.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Docs/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/*/README*.md'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    paths:
+      - 'Docs/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/*/README*.md'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Docs/package-lock.json
+      - run: npm ci
+        working-directory: Docs
+      - run: npm run build
+        working-directory: Docs
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: Docs/build
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

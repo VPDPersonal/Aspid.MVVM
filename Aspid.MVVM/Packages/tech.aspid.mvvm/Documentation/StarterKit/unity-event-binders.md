@@ -1,18 +1,18 @@
 # UnityEvent Binders
 
-Биндеры, которые транслируют значения из ViewModel в `UnityEvent`. Позволяют подписаться на изменения через Inspector.
+Binders that forward ViewModel values into a `UnityEvent`, so changes can be subscribed to in the Inspector.
 
 ---
 
-## Обзор
+## Overview
 
-UnityEvent-биндеры принимают значение от ViewModel и вызывают соответствующий `UnityEvent<T>`. Это позволяет реагировать на изменения ViewModel без написания кода — подписки настраиваются в Inspector.
+A UnityEvent binder receives a value from the ViewModel and invokes the matching `UnityEvent<T>`. Reactions to ViewModel changes are configured in the Inspector, without code.
 
 ---
 
-## Типизированные биндеры
+## Typed binders
 
-| Биндер | UnityEvent | Тип данных |
+| Binder | UnityEvent | Data type |
 |--------|-----------|-----------|
 | `UnityEventBoolMonoBinder` | `UnityEvent<bool>` | `bool` |
 | `UnityEventFloatMonoBinder` | `UnityEvent<float>` | `float` |
@@ -24,47 +24,47 @@ UnityEvent-биндеры принимают значение от ViewModel и 
 | `UnityEventVector2MonoBinder` | `UnityEvent<Vector2>` | `Vector2` |
 | `UnityEventVector3MonoBinder` | `UnityEvent<Vector3>` | `Vector3` |
 | `UnityEventQuaternionMonoBinder` | `UnityEvent<Quaternion>` | `Quaternion` |
-| `UnityEventEnumMonoBinder` | `UnityEvent<int>` | `enum` (как int) |
+| `UnityEventEnumMonoBinder` | `UnityEvent<int>` | `enum` (as int) |
 
 ---
 
-## Специальные биндеры
+## Special binders
 
 ### UnityEventBoolByBindMonoBinder
 
-Вызывает `UnityEvent<bool>` при **привязке/отвязке** биндера, а не при изменении значения:
+Invokes `UnityEvent<bool>` on **bind/unbind** of the binder rather than on value change:
 
 - `OnBound` → `UnityEvent<bool>(true)`
 - `OnUnbound` → `UnityEvent<bool>(false)`
 
-Реализует `IAnyBinder` — принимает любой тип данных (тип значения игнорируется).
+Implements `IAnyBinder`: accepts any data type (the value type is ignored).
 
-**Свойства:**
-- `_isInvert` — инверсия: `true` при отвязке, `false` при привязке
+**Properties:**
+- `_isInvert`: inverted, `true` on unbind and `false` on bind
 
-**Когда использовать:** Показать/скрыть UI-элемент в зависимости от того, привязан ли биндер.
+**When to use:** show or hide a UI element depending on whether the binder is bound.
 
 ### UnityEventSwitcherMonoBinder
 
-`bool` → выбор между двумя значениями → `UnityEvent<T>`.
+`bool` → one of two values → `UnityEvent<T>`.
 
 ### UnityEventNumberConditionMonoBinder
 
-Числовое условие → `UnityEvent<bool>`. Сравнивает число с порогом.
+A numeric condition → `UnityEvent<bool>`. Compares the number with a threshold.
 
 ### UnityEventNumberConditionSwitcherMonoBinder
 
-Числовое условие → выбор между двумя значениями.
+A numeric condition → one of two values.
 
 ---
 
-## Поддерживаемые режимы
+## Supported modes
 
-Все UnityEvent-биндеры поддерживают **OneWay** и **OneTime**.
+Every UnityEvent binder supports **OneWay** and **OneTime**.
 
 ---
 
-## Пример использования
+## Example
 
 ```csharp
 [ViewModel]
@@ -75,15 +75,15 @@ public partial class NotificationViewModel
 }
 ```
 
-В Inspector:
-1. Добавьте `UnityEventBoolMonoBinder` → привяжите к `HasNewMessages`
-2. В UnityEvent подпишите метод, например `NotificationPanel.SetActive(bool)`
-3. Добавьте `UnityEventStringMonoBinder` → привяжите к `Message`
-4. В UnityEvent подпишите метод отображения сообщения
+In the Inspector:
+1. Add `UnityEventBoolMonoBinder` → bind to `HasNewMessages`
+2. In the UnityEvent subscribe a method, for example `NotificationPanel.SetActive(bool)`
+3. Add `UnityEventStringMonoBinder` → bind to `Message`
+4. In the UnityEvent subscribe the method that shows the message
 
 ---
 
-## См. также
+## See also
 
-- [Биндеры](../06-binders.md) — базовые понятия
-- [Обзор StarterKit](README.md) — таблица всех компонентов
+- [Binders](../06-binders.md), the basics
+- [StarterKit overview](README.md), every component in one table

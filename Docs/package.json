@@ -1,0 +1,45 @@
+{
+  "name": "aspid-mvvm-docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "sync-i18n": "node scripts/sync-i18n.mjs",
+    "prestart": "npm run sync-i18n",
+    "prebuild": "npm run sync-i18n",
+    "start": "docusaurus start",
+    "start:ru": "docusaurus start --locale ru",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear",
+    "write-translations": "docusaurus write-translations",
+    "version": "docusaurus docs:version"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.9.1",
+    "@docusaurus/preset-classic": "^3.9.1",
+    "@mdx-js/react": "^3.1.0",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "remark-github-admonitions-to-directives": "^2.1.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "^3.9.1",
+    "@docusaurus/types": "^3.9.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0"
+  }
+}

@@ -1,21 +1,21 @@
-# Режимы привязки
+# Binding Modes
 
-Aspid.MVVM поддерживает четыре режима привязки данных между ViewModel и View.
+Aspid.MVVM supports four data binding modes between the ViewModel and the View.
 
-## Содержание
+## Contents
 
-- [Обзор](#обзор)
+- [Overview](#overview)
 - [OneWay](#oneway)
 - [TwoWay](#twoway)
 - [OneTime](#onetime)
 - [OneWayToSource](#onewaytosource)
-- [Автоматическое определение режима](#автоматическое-определение-режима)
-- [Явное указание режима](#явное-указание-режима)
-- [Ограничение режимов в Inspector](#ограничение-режимов-в-inspector)
+- [Automatic mode detection](#automatic-mode-detection)
+- [Explicit mode](#explicit-mode)
+- [Restricting modes in the Inspector](#restricting-modes-in-the-inspector)
 
 ---
 
-## Обзор
+## Overview
 
 ```csharp
 public enum BindMode
@@ -28,18 +28,18 @@ public enum BindMode
 }
 ```
 
-| Режим | Направление | Когда использовать |
+| Mode | Direction | When to use |
 |-------|-------------|-------------------|
-| **OneWay** | ViewModel → View | Отображение данных (текст, прогресс-бар, иконка) |
-| **TwoWay** | ViewModel ↔ View | Поля ввода, слайдеры, тогглы |
-| **OneTime** | ViewModel → View (1 раз) | Статические данные, команды |
-| **OneWayToSource** | View → ViewModel | Получение ссылки на компонент, события UI |
+| **OneWay** | ViewModel → View | Displaying data (text, progress bar, icon) |
+| **TwoWay** | ViewModel ↔ View | Input fields, sliders, toggles |
+| **OneTime** | ViewModel → View (once) | Static data, commands |
+| **OneWayToSource** | View → ViewModel | Component references, UI events |
 
 ---
 
 ## OneWay
 
-Данные передаются только из ViewModel во View. При изменении свойства — биндер обновляет UI. Изменения UI не влияют на ViewModel.
+Data flows from the ViewModel to the View only. When the property changes, the binder updates the UI. UI changes never reach the ViewModel.
 
 ```csharp
 [ViewModel]
@@ -50,15 +50,15 @@ public partial class StatsViewModel
 }
 ```
 
-**Внутренняя реализация:** `OneWayBindableMember<T>` хранит значение и event `Changed`. При `Add()` биндер сразу получает текущее значение и подписывается на `Changed`.
+**Implementation:** `OneWayBindableMember<T>` stores the value and a `Changed` event. On `Add()` the binder immediately receives the current value and subscribes to `Changed`.
 
-**Типичные биндеры:** `TextBinder`, `ImageSpriteBinder`, `ImageFillBinder`, `GraphicColorBinder`.
+**Typical binders:** `TextBinder`, `ImageSpriteBinder`, `ImageFillBinder`, `GraphicColorBinder`.
 
 ---
 
 ## TwoWay
 
-Двусторонняя синхронизация. Изменение ViewModel обновляет View, и наоборот — изменение View обновляет ViewModel.
+Two-way synchronization. A ViewModel change updates the View, and a View change updates the ViewModel.
 
 ```csharp
 [ViewModel]
@@ -70,42 +70,42 @@ public partial class FormViewModel
 }
 ```
 
-**Внутренняя реализация:** `TwoWayBindableMember<T>` поддерживает все 4 режима. При `Add()` для TwoWay/OneWayToSource также подписывается на `IReverseBinder<T>.ValueChanged`.
+**Implementation:** `TwoWayBindableMember<T>` supports all four modes. For TwoWay/OneWayToSource binders `Add()` also subscribes to `IReverseBinder<T>.ValueChanged`.
 
-**Защита от цикла:** Биндеры (например, `InputFieldBinder`) содержат флаг `_isNotifyValueChanged` для предотвращения бесконечной рекурсии.
+**Loop protection:** binders such as `InputFieldBinder` keep an `_isNotifyValueChanged` flag to prevent infinite recursion.
 
-**Типичные биндеры:** `InputFieldBinder`, `SliderValueBinder`, `ToggleIsOnBinder`.
+**Typical binders:** `InputFieldBinder`, `SliderValueBinder`, `ToggleIsOnBinder`.
 
 ---
 
 ## OneTime
 
-Значение передаётся один раз — при привязке. Дальнейшие изменения не отслеживаются.
+The value is delivered once, when binding. Later changes are not tracked.
 
 ```csharp
 [ViewModel]
 public partial class PlayerViewModel
 {
-    // Автоматически OneTime для const
+    // OneTime automatically for const
     [Bind] private const string Title = "Player Stats";
 
-    // Автоматически OneTime для readonly
+    // OneTime automatically for readonly
     [Bind] private readonly int _maxHealth;
 
-    // Явно OneTime
+    // Explicit OneTime
     [OneTimeBind] private IRelayCommand _saveCommand;
 }
 ```
 
-**Внутренняя реализация:** `OneTimeBindableMember<T>` — singleton-per-T. Метод `Add()` вызывает `SetValue` один раз и возвращает `null` (нет необходимости в `IBinderRemover`).
+**Implementation:** `OneTimeBindableMember<T>` is a singleton per T. `Add()` calls `SetValue` once and returns `null` (no `IBinderRemover` is needed).
 
-**Когда использовать:** Команды (`IRelayCommand`), конфигурационные данные, статические метки.
+**When to use:** commands (`IRelayCommand`), configuration data, static labels.
 
 ---
 
 ## OneWayToSource
 
-Данные передаются только из View в ViewModel. ViewModel не может push-ить значения во View.
+Data flows from the View to the ViewModel only. The ViewModel cannot push values to the View.
 
 ```csharp
 [ViewModel]
@@ -115,21 +115,21 @@ public partial class FormViewModel
 }
 ```
 
-**Внутренняя реализация:** `OneWayToSourceBindableMember<T>` — не хранит значение. Подписывается на `IReverseBinder<T>.ValueChanged` и передаёт изменения в ViewModel.
+**Implementation:** `OneWayToSourceBindableMember<T>` stores no value. It subscribes to `IReverseBinder<T>.ValueChanged` and forwards changes to the ViewModel.
 
-**Когда использовать:** Получение ввода пользователя без начального значения, получение ссылок на компоненты через `ComponentToSourceMonoBinder`.
+**When to use:** user input without an initial value, component references through `ComponentToSourceMonoBinder`.
 
 ---
 
-## Автоматическое определение режима
+## Automatic mode detection
 
-Атрибут `[Bind]` без параметров автоматически выбирает режим:
+`[Bind]` without arguments picks the mode itself:
 
-| Тип поля | Определяемый режим |
+| Field | Detected mode |
 |----------|-------------------|
 | `const` | OneTime |
 | `readonly` | OneTime |
-| Мутабельное поле | TwoWay |
+| Mutable field | TwoWay |
 
 ```csharp
 [ViewModel]
@@ -142,13 +142,14 @@ public partial class ExampleViewModel
 }
 ```
 
-> **Рекомендация:** Используйте явные атрибуты (`[OneWayBind]`, `[TwoWayBind]` и т.д.) для лучшей читаемости кода.
+> [!TIP]
+> Prefer the explicit attributes (`[OneWayBind]`, `[TwoWayBind]`, …) for readability.
 
 ---
 
-## Явное указание режима
+## Explicit mode
 
-### Через параметр `[Bind]`
+### Through the `[Bind]` argument
 
 ```csharp
 [Bind(BindMode.OneWay)] private string _text;
@@ -157,7 +158,7 @@ public partial class ExampleViewModel
 [Bind(BindMode.OneWayToSource)] private string _userInput;
 ```
 
-### Через атрибуты-ярлыки
+### Through the shorthand attributes
 
 ```csharp
 [OneWayBind] private string _text;
@@ -166,48 +167,48 @@ public partial class ExampleViewModel
 [OneWayToSourceBind] private string _userInput;
 ```
 
-Оба варианта эквивалентны. Атрибуты-ярлыки — сокращённая запись.
+Both forms are equivalent. The shorthand attributes are just shorter.
 
 ---
 
-## Ограничение режимов в Inspector
+## Restricting modes in the Inspector
 
-На стороне биндера можно ограничить допустимые режимы привязки с помощью `[BindModeOverride]`:
+On the binder side the allowed modes can be limited with `[BindModeOverride]`:
 
 ```csharp
-// Только OneWay и OneTime
+// OneWay and OneTime only
 [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
 public class TransformPositionBinder : TargetBinder<Transform, Vector3>, IVector3Binder
 {
-    // TwoWay и OneWayToSource недоступны в Inspector
+    // TwoWay and OneWayToSource are not offered in the Inspector
 }
 ```
 
-Некоторые биндеры поддерживают все режимы:
+Some binders support every mode:
 
 ```csharp
 [BindModeOverride(IsAll = true)]
 public class DebugLogBinder : MonoBinder
 {
-    // Все режимы доступны
+    // All modes available
 }
 ```
 
 ---
 
-## Сводная таблица
+## Summary
 
-| Режим | ViewModel → View | View → ViewModel | Обновляется | Подходит для |
+| Mode | ViewModel → View | View → ViewModel | Updates | Good for |
 |-------|:---:|:---:|-----------|-------------|
-| OneWay | ✅ | ❌ | При каждом изменении | Отображение данных |
-| TwoWay | ✅ | ✅ | При каждом изменении (обе стороны) | Интерактивные элементы |
-| OneTime | ✅ | ❌ | Только при привязке | Статика, команды |
-| OneWayToSource | ❌ | ✅ | При изменении View | Ввод данных, получение ссылок |
+| OneWay | ✅ | ❌ | On every change | Displaying data |
+| TwoWay | ✅ | ✅ | On every change (both sides) | Interactive elements |
+| OneTime | ✅ | ❌ | Only when binding | Static data, commands |
+| OneWayToSource | ❌ | ✅ | On View change | Input, component references |
 
 ---
 
-## См. также
+## See also
 
-- [Архитектура](02-architecture.md) — как работает конвейер привязки
-- [ViewModel](04-viewmodels.md) — объявление привязываемых полей
-- [Биндеры](06-binders.md) — создание биндеров с конкретными режимами
+- [Architecture](02-architecture.md), how the binding pipeline works
+- [ViewModels](04-viewmodels.md), declaring bindable members
+- [Binders](06-binders.md), writing binders with specific modes

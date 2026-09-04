@@ -1,75 +1,80 @@
-# Aspid.MVVM — Документация
+# Aspid.MVVM Documentation
 
-Полное руководство по использованию MVVM-фреймворка Aspid.MVVM для Unity.
+The complete guide to the Aspid.MVVM framework for Unity. Rendered at https://vpdpersonal.github.io/Aspid.MVVM/.
 
-## Содержание
+## Contents
 
-### Основы
+### Basics
 
-1. [Быстрый старт](01-getting-started.md) — установка, первый ViewModel и View
-2. [Архитектура](02-architecture.md) — MVVM-паттерн, Source Generation, конвейер привязки
-3. [Режимы привязки](03-binding-modes.md) — OneWay, TwoWay, OneTime, OneWayToSource
+1. [Getting Started](01-getting-started.md): installation, the first ViewModel and View
+2. [Architecture](02-architecture.md): the MVVM pattern, Source Generation, the binding pipeline
+3. [Binding Modes](03-binding-modes.md): OneWay, TwoWay, OneTime, OneWayToSource
 
-### Ключевые концепции
+### Core concepts
 
-4. [ViewModel](04-viewmodels.md) — создание ViewModel, атрибуты `[Bind]`, `[BindAlso]`, `[Access]`, обработчики изменений
-5. [View](05-views.md) — создание View, MonoView, `[AsBinder]`, жизненный цикл
-6. [Биндеры](06-binders.md) — IBinder, MonoBinder, создание кастомных биндеров
-7. [Команды](07-commands.md) — IRelayCommand, `[RelayCommand]`, CanExecute, параметры
-8. [Конвертеры](08-converters.md) — IConverter, встроенные конвертеры значений
-9. [Коллекции](09-collections.md) — ObservableList, ObservableDictionary, FilteredList, синхронизация
+4. [ViewModels](04-viewmodels.md): creating a ViewModel, `[Bind]`, `[BindAlso]`, `[Access]`, change handlers
+5. [Views](05-views.md): creating a View, MonoView, `[AsBinder]`, lifecycle
+6. [Binders](06-binders.md): IBinder, MonoBinder, custom binders
+7. [Commands](07-commands.md): IRelayCommand, `[RelayCommand]`, CanExecute, parameters
+8. [Converters](08-converters.md): IConverter, the built-in converter catalogue
+9. [Collections](09-collections.md): ObservableList, ObservableDictionary, FilteredList, synchronization
 
-### Продвинутые возможности
+### Advanced
 
-10. [DynamicViewModel](10-dynamic-viewmodel.md) — runtime-конструирование ViewModel без кодогенерации
-11. [ViewInitializer](11-view-initializers.md) — автоматическая инициализация View из Inspector
-12. [Интеграция с DI](12-di-integration.md) — Zenject и VContainer
-13. [Анализаторы](13-analyzers.md) — Roslyn-анализаторы и автоматические исправления
-14. [Лучшие практики](14-best-practices.md) — рекомендации и типичные ошибки
+10. [Dynamic ViewModel](10-dynamic-viewmodel.md): a ViewModel built at runtime without code generation
+11. [View Initializers](11-view-initializers.md): View initialization from the Inspector
+12. [DI Integration](12-di-integration.md): Zenject and VContainer
+13. [Analyzers](13-analyzers.md): Roslyn analyzers and code fixes
+14. [Best Practices](14-best-practices.md): recommendations and common mistakes
 
-### StarterKit — готовые компоненты
+### StarterKit: ready-made components
 
-- [Обзор StarterKit](StarterKit/README.md) — таблица всех компонентов
-- [Text](StarterKit/text-binders.md) — TextBinder, TextSwitcherBinder, шрифты, размеры
-- [InputField](StarterKit/input-field-binders.md) — InputFieldBinder, валидация, события
-- [Image](StarterKit/image-binders.md) — ImageSpriteBinder, ImageFillBinder
-- [Button / Command](StarterKit/button-command-binders.md) — ButtonCommandBinder, InteractableMode
-- [Slider](StarterKit/slider-binders.md) — SliderValueBinder, SliderMinMaxBinder
-- [Toggle](StarterKit/toggle-binders.md) — ToggleIsOnBinder
-- [Dropdown](StarterKit/dropdown-binders.md) — DropdownValueBinder, DropdownOptionsBinder
-- [GameObject](StarterKit/gameobject-binders.md) — GameObjectVisibleBinder
-- [Transform](StarterKit/transform-binders.md) — позиция, вращение, масштаб, RectTransform
-- [CanvasGroup](StarterKit/canvas-group-binders.md) — Alpha, BlocksRaycasts, Interactable
-- [Animator](StarterKit/animator-binders.md) — SetBool, SetFloat, SetInt, SetTrigger
-- [Graphic / Renderer](StarterKit/graphic-binders.md) — цвет, материалы
-- [AudioSource](StarterKit/audio-source-binders.md) — громкость, клип и другие свойства
-- [Collider](StarterKit/collider-binders.md) — Box, Capsule, Sphere, Mesh
-- [UnityEvent](StarterKit/unity-event-binders.md) — UnityEvent-биндеры для всех типов
-- [Коллекции](StarterKit/collection-binders.md) — Observable/Virtualized-биндеры списков
-- [Switcher](StarterKit/switcher-binders.md) — паттерн true/false -> значение
-- [Caster](StarterKit/caster-binders.md) — конвертирующие биндеры
-- [Value](StarterKit/value-binders.md) — ValueOneWayBinder, ValueTwoWayBinder
-- [Delegate](StarterKit/delegate-binders.md) — код-биндеры через делегаты
-- [Debug](StarterKit/debug-binder.md) — DebugLogBinder для отладки
-- [View Factories](StarterKit/view-factories.md) — PrefabViewFactory, PrefabViewPool
-- [Прочие](StarterKit/misc-binders.md) — ObjectNameBinder, ComponentToSourceMonoBinder
+- [StarterKit overview](StarterKit/README.md): every component in one table
+- [Text](StarterKit/text-binders.md): TextBinder, TextSwitcherBinder, fonts, sizes
+- [InputField](StarterKit/input-field-binders.md): InputFieldBinder, validation, events
+- [Image](StarterKit/image-binders.md): ImageSpriteBinder, ImageFillBinder
+- [Button / Command](StarterKit/button-command-binders.md): ButtonCommandBinder, InteractableMode
+- [Slider](StarterKit/slider-binders.md): SliderValueBinder, SliderMinMaxBinder
+- [Toggle](StarterKit/toggle-binders.md): ToggleIsOnBinder
+- [Dropdown](StarterKit/dropdown-binders.md): DropdownValueBinder, DropdownOptionsBinder
+- [GameObject](StarterKit/gameobject-binders.md): GameObjectVisibleBinder
+- [Transform](StarterKit/transform-binders.md): position, rotation, scale, RectTransform
+- [CanvasGroup](StarterKit/canvas-group-binders.md): Alpha, BlocksRaycasts, Interactable
+- [Animator](StarterKit/animator-binders.md): SetBool, SetFloat, SetInt, SetTrigger
+- [Graphic / Renderer](StarterKit/graphic-binders.md): color, materials
+- [AudioSource](StarterKit/audio-source-binders.md): volume, clip and other properties
+- [Collider](StarterKit/collider-binders.md): Box, Capsule, Sphere, Mesh
+- [UnityEvent](StarterKit/unity-event-binders.md): UnityEvent binders for every type
+- [Collections](StarterKit/collection-binders.md): Observable/Virtualized list binders
+- [Switcher](StarterKit/switcher-binders.md): the true/false → value pattern
+- [Caster](StarterKit/caster-binders.md): converting binders
+- [Value](StarterKit/value-binders.md): ValueOneWayBinder, ValueTwoWayBinder
+- [Delegate](StarterKit/delegate-binders.md): code binders through delegates
+- [Debug](StarterKit/debug-binder.md): DebugLogBinder for debugging
+- [View Factories](StarterKit/view-factories.md): PrefabViewFactory, PrefabViewPool
+- [Misc](StarterKit/misc-binders.md): ObjectNameBinder, ComponentToSourceMonoBinder
 
-### Туториалы
+### Tutorials
 
-#### Обучающий маршрут
+Every sample's `README.md` is its tutorial.
 
-- [Counter](Tutorials/counter.md) — `[OneWayBind]`, `[RelayCommand]`: кнопка + счётчик
-- [Greeter](Tutorials/greeter.md) — `[TwoWayBind]`, `On*Changed`: InputField → текст в реальном времени
-- [TodoItem](Tutorials/todo-item.md) — Model, `IDisposable`, несколько типов биндинга
-- [TodoList](Tutorials/todo-list.md) — `ObservableList`, `CreateSync`, коллекционные биндеры
+#### Path (samples 1–6)
 
-#### Разбор Sample-проектов
+- [1. Counter](../Samples~/01.%20Counter/README.md): `[ViewModel]`, `[Bind]`, `[RelayCommand]`, `ViewInitializer`
+- [2. Greeter](../Samples~/02.%20Greeter/README.md): `MonoViewModel`, `[TwoWayBind]`, `[BindAlso]`, `On*Changed`
+- [3. Bind Modes](../Samples~/03.%20BindModes/README.md): four modes on one screen, your own `ITwoWayConverter`
+- [4. Stats](../Samples~/04.%20Stats/README.md): commands with a parameter, `CanExecute`, draft → model
+- [5. Todo List](../Samples~/05.%20TodoList/README.md): `ObservableList`, `CreateSync`, collection binders
+- [6. Custom Binder](../Samples~/06.%20CustomBinder/README.md): a binder for your own component, `[GenerateSerializableBinder]`
 
-- [Hello World](Tutorials/hello-world.md) — разбор Sample-проекта Speaker
-- [Stats](Tutorials/stats.md) — CanExecute, параметризованные команды
-- [VirtualizedList](Tutorials/virtualized-list.md) — виртуализация, FilteredList
+#### Feature showcases
 
-## Ссылки
+- [Virtualized List](../Samples~/VirtualizedList/README.md): virtualization, `FilteredList`
+- [Dynamic ViewModel](../Samples~/DynamicViewModel/README.md): properties by id without generation
+- [DI Integration](../Samples~/DiIntegration/README.md): Zenject and VContainer through `ViewInitializer`
+- [API Reference Scripts](../Samples~/ExampleScripts/README.md): compilable snippets for every attribute
+
+## Links
 
 - [Unity Asset Store](https://assetstore.unity.com/packages/slug/298463)
-- [GitBook документация](https://vpd-inc.gitbook.io/aspid.mvvm/)
+- [Documentation site](https://vpdpersonal.github.io/Aspid.MVVM/)

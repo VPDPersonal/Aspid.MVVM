@@ -1,31 +1,31 @@
 # Button Command Binders
 
-Привязка `IRelayCommand` к кнопке `Button`.
+Binding an `IRelayCommand` to a `Button`.
 
 ---
 
 ## ButtonCommandBinder
 
-Основной биндер для связи команды с `Button.onClick`.
+The main binder connecting a command to `Button.onClick`.
 
-### Принцип работы
+### How it works
 
-1. При привязке — подписывается на `Button.onClick` → вызывает `command.Execute()`
-2. Подписывается на `command.CanExecuteChanged` → обновляет доступность кнопки
-3. При отвязке — отписывается от всех событий
+1. On bind it subscribes to `Button.onClick` → calls `command.Execute()`
+2. Subscribes to `command.CanExecuteChanged` → updates the button availability
+3. On unbind it unsubscribes from everything
 
 ### InteractableMode
 
-Определяет реакцию на `CanExecute`:
+Defines the reaction to `CanExecute`:
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |-------|----------|
 | `Interactable` | `button.interactable = canExecute` |
 | `Visible` | `gameObject.SetActive(canExecute)` |
-| `None` | Не реагирует на `CanExecute` |
-| `Custom` | Вызывает event `CanExecuteChanged(bool)` для ручной обработки |
+| `None` | Ignores `CanExecute` |
+| `Custom` | Raises the `CanExecuteChanged(bool)` event for manual handling |
 
-**Режимы привязки:** OneWay, OneTime.
+**Binding modes:** OneWay, OneTime.
 
 ```csharp
 [ViewModel]
@@ -40,23 +40,23 @@ public partial class FormViewModel
 
 ---
 
-## Параметризованные варианты
+## Parameterized variants
 
-Для команд с параметрами — параметры задаются в Inspector:
+For commands with parameters the parameters are set in the Inspector:
 
-| Биндер | Команда | Параметры |
+| Binder | Command | Parameters |
 |--------|---------|-----------|
 | `ButtonCommandBinder` | `IRelayCommand` | — |
-| `ButtonCommandBinder<T>` | `IRelayCommand<T>` | 1 параметр |
-| `ButtonCommandBinder<T1, T2>` | `IRelayCommand<T1, T2>` | 2 параметра |
-| `ButtonCommandBinder<T1, T2, T3>` | `IRelayCommand<T1, T2, T3>` | 3 параметра |
-| `ButtonCommandBinder<T1, T2, T3, T4>` | `IRelayCommand<T1, T2, T3, T4>` | 4 параметра |
+| `ButtonCommandBinder<T>` | `IRelayCommand<T>` | 1 parameter |
+| `ButtonCommandBinder<T1, T2>` | `IRelayCommand<T1, T2>` | 2 parameters |
+| `ButtonCommandBinder<T1, T2, T3>` | `IRelayCommand<T1, T2, T3>` | 3 parameters |
+| `ButtonCommandBinder<T1, T2, T3, T4>` | `IRelayCommand<T1, T2, T3, T4>` | 4 parameters |
 
-`ButtonCommandBinder` также принимает `IRelayCommand<bool>` и передаёт ему `true` при клике.
+`ButtonCommandBinder` also accepts `IRelayCommand<bool>` and passes it `true` on click.
 
-Generic-варианты абстрактны для Mono; готовые компоненты с одним параметром: `ButtonCommandIntMonoBinder`, `ButtonCommandFloatMonoBinder`, `ButtonCommandBoolMonoBinder`, `ButtonCommandStringMonoBinder`, `ButtonCommandObjectMonoBinder`.
+The generic variants are abstract for Mono; ready-made single-parameter components: `ButtonCommandIntMonoBinder`, `ButtonCommandFloatMonoBinder`, `ButtonCommandBoolMonoBinder`, `ButtonCommandStringMonoBinder`, `ButtonCommandObjectMonoBinder`.
 
-### Пример: команда с параметром из Stats
+### Example: a command with a parameter from Stats
 
 ```csharp
 // ViewModel:
@@ -64,13 +64,13 @@ Generic-варианты абстрактны для Mono; готовые ком
 private void AddSkillPointTo(Skill skill) { /* ... */ }
 // → IRelayCommand<Skill> AddSkillPointToCommand
 
-// В Inspector:
-// ButtonCommandBinder<Skill> с параметром Skill.Strength
+// Inspector:
+// ButtonCommandBinder<Skill> with the parameter Skill.Strength
 ```
 
 ---
 
-## См. также
+## See also
 
-- [Команды](../07-commands.md) — IRelayCommand, `[RelayCommand]`
-- [Обзор StarterKit](README.md)
+- [Commands](../07-commands.md): IRelayCommand, `[RelayCommand]`
+- [StarterKit overview](README.md)

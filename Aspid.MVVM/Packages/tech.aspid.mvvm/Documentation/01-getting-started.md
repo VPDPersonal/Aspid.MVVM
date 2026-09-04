@@ -1,45 +1,33 @@
----
-type: "note"
----
-# Быстрый старт
+# Getting Started
 
-Пошаговое руководство по началу работы с Aspid.MVVM: от установки до первого работающего примера.
+A step-by-step guide from installation to the first working example.
 
-## Содержание
+## Contents
 
-* [Требования](#%D1%82%D1%80%D0%B5%D0%B1%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)
-
-* [Установка](#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0)
-
-* [Обучающий маршрут](#%D0%BE%D0%B1%D1%83%D1%87%D0%B0%D1%8E%D1%89%D0%B8%D0%B9-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82)
-
-* [Первый пример: Counter](#%D0%BF%D0%B5%D1%80%D0%B2%D1%8B%D0%B9-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-counter)
-
-* [Как это работает](#%D0%BA%D0%B0%D0%BA-%D1%8D%D1%82%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82)
-
-* [Следующие шаги](#%D1%81%D0%BB%D0%B5%D0%B4%D1%83%D1%8E%D1%89%D0%B8%D0%B5-%D1%88%D0%B0%D0%B3%D0%B8)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Learning path](#learning-path)
+* [First example: Counter](#first-example-counter)
+* [How it works](#how-it-works)
+* [Next steps](#next-steps)
 
 ***
 
-## Требования
+## Requirements
 
-* **Unity 2022.3** или новее
+* **Unity 2022.3** or newer
+* **.NET Standard 2.0** (the framework's target)
+* **Source Generators** support in Unity (built in since 2022.3)
 
-* **.NET Standard 2.0** (целевая платформа фреймворка)
+## Installation
 
-* Поддержка **Source Generators** в Unity (встроена с 2022.3+)
+### From the Unity Asset Store
 
-## Установка
+1. Open the [Aspid.MVVM page](https://assetstore.unity.com/packages/slug/298463) in the Unity Asset Store
+2. Import the package into your project
+3. Make sure the `Assets/Aspid/MVVM/` folder was created
 
-### Из Unity Asset Store
-
-1. Откройте [страницу Aspid.MVVM](https://assetstore.unity.com/packages/slug/298463) в Unity Asset Store
-
-2. Импортируйте пакет в ваш проект
-
-3. Убедитесь, что папка `Assets/Aspid/MVVM/` создана
-
-### Из исходного кода
+### From source
 
 ```bash
 git clone https://github.com/VPDPersonal/Aspid.MVVM.git
@@ -47,84 +35,88 @@ cd Aspid.MVVM
 git submodule update --init --recursive
 ```
 
-> **Важно:** Проект использует 5 git-подмодулей. Без `git submodule update --init --recursive` код не скомпилируется.
+> [!IMPORTANT]
+> The project uses git submodules. Without `git submodule update --init --recursive` the code does not compile.
 
 ***
 
-## Обучающий маршрут
+## Learning path
 
-Каждый шаг добавляет ровно одну новую концепцию:
+Each sample adds exactly one new concept. Every sample's `README.md` is its tutorial.
 
-| # | Пример       | Новое                                                 | Туториал |
-| - | ------------ | ----------------------------------------------------- | -------- |
-| 1 | **Counter**  | `[ViewModel]`, `[OneWayBind]`, `[RelayCommand]`       | Туториал |
-| 2 | **Greeter**  | `[TwoWayBind]`, реактивность через `On*Changed`       | Туториал |
-| 3 | **TodoItem** | Модель, `IDisposable`, отписка от событий             | Туториал |
-| 4 | **TodoList** | `ObservableList`, `CreateSync`, коллекционные биндеры | Туториал |
+| # | Sample | New | Tutorial |
+| - | ------ | --- | -------- |
+| 1 | **Counter** | `[ViewModel]`, `[Bind]`, `[RelayCommand]`, `ViewInitializer` | [Counter](../Samples~/01.%20Counter/README.md) |
+| 2 | **Greeter** | `MonoViewModel`, `[TwoWayBind]`, `[BindAlso]`, `On*Changed` | [Greeter](../Samples~/02.%20Greeter/README.md) |
+| 3 | **Bind Modes** | four modes on one screen, your own `ITwoWayConverter` | [Bind Modes](../Samples~/03.%20BindModes/README.md) |
+| 4 | **Stats** | commands with a parameter, `CanExecute`, draft → model | [Stats](../Samples~/04.%20Stats/README.md) |
+| 5 | **Todo List** | a model, `ObservableList`, `CreateSync`, collection binders | [Todo List](../Samples~/05.%20TodoList/README.md) |
+| 6 | **Custom Binder** | a binder for your own component, `[GenerateSerializableBinder]` | [Custom Binder](../Samples~/06.%20CustomBinder/README.md) |
 
 ***
 
-## Первый пример: Counter
+## First example: Counter
 
-Кнопка увеличивает счётчик, число отображается в тексте. Это минимальный пример, демонстрирующий три ключевые концепции фреймворка.
+A button increments a counter and the number is shown in a text. The smallest example that shows the three core concepts of the framework.
 
-### Шаг 1: ViewModel
+### Step 1: ViewModel
 
-ViewModel содержит данные и логику. Source Generator генерирует весь код привязки автоматически.
+The ViewModel holds data and logic. The Source Generator writes all the binding code.
 
 ```csharp
 using Aspid.MVVM;
 
-// [ViewModel] — маркер для Source Generator.
-// Класс обязательно должен быть partial.
+// [ViewModel] marks the class for the Source Generator.
+// The class must be partial.
 [ViewModel]
 public sealed partial class CounterViewModel
 {
-    // [OneWayBind] — данные идут только из ViewModel во View (только чтение для UI).
-    // Source Generator создаст свойство Count, метод SetCount и событие CountChanged.
+    // [OneWayBind]: data flows from the ViewModel to the View only.
+    // The generator emits a Count property whose setter notifies binders.
     [OneWayBind] private int _count;
 
-    // [RelayCommand] — Source Generator создаст свойство IncrementCommand типа IRelayCommand.
+    // [RelayCommand]: the generator emits an IncrementCommand property of type IRelayCommand.
     [RelayCommand]
-    private void Increment() => SetCount(Count + 1);
+    private void Increment() => Count++;
 }
 ```
 
-**Что генерирует Source Generator из этого кода:**
+**What the Source Generator produces:**
 
-| Исходный код                      | Генерируется                                                    |
-| --------------------------------- | --------------------------------------------------------------- |
-| `[ViewModel]` на классе           | Реализация `IViewModel`, метод `FindBindableMember`             |
-| `[OneWayBind] int _count`         | Свойство `Count`, метод `SetCount(int)`, событие `CountChanged` |
-| `[RelayCommand] void Increment()` | Свойство `IncrementCommand` типа `IRelayCommand`                |
+| Source | Generated |
+| ------ | --------- |
+| `[ViewModel]` on the class | `IViewModel` implementation, `FindBindableMember` |
+| `[OneWayBind] int _count` | `Count` property with a notifying setter, `OnCountChanging` / `OnCountChanged` hooks |
+| `[RelayCommand] void Increment()` | `IncrementCommand` property of type `IRelayCommand` |
 
-### Шаг 2: View
+### Step 2: View
 
-View описывает, какие биндеры и к каким данным ViewModel подключить.
+The View declares which binders connect to which ViewModel members.
 
 ```csharp
 using UnityEngine;
 using Aspid.MVVM;
 
-// [View] — маркер для Source Generator.
-// Класс обязательно должен быть partial.
+// [View] marks the class for the Source Generator.
+// The class must be partial.
 [View]
 public sealed partial class CounterView : MonoView
 {
-    // Имя поля _count совпадает с именем поля в ViewModel.
-    // Source Generator связывает их автоматически по имени.
+    // The field name matches the ViewModel field name.
+    // The generator binds them by name.
     [SerializeField] private MonoBinder _count;
 
-    // Массив биндеров — удобно когда несколько UI-элементов выполняют одно действие.
+    // An array of binders: several UI elements trigger the same action.
     [SerializeField] private MonoBinder[] _increment;
 }
 ```
 
-> **Правило именования:** Имя поля View (без префикса `_`, `m_`, `s_`) должно совпадать с именем поля ViewModel. `_count` → привязывается к `Count`.
+> [!NOTE]
+> **Naming rule:** the View field name without the `_`, `m_` or `s_` prefix must match the ViewModel member. `_count` binds to `Count`.
 
-### Шаг 3: Bootstrap
+### Step 3: Bootstrap
 
-Bootstrap соединяет View и ViewModel:
+Bootstrap connects the View and the ViewModel:
 
 ```csharp
 using UnityEngine;
@@ -147,53 +139,39 @@ public sealed class Bootstrap : MonoBehaviour
 }
 ```
 
-### Шаг 4: Настройка в Inspector
+### Step 4: Inspector setup
 
-1. Создайте GameObject с компонентом `CounterView`
-
-2. Добавьте дочерний объект с компонентом `TextMonoBinder` — перетащите в поле `_count`
-
-3. Добавьте дочерний объект с `Button` и компонентом `ButtonCommandMonoBinder` — перетащите в массив `_increment`
-
-4. На Bootstrap-объекте назначьте ссылку на `CounterView`
+1. Create a GameObject with the `CounterView` component
+2. Add a child with a `TextMonoBinder` and drag it into the `_count` field
+3. Add a child with a `Button` and a `ButtonCommandMonoBinder` and drag it into the `_increment` array
+4. On the Bootstrap object assign the `CounterView` reference
 
 ***
 
-## Как это работает
+## How it works
 
-После вызова `view.Initialize(viewModel)`:
+After `view.Initialize(viewModel)`:
 
-1. **View** перебирает биндеры и вызывает `viewModel.FindBindableMember(id)` для каждого
-
-2. **ViewModel** (сгенерированный код) находит нужный `BindableMember` по ID без рефлексии
-
-3. **Binder** регистрируется и получает текущее значение
-
-4. При изменении `Count` через `SetCount()` — биндер автоматически обновляет `Text`
-
-5. При нажатии кнопки — `ButtonCommandMonoBinder` вызывает `IncrementCommand.Execute()`
+1. **View** walks its binders and calls `viewModel.FindBindableMember(id)` for each
+2. **ViewModel** (generated code) finds the `BindableMember` by id without reflection
+3. **Binder** subscribes and receives the current value
+4. When `Count` changes, the binder updates the `Text`
+5. When the button is pressed, `ButtonCommandMonoBinder` calls `IncrementCommand.Execute()`
 
 ```text
 ViewModel ──► BindableMember ──► Binder ──► UI
-               (без рефлексии, прямые вызовы)
+               (no reflection, direct calls)
 ```
 
-> Source Generator создаёт прямые вызовы на этапе компиляции — без рефлексии и без аллокаций.
+> [!NOTE]
+> The Source Generator emits direct calls at compile time: no reflection, no allocations.
 
 ***
 
-## Следующие шаги
+## Next steps
 
-* Counter — полный туториал с деталями по биндерам
-
-* Greeter — двусторонний биндинг: InputField → Text в реальном времени
-
-* TodoItem — отдельная Model, IDisposable, несколько типов биндинга
-
-* [Архитектура](02-architecture.md) — детальное описание конвейера привязки
-
-* [Режимы привязки](03-binding-modes.md) — OneWay, TwoWay, OneTime, OneWayToSource
-
-* StarterKit — все готовые биндеры для Unity UI
-
-⠀
+* [Counter](../Samples~/01.%20Counter/README.md), the full tutorial with binder details
+* [Greeter](../Samples~/02.%20Greeter/README.md), two-way binding: InputField → Text in real time
+* [Architecture](02-architecture.md), the binding pipeline in detail
+* [Binding Modes](03-binding-modes.md): OneWay, TwoWay, OneTime, OneWayToSource
+* [StarterKit](StarterKit/README.md), every ready-made binder for Unity UI

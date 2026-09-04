@@ -2107,16 +2107,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isDisposeViewOnDestroy: 1
   _viewComponents:
-  - _resolve: 0
-    _mono: {fileID: 8769340388664083537}
+  - _resolveType: 0
+    _component: {fileID: 8769340388664083537}
     _scriptableObject: {fileID: 0}
     _reference:
       rid: -2
     _typeName: 
   _isDisposeViewModelOnDestroy: 1
   _viewModelComponent:
-    _resolve: 1
-    _mono: {fileID: 0}
+    _resolveType: 1
+    _component: {fileID: 0}
     _scriptableObject: {fileID: 0}
     _reference:
       rid: 5294317343889948743

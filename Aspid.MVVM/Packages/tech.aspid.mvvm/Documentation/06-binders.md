@@ -1,49 +1,49 @@
-# Биндеры
+# Binders
 
-Биндер — мост между свойством ViewModel и UI-элементом. Он получает данные из ViewModel и обновляет UI, а в режимах TwoWay/OneWayToSource — отправляет изменения обратно.
+A binder is the bridge between a ViewModel property and a UI element. It receives data from the ViewModel and updates the UI, and in TwoWay/OneWayToSource modes sends changes back.
 
-## Содержание
+## Contents
 
-- [Иерархия классов](#иерархия-классов)
-- [Интерфейсы биндеров](#интерфейсы-биндеров)
-- [Binder — базовый класс](#binder--базовый-класс)
+- [Class hierarchy](#class-hierarchy)
+- [Binder interfaces](#binder-interfaces)
+- [Binder: the base class](#binder-the-base-class)
 - [MonoBinder](#monobinder)
 - [ComponentMonoBinder](#componentmonobinder)
 - [TargetBinder](#targetbinder)
-- [Создание кастомного биндера](#создание-кастомного-биндера)
+- [Writing a custom binder](#writing-a-custom-binder)
 - [\[BindModeOverride\]](#bindmodeoverride)
 - [\[UsedInModes\]](#usedinmodes)
 - [DebugLogBinder](#debuglogbinder)
 
 ---
 
-## Иерархия классов
+## Class hierarchy
 
 ```
-Binder (абстрактный, не MonoBehaviour)
-  └── MonoBinder (MonoBehaviour, абстрактный)
+Binder (abstract, not a MonoBehaviour)
+  └── MonoBinder (MonoBehaviour, abstract)
         └── ComponentMonoBinder<TComponent>
               └── ComponentMonoBinder<TComponent, TProperty>
                     └── TargetBinder<TTarget, TProperty>
                           └── TargetBinder<TTarget, TProperty, TConverter>
-                                └── Конкретные биндеры (TextBinder, ImageSpriteBinder, ...)
+                                └── Concrete binders (TextBinder, ImageSpriteBinder, ...)
 ```
 
 ---
 
-## Интерфейсы биндеров
+## Binder interfaces
 
-| Интерфейс | Назначение |
+| Interface | Purpose |
 |-----------|-----------|
-| `IBinder<T>` | `void SetValue(T value)` — получение значения от ViewModel |
-| `IReverseBinder<T>` | `event Action<T> ValueChanged` — отправка изменений из View |
-| `IAnyBinder` | `void SetValue<T>(T value)` — принимает любой тип |
+| `IBinder<T>` | `void SetValue(T value)`: receives a value from the ViewModel |
+| `IReverseBinder<T>` | `event Action<T> ValueChanged`: sends changes from the View |
+| `IAnyBinder` | `void SetValue<T>(T value)`: accepts any type |
 | `INumberBinder` | `SetValue(int)`, `SetValue(float)`, `SetValue(long)`, `SetValue(double)` |
 | `IColorBinder` | `SetValue(Color)` |
 | `IVectorBinder` | `SetValue(Vector3)` |
-| `INumberReverseBinder` | Обратная привязка для числовых типов |
+| `INumberReverseBinder` | Reverse binding for numeric types |
 
-### IBinder\<T\> — основной интерфейс
+### IBinder\<T\>: the main interface
 
 ```csharp
 public interface IBinder<in T> : IBinder
@@ -52,9 +52,9 @@ public interface IBinder<in T> : IBinder
 }
 ```
 
-Вызывается при каждом изменении свойства ViewModel (в режимах OneWay/TwoWay).
+Called on every change of the ViewModel property (OneWay/TwoWay modes).
 
-### IReverseBinder\<T\> — обратная привязка
+### IReverseBinder\<T\>: reverse binding
 
 ```csharp
 public interface IReverseBinder<T> : IBinder
@@ -63,25 +63,25 @@ public interface IReverseBinder<T> : IBinder
 }
 ```
 
-UI-элемент вызывает `ValueChanged?.Invoke(newValue)` при изменении (например, ввод текста, перемещение слайдера).
+The UI element raises `ValueChanged?.Invoke(newValue)` on change (typed text, a moved slider).
 
 ---
 
-## Binder — базовый класс
+## Binder: the base class
 
-Не наследует `MonoBehaviour`. Содержит базовую логику привязки:
+Does not inherit `MonoBehaviour`. Holds the core binding logic:
 
 ```csharp
 public abstract class Binder
 {
-    public BindMode Mode { get; }        // Режим привязки (сериализуется)
-    public virtual bool CanBind => true;  // Можно отключить привязку
-    public bool IsBound { get; }         // Привязан ли сейчас
+    public BindMode Mode { get; }        // Binding mode (serialized)
+    public virtual bool CanBind => true;  // Lets a binder opt out of binding
+    public bool IsBound { get; }         // Whether it is bound right now
 
-    public void Bind(IBinderAdder binderAdder);   // Привязка
-    public void Unbind();                          // Отвязка
+    public void Bind(IBinderAdder binderAdder);   // Bind
+    public void Unbind();                          // Unbind
 
-    // Виртуальные хуки:
+    // Virtual hooks:
     protected virtual void OnBinding() { }
     protected virtual void OnBound() { }
     protected virtual void OnUnbinding() { }
@@ -93,35 +93,35 @@ public abstract class Binder
 
 ## MonoBinder
 
-MonoBehaviour-обёртка над `Binder`. Базовый класс для всех Inspector-биндеров:
+A MonoBehaviour wrapper over `Binder`. The base of every Inspector binder:
 
 ```csharp
 public abstract class MonoBinder : MonoBehaviour
 {
-    // Сериализованный режим привязки — выбирается в Inspector
+    // Serialized binding mode, chosen in the Inspector
     [SerializeField] private BindMode _mode;
 }
 ```
 
-Все готовые биндеры из StarterKit наследуют `MonoBinder`.
+Every ready-made StarterKit binder inherits `MonoBinder`.
 
 ---
 
 ## ComponentMonoBinder
 
-Добавляет автоматический `GetComponent<T>()`:
+Adds an automatic `GetComponent<T>()`:
 
 ```csharp
-// Один generic-параметр: автоматически находит компонент
+// One generic parameter: finds the component itself
 public abstract class ComponentMonoBinder<TComponent> : MonoBinder
 {
-    protected TComponent CachedComponent { get; } // Ленивый GetComponent
+    protected TComponent CachedComponent { get; } // Lazy GetComponent
 }
 
-// Два generic-параметра: + свойство для привязки
+// Two generic parameters: plus the property to bind
 public abstract class ComponentMonoBinder<TComponent, TProperty> : ...
 {
-    // Переопределите для привязки конкретного свойства
+    // Override to bind a concrete property
     protected abstract TProperty Property { get; set; }
 }
 ```
@@ -130,52 +130,53 @@ public abstract class ComponentMonoBinder<TComponent, TProperty> : ...
 
 ## TargetBinder
 
-Базовый класс StarterKit с поддержкой конвертеров:
+The StarterKit base class with converter support:
 
 ```csharp
 public abstract class TargetBinder<TTarget, TProperty> : MonoBinder
 {
-    protected TTarget Target { get; }    // Целевой компонент
+    protected TTarget Target { get; }    // Target component
     protected abstract TProperty Property { get; set; }
 }
 
-// С конвертером:
+// With a converter:
 public abstract class TargetBinder<TTarget, TProperty, TConverter> : TargetBinder<TTarget, TProperty>
     where TConverter : IConverter<TProperty?, TProperty?>
 {
-    // Конвертер назначается через Inspector ([SerializeReference])
+    // The converter is assigned in the Inspector ([SerializeReference])
     [SerializeReference] private TConverter? _converter;
 
     // ViewModel → View
     protected override TProperty? GetConvertedValue(TProperty? value) => ...
 
-    // View → ViewModel: срабатывает, только если конвертер реализует ITwoWayConverter
+    // View → ViewModel: runs only when the converter implements ITwoWayConverter
     protected override TProperty? GetConvertedBackValue(TProperty? value) => ...
 }
 ```
 
-Конвертер хранится в приватном поле — производный класс переопределяет не его, а `GetConvertedValue` /
-`GetConvertedBackValue`. Ограничение `TProperty → TProperty` намеренное: конвертер на биндере меняет
-значение, а не его тип. Кросс-типовые преобразования (`float → string`) делает сам биндер.
+The converter lives in a private field; a subclass overrides `GetConvertedValue` /
+`GetConvertedBackValue`, not the field. The `TProperty → TProperty` constraint is deliberate: a
+converter on a binder changes the value, not its type. Cross-type conversions (`float → string`) are
+done by the binder itself.
 
-**Специализированные базовые классы:**
+**Specialized base classes:**
 
-| Класс | Тип Property | Доп. возможности |
+| Class | Property type | Extras |
 |-------|-------------|-----------------|
-| `TargetBinder<T, bool>` | `bool` | `_converter` — опциональный `IConverter<bool, bool>` |
-| `TargetBinder<T, string>` | `string` | `_converter` — опциональный `IConverter<string, string>` |
-| `TargetFloatBinder<T>` | `float` | `IFloatBinder` — принимает int/long/double |
+| `TargetBinder<T, bool>` | `bool` | `_converter`: optional `IConverter<bool, bool>` |
+| `TargetBinder<T, string>` | `string` | `_converter`: optional `IConverter<string, string>` |
+| `TargetFloatBinder<T>` | `float` | `IFloatBinder`: accepts int/long/double |
 | `TargetIntBinder<T>` | `int` | `IIntBinder` |
-| `TargetBinder<T, Vector3>` + `IVector3Binder` | `Vector3` | принимает `Vector2` (Z = 0) и скаляр (во все три компоненты) |
-| `TargetBinder<T, Vector2>` + `IVector2Binder` | `Vector2` | принимает `Vector3` (отбрасывает Z) и скаляр (в обе компоненты) |
-| `TargetBinder<T, Color>` + `IColorBinder` | `Color` | принимает hex/HTML-строку цвета |
-| `TargetBinder<T, Quaternion>` + `IRotationBinder` | `Quaternion` | читает `Vector2`/`Vector3` как углы Эйлера, скаляр — как одинаковый угол по трём осям |
+| `TargetBinder<T, Vector3>` + `IVector3Binder` | `Vector3` | accepts `Vector2` (Z = 0) and a scalar (all three components) |
+| `TargetBinder<T, Vector2>` + `IVector2Binder` | `Vector2` | accepts `Vector3` (drops Z) and a scalar (both components) |
+| `TargetBinder<T, Color>` + `IColorBinder` | `Color` | accepts a hex/HTML color string |
+| `TargetBinder<T, Quaternion>` + `IRotationBinder` | `Quaternion` | reads `Vector2`/`Vector3` as Euler angles, a scalar as the same angle on all three axes |
 
 ---
 
-## Создание кастомного биндера
+## Writing a custom binder
 
-### Пример: биндер для Text.color
+### Example: a binder for Text.color
 
 ```csharp
 using TMPro;
@@ -183,11 +184,11 @@ using UnityEngine;
 using Aspid.MVVM;
 using Aspid.MVVM.StarterKit;
 
-// Ограничиваем режимы: только OneWay и OneTime
+// Restrict the modes: OneWay and OneTime only
 [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
 public sealed class TextColorBinder : TargetBinder<TMP_Text, Color>, IColorBinder
 {
-    // Читаем и пишем цвет текста
+    // Read and write the text color
     protected override Color Property
     {
         get => Target.color;
@@ -196,7 +197,7 @@ public sealed class TextColorBinder : TargetBinder<TMP_Text, Color>, IColorBinde
 }
 ```
 
-### Пример: биндер с обратной привязкой
+### Example: a binder with reverse binding
 
 ```csharp
 using UnityEngine;
@@ -206,16 +207,16 @@ public sealed class CustomToggleBinder : MonoBinder, IBinder<bool>, IReverseBind
 {
     [SerializeField] private GameObject _indicator;
 
-    // IBinder<bool> — получаем значение от ViewModel
+    // IBinder<bool>: receive the value from the ViewModel
     public void SetValue(bool value)
     {
         _indicator.SetActive(value);
     }
 
-    // IReverseBinder<bool> — отправляем изменения в ViewModel
+    // IReverseBinder<bool>: send changes to the ViewModel
     public event Action<bool>? ValueChanged;
 
-    // Вызвать при клике пользователя
+    // Call on user click
     public void OnClick()
     {
         var newValue = !_indicator.activeSelf;
@@ -225,15 +226,15 @@ public sealed class CustomToggleBinder : MonoBinder, IBinder<bool>, IReverseBind
 }
 ```
 
-### Пример: генерик-биндер из кода
+### Example: a generic binder from code
 
 ```csharp
 using Aspid.MVVM.StarterKit;
 
-// Без MonoBehaviour — для привязки из кода
+// No MonoBehaviour: binding from code
 var binder = new DelegateOneWayBinder<string>(value =>
 {
-    Debug.Log($"Значение изменилось: {value}");
+    Debug.Log($"Value changed: {value}");
 });
 ```
 
@@ -241,64 +242,63 @@ var binder = new DelegateOneWayBinder<string>(value =>
 
 ## [BindModeOverride]
 
-Ограничивает режимы привязки, доступные в Inspector:
+Restricts the binding modes offered in the Inspector:
 
 ```csharp
-// Только OneWay и OneTime
+// OneWay and OneTime only
 [BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
 public class MyBinder : MonoBinder { }
 
-// Все режимы
+// Every mode
 [BindModeOverride(IsAll = true)]
 public class UniversalBinder : MonoBinder { }
 ```
 
-Если биндер не поддерживает обратную привязку (нет `IReverseBinder<T>`), ограничьте TwoWay и OneWayToSource.
+If the binder has no reverse binding (no `IReverseBinder<T>`), exclude TwoWay and OneWayToSource.
 
 ---
 
 ## [UsedInModes]
 
-Помечает сериализованное поле как используемое только в перечисленных режимах — в Inspector оно
-становится серым, когда биндер привязан в другом режиме, и получает подсказку
-`Not used in the current Mode.`:
+Marks a serialized field as used only in the listed modes. In the Inspector it is greyed out when the
+binder is bound in another mode and gets the tooltip `Not used in the current Mode.`:
 
 ```csharp
 public class MyBinder : MonoBinder, IBinder<string>, IReverseBinder<string>
 {
-    [Tooltip("Возвращается, когда обратное преобразование не удалось.")]
+    [Tooltip("Returned when the reverse conversion fails.")]
     [UsedInModes(BindMode.TwoWay, BindMode.OneWayToSource)]
     [SerializeField] private string _convertBackFallback = string.Empty;
 }
 ```
 
-Поле может лежать и на самом биндере, и внутри любого сериализуемого объекта, который биндер
-держит — вложенного класса, конвертера, элемента массива. Режим берётся у **ближайшего** биндера
-над полем: если биндер вложен в другой биндер, решает вложенный. Вне биндера поле остаётся
-активным.
+The field may sit on the binder itself or inside any serializable object the binder holds: a nested
+class, a converter, an array element. The mode is taken from the **nearest** binder above the field;
+when a binder is nested in another binder, the inner one decides. Outside a binder the field stays
+active.
 
-Атрибут ничего не меняет в рантайме — он только для Inspector, и в сборку без `UNITY_EDITOR`
-не попадает.
+The attribute changes nothing at runtime. It is Inspector-only and is stripped from builds without
+`UNITY_EDITOR`.
 
 ---
 
 ## DebugLogBinder
 
-Утилитарный биндер для отладки — логирует все получаемые значения:
+A utility binder for debugging. It logs every value it receives:
 
 ```csharp
-// DebugLogBinder поддерживает все режимы и все типы данных
-// Добавьте его в Inspector рядом с обычным биндером
-// для мониторинга значений
+// DebugLogBinder supports every mode and every data type.
+// Add it in the Inspector next to a regular binder
+// to watch the values.
 ```
 
-Реализует `IAnyBinder` и `IAnyReverseBinder`, принимает любой тип данных.
+Implements `IAnyBinder` and `IAnyReverseBinder`, accepts any data type.
 
 ---
 
-## См. также
+## See also
 
-- [View](05-views.md) — объявление биндеров в View
-- [ViewModel](04-viewmodels.md) — свойства для привязки
-- [StarterKit](StarterKit/README.md) — все готовые биндеры
-- [Конвертеры](08-converters.md) — преобразование значений
+- [Views](05-views.md), declaring binders in a View
+- [ViewModels](04-viewmodels.md), bindable properties
+- [StarterKit](StarterKit/README.md), every ready-made binder
+- [Converters](08-converters.md), value conversion

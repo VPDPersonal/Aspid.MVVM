@@ -1,27 +1,27 @@
-# Команды
+# Commands
 
-Команды (`IRelayCommand`) инкапсулируют действия с поддержкой `CanExecute`. Атрибут `[RelayCommand]` генерирует команду из обычного метода.
+Commands (`IRelayCommand`) encapsulate actions with `CanExecute` support. The `[RelayCommand]` attribute generates a command from an ordinary method.
 
-## Содержание
+## Contents
 
-- [Обзор](#обзор)
+- [Overview](#overview)
 - [IRelayCommand](#irelaycommand)
-- [Атрибут \[RelayCommand\]](#атрибут-relaycommand)
+- [The \[RelayCommand\] attribute](#the-relaycommand-attribute)
 - [CanExecute](#canexecute)
-- [Параметризованные команды](#параметризованные-команды)
-- [Ручное создание](#ручное-создание)
+- [Parameterized commands](#parameterized-commands)
+- [Manual creation](#manual-creation)
 - [RelayCommand.Empty](#relaycommandempty)
 
 ---
 
-## Обзор
+## Overview
 
-Команда — это объект, который:
-- Выполняет действие (`Execute`)
-- Определяет, доступно ли действие (`CanExecute`)
-- Уведомляет об изменении доступности (`CanExecuteChanged`)
+A command is an object that:
+- Performs an action (`Execute`)
+- Tells whether the action is available (`CanExecute`)
+- Notifies when availability changes (`CanExecuteChanged`)
 
-В Aspid.MVVM команды привязываются к UI через `ButtonCommandBinder`.
+In Aspid.MVVM commands are bound to the UI through `ButtonCommandBinder`.
 
 ---
 
@@ -37,9 +37,9 @@ public interface IRelayCommand
 }
 ```
 
-Параметризованные варианты — до 4 параметров:
+Parameterized variants take up to four parameters:
 
-| Интерфейс | Сигнатура Execute |
+| Interface | Execute signature |
 |-----------|------------------|
 | `IRelayCommand` | `void Execute()` |
 | `IRelayCommand<T>` | `void Execute(T arg)` |
@@ -49,9 +49,9 @@ public interface IRelayCommand
 
 ---
 
-## Атрибут [RelayCommand]
+## The [RelayCommand] attribute
 
-Генерирует `IRelayCommand`-свойство из метода:
+Generates an `IRelayCommand` property from a method:
 
 ```csharp
 [ViewModel]
@@ -62,26 +62,26 @@ public partial class PlayerViewModel
     {
         _player.Attack();
     }
-    // → Генерируется: IRelayCommand AttackCommand { get; }
+    // → Generated: IRelayCommand AttackCommand { get; }
 
     [RelayCommand]
     private void Heal(int amount)
     {
         _player.Heal(amount);
     }
-    // → Генерируется: IRelayCommand<int> HealCommand { get; }
+    // → Generated: IRelayCommand<int> HealCommand { get; }
 }
 ```
 
-**Соглашение:** Из метода `DoSomething()` генерируется свойство `DoSomethingCommand`.
+**Convention:** the method `DoSomething()` produces the property `DoSomethingCommand`.
 
 ---
 
 ## CanExecute
 
-Три способа определить условие доступности:
+Three ways to define the availability condition:
 
-### 1. Метод bool
+### 1. A bool method
 
 ```csharp
 [ViewModel]
@@ -96,7 +96,7 @@ public partial class FormViewModel
 }
 ```
 
-### 2. Метод bool с теми же параметрами
+### 2. A bool method with the same parameters
 
 ```csharp
 [ViewModel]
@@ -112,7 +112,7 @@ public partial class MathViewModel
 }
 ```
 
-### 3. Bool-свойство / поле
+### 3. A bool property or field
 
 ```csharp
 [ViewModel]
@@ -126,7 +126,7 @@ public partial class StatsViewModel
     [RelayCommand(CanExecute = nameof(IsDraft))]
     private void ResetToDefault() { /* ... */ }
 
-    // При изменении IsDraft — обновляем доступность команд
+    // When IsDraft changes, refresh command availability
     partial void OnIsDraftChanged(bool newValue)
     {
         ConfirmCommand.NotifyCanExecuteChanged();
@@ -135,53 +135,54 @@ public partial class StatsViewModel
 }
 ```
 
-> **Важно:** Не забывайте вызывать `NotifyCanExecuteChanged()` при изменении условия. Без этого `ButtonCommandBinder` не обновит состояние кнопки.
+> [!IMPORTANT]
+> Call `NotifyCanExecuteChanged()` whenever the condition changes. Without it `ButtonCommandBinder` will not update the button state.
 
 ---
 
-## Параметризованные команды
+## Parameterized commands
 
-Поддерживается до 4 параметров:
+Up to four parameters are supported:
 
 ```csharp
 [ViewModel]
 public partial class CommandsExample
 {
-    // 0 параметров → IRelayCommand
+    // 0 parameters → IRelayCommand
     [RelayCommand]
     private void Do0() { }
 
-    // 1 параметр → IRelayCommand<int>
+    // 1 parameter → IRelayCommand<int>
     [RelayCommand]
     private void Do1(int arg1) { }
 
-    // 2 параметра → IRelayCommand<int, string>
+    // 2 parameters → IRelayCommand<int, string>
     [RelayCommand]
     private void Do2(int arg1, string arg2) { }
 
-    // 3 параметра → IRelayCommand<int, string, float>
+    // 3 parameters → IRelayCommand<int, string, float>
     [RelayCommand]
     private void Do3(int arg1, string arg2, float arg3) { }
 
-    // 4 параметра → IRelayCommand<int, string, float, bool>
+    // 4 parameters → IRelayCommand<int, string, float, bool>
     [RelayCommand]
     private void Do4(int arg1, string arg2, float arg3, bool arg4) { }
 }
 ```
 
-Параметры передаются из `ButtonCommandBinder<T>` через сериализованные поля в Inspector.
+Parameters come from `ButtonCommandBinder<T>` through serialized fields in the Inspector.
 
 ---
 
-## Ручное создание
+## Manual creation
 
-Для случаев, когда `[RelayCommand]` не подходит:
+When `[RelayCommand]` does not fit:
 
 ```csharp
 [ViewModel]
 public partial class ManualCommandViewModel
 {
-    // Создаём вручную, привязываем через [Bind]
+    // Created by hand, bound through [Bind]
     [Bind] private readonly IRelayCommand _saveCommand;
     [Bind] private readonly IRelayCommand _deleteCommand;
 
@@ -200,46 +201,47 @@ public partial class ManualCommandViewModel
 }
 ```
 
-> Поле `readonly` с `[Bind]` автоматически получает режим **OneTime**.
+> [!NOTE]
+> A `readonly` field with `[Bind]` gets the **OneTime** mode automatically.
 
 ---
 
 ## RelayCommand.Empty
 
-Статические заглушки для случаев, когда команда не нужна:
+Static stubs for when a command is not needed:
 
 ```csharp
-// Команда, которую нельзя выполнить (CanExecute = false)
+// A command that cannot execute (CanExecute = false)
 IRelayCommand disabled = RelayCommand.Empty;
 
-// Команда, которую можно выполнить, но она ничего не делает
+// A command that can execute but does nothing
 IRelayCommand noop = RelayCommand.EmptyExecution;
 ```
 
 ---
 
-## Связь с ButtonCommandBinder
+## Relation to ButtonCommandBinder
 
-`ButtonCommandBinder` привязывает `IRelayCommand` к `Button.onClick`:
+`ButtonCommandBinder` binds an `IRelayCommand` to `Button.onClick`:
 
 ```csharp
-// В ViewModel:
+// ViewModel:
 [RelayCommand]
 private void Save() { /* ... */ }
 
-// В View:
+// View:
 [SerializeField] private MonoBinder _saveCommand;
 
-// В Inspector: назначьте ButtonCommandBinder на кнопку
-// и перетащите его в поле _saveCommand
+// Inspector: put a ButtonCommandBinder on the button
+// and drag it into the _saveCommand field
 ```
 
-Подробнее: [ButtonCommandBinder](StarterKit/button-command-binders.md).
+More: [ButtonCommandBinder](StarterKit/button-command-binders.md).
 
 ---
 
-## См. также
+## See also
 
-- [ViewModel](04-viewmodels.md) — `[RelayCommand]` в контексте ViewModel
-- [ButtonCommandBinder](StarterKit/button-command-binders.md) — привязка к кнопке
-- [Режимы привязки](03-binding-modes.md) — OneTime для команд
+- [ViewModels](04-viewmodels.md), `[RelayCommand]` in the ViewModel context
+- [ButtonCommandBinder](StarterKit/button-command-binders.md), binding to a button
+- [Binding Modes](03-binding-modes.md), OneTime for commands

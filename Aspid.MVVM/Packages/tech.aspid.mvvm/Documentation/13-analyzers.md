@@ -1,101 +1,101 @@
-# Анализаторы
+# Analyzers
 
-Roslyn-анализаторы проверяют корректность MVVM-кода на этапе компиляции и предлагают автоматические исправления.
+Roslyn analyzers check MVVM code at compile time and offer automatic fixes.
 
-## Содержание
+## Contents
 
-- [Обзор](#обзор)
-- [Список диагностик](#список-диагностик)
-- [Установка](#установка)
-- [Настройка](#настройка)
+- [Overview](#overview)
+- [Diagnostics](#diagnostics)
+- [Installation](#installation)
+- [Configuration](#configuration)
 
 ---
 
-## Обзор
+## Overview
 
-Aspid.MVVM включает два набора анализаторов:
+Aspid.MVVM ships two analyzer sets:
 
-| Пакет | Назначение |
+| Package | Purpose |
 |-------|-----------|
-| `Aspid.MVVM.Analyzers` | Проверка ViewModel и View кода |
-| `Aspid.MVVM.Unity.Generators` | Unity-специфичные проверки |
+| `Aspid.MVVM.Analyzers` | Checks ViewModel and View code |
+| `Aspid.MVVM.Unity.Generators` | Unity-specific checks |
 
-Анализаторы работают в IDE (Rider, Visual Studio, VS Code) и при компиляции Unity.
+The analyzers run in the IDE (Rider, Visual Studio, VS Code) and during Unity compilation.
 
 ---
 
-## Список диагностик
+## Diagnostics
 
 ### ViewModel
 
-| ID | Severity | Описание |
+| ID | Severity | Description |
 |----|----------|----------|
-| `AMVVM001` | Warning | Класс с `[ViewModel]` должен быть `partial` |
-| `AMVVM002` | Warning | Поле с `[Bind]` должно находиться в классе с `[ViewModel]` |
-| `AMVVM003` | Warning | Метод с `[RelayCommand]` должен находиться в классе с `[ViewModel]` |
-| `AMVVM004` | Info | Рекомендация использовать сгенерированное свойство вместо backing-поля |
-| `AMVVM005` | Warning | `CanExecute` метод/свойство не найдено |
-| `AMVVM006` | Warning | Несовпадение параметров `CanExecute` и команды |
+| `AMVVM001` | Warning | A class with `[ViewModel]` must be `partial` |
+| `AMVVM002` | Warning | A field with `[Bind]` must be inside a `[ViewModel]` class |
+| `AMVVM003` | Warning | A method with `[RelayCommand]` must be inside a `[ViewModel]` class |
+| `AMVVM004` | Info | Prefer the generated property over the backing field |
+| `AMVVM005` | Warning | The `CanExecute` method/property was not found |
+| `AMVVM006` | Warning | `CanExecute` parameters do not match the command |
 
 ### View
 
-| ID | Severity | Описание |
+| ID | Severity | Description |
 |----|----------|----------|
-| `AMVVM010` | Warning | Класс с `[View]` должен быть `partial` |
-| `AMVVM011` | Warning | Класс с `[View]` должен наследовать `MonoView` |
-| `AMVVM012` | Info | Поле биндера не имеет совпадающего свойства в ViewModel |
+| `AMVVM010` | Warning | A class with `[View]` must be `partial` |
+| `AMVVM011` | Warning | A class with `[View]` must inherit `MonoView` |
+| `AMVVM012` | Info | A binder field has no matching ViewModel property |
 
-### Code Fixes
+### Code fixes
 
-Для большинства диагностик доступны автоматические исправления:
+Most diagnostics come with an automatic fix:
 
-| Диагностика | Code Fix |
+| Diagnostic | Code fix |
 |-------------|----------|
-| `AMVVM001` | Добавить `partial` к классу |
-| `AMVVM004` | Заменить `_field` на `Property` |
-| `AMVVM010` | Добавить `partial` к классу |
+| `AMVVM001` | Add `partial` to the class |
+| `AMVVM004` | Replace `_field` with `Property` |
+| `AMVVM010` | Add `partial` to the class |
 
 ---
 
-## Установка
+## Installation
 
-Анализаторы поставляются вместе с пакетом Aspid.MVVM. Если вы клонировали из исходного кода:
+The analyzers ship with the Aspid.MVVM package. If you cloned from source:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-Убедитесь, что подмодуль `Aspid.MVVM.Analyzers` инициализирован.
+Make sure the `Aspid.MVVM.Analyzers` submodule is initialized.
 
 ---
 
-## Настройка
+## Configuration
 
-### Отключение конкретных диагностик
+### Disabling specific diagnostics
 
-В `.editorconfig`:
+In `.editorconfig`:
 
 ```ini
 [*.cs]
-# Отключить рекомендацию использовать свойство вместо поля
+# Turn off the property-over-field suggestion
 dotnet_diagnostic.AMVVM004.severity = none
 
-# Понизить до информации
+# Lower to a suggestion
 dotnet_diagnostic.AMVVM001.severity = suggestion
 ```
 
-### В коде (для отдельных мест)
+### In code (for single places)
 
 ```csharp
 #pragma warning disable AMVVM004
-var text = _text; // Используем backing-поле намеренно
+var text = _text; // Using the backing field on purpose
 #pragma warning restore AMVVM004
 ```
 
 ---
 
-## См. также
+## See also
 
-- [ViewModel](04-viewmodels.md) — атрибуты, проверяемые анализаторами
-- [View](05-views.md) — правила для View
-- [Лучшие практики](14-best-practices.md) — рекомендации по коду
+- [ViewModels](04-viewmodels.md), the attributes the analyzers check
+- [Views](05-views.md), View rules
+- [Best Practices](14-best-practices.md), code recommendations

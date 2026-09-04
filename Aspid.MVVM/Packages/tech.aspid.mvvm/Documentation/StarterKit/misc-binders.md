@@ -1,32 +1,32 @@
 # Misc Binders
 
-Прочие биндеры, не относящиеся к конкретной категории UI-компонентов.
+Binders that do not belong to a specific UI component category.
 
 ---
 
 ## ObjectNameBinder
 
-Привязка имени объекта `Object.name`.
+Binds the object name, `Object.name`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<string>` | Устанавливает имя |
-| `IReverseBinder<string>` | Отправляет текущее имя (OneWayToSource) |
+| `IBinder<string>` | Sets the name |
+| `IReverseBinder<string>` | Sends the current name (OneWayToSource) |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| Converter | `IConverter<string?, string?>` (опционально) |
+| Converter | `IConverter<string?, string?>` (optional) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
 public partial class ItemViewModel
 {
     [OneWayBind] private string _itemName;
-    // ObjectNameBinder установит gameObject.name = itemName
+    // ObjectNameBinder sets gameObject.name = itemName
 }
 ```
 
@@ -34,9 +34,9 @@ public partial class ItemViewModel
 
 ## ComponentToSourceMonoBinder\<T\>
 
-Базовый MonoBinder для отправки компонента из View в ViewModel. При привязке отправляет ссылку на компонент через `IReverseBinder<TComponent>`.
+The base MonoBinder for sending a component from the View to the ViewModel. On bind it sends the component reference through `IReverseBinder<TComponent>`.
 
-Используется для передачи Unity-компонентов в ViewModel:
+Used to pass Unity components into the ViewModel:
 
 ```csharp
 [ViewModel]
@@ -44,12 +44,12 @@ public partial class PlayerViewModel
 {
     [OneWayToSourceBind] private Rigidbody _rigidbody;
 }
-// В View — ComponentToSourceMonoBinder<Rigidbody> привяжется к полю
+// In the View a ComponentToSourceMonoBinder<Rigidbody> binds to the field
 ```
 
-### Готовые специализации
+### Ready-made specializations
 
-| Класс | Компонент |
+| Class | Component |
 |-------|----------|
 | `SliderToSourceMonoBinder` | `Slider` |
 | `DropdownToSourceMonoBinder` | `TMP_Dropdown` |
@@ -57,26 +57,26 @@ public partial class PlayerViewModel
 | `RendererToSourceMonoBinder` | `Renderer` |
 | `RectTransformToSourceMonoBinder` | `RectTransform` |
 
-### Универсальный ComponentToSourceMonoBinder
+### The universal ComponentToSourceMonoBinder
 
-Нетипизированный вариант — отправляет `Component` как `object` через `IAnyReverseBinder`. Подходит для любого компонента.
+The untyped variant sends the `Component` as `object` through `IAnyReverseBinder`. Fits any component.
 
-**Режим:** только OneWayToSource.
+**Mode:** OneWayToSource only.
 
 ---
 
 ## ByBindMonoBinder
 
-Паттерн «привязка по биндеру» — MonoBinder-обёртки, которые управляют целевым компонентом **другого** GameObject. Примеры:
+The "bind by binder" pattern: MonoBinder wrappers that drive a target component on **another** GameObject. Examples:
 
-| Класс | Описание |
+| Class | Description |
 |-------|----------|
-| `GameObjectVisibleByBindMonoBinder` | Показывает/скрывает указанный GameObject |
+| `GameObjectVisibleByBindMonoBinder` | Shows/hides the given GameObject |
 
 ---
 
-## См. также
+## See also
 
 - [GameObject Binders](gameobject-binders.md)
-- [Биндеры](../06-binders.md) — создание кастомных биндеров
-- [Обзор StarterKit](README.md)
+- [Binders](../06-binders.md), writing custom binders
+- [StarterKit overview](README.md)

@@ -1,6 +1,7 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Samples.ExampleScripts.ViewModels.Commands
 {
+    // CanExecute accepts a parameterless method, a method with the command's parameters, a bool property or a [Bind] bool field.
     [ViewModel]
     public partial class Ex3CommandViewModel
     {

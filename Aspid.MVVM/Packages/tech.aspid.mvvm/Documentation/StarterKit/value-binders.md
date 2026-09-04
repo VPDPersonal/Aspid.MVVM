@@ -1,23 +1,23 @@
 # Value Binders
 
-Обёртки для хранения привязанного значения в коде (без MonoBehaviour).
+Wrappers that hold a bound value in code (no MonoBehaviour).
 
 ---
 
-## Обзор
+## Overview
 
-Value-биндеры — это не-MonoBehaviour классы для получения значений из ViewModel в коде. Полезны когда нужно прочитать значение ViewModel программно, без UI.
+Value binders are non-MonoBehaviour classes for reading ViewModel values from code. Useful when a ViewModel value is needed programmatically, without UI.
 
 ---
 
-## Типы
+## Types
 
-| Класс | Режим | Описание |
+| Class | Mode | Description |
 |-------|-------|----------|
-| `ValueOneWayBinder<T>` | OneWay / OneTime | Хранит значение, event `Changed` |
-| `ValueTwoWayBinder<T>` | TwoWay | Двусторонняя — можно менять из кода |
-| `ValueOneTimeBinder<T>` | OneTime | Read-only после первой установки |
-| `ValueOneWayToSourceBinder<T>` | OneWayToSource | Push из кода в ViewModel |
+| `ValueOneWayBinder<T>` | OneWay / OneTime | Holds the value, `Changed` event |
+| `ValueTwoWayBinder<T>` | TwoWay | Two-way, can be changed from code |
+| `ValueOneTimeBinder<T>` | OneTime | Read-only after the first set |
+| `ValueOneWayToSourceBinder<T>` | OneWayToSource | Push from code into the ViewModel |
 
 ---
 
@@ -26,19 +26,19 @@ Value-биндеры — это не-MonoBehaviour классы для полу�
 ```csharp
 var healthValue = new ValueOneWayBinder<int>();
 
-// Привязка к ViewModel
+// Bind to the ViewModel
 view.BindCustomBinder("Health", healthValue);
 
-// Чтение значения
+// Read the value
 int current = healthValue.Value;
 
-// Подписка на изменения
+// Subscribe to changes
 healthValue.Changed += newValue =>
 {
     Debug.Log($"Health changed: {newValue}");
 };
 
-// Неявное приведение
+// Implicit conversion
 int hp = healthValue; // implicit cast to T?
 ```
 
@@ -49,20 +49,20 @@ int hp = healthValue; // implicit cast to T?
 ```csharp
 var nameValue = new ValueTwoWayBinder<string>();
 
-// Привязка...
+// Bind...
 
-// Чтение
+// Read
 string name = nameValue.Value;
 
-// Запись — уведомляет ViewModel
+// Write: notifies the ViewModel
 nameValue.Value = "New Name";
 ```
 
-При записи `Value` вызывается `ValueChanged`, который передаёт изменение обратно в ViewModel.
+Writing `Value` raises `ValueChanged`, which passes the change back to the ViewModel.
 
 ---
 
-## Пример: использование в кастомном компоненте
+## Example: use in a custom component
 
 ```csharp
 public class CustomComponent : MonoBehaviour
@@ -80,7 +80,7 @@ public class CustomComponent : MonoBehaviour
 
     private void Update()
     {
-        // Используем значение из ViewModel
+        // Use the value from the ViewModel
         if (_isActive.Value)
             DoSomething();
     }
@@ -89,7 +89,7 @@ public class CustomComponent : MonoBehaviour
 
 ---
 
-## См. также
+## See also
 
-- [Delegate Binders](delegate-binders.md) — делегат-биндеры из кода
-- [Биндеры](../06-binders.md) — обзор системы биндеров
+- [Delegate Binders](delegate-binders.md), delegate binders from code
+- [Binders](../06-binders.md), the binder system overview

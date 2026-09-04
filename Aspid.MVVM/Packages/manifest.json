@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "tech.aspid.fasttools": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview/1.0.0-rc.7",
+    "tech.aspid.fasttools": "file:../../../../../Aspid.FastTools/Aspid.FastTools/Packages/tech.aspid.fasttools",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.1.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.11",

@@ -1,46 +1,46 @@
 # Collection Binders
 
-Биндеры для отображения коллекций ViewModel в виде списков UI-элементов.
+Binders that show ViewModel collections as lists of UI elements.
 
 ---
 
-## Обзор
+## Overview
 
-| Биндер | Назначение |
+| Binder | Purpose |
 |--------|-----------|
-| `ViewModelObservableListBinder` | Динамический список с фабрикой View |
-| `ViewModelCollectionBinder<T>` | Статическая коллекция (фиксированные View) |
-| `ViewModelObservableDictionaryBinder` | Словарь с фабрикой View |
-| `VirtualizedListItemSourceBinder` | Источник данных для VirtualizedList |
+| `ViewModelObservableListBinder` | Dynamic list with a View factory |
+| `ViewModelCollectionBinder<T>` | Static collection (fixed Views) |
+| `ViewModelObservableDictionaryBinder` | Dictionary with a View factory |
+| `VirtualizedListItemSourceBinder` | Data source for a VirtualizedList |
 
 ---
 
 ## ViewModelObservableListBinder
 
-Основной биндер для отображения `ObservableList<IViewModel>`. При добавлении/удалении элементов автоматически создаёт/уничтожает View.
+The main binder for showing an `ObservableList<IViewModel>`. Creates and destroys Views as items are added and removed.
 
-### Принцип работы
+### How it works
 
 ```
 ObservableList<IViewModel> (ViewModel)
     → ViewModelObservableListBinder
-        → IViewFactory.Create(viewModel) при Add
-        → IViewFactory.Release(view) при Remove
+        → IViewFactory.Create(viewModel) on Add
+        → IViewFactory.Release(view) on Remove
 ```
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Тип | Описание |
+| Property | Type | Description |
 |----------|-----|----------|
-| `Factory` | `IViewFactory<MonoView>` | Фабрика для создания View (PrefabViewFactory или PrefabViewPool) |
-| `Filter` | `ICollectionFilter<IViewModel>` | Опциональный фильтр |
-| `Order` | `ICollectionOrder<IViewModel>` | Опциональная сортировка |
+| `Factory` | `IViewFactory<MonoView>` | Factory that creates Views (PrefabViewFactory or PrefabViewPool) |
+| `Filter` | `ICollectionFilter<IViewModel>` | Optional filter |
+| `Order` | `ICollectionOrder<IViewModel>` | Optional ordering |
 
-### Режим
+### Mode
 
-**OneWay** и **OneTime**.
+**OneWay** and **OneTime**.
 
-### Пример ViewModel
+### Example ViewModel
 
 ```csharp
 [ViewModel]
@@ -58,27 +58,27 @@ public partial class TodoListViewModel
 }
 ```
 
-MonoBinder-вариант: `ObservableListViewModelMonoBinder`.
+MonoBinder variant: `ObservableListViewModelMonoBinder`.
 
 ---
 
 ## ViewModelCollectionBinder\<T\>
 
-Для статических коллекций с предварительно созданными View:
+For static collections with pre-created Views:
 
 ```csharp
-// В Inspector: массив _views заполнен заранее
-// При привязке: View[0].Initialize(collection[0]), View[1].Initialize(collection[1])...
-// Лишние View скрываются через SetActive(false)
+// Inspector: the _views array is filled in advance
+// On bind: View[0].Initialize(collection[0]), View[1].Initialize(collection[1])...
+// Extra Views are hidden through SetActive(false)
 ```
 
-Подходит для фиксированного количества элементов (например, 5 слотов инвентаря).
+Fits a fixed number of items (for example 5 inventory slots).
 
 ---
 
 ## VirtualizedListItemSourceBinder
 
-Устанавливает `ItemsSource` для `VirtualizedList`:
+Sets the `ItemsSource` of a `VirtualizedList`:
 
 ```csharp
 [ViewModel]
@@ -98,26 +98,26 @@ public partial class ListViewModel
 }
 ```
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
 | `Filter` | `ICollectionFilter<IViewModel>` |
 | `Order` | `ICollectionOrder<IViewModel>` |
 
-Создаёт внутренний `FilteredList<IViewModel>` при наличии фильтра/сортировки.
+Creates an internal `FilteredList<IViewModel>` when a filter or an order is set.
 
-**Режим:** **OneTime**.
+**Mode:** **OneTime**.
 
 ---
 
 ## View Factories
 
-Фабрики используются `ViewModelObservableListBinder` для создания View:
+Factories are used by `ViewModelObservableListBinder` to create Views:
 
 ### PrefabViewFactory
 
-Создаёт View через `Object.Instantiate`:
+Creates Views through `Object.Instantiate`:
 
 ```
 Create(viewModel) → Instantiate(prefab) → SetSibling → Initialize(viewModel)
@@ -126,24 +126,25 @@ Release(view) → DestroyViewAndGameObject()
 
 ### PrefabViewPool
 
-Переиспользует View через `ObjectPool`:
+Reuses Views through an `ObjectPool`:
 
 ```
 Create(viewModel) → Pool.Get() → Initialize(viewModel) → SetActive(true)
 Release(view) → Deinitialize() → SetActive(false) → Pool.Release()
 ```
 
-**Свойства:**
-- `_initialCount` — начальный размер пула
-- `_maxCount` — максимальный размер
+**Properties:**
+- `_initialCount`: initial pool size
+- `_maxCount`: maximum size
 
-> **Рекомендация:** Используйте `PrefabViewPool` для часто обновляемых списков (чат, лента).
+> [!TIP]
+> Use `PrefabViewPool` for lists that update often (chat, feed).
 
-Подробнее: [View Factories](view-factories.md).
+More: [View Factories](view-factories.md).
 
 ---
 
-## Фильтрация и сортировка
+## Filtering and ordering
 
 ### ICollectionFilter\<T\>
 
@@ -154,7 +155,7 @@ public interface ICollectionFilter<in T>
 }
 ```
 
-Реализуйте для создания кастомного фильтра:
+Implement it for a custom filter:
 
 ```csharp
 [Serializable]
@@ -171,33 +172,33 @@ public class CompletedFilter : ICollectionFilter<IViewModel>
 public interface ICollectionOrder<in T> : IComparer<T> { }
 ```
 
-Реализуйте `Compare`, как у обычного `IComparer<T>`. Пустой слот в Inspector сохраняет порядок исходной коллекции.
+Implement `Compare` as for a regular `IComparer<T>`. An empty slot in the Inspector keeps the source collection order.
 
-### Готовые фильтры
+### Built-in filters
 
-| Фильтр | Поведение |
+| Filter | Behaviour |
 |--------|-----------|
-| `AndCollectionFilter<T>` | Проходит элемент, который пропускают все вложенные фильтры |
-| `OrCollectionFilter<T>` | Проходит элемент, который пропускает хотя бы один вложенный фильтр |
-| `NotCollectionFilter<T>` | Инвертирует вложенный фильтр |
-| `ConditionalCollectionFilter<T>` | Применяет вложенный фильтр только при включённом `IsEnabled` |
-| `ConverterCollectionFilter<T>` | Пропускает элемент, для которого `IConverter<T, bool>` вернул `true` |
-| `PredicateCollectionFilter<T>` | Обёртка над `Predicate<T>` для фильтров из кода |
+| `AndCollectionFilter<T>` | Passes an item that every nested filter passes |
+| `OrCollectionFilter<T>` | Passes an item that at least one nested filter passes |
+| `NotCollectionFilter<T>` | Inverts the nested filter |
+| `ConditionalCollectionFilter<T>` | Applies the nested filter only while `IsEnabled` is on |
+| `ConverterCollectionFilter<T>` | Passes an item for which `IConverter<T, bool>` returned `true` |
+| `PredicateCollectionFilter<T>` | A wrapper over `Predicate<T>` for filters from code |
 
-Пустой вложенный слот пропускает всё.
+An empty nested slot passes everything.
 
-### Готовые сортировки
+### Built-in orders
 
-| Сортировка | Поведение |
+| Order | Behaviour |
 |------------|-----------|
-| `SequenceCollectionOrder<T>` | Применяет вложенные порядки по очереди: решает первый, различивший элементы |
-| `InverseCollectionOrder<T>` | Обращает вложенный порядок |
-| `ComparisonCollectionOrder<T>` | Обёртка над `IComparer<T>` или `Comparison<T>` для сортировок из кода |
+| `SequenceCollectionOrder<T>` | Applies the nested orders in turn: the first one that tells the items apart decides |
+| `InverseCollectionOrder<T>` | Reverses the nested order |
+| `ComparisonCollectionOrder<T>` | A wrapper over `IComparer<T>` or `Comparison<T>` for orders from code |
 
 ---
 
-## См. также
+## See also
 
-- [Коллекции](../09-collections.md) — ObservableList, FilteredList, синхронизация
-- [View Factories](view-factories.md) — PrefabViewFactory, PrefabViewPool
-- [VirtualizedList Tutorial](../Tutorials/virtualized-list.md) — пример виртуализации
+- [Collections](../09-collections.md): ObservableList, FilteredList, synchronization
+- [View Factories](view-factories.md): PrefabViewFactory, PrefabViewPool
+- [Virtualized List tutorial](../../Samples~/VirtualizedList/README.md), a virtualization example

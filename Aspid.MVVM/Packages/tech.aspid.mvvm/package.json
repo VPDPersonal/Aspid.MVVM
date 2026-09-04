@@ -5,7 +5,7 @@
   "description": "Aspid.MVVM is a powerful, high-performance MVVM framework for Unity, eliminating reflection, minimizing GC allocations, and removing boilerplate code for faster, streamlined development.",
   "unity": "6000.0",
   "license": "MIT",
-  "documentationUrl": "https://vpd-inc.gitbook.io/aspid.mvvm/",
+  "documentationUrl": "https://vpdpersonal.github.io/Aspid.MVVM/",
   "changelogUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/CHANGELOG.md",
   "licensesUrl": "https://github.com/VPDPersonal/Aspid.MVVM/blob/main/LICENSE",
   "keywords": [
@@ -24,24 +24,54 @@
   },
   "samples": [
     {
-      "displayName": "Hello World",
-      "description": "Minimal end-to-end example wiring a View to a ViewModel.",
-      "path": "Samples~/HelloWorld"
+      "displayName": "Path 1. Counter",
+      "description": "The smallest setup: [ViewModel], [View], [RelayCommand]; manual Bootstrap vs ViewInitializer.",
+      "path": "Samples~/01. Counter"
     },
     {
-      "displayName": "Stats",
-      "description": "Binding numeric stats with converters and bindable members.",
-      "path": "Samples~/Stats"
+      "displayName": "Path 2. Greeter",
+      "description": "MonoViewModel on a GameObject, TwoWay binding and [BindAlso] for a computed property.",
+      "path": "Samples~/02. Greeter"
     },
     {
-      "displayName": "Todo List",
-      "description": "Observable collection bound to a dynamic list of items.",
-      "path": "Samples~/TodoList"
+      "displayName": "Path 3. Bind Modes",
+      "description": "OneTime, OneWay, TwoWay and OneWayToSource side by side, built-in and custom converters.",
+      "path": "Samples~/03. BindModes"
     },
     {
-      "displayName": "Virtualized List",
-      "description": "Virtualized list efficiently rendering large data sets.",
+      "displayName": "Path 4. Stats",
+      "description": "Commands with a parameter, CanExecute, a draft applied to the model on Confirm.",
+      "path": "Samples~/04. Stats"
+    },
+    {
+      "displayName": "Path 5. Todo List",
+      "description": "Observable collection synced to child ViewModels, a dialog View spawned at runtime.",
+      "path": "Samples~/05. TodoList"
+    },
+    {
+      "displayName": "Path 6. Custom Binder",
+      "description": "A binder for your own component with a generated serializable twin.",
+      "path": "Samples~/06. CustomBinder"
+    },
+    {
+      "displayName": "Feature: Virtualized List",
+      "description": "Virtualized list with filters and ordering over large data sets.",
       "path": "Samples~/VirtualizedList"
+    },
+    {
+      "displayName": "Feature: Dynamic ViewModel",
+      "description": "Properties declared at runtime by id, bound through a plain MonoView with no generated code.",
+      "path": "Samples~/DynamicViewModel"
+    },
+    {
+      "displayName": "Feature: DI Integration",
+      "description": "ViewModel resolved from Zenject or VContainer through ViewInitializer.",
+      "path": "Samples~/DiIntegration"
+    },
+    {
+      "displayName": "Feature: API Reference Scripts",
+      "description": "Compilable snippets covering every generator attribute; no scenes.",
+      "path": "Samples~/ExampleScripts"
     }
   ],
   "unityRelease": "0f1"

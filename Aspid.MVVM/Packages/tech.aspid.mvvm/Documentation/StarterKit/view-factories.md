@@ -1,12 +1,12 @@
 # View Factories
 
-Фабрики для создания и уничтожения View из префабов. Используются коллекционными биндерами.
+Factories that create and destroy Views from prefabs. Used by the collection binders.
 
 ---
 
 ## IViewFactory\<T\>
 
-Интерфейс фабрики:
+The factory interface:
 
 ```csharp
 public interface IViewFactory<T> where T : IView
@@ -20,27 +20,27 @@ public interface IViewFactory<T> where T : IView
 
 ## PrefabViewFactory
 
-Создаёт View из префаба через `Object.Instantiate`. При `Release` — уничтожает объект.
+Creates a View from a prefab through `Object.Instantiate`. `Release` destroys the object.
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_prefab` | Префаб MonoView |
-| `_container` | Родительский Transform для инстанцированных объектов |
-| `_overrideSibling` | Переопределить порядок в иерархии |
-| `_siblingIndex` | Индекс при `_overrideSibling = true` |
+| `_prefab` | The MonoView prefab |
+| `_container` | Parent Transform for instantiated objects |
+| `_overrideSibling` | Override the order in the hierarchy |
+| `_siblingIndex` | Index used when `_overrideSibling = true` |
 
-### Принцип работы
+### How it works
 
-1. `Create(viewModel)` — `Instantiate(prefab, container)` → `view.Initialize(viewModel)`
-2. `Release(view)` — `view.DestroyViewAndGameObject()`
+1. `Create(viewModel)`: `Instantiate(prefab, container)` → `view.Initialize(viewModel)`
+2. `Release(view)`: `view.DestroyViewAndGameObject()`
 
 ```csharp
-// Из кода:
+// From code:
 var factory = new PrefabViewFactory(itemPrefab, container);
 
-// Или типизированный:
+// Or typed:
 var factory = new PrefabViewFactory<ItemView>(itemPrefab, container);
 ```
 
@@ -48,39 +48,39 @@ var factory = new PrefabViewFactory<ItemView>(itemPrefab, container);
 
 ## PrefabViewPool
 
-Наследует `PrefabViewFactory`, но использует `ObjectPool<T>` вместо создания/уничтожения.
+Inherits `PrefabViewFactory` but uses an `ObjectPool<T>` instead of create/destroy.
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_initialCount` | Начальный размер пула (pre-warm) |
-| `_maxCount` | Максимальный размер пула |
+| `_initialCount` | Initial pool size (pre-warm) |
+| `_maxCount` | Maximum pool size |
 
-### Принцип работы
+### How it works
 
-1. `Create(viewModel)` — берёт View из пула (или создаёт новый) → `SetActive(true)` → `Initialize(viewModel)`
-2. `Release(view)` — `Deinitialize()` → `SetActive(false)` → возвращает в пул
+1. `Create(viewModel)`: takes a View from the pool (or creates one) → `SetActive(true)` → `Initialize(viewModel)`
+2. `Release(view)`: `Deinitialize()` → `SetActive(false)` → returns it to the pool
 
 ```csharp
-// Из кода:
+// From code:
 var pool = new PrefabViewPool(itemPrefab, container, new PoolSettings(initialCount: 10, maxCount: 100));
 ```
 
-### Преимущества над PrefabViewFactory
+### Advantages over PrefabViewFactory
 
-- Нет аллокаций при повторном использовании
-- Нет вызовов `Instantiate`/`Destroy`
-- Подходит для списков с частым добавлением/удалением элементов
+- No allocations on reuse
+- No `Instantiate`/`Destroy` calls
+- Fits lists with frequent add/remove
 
 ---
 
-## Использование с коллекционными биндерами
+## With collection binders
 
-View Factories используются в `ViewModelObservableListBinder` и `VirtualizedListItemSourceBinder`:
+View factories are used by `ViewModelObservableListBinder` and `VirtualizedListItemSourceBinder`:
 
 ```csharp
-// В Inspector:
+// Inspector:
 // ViewModelObservableListBinder → ViewFactory → PrefabViewPool
 //                               → Prefab: ItemView
 //                               → Container: ScrollContent
@@ -89,8 +89,8 @@ View Factories используются в `ViewModelObservableListBinder` и `V
 
 ---
 
-## См. также
+## See also
 
-- [Collection Binders](collection-binders.md) — использование фабрик
-- [Коллекции](../09-collections.md) — ObservableList
-- [Обзор StarterKit](README.md)
+- [Collection Binders](collection-binders.md), using the factories
+- [Collections](../09-collections.md), ObservableList
+- [StarterKit overview](README.md)

@@ -1,18 +1,18 @@
 # Delegate Binders
 
-Делегат-биндеры для создания привязок из кода без MonoBehaviour.
+Delegate binders create bindings from code without a MonoBehaviour.
 
 ---
 
-## Обзор
+## Overview
 
-Delegate-биндеры принимают делегаты (`Action`, `Func`) и создают привязку программно. Используйте их когда нужен кастомный биндер без создания отдельного класса.
+Delegate binders take delegates (`Action`, `Func`) and build a binding programmatically. Use them when a custom binder is needed without a dedicated class.
 
 ---
 
 ## DelegateOneWayBinder\<T\>
 
-Простейший биндер — принимает `Action<T>` для установки значения:
+The simplest binder: takes an `Action<T>` that applies the value:
 
 ```csharp
 var binder = new DelegateOneWayBinder<string>(value =>
@@ -23,7 +23,7 @@ var binder = new DelegateOneWayBinder<string>(value =>
 view.BindCustomBinder("Name", binder);
 ```
 
-### С таргетом: DelegateOneWayBinder\<TTarget, T\>
+### With a target: DelegateOneWayBinder\<TTarget, T\>
 
 ```csharp
 var label = GetComponent<TMP_Text>();
@@ -33,19 +33,19 @@ var binder = new DelegateOneWayBinder<TMP_Text, string>(
 );
 ```
 
-**Режимы:** OneWay, OneTime (TwoWay запрещён).
+**Modes:** OneWay, OneTime (TwoWay is not allowed).
 
 ---
 
 ## DelegateTwoWayBinder\<T\>
 
-Двусторонний биндер — принимает `Action<T>` для установки и возвращает изменения через `ValueChanged`:
+A two-way binder: takes an `Action<T>` to apply the value and reports changes through `ValueChanged`:
 
 ```csharp
 var binder = new DelegateTwoWayBinder<string>(
     subscribe: callback =>
     {
-        // Подписаться на изменения UI → вызвать callback(newValue)
+        // Subscribe to UI changes → call callback(newValue)
         inputField.onEndEdit.AddListener(text => callback(text));
     },
     setValue: value =>
@@ -55,17 +55,17 @@ var binder = new DelegateTwoWayBinder<string>(
 );
 ```
 
-Дополнительные параметры:
-- `getValueOnBound` — вызывается при привязке, возвращает начальное значение
-- `getValueOnUnbinding` — вызывается при отвязке
+Extra parameters:
+- `getValueOnBound`: called on bind, returns the initial value
+- `getValueOnUnbinding`: called on unbind
 
-**Режим:** TwoWay.
+**Mode:** TwoWay.
 
 ---
 
 ## DelegateOneWayToSourceBinder\<T\>
 
-Обратный биндер — отправляет значения из View в ViewModel:
+A reverse binder: sends values from the View to the ViewModel:
 
 ```csharp
 var binder = new DelegateOneWayToSourceBinder<float>(
@@ -73,17 +73,17 @@ var binder = new DelegateOneWayToSourceBinder<float>(
     {
         slider.onValueChanged.AddListener(v => callback(v));
     },
-    getValueOnBound: () => slider.value  // начальное значение
+    getValueOnBound: () => slider.value  // initial value
 );
 ```
 
-**Режим:** OneWayToSource.
+**Mode:** OneWayToSource.
 
 ---
 
 ## CasterBinder\<TFrom, TTo\>
 
-Биндер с конвертацией типа через `IConverter<TFrom, TTo>`:
+A binder with a type conversion through `IConverter<TFrom, TTo>`:
 
 ```csharp
 var binder = new CasterBinder<int, string>(
@@ -92,13 +92,13 @@ var binder = new CasterBinder<int, string>(
 );
 ```
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## DelegateOneTimeBinder\<T\>
 
-Биндер, получающий значение один раз:
+A binder that receives the value once:
 
 ```csharp
 var binder = new DelegateOneTimeBinder<Config>(config =>
@@ -107,24 +107,24 @@ var binder = new DelegateOneTimeBinder<Config>(config =>
 });
 ```
 
-**Режим:** OneTime.
+**Mode:** OneTime.
 
 ---
 
-## Когда использовать
+## When to use
 
-| Сценарий | Биндер |
+| Case | Binder |
 |----------|--------|
-| Простая реакция на изменение | `DelegateOneWayBinder<T>` |
-| Двусторонняя связь с кастомным компонентом | `DelegateTwoWayBinder<T>` |
-| Передача данных из UI в ViewModel | `DelegateOneWayToSourceBinder<T>` |
-| Конвертация типа при привязке | `CasterBinder<TFrom, TTo>` |
-| Одноразовая инициализация | `DelegateOneTimeBinder<T>` |
+| A simple reaction to a change | `DelegateOneWayBinder<T>` |
+| Two-way link with a custom component | `DelegateTwoWayBinder<T>` |
+| Passing data from the UI to the ViewModel | `DelegateOneWayToSourceBinder<T>` |
+| Type conversion while binding | `CasterBinder<TFrom, TTo>` |
+| One-off initialization | `DelegateOneTimeBinder<T>` |
 
 ---
 
-## См. также
+## See also
 
-- [Value Binders](value-binders.md) — хранение привязанного значения
-- [Биндеры](../06-binders.md) — обзор системы биндеров
-- [Обзор StarterKit](README.md)
+- [Value Binders](value-binders.md), holding the bound value
+- [Binders](../06-binders.md), the binder system overview
+- [StarterKit overview](README.md)

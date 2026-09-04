@@ -1,19 +1,19 @@
 # Dropdown Binders
 
-Биндеры для компонента `TMP_Dropdown` (TextMeshPro).
+Binders for the `TMP_Dropdown` (TextMeshPro) component.
 
 ---
 
 ## DropdownValueBinder
 
-Привязка выбранного индекса `TMP_Dropdown.value`.
+Binds the selected index, `TMP_Dropdown.value`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<int>` | Устанавливает индекс из ViewModel |
-| `INumberBinder` | Принимает `int`, `float`, `long`, `double` |
+| `IBinder<int>` | Sets the index from the ViewModel |
+| `INumberBinder` | Accepts `int`, `float`, `long`, `double` |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
@@ -27,26 +27,26 @@ public partial class LanguageViewModel
 
 ## DropdownValueSwitcherBinder
 
-`bool` → выбор между двумя индексами.
+`bool` → one of two indices.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## DropdownOptionsBinder
 
-Привязка списка опций `TMP_Dropdown`.
+Binds the `TMP_Dropdown` option list.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<List<string>>` | Устанавливает текстовые опции |
-| `IBinder<List<Sprite>>` | Устанавливает опции-спрайты |
-| `IBinder<IEnumerable<TMP_Dropdown.OptionData>>` | Устанавливает опции с полным набором данных |
-| `IReverseBinder<List<TMP_Dropdown.OptionData>>` | Отправляет текущие опции обратно (OneWayToSource) |
+| `IBinder<List<string>>` | Sets text options |
+| `IBinder<List<Sprite>>` | Sets sprite options |
+| `IBinder<IEnumerable<TMP_Dropdown.OptionData>>` | Sets options with the full data set |
+| `IReverseBinder<List<TMP_Dropdown.OptionData>>` | Sends the current options back (OneWayToSource) |
 
-При установке значения старые опции очищаются, затем добавляются новые; `null` очищает список. Выбранный индекс сохраняется, если новый список его вмещает.
+On set the old options are cleared and the new ones added; `null` clears the list. The selected index is kept when the new list still contains it.
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
@@ -65,64 +65,64 @@ public partial class LanguageViewModel
 
 ## DropdownOptionsSwitcherBinder
 
-`bool` → выбор между двумя наборами опций.
+`bool` → one of two option sets.
 
 ---
 
 ## DropdownOptionsByEnumMonoBinder
 
-Заполняет опции значениями enum-типа привязанного значения. Опции перестраиваются только при смене типа; `null` очищает список. Необязательный конвертер `IConverter<Enum, IEnumerable<OptionData>>` (например, `EnumToDropdownOptionDataConverter`) задаёт подписи, без него берутся имена значений.
+Fills the options with the values of the bound value's enum type. The options are rebuilt only when the type changes; `null` clears the list. An optional `IConverter<Enum, IEnumerable<OptionData>>` (for example `EnumToDropdownOptionDataConverter`) provides the labels; without it the value names are used.
 
 ---
 
 ## DropdownAlphaFadeSpeedBinder
 
-Привязка скорости затухания `TMP_Dropdown.alphaFadeSpeed`.
+Binds the fade speed, `TMP_Dropdown.alphaFadeSpeed`.
 
-Отрицательное значение поднимается до 0, NaN логируется.
+A negative value is raised to 0, NaN is logged.
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
 ## DropdownAlphaFadeSpeedSwitcherBinder
 
-`bool` → выбор между двумя значениями скорости затухания.
+`bool` → one of two fade speeds.
 
 ---
 
 ## DropdownCommandBinder
 
-Привязка команды к `TMP_Dropdown.onValueChanged`. При выборе элемента вызывает `command.Execute(selectedIndex)`.
+Binds a command to `TMP_Dropdown.onValueChanged`. When an item is selected it calls `command.Execute(selectedIndex)`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<IRelayCommand<int>>` | Передаёт индекс как `int` |
-| `IBinder<IRelayCommand<long>>` | Передаёт индекс как `long` |
+| `IBinder<IRelayCommand<int>>` | Passes the index as `int` |
+| `IBinder<IRelayCommand<long>>` | Passes the index as `long` |
 
 ### InteractableMode
 
-Аналогично `ButtonCommandBinder` — реакция на `CanExecute`:
+As in `ButtonCommandBinder`, the reaction to `CanExecute`:
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |-------|----------|
 | `Interactable` | `dropdown.interactable = canExecute` |
 | `Visible` | `gameObject.SetActive(canExecute)` |
-| `None` | Не реагирует |
-| `Custom` | Вызывает `ICanExecuteHandler.SetCanExecute(bool)` |
+| `None` | Ignores it |
+| `Custom` | Calls `ICanExecuteHandler.SetCanExecute(bool)` |
 
-### Параметризованные варианты
+### Parameterized variants
 
-| Биндер | Команда | Доп. параметры |
+| Binder | Command | Extra parameters |
 |--------|---------|----------------|
 | `DropdownCommandBinder` | `IRelayCommand<int>` / `IRelayCommand<long>` | — |
-| `DropdownCommandBinder<T>` | `IRelayCommand<int, T>` | 1 параметр |
-| `DropdownCommandBinder<T1, T2>` | `IRelayCommand<int, T1, T2>` | 2 параметра |
-| `DropdownCommandBinder<T1, T2, T3>` | `IRelayCommand<int, T1, T2, T3>` | 3 параметра |
+| `DropdownCommandBinder<T>` | `IRelayCommand<int, T>` | 1 parameter |
+| `DropdownCommandBinder<T1, T2>` | `IRelayCommand<int, T1, T2>` | 2 parameters |
+| `DropdownCommandBinder<T1, T2, T3>` | `IRelayCommand<int, T1, T2, T3>` | 3 parameters |
 
-Первый параметр команды — всегда выбранный индекс.
+The first command parameter is always the selected index.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ```csharp
 [ViewModel]
@@ -138,12 +138,12 @@ public partial class LanguageViewModel
 
 ## DropdownToSourceMonoBinder
 
-MonoBinder для OneWayToSource-привязки `TMP_Dropdown` как компонента. Наследует `ComponentToSourceMonoBinder<TMP_Dropdown>`.
+A MonoBinder for OneWayToSource binding of the `TMP_Dropdown` as a component. Inherits `ComponentToSourceMonoBinder<TMP_Dropdown>`.
 
 ---
 
-## См. также
+## See also
 
 - [Slider Binders](slider-binders.md)
-- [Button Command Binders](button-command-binders.md) — InteractableMode
-- [Обзор StarterKit](README.md)
+- [Button Command Binders](button-command-binders.md), InteractableMode
+- [StarterKit overview](README.md)

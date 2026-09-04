@@ -1,15 +1,15 @@
-# DynamicViewModel
+# Dynamic ViewModel
 
-`DynamicViewModel` создаёт типизированную ViewModel во время выполнения, без отдельного класса и
-Source Generator. Он предназначен для тестов View, прототипов, отладочных экранов и интерфейсов,
-схема которых определяется конфигурацией.
+`DynamicViewModel` builds a typed ViewModel at runtime, without a dedicated class or the Source
+Generator. It is meant for View tests, prototypes, debug screens and interfaces whose shape comes
+from configuration.
 
-Для обычных production-экранов используйте `[ViewModel]`: сгенерированный тип лучше выражает
-фиксированную схему, проверяет идентификаторы во время компиляции и поддерживает `[RelayCommand]`.
+For regular production screens use `[ViewModel]`: the generated type expresses a fixed schema
+better, checks identifiers at compile time and supports `[RelayCommand]`.
 
-## Быстрый старт
+## Quick start
 
-Метод `Add<T>` возвращает типизированный handle свойства:
+`Add<T>` returns a typed property handle:
 
 ```csharp
 var viewModel = new DynamicViewModel();
@@ -20,15 +20,15 @@ IDynamicProperty<Sprite> icon = viewModel.Add("Icon", heroSprite, BindMode.OneTi
 
 view.Initialize(viewModel);
 
-health.Value = 75;             // View получает 75
-Debug.Log(name.Value);         // актуальное значение, включая ввод из View
+health.Value = 75;             // The View receives 75
+Debug.Log(name.Value);         // Current value, including input from the View
 ```
 
-По умолчанию создаётся `OneWay`-свойство.
+The default is a `OneWay` property.
 
-## Инициализатор коллекции
+## Collection initializer
 
-`DynamicViewModel` поддерживает компактный синтаксис для случаев, когда handles не нужны:
+`DynamicViewModel` supports a compact syntax when handles are not needed:
 
 ```csharp
 var viewModel = new DynamicViewModel
@@ -39,12 +39,12 @@ var viewModel = new DynamicViewModel
 };
 ```
 
-Количество свойств не ограничено. В отличие от старого `Create<T1, ..., T8>`, новые типы свойств
-не требуют дополнительных перегрузок.
+The number of properties is unlimited. Unlike the old `Create<T1, ..., T8>`, new property types need
+no extra overloads.
 
-## Чтение и изменение
+## Reading and writing
 
-### Через типизированный handle
+### Through a typed handle
 
 ```csharp
 var score = viewModel.Add("Score", 0);
@@ -53,9 +53,9 @@ score.ValueChanged += value => Debug.Log($"Score: {value}");
 score.Value = 10;
 ```
 
-Повторная установка равного значения ничего не отправляет и не вызывает `ValueChanged`.
+Setting an equal value sends nothing and does not raise `ValueChanged`.
 
-### Через ViewModel
+### Through the ViewModel
 
 ```csharp
 IDynamicProperty<int> property = viewModel.Get<int>("Score");
@@ -64,33 +64,33 @@ property.Value = 20;
 if (viewModel.TryGet<int>("Score", out var scoreProperty))
     scoreProperty.Value = 30;
 
-viewModel["Score"].UntypedValue = 40;   // без generic-параметра, для config-driven кода
+viewModel["Score"].UntypedValue = 40;   // no generic parameter, for config-driven code
 ```
 
-`Get<T>` бросает:
+`Get<T>` throws:
 
-- `KeyNotFoundException`, если ID отсутствует;
-- `ArgumentException`, если свойство существует, но имеет другой тип.
+- `KeyNotFoundException` when the id is missing;
+- `ArgumentException` when the property exists but has another type.
 
-`TryGet<T>` возвращает `false` в обоих случаях.
+`TryGet<T>` returns `false` in both cases.
 
-## Режимы
+## Modes
 
-| Режим | Поведение |
+| Mode | Behaviour |
 |---|---|
-| `OneWay` | Начальное значение и последующие изменения передаются из ViewModel во View |
-| `TwoWay` | Значение синхронизируется в обе стороны; `Value` всегда содержит актуальный ввод View |
-| `OneTime` | Каждый новый binder получает текущее значение один раз; уже подключённые binder-ы не обновляются |
-| `OneWayToSource` | Принимает изменения из View, не подписывая View на последующие изменения |
-| `None` | Не поддерживается и отклоняется конструктором |
+| `OneWay` | The initial value and later changes go from the ViewModel to the View |
+| `TwoWay` | The value syncs both ways; `Value` always holds the current View input |
+| `OneTime` | Every new binder receives the current value once; already attached binders are not updated |
+| `OneWayToSource` | Accepts changes from the View without subscribing the View to later changes |
+| `None` | Not supported, rejected by the constructor |
 
-Режим свойства определяет возможности bindable member. Режим конкретного binder-а по-прежнему
-задаётся в самом binder-е и должен быть совместим с этими возможностями.
+The property mode defines what the bindable member can do. The mode of a concrete binder is still
+set on the binder and must be compatible with those capabilities.
 
-## Нетипизированный доступ
+## Untyped access
 
-Для конфигураций, где тип становится известен только во время выполнения, доступны
-`IDynamicProperty`, `Properties` и индексатор:
+For configurations where the type is only known at runtime there are `IDynamicProperty`,
+`Properties` and the indexer:
 
 ```csharp
 foreach (IDynamicProperty property in viewModel.Properties)
@@ -101,69 +101,67 @@ foreach (IDynamicProperty property in viewModel.Properties)
 viewModel["Title"].UntypedValue = "Profile";
 ```
 
-Запись значения несовместимого типа бросает `ArgumentException`. Запись `null` устанавливает
-`default(T)`.
+Writing a value of an incompatible type throws `ArgumentException`. Writing `null` sets `default(T)`.
 
-Пользовательское свойство можно реализовать через `IDynamicProperty` и добавить тем же методом:
+A custom property can implement `IDynamicProperty` and be added with the same method:
 
 ```csharp
 viewModel.Add(customProperty);
 ```
 
-## Проверка идентификаторов
+## Identifier checks
 
-Пустые ID и дубликаты отклоняются сразу. По умолчанию регистр учитывается (`StringComparer.Ordinal`),
-но comparer можно заменить:
+Empty ids and duplicates are rejected immediately. Ids are case-sensitive by default
+(`StringComparer.Ordinal`), but the comparer can be replaced:
 
 ```csharp
 var viewModel = new DynamicViewModel(
     idComparer: StringComparer.OrdinalIgnoreCase);
 ```
 
-Обычно отсутствующий ID binder-а означает, что привязка просто не создаётся. В тестах и при
-разработке экрана удобно включить строгий режим:
+Normally a binder id that is missing means the binding is simply not created. In tests and while
+building a screen a strict mode is handy:
 
 ```csharp
 var viewModel = new DynamicViewModel(throwOnMissingMember: true);
 ```
 
-Тогда запрос неизвестного ID бросает `KeyNotFoundException` с именем отсутствующего свойства.
+Then a request for an unknown id throws `KeyNotFoundException` naming the missing property.
 
-## Добавление свойств и жизненный цикл View
+## Adding properties and the View lifecycle
 
-Свойства следует добавлять до `view.Initialize(viewModel)`. `Add` после инициализации делает
-свойство доступным для будущих запросов, но уже инициализированная View не выполняет поиск binder-ов
-повторно автоматически.
+Add properties before `view.Initialize(viewModel)`. `Add` after initialization makes the property
+available to later lookups, but an already initialized View does not re-run its binder lookup on its own.
 
-## Когда использовать
+## When to use
 
-Подходящие сценарии:
+Good fits:
 
-- изолированные тесты View;
-- быстрый прототип;
+- isolated View tests;
+- a quick prototype;
 - debug/admin UI;
-- свойства, составленные из JSON или конфигурации;
-- небольшие переиспользуемые View с runtime-набором полей.
+- properties assembled from JSON or configuration;
+- small reusable Views with a runtime set of fields.
 
-Не используйте `DynamicViewModel` как замену обычной ViewModel с фиксированной схемой. Строковые ID
-переносят часть ошибок из compile time в runtime, а бизнес-логика, команды и зависимости лучше
-выражаются отдельным типом.
+Do not use `DynamicViewModel` as a replacement for a regular ViewModel with a fixed schema. String ids
+move some errors from compile time to runtime, and business logic, commands and dependencies are
+better expressed by a dedicated type.
 
-## Сравнение со сгенерированной ViewModel
+## Compared to a generated ViewModel
 
-| Аспект | Source Generator | `DynamicViewModel` |
+| Aspect | Source Generator | `DynamicViewModel` |
 |---|:---:|:---:|
-| Фиксированная схема | Оптимально | Избыточно |
-| Runtime-схема | Требует нового типа | Поддерживается |
-| Проверка ID при компиляции | Да | Нет |
-| Типизированное чтение значений | Да | Да |
-| Обновление и наблюдение | Да | Да |
-| `[RelayCommand]` и generated hooks | Да | Нет |
-| Разрешение binder-а | Сгенерированный код | Один поиск в словаре |
+| Fixed schema | Best fit | Overkill |
+| Runtime schema | Needs a new type | Supported |
+| Compile-time id check | Yes | No |
+| Typed value reads | Yes | Yes |
+| Update and observe | Yes | Yes |
+| `[RelayCommand]` and generated hooks | Yes | No |
+| Binder resolution | Generated code | One dictionary lookup |
 
-Словарный поиск выполняется при подключении binder-а, а не при каждом изменении значения.
+The dictionary lookup happens when a binder is attached, not on every value change.
 
-## См. также
+## See also
 
-- [ViewModel](04-viewmodels.md) — сгенерированные ViewModel
-- [Режимы привязки](03-binding-modes.md) — OneWay, TwoWay, OneTime и OneWayToSource
+- [ViewModels](04-viewmodels.md), generated ViewModels
+- [Binding Modes](03-binding-modes.md): OneWay, TwoWay, OneTime and OneWayToSource

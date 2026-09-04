@@ -1,25 +1,25 @@
 # GameObject Binders
 
-Биндеры для управления свойствами `GameObject`.
+Binders that drive `GameObject` properties.
 
 ---
 
 ## GameObjectVisibleBinder
 
-Привязка видимости через `GameObject.SetActive(bool)`.
+Binds visibility through `GameObject.SetActive(bool)`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<bool>` | Устанавливает активность объекта |
-| `IReverseBinder<bool>` | Отправляет текущее состояние (OneWayToSource) |
+| `IBinder<bool>` | Sets the object's active state |
+| `IReverseBinder<bool>` | Sends the current state (OneWayToSource) |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_converter` | Опциональный конвертер значения (например, `BoolInvertConverter`) |
+| `_converter` | Optional value converter (for example `BoolInvertConverter`) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ```csharp
 [ViewModel]
@@ -29,16 +29,16 @@ public partial class PanelViewModel
 }
 ```
 
-### Пример с инверсией
+### Inverted example
 
-Если нужно скрыть объект когда значение `true`:
+To hide the object when the value is `true`:
 
 ```csharp
 [ViewModel]
 public partial class LoadingViewModel
 {
     [OneWayBind] private bool _isLoading;
-    // BoolInvertConverter → GameObject скрыт при isLoading=true
+    // BoolInvertConverter → the GameObject is hidden while isLoading = true
 }
 ```
 
@@ -46,40 +46,40 @@ public partial class LoadingViewModel
 
 ## GameObjectTagBinder
 
-Привязка тега `GameObject.tag`.
+Binds the tag, `GameObject.tag`.
 
-| Интерфейс | Описание |
+| Interface | Description |
 |-----------|----------|
-| `IBinder<string>` | Устанавливает тег |
-| `IReverseBinder<string>` | Отправляет текущий тег (OneWayToSource) |
+| `IBinder<string>` | Sets the tag |
+| `IReverseBinder<string>` | Sends the current tag (OneWayToSource) |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| Converter | `IConverter<string?, string?>` (опционально) |
+| Converter | `IConverter<string?, string?>` (optional) |
 
-**Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
+**Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
 ---
 
 ## GameObjectTagSwitcherBinder
 
-`bool` → выбор между двумя тегами.
+`bool` → one of two tags.
 
-**Режимы:** OneWay, OneTime.
+**Modes:** OneWay, OneTime.
 
 ---
 
 ## GameObjectVisibleByBindMonoBinder
 
-MonoBinder-обёртка для `GameObjectVisibleBinder`. Позволяет привязать видимость целевого `GameObject` через Inspector.
+A MonoBinder wrapper for `GameObjectVisibleBinder`. Binds the visibility of a target `GameObject` through the Inspector.
 
-Отличается от обычного `GameObjectVisibleBinder` тем, что позволяет управлять активностью **другого** `GameObject`, а не того, на котором находится биндер.
+Unlike the plain `GameObjectVisibleBinder`, it drives the active state of **another** `GameObject`, not the one the binder sits on.
 
 ---
 
-## Пример: показ/скрытие панелей
+## Example: showing and hiding panels
 
 ```csharp
 [ViewModel]
@@ -91,12 +91,12 @@ public partial class UIViewModel
 }
 ```
 
-В View привяжите каждый `GameObjectVisibleBinder` к соответствующей панели. Панели будут автоматически показываться/скрываться при изменении свойств ViewModel.
+In the View bind a `GameObjectVisibleBinder` to each panel. The panels show and hide as the ViewModel properties change.
 
 ---
 
-## См. также
+## See also
 
-- [Canvas Group Binders](canvas-group-binders.md) — альтернатива через alpha/interactable
-- [Switcher Binders](switcher-binders.md) — паттерн Switcher
-- [Обзор StarterKit](README.md)
+- [Canvas Group Binders](canvas-group-binders.md), the alpha/interactable alternative
+- [Switcher Binders](switcher-binders.md), the Switcher pattern
+- [StarterKit overview](README.md)

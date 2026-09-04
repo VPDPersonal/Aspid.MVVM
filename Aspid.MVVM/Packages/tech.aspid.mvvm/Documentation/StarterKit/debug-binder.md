@@ -1,49 +1,49 @@
 # Debug Binder
 
-Биндер для отладки привязок.
+A binder for debugging bindings.
 
 ---
 
 ## DebugLogBinder
 
-Универсальный биндер, который логирует все операции в `Debug.Log`. Реализует `IAnyBinder` и `IAnyReverseBinder` — принимает **любой** тип данных.
+A universal binder that logs every operation to `Debug.Log`. Implements `IAnyBinder` and `IAnyReverseBinder`, so it accepts **any** data type.
 
-### Что логирует
+### What it logs
 
-| Событие | Сообщение |
+| Event | Message |
 |---------|----------|
 | `SetValue(value)` | `SetValue: {converted}` |
-| Подписка `ValueChanged` | `Add ValueChanged: {callback}` |
-| Отписка `ValueChanged` | `Remove ValueChanged: {callback}` |
+| `ValueChanged` subscribed | `Add ValueChanged: {callback}` |
+| `ValueChanged` unsubscribed | `Remove ValueChanged: {callback}` |
 
-### Inspector-свойства
+### Inspector properties
 
-| Свойство | Описание |
+| Property | Description |
 |----------|----------|
-| `_converter` | `IConverter<object, string>` — конвертер для отображения (по умолчанию `ObjectToStringConverter`) |
+| `_converter` | `IConverter<object, string>` used for display (default `ObjectToStringConverter`) |
 
-**Режимы:** все (OneWay, TwoWay, OneTime, OneWayToSource).
+**Modes:** all (OneWay, TwoWay, OneTime, OneWayToSource).
 
-### Пример использования
+### Usage
 
-Добавьте `DebugLogMonoBinder` на любой `MonoView` и привяжите к нужному свойству ViewModel через Inspector. Все изменения свойства будут логироваться в Console.
+Add `DebugLogMonoBinder` to any `MonoView` and bind it to the ViewModel property in the Inspector. Every change of the property is logged to the Console.
 
 ```csharp
-// Или из кода:
+// Or from code:
 var debugBinder = new DebugLogBinder();
 view.BindCustomBinder("PlayerName", debugBinder);
 // Console: "SetValue: John"
 ```
 
-### Когда использовать
+### When to use
 
-- Проверить, что привязка работает и значения доходят
-- Отладить порядок вызовов SetValue
-- Убедиться, что обратная привязка (Reverse) подписывается корректно
+- Check that a binding works and values arrive
+- Debug the order of `SetValue` calls
+- Make sure reverse binding subscribes correctly
 
 ---
 
-## См. также
+## See also
 
-- [Биндеры](../06-binders.md) — `[BinderLog]` для логирования существующих биндеров
-- [Обзор StarterKit](README.md)
+- [Binders](../06-binders.md), `[BinderLog]` for logging existing binders
+- [StarterKit overview](README.md)

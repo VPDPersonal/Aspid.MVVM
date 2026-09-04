@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405bca8dd22b4f9796c0e9838a1b79be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name:
+  _number:
   - {fileID: 6664317192602407437}
   _isCompleted:
   - {fileID: 6058888957718957717}
@@ -525,8 +525,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Todo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6ab13558f534d4861b33aa80f973811c, type: 2}
+  m_sharedMaterial: {fileID: 974145192505218946, guid: 6ab13558f534d4861b33aa80f973811c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -673,6 +673,6 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1607910575253225648
-      type: {class: StringFormatConverter, ns: Aspid.MVVM.StarterKit.Unity, asm: Aspid.MVVM.StarterKit.Unity}
+      type: {class: StringFormatConverter, ns: Aspid.MVVM.StarterKit, asm: Aspid.MVVM.StarterKit}
       data:
         _format: 

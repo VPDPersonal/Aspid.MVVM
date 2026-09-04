@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class InverseCollectionOrder<T> : ICollectionOrder<T>
     {
         [Tooltip("Order to run in the opposite direction.")]
-        [TypeSelector]
         [SerializeReference] private ICollectionOrder<T>? _order;
 
         protected InverseCollectionOrder() { }

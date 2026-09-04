@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class InverseConverter<TFrom, TTo> : ITwoWayConverter<TTo?, TFrom?>
     {
         [Tooltip("The two-way converter to run in the opposite direction. Required.")]
-        [TypeSelector]
         [SerializeReference] private ITwoWayConverter<TFrom?, TTo?>? _converter;
 
         protected InverseConverter() { }

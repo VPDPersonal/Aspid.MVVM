@@ -13,7 +13,6 @@ namespace Aspid.MVVM.StarterKit
     public sealed class SequenceCanExecuteHandler : ICanExecuteHandler
     {
         [Tooltip("Handlers that receive the state, in order. Empty slots are skipped.")]
-        [TypeSelector]
         [SerializeReference] private ICanExecuteHandler?[] _handlers = Array.Empty<ICanExecuteHandler>();
 
         private SequenceCanExecuteHandler() { }

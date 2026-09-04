@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class OrCollectionFilter<T> : ICollectionFilter<T>
     {
         [Tooltip("Filters of which at least one must pass an element. Empty slots are skipped.")]
-        [TypeSelector]
         [SerializeReference] private ICollectionFilter<T>?[] _filters = Array.Empty<ICollectionFilter<T>>();
 
         protected OrCollectionFilter() { }

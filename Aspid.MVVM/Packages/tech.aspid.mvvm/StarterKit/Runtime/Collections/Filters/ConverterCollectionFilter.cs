@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class ConverterCollectionFilter<T> : ICollectionFilter<T>
     {
         [Tooltip("Converter that decides whether an element passes.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T, bool>? _converter;
 
         protected ConverterCollectionFilter() { }

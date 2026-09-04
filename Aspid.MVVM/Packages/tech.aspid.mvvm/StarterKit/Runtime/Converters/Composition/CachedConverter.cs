@@ -24,7 +24,6 @@ namespace Aspid.MVVM.StarterKit
     public class CachedConverter<TFrom, TTo> : ITwoWayConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to memoize. Required.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
         [NonSerialized] private bool _hasCache;

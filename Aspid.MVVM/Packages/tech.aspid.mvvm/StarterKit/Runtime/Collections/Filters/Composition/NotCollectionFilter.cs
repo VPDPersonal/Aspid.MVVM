@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class NotCollectionFilter<T> : ICollectionFilter<T>
     {
         [Tooltip("Filter whose verdict is inverted.")]
-        [TypeSelector]
         [SerializeReference] private ICollectionFilter<T>? _filter;
 
         protected NotCollectionFilter() { }

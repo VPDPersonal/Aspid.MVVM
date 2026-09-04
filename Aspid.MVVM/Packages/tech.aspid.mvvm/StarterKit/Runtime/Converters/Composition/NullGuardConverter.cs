@@ -20,7 +20,6 @@ namespace Aspid.MVVM.StarterKit
     public class NullGuardConverter<TFrom, TTo> : IConverter<TFrom?, TTo?>
     {
         [Tooltip("Run for a non-null value. When empty, the null result is returned.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
         [Tooltip("Returned when the incoming value is null.")]

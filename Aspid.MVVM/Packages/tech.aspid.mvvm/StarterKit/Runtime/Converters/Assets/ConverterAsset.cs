@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public abstract class ConverterAsset<TFrom, TTo> : ScriptableObject, IConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter this asset shares. Required; it must not lead back to this asset.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _converter;
 
         [NonSerialized] private bool _isConverting;

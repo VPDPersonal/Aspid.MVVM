@@ -19,15 +19,12 @@ namespace Aspid.MVVM.StarterKit
     public class ConditionalConverter<T> : IConverter<T?, T?>
     {
         [Tooltip("Decides which branch a value takes. Required when a branch is set.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T?, bool>? _predicate;
 
         [Tooltip("Applied when the predicate is true. When empty, the value passes through.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T?, T?>? _then;
 
         [Tooltip("Applied when the predicate is false. When empty, the value passes through.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T?, T?>? _else;
 
         protected ConditionalConverter() { }

@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class CollectionContainsToBoolConverter<T> : IConverter<IEnumerable<T?>?, bool>
     {
         [Tooltip("Decides whether an item counts as a match. Required.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T?, bool>? _match = new EqualityToBoolConverter<T?>();
 
         [Tooltip("Invert the result: true when no item matches.")]

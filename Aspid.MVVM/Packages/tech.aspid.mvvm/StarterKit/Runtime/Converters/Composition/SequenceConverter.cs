@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class SequenceConverter<T> : ITwoWayConverter<T?, T?>
     {
         [Tooltip("The converters applied in order. Empty slots are skipped.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T?, T?>?[]? _converters = Array.Empty<IConverter<T?, T?>>();
 
         [Tooltip("Returned from Convert Back when a link in the chain converts one way only.")]

@@ -23,11 +23,9 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private Mode _mode;
 
         [Tooltip("Applied to the bound vector before the components are selected.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<Vector2, Vector2>? _preConverter;
 
         [Tooltip("Applied to the combined result.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<Vector2, Vector2>? _postConverter;
 
         /// <remarks>Default: both components from the bound vector, with no pre- or post-converter.</remarks>

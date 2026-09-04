@@ -24,11 +24,9 @@ namespace Aspid.MVVM.StarterKit
     public class ComposeConverter<TFrom, TMid, TTo> : ITwoWayConverter<TFrom?, TTo?>
     {
         [Tooltip("Applied to the incoming value. Required.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TMid?>? _first;
 
         [Tooltip("Applied to the result of the first link. Required.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<TMid?, TTo?>? _second;
 
         [Tooltip("Returned from Convert Back when either link converts one way only.")]

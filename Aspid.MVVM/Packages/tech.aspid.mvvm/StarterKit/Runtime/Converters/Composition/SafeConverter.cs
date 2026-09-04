@@ -20,7 +20,6 @@ namespace Aspid.MVVM.StarterKit
     public class SafeConverter<TFrom, TTo> : ITwoWayConverter<TFrom?, TTo?>
     {
         [Tooltip("The converter to run. When empty, the fallback is returned.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<TFrom?, TTo?>? _inner;
 
         [Tooltip("Returned from Convert when the converter throws or is empty.")]

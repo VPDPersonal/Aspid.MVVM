@@ -25,7 +25,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private ColorStop[] _stops = Array.Empty<ColorStop>();
 
         [Tooltip("Writes the number itself. Empty writes it in the general format.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<float, string?>? _number = new NumberFormatConverter("0.##");
 
         [Tooltip("Used when the value is below every threshold.")]

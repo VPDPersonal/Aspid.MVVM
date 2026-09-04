@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
     public class SequenceCollectionOrder<T> : ICollectionOrder<T>
     {
         [Tooltip("Orders applied in sequence. Empty slots are skipped.")]
-        [TypeSelector]
         [SerializeReference] private ICollectionOrder<T>?[] _orders = Array.Empty<ICollectionOrder<T>>();
 
         protected SequenceCollectionOrder() { }

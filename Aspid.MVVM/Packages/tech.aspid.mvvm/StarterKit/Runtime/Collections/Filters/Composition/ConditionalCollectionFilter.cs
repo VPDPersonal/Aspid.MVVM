@@ -22,7 +22,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private bool _isEnabled = true;
 
         [Tooltip("Filter applied while enabled.")]
-        [TypeSelector]
         [SerializeReference] private ICollectionFilter<T>? _filter;
 
         protected ConditionalCollectionFilter() { }

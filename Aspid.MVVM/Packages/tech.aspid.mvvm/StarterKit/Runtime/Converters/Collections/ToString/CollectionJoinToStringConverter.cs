@@ -26,7 +26,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private string _separator = ", ";
 
         [Tooltip("Writes each item. When empty, the item is written as it is.")]
-        [TypeSelector]
         [SerializeReference] private IConverter<T?, string?>? _item = new ValueToStringConverter<T?>();
 
         [Tooltip("How many items to show. Zero shows all of them.")]

@@ -22,7 +22,6 @@ namespace Aspid.MVVM.StarterKit
         private const string DefaultFormat = "{0} {1}";
 
         [Tooltip("The grammar and the words it picks between. Required.")]
-        [TypeSelector]
         [SerializeReference] private PluralRule? _rule;
 
         [Tooltip("Composite format: {0} is the count, {1} the word. Blank or invalid writes the word alone.")]

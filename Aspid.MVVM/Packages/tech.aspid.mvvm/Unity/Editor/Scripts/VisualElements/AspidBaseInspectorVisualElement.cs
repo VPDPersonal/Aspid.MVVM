@@ -10,7 +10,6 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Aspid.FastTools.UIElements;
 using Aspid.FastTools.UIElements.Editors.Internal;
-using Aspid.FastTools.SerializeReferences.Editors;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -112,16 +111,6 @@ namespace Aspid.MVVM
                 return new MonoBinderPropertyField(propertyCopy, binderId, assemblyQualifiedName);
             }
 
-            // A [SerializeReference] field gets the FastTools type-picker dropdown instead of Unity's default
-            // managed-reference UI. Routing it here rather than through a [TypeSelector] attribute keeps every
-            // polymorphic field in a View / ViewModel / Binder picking a type the same way, with nothing to
-            // annotate — the candidate set is the field's own declared type.
-            if (propertyCopy.propertyType is SerializedPropertyType.ManagedReference)
-                return StyleAsAspidField(SerializeReferenceEditorGUI.CreateField(propertyCopy));
-
-            if (IsManagedReferenceArray(propertyCopy))
-                return StyleAsAspidField(SerializeReferenceEditorGUI.CreateList(propertyCopy));
-
             return new AspidPropertyField(propertyCopy);
 
             bool IsMonoBinderType(Type? type)
@@ -132,38 +121,6 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Gives a field built outside <see cref="AspidPropertyField"/> the same inspector chrome:
-        /// the rounded panel, its background and the padding that insets it from the surrounding box.
-        /// </summary>
-        /// <remarks>
-        /// The style sheet keys off both classes together
-        /// (<c>.aspid-fasttools-theme--lightness.aspid-property-field</c>), so a field carrying only one of
-        /// them renders unstyled — edge to edge, with no panel behind it.
-        /// </remarks>
-        /// <param name="field">The field to style.</param>
-        /// <returns>The same field, styled.</returns>
-        private static VisualElement StyleAsAspidField(VisualElement field)
-        {
-            field.styleSheets.Add(AspidPropertyField.StyleSheet);
-            field.AddToClassList(AspidPropertyField.StyleClass);
-            field.AddToClassList(ThemeStyle.LightnessClass);
-
-            return field;
-        }
-
-        /// <summary>
-        /// Indicates whether the property is an array or list whose elements are managed references.
-        /// </summary>
-        /// <remarks>
-        /// <see cref="SerializedProperty.arrayElementType"/> reports <c>managedReference&lt;…&gt;</c> only for a
-        /// <c>[SerializeReference]</c> collection, so it separates one from an array of plain serialized values.
-        /// </remarks>
-        private static bool IsManagedReferenceArray(SerializedProperty property) =>
-            property.isArray &&
-            property.propertyType is not SerializedPropertyType.String &&
-            property.arrayElementType.StartsWith("managedReference<", StringComparison.Ordinal);
-        
         private static string? GetAssemblyQualifiedName(FieldInfo? field)
         {
             if (field is null) return null;

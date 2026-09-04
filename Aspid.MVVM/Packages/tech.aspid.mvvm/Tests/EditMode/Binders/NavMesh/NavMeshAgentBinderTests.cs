@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -30,12 +32,14 @@ namespace Aspid.MVVM.Tests
         /// the rest of the View's bindings with it — a test agent is never on one.
         /// </summary>
         [Test]
-        public void IsStopped_IsSkippedWhileTheAgentIsNotOnANavMesh()
+        public void IsStopped_IsReportedAndSkippedWhileTheAgentIsNotOnANavMesh()
         {
             var agent = Spawn<NavMeshAgent>("NavMeshAgent");
             var binder = agent.gameObject.AddComponent<NavMeshAgentIsStoppedMonoBinder>();
 
             Assert.IsFalse(agent.isOnNavMesh, "The test agent unexpectedly ended up on a navmesh");
+
+            LogAssert.Expect(LogType.Error, new Regex("not on a NavMesh"));
             Assert.DoesNotThrow(() => ((IBinder<bool>)binder).SetValue(true), "Writing off the navmesh threw");
         }
 

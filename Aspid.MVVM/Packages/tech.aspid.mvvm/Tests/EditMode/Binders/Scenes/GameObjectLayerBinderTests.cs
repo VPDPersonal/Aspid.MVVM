@@ -34,7 +34,7 @@ namespace Aspid.MVVM.Tests
             var gameObject = Spawn("Object");
             var binder = gameObject.AddComponent<GameObjectLayerMonoBinder>();
 
-            LogAssert.Expect(LogType.Error, new Regex("Layer 40 does not exist"));
+            LogAssert.Expect(LogType.Error, new Regex("layer 40 does not exist"));
             ((IBinder<int>)binder).SetValue(40);
 
             Assert.AreEqual(0, gameObject.layer, "A non-existent layer was written anyway");

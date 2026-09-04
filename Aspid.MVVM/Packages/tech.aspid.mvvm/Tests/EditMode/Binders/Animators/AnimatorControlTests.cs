@@ -56,7 +56,7 @@ namespace Aspid.MVVM.Tests
             var animator = New();
             var binder = animator.gameObject.AddComponent<AnimatorLayerWeightMonoBinder>();
 
-            LogAssert.Expect(LogType.Error, new Regex("Layer 0 does not exist"));
+            LogAssert.Expect(LogType.Error, new Regex("has no layer 1"));
             ((IBinder<float>)binder).SetValue(0.5f);
         }
 

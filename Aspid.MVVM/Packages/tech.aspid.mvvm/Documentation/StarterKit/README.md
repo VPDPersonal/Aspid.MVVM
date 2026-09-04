@@ -64,6 +64,12 @@ StarterKit -- это набор готовых к использованию б�
 | `ImageSpriteSwitcherBinder` | `bool` -> `Sprite` | OneWay, OneTime | Переключение спрайта между двумя значениями |
 | `ImageFillBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка `fillAmount` (0-1) |
 | `ImageFillSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение заполнения |
+| `ImageSpriteAddressableMonoBinder` | `string`, `IKeyEvaluator` | OneWay, OneTime | Загрузка спрайта через Addressables (`ASPID_MVVM_ADDRESSABLES_INTEGRATION`) |
+| `ImageTypeBinder` | `Image.Type` | OneWay, OneTime, OneWayToSource | Привязка `Image.type` |
+| `ImagePreserveAspectBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `preserveAspect` |
+| `ImageFillOriginBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `fillOrigin` |
+| `ImageFillClockwiseBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `fillClockwise` |
+| `Image{Sprite, Fill}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы Image |
 
 ---
 
@@ -73,8 +79,11 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `RawImageTextureBinder` | `Texture` | OneWay, OneTime | Привязка текстуры |
+| `RawImageTextureBinder` | `Texture`, `Sprite` | OneWay, OneTime, OneWayToSource | Привязка текстуры с авто-отключением при `null` |
 | `RawImageTextureSwitcherBinder` | `bool` -> `Texture` | OneWay, OneTime | Переключение текстуры |
+| `RawImageTextureAddressableMonoBinder` | `string`, `IKeyEvaluator` | OneWay, OneTime | Загрузка текстуры через Addressables (`ASPID_MVVM_ADDRESSABLES_INTEGRATION`) |
+| `RawImageTextureEnum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Текстура по enum, для одного или группы RawImage |
+| `RawImageUvRectBinder` | `Rect` | OneWay, OneTime, OneWayToSource | Привязка `uvRect`; неконечные значения отклоняются |
 
 ---
 
@@ -84,16 +93,16 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `ButtonCommandBinder` | `IRelayCommand` | OneWay, OneTime | Привязка команды к Button.onClick с InteractableMode |
-| `ButtonCommandBinder<T>` | `IRelayCommand<T>` | OneWay, OneTime | Команда с параметром |
-| `ButtonCommandBinder<T1,T2>` | `IRelayCommand<T1,T2>` | OneWay, OneTime | Команда с двумя параметрами |
-| `ToggleCommandBinder` | `IRelayCommand<bool>` | OneWay, OneTime | Команда для Toggle.onValueChanged |
-| `SliderCommandBinder` | `IRelayCommand<float>` | OneWay, OneTime | Команда для Slider.onValueChanged |
+| `ButtonCommandBinder` | `IRelayCommand`, `IRelayCommand<bool>` | OneWay, OneTime | Привязка команды к Button.onClick с InteractableMode |
+| `ButtonCommandBinder<T>` … `<T1,T2,T3,T4>` | `IRelayCommand<T…>` | OneWay, OneTime | Команда с 1–4 параметрами из Inspector |
+| `ButtonCommand{Int, Float, Bool, String, Object}MonoBinder` | `IRelayCommand<T>` | OneWay, OneTime | Готовые Mono-варианты с одним параметром |
+| `ToggleCommandBinder` | `IRelayCommand`, `IRelayCommand<bool>` | OneWay, OneTime | Команда для Toggle.onValueChanged |
+| `SliderCommandBinder` | `IRelayCommand<int/long/float/double>` | OneWay, OneTime | Команда для Slider.onValueChanged |
 | `DropdownCommandBinder` | `IRelayCommand<int>` | OneWay, OneTime | Команда для TMP_Dropdown.onValueChanged |
 | `InputFieldCommandBinder` | `IRelayCommand`, `IRelayCommand<string>` | OneWay, OneTime | Команда для события TMP_InputField (`UpdateInputFieldEvent`) |
-| `ScrollRectCommandBinder` | `IRelayCommand<Vector2>` | OneWay, OneTime | Команда для ScrollRect.onValueChanged |
-| `ScrollbarCommandBinder` | `IRelayCommand<float>` | OneWay, OneTime | Команда для Scrollbar.onValueChanged |
-| `EventTriggerCommandBinder` | `IRelayCommand` | OneWay, OneTime | Команда для EventTrigger |
+| `ScrollRectCommandBinder` | `IRelayCommand<Vector2>`, `IRelayCommand<Vector3>` | OneWay, OneTime | Команда для ScrollRect.onValueChanged |
+| `ScrollbarCommandBinder` | `IRelayCommand<int/long/float/double>` | OneWay, OneTime | Команда для Scrollbar.onValueChanged |
+| `EventTriggerCommandBinder` | `IRelayCommand`, `IRelayCommand<BaseEventData>`, `IRelayCommand<EventTriggerType>` | OneWay, OneTime | Команда для выбранного события EventTrigger; варианты `<T1..T3>` с параметрами |
 
 ---
 
@@ -104,8 +113,35 @@ StarterKit -- это набор готовых к использованию б�
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
 | `SliderValueBinder` | `int`, `float`, `long`, `double` | OneWay, TwoWay, OneTime, OneWayToSource | Привязка `Slider.value` с обратной связью |
-| `SliderMinMaxBinder` | `Vector2` | OneWay, OneTime | Привязка min/max значений слайдера |
+| `SliderMinMaxBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка min/max слайдера (`SliderRangeMode`) |
 | `SliderMinMaxSwitcherBinder` | `bool` -> `Vector2` | OneWay, OneTime | Переключение min/max |
+| `Slider{Value, MinMax}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы Slider |
+| `SliderValueSwitcherMonoBinder` | `bool` -> `float` | OneWay, OneTime | Переключение `Slider.value` |
+
+---
+
+## Scrollbar
+
+Биндеры для `UnityEngine.UI.Scrollbar`.
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `ScrollbarValueBinder` | `int`, `float`, `long`, `double` | OneWay, TwoWay, OneTime, OneWayToSource | Привязка `Scrollbar.value` (в [0, 1]) с обратной связью |
+| `ScrollbarSizeBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка `Scrollbar.size` (в [0, 1]) |
+| `ScrollbarValue{Switcher, Enum, EnumGroup}MonoBinder` | `bool` / `Enum` | OneWay, OneTime | Значение по флагу или enum |
+
+---
+
+## ScrollRect
+
+Биндеры для `UnityEngine.UI.ScrollRect`.
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `ScrollRectNormalizedPositionBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `normalizedPosition` (компоненты в [0, 1]) |
+| `ScrollRect{Horizontal, Vertical}NormalizedPositionBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка положения по оси (в [0, 1]) |
+| `ScrollRect{Horizontal, Vertical}Binder` | `bool` | OneWay, OneTime, OneWayToSource | Включение прокрутки по оси |
+| `ScrollRect{…}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы ScrollRect |
 
 ---
 
@@ -115,7 +151,10 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `ToggleIsOnBinder` | `bool` | OneWay, TwoWay, OneTime, OneWayToSource | Привязка `Toggle.isOn` с поддержкой инверсии |
+| `ToggleIsOnBinder` | `bool` | OneWay, TwoWay, OneTime, OneWayToSource | Привязка `Toggle.isOn` с опциональным конвертером |
+| `ToggleIsOnEnumBinder` | `Enum` -> `bool` | OneWay, OneTime | `isOn` по значению enum |
+| `ToggleIsOnEnumGroupBinder` | `Enum` -> `bool` | OneWay, OneTime | `isOn` группы Toggle по значению enum |
+| `ToggleGroupAllowSwitchOffBinder` | `bool` | OneWay, OneTime | Привязка `ToggleGroup.allowSwitchOff` |
 
 ---
 
@@ -141,9 +180,14 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `GameObjectVisibleBinder` | `bool` | OneWay, OneTime | Привязка `SetActive` |
-| `GameObjectTagBinder` | `string` | OneWay, OneTime | Привязка `tag` |
+| `GameObjectVisibleBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `SetActive` |
+| `GameObjectVisibleByBindMonoBinder` | любой | OneTime | Показ объекта, пока есть привязка |
+| `GameObjectTagBinder` | `string` | OneWay, OneTime, OneWayToSource | Привязка `tag` |
 | `GameObjectTagSwitcherBinder` | `bool` -> `string` | OneWay, OneTime | Переключение тега |
+| `GameObjectLayerBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `layer`; несуществующий индекс отклоняется |
+| `GameObjectNameMonoBinder` | `string` | OneWay, OneTime, OneWayToSource | Имя объекта; `null` очищает |
+| `GameObjectInstantiateAddressableMonoBinder` | `string`, `IKeyEvaluator` | OneWay, OneTime | Инстанс префаба из Addressables (`ASPID_MVVM_ADDRESSABLES_INTEGRATION`) |
+| `GameObject{Visible, Tag}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы объектов |
 
 ---
 
@@ -186,9 +230,10 @@ StarterKit -- это набор готовых к использованию б�
 |-----------|-----------|--------|----------|
 | `CanvasGroupAlphaBinder` | `float` | OneWay, OneTime, OneWayToSource | Привязка `alpha` |
 | `CanvasGroupAlphaSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение прозрачности |
-| `CanvasGroupInteractableBinder` | `bool` | OneWay, OneTime | Привязка `interactable` |
-| `CanvasGroupBlocksRaycastsBinder` | `bool` | OneWay, OneTime | Привязка `blocksRaycasts` |
-| `CanvasGroupIgnoreParentGroupsBinder` | `bool` | OneWay, OneTime | Привязка `ignoreParentGroups` |
+| `CanvasGroupInteractableBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `interactable` |
+| `CanvasGroupBlocksRaycastsBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `blocksRaycasts` |
+| `CanvasGroupIgnoreParentGroupsBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `ignoreParentGroups` |
+| `CanvasGroup{…}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы CanvasGroup |
 
 ---
 
@@ -198,11 +243,14 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `AnimatorSetBoolBinder` | `bool` | OneWay, OneTime | Установка bool-параметра аниматора |
-| `AnimatorSetIntBinder` | `int` | OneWay, OneTime | Установка int-параметра аниматора |
-| `AnimatorSetFloatBinder` | `float` | OneWay, OneTime | Установка float-параметра аниматора |
-| `AnimatorSetTriggerBinder` | `bool` | OneWay, OneTime | Установка/сброс триггера аниматора |
-| `AnimatorSetParameterBinder` | `AnimatorControllerParameterType` | OneWay, OneTime | Универсальный биндер параметра |
+| `AnimatorSetBoolBinder` | `bool` | OneWay, OneTime, OneWayToSource | Установка bool-параметра; в OneWayToSource отдаёт `Action<bool>`/`IRelayCommand<bool>` |
+| `AnimatorSetIntBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Установка int-параметра |
+| `AnimatorSetFloatBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Установка float-параметра |
+| `AnimatorSetTriggerBinder` / `AnimatorResetTriggerBinder` | `Action`, `IRelayCommand` | OneWayToSource | `SetTrigger` / `ResetTrigger` как команда для ViewModel |
+| `AnimatorSpeedBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка `Animator.speed` |
+| `AnimatorLayerWeightBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Вес слоя, [0, 1] |
+| `AnimatorControllerBinder` | `RuntimeAnimatorController` | OneWay, OneTime, OneWayToSource | Привязка `runtimeAnimatorController` |
+| `AnimatorPlayStateBinder` | `string` | OneWay, OneTime | `Animator.Play` состояния по имени |
 
 ---
 
@@ -227,8 +275,26 @@ StarterKit -- это набор готовых к использованию б�
 | `RendererSortingOrderBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.sortingOrder` |
 | `RendererSortingLayerNameBinder` | `string` | OneWay, OneTime, OneWayToSource | Привязка `Renderer.sortingLayerName` |
 | `RendererPropertyBlock{Float, Color, Vector, Texture}MonoBinder` | `float` / `Color` / `Vector4` / `Texture` | OneWay, OneTime | Shader-свойство через `MaterialPropertyBlock` |
-| `LineRendererColorBinder` | `Color` | OneWay, OneTime | Привязка цвета LineRenderer |
+| `LineRendererColorBinder` | `Color` | OneWay, OneTime, OneWayToSource | Цвет начала/конца LineRenderer (`LineRendererColorMode`) |
 | `LineRendererColorSwitcherBinder` | `bool` -> `Color` | OneWay, OneTime | Переключение цвета LineRenderer |
+| `LineRendererColorEnum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Цвет по enum, для одного или группы LineRenderer |
+| `LineRendererLoopBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `LineRenderer.loop` |
+| `LineRendererWidthMultiplierBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка `widthMultiplier` (не ниже нуля) |
+
+---
+
+## SpriteRenderer
+
+Биндеры для `SpriteRenderer` (2D).
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `SpriteRendererSpriteBinder` | `Sprite`, `Texture2D` | OneWay, OneTime, OneWayToSource | Привязка `SpriteRenderer.sprite`; текстура оборачивается в спрайт |
+| `SpriteRendererColorBinder` | `Color` | OneWay, OneTime, OneWayToSource | Привязка `SpriteRenderer.color` |
+| `SpriteRendererFlipXBinder` / `FlipYBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `flipX` / `flipY` |
+| `SpriteRendererSizeBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `size` (Sliced/Tiled); отрицательные компоненты обнуляются |
+| `SpriteRendererSortingOrderBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `sortingOrder` |
+| `SpriteRenderer{Sprite, Color, FlipX, FlipY, SortingOrder}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы SpriteRenderer |
 
 ---
 
@@ -298,21 +364,72 @@ StarterKit -- это набор готовых к использованию б�
 
 ---
 
+## Rigidbody
+
+Биндеры для `Rigidbody` и `Rigidbody2D`.
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `RigidbodyMassBinder` / `Rigidbody2DMassBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка `mass`; неконечное значение отклоняется |
+| `RigidbodyIsKinematicBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Rigidbody.isKinematic` |
+| `RigidbodyUseGravityBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Rigidbody.useGravity` |
+| `RigidbodyConstraintsBinder` | `RigidbodyConstraints` | OneWay, OneTime, OneWayToSource | Привязка `Rigidbody.constraints` |
+| `Rigidbody2DBodyTypeBinder` | `RigidbodyType2D` | OneWay, OneTime, OneWayToSource | Привязка `Rigidbody2D.bodyType` |
+| `Rigidbody2DGravityScaleBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка `Rigidbody2D.gravityScale` |
+| `Rigidbody2DSimulatedBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Rigidbody2D.simulated` |
+
+---
+
+## Aggregator / Conditional
+
+Комбинирование нескольких привязок и выбор по условию; результат уходит в `UnityEvent<T>`.
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `AndBoolMonoBinder` / `OrBoolMonoBinder` | вход `bool` | — | Агрегатор: `UnityEvent<bool>` со сводкой всех входов |
+| `FormatStringMonoBinder` | вход `string` | — | Агрегатор: `string.Format` по входам |
+| `BoolAggregatorInputMonoBinder` / `StringAggregatorInputMonoBinder` | `bool` / `string` | OneWay, OneTime | Вход агрегатора с индексом |
+| `Conditional{Color, Float, String}MonoBinder` | `bool` | OneWay, OneTime | Одно из двух значений в `UnityEvent<T>` |
+
+---
+
+## RateLimit / Tween
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `Debounce{Float, String}MonoBinder` | `float` / `string` | OneWay, OneTime | Пропускает последнее значение, когда поток затих |
+| `Throttle{Float, String}MonoBinder` | `float` / `string` | OneWay, OneTime | Не больше одного значения за интервал |
+| `Delay{Float, String}MonoBinder` | `float` / `string` | OneWay, OneTime | Каждое значение с задержкой, по порядку |
+| `Tween{Float, Vector3, Color}MonoBinder` | `float` / `Vector3` / `Color` | OneWay, OneTime | Плавный переход к новому значению через `UnityEvent<T>` |
+
+---
+
+## UI Toolkit
+
+Биндеры ищут элемент в `UIDocument` по имени или USS-классу.
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `ElementLabelTextMonoBinder` | любой | OneWay, OneTime | `Label.text` |
+| `ElementTextFieldValueMonoBinder` | `string` | все | Текст `TextField` с обратной связью |
+| `ElementSliderValueMonoBinder` | `int`, `float`, `long`, `double` | все | Значение `Slider` с обратной связью |
+| `ElementButtonCommandMonoBinder` | `IRelayCommand` | OneWay, OneTime | Клик по `Button` |
+| `Element{Enabled, Display, Class}MonoBinder` | `bool` | OneWay, OneTime | `SetEnabled`, `display`, USS-класс |
+| `ElementListViewItemsSourceMonoBinder` | `IReadOnlyList<object>`, observable/filtered | OneWay, OneTime | Источник `ListView` |
+
+---
+
 ## UnityEvent
 
 Биндеры для вызова `UnityEvent` при изменении значения. [Подробнее](unity-event-binders.md)
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `UnityEventBoolMonoBinder` | `bool` | OneWay, OneTime | Вызов UnityEvent при изменении bool |
-| `UnityEventIntMonoBinder` | `int` | OneWay, OneTime | Вызов UnityEvent при изменении int |
-| `UnityEventFloatMonoBinder` | `float` | OneWay, OneTime | Вызов UnityEvent при изменении float |
-| `UnityEventStringMonoBinder` | `string` | OneWay, OneTime | Вызов UnityEvent при изменении string |
-| `UnityEventVector2MonoBinder` | `Vector2` | OneWay, OneTime | Вызов UnityEvent при изменении Vector2 |
-| `UnityEventVector3MonoBinder` | `Vector3` | OneWay, OneTime | Вызов UnityEvent при изменении Vector3 |
-| `UnityEventColorMonoBinder` | `Color` | OneWay, OneTime | Вызов UnityEvent при изменении Color |
-| `UnityEventQuaternionMonoBinder` | `Quaternion` | OneWay, OneTime | Вызов UnityEvent при изменении Quaternion |
-| `UnityEventSwitcherMonoBinder` | `bool` | OneWay, OneTime | Вызов одного из двух UnityEvent по условию |
+| `UnityEvent{Bool, Int, Long, Float, Double, String, Color, Vector2, Vector3, Quaternion}MonoBinder` | соответствующий тип | OneWay, OneTime | Вызов `UnityEvent<T>` со значением; у числовых и строкового принимаются все числовые типы |
+| `UnityEventEnumMonoBinder` | `Enum` | OneWay, OneTime | Вызов `UnityEvent`, сопоставленного значению enum |
+| `UnityEventSwitcherMonoBinder` | `bool` | OneWay, OneTime | Вызов одного из двух `UnityEvent` |
+| `UnityEventNumberCondition(Switcher)MonoBinder` | `float` | OneWay, OneTime | Число → `bool` через конвертер → `UnityEvent<bool>` или одно из двух событий |
+| `UnityEventBoolByBindMonoBinder` | любой | OneTime | `UnityEvent<bool>` с фактом наличия привязки |
 
 ---
 
@@ -325,7 +442,7 @@ StarterKit -- это набор готовых к использованию б�
 | `ViewModelObservableListBinder` | `ObservableList<IViewModel>` | OneWay, OneTime | Динамический список с фабрикой View |
 | `ViewModelCollectionBinder` | `IReadOnlyList<IViewModel>` | OneWay, OneTime | Статическая коллекция |
 | `ViewModelObservableDictionaryBinder` | `ObservableDict<K,IViewModel>` | OneWay, OneTime | Словарь с фабрикой View |
-| `VirtualizedListItemSourceBinder` | `IVirtualizedListItemSource` | OneWay, OneTime | Источник данных для VirtualizedList |
+| `VirtualizedListItemSourceBinder` | `IReadOnlyList<IViewModel>` | OneWay, OneTime | Источник данных для VirtualizedList |
 
 ---
 
@@ -335,9 +452,12 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `SelectableInteractableBinder` | `bool` | OneWay, OneTime | Привязка `interactable` |
-| `SelectableColorBlockBinder` | `ColorBlock` | OneWay, OneTime | Привязка `colors` |
+| `SelectableInteractableBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `interactable` |
+| `SelectableColorBlockBinder` | `ColorBlock` | OneWay, OneTime, OneWayToSource | Привязка `colors` |
 | `SelectableColorBlockSwitcherBinder` | `bool` -> `ColorBlock` | OneWay, OneTime | Переключение цветовой схемы |
+| `SelectableTransitionBinder` | `Selectable.Transition` | OneWay, OneTime, OneWayToSource | Привязка `transition` |
+| `SelectableTargetGraphicBinder` | `Graphic` | OneWay, OneTime, OneWayToSource | Привязка `targetGraphic` |
+| `Selectable{Interactable, ColorBlock}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum, для одного или группы Selectable |
 
 ---
 
@@ -347,7 +467,9 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `BehaviourEnabledBinder` | `bool` | OneWay, OneTime | Привязка `Behaviour.enabled` |
+| `BehaviourEnabledBinder` | `bool` | OneWay, OneTime, OneWayToSource | Привязка `Behaviour.enabled`; пустая ссылка берёт первый не-биндер на объекте |
+| `BehaviourEnabledByBindMonoBinder` | любой | OneTime | Биндер включён, пока есть привязка |
+| `BehaviourEnabledEnum(Group)MonoBinder` | `Enum` | OneWay, OneTime | `enabled` по enum, для одного или группы Behaviour |
 
 ---
 
@@ -357,10 +479,15 @@ StarterKit -- это набор готовых к использованию б�
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `LayoutGroupPaddingBinder` | `RectOffset` / `int` | OneWay, OneTime | Привязка padding |
-| `LayoutGroupPaddingSwitcherBinder` | `bool` -> padding | OneWay, OneTime | Переключение padding |
-| `HorizontalOrVerticalLayoutSpacingBinder` | `float` | OneWay, OneTime | Привязка spacing |
-| `HorizontalOrVerticalLayoutSpacingSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение spacing |
+| `LayoutGroupPaddingBinder` | `RectOffset`, `int` | OneWay, OneTime, OneWayToSource | Привязка padding; стороны выбираются `RectSides` |
+| `LayoutGroupPaddingSwitcherBinder` | `bool` -> `RectOffset` | OneWay, OneTime | Переключение padding |
+| `HorizontalOrVerticalLayoutGroupSpacingBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Привязка spacing |
+| `HorizontalOrVerticalLayoutGroupSpacingSwitcherBinder` | `bool` -> `float` | OneWay, OneTime | Переключение spacing |
+| `GridLayoutGroupCellSizeBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `cellSize` (не ниже нуля) |
+| `GridLayoutGroupSpacingBinder` | `Vector2` | OneWay, OneTime, OneWayToSource | Привязка `spacing` |
+| `GridLayoutGroupConstraintBinder` | `GridLayoutGroup.Constraint` | OneWay, OneTime, OneWayToSource | Привязка `constraint` |
+| `GridLayoutGroupConstraintCountBinder` | `int` | OneWay, OneTime, OneWayToSource | Привязка `constraintCount` |
+| `{LayoutGroup, HorizontalOrVerticalLayoutGroup}{…}Enum(Group)MonoBinder` | `Enum` | OneWay, OneTime | Значение по enum |
 
 ---
 
@@ -406,13 +533,67 @@ MonoBinder-кастеры для преобразования типов меж�
 
 ---
 
+## UI-компоненты (прочие)
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `CanvasSortingOrderBinder` / `CanvasOverrideSortingBinder` | `int` / `bool` | OneWay, OneTime, OneWayToSource | `Canvas.sortingOrder`, `overrideSorting` |
+| `CanvasScaler{UiScaleMode, ScaleFactor, ReferenceResolution, MatchWidthOrHeight}Binder` | `ScaleMode` / `float` / `Vector2` / `float` | OneWay, OneTime, OneWayToSource | Свойства `CanvasScaler` с ограничениями Unity |
+| `ContentSizeFitter{HorizontalFit, VerticalFit}Binder` | `ContentSizeFitter.FitMode` | OneWay, OneTime, OneWayToSource | Режимы подгонки размера |
+| `AspectRatioFitter{AspectMode, AspectRatio}Binder` | `AspectMode` / `float` | OneWay, OneTime, OneWayToSource | Режим и соотношение сторон |
+| `LayoutElement{PreferredWidth, PreferredHeight, FlexibleWidth, FlexibleHeight}Binder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Размеры элемента; отрицательное = «без предпочтения» |
+| `LayoutElementIgnoreLayoutBinder` | `bool` | OneWay, OneTime, OneWayToSource | `ignoreLayout` |
+| `MaskShowMaskGraphicBinder` | `bool` | OneWay, OneTime, OneWayToSource | `Mask.showMaskGraphic` |
+| `RectMask2DPaddingBinder` | `Vector3` | OneWay, OneTime, OneWayToSource | `RectMask2D.padding` (left, bottom, right) |
+| `Shadow{EffectColor, EffectDistance}Binder` | `Color` / `Vector2` | OneWay, OneTime, OneWayToSource | Цвет и смещение `Shadow`/`Outline` |
+
+---
+
+## ParticleSystem
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `ParticleSystemEmissionEnabledBinder` | `bool` | OneWay, OneTime, OneWayToSource | Включение эмиссии без остановки системы |
+| `ParticleSystemEmissionRateBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Множитель `rateOverTime`, не ниже нуля |
+| `ParticleSystemStartColorBinder` | `Color` | OneWay, OneTime, OneWayToSource | Цвет новых частиц |
+| `ParticleSystem{Play, Stop, Pause, Clear}MonoBinder` | `Action`, `IRelayCommand` | OneWayToSource | Операция воспроизведения как команда для ViewModel |
+
+---
+
+## Сцена и рендеринг
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `Camera{BackgroundColor, FieldOfView, Orthographic, OrthographicSize}Binder` | `Color` / `float` / `bool` / `float` | OneWay, OneTime, OneWayToSource | Свойства камеры |
+| `Light{Color, Intensity, Range, SpotAngle}Binder` | `Color` / `float` | OneWay, OneTime, OneWayToSource | Свойства источника света |
+| `VideoPlayer{Clip, IsLooping, PlaybackSpeed}Binder` | `VideoClip` / `bool` / `float` | OneWay, OneTime, OneWayToSource | Клип, зацикливание, скорость (0..10) |
+| `NavMeshAgent{Speed, IsStopped}Binder` | `float` / `bool` | OneWay, OneTime, OneWayToSource | Агент вне NavMesh: запись `isStopped` логируется и пропускается |
+
+---
+
+## Глобальное состояние
+
+Биндеры без цели: статические свойства движка.
+
+| Компонент | Тип данных | Режимы | Описание |
+|-----------|-----------|--------|----------|
+| `TimeScaleBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | `Time.timeScale`, не ниже нуля |
+| `TargetFrameRateBinder` | `int` | OneWay, OneTime, OneWayToSource | `Application.targetFrameRate`, не ниже -1 |
+| `QualityLevelBinder` | `int` | OneWay, OneTime, OneWayToSource | Уровень качества, индекс ограничен списком проекта |
+| `ScreenFullScreenBinder` | `bool` | OneWay, OneTime, OneWayToSource | `Screen.fullScreen` |
+| `AudioListener{Volume, Pause}Binder` | `float` / `bool` | OneWay, OneTime, OneWayToSource | Глобальная громкость и пауза звука |
+| `AudioMixerFloatBinder` | `int`, `float`, `long`, `double` | OneWay, OneTime, OneWayToSource | Exposed-параметр `AudioMixer` |
+| `AudioMixerSnapshotBinder` | `int`, `string` | OneWay, OneTime | Переход к снапшоту по индексу или имени |
+
+---
+
 ## Debug
 
 Утилиты для отладки.
 
 | Компонент | Тип данных | Режимы | Описание |
 |-----------|-----------|--------|----------|
-| `DebugLogBinder` | `any` | OneWay, OneTime | Вывод значения в `Debug.Log` при изменении |
+| `DebugLogBinder` | любой | все | Вывод значения в `Debug.Log`; только в Editor и development-сборках |
 
 ---
 

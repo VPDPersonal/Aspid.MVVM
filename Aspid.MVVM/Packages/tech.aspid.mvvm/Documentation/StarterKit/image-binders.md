@@ -19,7 +19,9 @@
 |----------|----------|
 | `_disabledWhenNull` | Отключает `Image` компонент, когда спрайт `null` |
 
-**Режимы:** OneWay, OneTime.
+Спрайт, созданный из `Texture2D`, принадлежит биндеру и уничтожается при отвязке.
+
+**Режимы:** OneWay, OneTime, OneWayToSource.
 
 ```csharp
 [ViewModel]
@@ -59,13 +61,38 @@ public partial class HealthBarViewModel
 
 Значение clamp-ится в диапазоне [0, 1]. Реализует `INumberBinder` — принимает `int`, `float`, `long`, `double`.
 
-**Режимы:** OneWay, OneTime.
+**Режимы:** OneWay, OneTime, OneWayToSource.
 
 ---
 
 ## ImageFillSwitcherBinder
 
 `bool` → выбор между двумя значениями `fillAmount`.
+
+---
+
+## ImageSpriteAddressableMonoBinder
+
+Загружает `Sprite` по адресу Addressables (`string` или `IKeyEvaluator`) и ставит его в `Image.sprite`. Доступен только с `ASPID_MVVM_ADDRESSABLES_INTEGRATION`.
+
+| Свойство | Описание |
+|----------|----------|
+| `_defaultSprite` | Показывается во время загрузки и при ошибке |
+| `_disabledWhenNull` | Отключает `Image`, когда спрайт `null` |
+| `_seamlessSwap` | Держать прежний спрайт до окончания загрузки |
+
+---
+
+## Прочие свойства Image
+
+| Биндер | Свойство | Тип |
+|--------|----------|-----|
+| `ImageTypeBinder` | `Image.type` | `Image.Type` |
+| `ImagePreserveAspectBinder` | `preserveAspect` | `bool` |
+| `ImageFillOriginBinder` | `fillOrigin` | `int`, индекс в enum текущего `fillMethod` |
+| `ImageFillClockwiseBinder` | `fillClockwise` | `bool` |
+
+**Режимы:** OneWay, OneTime, OneWayToSource.
 
 ---
 

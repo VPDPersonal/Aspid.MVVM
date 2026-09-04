@@ -74,7 +74,7 @@ public partial class CharacterViewModel
 
 ## AnimatorSetTriggerBinder
 
-Привязка `Animator.SetTrigger`. Работает иначе — только **OneWayToSource**.
+Привязка `Animator.SetTrigger`. Работает иначе — только **OneWayToSource**. Парный `AnimatorResetTriggerBinder` вызывает `ResetTrigger`: взведённый и не сработавший триггер иначе остаётся активным.
 
 Предоставляет `Action` или `IRelayCommand` во ViewModel для вызова триггера:
 

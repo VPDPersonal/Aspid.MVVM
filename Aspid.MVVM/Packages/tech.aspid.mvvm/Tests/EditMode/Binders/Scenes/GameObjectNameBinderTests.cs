@@ -12,7 +12,7 @@ namespace Aspid.MVVM.Tests
     public sealed class GameObjectNameBinderTests : SceneFixture
     {
         [Test]
-        public void Name_ReachesTheObject_AndRefusesNull()
+        public void Name_ReachesTheObject_AndNullClearsIt()
         {
             var gameObject = Spawn("Named");
             var binder = gameObject.AddComponent<GameObjectNameMonoBinder>();
@@ -21,7 +21,7 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual("Slot 3", gameObject.name, "The name did not reach the object");
 
             ((IBinder<string>)binder).SetValue(null);
-            Assert.AreEqual("Slot 3", gameObject.name, "A null value erased the object's name");
+            Assert.AreEqual(string.Empty, gameObject.name, "A null value did not clear the object's name");
         }
     }
 }

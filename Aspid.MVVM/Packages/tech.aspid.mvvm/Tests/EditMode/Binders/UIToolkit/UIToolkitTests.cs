@@ -130,7 +130,7 @@ namespace Aspid.MVVM.Tests
             var (document, _) = NewDocument<Label>("title");
             var binder = NewBinder<ElementLabelTextMonoBinder>(document, "missing");
 
-            LogAssert.Expect(LogType.Error, new Regex("No Label named 'missing'"));
+            LogAssert.Expect(LogType.Error, new Regex("holds no Label named 'missing'"));
             binder.SetValue("value");
         }
 
@@ -174,7 +174,7 @@ namespace Aspid.MVVM.Tests
         {
             var binder = Spawn<ElementLabelTextMonoBinder>("UIToolkit");
 
-            LogAssert.Expect(LogType.Error, new Regex("No UIDocument assigned"));
+            LogAssert.Expect(LogType.Error, new Regex("no UIDocument is assigned"));
             binder.SetValue("value");
         }
 

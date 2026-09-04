@@ -21,7 +21,7 @@
 
 ### Защита от циклов
 
-Флаг `_isNotifyValueChanged` предотвращает рекурсию при TwoWay-привязке: когда ViewModel обновляет Toggle, обратное событие блокируется.
+Запись из ViewModel вызывает `onValueChanged` для остальных слушателей, но биндер не отправляет её обратно в ViewModel.
 
 **Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
 
@@ -81,18 +81,33 @@ public partial class SettingsViewModel
 
 ---
 
+## ToggleIsOnEnumBinder / ToggleIsOnEnumGroupBinder
+
+Устанавливают `isOn` по значению enum через `SetIsOnWithoutNotify`: `Enum`-вариант для одного Toggle, `EnumGroup` для набора Toggle, где каждому члену enum сопоставлен свой элемент.
+
+**Режимы:** OneWay, OneTime.
+
+---
+
+## ToggleGroupAllowSwitchOffBinder
+
+Привязка `ToggleGroup.allowSwitchOff`. Выключение не выбирает ничего: пустая группа остаётся пустой до нажатия пользователя.
+
+**Режимы:** OneWay, OneTime.
+
+---
+
 ## Пример: настройки с инверсией
 
 ```csharp
 [ViewModel]
 public partial class NotificationViewModel
 {
-    // BoolInvertConverter → Toggle ON = "не беспокоить выключен"
     [TwoWayBind] private bool _doNotDisturb;
 }
 ```
 
-В Inspector на `ToggleIsOnBinder` установите `Is Invert = true`, чтобы Toggle показывал "Уведомления включены" (`!doNotDisturb`).
+В Inspector на `ToggleIsOnBinder` задайте конвертер `BoolInvertConverter`, чтобы Toggle показывал "Уведомления включены" (`!doNotDisturb`).
 
 ---
 

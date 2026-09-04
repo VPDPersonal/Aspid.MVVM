@@ -1,3 +1,3 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo(assemblyName: "Aspid.MVVM.StarterKit.Unity.Editor")]
+[assembly: InternalsVisibleTo(assemblyName: "Aspid.MVVM.StarterKit.Editor")]

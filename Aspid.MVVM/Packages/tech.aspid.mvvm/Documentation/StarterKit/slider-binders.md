@@ -21,7 +21,7 @@
 
 ### Защита от циклов
 
-Флаг `_isNotifyValueChanged` предотвращает рекурсию при TwoWay-привязке: когда ViewModel обновляет `Slider.value`, обратное событие блокируется.
+Запись из ViewModel вызывает `onValueChanged` для остальных слушателей, но биндер не отправляет её обратно в ViewModel. Значение clamp-ится к диапазону слайдера; если clamp его изменил, изменённое значение отправляется в ViewModel.
 
 **Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
 
@@ -42,9 +42,10 @@ public partial class VolumeViewModel
 | Интерфейс | Описание |
 |-----------|----------|
 | `IBinder<Vector2>` | `x` = minValue, `y` = maxValue |
-| `INumberBinder` | При числовом типе — устанавливает оба значения одинаково |
 
-### SliderValueMode
+Перевёрнутый диапазон логируется и разворачивается, неконечный — логируется и не применяется.
+
+### SliderRangeMode
 
 Определяет, какую часть min/max обновлять:
 
@@ -68,7 +69,7 @@ public partial class DifficultyViewModel
 
 ## SliderMinMaxSwitcherBinder
 
-`bool` → выбор между двумя значениями `Vector2` для min/max. Поддерживает `SliderValueMode`.
+`bool` → выбор между двумя значениями `Vector2` для min/max. Поддерживает `SliderRangeMode`.
 
 **Режимы:** OneWay, OneTime.
 

@@ -52,6 +52,10 @@ public partial class FormViewModel
 | `ButtonCommandBinder<T1, T2, T3>` | `IRelayCommand<T1, T2, T3>` | 3 параметра |
 | `ButtonCommandBinder<T1, T2, T3, T4>` | `IRelayCommand<T1, T2, T3, T4>` | 4 параметра |
 
+`ButtonCommandBinder` также принимает `IRelayCommand<bool>` и передаёт ему `true` при клике.
+
+Generic-варианты абстрактны для Mono; готовые компоненты с одним параметром: `ButtonCommandIntMonoBinder`, `ButtonCommandFloatMonoBinder`, `ButtonCommandBoolMonoBinder`, `ButtonCommandStringMonoBinder`, `ButtonCommandObjectMonoBinder`.
+
 ### Пример: команда с параметром из Stats
 
 ```csharp

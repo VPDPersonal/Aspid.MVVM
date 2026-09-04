@@ -205,8 +205,8 @@ public sealed class NumberCollectionOrder : ICollectionOrder<IViewModel>
 ### Настройка в Inspector
 
 1. Добавьте `VirtualizedListItemSourceMonoBinder` на ListView
-2. Укажите `ViewFactory` (рекомендуется `PrefabViewPool` для виртуализации)
-3. Опционально добавьте фильтр и/или компаратор
+2. Укажите префаб элемента в компоненте `VirtualizedList`
+3. Опционально задайте фильтр и/или порядок сортировки на биндере
 
 ---
 

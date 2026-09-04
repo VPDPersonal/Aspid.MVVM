@@ -4,8 +4,7 @@
     "references": [
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
-        "Aspid.MVVM.StarterKit",
-        "Aspid.MVVM.StarterKit.Unity"
+        "Aspid.MVVM.StarterKit"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

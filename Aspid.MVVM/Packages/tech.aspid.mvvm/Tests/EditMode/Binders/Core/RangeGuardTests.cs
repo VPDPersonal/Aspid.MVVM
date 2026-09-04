@@ -24,7 +24,7 @@ namespace Aspid.MVVM.Tests
             var slider = Spawn<Slider>();
 
             LogAssert.Expect(LogType.Error, new Regex("is inverted"));
-            slider.SetMinMax(new Vector2(10f, 2f), SliderValueMode.Range);
+            slider.SetMinMax(new Vector2(10f, 2f), SliderRangeMode.Range);
 
             Assert.AreEqual(2f, slider.minValue);
             Assert.AreEqual(10f, slider.maxValue);
@@ -38,7 +38,7 @@ namespace Aspid.MVVM.Tests
             slider.maxValue = 1f;
 
             LogAssert.Expect(LogType.Error, new Regex("is not finite"));
-            slider.SetMinMax(new Vector2(float.NaN, 1f), SliderValueMode.Range);
+            slider.SetMinMax(new Vector2(float.NaN, 1f), SliderRangeMode.Range);
 
             Assert.AreEqual(0f, slider.minValue);
             Assert.AreEqual(1f, slider.maxValue);

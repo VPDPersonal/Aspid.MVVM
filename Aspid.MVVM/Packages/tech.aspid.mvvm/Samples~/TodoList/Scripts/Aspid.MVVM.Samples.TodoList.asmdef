@@ -7,8 +7,7 @@
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit",
-        "Aspid.Collections.Observable",
-        "Aspid.MVVM.StarterKit.Unity"
+        "Aspid.Collections.Observable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,0 +1,19 @@
+{
+    "name": "Aspid.MVVM.Samples.BindModes",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.FastTools.Unity"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

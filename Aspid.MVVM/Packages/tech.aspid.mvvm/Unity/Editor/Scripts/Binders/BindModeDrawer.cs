@@ -33,8 +33,8 @@ namespace Aspid.MVVM
 
             EditorGUI.BeginChangeCheck();
             {
-                // Перегрузка с GUIContent-подписью требует GUIContent-вариантов: без неё подпись поля теряется,
-                // и вложенное поле BindMode рисуется без имени.
+                // The GUIContent label overload needs GUIContent options, otherwise the label is lost
+                // and a nested BindMode field is drawn unnamed.
                 var displayedOptions = availableModes.Modes.Select(mode => new GUIContent(mode.ToString())).ToArray();
                 selectedIndex = EditorGUI.Popup(position, label, selectedIndex, displayedOptions);
             }
@@ -52,8 +52,9 @@ namespace Aspid.MVVM
             var availableModes = GetAvailableModes();
             var selectedIndex = GetSelectedIndex(property, availableModes);
             
+            var label = string.IsNullOrEmpty(preferredLabel) ? null : preferredLabel;
             var displayedOptions = availableModes.Modes.Select(mode => mode.ToString()).ToList();
-            var popup = new PopupField<string>(property.displayName, displayedOptions, selectedIndex, static data => data, static data => data)
+            var popup = new PopupField<string>(label, displayedOptions, selectedIndex, static data => data, static data => data)
                 .SetMargin(0, 0, 0, 0);
 
             popup.showMixedValue = property.hasMultipleDifferentValues;

@@ -6,7 +6,6 @@ namespace Aspid.MVVM.Samples.Greeter
     [ViewModel]
     public sealed partial class GreeterMonoViewModel : MonoViewModel
     {
-        // Когда InputField изменится, Name обновится автоматически.
         [Bind] 
         [SerializeField] private string _name;
         
@@ -20,8 +19,7 @@ namespace Aspid.MVVM.Samples.Greeter
         private void Clear() =>
             Name = string.Empty;
 
-        // Partial-метод, который Source Generator вызывает при каждом изменении Name.
-        // Имя формируется по правилу: On + {PropertyName} + Changed.
+        // Partial method the Source Generator calls whenever Name changes; named On + {PropertyName} + Changed.
         partial void OnNameChanged(string newValue) =>
             Greeting = string.IsNullOrEmpty(newValue)
                 ? string.Empty

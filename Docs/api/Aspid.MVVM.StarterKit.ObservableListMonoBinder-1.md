@@ -1,0 +1,313 @@
+---
+title: "Class ObservableListMonoBinder<T>"
+sidebar_label: "ObservableListMonoBinder<T>"
+description: "Class ObservableListMonoBinder<T> — Aspid.MVVM API reference"
+hide_title: true
+pagination_prev: null
+pagination_next: null
+---
+# Class ObservableListMonoBinder\<T\> {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1}
+
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
+Assembly: Aspid.MVVM.StarterKit.dll  
+
+Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that follows a plain, observable or filtered list and reflects its
+add, remove, replace, move and reset changes onto a View.
+
+```csharp
+public abstract class ObservableListMonoBinder<T> : MonoBinder, IMonoBinderValidatable, IRebindableBinder, IBinder<IReadOnlyList<T>>, IBinder<IReadOnlyFilteredList<T>>, IBinder<IReadOnlyObservableList<T>>, IBinder
+```
+
+#### Type Parameters
+
+`T` 
+
+The element type of the list.
+
+#### Inheritance
+
+[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+Object ← 
+Component ← 
+Behaviour ← 
+MonoBehaviour ← 
+[MonoBinder](Aspid.MVVM.MonoBinder.md) ← 
+[ObservableListMonoBinder\<T\>](Aspid.MVVM.StarterKit.ObservableListMonoBinder-1.md)
+
+#### Implements
+
+[IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md), 
+[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
+[IBinder\<IReadOnlyList\<T\>\>](Aspid.MVVM.IBinder-1.md), 
+[IBinder\<IReadOnlyFilteredList\<T\>\>](Aspid.MVVM.IBinder-1.md), 
+[IBinder\<IReadOnlyObservableList\<T\>\>](Aspid.MVVM.IBinder-1.md), 
+[IBinder](Aspid.MVVM.IBinder.md)
+
+
+#### Extension Methods
+
+[BinderExtensions.BindSafely\<ObservableListMonoBinder\<T\>\>\(ObservableListMonoBinder\<T\>?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
+[BinderExtensions.BindSafely\<ObservableListMonoBinder\<T\>\>\(ObservableListMonoBinder\<T\>?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
+[BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
+[BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
+[BinderLogger.LogWarning\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogWarning_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
+[BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
+[BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
+[BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
+[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
+[BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
+[BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
+[BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
+[BinderMath.RequireFinite\(IBinder, Vector4, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector4_UnityEngine_Object_), 
+[BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
+[BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
+[BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
+[BinderExtensions.UnbindSafely\<ObservableListMonoBinder\<T\>\>\(ObservableListMonoBinder\<T\>?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+
+## Fields
+
+### SetValueMarker {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_SetValueMarker}
+
+```csharp
+protected static readonly ProfilerMarker SetValueMarker
+```
+
+#### Field Value
+
+ ProfilerMarker
+
+## Properties
+
+### IsDebug {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_IsDebug}
+
+```csharp
+protected bool IsDebug { get; }
+```
+
+#### Property Value
+
+ [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+
+### List {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_List}
+
+Gets the bound list, possibly wrapped by [`ObservableListMonoBinder<T>.GetFilteredList`](Aspid.MVVM.StarterKit.ObservableListMonoBinder-1.md#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_GetFilteredList_System_Collections_Generic_IReadOnlyList__0__), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when none is set.
+
+```csharp
+protected IReadOnlyList<T> List { get; }
+```
+
+#### Property Value
+
+ [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<T\>
+
+## Methods
+
+### AddLog\(string\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_AddLog_System_String_}
+
+```csharp
+protected void AddLog(string log)
+```
+
+#### Parameters
+
+`log` [string](https://learn.microsoft.com/dotnet/api/system.string)
+
+### GetFilteredList\(IReadOnlyList\<T\>\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_GetFilteredList_System_Collections_Generic_IReadOnlyList__0__}
+
+Called on binding to optionally wrap the list in a filtered view. Override to add a filter.
+
+```csharp
+protected virtual IReadOnlyFilteredList<T> GetFilteredList(IReadOnlyList<T> list)
+```
+
+#### Parameters
+
+`list` [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<T\>
+
+The bound list.
+
+#### Returns
+
+ IReadOnlyFilteredList\<T\>
+
+The filtered view, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to use <code class="paramref">list</code> as-is.
+
+### OnAdded\(T, int\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnAdded__0_System_Int32_}
+
+Called when one item was added.
+
+```csharp
+protected abstract void OnAdded(T newItem, int index)
+```
+
+#### Parameters
+
+`newItem` T
+
+The added item.
+
+`index` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index it was inserted at.
+
+### OnAdded\(IReadOnlyList\<T\>, int\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnAdded_System_Collections_Generic_IReadOnlyList__0__System_Int32_}
+
+Called when several items were added at once, including the whole list on binding.
+
+```csharp
+protected abstract void OnAdded(IReadOnlyList<T> newItems, int index)
+```
+
+#### Parameters
+
+`newItems` [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<T\>
+
+The added items.
+
+`index` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index of the first added item.
+
+### OnMoved\(T, T, int, int\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnMoved__0__0_System_Int32_System_Int32_}
+
+Called when an item was moved.
+
+```csharp
+protected abstract void OnMoved(T oldItem, T newItem, int oldStartingIndex, int newStartingIndex)
+```
+
+#### Parameters
+
+`oldItem` T
+
+The item at <code class="paramref">oldStartingIndex</code> before the move.
+
+`newItem` T
+
+The item at <code class="paramref">newStartingIndex</code> after the move.
+
+`oldStartingIndex` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index before the move.
+
+`newStartingIndex` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index after the move.
+
+### OnRemoved\(T, int\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnRemoved__0_System_Int32_}
+
+Called when one item was removed.
+
+```csharp
+protected abstract void OnRemoved(T oldItem, int oldStartingIndex)
+```
+
+#### Parameters
+
+`oldItem` T
+
+The removed item.
+
+`oldStartingIndex` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index it was removed from.
+
+### OnRemoved\(IReadOnlyList\<T\>, int\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnRemoved_System_Collections_Generic_IReadOnlyList__0__System_Int32_}
+
+Called when several items were removed at once.
+
+```csharp
+protected abstract void OnRemoved(IReadOnlyList<T> oldItems, int oldStartingIndex)
+```
+
+#### Parameters
+
+`oldItems` [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<T\>
+
+The removed items.
+
+`oldStartingIndex` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index of the first removed item.
+
+### OnReplaced\(T, T, int\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnReplaced__0__0_System_Int32_}
+
+Called when the item at <code class="paramref">index</code> was replaced.
+
+```csharp
+protected abstract void OnReplaced(T oldItem, T newItem, int index)
+```
+
+#### Parameters
+
+`oldItem` T
+
+The item before replacement.
+
+`newItem` T
+
+The item after replacement.
+
+`index` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The index of the replaced item.
+
+### OnReset\(\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnReset}
+
+Called when the list was cleared or replaced; the View should drop every item.
+
+```csharp
+protected abstract void OnReset()
+```
+
+### OnUnbound\(\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_OnUnbound}
+
+Unsubscribes from the bound list and resets the View.
+
+```csharp
+protected override void OnUnbound()
+```
+
+### SetValue\(IReadOnlyList\<T\>\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_SetValue_System_Collections_Generic_IReadOnlyList__0__}
+
+Binds to a plain list; changes to it are not observed.
+
+```csharp
+public void SetValue(IReadOnlyList<T> list)
+```
+
+#### Parameters
+
+`list` [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<T\>
+
+The list to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to clear the binding.
+
+### SetValue\(IReadOnlyFilteredList\<T\>\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_SetValue_Aspid_Collections_Observable_Filtered_IReadOnlyFilteredList__0__}
+
+Binds to a filtered list; a filter change resets and replays the whole list.
+
+```csharp
+public void SetValue(IReadOnlyFilteredList<T> list)
+```
+
+#### Parameters
+
+`list` IReadOnlyFilteredList\<T\>
+
+The list to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to clear the binding.
+
+### SetValue\(IReadOnlyObservableList\<T\>\) {#Aspid_MVVM_StarterKit_ObservableListMonoBinder_1_SetValue_Aspid_Collections_Observable_IReadOnlyObservableList__0__}
+
+Binds to an observable list and follows its granular changes.
+
+```csharp
+public void SetValue(IReadOnlyObservableList<T> list)
+```
+
+#### Parameters
+
+`list` IReadOnlyObservableList\<T\>
+
+The list to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to clear the binding.
+

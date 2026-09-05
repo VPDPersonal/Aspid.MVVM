@@ -109,18 +109,56 @@ npm run build            # what CI runs; fails on broken links
 
 `onBrokenLinks` and `onBrokenMarkdownLinks` are set to `throw`: a bad relative link breaks the build on purpose.
 
+## API reference (`/api`)
+
+The **API** tab is generated from the XML doc comments by DocFX, not written by hand. `Docs/api/` holds the
+generated Markdown plus `sidebar.js` and **is committed**: DocFX has to compile the assemblies against the
+local Unity installation, which CI does not have.
+
+```bash
+dotnet tool install -g docfx        # once
+cd Docs && npm run api              # regenerate after public API or XML doc changes
+```
+
+`npm run api` runs three steps (`Docs/scripts/docfx-*.mjs`, `Docs/docfx/docfx.json`):
+
+1. `docfx-projects.mjs` rewrites the legacy `.csproj` files Unity generates (`Aspid.MVVM`, `Aspid.MVVM.Unity`,
+   `Aspid.MVVM.StarterKit`) into SDK-style projects under `Docs/docfx/projects/` (gitignored, absolute paths)
+   with the same files, references, defines and the source generators as analyzers. Unity must have regenerated
+   the `.csproj` files and `Library/ScriptAssemblies` first (open the project once).
+2. `docfx metadata` writes one Markdown page per type into `Docs/api/`.
+3. `docfx-postprocess.mjs` makes it MDX-safe: `<xref>` → links (own pages, learn.microsoft.com, Unity Scripting
+   Reference), `<pre><code>` → fenced code, heading anchors as `{#id}`, escaped `<T`/`{}`, no "Inherited Members",
+   front matter with a short `sidebar_label`, and `toc.yml` → `sidebar.js` (namespace → Classes/Interfaces/… groups).
+
+The pages are served by a third docs plugin instance (`id: 'api'`) in `docusaurus.config.js`. Never edit files in
+`Docs/api/` by hand; fix the XML comment or the postprocess script and regenerate. Translations are not
+generated; the `ru` locale falls back to the English pages.
+
 ## Design
 
-The theme is the Ayu palette (Light/Dark) with Inter + JetBrains Mono:
+The theme is a dark graphite with the Unity badge green as accent (see the `--venom-*` tokens); light mode is
+pastel beige. Fonts: IBM Plex Serif (headings), iA Writer Quattro (body, self-hosted in `Docs/src/fonts/`),
+IBM Plex Mono (code and UI labels).
 
-- `Docs/src/css/custom.css`: Infima variables and layout polish. Colours live in `--ayu-*` tokens at the top; change them there, not inline.
-- `Docs/src/prism/ayu.js`: Prism themes for code blocks, same palette.
-- `Docs/src/pages/index.js` + `index.module.css`: the landing page (hero with two code cards, features grid, sample path). All strings go through `<Translate>` so `npm run write-translations` picks them up.
-- `Docs/static/img/logo.svg`: navbar logo and favicon.
-- The version dropdown shows the package version read from `package.json`; `sidebars.js` pins `README.md` as "Introduction" at the top.
+- `Docs/src/css/custom.css`: tokens at the top (`:root` light, `html[data-theme='dark']` dark), Infima
+  overrides, the Delta-style three-panel docs layout (`html.docs-doc-page`), gemstone colours for admonitions.
+  Panels are square, the article scrolls inside its own panel; `Docs/src/clientModules/panelScroll.js` forwards
+  that scroll to `document` so the TOC highlight keeps working.
+- `Docs/src/prism/venom.js`: Prism themes for code blocks. Dark is Ayu Dark as rendered by Rider
+  (background `#0e1015`); light is Ayu Light on cream.
+- `Docs/src/pages/index.js` + `index.module.css`: the landing page (hero, stats, before/after, data-flow diagram,
+  Inspector mock, features, sample path, CTA). All strings go through `<Translate>` so `npm run write-translations`
+  picks them up. The Inspector block is a CSS mock until a real screenshot replaces it.
+- `Docs/static/img/logo.svg` (light) and `logo-dark.svg` (dark): navbar logo; `favicon.svg`.
+- The version dropdown shows the package version read from `package.json`; `sidebars.js` pins `README.md` as
+  "Introduction" at the top and relabels the StarterKit category.
 
-Check both themes after a change: build, `npx docusaurus serve`, and screenshot with headless Chrome
-(`--blink-settings=preferredColorScheme=1` forces light).
+Check both themes after a change: build, `npx docusaurus serve`, and screenshot with headless Chrome (set
+`localStorage.theme = 'light'` through the DevTools protocol; `defaultMode` is dark). Do not run `npm run build`
+while a dev server is running from the same folder: they share `.docusaurus/`, `i18n/` and
+`node_modules/.cache`, and the dev server starts crashing with `Cannot read properties of undefined (reading 'id')`.
+Build a copy of `Docs/` (with a real copy of `node_modules`, not a symlink) instead, or stop the dev server.
 
 ## Deploy
 

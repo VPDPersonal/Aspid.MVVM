@@ -1,0 +1,24 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "projects",
+          "files": [
+            "Aspid.MVVM.csproj",
+            "Aspid.MVVM.Unity.csproj",
+            "Aspid.MVVM.StarterKit.csproj"
+          ]
+        }
+      ],
+      "dest": "../api",
+      "outputFormat": "markdown",
+      "includePrivateMembers": false,
+      "disableGitFeatures": true,
+      "disableDefaultFilter": false,
+      "namespaceLayout": "flattened",
+      "memberLayout": "samePage",
+      "enumSortOrder": "declaringOrder"
+    }
+  ]
+}

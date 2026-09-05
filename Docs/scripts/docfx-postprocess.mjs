@@ -217,11 +217,12 @@ function starterKitCategory(node) {
     const nested = [...subs.entries()]
       .filter(([sub]) => sub !== '')
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(([sub, docs]) => ({ type: 'category', label: sub, collapsed: true, items: docs.sort(byLabel) }));
-    return { type: 'category', label: top, collapsed: true, items: [...nested, ...direct] };
+      .map(([sub, docs]) => ({ type: 'category', key: `${node.name}.${top}.${sub}`, label: sub, collapsed: true, items: docs.sort(byLabel) }));
+    return { type: 'category', key: `${node.name}.${top}`, label: top, collapsed: true, items: [...nested, ...direct] };
   });
   return {
     type: 'category',
+    key: node.name,
     label: node.name,
     collapsed: true,
     link: { type: 'doc', id: docId(node.href) },
@@ -235,7 +236,8 @@ function namespaceCategory(node) {
   let current = null;
   for (const item of node.items) {
     if (!item.href) {
-      current = { type: 'category', label: item.name, collapsed: true, items: [] };
+      // `key` keeps the translation key unique: every namespace has its own "Classes", "Enums", …
+      current = { type: 'category', key: `${node.name}.${item.name}`, label: item.name, collapsed: true, items: [] };
       groups.push(current);
     } else if (current) {
       current.items.push({ type: 'doc', id: docId(item.href), label: item.name });
@@ -245,6 +247,7 @@ function namespaceCategory(node) {
   }
   return {
     type: 'category',
+    key: node.name,
     label: node.name,
     collapsed: true,
     link: { type: 'doc', id: docId(node.href) },

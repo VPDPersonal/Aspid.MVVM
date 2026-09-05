@@ -2,6 +2,7 @@
 export default { api: [
   {
     "type": "category",
+    "key": "Aspid.MVVM",
     "label": "Aspid.MVVM",
     "collapsed": true,
     "link": {
@@ -11,6 +12,7 @@ export default { api: [
     "items": [
       {
         "type": "category",
+        "key": "Aspid.MVVM.Classes",
         "label": "Classes",
         "collapsed": true,
         "items": [
@@ -398,6 +400,7 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.Structs",
         "label": "Structs",
         "collapsed": true,
         "items": [
@@ -415,6 +418,7 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.Interfaces",
         "label": "Interfaces",
         "collapsed": true,
         "items": [
@@ -517,6 +521,7 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.Enums",
         "label": "Enums",
         "collapsed": true,
         "items": [
@@ -536,6 +541,7 @@ export default { api: [
   },
   {
     "type": "category",
+    "key": "Aspid.MVVM.StarterKit",
     "label": "Aspid.MVVM.StarterKit",
     "collapsed": true,
     "link": {
@@ -545,11 +551,13 @@ export default { api: [
     "items": [
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Binders",
         "label": "Binders",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Aggregator",
             "label": "Aggregator",
             "collapsed": true,
             "items": [
@@ -592,6 +600,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Animator",
             "label": "Animator",
             "collapsed": true,
             "items": [
@@ -714,6 +723,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Application",
             "label": "Application",
             "collapsed": true,
             "items": [
@@ -761,6 +771,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.AspectRatioFitter",
             "label": "AspectRatioFitter",
             "collapsed": true,
             "items": [
@@ -788,6 +799,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.AudioListener",
             "label": "AudioListener",
             "collapsed": true,
             "items": [
@@ -815,6 +827,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.AudioMixer",
             "label": "AudioMixer",
             "collapsed": true,
             "items": [
@@ -842,6 +855,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.AudioSource",
             "label": "AudioSource",
             "collapsed": true,
             "items": [
@@ -1389,6 +1403,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Behaviour",
             "label": "Behaviour",
             "collapsed": true,
             "items": [
@@ -1426,6 +1441,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Button",
             "label": "Button",
             "collapsed": true,
             "items": [
@@ -1513,6 +1529,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Camera",
             "label": "Camera",
             "collapsed": true,
             "items": [
@@ -1560,6 +1577,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Canvas",
             "label": "Canvas",
             "collapsed": true,
             "items": [
@@ -1587,6 +1605,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.CanvasGroup",
             "label": "CanvasGroup",
             "collapsed": true,
             "items": [
@@ -1689,6 +1708,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.CanvasScaler",
             "label": "CanvasScaler",
             "collapsed": true,
             "items": [
@@ -1736,6 +1756,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Caster",
             "label": "Caster",
             "collapsed": true,
             "items": [
@@ -1813,6 +1834,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Collection",
             "label": "Collection",
             "collapsed": true,
             "items": [
@@ -1935,6 +1957,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Collider",
             "label": "Collider",
             "collapsed": true,
             "items": [
@@ -2347,6 +2370,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Collider2D",
             "label": "Collider2D",
             "collapsed": true,
             "items": [
@@ -2424,6 +2448,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Command",
             "label": "Command",
             "collapsed": true,
             "items": [
@@ -2461,6 +2486,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Conditional",
             "label": "Conditional",
             "collapsed": true,
             "items": [
@@ -2488,6 +2514,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.ContentSizeFitter",
             "label": "ContentSizeFitter",
             "collapsed": true,
             "items": [
@@ -2515,6 +2542,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Core",
             "label": "Core",
             "collapsed": true,
             "items": [
@@ -2527,6 +2555,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Debug",
             "label": "Debug",
             "collapsed": true,
             "items": [
@@ -2544,6 +2573,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Delegate",
             "label": "Delegate",
             "collapsed": true,
             "items": [
@@ -2591,6 +2621,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Dropdown",
             "label": "Dropdown",
             "collapsed": true,
             "items": [
@@ -2743,6 +2774,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.EventTrigger",
             "label": "EventTrigger",
             "collapsed": true,
             "items": [
@@ -2795,6 +2827,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.GameObject",
             "label": "GameObject",
             "collapsed": true,
             "items": [
@@ -2887,6 +2920,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.General",
             "label": "General",
             "collapsed": true,
             "items": [
@@ -3104,6 +3138,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Graphic",
             "label": "Graphic",
             "collapsed": true,
             "items": [
@@ -3251,6 +3286,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.GridLayoutGroup",
             "label": "GridLayoutGroup",
             "collapsed": true,
             "items": [
@@ -3298,6 +3334,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Helpers",
             "label": "Helpers",
             "collapsed": true,
             "items": [
@@ -3320,6 +3357,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.HorizontalOrVerticalLayoutGroup",
             "label": "HorizontalOrVerticalLayoutGroup",
             "collapsed": true,
             "items": [
@@ -3362,6 +3400,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Image",
             "label": "Image",
             "collapsed": true,
             "items": [
@@ -3484,6 +3523,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.InputField",
             "label": "InputField",
             "collapsed": true,
             "items": [
@@ -3716,6 +3756,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.LayoutElement",
             "label": "LayoutElement",
             "collapsed": true,
             "items": [
@@ -3773,6 +3814,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.LayoutGroup",
             "label": "LayoutGroup",
             "collapsed": true,
             "items": [
@@ -3820,6 +3862,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Light",
             "label": "Light",
             "collapsed": true,
             "items": [
@@ -3867,6 +3910,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.LineRenderer",
             "label": "LineRenderer",
             "collapsed": true,
             "items": [
@@ -3939,6 +3983,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.LocalizeStringEvent",
             "label": "LocalizeStringEvent",
             "collapsed": true,
             "items": [
@@ -3991,6 +4036,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Mask",
             "label": "Mask",
             "collapsed": true,
             "items": [
@@ -4008,6 +4054,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.NavMeshAgent",
             "label": "NavMeshAgent",
             "collapsed": true,
             "items": [
@@ -4035,6 +4082,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Object",
             "label": "Object",
             "collapsed": true,
             "items": [
@@ -4052,6 +4100,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.ParticleSystem",
             "label": "ParticleSystem",
             "collapsed": true,
             "items": [
@@ -4114,6 +4163,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.RateLimit",
             "label": "RateLimit",
             "collapsed": true,
             "items": [
@@ -4171,6 +4221,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.RawImage",
             "label": "RawImage",
             "collapsed": true,
             "items": [
@@ -4233,6 +4284,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.RectMask2D",
             "label": "RectMask2D",
             "collapsed": true,
             "items": [
@@ -4250,6 +4302,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.RectTransform",
             "label": "RectTransform",
             "collapsed": true,
             "items": [
@@ -4432,6 +4485,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Renderer",
             "label": "Renderer",
             "collapsed": true,
             "items": [
@@ -4584,6 +4638,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Rigidbody",
             "label": "Rigidbody",
             "collapsed": true,
             "items": [
@@ -4631,6 +4686,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Rigidbody2D",
             "label": "Rigidbody2D",
             "collapsed": true,
             "items": [
@@ -4678,6 +4734,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Scrollbar",
             "label": "Scrollbar",
             "collapsed": true,
             "items": [
@@ -4765,6 +4822,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.ScrollRect",
             "label": "ScrollRect",
             "collapsed": true,
             "items": [
@@ -4907,6 +4965,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Selectable",
             "label": "Selectable",
             "collapsed": true,
             "items": [
@@ -4989,6 +5048,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Shadow",
             "label": "Shadow",
             "collapsed": true,
             "items": [
@@ -5016,6 +5076,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Slider",
             "label": "Slider",
             "collapsed": true,
             "items": [
@@ -5133,6 +5194,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.SpriteRenderer",
             "label": "SpriteRenderer",
             "collapsed": true,
             "items": [
@@ -5250,6 +5312,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Text",
             "label": "Text",
             "collapsed": true,
             "items": [
@@ -5477,6 +5540,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Toggle",
             "label": "Toggle",
             "collapsed": true,
             "items": [
@@ -5549,6 +5613,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.ToggleGroup",
             "label": "ToggleGroup",
             "collapsed": true,
             "items": [
@@ -5566,6 +5631,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Transform",
             "label": "Transform",
             "collapsed": true,
             "items": [
@@ -5718,6 +5784,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Tween",
             "label": "Tween",
             "collapsed": true,
             "items": [
@@ -5745,6 +5812,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.UIToolkit",
             "label": "UIToolkit",
             "collapsed": true,
             "items": [
@@ -5802,6 +5870,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.UnityEvent",
             "label": "UnityEvent",
             "collapsed": true,
             "items": [
@@ -5884,6 +5953,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.Value",
             "label": "Value",
             "collapsed": true,
             "items": [
@@ -5911,6 +5981,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.VideoPlayer",
             "label": "VideoPlayer",
             "collapsed": true,
             "items": [
@@ -5948,6 +6019,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Binders.VirtualizedList",
             "label": "VirtualizedList",
             "collapsed": true,
             "items": [
@@ -5972,11 +6044,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Collections",
         "label": "Collections",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Collections.Filters",
             "label": "Filters",
             "collapsed": true,
             "items": [
@@ -6019,6 +6093,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Collections.Orders",
             "label": "Orders",
             "collapsed": true,
             "items": [
@@ -6048,11 +6123,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Commands",
         "label": "Commands",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Commands.CanExecuteHandlers",
             "label": "CanExecuteHandlers",
             "collapsed": true,
             "items": [
@@ -6075,6 +6152,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Commands.Core",
             "label": "Core",
             "collapsed": true,
             "items": [
@@ -6087,6 +6165,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Commands.Helpers",
             "label": "Helpers",
             "collapsed": true,
             "items": [
@@ -6101,11 +6180,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Components",
         "label": "Components",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Components.UI",
             "label": "UI",
             "collapsed": true,
             "items": [
@@ -6120,11 +6201,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Converters",
         "label": "Converters",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Assets",
             "label": "Assets",
             "collapsed": true,
             "items": [
@@ -6597,6 +6680,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Bools",
             "label": "Bools",
             "collapsed": true,
             "items": [
@@ -6624,6 +6708,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Bounds",
             "label": "Bounds",
             "collapsed": true,
             "items": [
@@ -6651,6 +6736,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Collections",
             "label": "Collections",
             "collapsed": true,
             "items": [
@@ -6723,6 +6809,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Colors",
             "label": "Colors",
             "collapsed": true,
             "items": [
@@ -6820,6 +6907,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Composition",
             "label": "Composition",
             "collapsed": true,
             "items": [
@@ -6877,6 +6965,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Core",
             "label": "Core",
             "collapsed": true,
             "items": [
@@ -6899,6 +6988,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Enums",
             "label": "Enums",
             "collapsed": true,
             "items": [
@@ -6961,6 +7051,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.General",
             "label": "General",
             "collapsed": true,
             "items": [
@@ -6993,6 +7084,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Helpers",
             "label": "Helpers",
             "collapsed": true,
             "items": [
@@ -7010,6 +7102,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Localizations",
             "label": "Localizations",
             "collapsed": true,
             "items": [
@@ -7022,6 +7115,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Materials",
             "label": "Materials",
             "collapsed": true,
             "items": [
@@ -7034,6 +7128,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Numbers",
             "label": "Numbers",
             "collapsed": true,
             "items": [
@@ -7401,6 +7496,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Objects",
             "label": "Objects",
             "collapsed": true,
             "items": [
@@ -7428,6 +7524,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Quaternions",
             "label": "Quaternions",
             "collapsed": true,
             "items": [
@@ -7460,6 +7557,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.RectOffsets",
             "label": "RectOffsets",
             "collapsed": true,
             "items": [
@@ -7477,6 +7575,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Rects",
             "label": "Rects",
             "collapsed": true,
             "items": [
@@ -7489,6 +7588,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Strings",
             "label": "Strings",
             "collapsed": true,
             "items": [
@@ -7706,6 +7806,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Textures",
             "label": "Textures",
             "collapsed": true,
             "items": [
@@ -7728,6 +7829,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Times",
             "label": "Times",
             "collapsed": true,
             "items": [
@@ -7795,6 +7897,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Converters.Vectors",
             "label": "Vectors",
             "collapsed": true,
             "items": [
@@ -7984,11 +8087,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Helpers",
         "label": "Helpers",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Helpers.Colors",
             "label": "Colors",
             "collapsed": true,
             "items": [
@@ -8006,6 +8111,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Helpers.Enums",
             "label": "Enums",
             "collapsed": true,
             "items": [
@@ -8018,6 +8124,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Helpers.Globalization",
             "label": "Globalization",
             "collapsed": true,
             "items": [
@@ -8035,6 +8142,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Helpers.Logging",
             "label": "Logging",
             "collapsed": true,
             "items": [
@@ -8047,6 +8155,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Helpers.Transforms",
             "label": "Transforms",
             "collapsed": true,
             "items": [
@@ -8071,11 +8180,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.ViewModels",
         "label": "ViewModels",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.ViewModels.Dynamic",
             "label": "Dynamic",
             "collapsed": true,
             "items": [
@@ -8130,11 +8241,13 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.StarterKit.Views",
         "label": "Views",
         "collapsed": true,
         "items": [
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Views.Factories",
             "label": "Factories",
             "collapsed": true,
             "items": [
@@ -8202,6 +8315,7 @@ export default { api: [
           },
           {
             "type": "category",
+            "key": "Aspid.MVVM.StarterKit.Views.Initializers",
             "label": "Initializers",
             "collapsed": true,
             "items": [
@@ -8258,6 +8372,7 @@ export default { api: [
   },
   {
     "type": "category",
+    "key": "Aspid.MVVM.Validation",
     "label": "Aspid.MVVM.Validation",
     "collapsed": true,
     "link": {
@@ -8267,6 +8382,7 @@ export default { api: [
     "items": [
       {
         "type": "category",
+        "key": "Aspid.MVVM.Validation.Structs",
         "label": "Structs",
         "collapsed": true,
         "items": [
@@ -8284,6 +8400,7 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.Validation.Interfaces",
         "label": "Interfaces",
         "collapsed": true,
         "items": [
@@ -8296,6 +8413,7 @@ export default { api: [
       },
       {
         "type": "category",
+        "key": "Aspid.MVVM.Validation.Enums",
         "label": "Enums",
         "collapsed": true,
         "items": [

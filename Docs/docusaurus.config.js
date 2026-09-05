@@ -43,7 +43,7 @@ const markdownOptions = {
 const config = {
   title: 'Aspid.MVVM',
   tagline: 'Source Generator-based MVVM framework for Unity',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/favicon.png',
 
   url: 'https://vpdpersonal.github.io',
   baseUrl: '/Aspid.MVVM/',
@@ -135,7 +135,7 @@ const config = {
       colorMode: { defaultMode: 'dark', respectPrefersColorScheme: false },
       navbar: {
         title: 'Aspid.MVVM',
-        logo: { alt: 'Aspid.MVVM', src: 'img/logo.svg', srcDark: 'img/logo-dark.svg', width: 28, height: 28 },
+        logo: { alt: 'Aspid.MVVM', src: 'img/logo.png', width: 28, height: 28 },
         hideOnScroll: false,
         items: [
           { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },

@@ -150,7 +150,7 @@ IBM Plex Mono (code and UI labels).
 - `Docs/src/pages/index.js` + `index.module.css`: the landing page (hero, stats, before/after, data-flow diagram,
   Inspector mock, features, sample path, CTA). All strings go through `<Translate>` so `npm run write-translations`
   picks them up. The Inspector block is a CSS mock until a real screenshot replaces it.
-- `Docs/static/img/logo.svg` (light) and `logo-dark.svg` (dark): navbar logo; `favicon.svg`.
+- `Docs/static/img/logo.png`, `favicon.png`: the snake icon from `Unity/Editor/Resources/Icons`, downscaled; one image for both themes.
 - The version dropdown shows the package version read from `package.json`; `sidebars.js` pins `README.md` as
   "Introduction" at the top and relabels the StarterKit category.
 

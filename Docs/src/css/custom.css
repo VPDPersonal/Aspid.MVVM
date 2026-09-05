@@ -1,117 +1,177 @@
 /*
- * Aspid.MVVM docs theme, based on the Ayu palette (Light for light mode, Dark for dark mode).
- * https://github.com/ayu-theme/ayu-colors
+ * Aspid.MVVM docs theme "Venom": acid green on near-black. Dark is the primary mode;
+ * light mode is pastel beige with the same green, deepened for contrast on cream.
  */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
-:root {
-  /* Ayu Light */
-  --ayu-bg: #fcfcfc;
-  --ayu-panel: #f3f4f5;
-  --ayu-line: #e7e8e9;
-  --ayu-fg: #5c6166;
-  --ayu-fg-strong: #1f2328;
-  --ayu-muted: #8a9199;
-  --ayu-accent: #f2ae49;
-  --ayu-accent-strong: #ff9940;
-  --ayu-blue: #399ee6;
-  --ayu-green: #86b300;
-  --ayu-purple: #a37acc;
-  --ayu-red: #f07171;
-  --ayu-cyan: #4cbf99;
-  --ayu-orange: #fa8d3e;
-
-  --ifm-color-primary: #e8930f;
-  --ifm-color-primary-dark: #d2840d;
-  --ifm-color-primary-darker: #c67d0c;
-  --ifm-color-primary-darkest: #a3670a;
-  --ifm-color-primary-light: #f09e21;
-  --ifm-color-primary-lighter: #f1a42e;
-  --ifm-color-primary-lightest: #f4b657;
-
-  --ifm-background-color: var(--ayu-bg);
-  --ifm-background-surface-color: var(--ayu-panel);
-  --ifm-font-color-base: var(--ayu-fg-strong);
-  --ifm-font-color-secondary: var(--ayu-fg);
-  --ifm-heading-color: var(--ayu-fg-strong);
-  --ifm-toc-border-color: var(--ayu-line);
-  --ifm-hr-border-color: var(--ayu-line);
-  --ifm-table-border-color: var(--ayu-line);
-  --ifm-table-stripe-background: rgba(0, 0, 0, 0.02);
-  --ifm-color-emphasis-300: var(--ayu-line);
-  --ifm-link-color: var(--ayu-blue);
-  --ifm-link-hover-color: #2a86cc;
-  --ifm-menu-color: var(--ayu-fg);
-  --ifm-menu-color-active: var(--ayu-fg-strong);
-  --ifm-menu-color-background-active: rgba(232, 147, 15, 0.1);
-  --ifm-menu-color-background-hover: rgba(0, 0, 0, 0.04);
-  --ifm-navbar-background-color: rgba(252, 252, 252, 0.85);
-  --ifm-navbar-shadow: 0 1px 0 var(--ayu-line);
-  --ifm-footer-background-color: var(--ayu-panel);
-  --ifm-code-background: rgba(0, 0, 0, 0.045);
-  --ifm-pre-background: #f8f9fa;
-
-  --ifm-font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --ifm-font-size-base: 15px;
-  --ifm-line-height-base: 1.7;
-  --ifm-code-font-size: 88%;
-  --ifm-heading-font-weight: 700;
-  --ifm-global-radius: 8px;
-  --ifm-code-border-radius: 6px;
-  --ifm-pre-border-radius: 10px;
-  --ifm-menu-link-padding-vertical: 0.45rem;
-  --ifm-navbar-height: 3.75rem;
-  --docusaurus-highlighted-code-line-bg: rgba(232, 147, 15, 0.12);
+/* iA Writer Quattro S (OFL, see src/fonts/LICENSE-iA-Writer-Quattro.md). */
+@font-face {
+  font-family: 'iA Writer Quattro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/iAWriterQuattroS-Regular.woff2') format('woff2');
 }
 
-[data-theme='dark'] {
-  /* Ayu Dark */
-  --ayu-bg: #0b0e14;
-  --ayu-panel: #0f131a;
-  --ayu-line: #1b2028;
-  --ayu-fg: #bfbdb6;
-  --ayu-fg-strong: #e6e1cf;
-  --ayu-muted: #565b66;
-  --ayu-accent: #e6b450;
-  --ayu-accent-strong: #ffb454;
-  --ayu-blue: #59c2ff;
-  --ayu-green: #aad94c;
-  --ayu-purple: #d2a6ff;
-  --ayu-red: #f07178;
-  --ayu-cyan: #95e6cb;
-  --ayu-orange: #ff8f40;
+@font-face {
+  font-family: 'iA Writer Quattro';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/iAWriterQuattroS-Italic.woff2') format('woff2');
+}
 
-  --ifm-color-primary: #e6b450;
-  --ifm-color-primary-dark: #e2a934;
-  --ifm-color-primary-darker: #dfa426;
-  --ifm-color-primary-darkest: #c08a1c;
-  --ifm-color-primary-light: #eabf6c;
-  --ifm-color-primary-lighter: #ecc47a;
-  --ifm-color-primary-lightest: #f1d3a0;
+@font-face {
+  font-family: 'iA Writer Quattro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/iAWriterQuattroS-Bold.woff2') format('woff2');
+}
 
-  --ifm-background-color: var(--ayu-bg);
-  --ifm-background-surface-color: var(--ayu-panel);
-  --ifm-font-color-base: var(--ayu-fg);
-  --ifm-font-color-secondary: #8a9199;
-  --ifm-heading-color: var(--ayu-fg-strong);
-  --ifm-toc-border-color: var(--ayu-line);
-  --ifm-hr-border-color: var(--ayu-line);
-  --ifm-table-border-color: var(--ayu-line);
+@font-face {
+  font-family: 'iA Writer Quattro';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/iAWriterQuattroS-BoldItalic.woff2') format('woff2');
+}
+
+:root {
+  /* Venom Light: pastel beige */
+  --venom-bg: #f6f1e8;
+  --venom-panel: #ede6d9;
+  --venom-line: #e1d8c8;
+  --venom-line-strong: #d1c5b0;
+  --venom-fg: #4b463d;
+  --venom-fg-strong: #201d18;
+  --venom-muted: #877e6f;
+  --venom-accent: #3f8a4b;
+  --venom-accent-2: #357a42;
+  --venom-accent-deep: #2f6b39;
+  --venom-accent-ink: #ffffff;
+  --venom-sapphire: #2f6fd0;
+  --venom-ruby: #c23a52;
+  --venom-amber: #a8720f;
+  --venom-purple: #7a4fd0;
+  --venom-glow: rgba(63, 138, 75, 0.16);
+  --venom-glow-2: rgba(168, 114, 15, 0.12);
+  --venom-glow-soft: rgba(63, 138, 75, 0.09);
+
+  --ifm-color-primary: #3f8a4b;
+  --ifm-color-primary-dark: #397c44;
+  --ifm-color-primary-darker: #367540;
+  --ifm-color-primary-darkest: #2c6135;
+  --ifm-color-primary-light: #459852;
+  --ifm-color-primary-lighter: #499f56;
+  --ifm-color-primary-lightest: #58b065;
+
+  --ifm-background-color: var(--venom-bg);
+  --ifm-background-surface-color: var(--venom-panel);
+  --ifm-font-color-base: var(--venom-fg);
+  --ifm-font-color-secondary: var(--venom-muted);
+  --ifm-heading-color: var(--venom-fg-strong);
+  --ifm-toc-border-color: var(--venom-line);
+  --ifm-hr-border-color: var(--venom-line);
+  --ifm-hr-background-color: var(--venom-line);
+  --ifm-table-border-color: var(--venom-line);
+  --ifm-table-stripe-background: rgba(60, 40, 10, 0.03);
+  --ifm-color-emphasis-300: var(--venom-line);
+  --ifm-link-color: var(--venom-accent-2);
+  --ifm-link-hover-color: var(--venom-accent);
+  --ifm-menu-color: var(--venom-fg);
+  --ifm-menu-color-active: var(--venom-accent);
+  --ifm-menu-color-background-active: var(--venom-glow-soft);
+  --ifm-menu-color-background-hover: rgba(60, 40, 10, 0.05);
+  --ifm-navbar-background-color: rgba(246, 241, 232, 0.85);
+  --ifm-navbar-shadow: 0 1px 0 var(--venom-line);
+  --ifm-footer-background-color: var(--venom-panel);
+  --ifm-code-background: #fcf9f3;
+  --ifm-pre-background: #fcf9f3;
+
+  --ifm-font-family-base: 'iA Writer Quattro', 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'IBM Plex Serif', ui-serif, Georgia, 'Times New Roman', serif;
+  --ifm-font-family-monospace: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.75;
+  --ifm-code-font-size: 90%;
+  --ifm-heading-font-weight: 500;
+  --ifm-global-radius: 0;
+  --ifm-code-border-radius: 0;
+  --ifm-pre-border-radius: 0;
+  --ifm-button-border-radius: 0;
+  --ifm-badge-border-radius: 0;
+  --ifm-alert-border-radius: 0;
+  --ifm-breadcrumb-border-radius: 0;
+  --ifm-card-border-radius: 0;
+  --ifm-menu-link-padding-vertical: 0.45rem;
+  --ifm-navbar-height: 3.75rem;
+  --docusaurus-highlighted-code-line-bg: var(--venom-glow-soft);
+  --ifm-color-success: var(--venom-accent);
+  --ifm-color-info: var(--venom-sapphire);
+  --ifm-color-warning: var(--venom-amber);
+  --ifm-color-danger: var(--venom-ruby);
+  --ifm-color-success-contrast-background: color-mix(in srgb, var(--venom-accent) 10%, var(--venom-bg));
+  --ifm-color-info-contrast-background: color-mix(in srgb, var(--venom-sapphire) 10%, var(--venom-bg));
+  --ifm-color-warning-contrast-background: color-mix(in srgb, var(--venom-amber) 10%, var(--venom-bg));
+  --ifm-color-danger-contrast-background: color-mix(in srgb, var(--venom-ruby) 10%, var(--venom-bg));
+  --ifm-color-secondary-contrast-background: var(--venom-panel);
+  --ifm-alert-border-color: currentColor;
+}
+
+html[data-theme='dark'] {
+  /* Venom Dark */
+  --venom-bg: #0a0b0f;
+  --venom-panel: #10121a;
+  --venom-line: #1c1f28;
+  --venom-line-strong: #272b35;
+  --venom-fg: #c8c8cc;
+  --venom-fg-strong: #f0f0f2;
+  --venom-muted: #707078;
+  --venom-accent: #5cb46b;
+  --venom-accent-2: #a9dbb2;
+  --venom-accent-deep: #357a42;
+  --venom-accent-ink: #06140a;
+  /* Gemstones: sapphire, ruby, amber, amethyst */
+  --venom-sapphire: #5b9cf0;
+  --venom-ruby: #e2506a;
+  --venom-amber: #e8b04a;
+  --venom-purple: #b48ce6;
+  --venom-glow: rgba(92, 180, 107, 0.2);
+  --venom-glow-2: rgba(53, 122, 66, 0.22);
+  --venom-glow-soft: rgba(92, 180, 107, 0.1);
+
+  --ifm-color-primary: #5cb46b;
+  --ifm-color-primary-dark: #4fa35d;
+  --ifm-color-primary-darker: #4a9a58;
+  --ifm-color-primary-darkest: #3d7f48;
+  --ifm-color-primary-light: #70bd7d;
+  --ifm-color-primary-lighter: #7cc288;
+  --ifm-color-primary-lightest: #a0d3a8;
+
+  --ifm-background-color: var(--venom-bg);
+  --ifm-background-surface-color: var(--venom-panel);
+  --ifm-font-color-base: var(--venom-fg);
+  --ifm-font-color-secondary: var(--venom-muted);
+  --ifm-heading-color: var(--venom-fg-strong);
+  --ifm-toc-border-color: var(--venom-line);
+  --ifm-hr-border-color: var(--venom-line);
+  --ifm-hr-background-color: var(--venom-line);
+  --ifm-table-border-color: var(--venom-line);
   --ifm-table-stripe-background: rgba(255, 255, 255, 0.02);
-  --ifm-color-emphasis-300: var(--ayu-line);
-  --ifm-link-color: var(--ayu-blue);
-  --ifm-link-hover-color: #8ad3ff;
-  --ifm-menu-color: var(--ayu-fg);
-  --ifm-menu-color-active: var(--ayu-accent);
-  --ifm-menu-color-background-active: rgba(230, 180, 80, 0.1);
+  --ifm-color-emphasis-300: var(--venom-line);
+  --ifm-link-color: var(--venom-accent-2);
+  --ifm-link-hover-color: var(--venom-accent);
+  --ifm-menu-color: var(--venom-fg);
+  --ifm-menu-color-active: var(--venom-accent);
+  --ifm-menu-color-background-active: var(--venom-glow-soft);
   --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.04);
-  --ifm-navbar-background-color: rgba(11, 14, 20, 0.8);
-  --ifm-navbar-shadow: 0 1px 0 var(--ayu-line);
-  --ifm-footer-background-color: var(--ayu-panel);
-  --ifm-code-background: rgba(255, 255, 255, 0.06);
-  --ifm-pre-background: #0d1017;
-  --docusaurus-highlighted-code-line-bg: rgba(230, 180, 80, 0.12);
+  --ifm-navbar-background-color: rgba(10, 11, 15, 0.85);
+  --ifm-navbar-shadow: 0 1px 0 var(--venom-line);
+  --ifm-footer-background-color: var(--venom-panel);
+  --ifm-code-background: #0e1015;
+  --ifm-pre-background: #0e1015;
+  --docusaurus-highlighted-code-line-bg: var(--venom-glow-soft);
 }
 
 /* ---------- Layout polish ---------- */
@@ -121,13 +181,23 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ifm-heading-font-family);
+}
+
 .navbar {
   backdrop-filter: saturate(180%) blur(12px);
   -webkit-backdrop-filter: saturate(180%) blur(12px);
 }
 
 .navbar__title {
-  font-weight: 700;
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
@@ -140,7 +210,7 @@ html {
 }
 
 .theme-doc-sidebar-container {
-  border-right: 1px solid var(--ayu-line) !important;
+  border-right: 1px solid var(--venom-line) !important;
 }
 
 .menu {
@@ -149,7 +219,7 @@ html {
 }
 
 .menu__link {
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .menu__link--active:not(.menu__link--sublist) {
@@ -157,9 +227,42 @@ html {
 }
 
 .menu__list-item-collapsible .menu__link {
-  font-weight: 600;
-  color: var(--ifm-heading-color);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--venom-muted);
+}
+
+/* Nested categories (API: Binders → Text) read as regular items; only the top level is a small-caps header. */
+.menu__list .menu__list .menu__list-item-collapsible .menu__link {
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
   text-transform: none;
+  color: var(--venom-fg);
+}
+
+.table-of-contents::before {
+  content: 'On this page';
+  display: block;
+  margin: 0 0 0.6rem var(--ifm-toc-padding-horizontal);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--venom-muted);
+}
+
+.table-of-contents ul .table-of-contents::before {
+  content: none;
+}
+
+.breadcrumbs {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
 }
 
 .table-of-contents {
@@ -174,20 +277,25 @@ html {
 /* ---------- Content ---------- */
 
 .markdown {
-  --ifm-h1-font-size: 2.25rem;
-  --ifm-h2-font-size: 1.55rem;
-  --ifm-h3-font-size: 1.2rem;
+  --ifm-h1-font-size: clamp(2rem, 7vw, 2.25rem);
+  --ifm-h2-font-size: clamp(1.5rem, 5vw, 1.75rem);
+  --ifm-h3-font-size: 1.375rem;
+  --ifm-h4-font-size: 1.125rem;
 }
 
 .markdown h1,
-.markdown h2 {
-  letter-spacing: -0.02em;
+.markdown h2,
+.markdown h3 {
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
-.markdown h2 {
-  margin-top: 2.75rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--ayu-line);
+.markdown h2,
+.markdown h3 {
+  margin-top: 3rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--venom-line);
 }
 
 .markdown hr {
@@ -202,12 +310,8 @@ html {
 
 .theme-code-block {
   box-shadow: none !important;
-  border: 1px solid var(--ayu-line);
+  border: 1px solid var(--venom-line);
   border-radius: var(--ifm-pre-border-radius);
-}
-
-[data-theme='dark'] .theme-code-block {
-  border-color: #1e242e;
 }
 
 .prism-code {
@@ -236,19 +340,36 @@ pre {
 
 .markdown table th,
 .markdown table td {
-  border-color: var(--ayu-line);
+  border-color: var(--venom-line);
   padding: 0.55rem 0.8rem;
 }
 
 .theme-admonition {
-  border-left-width: 3px;
+  border: 1px solid var(--venom-line);
+  border-left: 3px solid var(--ifm-alert-border-color);
   border-radius: var(--ifm-global-radius);
   box-shadow: none;
 }
 
+.alert--success { --ifm-alert-border-color: var(--venom-accent); --ifm-alert-background-color: var(--ifm-color-success-contrast-background); }
+.alert--info { --ifm-alert-border-color: var(--venom-sapphire); --ifm-alert-background-color: var(--ifm-color-info-contrast-background); }
+.alert--warning { --ifm-alert-border-color: var(--venom-amber); --ifm-alert-background-color: var(--ifm-color-warning-contrast-background); }
+.alert--danger { --ifm-alert-border-color: var(--venom-ruby); --ifm-alert-background-color: var(--ifm-color-danger-contrast-background); }
+.alert--secondary { --ifm-alert-border-color: var(--venom-muted); --ifm-alert-background-color: var(--venom-panel); }
+
+.theme-admonition,
+.theme-admonition .admonition-heading,
+.theme-admonition a {
+  --ifm-alert-foreground-color: var(--venom-fg);
+}
+
+.theme-admonition .admonition-icon svg {
+  fill: var(--ifm-alert-border-color);
+}
+
 .pagination-nav__link {
-  border-color: var(--ayu-line);
-  border-radius: 10px;
+  border-color: var(--venom-line);
+  border-radius: 0;
 }
 
 .pagination-nav__link:hover {
@@ -261,21 +382,191 @@ pre {
 }
 
 .footer {
-  border-top: 1px solid var(--ayu-line);
+  border-top: 1px solid var(--venom-line);
   padding: 2rem 0;
 }
 
 .footer--dark {
-  --ifm-footer-background-color: var(--ayu-panel);
+  --ifm-footer-background-color: var(--venom-panel);
   --ifm-footer-color: var(--ifm-font-color-secondary);
   --ifm-footer-link-color: var(--ifm-font-color-secondary);
   --ifm-footer-title-color: var(--ifm-heading-color);
 }
 
 ::selection {
-  background: rgba(232, 147, 15, 0.25);
+  background: var(--venom-glow);
 }
 
-[data-theme='dark'] ::selection {
-  background: rgba(230, 180, 80, 0.3);
+/* ---------- Docs layout: centered panels ---------- */
+
+html.docs-doc-page {
+  --venom-canvas: #030406;
+  --doc-panel-radius: 0;
+  --doc-panel-gap: 1rem;
+}
+
+html.docs-doc-page,
+html.docs-doc-page body {
+  background-color: var(--venom-canvas);
+}
+
+/* Dot-matrix canvas: a 20px lattice of dots, with a soft glow behind the content. */
+html.docs-doc-page body {
+  background-image: radial-gradient(circle at center, rgba(255,255,255,0.08) 1px, transparent 1.4px);
+  background-size: 20px 20px;
+  background-position: 10px 10px;
+  background-repeat: repeat;
+}
+
+html[data-theme='light'].docs-doc-page {
+  --venom-canvas: #e8dfd0;
+}
+
+html[data-theme='light'].docs-doc-page body {
+  background-image: radial-gradient(circle at center, rgba(70, 50, 20, 0.14) 1px, transparent 1.4px);
+}
+
+html.docs-doc-page .navbar {
+  border-bottom: 1px solid var(--venom-line);
+}
+
+@media (min-width: 997px) {
+  [class*='docsWrapper_'] {
+    width: 100%;
+    max-width: 1880px;
+    margin: 0 auto;
+    padding: var(--doc-panel-gap);
+  }
+
+  html.docs-doc-page .footer {
+    display: none;
+  }
+
+  [class*='docRoot_'] {
+    gap: var(--doc-panel-gap);
+  }
+
+  /* Sidebar panel */
+  .theme-doc-sidebar-container {
+    position: sticky;
+    top: calc(var(--ifm-navbar-height) + var(--doc-panel-gap));
+    align-self: flex-start;
+    height: calc(100vh - var(--ifm-navbar-height) - var(--doc-panel-gap) * 2);
+    margin-top: 0 !important;
+    border: none !important;
+    border-radius: var(--doc-panel-radius);
+    background: var(--venom-bg);
+    overflow: hidden;
+    clip-path: none !important;
+  }
+
+  .theme-doc-sidebar-container [class*='sidebarViewport_'] {
+    position: static;
+    max-height: none;
+  }
+
+  .theme-doc-sidebar-container [class*='sidebarViewport_'],
+  .theme-doc-sidebar-container [class*='sidebar_'] {
+    height: 100%;
+  }
+
+  .theme-doc-sidebar-container [class*='sidebar_'] {
+    position: static;
+    padding-top: 0;
+    max-height: none;
+  }
+
+  /* Content + TOC */
+  [class*='docMainContainer_'] > .container {
+    max-width: none;
+    padding: 0 !important;
+  }
+
+  [class*='docMainContainer_'] .row {
+    margin: 0;
+    gap: var(--doc-panel-gap);
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+
+  [class*='docItemCol_'] {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    max-width: none !important;
+    height: calc(100vh - var(--ifm-navbar-height) - var(--doc-panel-gap) * 2);
+    padding: 0;
+    border: none;
+    border-radius: var(--doc-panel-radius);
+    background: var(--venom-bg);
+    overflow: hidden;
+  }
+
+  [class*='docItemCol_']::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, var(--venom-accent), var(--venom-accent-deep) 60%, var(--venom-sapphire));
+  }
+
+  [class*='docItemContainer_'] {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-width: none;
+    padding: 2rem 3.5rem 3rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--venom-line-strong) transparent;
+  }
+
+  [class*='docMainContainer_'] .col.col--3 {
+    position: sticky;
+    top: calc(var(--ifm-navbar-height) + var(--doc-panel-gap));
+    flex: 0 0 19rem;
+    max-width: 19rem;
+    height: calc(100vh - var(--ifm-navbar-height) - var(--doc-panel-gap) * 2);
+    padding: 1.25rem 1rem;
+    overflow: hidden;
+    border: none;
+    border-radius: var(--doc-panel-radius);
+    background: var(--venom-bg);
+  }
+
+  .theme-doc-toc-desktop {
+    position: static !important;
+    top: auto !important;
+    margin: 0;
+    max-height: 100%;
+  }
+
+  .theme-doc-toc-desktop .table-of-contents {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Active items: translucent fill, accent text */
+.menu__link--active:not(.menu__link--sublist),
+.menu__link--active:not(.menu__link--sublist):hover {
+  background: var(--venom-glow-soft);
+  color: var(--venom-accent);
+  box-shadow: inset 2px 0 0 var(--venom-accent);
+}
+
+.table-of-contents__link--active {
+  color: var(--venom-accent) !important;
+}
+
+.markdown a:not(.card):not(.pagination-nav__link) {
+  color: var(--venom-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--venom-accent) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.markdown a:not(.card):not(.pagination-nav__link):hover {
+  text-decoration-color: var(--venom-accent);
 }

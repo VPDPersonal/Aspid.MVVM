@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "sync-i18n": "node scripts/sync-i18n.mjs",
+    "api": "node scripts/docfx-projects.mjs && rm -rf api && docfx metadata docfx/docfx.json && node scripts/docfx-postprocess.mjs",
     "prestart": "npm run sync-i18n",
     "prebuild": "npm run sync-i18n",
     "start": "docusaurus start",

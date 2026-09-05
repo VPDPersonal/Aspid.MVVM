@@ -4,3 +4,4 @@ build/
 .cache-loader/
 npm-install.log
 i18n/
+docfx/projects/

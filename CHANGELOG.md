@@ -138,7 +138,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 - Package promoted to an embedded UPM package under `Packages/tech.aspid.mvvm`; Unity project moved into `Aspid.MVVM/`.
 - `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are git submodules.
-- `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.7`) are UPM git dependencies.
+- `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.8`) are UPM git dependencies.
 - Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags, verifies generator DLL drift and takes release notes from this file.
 - Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI with an `.mcp.json` server; root `CLAUDE.md`.
 - Editor target `6000.4.0f1`.

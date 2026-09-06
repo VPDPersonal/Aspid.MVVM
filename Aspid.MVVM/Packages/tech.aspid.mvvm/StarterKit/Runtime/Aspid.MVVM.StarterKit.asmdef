@@ -6,7 +6,7 @@
         "VContainer",
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
-        "Aspid.FastTools.Unity",
+        "Aspid.FastTools",
         "Aspid.Collections.Observable",
         "Unity.Localization",
         "Unity.ResourceManager",

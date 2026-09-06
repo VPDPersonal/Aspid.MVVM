@@ -299,12 +299,13 @@
       "hash": "c050c3cee1c9a322d378d705d2af709ee85bc429"
     },
     "tech.aspid.fasttools": {
-      "version": "file:../../../../../Aspid.FastTools/Aspid.FastTools/Packages/tech.aspid.fasttools",
+      "version": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview/1.0.0-rc.8",
       "depth": 0,
-      "source": "local",
+      "source": "git",
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0"
-      }
+      },
+      "hash": "81a67636e943ba01a22297f1fca0f7f88390a19f"
     },
     "tech.aspid.mvvm": {
       "version": "file:tech.aspid.mvvm",

@@ -5,7 +5,7 @@
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit",
-        "Aspid.FastTools.Unity"
+        "Aspid.FastTools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

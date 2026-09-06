@@ -1,282 +1,167 @@
-# Migration Guide
+# Migration Guide: 1.0 → 1.1
 
-Upgrade notes for moving an existing project from **Aspid.MVVM 1.0** to **Aspid.MVVM 1.1**.
-
-For the full list of changes see [CHANGELOG.md](CHANGELOG.md).
+What to change in a project moving from **Aspid.MVVM 1.0.x** to **1.1.0**. The full list of changes is in [CHANGELOG.md](CHANGELOG.md).
 
 > 🌐 Русская версия: [MIGRATION.ru.md](MIGRATION.ru.md)
 
-> Unity asset references (prefabs, scenes, ScriptableObjects) survive the upgrade because every relocated script kept its original `.meta` GUID. Source-code references to renamed classes do **not** survive — search-and-replace is required.
-
-> **Minimum Unity is now `6000.0`**.
+Every relocated script kept its `.meta` GUID, so prefabs, scenes and ScriptableObjects keep their references. **Source code does not** — renamed types are a search-and-replace job. Renamed types carry no `[MovedFrom]`; a `[SerializeReference]` slot authored with an old type name needs the serialized-reference repair tool or re-authoring.
 
 ---
 
 ## TL;DR
 
-1. Add the required git packages `tech.aspid.collections` and `tech.aspid.fasttools` to your `manifest.json` — they are not auto-resolved (see § 3.1).
-2. Rename `ViewModelObservableList*` → `ObservableList*ViewModel`, and the same shape for Dictionary / Collection (see § 1.1).
-3. Replace every `[AddComponentContextMenu(typeof(X), "path")]` with `[AddBinderContextMenu(typeof(X), Path = "path")]`, and fold any `[AddPropertyContextMenu(typeof(X), "m_Field")]` into the same attribute's `serializePropertyNames` argument (see § 1.2).
-4. Audit every `view.Dispose()` call: the GameObject is no longer destroyed automatically (see § 2.2).
-5. Audit every `view.DestroyView()` call: it now destroys only the View component, not the GameObject — use `view.DestroyViewAndGameObject()` for the old behaviour (see § 2.3).
+1. Upgrade the Editor to Unity `6000.0` or newer.
+2. Add `tech.aspid.collections` and `tech.aspid.fasttools` to `manifest.json` (§ 1).
+3. Rename types from the table in § 2; the compiler finds the rest.
+4. `view.Dispose()` and `view.DestroyView()` no longer destroy the GameObject (§ 4.2).
+5. Custom `CollectionBinder<T>` subclasses implement six new hooks (§ 4.4).
+6. Re-author `NumberCompareConverter` thresholds and `ParseHtmlStringConverter` fallbacks (§ 4.7).
 
 ---
 
-## 1. Compilation breakers
+## 1. Project and packages
 
-### 1.1 Renamed StarterKit binder classes
+- **Unity `6000.0`** is the minimum; the Editor project is on `6000.4.0f1`.
+- Two git packages are required and not auto-resolved:
 
-`.meta` GUIDs are intact, so existing prefabs / scenes keep working. Only your own source code needs updates.
+```json
+"tech.aspid.collections": "https://github.com/VPDPersonal/Aspid.Collections.git#upm",
+"tech.aspid.fasttools": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm"
+```
+
+- `Aspid.Collections` no longer ships inside the package. Assembly (`Aspid.Collections.Observable`) and namespaces are unchanged.
+- The framework moved from `Assets/Plugins/Aspid/MVVM/` to the UPM package `Packages/tech.aspid.mvvm/`. Update path constants and CI scripts; asset references survive.
+- Assemblies `Aspid.MVVM.StarterKit.Unity` and `Aspid.MVVM.StarterKit.Unity.Editor` merged into `Aspid.MVVM.StarterKit` and `Aspid.MVVM.StarterKit.Editor`. Fix `.asmdef` references; the namespace `Aspid.MVVM.StarterKit` is unchanged.
+- `SerializeReferenceDropdown` is no longer a dependency; `[SerializeReference]` fields are drawn by the FastTools type picker.
+
+---
+
+## 2. Renamed types and members
 
 | 1.0 | 1.1 |
 |-----|-----|
-| `ViewModelObservableListMonoBinder` (incl. generic `<T>`, `<T, TViewFactory>`) | `ObservableListViewModelMonoBinder` |
-| `ViewModelObservableListBinder` | `ObservableListViewModelBinder` |
+| `ViewModelObservableListMonoBinder` / `…Binder` | `ObservableListViewModelMonoBinder` / `…Binder` |
 | `ViewModelObservableDictionaryBinder` | `ObservableDictionaryViewModelBinder` |
-| `ViewModelCollectionMonoBinder` | `CollectionViewModelMonoBinder` |
+| `ViewModelCollectionMonoBinder` / `…Binder` | `CollectionViewModelMonoBinder` / `…Binder` |
+| `CollectionBinderBase<T>` | `CollectionBinder<T>` |
+| `OneWayValue<T>`, `OneTimeValue<T>`, `TwoWayValue<T>`, `OneWayToSourceValue<T>` | `ValueOneWayBinder<T>`, `ValueOneTimeBinder<T>`, `ValueTwoWayBinder<T>`, `ValueOneWayToSourceBinder<T>` |
+| `GenericOneWayBinder`, `GenericOneTimeBinder`, `GenericTwoWayBinder`, `GenericOneWayToSourceBinder` (and `UnityGeneric*`) | `DelegateOneWayBinder`, `DelegateOneTimeBinder`, `DelegateTwoWayBinder`, `DelegateOneWayToSourceBinder` |
+| `GenericCasterBinder` (and `UnityGenericCasterBinder`) | `CasterBinder` |
+| `GenericToStringCasterBinder` / `…MonoBinder` | `ValueToStringCasterBinder` / `…MonoBinder` |
+| `MonoCommandBinder` | `CommandMonoBinder` |
+| `ScrollBarCommandMonoBinder` | `ScrollbarCommandMonoBinder` |
+| `RawImageMaterial*Binder` | `GraphicMaterial*Binder` (any `Graphic`) |
+| `RendererMaterialColorBinder` / `…SwitcherBinder` | `RendererMaterialsColorBinder` / `…SwitcherBinder` |
+| `SliderValueMode` | `SliderRangeMode` (same members) |
+| `ICanExecuteView`, `ColorInteractable`, `GameObjectVisibleInteractable`, `SequenceCanExecuteView` | `ICanExecuteHandler`, `ColorCanExecuteHandler`, `GameObjectVisibleCanExecuteHandler`, `SequenceCanExecuteHandler` |
+| `RectTransformSetters`, `TransformSetters` | `RectTransformGettersAndSetters`, `TransformGettersAndSetters` |
+| `IMonoBinderValidable.IsMonoExist`, `ValidableBindersById` | `IMonoBinderValidatable.IsMonoAlive`, `ValidatableBindersById` |
+| `Binder.IsBind`, `MonoBinder.IsBind` | `CanBind` |
+| `ObservableListBinder.GetFilterList` | `GetFilteredList` |
+| `BinderFieldInfoExtensions.GetBinderId` | `BinderIdUtility.FromFieldName` (Editor assembly) |
+| `ViewModelDebugPanel` | `DebugViewModelPanel` |
+| `GenericFuncConverter<TFrom, TTo>` | `FuncConverter<TFrom, TTo>` |
+| `ConverterExtensions.ToConvert` | `FuncConverterExtensions.ToConverter` |
+| `GenericToString<TFrom>` | `ValueToStringConverter<T>` — override `Format(T value, string format)` instead of `ToStringValue` |
+| `SequenceConverters<T>` | `SequenceConverter<T>` |
+| `NumberToBoolConverter`, `Comparisons` (`Inequality`) | `NumberCompareConverter`, `ComparisonMode` (`NotEqual`) — threshold widened to `double`, see § 4.7 |
+| `Vector2ToVector3Converter`, `Vector3ToVector2Converter` (`Values`) | `Vector2Vector3Converter` (`Mode`), two-way |
+| `Vector2SubstitutionConverter`, `Vector3SubstitutionConverter` | `VectorSwizzleConverter` |
+| `TimeSpanToStringConverter` | `TimeSpanFormatConverter` |
+| `ObjectToStringConverter` | `ValueToStringConverter<object>` |
+| `ObjectNullToBoolConverter` | `EqualityToBoolConverter<T>` against `null` |
 
-Suggested approach: a single global rename per row (regex / IDE refactor). Namespace `Aspid.MVVM.StarterKit` is unchanged.
+---
 
-### 1.2 `AddComponentContextMenuAttribute` removed
+## 3. Removed
 
-`AddComponentContextMenuAttribute` and `AddPropertyContextMenuAttribute` were both removed and merged into a single `AddBinderContextMenuAttribute` (plus the type-only variant `AddBinderContextMenuByTypeAttribute`, which registers a binder purely by its target component type). The menu path moves to the named `Path` property; the serialized-property name(s) that `[AddPropertyContextMenu]` provided move into the `serializePropertyNames` constructor parameter (`params string[]`, so several are allowed).
+| Removed | Use instead |
+|---------|-------------|
+| `AddComponentContextMenuAttribute`, `AddPropertyContextMenu` | `[AddBinderContextMenu(typeof(X), serializePropertyNames: "m_Field", Path = "path")]`; `AddBinderContextMenuByTypeAttribute` registers by target type only |
+| `DynamicViewModel.Create<…>`, `DynamicPropertyData<T>`, `DynamicPropertyFactory`, `OneWay/TwoWay/OneTimeDynamicProperty<T>` | `DynamicViewModel.Add<T>` / `Get<T>` → `IDynamicProperty<T>` (§ 4.8) |
+| `IConverterXToY` aliases (`IConverterFloat`, `IConverterIntToLong`, …), `ToConvert` / `ToConvertSpecific` wrappers | `IConverter<TFrom, TTo>` and `ToConverter<TFrom, TTo>`. A `[SerializeReference]` field declared as an alias resolves to `null` on load — retype it |
+| `IBindableValue<T>`, `IReadOnlyBindableValue<T>` | `ValueTwoWayBinder<T>.Value` / `ValueOneWayBinder<T>.Value` |
+| `IViewModelCollectionFilter`, `And/OrCompositeCollectionFilter`, `And/OrViewModelCompositeCollectionFilter`, `ICollectionComparer`, `NumberCollectionComparer` | Filtering and ordering from `tech.aspid.collections` |
+| `UNITY_2022_1_OR_NEWER` / `UNITY_6000_0_OR_NEWER` compatibility branches, `PhysicMaterial` fallbacks | Unity 6 only |
 
 ```csharp
-// BEFORE — Aspid.MVVM 1.0
-[AddPropertyContextMenu(typeof(CanvasGroup), "m_Alpha")]        // optional
+// 1.0
+[AddPropertyContextMenu(typeof(CanvasGroup), "m_Alpha")]
 [AddComponentContextMenu(typeof(CanvasGroup), "Add CanvasGroup Binder/Alpha")]
 public partial class MyAlphaBinder : MonoBinder { }
 
-// AFTER — Aspid.MVVM 1.1 (one attribute; both arguments carry over, Path is optional)
+// 1.1
 [AddBinderContextMenu(typeof(CanvasGroup), serializePropertyNames: "m_Alpha", Path = "Add CanvasGroup Binder/Alpha")]
 public partial class MyAlphaBinder : MonoBinder { }
 ```
 
-If a binder only had `[AddComponentContextMenu(typeof(X), "path")]`, the mechanical replacement is `[AddBinderContextMenu(typeof(X), Path = "path")]`.
-
 ---
 
-### 1.3 Typed binder bases replaced by binder interfaces
+## 4. Behaviour changes
 
-The bases that existed only to restate the `SetValue` overloads are gone. The conversions now live in the binder
-interfaces as default interface implementations, so a binder names the interface instead of inheriting a base.
+### 4.1 `MonoView` is concrete
 
-| 1.0 / earlier 1.1 | Now |
-|-----|-----|
-| `TargetVector3Binder<T>` | `TargetBinder<T, Vector3>, IVector3Binder` |
-| `TargetVector2Binder<T>` | `TargetBinder<T, Vector2>, IVector2Binder` |
-| `ComponentVector3MonoBinder<T>` | `ComponentMonoBinder<T, Vector3>, IVector3Binder` |
-| `ComponentVector2MonoBinder<T>` | `ComponentMonoBinder<T, Vector2>, IVector2Binder` |
-| `ComponentQuaternionMonoBinder<T>` | `ComponentMonoBinder<T, Quaternion>, IRotationBinder` |
-| `Vector3Binder` / `Vector2Binder` | `Binder<Vector3>, IVector3Binder` / `Binder<Vector2>, IVector2Binder` |
-| `Vector3MonoBinder` / `Vector2MonoBinder` | `MonoBinder<Vector3>, IVector3Binder` / `MonoBinder<Vector2>, IVector2Binder` |
-| `TargetQuaternionBinder<T>` | `TargetBinder<T, Quaternion>, IRotationBinder` |
-| `ComponentColorMonoBinder<T>` | `ComponentMonoBinder<T, Color>, IColorBinder` |
-| `TargetColorBinder<T>` | `TargetBinder<T, Color>, IColorBinder` |
-| `ComponentBoolMonoBinder<T>` / `ComponentStringMonoBinder<T>` | `ComponentMonoBinder<T, bool>` / `ComponentMonoBinder<T, string>` |
-| `ColorMonoBinder` / `QuaternionMonoBinder` | `MonoBinder<Color>, IColorBinder` / `MonoBinder<Quaternion>, IRotationBinder` |
-| `BoolMonoBinder` / `StringMonoBinder` | `MonoBinder<bool>` / `MonoBinder<string>` |
-| `TargetBoolBinder<T>` / `TargetStringBinder<T>` | `TargetBinder<T, bool>` / `TargetBinder<T, string>` |
+`MonoView` is no longer `abstract`: the binder list, child validation and `[RequireBinder]` live on it. Subclasses keep working; the new serialized fields start empty.
 
-`.meta` GUIDs of the concrete binders are untouched, so prefabs and scenes keep working.
-
-`TargetQuaternionBinder<T>` rejected `BindMode.TwoWay` in its constructor — a rotation property raises no change
-event. A rotation binder now carries that check itself; a custom one built on the removed base has to add
-`mode.ThrowExceptionIfMatches(BindMode.TwoWay);` to its own constructor.
-
-A default interface implementation is not a class member, so the extra `SetValue` entry points are reachable only
-through the interface. Call sites that used them directly need a cast:
+### 4.2 `Dispose()` and `DestroyView()` keep the GameObject
 
 ```csharp
-// BEFORE
-vector2Binder.SetValue(5f);
-vector3Binder.SetValue(new Vector2(1f, 2f));
-
-// AFTER
-((IBinder<float>)vector2Binder).SetValue(5f);
-((IBinder<Vector2>)vector3Binder).SetValue(new Vector2(1f, 2f));
-```
-
-The same applies to the numeric bases: `SetValue(int)`, `SetValue(long)`, `SetValue(float)` and `SetValue(double)`
-now come from `IIntBinder` / `ILongBinder` / `IFloatBinder` / `IDoubleBinder`, and out-of-range values saturate at the
-target type's bounds instead of wrapping.
-
----
-
-### 1.4 `TargetBinderWithConverter<T, TProperty>` merged into `TargetBinder<T, TProperty>`
-
-The two-argument `TargetBinder` now holds the converter itself, the way `ComponentMonoBinder<T, TProperty>` and
-`MonoBinder<TProperty>` always have. `TargetBinderWithConverter<T, TProperty>` and
-`TargetObjectBinderWithConverter<T, TObject>` are removed — rename them to `TargetBinder<T, TProperty>` and
-`TargetObjectBinder<T, TObject>`; nothing else about those binders changes.
-
-Its constructor takes the converter between the target and the mode, so a binder built directly on the
-two-argument base passes one more argument:
-
-```csharp
-// BEFORE
-public MyBinder(Image target, BindMode mode = BindMode.OneWay)
-    : base(target, mode) { }
-
-// AFTER
-public MyBinder(Image target, IConverter<Image.Type, Image.Type>? converter = null, BindMode mode = BindMode.OneWay)
-    : base(target, converter, mode) { }
-```
-
-Callers that passed the mode positionally as the second argument now have to name it: `new MyBinder(target,
-mode: BindMode.OneWayToSource)`. Binders that had no converter before gain a serialized one, which starts empty
-and changes nothing until it is filled in.
-
----
-
-### 1.5 `BinderMath` methods name the binder they sanitise for
-
-`SafeClamp`, `SafeClamp01` and `NonNegative` replaced a non-finite value without a word in the console, which is
-the opposite of what the converters do for a value they cannot convert. They now report the replacement, and to do
-that they need to know who is calling: each is an extension on `IBinder`, with a `Type` overload for a helper
-reporting on another binder's behalf — the same pair `BinderLogger` offers.
-
-```csharp
-// BEFORE
-Target.pitch = BinderMath.SafeClamp(value, -3f, 3f);
-
-// AFTER — inside a binder; a serializable binder passes its target as the object to ping
-Target.pitch = this.SafeClamp(value, -3f, 3f, Target);
-
-// AFTER — inside a static helper
-audioSource.time = BinderMath.SafeClamp(typeof(AudioSourceTimeSetters), value, 0f, end, audioSource);
-```
-
-`BinderMath.IsFinite(float)` stays a plain predicate. The new `RequireFinite` is the reporting form of it: it
-returns `false` and logs, and replaces the `if (!BinderMath.IsFinite(value)) return;` guard that silently dropped
-the write. Overloads cover `float`, `Vector2`, `Vector3`, `Vector4` and `Rect`, and a vector is reported once
-rather than once per component.
-
-Only the non-finite path reports. A finite value outside the range still saturates at the bound in silence — that
-is the documented contract, and a slider driven every frame would otherwise fill the console.
-
----
-
-### 1.6 Renamed binder members
-
-| 1.1.0-beta | Now |
-|---|---|
-| `Binder.IsBind`, `MonoBinder.IsBind` | `CanBind` |
-| `CollectionBinderBase<T>` | `CollectionBinder<T>` |
-| `OnReplace(…)`, `OnMove(…)` on the collection binder bases | `OnReplaced(…)`, `OnMoved(…)` |
-| `NumberReverseChannel.HasDecimalListeners`, `RaiseDecimals` | `HasFloatingPointListeners`, `RaiseFloatingPoint` |
-| `ObservableListBinder.GetFilterList` | `GetFilteredList` |
-| `EnumCasterParse` | `EnumNameParse` |
-| `IMonoBinderValidable`, `IsMonoExist` | `IMonoBinderValidatable`, `IsMonoAlive` |
-| `Generic*ToSourceBinder` / `GenericTwoWayBinder` ctor parameters `initialize`, `onBoundValueChanged`, `onUnboundValueChanged` | `subscribe`, `getValueOnBound`, `getValueOnUnbinding` |
-| `BinderFieldInfoExtensions.GetBinderId` (runtime assembly) | `BinderIdUtility.FromFieldName` (Editor assembly) |
-
-**Compile impact:** overrides of `IsBind`, `OnReplace`, `OnMove`, `GetFilterList` and any named-argument call of the generic constructors stop compiling until renamed. No serialized data changes.
-
----
-
-## 2. Runtime / behavioural changes
-
-### 2.1 `MonoView` is no longer abstract
-
-```csharp
-// 1.0
-public abstract partial class MonoView : MonoBehaviour, IDisposable
-
-// 1.1
-public partial class MonoView : MonoBehaviour, IDisposable
-```
-
-Existing subclasses keep working — newly added serialized fields (`_bindersList`, `_designViewModel`, `_designViewModelAssemblyQualifiedNames`) appear empty. Either populate them in the inspector or keep the legacy override style — both are supported.
-
-### 2.2 `MonoView.Dispose()` no longer destroys the GameObject
-
-```csharp
-// 1.0
-public virtual void Dispose() {
-    Deinitialize();
-    if (this) Destroy(gameObject); // <-- removed
-}
-
-// 1.1
-public virtual void Dispose() => Deinitialize();
-```
-
-If your code relied on `view.Dispose()` to free the host object, switch to:
-
-```csharp
+// 1.0 — both destroyed the GameObject
 view.Dispose();
-Object.Destroy(view.gameObject);
-```
-
-(or override `Dispose` in your subclass to restore the old behaviour).
-
-### 2.3 `DestroyView()` no longer destroys the GameObject
-
-Mirroring § 2.2, the `DestroyView` extension method changed. In 1.0 `view.DestroyView()` tore down the whole GameObject; in 1.1 it deinitializes the View (or calls `Dispose()` if the View is `IDisposable`) and destroys only the View **component**, leaving the GameObject alive. A new `DestroyViewAndGameObject()` restores the old behaviour.
-
-```csharp
-// 1.0 — destroyed the GameObject
 view.DestroyView();
 
-// 1.1 — destroys only the View component; to also destroy the GameObject:
-view.DestroyViewAndGameObject();
+// 1.1
+view.Dispose();                   // Deinitialize() only
+Object.Destroy(view.gameObject);  // if you still want the object gone
+
+view.DestroyView();               // destroys only the View component
+view.DestroyViewAndGameObject();  // the 1.0 behaviour
 ```
 
-Both methods are now null/destroyed-safe (they return `null` instead of throwing) and, in the Editor outside play mode, use `DestroyImmediate`. The same pair exists for the generic `DestroyView<T>()` / `DestroyViewAndGameObject<T>()` overloads.
+Both extension methods return `null` instead of throwing on a destroyed View and use `DestroyImmediate` outside play mode.
 
-### 2.4 `CollectionBinder<T>` forwards granular change events
+### 4.3 `MonoBinder.Bind()` on a bound binder
 
-In 1.0, `CollectionBinder<T>` exposed only `OnAdded(IReadOnlyCollection<T>)` and `OnReset()`, and did not subscribe to `CollectionChanged`. In 1.1 it subscribes to `CollectionChanged` and adds six new abstract hooks:
+Logs an error and returns instead of throwing.
 
-- `OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`
-- `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`
-- `OnReplaced(T? oldItem, T? newItem, int newStartingIndex)`
-- `OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex)`
+### 4.4 `CollectionBinder<T>` hooks
 
-Batch `Replace` events are unrolled into per-item `OnReplaced` calls.
-
-**Compile impact:** any class deriving from `CollectionBinder<T>` must implement all six new abstract methods or it will not compile. Empty bodies preserve the 1.0 behaviour. `CollectionMonoBinder<T>` itself is unchanged (still only `OnAdded` / `OnReset`).
-
-### 2.5 `ViewInitializer` overhaul
-
-The `ViewInitializer` family was reworked: view/container resolution moved into `ViewInitializerBase`, edit-mode `Views` / `ViewModel` resolve lazily, and container `Resolve` became `TryResolve` (a failed DI resolve no longer throws). A new `InitializeStage.DiConstructor` stage was added (compiled only when a Zenject or VContainer integration define is set). The default initialization stage is **unchanged** — it is still `Awake`.
-
-The serialized resolution data was also restructured: the per-target resolution entries are now `ViewInitializeComponent` items (with the target type stored as a type-name string) instead of the old inline `InitializeComponent<IView>` fields. Re-check the resolution settings on existing `ViewInitializer` / `ViewInitializerManual` components in the inspector after upgrading.
-
-### 2.6 Addressable seamless swap
-
-`AddressableMonoBinder<TAsset>` / `AddressableMonoBinder<TAsset, TComponent>` gain a serialized `_seamlessSwap` flag (default `false`, so opt-in). With it off, a new bind still resets to the default asset before loading, as in 1.0; with it on, the previously loaded asset stays on screen until the new load completes. The load lifecycle was rewritten even on the default path (a single internal handle became separate current/pending handles), so if you subclass an Addressable binder and override the asset-set or release flow, re-check it against the new field and handle lifecycle.
-
-### 2.7 `[AddComponentMenu]` paths
-
-A number of menu paths were normalised:
-
-- "Collections/…" → "Collection/…" (singular).
-- ASCII hyphen `-` between words → en-dash `–`.
-
-Tooling that searches the Add Component dialog or menu paths by exact string needs to be updated.
-
-### 2.8 Behavioural fixes that change runtime output
-
-One 1.0 bug was fixed, so the same source now behaves differently at runtime — no recompile needed:
-
-- **`NumberToBoolConverter` with `Comparisons.Inequality`** returned the same result as `Comparisons.Equal` in 1.0 (the comparison was inverted). It now correctly returns `true` when the values are *not* approximately equal. Review binders configured with `Inequality` and remove any compensating inversion you added downstream.
-
-### 2.9 `DynamicViewModel`
-
-The fixed-arity `DynamicViewModel.Create<...>` API and its `DynamicPropertyData<T>`, `DynamicPropertyFactory`
-and mode-specific property classes were replaced by a single typed property:
+`CollectionBinder<T>` subscribes to `CollectionChanged` and adds six abstract hooks. A custom subclass must implement them; empty bodies restore the 1.0 behaviour.
 
 ```csharp
-var viewModel = new DynamicViewModel();
-DynamicProperty<string> title = viewModel.Add("Title", "Hello");
-DynamicProperty<float> volume = viewModel.Add("Volume", 0.5f, BindMode.TwoWay);
-
-title.Value = "Updated";
+protected abstract void OnAdded(T? newItem);
+protected abstract void OnAdded(IReadOnlyList<T?>? newItems);
+protected abstract void OnRemoved(T? oldItem);
+protected abstract void OnRemoved(IReadOnlyList<T?>? oldItems);
+protected abstract void OnReplaced(T? oldItem, T? newItem, int index);
+protected abstract void OnMoved(T? oldItem, T? newItem, int oldStartingIndex, int newStartingIndex);
 ```
 
-When no property handle is needed, use the collection initializer:
+`CollectionMonoBinder<T>` keeps `OnAdded(IReadOnlyCollection<T>)` / `OnReset()`, but now follows the collection and rebuilds on every change.
+
+### 4.5 `ViewInitializer`
+
+Resolution moved into `ViewInitializerBase`, container `Resolve` became `TryResolve` (a failed resolve no longer throws), and `InitializeStage.DiConstructor` was added. The default stage is still `Awake`. The serialized resolution entries changed type — re-check `ViewInitializer` / `ViewInitializerManual` in the Inspector.
+
+### 4.6 Binders
+
+- **`[AddComponentMenu]` paths**: `Collections/…` → `Collection/…`, hyphen → en dash (`Binder – ViewModel`). Update tooling that matches menu paths.
+- **Addressable binders** gained an opt-in `_seamlessSwap`; the load lifecycle uses separate current/pending handles. Re-check subclasses that override the asset-set or release flow.
+- **Sanitising is loud**: a `NaN` or infinity written to a binder is clamped and reported through `BinderLogger`. A finite out-of-range value still saturates silently.
+- **Reverse binding converts**: in `TwoWay` / `OneWayToSource` a converter's `ConvertBack` is applied. Remove any compensation your ViewModel did for the missing reverse conversion.
+- **Bool binders** carry an `IConverter<bool, bool>` slot instead of `_isInvert`. Re-author inversion by picking `BoolInvertConverter`; `*ByBind` binders keep the flag.
+- **A `MonoBinder` added in the Inspector** starts in the mode its `DefaultMode` allows, not always `TwoWay`.
+- **A destroyed `MonoBinder`** unbinds from `OnDestroy`; call `base.OnDestroy()` in overrides.
+
+### 4.7 Converters
+
+- **Misconfiguration reports on every conversion** and returns an authored fallback. Expect new console errors from setups that were silently broken.
+- **`NumberCompareConverter`** (was `NumberToBoolConverter`): `Inequality` was inverted in 1.0 and now works; the `_value` threshold widened from `float` to `double`, so every authored threshold reads back as `0` — re-author it.
+- **`ParseHtmlStringConverter`**: the fallback moved from `_defaultColor` to `_fallback` and must be re-authored; an unparsable colour is now reported.
+- **`ValueToStringConverter<T>`** (was `GenericToString<TFrom>`): formatting is the virtual `Format(T value, string format)` hook; a blank or whitespace format falls back to `ToString()`. A `FormatException` is contained instead of cutting the binder subscriber list.
+- **Whitespace is blank**: every string converter treats a whitespace-only string as empty.
+
+### 4.8 `DynamicViewModel`
 
 ```csharp
 var viewModel = new DynamicViewModel
@@ -284,172 +169,50 @@ var viewModel = new DynamicViewModel
     { "Title", "Hello" },
     { "Volume", 0.5f, BindMode.TwoWay }
 };
+
+IDynamicProperty<float> volume = viewModel.Get<float>("Volume");
+volume.Value = 0.8f;
+volume.ValueChanged += v => Debug.Log(v);
 ```
 
-Replace reads and writes through mode-specific property instances with `Value`, or use
-`GetValue<T>` / `SetValue<T>` by ID. Unlike the old factory, the number of properties is unlimited.
+`Add<T>` returns the same `IDynamicProperty<T>` handle. All four `BindMode`s live on one property type; the number of properties is unlimited.
+
+### 4.9 `RelayCommand`
+
+`RelayCommand.Empty` stays non-executable; `RelayCommand.EmptyExecution` is executable and does nothing. The private empty constructor is now `RelayCommand(bool value = false)` — relevant only to reflection.
 
 ---
 
-## 3. Project / infrastructure
+## 5. Writing custom binders in 1.1
 
-### 3.1 Required packages
-
-1.1 is distributed as a UPM package (`tech.aspid.mvvm`). Its assemblies depend on two external git packages that `package.json` does not declare, so add them to your `Packages/manifest.json` before importing 1.1:
-
-```json
-"tech.aspid.collections": "https://github.com/VPDPersonal/Aspid.Collections.git#upm",
-"tech.aspid.fasttools": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm"
-```
-
-The `Aspid.Collections` source that previously shipped inside the package was removed; it is now the separate `tech.aspid.collections` package. Its assembly name (`Aspid.Collections.Observable`) and namespaces are unchanged, so `using` directives and type references need no edits once the package is present.
-
-### 3.2 Unity project relocated
-
-The Unity project tree moved from the repository root into `Aspid.MVVM/`, and the framework also moved out of the `Plugins/` layer:
-
-```
-1.0:  <repo>/Assets/Plugins/Aspid/MVVM/...
-1.1:  <repo>/Aspid.MVVM/Packages/tech.aspid.mvvm/...
-```
-
-(Third-party plugins such as Zenject stay under `Assets/Plugins/`.) `.meta` GUIDs were preserved, so prefab / scene / ScriptableObject references survive — only textual path strings (CI/CD scripts, IDE workspaces, build pipelines, path constants) need updating.
-
-### 3.3 Unity Editor versions
-
-`package.json` now declares `"unity": "6000.0"`, formally setting the minimum supported Unity to `6000.0`. 1.0 shipped without a UPM `package.json`, so it declared no minimum (its repository project file was already on Unity `6000.2.7f2`). Projects still on Unity 2022 / 2023 must upgrade the Editor before adopting 1.1.
-
----
-
-## 4. Architectural notes
-
-### 4.1 `BindSafely` / `UnbindSafely`
-
-Optional `owner` and `memberName` parameters (defaulting to `null`) were appended to the existing `BindSafely` / `UnbindSafely` methods, so the null-binder diagnostic can name the owning View (its type and GameObject name), the field that holds the binders, and the element index. Existing source call sites compile unchanged.
-
-### 4.2 Bindable Properties
-
-Existing `[Bind]` fields keep working. Bindable Properties (PR #46) are additive — opt in **per property** by applying `[Bind]` (or `[OneWayBind]` / `[TwoWayBind]` / `[OneTimeBind]` / `[OneWayToSourceBind]`) directly to a property instead of a field. In 1.0 these attributes targeted fields only; in 1.1 they also accept properties. No ViewModel-level change is required.
-
-### 4.3 `RelayCommand`
-
-`RelayCommand.Empty` is preserved (still non-executable). New `RelayCommand.EmptyExecution` returns a command that is executable but does nothing; both exist on every arity (`RelayCommand`, `RelayCommand<T>`, … up to four type arguments). The internal empty constructor changed from a parameterless `RelayCommand()` to `RelayCommand(bool value = false)` — invisible through the public API, but reflection that looks up the private parameterless constructor by signature must be updated.
-
----
-
-## 5. Converters
-
-The converter subsystem was rebuilt: 14 converters became 148, the contract gained a reverse direction, and the pre-2023.1 compatibility layer was deprecated. Almost all of it is source-code work — the names that appear in serialized data were deliberately left alone, and the deprecated types are still implemented. Three exceptions need authoring time: `DateTimeCompareConverter` and `DateTimeOffsetFormatConverter` lose their settings to the enum change and `NumberCompareConverter` loses its threshold to a widened field (§ 5.4), and a prefab-instance override on a renamed or re-encapsulated type needs the repair tool (§ 5.1).
-
-### 5.1 Renames
-
-Nine names changed. Four have no serialized footprint at all; the rest are types that `[MovedFrom]` migrates for an object's own data:
-
-| Was | Is | Notes |
-|-----|-----|-------|
-| `Vector2ToVector3Converter.Values`, `Vector3ToVector2Converter.Values` | `Mode` | Nested enum type; a nested type name is not serialized |
-| `Comparisons.Inequality` | `ComparisonMode.NotEqual` | An enum serializes as an ordinal, which is unchanged |
-| `EnumMatch.Equals` | `EnumMatch.Equal` | Same — an ordinal. The member was hiding the inherited `object.Equals` |
-| `ConverterExtensions.ToConvert` | `ToConverter` | Extension method; code only. The method returns a converter, so the old name read as an imperative |
-| `WrapMode` | `NumberWrapMode` | Enum **type** rename; the value stays an ordinal, so authored data is unaffected. The old name was ambiguous against `UnityEngine.WrapMode` |
-| `ListToStringConverter` | `CollectionJoinToStringConverter` | Carries `[MovedFrom]`. It accepts any `IEnumerable<T>`, and every sibling is named `Collection*` |
-| `NumberToBoolConverter` | `NumberCompareConverter` | Class rename, plus `Comparisons` → `ComparisonMode` and a threshold widened from `float` to `double` — that one costs authoring time (§ 5.4) |
-| `BoxColliderCentreCombineConverter`, `CapsuleColliderCentreCombineConverter`, `SphereColliderCentreCombineConverter` | `…CenterCombineConverter` | Carry `[MovedFrom]`. American spelling, and it matches Unity's own `center` property |
-
-Search-and-replace the first five and you are done. For everything carrying `[MovedFrom]`, read the warning below before assuming scenes are untouched.
-
-> **A wider rename wave was attempted and reverted, and the reason is worth knowing if you maintain
-> your own `[SerializeReference]` types.** `[MovedFrom]` and `[FormerlySerializedAs]` cover an
-> object's own serialized data. They do **not** cover a prefab-instance override, which is keyed by
-> the stored type string and the property path. Renaming `SequenceConverters` emptied a converter in
-> the package's own Hello World sample — 24 console errors and a binder that stopped converting,
-> with `[MovedFrom]` present and correct. So `SequenceConverters`, `GenericToString`,
-> `_preConvertor` / `_postConvertor` and `_values` keep their names, spelling and all.
->
-> The same caveat applies to `ListToStringConverter` → `CollectionJoinToStringConverter`, and to
-> `EnumToValueConverter.Entry` / `LookupEntry`, whose public fields became private `[SerializeField]`
-> with `[FormerlySerializedAs]`. None of the three is authored in any scene or prefab shipped with
-> the package, so nothing inside it needed migrating. If **your** project authored one as a
-> prefab-instance override, run the repair tool that rewrites the stored type strings and property
-> paths over every scene and prefab — otherwise the override is dropped on load with no diagnostic.
-
-### 5.2 Deprecated: the named converter aliases
-
-The 40 `IConverterXToY` interfaces and the 70 `ToConvert` / `ToConvertSpecific` wrappers are `[Obsolete]`. They existed because Unity before 2023.1 could not serialize a `[SerializeReference]` field of an open generic; 1.1 requires Unity 6000.0.
+- **Serializable twin is generated.** Write the `MonoBinder` half, mark it `[GenerateSerializableBinder]`, and `{Name}Binder` is emitted over the matching `Target*Binder`. A twin that already exists by name is left alone.
+- **Property bases carry the converter.** `TargetBinder<TTarget, TProperty>` and `ComponentMonoBinder<TComponent, TProperty>` hold a `[SerializeReference] IConverter<TProperty, TProperty>` slot; typed bases `Target{Int,Float,Object}Binder<TTarget>` and `Component{Int,Float,Object}MonoBinder<TComponent>` sit on top.
+- **Numeric and vector overloads come from interfaces.** `IIntBinder`, `ILongBinder`, `IFloatBinder`, `IDoubleBinder`, `IVector2Binder`, `IVector3Binder`, `IColorBinder`, `IRotationBinder` supply the extra `SetValue` overloads as default interface members; out-of-range values saturate. They are reachable only through the interface: `((IBinder<float>)binder).SetValue(5f)`.
+- **One reverse channel for numbers.** `INumberReverseBinder` bridges `IReverseBinder<int/long/float/double>.ValueChanged` to a `NumberReverseChannel` the binder holds; subscribe via `((IReverseBinder<float>)binder).ValueChanged`.
+- **`BinderMath` names the caller.**
 
 ```csharp
-// before
-[SerializeReference] private IConverterFloat _converter;
-IConverterFloat c = ((Func<float, float>)(x => x * 2f)).ToConvert();
-
-// after
-[SerializeReference] private IConverter<float, float> _converter;
-IConverter<float, float> c = ((Func<float, float>)(x => x * 2f)).ToConverter();
+Target.pitch = this.SafeClamp(value, -3f, 3f, Target);            // inside a binder
+if (!this.RequireFinite(value, Target)) return;                   // replaces a silent IsFinite guard
+value = BinderMath.SafeClamp(typeof(MyHelper), value, 0f, 1f);    // inside a static helper
 ```
-
-The generic `ConverterExtensions.ToConverter<TFrom, TTo>` is the replacement and is not deprecated. It was called `ToConvert` before this release — the name said "convert" but the method hands back a converter.
-
-**You have one release to act.** The package's own converters still implement the aliases, so a field declared as `IConverterFloat` keeps deserializing today. When the aliases are removed, such a field resolves to `null` on load — silently, with no exception and no console entry. The compiler warning is the only notice you get.
-
-### 5.3 Reverse binding now converts
-
-A binder in `BindMode.TwoWay` or `BindMode.OneWayToSource` used to send the View's value back to the ViewModel unconverted. It now calls `ITwoWayConverter.ConvertBack` when the assigned converter implements it, and warns in the console when it does not.
-
-This changes runtime output where a two-way binding had a converter attached. If you compensated for the missing reverse conversion in the ViewModel — a setter that undid the converter's work — remove that compensation.
-
-### 5.4 Behavioural fixes that change runtime output
-
-- **`StringFormatConverter` with `_formatEmptyValues` enabled** formats null and empty input again. Between the 1.1 previews it returned `null` instead of the formatted empty string.
-- **A `FormatException` in a converter no longer stops unrelated binders.** If your scene had a broken format string, binders behind it in the dispatch order were silently not updating; they will now update.
-- **The `Vector3CombineConverter` family returns the input unchanged** instead of throwing when its scene reference is missing, and reports it on every push.
-- **A misconfigured converter now reports on every conversion.** Expect new console output from converters that were already misconfigured and silently returned a fallback — an empty token list, an inverted `min`/`max`, a missing inner converter, a duplicate lookup key. The messages name the converter and what it did instead; they are pointing at authoring that was already broken, not at a new failure.
-- **`SafeConverter` lost its `_logErrors` field.** A caught exception is always logged, in full. If you relied on that switch to keep a scene quiet, the noise it was hiding will now appear.
-- **`NumberCompareConverter` needs its threshold re-authored.** The former `NumberToBoolConverter` kept its `_value` field name but widened it from `float` to `double`, and Unity does not carry a float across to a double field: every authored threshold reads back as `0`. The comparison itself survives — `ComparisonMode` has the same members in the same order as `Comparisons`.
-- **`DateTimeCompareConverter` and `DateTimeOffsetFormatConverter` need re-authoring.** Their bool pairs became the `ReferenceSource` and `OffsetSource` enums, and the old booleans do **not** migrate: each instance reverts to its default and the intended source has to be picked again in the Inspector. Both converters are worth a scene search before you upgrade.
-- **Two-way bindings gained a reverse direction they did not have.** `DateTimeToUnixTimestampConverter`, `StringToDateTimeConverter` and `StringToTimeSpanConverter` used to hand the value back untouched in a `TwoWay` binding; they now convert. If your ViewModel was compensating for that, remove the compensation.
-- **An undeclared enum value raises `InvalidOperationException` instead of `ArgumentOutOfRangeException`.** Only relevant if you catch it — the arm reports corrupt serialized state, not a bad argument.
-
-### 5.5 `GenericToString.ToStringValue` is gone
-
-`protected virtual string ToStringValue(TFrom)` became a private detail when formatting moved to the
-`Format` hook. A subclass that overrode it no longer compiles:
-
-```csharp
-// before
-protected override string ToStringValue(float value) => value.ToString("F2");
-
-// after — Format receives the typed value and runs for every non-blank format
-protected override string? Format(float value) => value.ToString("F2");
-```
-
-The two hooks are not called on the same schedule. `ToStringValue` ran only when the format was
-blank; `Format` runs whenever it is **not** blank, and a blank one falls back to `ToString()`. If the
-override existed to change the no-format rendering, it now belongs in the subclass's own `Convert`.
 
 ---
 
-## Upgrade checklist
+## Checklist
 
-- [ ] Add the `tech.aspid.collections` and `tech.aspid.fasttools` git packages to `manifest.json` (required; not auto-resolved)
-- [ ] Upgrade the Editor to Unity `6000.0` or newer
-- [ ] Update CI / build scripts and path constants: `Assets/Plugins/Aspid/...` → `Aspid.MVVM/Assets/Aspid/...` (repo-root `Assets/` → `Aspid.MVVM/Assets/`)
-- [ ] Global rename of StarterKit binder classes (see § 1.1)
-- [ ] Replace `[AddComponentContextMenu(...)]` with `[AddBinderContextMenu(..., Path = ...)]`
-- [ ] Move `[AddPropertyContextMenu(..., "m_Field")]` arguments into `[AddBinderContextMenu(..., serializePropertyNames: "m_Field")]`
-- [ ] Add explicit `Object.Destroy(view.gameObject)` where `view.Dispose()` was used to free objects
-- [ ] Replace `view.DestroyView()` with `view.DestroyViewAndGameObject()` where you relied on it to destroy the host GameObject
-- [ ] Implement the six new abstract hooks on any custom `CollectionBinder<T>` subclass (`OnAdded(T?)`, `OnAdded(IReadOnlyList<T?>)`, `OnRemoved(T?)`, `OnRemoved(IReadOnlyList<T?>)`, `OnReplaced`, `OnMoved`)
-- [ ] Review `ViewInitializer` setups: resolution moved into `ViewInitializerBase`, container `Resolve` became `TryResolve`, and an `InitializeStage.DiConstructor` stage was added (the default stage is unchanged — `Awake`)
-- [ ] Re-check `ViewInitializer` / `ViewInitializerManual` inspector data — the serialized resolution components changed type, so existing view/viewModel resolution settings may not carry over
-- [ ] Replace `DynamicViewModel.Create`, `DynamicPropertyData<T>` and mode-specific dynamic properties with `DynamicViewModel.Add<T>`
-- [ ] Review `NumberToBoolConverter` (`Inequality`) usages for the corrected runtime behaviour
-- [ ] Smoke-test scenes that use `ImageSpriteSwitcherBinder`, Addressable binders and `VirtualizedList*`
-- [ ] Update tests / tooling that look up components by `AddComponentMenu` path
-- [ ] Rename `Values` → `Mode`, `Comparisons.Inequality` → `NotEqual`, `EnumMatch.Equals` → `Equal`, `ToConvert` → `ToConverter`, `WrapMode` → `NumberWrapMode` and `ListToStringConverter` → `CollectionJoinToStringConverter` in your own code (see § 5.1)
-- [ ] Re-author `NumberCompareConverter` thresholds (see § 5.4)
-- [ ] Re-author `DateTimeCompareConverter` and `DateTimeOffsetFormatConverter` in every scene and prefab — their bool settings do not migrate to the new enums (see § 5.4)
-- [ ] Run the serialized-reference repair tool if any scene or prefab overrides `CollectionJoinToStringConverter`, `EnumToValueConverter.Entry` or `LookupEntry` on a prefab instance (see § 5.1)
-- [ ] Expect and triage new console errors from converters that were already misconfigured — they no longer report only once (see § 5.4)
-- [ ] Move `[SerializeReference]` converter fields and code off the `[Obsolete]` `IConverterXToY` aliases onto `IConverter<TFrom, TTo>` — you have one release, and the failure after that is silent (see § 5.2)
-- [ ] Review every two-way binding that has a converter: the reverse direction now converts (see § 5.3)
-- [ ] Move any `ToStringValue` override to `Format` (see § 5.5)
+- [ ] Editor on Unity `6000.0`+; `tech.aspid.collections` and `tech.aspid.fasttools` in `manifest.json`
+- [ ] Path constants and CI: `Assets/Plugins/Aspid/MVVM/` → `Packages/tech.aspid.mvvm/`; `.asmdef` references to `Aspid.MVVM.StarterKit.Unity*` → `Aspid.MVVM.StarterKit*`
+- [ ] Rename types and members from § 2
+- [ ] Replace `[AddComponentContextMenu]` / `[AddPropertyContextMenu]` with `[AddBinderContextMenu]`
+- [ ] Retype `[SerializeReference]` fields declared as `IConverterXToY` aliases to `IConverter<TFrom, TTo>`
+- [ ] Add `Object.Destroy(view.gameObject)` after `Dispose()`, or switch `DestroyView()` → `DestroyViewAndGameObject()` where the object must go
+- [ ] Implement the six hooks on custom `CollectionBinder<T>` subclasses
+- [ ] Re-check `ViewInitializer` Inspector data
+- [ ] Replace `DynamicViewModel.Create` with `Add<T>` / collection initializer
+- [ ] Re-author `NumberCompareConverter` thresholds, `ParseHtmlStringConverter` fallbacks and bool-binder inversion (`BoolInvertConverter`)
+- [ ] Move `ToStringValue` overrides to `Format(T, string)`
+- [ ] Remove ViewModel-side compensation for the missing reverse conversion in two-way bindings
+- [ ] Run the serialized-reference repair tool over scenes and prefabs that hold renamed converters or binders in `[SerializeReference]` slots
+- [ ] Update tooling that matches `AddComponentMenu` paths
+- [ ] Triage new console errors from converters and binders that were already misconfigured

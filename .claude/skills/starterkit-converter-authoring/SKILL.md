@@ -5,7 +5,7 @@ description: How to write a new `IConverter` for Aspid.MVVM StarterKit correctly
 
 # StarterKit converter
 
-General style: skill `aspid-code-style`; placement: `starterkit-layout`; docs: `aspid-mvvm-xmldoc`. This skill covers only what is specific to converters.
+General style: skill `aspid-code-style`; placement: `starterkit-layout`; docs: `asp-xmldoc`. This skill covers only what is specific to converters.
 
 ## Skeleton
 

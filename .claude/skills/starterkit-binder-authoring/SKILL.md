@@ -5,7 +5,7 @@ description: How to write a new Aspid.MVVM StarterKit binder correctly the first
 
 # StarterKit binder
 
-General style: skill `aspid-code-style`; placement: `starterkit-layout`; docs: `aspid-mvvm-xmldoc`. This skill covers only what is specific to binders.
+General style: skill `aspid-code-style`; placement: `starterkit-layout`; docs: `asp-xmldoc`. This skill covers only what is specific to binders.
 
 ## Binder review (standing routine for any binder the user sends)
 

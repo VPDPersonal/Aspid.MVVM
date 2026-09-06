@@ -74,7 +74,7 @@ The single deviation from StyleCop: auto-properties sit above the constructor. W
 
 - Delete `//` comments entirely when they restate the XML doc or the obvious. Shortening instead of deleting counts as half-done work.
 - Keep only what the code cannot be understood without, as one short phrase.
-- XML docs: skill `aspid-mvvm-xmldoc`.
+- XML docs: global skill `asp-xmldoc`.
 
 ## Generics and inheritance
 

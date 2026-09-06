@@ -77,7 +77,7 @@ The framework uses Source Generators to eliminate boilerplate and reflection:
 - All classes requiring source generation must be `partial`
 - Explicit access modifiers on all members
 - Nullable reference types (`T?` for optional values)
-- XML documentation comments on all public APIs
+- XML documentation comments on all public APIs; conventions in global skill `asp-xmldoc`. Aspid-specific `<param>` phrasing: binding mode `The binding mode. [constraints]`, converter `The converter used to transform X to Y.`, bound enum value `The bound enum value received from the ViewModel.`, target object `The X to bind.`
 - ReSharper suppression comments on generated/special code
 
 ## Solutions
@@ -169,7 +169,7 @@ Submodules:
 
 - Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill `docs-site`
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
-- **XML doc conventions**: skill `aspid-mvvm-xmldoc` in `.claude/skills/` — rules for writing XML documentation comments
+- **XML doc conventions**: global skill `asp-xmldoc`
 - **Code style**: skill `aspid-code-style` — member ordering, formatting, nullable, comments
 - **StarterKit layout**: skill `starterkit-layout` — folder taxonomy and naming inside `StarterKit/`
 - **Writing a converter**: skill `starterkit-converter-authoring`

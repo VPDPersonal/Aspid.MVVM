@@ -1,0 +1,224 @@
+/* --- Welcome tab ---
+   Hero over the bare dotted canvas, then the samples list as glass cards. Mirrors the Aspid.FastTools Welcome tab so
+   both packages' windows read as one family. */
+.aspid-mvvm-welcome__scroll {
+    flex-grow: 1;
+}
+
+/* 12px matches the Settings tab's content padding, so the cards' side inset is one value across tabs. */
+.aspid-mvvm-welcome__content {
+    padding: 12px;
+    flex-grow: 1;
+    align-items: stretch;
+}
+
+.aspid-mvvm-welcome__hero {
+    padding: 10px 0;
+    align-items: center;
+    flex-direction: row;
+}
+
+.aspid-mvvm-welcome__logo {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 1;
+    margin-right: 15px;
+}
+
+.aspid-mvvm-welcome__hero-text {
+    flex-grow: 1;
+}
+
+.aspid-mvvm-welcome__hero AspidAnimatedTitle {
+    margin-bottom: 5px;
+    font-size: 36px;
+    -unity-font-style: bold;
+}
+
+/* Keep the animated gradient inside the brand green family: the red/amber stops read as status colors everywhere
+   else in the window, so the title cycles dark to light green instead of the logo's traffic-light triplet. */
+.aspid-mvvm-welcome__hero AspidAnimatedTitle {
+    --aspid-fasttools-colors-animated_title-color_1: var(--aspid-colors-status-success-text-darkness);
+    --aspid-fasttools-colors-animated_title-color_2: var(--aspid-colors-status-success-text-dark);
+    --aspid-fasttools-colors-animated_title-color_3: var(--aspid-colors-status-success-text-light);
+}
+
+/* The hero blurb reads directly over the dotted canvas, no plate behind it. */
+.aspid-mvvm-welcome__description {
+    white-space: normal;
+}
+
+/* Quick links under the blurb, styled like the footer's GitHub link: signature green, brighter on hover. */
+.aspid-mvvm-welcome__hero-links {
+    margin-top: 6px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.aspid-mvvm-welcome__hero-link {
+    padding: 0;
+    cursor: link;
+    font-size: 13px;
+    -unity-font-style: bold;
+    color: var(--aspid-colors-status-success-text-dark);
+}
+
+.aspid-mvvm-welcome__hero-link:hover {
+    color: var(--aspid-colors-status-success-text-light);
+}
+
+.aspid-mvvm-welcome__hero-link-separator {
+    margin: 0 6px;
+    padding: 0;
+    font-size: 13px;
+    color: var(--aspid-colors-text-darkness);
+}
+
+.aspid-mvvm-welcome__card {
+    padding: 10px 0;
+}
+
+.aspid-mvvm-welcome__card-header {
+    margin-bottom: 10px;
+    --aspid-fasttools-metrics-label_size: h2;
+}
+
+/* Sample cards: translucent dark fill, neutral border, 8px radius, overriding AspidBox's opaque darkness fill and
+   its 10px radius (the double class outranks the box's own rules). */
+.aspid-mvvm-welcome__sample.aspid-fasttools-background {
+    flex-grow: 0;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--aspid-colors-shade-darkness);
+    background-color: rgba(20, 20, 20, 0.55);
+}
+
+.aspid-mvvm-welcome__sample-header-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* The whole header line is one flat clickable button: the gradient fill is set transparent so it matches the card
+   surface and the accent only drives the soft full-width hover glow. Scoped under __sample to outrank the button's
+   own :root height/padding/margin rules. */
+.aspid-mvvm-welcome__sample .aspid-mvvm-welcome__sample-header {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+    margin: 0;
+    padding: 4px 4px;
+    --aspid-fasttools-colors-gradient_button-bg: rgba(0, 0, 0, 0);
+}
+
+/* The action verb ("Import") right-aligns inside the header button's flex-grow label. */
+.aspid-mvvm-welcome__sample-header .aspid-fasttools-gradient-button__label {
+    -unity-text-align: middle-right;
+}
+
+/* An imported sample's header verb is "Remove", a destructive direct action, so its hover glow goes error. */
+.aspid-mvvm-welcome__sample .aspid-mvvm-welcome__sample-header--remove {
+    --aspid-fasttools-colors-gradient_button-accent: var(--aspid-colors-status-error-text-light);
+}
+
+.aspid-mvvm-welcome__sample-info {
+    flex-direction: row;
+    align-items: center;
+}
+
+.aspid-mvvm-welcome__sample-title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: var(--aspid-colors-text-light);
+}
+
+/* State marker ahead of the title: brand blue while the sample is still waiting to be imported. */
+.aspid-mvvm-welcome__sample-state-dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    margin-right: 8px;
+    border-radius: 3px;
+    background-color: var(--aspid-colors-status-info-text-dark);
+    transition-property: background-color;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+}
+
+/* Hovering the header verb turns the dot the Import accent green: "about to become imported". */
+.aspid-mvvm-welcome__sample--header-hover .aspid-mvvm-welcome__sample-state-dot {
+    background-color: var(--aspid-colors-status-success-text-dark);
+}
+
+.aspid-mvvm-welcome__sample-state-dot--imported {
+    background-color: var(--aspid-colors-status-success-text-dark);
+}
+
+/* An imported card's verb is Remove, so hovering it previews the destructive tone (equal specificity with the hover
+   rule above, this one wins by coming later). */
+.aspid-mvvm-welcome__sample--header-hover .aspid-mvvm-welcome__sample-state-dot--imported {
+    background-color: var(--aspid-colors-status-error-text-dark);
+}
+
+.aspid-mvvm-welcome__sample-divider {
+    flex-grow: 0;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    opacity: 0.5;
+}
+
+/* The hover sweep: an accent hairline lying exactly on the divider line (pulled up over it by the negative margin),
+   scaling in from the left edge while the header button is hovered. Triggered by the --header-hover card modifier,
+   since the sweep is the button's sibling and :hover can't reach across. */
+.aspid-mvvm-welcome__sample-sweep {
+    height: 1px;
+    margin-top: -3px;
+    margin-bottom: 2px;
+    background-color: var(--aspid-colors-status-success-text-dark);
+    transform-origin: left;
+    scale: 0 1;
+    transition-property: scale;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+}
+
+.aspid-mvvm-welcome__sample--header-hover .aspid-mvvm-welcome__sample-sweep {
+    scale: 1 1;
+}
+
+.aspid-mvvm-welcome__sample-sweep--remove {
+    background-color: var(--aspid-colors-status-error-text-dark);
+}
+
+/* Shares the header's 4px horizontal inset so the description's left edge lines up with the title above. */
+.aspid-mvvm-welcome__sample-description {
+    margin-top: 6px;
+    padding: 0 4px;
+    font-size: 12px;
+    white-space: normal;
+    -unity-font-style: normal;
+    color: var(--aspid-colors-text-dark);
+}
+
+.aspid-mvvm-welcome__toast {
+    color: var(--aspid-colors-status-info-text-lightness);
+    opacity: 0;
+    padding: 10px;
+    position: absolute;
+    max-width: 80%;
+    font-size: 14px;
+    white-space: normal;
+    border-width: 1px;
+    border-radius: 10px;
+    background-color: var(--aspid-colors-status-info-dark);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.aspid-mvvm-welcome__toast--visible {
+    opacity: 0.75;
+}

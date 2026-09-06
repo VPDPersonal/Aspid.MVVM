@@ -1,0 +1,164 @@
+/* --- Aspid.MVVM window chrome ---
+   The shell hosting the Welcome and Settings tabs, in the Aspid.FastTools workbench idiom: one animated dotted canvas,
+   owned by the window, fills the whole window behind everything; the tab strip and the tab content are transparent
+   and float over it. The active tab is marked by a signature green glyph and underline. */
+.aspid-mvvm-window {
+    flex-grow: 1;
+}
+
+/* Docked-window floor for the tab content: minSize only bounds a floating window, a docked pane can be squeezed far
+   below it. Below the floor the content slides off the right edge instead of collapsing into slivers. */
+.aspid-mvvm-window__container {
+    min-width: 340px;
+}
+
+.aspid-mvvm-window__background {
+    background-color: rgb(0, 0, 0);
+}
+
+/* The tab strip is fully transparent so the dotted canvas shows through behind the tabs. */
+.aspid-mvvm-window__toolbar {
+    flex-direction: row;
+    flex-shrink: 0;
+    align-items: stretch;
+    padding-top: 6px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* The window name filling the strip between the two edge tabs; dim, so the tabs keep the hierarchy. */
+.aspid-mvvm-window__toolbar-title {
+    flex-grow: 1;
+    padding: 15px 16px;
+    font-size: 14px;
+    color: var(--aspid-colors-text-dark);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+/* Each tab: a flat button stripped of Unity's button chrome and of any fill, so it sits directly on the canvas. The
+   element-qualified selector outranks the built-in .unity-button rules. */
+Button.aspid-mvvm-window__toolbar-button {
+    margin: 0 4px;
+    padding: 15px 16px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: 0;
+    color: var(--aspid-colors-text-dark);
+    font-size: 14px;
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
+}
+
+Button.aspid-mvvm-window__toolbar-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--aspid-colors-text-light);
+}
+
+Button.aspid-mvvm-window__toolbar-button--active {
+    color: var(--aspid-colors-text-lightness);
+    -unity-font-style: bold;
+}
+
+Button.aspid-mvvm-window__toolbar-button--active:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--aspid-colors-text-lightness);
+}
+
+/* Underline accent: a 2px child bar pinned to the tab's bottom edge. Toggling a child's background-color via the
+   parent's --active class repaints reliably, whereas a border-bottom-color flip only redrew on the next relayout. */
+.aspid-mvvm-window__tab-underline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--aspid-colors-shade-darkness);
+}
+
+Button.aspid-mvvm-window__toolbar-button--active .aspid-mvvm-window__tab-underline {
+    background-color: var(--aspid-colors-status-success-text-light);
+}
+
+/* The edge tabs are square and icon-only: a fixed-width square stretched to the strip's full height. The glyph lives
+   on an inner __tab-icon element, leaving the button's own background free for the shared hover wash. */
+Button.aspid-mvvm-window__toolbar-button--square {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 30px;
+    padding: 0;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The glyph: a white silhouette tinted per state, dim grey at rest. The picture comes from the FastTools theme
+   variables, so both packages' windows share the very same icons. */
+.aspid-mvvm-window__tab-icon {
+    width: 24px;
+    height: 24px;
+    -unity-background-image-tint-color: var(--aspid-colors-text-dark);
+}
+
+.aspid-mvvm-window__tab-icon--home {
+    background-image: var(--aspid-icons-home);
+}
+
+.aspid-mvvm-window__tab-icon--settings {
+    background-image: var(--aspid-icons-settings);
+}
+
+Button.aspid-mvvm-window__toolbar-button--square:hover .aspid-mvvm-window__tab-icon {
+    -unity-background-image-tint-color: var(--aspid-colors-text-light);
+}
+
+Button.aspid-mvvm-window__toolbar-button--square.aspid-mvvm-window__toolbar-button--active .aspid-mvvm-window__tab-icon {
+    -unity-background-image-tint-color: var(--aspid-colors-status-success-text-light);
+}
+
+/* --- Scrollbar ---
+   Every vertical scroller in the window re-dressed from Unity's bright default into the window's quiet family: no
+   step buttons, no track, just a slim translucent thumb that brightens while the scroller is hovered. */
+.aspid-mvvm-window .unity-scroller--vertical {
+    width: 12px;
+    margin: 0;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.aspid-mvvm-window .unity-scroller--vertical > .unity-scroller__low-button,
+.aspid-mvvm-window .unity-scroller--vertical > .unity-scroller__high-button {
+    display: none;
+}
+
+.aspid-mvvm-window .unity-scroller--vertical .unity-scroller__slider {
+    margin: 0;
+    padding: 0;
+    width: 12px;
+    min-width: 12px;
+    top: 0;
+    bottom: 0;
+}
+
+.aspid-mvvm-window .unity-scroller--vertical .unity-base-slider__tracker {
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.aspid-mvvm-window .unity-scroller--vertical .unity-base-slider__dragger {
+    left: 3px;
+    width: 6px;
+    border-width: 0;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.12);
+    transition-property: background-color;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+}
+
+.aspid-mvvm-window .unity-scroller--vertical:hover .unity-base-slider__dragger {
+    background-color: rgba(255, 255, 255, 0.28);
+}
+
+.aspid-mvvm-window .unity-scroller--vertical .unity-base-slider__dragger-border {
+    display: none;
+}

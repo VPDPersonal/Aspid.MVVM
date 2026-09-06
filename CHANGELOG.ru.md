@@ -19,7 +19,7 @@
 - Генератор: bindable-свойства, `NotifyCanExecuteChangedAll()`, автогенерируемые поля биндеров, `[GenerateSerializableBinder]`.
 - StarterKit: число типов биндеров выросло с ~360 до ~890 — uGUI, TextMeshPro, UI Toolkit, 2D, физика, аудио, анимация, свет и камеры.
 - Конвертеры: каталог вырос с 17 до ~190, `ITwoWayConverter`, `ConverterAsset`, композиционные примитивы, форматирование с учётом культуры.
-- Редактор: инспекторы на UI Toolkit, переписанный `DebugViewModelPanel`, окно настроек, type picker FastTools для `[SerializeReference]`.
+- Редактор: инспекторы на UI Toolkit, переписанный `DebugViewModelPanel`, окно Welcome / Settings, type picker FastTools для `[SerializeReference]`.
 - `MonoView` стал конкретным классом, `DynamicViewModel` — типизированный набор свойств, у `ViewInitializer` появилась DI-стадия конструирования.
 - Пакет — встроенный UPM-пакет; `Aspid.Collections` и `Aspid.FastTools` подключаются как UPM git-зависимости; генераторы — в сабмодулях.
 - Сайт документации на Docusaurus (`en` / `ru`), сэмплы перестроены в учебный путь, ~3000 EditMode-тестов.
@@ -66,7 +66,7 @@
 
 - Инспекторы на UI Toolkit для `MonoBinder`, `MonoView`, `MonoViewModel`; общие `AspidInspectorHeader`, `AspidPropertyField`, `AspidDividingLine`, `AspidToggle`.
 - `DebugViewModelPanel` переписан: вкладки, сохраняемый поиск по имени и типу, поддержка `RelayCommand`, bindable- и автосвойств.
-- Окно `Aspid.MVVM Settings` в стиле FastTools Welcome, в меню `Tools/Aspid 🐍`; версия читается из манифеста пакета.
+- Окно `Aspid MVVM` в меню `Tools/Aspid 🐍/MVVM`, в стиле рабочего окна FastTools: вкладка **Welcome** со списком сэмплов (карточки Import / Remove, автооткрытие один раз на версию пакета, отключается для пользователя) и вкладка **Settings** с build-дефайнами и переключателем автопоказа Welcome; навигация с клавиатуры, шорткаты вкладок, футер с версией.
 - Поля `[SerializeReference]` — конвертеры, фильтры, сортировки, обработчики, фабрики View, `PluralRule` — рисуются type picker'ом FastTools без атрибутов.
 - Drag & Drop для неназначенных биндеров с группировкой, Auto-Assign и Select / Restore.
 - `[RequireBinder]` и валидация дочерних View / биндеров.

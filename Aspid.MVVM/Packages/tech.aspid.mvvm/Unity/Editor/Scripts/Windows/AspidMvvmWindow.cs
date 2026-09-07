@@ -25,7 +25,8 @@ namespace Aspid.MVVM
         private const string ContainerClass = RootClass + "__container";
 
         private const string WindowStyleSheetPath = "Styles/Windows/Aspid-MVVM-Window";
-        private const string WindowIconPath = "Icons/aspid_icon_medium_green_1020x1008";
+        // The padded brand mark, the same file the FastTools window uses, so both tabs show the mark at one size.
+        private const string WindowIconPath = "Icons/aspid_icon_window_tab_green_1022x1011";
 
         // Below this the hero and the cards degrade into slivers. Applied in CreateGUI, so a pane restored from a saved
         // layout, which never passes through Open, gets it too.

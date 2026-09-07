@@ -31,9 +31,9 @@ namespace Aspid.MVVM
         private const string GitHubUrl = "https://github.com/VPDPersonal/Aspid.MVVM";
         private const string DocumentationUrl = "https://vpdpersonal.github.io/Aspid.MVVM/";
 
-        private const string Icon1ResourcePath = "Icons/aspid_icon_medium_green_1020x1008";
-        private const string Icon2ResourcePath = "Icons/aspid_icon_medium_yellow_1020x1008";
-        private const string Icon3ResourcePath = "Icons/aspid_icon_medium_red_1020x1008";
+        private const string Icon1ResourcePath = "Icons/aspid_icon_medium_green_256x253";
+        private const string Icon2ResourcePath = "Icons/aspid_icon_medium_yellow_256x253";
+        private const string Icon3ResourcePath = "Icons/aspid_icon_medium_red_256x253";
 
         private const string ScrollClass = UssClassPrefix + "scroll";
         private const string ContentClass = UssClassPrefix + "content";

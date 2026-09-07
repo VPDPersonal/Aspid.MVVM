@@ -25,10 +25,13 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
-/* The window name filling the strip between the two edge tabs; dim, so the tabs keep the hierarchy. */
+/* The window name filling the strip between the two edge tabs; dim, so the tabs keep the hierarchy. Its height is
+   pinned to the 30px a FastTools mode tab resolves to, so the strip, and everything below it, sits at the same
+   offset in both windows and the content doesn't jump when switching between them. */
 .aspid-mvvm-window__toolbar-title {
     flex-grow: 1;
-    padding: 15px 16px;
+    height: 30px;
+    padding: 0 16px;
     font-size: 14px;
     color: var(--aspid-colors-text-dark);
     -unity-font-style: bold;

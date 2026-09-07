@@ -19,7 +19,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - Source generator: bindable properties, `NotifyCanExecuteChangedAll()`, auto-emitted binder fields, `[GenerateSerializableBinder]`.
 - StarterKit: binder types grown from ~360 to ~890, covering uGUI, TextMeshPro, UI Toolkit, 2D, physics, audio, animation, lighting and cameras.
 - Converters: catalogue grown from 17 to ~190, `ITwoWayConverter`, `ConverterAsset`, composition primitives, culture-aware formatting.
-- Editor: UI Toolkit inspectors, rebuilt `DebugViewModelPanel`, Settings window, FastTools type picker for `[SerializeReference]`.
+- Editor: UI Toolkit inspectors, rebuilt `DebugViewModelPanel`, Welcome / Settings window, FastTools type picker for `[SerializeReference]`.
 - `MonoView` is concrete, `DynamicViewModel` is a typed property bag, `ViewInitializer` gained a DI construction stage.
 - Package is an embedded UPM package; `Aspid.Collections` and `Aspid.FastTools` are UPM git dependencies; generators live in submodules.
 - Documentation site on Docusaurus (`en` / `ru`), samples rebuilt as a learning path, ~3000 EditMode tests.
@@ -66,7 +66,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 
 - UI Toolkit inspectors for `MonoBinder`, `MonoView`, `MonoViewModel`; shared `AspidInspectorHeader`, `AspidPropertyField`, `AspidDividingLine`, `AspidToggle`.
 - `DebugViewModelPanel` rewritten: tabs, persistent search by name and type, `RelayCommand` support, bindable and auto-property support.
-- `Aspid.MVVM Settings` window in the FastTools Welcome style, under `Tools/Aspid 🐍`; version read from the package manifest.
+- `Aspid MVVM` window under `Tools/Aspid 🐍/MVVM`, in the FastTools workbench style: a **Welcome** tab with the samples list (Import / Remove cards, auto-opens once per package version, per-user opt-out) and a **Settings** tab with the build defines and the Welcome auto-show switch; keyboard navigation, tab shortcuts, version footer.
 - `[SerializeReference]` fields — converters, filters, orders, handlers, view factories, `PluralRule` — are drawn with the FastTools type picker, no attribute needed.
 - Drag & Drop for unassigned binders with grouping, Auto-Assign and Select / Restore.
 - `[RequireBinder]` and child View / Binder validation.

@@ -4,8 +4,10 @@
     "references": [
         "Aspid.MVVM",
         "Aspid.MVVM.Unity",
+        "Aspid.MVVM.Unity.Editor",
         "Aspid.MVVM.StarterKit",
         "Aspid.FastTools",
+        "Aspid.FastTools.Editor",
         "Unity.TextMeshPro",
         "Unity.Localization",
         "Aspid.Collections.Observable",

@@ -1,0 +1,51 @@
+/* The window's bottom bar: a faded dividing line above a version / keys / GitHub row. Kept transparent so the
+   window's dotted canvas reads continuously behind it. */
+.aspid-mvvm-window-footer {
+    flex-shrink: 0;
+    margin-top: 2px;
+    padding-bottom: 8px;
+}
+
+.aspid-mvvm-window-footer AspidDividingLine {
+    opacity: 0.5;
+}
+
+.aspid-mvvm-window-footer__row {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Version: dim grey at rest, brightening on hover to signal it links to the tagged release. */
+.aspid-mvvm-window-footer__version {
+    color: var(--aspid-colors-text-darkness);
+    font-size: 14px;
+}
+
+.aspid-mvvm-window-footer__version:hover {
+    color: var(--aspid-colors-text-light);
+}
+
+/* The keyboard-ring key, absolutely centered over the whole row in the quietest text tone. */
+.aspid-mvvm-window-footer__keys {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    font-size: 11px;
+    color: var(--aspid-colors-text-darkness);
+    -unity-text-align: middle-center;
+}
+
+.aspid-mvvm-window-footer__link {
+    color: var(--aspid-colors-status-success-text-dark);
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+.aspid-mvvm-window-footer__link:hover {
+    color: var(--aspid-colors-status-success-text-light);
+}

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentFloatMonoBinder{Graphic}"/> that binds the selected channels of <see cref="Graphic.color"/>.
+    /// <see cref="ComponentFloatMonoBinder{TComponent}"/> that binds the selected channels of <see cref="Graphic.color"/>.
     /// </summary>
     [GenerateSerializableBinder]
     [AddBinderContextMenu(typeof(Graphic), serializePropertyNames: "m_Color")]

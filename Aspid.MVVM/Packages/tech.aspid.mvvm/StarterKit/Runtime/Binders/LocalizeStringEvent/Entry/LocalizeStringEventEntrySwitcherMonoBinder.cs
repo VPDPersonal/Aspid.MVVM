@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="SwitcherMonoBinder{TComponent, T}"/> that switches
-    /// the <see cref="LocalizedString.TableEntryReference"/> of <see cref="LocalizeStringEvent.StringReference"/>
+    /// the <see cref="LocalizedReference.TableEntryReference"/> of <see cref="LocalizeStringEvent.StringReference"/>
     /// by key name.
     /// </summary>
     [GenerateSerializableBinder]

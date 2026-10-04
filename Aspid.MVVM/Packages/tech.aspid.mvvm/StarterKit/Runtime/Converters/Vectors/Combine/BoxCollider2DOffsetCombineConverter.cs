@@ -27,7 +27,7 @@ namespace Aspid.MVVM.StarterKit
         protected override Component? Target => _collider;
 
         /// <summary>
-        /// Gets the reference vector to combine with, which is the collider's <see cref="BoxCollider2D.offset"/>.
+        /// Gets the reference vector to combine with, which is the collider's <see cref="Collider2D.offset"/>.
         /// </summary>
         protected override Vector2 VectorTo => _collider!.offset;
     }

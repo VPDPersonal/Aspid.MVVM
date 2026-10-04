@@ -159,7 +159,7 @@ namespace Aspid.MVVM.StarterKit
     /// the slider value and <see cref="Param"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2}"/> with an <see langword="int"/>, <see langword="long"/>,
+    /// Accepts <see cref="IRelayCommand{T1, T2}"/> with an <see langword="int"/>, <see langword="long"/>,
     /// <see langword="float"/> or <see langword="double"/> value; integers are truncated.
     /// </remarks>
     /// <typeparam name="T">The type of the extra parameter.</typeparam>
@@ -334,7 +334,7 @@ namespace Aspid.MVVM.StarterKit
     /// the slider value and <see cref="Param1"/>, <see cref="Param2"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2, T3}"/> with an <see langword="int"/>, <see langword="long"/>,
+    /// Accepts <see cref="IRelayCommand{T1, T2, T3}"/> with an <see langword="int"/>, <see langword="long"/>,
     /// <see langword="float"/> or <see langword="double"/> value; integers are truncated.
     /// </remarks>
     /// <typeparam name="T1">The type of the first extra parameter.</typeparam>
@@ -531,7 +531,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Param2"/>, <see cref="Param3"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2, T3, T4}"/> with an <see langword="int"/>, <see langword="long"/>,
+    /// Accepts <see cref="IRelayCommand{T1, T2, T3, T4}"/> with an <see langword="int"/>, <see langword="long"/>,
     /// <see langword="float"/> or <see langword="double"/> value; integers are truncated.
     /// </remarks>
     /// <typeparam name="T1">The type of the first extra parameter.</typeparam>

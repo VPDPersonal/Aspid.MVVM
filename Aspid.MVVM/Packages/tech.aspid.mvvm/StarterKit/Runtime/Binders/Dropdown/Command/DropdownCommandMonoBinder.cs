@@ -85,7 +85,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TMP_Dropdown.onValueChanged"/> with the selected index and <see cref="Param"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2}"/> with an <see langword="int"/> or <see langword="long"/> index.
+    /// Accepts <see cref="IRelayCommand{T1, T2}"/> with an <see langword="int"/> or <see langword="long"/> index.
     /// </remarks>
     /// <typeparam name="T">The type of the extra parameter.</typeparam>
     public abstract partial class DropdownCommandMonoBinder<T> : ComponentMonoBinder<TMP_Dropdown>,
@@ -174,7 +174,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Param2"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2, T3}"/> with an <see langword="int"/> or <see langword="long"/> index.
+    /// Accepts <see cref="IRelayCommand{T1, T2, T3}"/> with an <see langword="int"/> or <see langword="long"/> index.
     /// </remarks>
     /// <typeparam name="T1">The type of the first extra parameter.</typeparam>
     /// <typeparam name="T2">The type of the second extra parameter.</typeparam>
@@ -276,7 +276,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Param2"/>, <see cref="Param3"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2, T3, T4}"/> with an <see langword="int"/> or <see langword="long"/>
+    /// Accepts <see cref="IRelayCommand{T1, T2, T3, T4}"/> with an <see langword="int"/> or <see langword="long"/>
     /// index.
     /// </remarks>
     /// <typeparam name="T1">The type of the first extra parameter.</typeparam>

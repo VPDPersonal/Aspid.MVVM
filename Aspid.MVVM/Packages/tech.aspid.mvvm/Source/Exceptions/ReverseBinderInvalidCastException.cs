@@ -31,7 +31,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Throws a <see cref="ReverseBinderInvalidCastException{T}"/> when a struct binder does not implement
-        /// <see cref="IReverseBinder{T}"/> or <see cref="IReverseBinder{TBoxed}"/>.
+        /// <see cref="IReverseBinder{T}"/> or <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/>.
         /// </summary>
         /// <typeparam name="TBoxed">The expected boxed type.</typeparam>
         /// <param name="binder">The binder that failed the type check.</param>

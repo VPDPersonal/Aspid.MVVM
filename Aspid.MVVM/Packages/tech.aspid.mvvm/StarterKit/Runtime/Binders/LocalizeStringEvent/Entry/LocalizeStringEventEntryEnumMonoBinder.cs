@@ -8,7 +8,7 @@ namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
     /// <see cref="EnumMonoBinder{TComponent, TValue}"/> that sets
-    /// the <see cref="LocalizedString.TableEntryReference"/> of <see cref="LocalizeStringEvent.StringReference"/>
+    /// the <see cref="LocalizedReference.TableEntryReference"/> of <see cref="LocalizeStringEvent.StringReference"/>
     /// by key name.
     /// </summary>
     [AddBinderContextMenu(typeof(LocalizeStringEvent), serializePropertyNames: "m_StringReference", SubPath = "Enum")]

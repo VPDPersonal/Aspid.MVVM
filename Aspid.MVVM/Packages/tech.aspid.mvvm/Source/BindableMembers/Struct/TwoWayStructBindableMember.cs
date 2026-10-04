@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="TwoWayStructBindableMember{T,TBoxed}"/> that fixes <typeparamref name="TBoxed"/> to <see cref="ValueType"/>
+    /// Concrete <see cref="TwoWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
     /// for any value-type payload that does not need a more specific boxing target.
     /// </summary>
     /// <typeparam name="T">The struct type of the bound value.</typeparam>
@@ -30,8 +30,8 @@ namespace Aspid.MVVM
     /// <summary>
     /// Abstract base <see cref="IBinderAdder"/> for struct-valued two-way bindings that supports every
     /// <see cref="BindMode"/> except <see cref="BindMode.None"/>, dispatching forward updates through
-    /// <see cref="IBinder{T}"/> / <see cref="IBinder{TBoxed}"/> / <see cref="IAnyBinder"/> and reverse updates
-    /// through <see cref="IReverseBinder{T}"/> / <see cref="IReverseBinder{TBoxed}"/> / <see cref="IAnyReverseBinder"/>.
+    /// <see cref="IBinder{T}"/> / <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/> / <see cref="IAnyBinder"/> and reverse updates
+    /// through <see cref="IReverseBinder{T}"/> / <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/> / <see cref="IAnyReverseBinder"/>.
     /// Additionally exposes a get/set <see cref="Value"/> and a <see cref="Changed"/> event.
     /// </summary>
     /// <typeparam name="T">The struct type of the bound value.</typeparam>
@@ -98,11 +98,11 @@ namespace Aspid.MVVM
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// Thrown if the forward direction is required (<see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/>, <see cref="BindMode.OneTime"/>)
-        /// and <paramref name="binder"/> is neither <see cref="IBinder{T}"/>, <see cref="IBinder{TBoxed}"/> nor <see cref="IAnyBinder"/>.
+        /// and <paramref name="binder"/> is neither <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/> nor <see cref="IAnyBinder"/>.
         /// </exception>
         /// <exception cref="ReverseBinderInvalidCastException{T}">
         /// Thrown if the reverse direction is required (<see cref="BindMode.TwoWay"/>, <see cref="BindMode.OneWayToSource"/>)
-        /// and <paramref name="binder"/> is neither <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{TBoxed}"/> nor <see cref="IAnyReverseBinder"/>.
+        /// and <paramref name="binder"/> is neither <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/> nor <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {

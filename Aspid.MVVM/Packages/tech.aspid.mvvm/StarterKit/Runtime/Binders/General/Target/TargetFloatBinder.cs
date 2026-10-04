@@ -5,7 +5,7 @@ using System;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Abstract base <see cref="TargetBinder{T1, T2}">TargetBinder&lt;TTarget, float&gt;</see> that binds a <see langword="float"/> property,
+    /// Abstract base <see cref="TargetBinder{TTarget, TProperty}">TargetBinder&lt;TTarget, float&gt;</see> that binds a <see langword="float"/> property,
     /// accepting every numeric type via <see cref="IFloatBinder"/> and reporting to every numeric type via <see cref="INumberReverseBinder"/>.
     /// </summary>
     /// <typeparam name="TTarget">The type of the target object that exposes the bound property.</typeparam>

@@ -8,8 +8,8 @@ using Aspid.Collections.Observable.Filtered;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="VisualElementMonoBinder{TElement}"/> that binds <see cref="ListView.itemsSource"/> to a read-only
-    /// collection.
+    /// <see cref="VisualElementMonoBinder{TElement}"/> that binds <see cref="BaseVerticalCollectionView.itemsSource"/>
+    /// of a <see cref="ListView"/> to a read-only collection.
     /// </summary>
     /// <remarks>
     /// Observable and filtered lists are followed and refreshed on every change. The collection is wrapped so the

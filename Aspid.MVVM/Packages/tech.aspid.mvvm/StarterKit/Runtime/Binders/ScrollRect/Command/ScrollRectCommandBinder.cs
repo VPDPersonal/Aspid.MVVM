@@ -91,7 +91,7 @@ namespace Aspid.MVVM.StarterKit
     /// the normalized position and <see cref="Param"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2}"/> with a <see cref="Vector2"/> or <see cref="Vector3"/> position.
+    /// Accepts <see cref="IRelayCommand{T1, T2}"/> with a <see cref="Vector2"/> or <see cref="Vector3"/> position.
     /// </remarks>
     /// <typeparam name="T">The type of the extra parameter.</typeparam>
     [Serializable]
@@ -194,7 +194,7 @@ namespace Aspid.MVVM.StarterKit
     /// the normalized position and <see cref="Param1"/>, <see cref="Param2"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2, T3}"/> with a <see cref="Vector2"/> or <see cref="Vector3"/> position.
+    /// Accepts <see cref="IRelayCommand{T1, T2, T3}"/> with a <see cref="Vector2"/> or <see cref="Vector3"/> position.
     /// </remarks>
     /// <typeparam name="T1">The type of the first extra parameter.</typeparam>
     /// <typeparam name="T2">The type of the second extra parameter.</typeparam>
@@ -316,7 +316,7 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="Param2"/>, <see cref="Param3"/>.
     /// </summary>
     /// <remarks>
-    /// Accepts <see cref="IRelayCommand{T, T2, T3, T4}"/> with a <see cref="Vector2"/> or <see cref="Vector3"/>
+    /// Accepts <see cref="IRelayCommand{T1, T2, T3, T4}"/> with a <see cref="Vector2"/> or <see cref="Vector3"/>
     /// position.
     /// </remarks>
     /// <typeparam name="T1">The type of the first extra parameter.</typeparam>

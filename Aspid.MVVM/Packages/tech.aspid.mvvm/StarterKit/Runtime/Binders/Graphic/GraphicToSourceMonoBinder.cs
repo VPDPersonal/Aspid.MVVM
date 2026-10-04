@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// <see cref="ComponentToSourceMonoBinder{Graphic}"/> for <see cref="Graphic"/>.
+    /// <see cref="ComponentToSourceMonoBinder{TComponent}"/> for <see cref="Graphic"/>.
     /// </summary>
     [AddBinderContextMenu(typeof(Graphic))]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic To Source Binder")]

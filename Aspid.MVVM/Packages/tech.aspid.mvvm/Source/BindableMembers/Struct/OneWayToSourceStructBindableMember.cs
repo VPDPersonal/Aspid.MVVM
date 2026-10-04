@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <typeparamref name="TBoxed"/> to <see cref="ValueType"/>
+    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
     /// for any value-type payload that does not need a more specific boxing target.
     /// </summary>
     /// <typeparam name="T">The struct type of the bound value.</typeparam>
@@ -30,7 +30,7 @@ namespace Aspid.MVVM
     /// Abstract base <see cref="IBinderAdder"/> for struct-valued one-way-to-source bindings that forwards
     /// View-side value changes back to the ViewModel through a captured setter <see cref="Action{T}"/>;
     /// additionally exposes the latest <see cref="Value"/> and a <see cref="Changed"/> event.
-    /// Accepts <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{TBoxed}"/>, and
+    /// Accepts <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/>, and
     /// <see cref="IAnyReverseBinder"/> in <see cref="BindMode.OneWayToSource"/> or <see cref="BindMode.TwoWay"/> mode.
     /// </summary>
     /// <typeparam name="T">The struct type of the bound value.</typeparam>
@@ -74,7 +74,7 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to bind to the event.</param>
         /// <returns>Returns itself to allow unsubscription later.</returns>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{TBoxed}"/>, or <see cref="IAnyReverseBinder"/>.
+        /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/>, or <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {

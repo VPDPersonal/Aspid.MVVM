@@ -32,7 +32,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Throws a <see cref="BinderInvalidCastException"/> when a struct binder does not implement
-        /// <see cref="IBinder{T}"/>, <see cref="IBinder{TBoxed}"/>, or <see cref="IAnyBinder"/>.
+        /// <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/>, or <see cref="IAnyBinder"/>.
         /// </summary>
         /// <typeparam name="T">The expected unboxed struct type.</typeparam>
         /// <typeparam name="TBoxed">The expected boxed type.</typeparam>

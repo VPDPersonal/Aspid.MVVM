@@ -31,18 +31,18 @@ namespace Aspid.MVVM
         /// </remarks>
         public override bool CanBind => IsTargetAlive(Target);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TargetBinder{TTarget}"/> class with the specified target and binding mode.
-        /// </summary>
-        /// <param name="target">The target object this binder will operate on.</param>
-        /// <param name="mode">The binding mode to use for the binder.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="target"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
         /// assigns the fields itself.
         /// </remarks>
         protected TargetBinder() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TargetBinder{TTarget}"/> class with the specified target and binding mode.
+        /// </summary>
+        /// <param name="target">The target object this binder will operate on.</param>
+        /// <param name="mode">The binding mode to use for the binder.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="target"/> is <see langword="null"/>.</exception>
         protected TargetBinder(TTarget target, BindMode mode = BindMode.OneWay)
             : base(mode)
         {

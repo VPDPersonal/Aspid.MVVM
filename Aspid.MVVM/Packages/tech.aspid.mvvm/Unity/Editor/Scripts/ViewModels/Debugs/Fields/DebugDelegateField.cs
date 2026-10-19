@@ -25,7 +25,7 @@ namespace Aspid.MVVM
             if (EqualityComparer<object>.Default.Equals(_value, newValue)) return;
             
             Clear();
-            Build(_label, _value, _context);
+            Build(_label, newValue, _context);
         }
 
         private void Build(string label, object value, IFieldContext context)

@@ -115,7 +115,7 @@ dotnet test Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests
 
 Editor automation goes through the official **Unity CLI** (`unity`) and the `com.unity.pipeline`
 package, which is declared in `Aspid.MVVM/Packages/manifest.json`. A running Editor exposes ~140
-commands over its Pipeline server:
+commands over its Pipeline server, called as `unity command <group> <name>` (Pipeline 0.9+):
 
 ```bash
 # Open the project and check that the Pipeline server is up
@@ -124,11 +124,12 @@ unity status --json
 
 # Discover / run Editor commands
 unity command                                  # list every command the Editor exposes
-unity command recompile --json                 # compile check after C# edits
-unity command package_resolve --json           # re-resolve packages after a manifest change
-unity command get_console_logs --json          # read the Editor console
-unity command run_tests --mode EditMode --json # Unity Test Framework run
-unity command eval --code 'return Application.unityVersion;'
+unity command <group>                          # list the commands of one group
+unity command script recompile --json          # compile check after C# edits
+unity command package resolve --json           # re-resolve packages after a manifest change
+unity command console get --json               # read the Editor console
+unity command test run --mode editor --json    # Unity Test Framework run (EditMode)
+unity command script eval --code 'return Application.unityVersion;'
 ```
 
 When several Unity Editors are open, add `--project-path ./Aspid.MVVM` — otherwise the CLI can't

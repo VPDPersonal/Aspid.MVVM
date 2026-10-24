@@ -30,7 +30,7 @@ namespace Aspid.MVVM
         public AspidMvvmWindowFooter()
         {
             this.AddAspidThemeStyleSheets()
-                .AddStyleSheetsFromResource(StyleSheetPath)
+                .AddStyleSheetFromResources(StyleSheetPath)
                 .AddClass(RootClass);
 
             var version = ReadPackageVersion();

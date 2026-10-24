@@ -78,7 +78,7 @@ namespace Aspid.MVVM
         public WelcomeView()
         {
             style.flexGrow = 1;
-            this.AddStyleSheetsFromResource(StyleSheetPath);
+            this.AddStyleSheetFromResources(StyleSheetPath);
 
             _samplesList = new VisualElement();
 

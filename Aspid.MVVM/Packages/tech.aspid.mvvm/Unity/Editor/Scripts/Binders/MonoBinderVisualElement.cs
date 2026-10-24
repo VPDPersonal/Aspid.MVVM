@@ -99,7 +99,7 @@ namespace Aspid.MVVM
         protected virtual VisualElement Build()
         {
             return new VisualElement()
-                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+                .AddStyleSheetFromResources(AspidStyles.DefaultStyleSheet)
                 .AddClass(AspidStyles.InspectorStyleClass)
                 .AddChild(BuildHeader())
                 .AddChild(BuildIdSelector())
@@ -356,7 +356,7 @@ namespace Aspid.MVVM
         protected virtual string GetScriptName()
         {
             var monoBinder = _editor.TargetAsMonoBinder;
-            return !monoBinder ? string.Empty : monoBinder.GetScriptNameWithIndex();
+            return !monoBinder ? string.Empty : monoBinder.GetDisplayNameWithIndex();
         }
     }
 }

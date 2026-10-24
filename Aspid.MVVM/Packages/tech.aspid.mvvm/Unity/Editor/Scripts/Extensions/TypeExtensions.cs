@@ -52,6 +52,31 @@ namespace Aspid.MVVM
             .Where(field => field.IsPublic || field.IsDefined(typeof(SerializeField)) || field.IsDefined(typeof(SerializeReference)))
             .ToDictionary(field => field.Name);
 
+        /// <summary>
+        /// Returns the members of <paramref name="type"/> and of its base classes, base class members first,
+        /// so they come in declaration order, as the Unity inspector lists them.
+        /// </summary>
+        /// <param name="type">The type whose members to collect.</param>
+        /// <param name="bindingFlags">The member filter. <see cref="BindingFlags.DeclaredOnly"/> is always added.</param>
+        /// <param name="stopAt">The base class at which the walk stops, excluded; <see langword="null"/> walks to <see cref="object"/>.</param>
+        /// <returns>The members of the whole class chain.</returns>
+        internal static IReadOnlyList<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? stopAt = null)
+        {
+            var typeChain = new List<Type>();
+
+            for (var currentType = type; currentType is not null && currentType != stopAt; currentType = currentType.BaseType)
+                typeChain.Add(currentType);
+
+            typeChain.Reverse();
+            bindingFlags |= BindingFlags.DeclaredOnly;
+
+            var members = new List<MemberInfo>();
+            foreach (var chainType in typeChain)
+                members.AddRange(chainType.GetMembers(bindingFlags));
+
+            return members;
+        }
+
         private static Type GetUnitySerializableType(Type? type, string name)
         {
             if (type is null) throw ThrowException();

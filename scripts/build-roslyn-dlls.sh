@@ -6,10 +6,8 @@
 #
 # Usage: scripts/build-roslyn-dlls.sh
 #
-# The CopyToUnity targets of the submodules are switched off with IsRoslynComponent=false, which only adds an IDE
-# capability: the generator's copies every build into the package (a Debug one too, as `dotnet test` makes), and those
-# of the analyzer and the Unity generator still copy into Aspid.MVVM/Assets/Aspid/MVVM/, where the dev project would
-# import them as plain plugins.
+# IsRoslynComponent=false, which only adds an IDE capability, switches off the CopyToUnity targets of the submodules,
+# so that only this script writes into the package.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

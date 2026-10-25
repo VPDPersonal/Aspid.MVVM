@@ -13,17 +13,23 @@ namespace Aspid.MVVM.Tests
     /// culture, the general format, and the fallback for a format .NET refuses.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class NumberFormatConverterDecimalTests
     {
         [Test]
-        public void Convert_DefaultFormat_WritesTwoDecimalsWithGrouping() =>
+        public void Convert_N2Format_WritesTwoDecimalsWithGrouping() =>
             Assert.AreEqual("1,234.50", new NumberFormatConverter("N2").Convert(1234.5m));
 
-        // The default format also rounds: .678 becomes .68 rather than being cut to .67.
+        // N2 also rounds: .678 becomes .68 rather than being cut to .67.
         [Test]
-        public void Convert_DefaultFormat_RoundsToTwoDecimals() =>
-            Assert.AreEqual("12,345.68", new NumberFormatConverter().Convert(12345.678m));
+        public void Convert_N2Format_RoundsToTwoDecimals() =>
+            Assert.AreEqual("12,345.68", new NumberFormatConverter("N2").Convert(12345.678m));
+
+        // The default is the one NumberFormatConverter has for every numeric type, N0, rather than the
+        // N2 a decimal-only converter used to default to.
+        [Test]
+        public void Convert_DefaultFormat_WritesAWholeNumberWithGrouping() =>
+            Assert.AreEqual("12,346", new NumberFormatConverter().Convert(12345.678m));
 
         [Test]
         public void Convert_FFormat_OmitsGrouping() =>
@@ -39,10 +45,10 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_HonoursTheCulture()
         {
-            Assert.AreEqual("12.345,68", new NumberFormatConverter().Convert(12345.678m));
+            Assert.AreEqual("12.345,68", new NumberFormatConverter("N2").Convert(12345.678m));
             Assert.AreEqual(
                 "12,345.68",
                 new NumberFormatConverter("N2", CultureInfoMode.InvariantCulture).Convert(12345.678m));

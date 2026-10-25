@@ -23,6 +23,11 @@ namespace Aspid.MVVM.Tests
         /// <summary>
         /// Pins the premise: this is Unity's behaviour, not the binder's.
         /// </summary>
+        /// <remarks>
+        /// Where the refusal leaves the playhead depends on the audio output: with a device it stays where it was, and
+        /// on a machine without one (a headless CI container) it reads as the end of the clip. It never takes the
+        /// position asked for, which is what the binder's clamp is there for.
+        /// </remarks>
         [UnityTest]
         public IEnumerator UnityTime_RefusesAPositionOutsideTheClip_AndSaysSo()
         {
@@ -37,8 +42,10 @@ namespace Aspid.MVVM.Tests
             LogAssert.Expect(LogType.Error, new Regex("invalid seek position"));
             audioSource.time = 100f;
 
-            Assert.AreEqual(0.5f, audioSource.time, 0.01f,
-                "Unity changed behaviour: a refused seek no longer leaves the position untouched");
+            Assert.That(
+                audioSource.time,
+                Is.EqualTo(0.5f).Within(0.01f).Or.EqualTo(audioSource.clip.length).Within(0.01f),
+                "Unity changed behaviour: a refused seek moved the position somewhere other than where it was or the end of the clip");
         }
 
         [UnityTest]

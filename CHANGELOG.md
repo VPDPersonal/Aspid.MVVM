@@ -128,7 +128,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 #### Samples & documentation
 
-- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has a `README`, its own `.asmdef` and a compact `Sample SDF` font.
+- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has a `README`, its own `.asmdef` and a compact `Sample SDF` font (iA Writer Quattro S, as in the Aspid.FastTools samples).
 - Documentation site on Docusaurus (GitHub Pages), English original with a Russian translation, tutorials in the sample READMEs, DocFX API reference.
 - XML docs on every public binder, converter and Editor type; every serialized field has a `[Tooltip]`; all four assemblies build clean with `-doc`.
 - `Documentation/08-converters.md` rewritten around the shipped catalogue.
@@ -214,6 +214,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `GenericToString<TFrom>.ToStringValue` — override `Format(T value, string format)` on `ValueToStringConverter<T>`.
 - The pre-Unity-6 compatibility gate: `using Converter = …` aliases, `ToConvertSpecific()` branches, `UNITY_6000_0_OR_NEWER` branches, `PhysicMaterial` fallbacks.
 - The vendored `com.unity.asset-store-tools` in the Editor project — it is not part of the package.
+- TMP Examples & Extras in the Editor project; TMP Essential Resources are back in the default `Assets/TextMesh Pro`.
 
 ### Fixed
 
@@ -242,6 +243,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `UnityEventStringMonoBinder` threw on a `null` value.
 - Generator ignored `enum` / `struct` constraints on generic bindable members.
 - `MonoBinder.Unbind()` `ProfilerMarker` guard broke compilation before Unity 2022.1.
+- A `MonoView` added from code with `AddComponent` threw a `NullReferenceException` from `Initialize`: its binder list was never deserialized and stayed `null`.
 
 #### Collections
 
@@ -266,6 +268,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Localization entry binders passed a silent `null` for an entry referenced by id; the binder now says why.
 - `RectTransformSetters.SetSizeDelta` reported `Vector3(w, h, 0)` in `OneWayToSource`; a `Vector2` channel is raised too.
 - `AudioSource` and `Slider` min / max could be left inverted.
+- `DebugLogBinder` logged a converter's `null` result as the value's `ToString()`; only an empty converter slot falls back to it now.
 
 #### Converters
 

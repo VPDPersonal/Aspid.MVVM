@@ -59,7 +59,7 @@ namespace Aspid.MVVM.StarterKit
 
 | Situation | Base |
 |---|---|
-| Number → number, one formula, the 16 numeric interfaces | `NumberConverter` / `TwoWayNumberConverter` (`Converters/General/Numbers`); override only `Apply` / `Undo` |
+| Number → number, one formula, the 16 numeric interfaces | `NumberConverter` / `TwoWayNumberConverter` (`Converters/General/Numbers`); override only `Apply` / `Undo`, plus `ApplyToInteger` when the `int`/`long` results need another formula (`RoundNumberConverter` ignores its decimal places there) |
 | String → number | `StringToNumberConverter<T>` (`Strings/ToNumber`): `TryParse`/`Clamp`/`ConvertBack`/`Expected`; `decimal` stays separate (string-backed fields) |
 | Key → value by table | subclass `DictionaryLookupConverter` (see `EnumToValueConverter`), never a copy of the logic |
 | Formatting via `ToString(format, culture)` | `Helpers/Globalization/FormatExtensions.FormatOrGeneral<T>` instead of a private try/catch |

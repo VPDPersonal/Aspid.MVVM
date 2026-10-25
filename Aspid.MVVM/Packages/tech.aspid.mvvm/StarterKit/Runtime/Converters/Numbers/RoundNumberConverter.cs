@@ -59,6 +59,14 @@ namespace Aspid.MVVM.StarterKit
             return Round(value * scale) / scale;
         }
 
+        /// <summary>
+        /// Rounds the number to a whole one, ignoring the decimal places.
+        /// </summary>
+        /// <param name="value">The number to round.</param>
+        /// <returns>The rounded number. An undeclared mode reports an error and returns the value unchanged.</returns>
+        protected override double ApplyToInteger(double value) =>
+            Round(value);
+
         private double Round(double value) => _mode switch
         {
             RoundMode.Round => Math.Round(value, _midpoint),

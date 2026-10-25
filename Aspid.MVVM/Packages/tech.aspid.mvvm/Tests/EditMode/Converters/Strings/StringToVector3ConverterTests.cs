@@ -12,12 +12,12 @@ namespace Aspid.MVVM.Tests
     /// decimal point and the component-count refusal.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToVector3ConverterTests
     {
         // See StringToVector2ConverterTests for the collision both converters step back from.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_RoundTripsWhenTheCultureCollidesWithTheSeparator()
         {
             var converter = new StringToVector3Converter(",", default, CultureInfoMode.CurrentCulture);

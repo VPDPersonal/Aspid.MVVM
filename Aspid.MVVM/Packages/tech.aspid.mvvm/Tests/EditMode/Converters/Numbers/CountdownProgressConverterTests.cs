@@ -1,8 +1,6 @@
-using UnityEngine;
+using System;
 using NUnit.Framework;
-using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
-using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -28,16 +26,11 @@ namespace Aspid.MVVM.Tests
         public void Countdown_ZeroDurationIsAFinishedTimer() =>
             Assert.AreEqual(0f, new CountdownProgressConverter(0f).Convert(10f), delta: 1e-6f);
 
-        // [Min(0f)] holds the Inspector at zero, so a negative duration is older authored data. A
-        // finished timer is the safe read: dividing by it would drive a fill bar past its own end.
-        [TestCase(false, 0f)]
-        [TestCase(true, 1f)]
-        public void Countdown_NegativeDuration_ReportsAndReadsAsFinished(bool elapsed, float expected)
-        {
-            LogAssert.Expect(LogType.Error, new Regex("CountdownProgressConverter.*duration -1 is negative"));
-
-            Assert.AreEqual(expected, new CountdownProgressConverter(-1f, elapsed).Convert(10f), delta: 1e-6f);
-        }
+        // [Min(0f)] holds the Inspector at zero, so the constructor is the only way a negative duration
+        // gets in, and it refuses one.
+        [Test]
+        public void Constructor_NegativeDuration_Throws() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new CountdownProgressConverter(-1f));
 
         [Test]
         public void CountdownProgress_Double_ReadsTheSameProgress() =>

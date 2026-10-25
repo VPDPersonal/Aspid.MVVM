@@ -56,7 +56,7 @@ namespace Aspid.MVVM.Tests
         // The culture reaches only the negative sign: .NET writes ASCII digits for a positive number
         // whichever culture is picked, and the suffix stays English either way.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_TheCultureChangesNothingForAPositiveNumber() =>
             Assert.AreEqual("1234th", new OrdinalConverter(CultureInfoMode.CurrentCulture).Convert(1234));
 

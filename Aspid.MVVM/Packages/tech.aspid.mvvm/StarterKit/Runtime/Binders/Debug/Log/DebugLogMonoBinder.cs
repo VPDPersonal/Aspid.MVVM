@@ -36,7 +36,13 @@ namespace Aspid.MVVM.StarterKit
         private static void Log(string message) =>
             UnityEngine.Debug.Log(message);
 
-        private string Format(object value) =>
-            value is null ? "null" : _converter?.Convert(value) ?? value.ToString();
+        // A converter returning null is a result of its own, not a missing converter, so ToString does not replace it.
+        private string Format(object value)
+        {
+            if (value is null) return "null";
+            if (_converter is null) return value.ToString();
+
+            return _converter.Convert(value) ?? "null";
+        }
     }
 }

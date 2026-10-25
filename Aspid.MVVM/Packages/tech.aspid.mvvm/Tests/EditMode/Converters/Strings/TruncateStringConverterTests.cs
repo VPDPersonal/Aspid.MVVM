@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
@@ -61,15 +62,11 @@ namespace Aspid.MVVM.Tests
         }
 
         // A limit no string could ever be shortened to is a misconfiguration, not a way to switch the
-        // converter off, so it is reported on every push.
+        // converter off. [Min(1)] holds the Inspector at one, so the constructor refuses it.
         [TestCase(0)]
         [TestCase(-5)]
-        public void Convert_ANonPositiveLimit_IsReported(int maxLength)
-        {
-            LogAssert.Expect(LogType.Error, new Regex("TruncateStringConverter.*not positive"));
-
-            Assert.AreEqual("abcdef", new TruncateStringConverter(maxLength).Convert("abcdef"));
-        }
+        public void Constructor_ANonPositiveLimit_Throws(int maxLength) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TruncateStringConverter(maxLength));
 
         // The side is consulted only once the string is over the limit and the marker fits, so an
         // undeclared side is reached only past both guards. Unshortened is the only answer that cannot

@@ -24,7 +24,7 @@ namespace Aspid.MVVM
 #endif
         
         [RequireBinder(Id = "DesignViewModel")]
-        [SerializeField] private Binders[] _bindersList;
+        [SerializeField] private Binders[] _bindersList = Array.Empty<Binders>();
 
         protected virtual void OnDestroy() =>
             Dispose();

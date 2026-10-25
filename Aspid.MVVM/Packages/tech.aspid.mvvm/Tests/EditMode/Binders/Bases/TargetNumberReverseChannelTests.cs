@@ -1,6 +1,9 @@
 using System;
+using UnityEngine;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
+using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -61,15 +64,31 @@ namespace Aspid.MVVM.Tests
             Assert.Throws<InvalidOperationException>(() => binder.Bind(member));
         }
 
+        // The way back runs the converter's ConvertBack, never its forward Convert.
         [Test]
-        public void FloatBinder_OneWayToSource_AppliesConverterBeforeDelivering()
+        public void FloatBinder_OneWayToSource_ConvertsBackBeforeDelivering()
         {
             var binder = new TestTargetFloatBinder(
                 new FloatHolder { Value = FloatProperty },
                 new DoublingFloatConverter(),
                 BindMode.OneWayToSource);
 
-            Assert.AreEqual(FloatProperty * 2f, Bind<float>(binder));
+            Assert.AreEqual(FloatProperty / 2f, Bind<float>(binder));
+        }
+
+        // The forward converter describes the presentation in the View, so running it towards the ViewModel
+        // would write the presentation into the model: a one-way converter is left out, with a warning.
+        [Test]
+        public void FloatBinder_OneWayToSource_LeavesAOneWayConverterOut()
+        {
+            var binder = new TestTargetFloatBinder(
+                new FloatHolder { Value = FloatProperty },
+                new OneWayDoublingFloatConverter(),
+                BindMode.OneWayToSource);
+
+            LogAssert.Expect(LogType.Warning, new Regex("converts one way only"));
+
+            Assert.AreEqual(FloatProperty, Bind<float>(binder));
         }
 
         private static T BindFloatBinder<T>()
@@ -132,7 +151,15 @@ namespace Aspid.MVVM.Tests
     }
 
     [Serializable]
-    internal sealed class DoublingFloatConverter : IConverter<float, float>
+    internal sealed class DoublingFloatConverter : ITwoWayConverter<float, float>
+    {
+        public float Convert(float value) => value * 2f;
+
+        public float ConvertBack(float value) => value / 2f;
+    }
+
+    [Serializable]
+    internal sealed class OneWayDoublingFloatConverter : IConverter<float, float>
     {
         public float Convert(float value) => value * 2f;
     }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
@@ -40,13 +41,19 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(1f, converter.Convert(1f).r, 1e-4f);
         }
 
+        // The parameterless constructor is the Inspector's empty slot; the gradient is required, so
+        // the other constructor refuses a null one and Convert reports the empty slot on every push.
         [Test]
         public void Convert_NoGradient_ReportsAndReturnsWhite()
         {
             LogAssert.Expect(LogType.Error, new Regex("no gradient is assigned"));
 
-            Assert.AreEqual(Color.white, new GradientEvaluateConverter(null!).Convert(0.5f));
+            Assert.AreEqual(Color.white, new GradientEvaluateConverter().Convert(0.5f));
         }
+
+        [Test]
+        public void Constructor_NullGradient_Throws() =>
+            Assert.Throws<ArgumentNullException>(() => new GradientEvaluateConverter(null!));
 
         // Every input would land on the same place in the ramp, so the gradient could only ever
         // answer with one color.

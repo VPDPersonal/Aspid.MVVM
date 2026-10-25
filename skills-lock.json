@@ -1,6 +1,24 @@
 {
   "version": 1,
   "skills": {
+    "asp-branch": {
+      "source": "VPDPersonal/Aspid.AgentKit",
+      "sourceType": "github",
+      "skillPath": "asp-git/skills/asp-branch/SKILL.md",
+      "computedHash": "96a44c71c1c4746fbc2d69c9d72a11089bf7c85e88908456c43654d4bf14b664"
+    },
+    "asp-commit": {
+      "source": "VPDPersonal/Aspid.AgentKit",
+      "sourceType": "github",
+      "skillPath": "asp-git/skills/asp-commit/SKILL.md",
+      "computedHash": "74c78fc35b1b288e405a72e2233d2264787660198b310ac991f7f04f0674fe64"
+    },
+    "asp-pr": {
+      "source": "VPDPersonal/Aspid.AgentKit",
+      "sourceType": "github",
+      "skillPath": "asp-git/skills/asp-pr/SKILL.md",
+      "computedHash": "3beb3915ff9612dd46e5bf3427f8914fff94cb42bec7776e9c7d172d8757f692"
+    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",

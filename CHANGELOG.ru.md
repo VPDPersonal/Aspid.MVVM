@@ -128,7 +128,7 @@
 
 #### Сэмплы и документация
 
-- Сэмплы перестроены в учебный путь: `01. Counter` → `06. CustomBinder`, плюс `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; у каждого `README`, свой `.asmdef` и компактный шрифт `Sample SDF`.
+- Сэмплы перестроены в учебный путь: `01. Counter` → `06. CustomBinder`, плюс `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; у каждого `README`, свой `.asmdef` и компактный шрифт `Sample SDF` (iA Writer Quattro S, как в сэмплах Aspid.FastTools).
 - Сайт документации на Docusaurus (GitHub Pages): английский оригинал с русским переводом, туториалы в README сэмплов, API-справка DocFX.
 - XML-документация на всех публичных биндерах, конвертерах и типах редактора; у каждого сериализуемого поля есть `[Tooltip]`; все четыре сборки собираются с `-doc` без ошибок.
 - `Documentation/08-converters.md` переписан под актуальный каталог.
@@ -213,6 +213,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `GenericToString<TFrom>.ToStringValue` — переопределяйте `Format(T value, string format)` у `ValueToStringConverter<T>`.
 - Слой совместимости с Unity до 6: алиасы `using Converter = …`, ветки `ToConvertSpecific()`, ветки `UNITY_6000_0_OR_NEWER`, фолбэки `PhysicMaterial`.
 - `com.unity.asset-store-tools`, вложенный в проект редактора, — он не входит в пакет.
+- TMP Examples & Extras в проекте редактора; TMP Essential Resources снова лежат в стандартной `Assets/TextMesh Pro`.
 
 ### Исправлено
 

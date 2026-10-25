@@ -118,4 +118,4 @@ public sealed partial class HeroViewModel
 
 Full binder rules are in [Binders](../../Documentation/06-binders.md).
 
-Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (Liberation Sans, OFL), so it does not depend on the fonts from TMP Essentials.
+Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (iA Writer Quattro S, OFL, as in the Aspid.FastTools samples), so it does not depend on the fonts from TMP Essentials.

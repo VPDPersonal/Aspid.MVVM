@@ -19,8 +19,10 @@ namespace Aspid.MVVM.StarterKit
         ITwoWayConverter<Vector2, Vector3>,
         ITwoWayConverter<Vector3, Vector2>
     {
+        // The field keeps the name _values although its type is Mode: renaming a serialized field drops the
+        // prefab-instance overrides authored against it, and [FormerlySerializedAs] does not reach them.
         [Tooltip("Which axes of the 3D vector the 2D components are written into.")]
-        [SerializeField] private Mode _mode;
+        [SerializeField] private Mode _values;
 
         [Tooltip("The constant written into the axis the mode leaves out.")]
         [SerializeField] private float _thirdValue;
@@ -37,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
             Mode mode,
             float thirdValue = 0)
         {
-            _mode = mode;
+            _values = mode;
             _thirdValue = thirdValue;
         }
 
@@ -49,7 +51,7 @@ namespace Aspid.MVVM.StarterKit
         /// The converted 3D vector. Reports an error and returns a zero vector when the mode is not
         /// a declared value.
         /// </returns>
-        public Vector3 Convert(Vector2 value) => _mode switch
+        public Vector3 Convert(Vector2 value) => _values switch
         {
             Mode.XY => new Vector3(value.x, value.y, _thirdValue),
             Mode.XZ => new Vector3(value.x, _thirdValue, value.y),
@@ -68,7 +70,7 @@ namespace Aspid.MVVM.StarterKit
         /// The two axes the mode names, in the order it names them; the constant axis is dropped.
         /// Reports an error and returns a zero vector when the mode is not a declared value.
         /// </returns>
-        public Vector2 ConvertBack(Vector3 value) => _mode switch
+        public Vector2 ConvertBack(Vector3 value) => _values switch
         {
             Mode.XY => new Vector2(value.x, value.y),
             Mode.XZ => new Vector2(value.x, value.z),
@@ -89,7 +91,7 @@ namespace Aspid.MVVM.StarterKit
             where T : struct
         {
             this.LogError(
-                problem: $"the mode {_mode.Describe()} is not a declared {nameof(Mode)}",
+                problem: $"the mode {_values.Describe()} is not a declared {nameof(Mode)}",
                 consequence: "Returning a zero vector.");
 
             return default;

@@ -19,7 +19,8 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional converter applied to the value; reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<bool, bool>? _converter;
 
-        [NonSerialized] private bool _isNotifyValueChanged = true;
+        // False at rest: Unity builds a deserialized binder without running field initializers.
+        [NonSerialized] private bool _isSuppressingEcho;
 
         /// <param name="target">The toggle to bind.</param>
         /// <param name="converter">
@@ -47,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue(bool value)
         {
-            _isNotifyValueChanged = false;
+            _isSuppressingEcho = true;
 
             try
             {
@@ -56,7 +57,7 @@ namespace Aspid.MVVM.StarterKit
             finally
             {
                 // Keeps the reverse channel alive when another listener throws.
-                _isNotifyValueChanged = true;
+                _isSuppressingEcho = false;
             }
         }
 
@@ -78,7 +79,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(bool isOn)
         {
-            if (!_isNotifyValueChanged) return;
+            if (_isSuppressingEcho) return;
             ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(isOn) : isOn);
         }
     }

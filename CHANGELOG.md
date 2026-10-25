@@ -231,6 +231,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Behaviour binders resolved themselves as their own target.
 - `EnumGroup` binders threw on an unassigned entry and left the rest of the group stale.
 - The Toggle, Slider and InputField echo guard was not restored after an exception, silencing the reverse channel for good.
+- Serialized `ToggleIsOnBinder`, `SliderValueBinder` and `InputFieldBinder` never reported to the ViewModel in `OneWayToSource`: Unity runs no field initializers on deserialization, so the echo guard came out closed.
 - InputField binders subscribed from `OnValidate` while unbound, stacking duplicate listeners.
 - InputField integer channel stayed silent for a number `int` cannot hold; a failed integer parse also silenced the float channels.
 - `NaN` and infinities passed every `Mathf.Clamp` into `alpha`, `fillAmount`, `pitch` and 45 more sites.

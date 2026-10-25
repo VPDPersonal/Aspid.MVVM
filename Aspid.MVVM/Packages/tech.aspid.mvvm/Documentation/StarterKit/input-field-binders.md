@@ -24,7 +24,7 @@ The main text input binder.
 
 ### Loop protection
 
-The `_isNotifyValueChanged` flag prevents infinite recursion in TwoWay binding: while the ViewModel updates the InputField, the reverse event is blocked.
+The `_isSuppressingEcho` flag prevents infinite recursion in TwoWay binding: while the ViewModel updates the InputField, the reverse event is blocked.
 
 ### Numeric modes
 

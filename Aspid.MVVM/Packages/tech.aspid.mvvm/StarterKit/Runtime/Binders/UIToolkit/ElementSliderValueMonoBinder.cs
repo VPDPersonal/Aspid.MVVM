@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         IFloatBinder,
         IReverseBinder<float>
     {
-        private bool _isNotifyValueChanged = true;
+        private bool _isSuppressingEcho;
 
         /// <inheritdoc/>
         public event Action<float> ValueChanged;
@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
             if (element is null) return;
             if (!this.RequireFinite(value)) return;
 
-            _isNotifyValueChanged = false;
+            _isSuppressingEcho = true;
 
             try
             {
@@ -45,7 +45,7 @@ namespace Aspid.MVVM.StarterKit
             finally
             {
                 // Keeps the reverse channel alive when another listener throws.
-                _isNotifyValueChanged = true;
+                _isSuppressingEcho = false;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnSliderChanged(ChangeEvent<float> changed)
         {
-            if (_isNotifyValueChanged)
+            if (!_isSuppressingEcho)
                 ValueChanged?.Invoke(changed.newValue);
         }
     }

@@ -28,7 +28,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private IConverter<string, string> _converter;
 
         private NumberReverseChannel _channel;
-        private bool _isNotifyValueChanged = true;
+        private bool _isSuppressingEcho;
 
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
@@ -76,7 +76,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(string value)
         {
-            _isNotifyValueChanged = false;
+            _isSuppressingEcho = true;
 
             try
             {
@@ -84,7 +84,7 @@ namespace Aspid.MVVM.StarterKit
             }
             finally
             {
-                _isNotifyValueChanged = true;
+                _isSuppressingEcho = false;
             }
         }
 
@@ -110,7 +110,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(string value)
         {
-            if (!_isNotifyValueChanged) return;
+            if (_isSuppressingEcho) return;
 
             value = GetConvertedBackValue(value);
             ValueChanged?.Invoke(value);

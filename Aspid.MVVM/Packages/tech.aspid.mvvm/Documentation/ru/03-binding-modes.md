@@ -72,7 +72,7 @@ public partial class FormViewModel
 
 **Внутренняя реализация:** `TwoWayBindableMember<T>` поддерживает все 4 режима. При `Add()` для TwoWay/OneWayToSource также подписывается на `IReverseBinder<T>.ValueChanged`.
 
-**Защита от цикла:** Биндеры (например, `InputFieldBinder`) содержат флаг `_isNotifyValueChanged` для предотвращения бесконечной рекурсии.
+**Защита от цикла:** Биндеры (например, `InputFieldBinder`) содержат флаг `_isSuppressingEcho` для предотвращения бесконечной рекурсии.
 
 **Типичные биндеры:** `InputFieldBinder`, `SliderValueBinder`, `ToggleIsOnBinder`.
 

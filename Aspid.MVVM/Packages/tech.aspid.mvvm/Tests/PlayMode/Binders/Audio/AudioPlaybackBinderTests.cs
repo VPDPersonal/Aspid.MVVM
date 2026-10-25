@@ -50,10 +50,14 @@ namespace Aspid.MVVM.Tests
             audioSource.Play();
             yield return null;
 
+            // Each check waits a frame: without an audio device (a headless CI container on 6000.6) isPlaying can still
+            // read the old state right after the call.
             Invoke(pause);
+            yield return null;
             Assert.IsFalse(audioSource.isPlaying, "Pause did not take effect");
 
             Invoke(unpause);
+            yield return null;
             Assert.IsTrue(audioSource.isPlaying, "Resume did not take effect");
         }
 

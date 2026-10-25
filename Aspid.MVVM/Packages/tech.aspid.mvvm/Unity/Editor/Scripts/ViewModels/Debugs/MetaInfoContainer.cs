@@ -46,7 +46,7 @@ namespace Aspid.MVVM
             {
                 this.SetDisplay(DisplayStyle.None);
                 closeCallback?.Invoke();
-            }).SetText("▼");
+            }).SetTextSelf("▼");
         }
 
         private static VisualElement CreateIdField(IFieldContext context)

@@ -72,7 +72,7 @@ namespace Aspid.MVVM
                     foreach (var method in methods)
                     {
                         var button = new Button(() => method.Invoke(value, new object[] { }))
-                            .SetText(method.Name);
+                            .SetTextSelf(method.Name);
                         
                         container.AddChild(button);
                     }  

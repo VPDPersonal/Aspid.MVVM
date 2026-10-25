@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         public override VisualElement CreateInspectorGUI()
         {
             _root = new VisualElement()
-                .AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet);
+                .AddStyleSheetFromResources(AspidStyles.DefaultStyleSheet);
 
             var header = new AspidInspectorHeader(target)
                 .SetMargin(top: 3, left: -10f);
@@ -211,7 +211,7 @@ namespace Aspid.MVVM.StarterKit
         private void UpdateHeaderText()
         {
             var header = _root.Q<AspidInspectorHeader>();
-            header.Text = target.GetScriptName();
+            header.Text = target.GetDisplayName();
             header.Subtext = GetInitializeComponentName(_viewModel);
         }
     }

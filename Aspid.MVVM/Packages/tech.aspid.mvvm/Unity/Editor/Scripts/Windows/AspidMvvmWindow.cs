@@ -65,7 +65,7 @@ namespace Aspid.MVVM
 
             var root = rootVisualElement;
             root.AddAspidThemeStyleSheets()
-                .AddStyleSheetsFromResource(WindowStyleSheetPath)
+                .AddStyleSheetFromResources(WindowStyleSheetPath)
                 .AddClass(RootClass);
 
             _background = new AspidAnimatedDotsBackground()

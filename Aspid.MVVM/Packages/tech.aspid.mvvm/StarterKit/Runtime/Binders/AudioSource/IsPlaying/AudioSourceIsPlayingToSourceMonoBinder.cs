@@ -29,6 +29,13 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnBound()
         {
+            if (_converter is not (null or ITwoWayConverter<bool, bool>))
+            {
+                this.LogWarning(
+                    problem: $"it is bound as {Mode} with {_converter.GetType().GetTypeName()}, which converts one way only",
+                    consequence: "Values sent back to the ViewModel are not converted.");
+            }
+
             _wasPlaying = CachedComponent.isPlaying;
             Raise(_wasPlaying);
         }

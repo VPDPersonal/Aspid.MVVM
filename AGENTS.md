@@ -168,7 +168,8 @@ Submodules:
 
 ## Documentation
 
-Project skills live in `.claude/skills/`; `.agents/skills/` links there for other agents.
+Project skills live in `.claude/skills/`; `.agents/skills/` links there for other agents. On Windows the link needs
+a clone with `-c core.symlinks=true` (Developer Mode on); without it, read `.claude/skills/` directly.
 
 - Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill [docs-site](.claude/skills/docs-site/SKILL.md)
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463

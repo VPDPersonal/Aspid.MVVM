@@ -28,14 +28,16 @@ namespace Aspid.MVVM.Tests
         /// Pins the premise: this is Unity's behaviour, not the binder's.
         /// </summary>
         /// <remarks>
-        /// Where the refusal leaves the playhead depends on the audio output: with a device it stays where it was, and
-        /// on a machine without one (a headless CI container) it reads as the end of the clip. It never takes the
-        /// position asked for, which is what the binder's clamp is there for.
+        /// Where the refusal leaves the playhead depends on the audio output and on time: with a device it stays where it
+        /// was, on a machine without one (a headless CI container) it reads as the end of the clip, and the source keeps
+        /// playing while Unity logs the error, which in CI takes long enough to move it by a few tenths of a second. It
+        /// never takes the position asked for and never goes back, which is what the binder's clamp is there for.
         /// </remarks>
         [UnityTest]
         public IEnumerator UnityTime_RefusesAPositionOutsideTheClip_AndSaysSo()
         {
-            var audioSource = NewPlayingSource();
+            // Long enough that the clip does not end, and the source stop, while the error is being logged.
+            var audioSource = NewPlayingSource(seconds: 3);
             yield return null;
 
             Assert.IsTrue(audioSource.isPlaying, "The source is not playing — time stores nothing while it is not");
@@ -48,8 +50,8 @@ namespace Aspid.MVVM.Tests
 
             Assert.That(
                 audioSource.time,
-                Is.InRange(0.5f, 0.5f + PlayheadDrift).Or.EqualTo(audioSource.clip.length).Within(0.01f),
-                "Unity changed behaviour: a refused seek moved the position somewhere other than where it was or the end of the clip");
+                Is.InRange(0.5f, audioSource.clip.length),
+                "Unity changed behaviour: a refused seek moved the position out of the clip or back before where it was");
         }
 
         [UnityTest]
@@ -79,10 +81,10 @@ namespace Aspid.MVVM.Tests
             Assert.That(audioSource.time, Is.InRange(0f, PlayheadDrift), "A negative position was not clamped");
         }
 
-        private AudioSource NewPlayingSource()
+        private AudioSource NewPlayingSource(int seconds = 1)
         {
             var gameObject = Spawn("Audio");
-            var clip = Track(AudioClip.Create("guard", SampleRate, 1, SampleRate, false));
+            var clip = Track(AudioClip.Create("guard", SampleRate * seconds, 1, SampleRate, false));
 
             var audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.clip = clip;

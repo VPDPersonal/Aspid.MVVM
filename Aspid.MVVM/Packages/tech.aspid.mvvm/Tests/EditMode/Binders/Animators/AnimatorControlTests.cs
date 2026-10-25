@@ -96,12 +96,14 @@ namespace Aspid.MVVM.Tests
             Assert.IsTrue(new AnimatorPlayStateBinder(animator).CanBind);
         }
 
+        // The serializable twin is generated, and the generated constructor guards each mode the Mono
+        // half's [BindModeOverride] leaves out with ThrowExceptionIfMatches, which throws ArgumentException.
         [Test]
         public void TheStateBinders_RefuseTheReverseModes()
         {
             var animator = New();
 
-            Assert.Throws<System.InvalidOperationException>(
+            Assert.Throws<System.ArgumentException>(
                 () => _ = new AnimatorPlayStateBinder(animator, mode: BindMode.OneWayToSource),
                 "OneWayToSource was accepted by a mode with nothing to read back");
         }

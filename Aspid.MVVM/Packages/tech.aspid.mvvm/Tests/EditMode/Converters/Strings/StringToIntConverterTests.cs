@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Tests
     /// failure and the authored clamp bounds.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToIntConverterTests
     {
         // Blank text is an unfilled field rather than a malformed number, so it takes the fallback
@@ -79,11 +79,15 @@ namespace Aspid.MVVM.Tests
             return converter;
         }
 
+        // The bounds are private fields of StringToNumberConverter<T>, so the search walks up the hierarchy.
         private static T With<T>(T converter, string field, object value)
             where T : class
         {
-            var info = converter.GetType().GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
-            Assert.IsNotNull(info, $"{converter.GetType().Name} has no field {field}");
+            FieldInfo info = null;
+            for (var type = converter.GetType(); type is not null && info is null; type = type.BaseType)
+                info = type.GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+
+            Assert.IsNotNull(info, $"{converter.GetType().Name} has no field {field} in its hierarchy");
 
             info.SetValue(converter, value);
 

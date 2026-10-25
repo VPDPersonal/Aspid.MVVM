@@ -1,8 +1,6 @@
-using UnityEngine;
+using System;
 using NUnit.Framework;
-using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
-using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -20,19 +18,10 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual("abc     ", new PadStringConverter(8, padLeft: false).Convert("abc"));
         }
 
-        // PadLeft and PadRight throw on a negative width, and the field is an Inspector int with
-        // nothing to stop one being typed.
+        // PadLeft and PadRight throw on a negative width. [Min(0)] holds the Inspector at zero, so the
+        // constructor is the only way one gets in, and it refuses it.
         [Test]
-        public void Convert_NegativeWidth_ReportsEveryPushAndLeavesTheStringAlone()
-        {
-            var converter = new PadStringConverter(-4);
-
-            LogAssert.Expect(LogType.Error, new Regex("PadStringConverter.*negative"));
-            LogAssert.Expect(LogType.Error, new Regex("PadStringConverter.*negative"));
-
-            Assert.AreEqual("abc", converter.Convert("abc"));
-            Assert.AreEqual("xy", converter.Convert("xy"));
-            Assert.IsNull(converter.Convert(null), "a null value never reaches the width at all");
-        }
+        public void Constructor_NegativeWidth_Throws() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PadStringConverter(-4));
     }
 }

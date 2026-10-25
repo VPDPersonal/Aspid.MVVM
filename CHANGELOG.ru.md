@@ -242,6 +242,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `UnityEventStringMonoBinder` бросал на `null`.
 - Генератор игнорировал ограничения `enum` / `struct` на обобщённых bindable-членах.
 - Guard `ProfilerMarker` в `MonoBinder.Unbind()` ломал компиляцию до Unity 2022.1.
+- `MonoView`, добавленный из кода через `AddComponent`, бросал `NullReferenceException` из `Initialize`: его список биндеров не десериализовался и оставался `null`.
 
 #### Коллекции
 
@@ -266,6 +267,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - Биндеры записей локализации молча отдавали `null` для записи по id; теперь биндер объясняет причину.
 - `RectTransformSetters.SetSizeDelta` отдавал `Vector3(w, h, 0)` в `OneWayToSource`; добавлен канал `Vector2`.
 - `min` / `max` у `AudioSource` и `Slider` могли остаться перевёрнутыми.
+- `DebugLogBinder` писал вместо `null`-результата конвертера `ToString()` значения; к `ToString()` теперь переходит только пустой слот конвертера.
 
 #### Конвертеры
 

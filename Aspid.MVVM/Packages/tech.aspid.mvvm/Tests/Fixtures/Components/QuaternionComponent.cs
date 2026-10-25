@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Tests
     /// A component exposing a single <see cref="Quaternion"/> field, for tests that bind through a
     /// Component binder base.
     /// </summary>
-    internal sealed class QuaternionComponent : MonoBehaviour
+    public sealed class QuaternionComponent : MonoBehaviour
     {
         public Quaternion Value = Quaternion.identity;
     }

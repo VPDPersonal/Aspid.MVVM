@@ -8,7 +8,7 @@ namespace Aspid.MVVM.Tests
     /// Records what <see cref="ObservableCollectionMonoBinder{T}"/> dispatches, which is all this binder is
     /// responsible for.
     /// </summary>
-    internal sealed class ProbeCollectionBinder : ObservableCollectionMonoBinder<string>
+    public sealed class ProbeCollectionBinder : ObservableCollectionMonoBinder<string>
     {
         public readonly List<string> Added = new();
         public readonly List<string> Removed = new();

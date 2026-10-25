@@ -6,6 +6,7 @@
         "Aspid.MVVM.Unity",
         "Aspid.MVVM.Unity.Editor",
         "Aspid.MVVM.StarterKit",
+        "Aspid.MVVM.Tests.Fixtures",
         "Aspid.FastTools",
         "Aspid.FastTools.Editor",
         "Unity.TextMeshPro",

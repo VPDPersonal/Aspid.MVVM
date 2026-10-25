@@ -141,10 +141,4 @@ namespace Aspid.MVVM.Tests
             Spawn<T>(typeof(T).Name);
         #endregion
     }
-
-    /// <summary>
-    /// Closes <see cref="StringToEnumCasterMonoBinder{TEnum}"/> over <see cref="BindMode"/> — the one-line subclass a
-    /// project writes for its own enum, and what makes the abstract binder addable as a component.
-    /// </summary>
-    internal sealed class StringToBindModeCasterMonoBinder : StringToEnumCasterMonoBinder<BindMode> { }
 }

@@ -78,17 +78,6 @@ namespace Aspid.MVVM.Tests
         }
     }
 
-    internal sealed class TestComponentVector3Binder : ComponentMonoBinder<Vector3Component, Vector3>, IVector3Binder
-    {
-        public Vector3 Applied => CachedComponent.Value;
-
-        protected override Vector3 Property
-        {
-            get => CachedComponent.Value;
-            set => CachedComponent.Value = value;
-        }
-    }
-
     internal sealed class Vector3Holder
     {
         public Vector3 Value;

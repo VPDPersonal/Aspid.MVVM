@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Tests
     /// Records a <see cref="MonoBinder"/>'s lifecycle hook calls in order, and lets a test force <see cref="CanBind"/>
     /// and the mode <c>Reset</c> applies.
     /// </summary>
-    internal sealed class ProbeMonoBinder : MonoBinder, IBinder<bool>
+    public sealed class ProbeMonoBinder : MonoBinder, IBinder<bool>
     {
         public readonly List<string> Calls = new();
 

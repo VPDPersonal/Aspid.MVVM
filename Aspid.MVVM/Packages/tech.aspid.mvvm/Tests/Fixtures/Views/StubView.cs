@@ -4,9 +4,10 @@ using UnityEngine;
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
-    /// Minimal <see cref="IView"/> ScriptableObject, for tests that only need a scriptable <see cref="IView"/> instance.
+    /// Minimal <see cref="IView"/> so a test exercises a binder's own logic rather than MonoView's
+    /// initialization requirements.
     /// </summary>
-    internal sealed class StubScriptableView : ScriptableObject, IView
+    public sealed class StubView : MonoBehaviour, IView
     {
         public IViewModel ViewModel { get; private set; }
 

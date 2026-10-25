@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Tests
     /// <summary>
     /// Creates a <see cref="StubView"/> parented under a fixed transform, for tests of view-spawning binders.
     /// </summary>
-    internal sealed class StubViewFactory : IViewFactory<StubView>
+    public sealed class StubViewFactory : IViewFactory<StubView>
     {
         private readonly Transform _parent;
 

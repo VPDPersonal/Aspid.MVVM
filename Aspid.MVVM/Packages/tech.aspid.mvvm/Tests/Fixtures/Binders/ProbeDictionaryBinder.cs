@@ -8,7 +8,7 @@ namespace Aspid.MVVM.Tests
     /// Records what <see cref="ObservableDictionaryMonoBinder{TKey, TValue}"/> dispatches, which is all this half
     /// of the collection domain is responsible for.
     /// </summary>
-    internal sealed class ProbeDictionaryBinder : ObservableDictionaryMonoBinder<string, string>
+    public sealed class ProbeDictionaryBinder : ObservableDictionaryMonoBinder<string, string>
     {
         public readonly List<KeyValuePair<string, string>> Added = new();
         public readonly List<KeyValuePair<string, string>> Removed = new();

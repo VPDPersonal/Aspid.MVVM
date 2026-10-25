@@ -38,14 +38,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.asset-store-tools": {
-      "version": "file:com.unity.asset-store-tools",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.2.1"
-      }
-    },
     "com.unity.bindings.openimageio": {
       "version": "1.0.2",
       "depth": 1,

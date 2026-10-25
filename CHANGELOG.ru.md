@@ -212,6 +212,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `IBindableValue<T>`, `IReadOnlyBindableValue<T>` — используйте `Value` у value-биндеров.
 - `GenericToString<TFrom>.ToStringValue` — переопределяйте `Format(T value, string format)` у `ValueToStringConverter<T>`.
 - Слой совместимости с Unity до 6: алиасы `using Converter = …`, ветки `ToConvertSpecific()`, ветки `UNITY_6000_0_OR_NEWER`, фолбэки `PhysicMaterial`.
+- `com.unity.asset-store-tools`, вложенный в проект редактора, — он не входит в пакет.
 
 ### Исправлено
 

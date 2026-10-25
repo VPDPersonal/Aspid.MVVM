@@ -212,6 +212,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `IBindableValue<T>`, `IReadOnlyBindableValue<T>` — use the value binders' `Value`.
 - `GenericToString<TFrom>.ToStringValue` — override `Format(T value, string format)` on `ValueToStringConverter<T>`.
 - The pre-Unity-6 compatibility gate: `using Converter = …` aliases, `ToConvertSpecific()` branches, `UNITY_6000_0_OR_NEWER` branches, `PhysicMaterial` fallbacks.
+- The vendored `com.unity.asset-store-tools` in the Editor project — it is not part of the package.
 
 ### Fixed
 

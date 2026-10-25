@@ -128,7 +128,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 #### Samples & documentation
 
-- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has a `README`, its own `.asmdef` and a compact `Sample SDF` font.
+- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has a `README`, its own `.asmdef` and a compact `Sample SDF` font (iA Writer Quattro S, as in the Aspid.FastTools samples).
 - Documentation site on Docusaurus (GitHub Pages), English original with a Russian translation, tutorials in the sample READMEs, DocFX API reference.
 - XML docs on every public binder, converter and Editor type; every serialized field has a `[Tooltip]`; all four assemblies build clean with `-doc`.
 - `Documentation/08-converters.md` rewritten around the shipped catalogue.

@@ -116,4 +116,4 @@ Coloring the name is a View concern, so it does not belong in the ViewModel. `Te
 
 Next: [Bind Modes](../03.%20BindModes/README.md), all four modes on one screen.
 
-Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (Liberation Sans, OFL), so it does not depend on the fonts from TMP Essentials.
+Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (iA Writer Quattro S, OFL, as in the Aspid.FastTools samples), so it does not depend on the fonts from TMP Essentials.

@@ -62,4 +62,4 @@ The scene has a plain `MonoView`. Its **Binders** list maps each id (`Title`, `E
 
 More in [Dynamic ViewModel](../../Documentation/10-dynamic-viewmodel.md).
 
-Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (Liberation Sans, OFL), so it does not depend on the fonts from TMP Essentials.
+Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (iA Writer Quattro S, OFL, as in the Aspid.FastTools samples), so it does not depend on the fonts from TMP Essentials.

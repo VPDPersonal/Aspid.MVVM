@@ -13,8 +13,8 @@ Assembly: Aspid.MVVM.dll
 
 Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued two-way bindings that supports every
 [`BindMode`](Aspid.MVVM.BindMode.md) except [`BindMode.None`](Aspid.MVVM.BindMode.md), dispatching forward updates through
-[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) and reverse updates
-through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
+[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code> / [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) and reverse updates
+through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code> / [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 Additionally exposes a get/set [`TwoWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Value) and a [`TwoWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Changed) event.
 
 ```csharp

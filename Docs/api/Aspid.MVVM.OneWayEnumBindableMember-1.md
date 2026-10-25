@@ -11,8 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
-allowing enum-typed binders ([`IBinder<T>`](Aspid.MVVM.IBinder-1.md)) to receive the boxed enum value alongside
+Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
+allowing enum-typed binders ([`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)) to receive the boxed enum value alongside
 the strongly-typed <code class="typeparamref">T</code>.
 
 ```csharp
@@ -56,10 +56,4 @@ public OneWayEnumBindableMember(T value)
 `value` T
 
 The initial value of the bindable member.
-
-#### Exceptions
-
- [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
-
-Thrown when <code class="paramref">mode</code> is neither [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) nor [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 

@@ -62,8 +62,6 @@ The type of the target object that this binder operates on.
 
 ### TargetBinder\(\) {#Aspid_MVVM_TargetBinder_1__ctor}
 
-Initializes a new instance of the [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) class with the specified target and binding mode.
-
 ```csharp
 protected TargetBinder()
 ```
@@ -73,13 +71,9 @@ protected TargetBinder()
 For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
 assigns the fields itself.
 
-#### Exceptions
-
- [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
-
-Thrown if <code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-
 ### TargetBinder\(TTarget, BindMode\) {#Aspid_MVVM_TargetBinder_1__ctor__0_Aspid_MVVM_BindMode_}
+
+Initializes a new instance of the [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) class with the specified target and binding mode.
 
 ```csharp
 protected TargetBinder(TTarget target, BindMode mode = BindMode.OneWay)
@@ -89,7 +83,17 @@ protected TargetBinder(TTarget target, BindMode mode = BindMode.OneWay)
 
 `target` TTarget
 
+The target object this binder will operate on.
+
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
+
+The binding mode to use for the binder.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+Thrown if <code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 

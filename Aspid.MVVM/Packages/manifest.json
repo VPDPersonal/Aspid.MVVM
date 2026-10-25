@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.15",
     "com.unity.collections": "6.6.0",
@@ -9,7 +8,6 @@
     "com.unity.localization": "1.5.13",
     "com.unity.memoryprofiler": "1.1.12",
     "com.unity.pipeline": "0.9.0-exp.1",
-    "com.unity.recorder": "5.1.7",
     "com.unity.render-pipelines.universal": "17.6.0",
     "com.unity.timeline": "6.6.0",
     "com.unity.ugui": "2.6.0",

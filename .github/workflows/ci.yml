@@ -366,10 +366,7 @@ jobs:
         with:
           sparse-checkout: |
             Aspid.MVVM/Packages
-            Aspid.MVVM/Assets/_Assets/TextMesh Pro/Fonts
-            Aspid.MVVM/Assets/_Assets/TextMesh Pro/Resources
-            Aspid.MVVM/Assets/_Assets/TextMesh Pro/Shaders
-            Aspid.MVVM/Assets/_Assets/TextMesh Pro/Sprites
+            Aspid.MVVM/Assets/TextMesh Pro
             scripts
 
       - name: Create the test project

@@ -96,10 +96,10 @@ cp -R "$PACKAGE/Samples~/." "$PROJECT/Assets/Samples/"
 
 # The TMP Essential Resources of the dev project: the default font asset and TMP Settings that a TextMeshPro component
 # looks for, as in a user project after the TMP importer ran.
-TMP="$DEV/Assets/_Assets/TextMesh Pro"
+TMP="$DEV/Assets/TextMesh Pro"
 mkdir -p "$PROJECT/Assets/TextMesh Pro"
 cp "$TMP.meta" "$PROJECT/Assets/TextMesh Pro.meta"
-for folder in Fonts Resources Shaders Sprites; do
+for folder in Fonts Resources Shaders; do
   cp -R "$TMP/$folder" "$TMP/$folder.meta" "$PROJECT/Assets/TextMesh Pro/"
 done
 

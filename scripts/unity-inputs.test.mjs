@@ -51,7 +51,7 @@ const replace = (text, from, to) => {
   return text.replace(from, to);
 };
 
-const TMP_SETTINGS = 'Aspid.MVVM/Assets/_Assets/TextMesh Pro/Resources/TMP Settings.asset';
+const TMP_SETTINGS = 'Aspid.MVVM/Assets/TextMesh Pro/Resources/TMP Settings.asset';
 const FILES = [
   ['100644', 'a1', `${PACKAGE}/package.json`],
   ['100644', 'a2', `${PACKAGE}/Source/Item.cs`],
@@ -104,9 +104,9 @@ test('code, assets, the DLLs and the dev project files that the test project rea
   }
 });
 
-test('the TMP Essential Resources are the four folders and their .meta', () => {
-  assert.equal(TMP_ESSENTIALS.length, 9);
-  assert.ok(TMP_ESSENTIALS.every((path) => path.startsWith('Aspid.MVVM/Assets/_Assets/TextMesh Pro')));
+test('the TMP Essential Resources are the three folders and their .meta', () => {
+  assert.equal(TMP_ESSENTIALS.length, 7);
+  assert.ok(TMP_ESSENTIALS.every((path) => path.startsWith('Aspid.MVVM/Assets/TextMesh Pro')));
   assert.ok(!TMP_ESSENTIALS.some((path) => /Examples|Documentation/.test(path)));
 });
 
@@ -189,6 +189,6 @@ test('the inputs of this commit list the package, the dev manifest and the TMP s
   assert.match(text, /^unity-inputs 1$/m);
   assert.match(text, new RegExp(` ${PACKAGE}/package\\.json$`, 'm'));
   assert.match(text, / Aspid\.MVVM\/Packages\/packages-lock\.json$/m);
-  assert.match(text, / Aspid\.MVVM\/Assets\/_Assets\/TextMesh Pro\/Resources\/TMP Settings\.asset$/m);
+  assert.match(text, / Aspid\.MVVM\/Assets\/TextMesh Pro\/Resources\/TMP Settings\.asset$/m);
   assert.doesNotMatch(text, /\/Documentation\//);
 });

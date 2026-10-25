@@ -19,8 +19,8 @@ import { fileURLToPath } from 'node:url';
 
 export const PACKAGE = 'Aspid.MVVM/Packages/tech.aspid.mvvm';
 export const DEV_PACKAGES = ['Aspid.MVVM/Packages/manifest.json', 'Aspid.MVVM/Packages/packages-lock.json'];
-const TMP = 'Aspid.MVVM/Assets/_Assets/TextMesh Pro';
-export const TMP_ESSENTIALS = [`${TMP}.meta`, ...['Fonts', 'Resources', 'Shaders', 'Sprites'].flatMap((folder) => [
+const TMP = 'Aspid.MVVM/Assets/TextMesh Pro';
+export const TMP_ESSENTIALS = [`${TMP}.meta`, ...['Fonts', 'Resources', 'Shaders'].flatMap((folder) => [
   `${TMP}/${folder}`,
   `${TMP}/${folder}.meta`,
 ])];

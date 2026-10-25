@@ -11,8 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`VisualElementMonoBinder<T>`](Aspid.MVVM.StarterKit.VisualElementMonoBinder-1.md) that binds ListView.itemsSource to a read-only
-collection.
+[`VisualElementMonoBinder<T>`](Aspid.MVVM.StarterKit.VisualElementMonoBinder-1.md) that binds [`itemsSource`](https://docs.unity3d.com/ScriptReference/UIElements-BaseVerticalCollectionView-itemsSource.html)
+of a [`ListView`](https://docs.unity3d.com/ScriptReference/UIElements-ListView.html) to a read-only collection.
 
 ```csharp
 [BindModeOverride(new BindMode[] { BindMode.OneWay, BindMode.OneTime })]

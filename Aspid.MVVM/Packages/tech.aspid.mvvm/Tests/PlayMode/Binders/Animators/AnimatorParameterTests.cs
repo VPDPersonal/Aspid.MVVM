@@ -24,6 +24,8 @@ namespace Aspid.MVVM.Tests
         [UnityTest]
         public IEnumerator WithAMisspelledParameterName_TheAnimatorIsLeftAlone()
         {
+            // Reported on every push, not only the first.
+            LogAssert.Expect(LogType.Error, new Regex("has no Float parameter by that name"));
             LogAssert.Expect(LogType.Error, new Regex("has no Float parameter by that name"));
 
             var (binder, animator) = Create("Speeed");

@@ -11,7 +11,7 @@ namespace Aspid.MVVM.Tests
     /// Coverage for <see cref="StringToFloatConverter"/> — reading, culture and the exact round trip.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToFloatConverterTests
     {
         [TestCase("1.5", 1.5f)]
@@ -29,7 +29,7 @@ namespace Aspid.MVVM.Tests
         // A German player typing "1,5" means one and a half; reading it as invariant gives fifteen
         // or nothing at all.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_HonoursTheCulture() =>
             Assert.AreEqual(1.5f, new StringToFloatConverter(0f).Convert("1,5"), 1e-5f);
 

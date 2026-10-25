@@ -14,7 +14,7 @@ Assembly: Aspid.MVVM.StarterKit.dll
 [`ComponentFloatMonoBinder<T>`](Aspid.MVVM.StarterKit.ComponentFloatMonoBinder-1.md) that binds [`widthMultiplier`](https://docs.unity3d.com/ScriptReference/LineRenderer-widthMultiplier.html).
 
 ```csharp
-[AddBinderContextMenu(typeof(LineRenderer), new string[] { "m_Parameters.widthMultiplier" })]
+[AddBinderContextMenu(typeof(LineRenderer), new string[] { "widthMultiplier" })]
 [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Width Multiplier")]
 public class LineRendererWidthMultiplierMonoBinder : ComponentFloatMonoBinder<LineRenderer>, IMonoBinderValidatable, IRebindableBinder, IFloatBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
 ```

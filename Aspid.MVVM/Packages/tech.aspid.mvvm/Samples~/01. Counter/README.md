@@ -125,4 +125,4 @@ In the Inspector drag each binder into the matching `CounterView` field. Every e
 
 Next: [Greeter](../02.%20Greeter/README.md), a ViewModel living on a GameObject with two-way binding.
 
-Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (Liberation Sans, OFL), so it does not depend on the fonts from TMP Essentials.
+Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (iA Writer Quattro S, OFL, as in the Aspid.FastTools samples), so it does not depend on the fonts from TMP Essentials.

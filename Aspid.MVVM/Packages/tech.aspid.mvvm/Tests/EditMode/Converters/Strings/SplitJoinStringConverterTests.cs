@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NUnit.Framework;
 using System.Reflection;
@@ -29,18 +30,21 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual("a-b-c", new SplitJoinStringConverter("<>", "-").Convert("a<>b<>c"));
 
         // The limit counts parts, not separators, and the last part swallows the remainder with its
-        // separators still in it — the same bargain string.Split(count) makes. Zero and anything
-        // negative mean no limit, because the guard is "> 0"; a limit at or above the real part count
-        // is indistinguishable from no limit.
+        // separators still in it, the same bargain string.Split(count) makes. Zero means no limit; a
+        // limit at or above the real part count is indistinguishable from no limit.
         [TestCase(0, "a | b | c | d")]
         [TestCase(1, "a,b,c,d")]
         [TestCase(2, "a | b,c,d")]
         [TestCase(3, "a | b | c,d")]
         [TestCase(4, "a | b | c | d")]
         [TestCase(9, "a | b | c | d")]
-        [TestCase(-1, "a | b | c | d")]
         public void Convert_MaxPartsCapsThePartCount(int maxParts, string expected) =>
             Assert.AreEqual(expected, new SplitJoinStringConverter(",", " | ", maxParts).Convert("a,b,c,d"));
+
+        // [Min(0)] holds the Inspector at zero, so the constructor refuses a negative limit.
+        [Test]
+        public void Constructor_NegativeMaxParts_Throws() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new SplitJoinStringConverter(",", " | ", maxParts: -1));
 
         // Trimming applies to the ends of each part, and the capped last part is one part — so the
         // whitespace inside the swallowed remainder is left exactly as it arrived while the outer

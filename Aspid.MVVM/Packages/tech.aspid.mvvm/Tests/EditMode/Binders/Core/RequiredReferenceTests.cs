@@ -39,13 +39,16 @@ namespace Aspid.MVVM.Tests
             Assert.IsFalse(ignored.activeSelf, "The entry after the empty slot did not receive the default value");
         }
 
+        // An error is logged on every occurrence rather than silenced after the first, so each push that walks
+        // the table reports the empty slot again.
         [Test]
-        public void EnumGroup_WithAnEmptySlot_ReportsOnlyOnce()
+        public void EnumGroup_WithAnEmptySlot_ReportsEveryPush()
         {
             var applied = Spawn("Applied");
             var binder = CreateVisibleGroup(("First", applied), ("Second", null));
 
-            LogAssert.Expect(LogType.Error, new Regex("has no GameObject assigned"));
+            for (var i = 0; i < 3; i++)
+                LogAssert.Expect(LogType.Error, new Regex("has no GameObject assigned"));
 
             ((IBinder<Enum>)binder).SetValue(TestGroupEnum.First);
             ((IBinder<Enum>)binder).SetValue(TestGroupEnum.Second);
@@ -70,12 +73,14 @@ namespace Aspid.MVVM.Tests
             ((IBinder<float>)binder).SetValue(1f);
         }
 
+        // An error is logged on every occurrence rather than silenced after the first.
         [Test]
-        public void AnimatorBinder_ReportsOnlyOnce()
+        public void AnimatorBinder_ReportsEveryPush()
         {
             var binder = CreateAnimatorBinder(parameterName: "");
 
-            LogAssert.Expect(LogType.Error, new Regex("no parameter name is set"));
+            for (var i = 0; i < 3; i++)
+                LogAssert.Expect(LogType.Error, new Regex("no parameter name is set"));
 
             ((IBinder<float>)binder).SetValue(1f);
             ((IBinder<float>)binder).SetValue(2f);

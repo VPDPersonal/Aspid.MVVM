@@ -1,8 +1,6 @@
-using UnityEngine;
+using System;
 using NUnit.Framework;
-using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
-using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -32,15 +30,11 @@ namespace Aspid.MVVM.Tests
         public void Convert_NegativeValue_KeepsTheSignOutsideThePadding() =>
             Assert.AreEqual("-07", new PaddedNumberConverter(2).Convert(-7));
 
-        // PadLeft throws on a negative width, and a typed-in count reaches it straight from the
-        // Inspector — the converter has to report it rather than take the binder down.
+        // PadLeft throws on a negative width. [Min(0)] holds the Inspector at zero, so the constructor
+        // is the only way one gets in, and it refuses it rather than take the binder down on a push.
         [Test]
-        public void Convert_NegativeDigits_ReportsAndPadsNothing()
-        {
-            LogAssert.Expect(LogType.Error, new Regex("PaddedNumberConverter.*digit count -1 is negative"));
-
-            Assert.AreEqual("7", new PaddedNumberConverter(-1).Convert(7));
-        }
+        public void Constructor_NegativeDigits_Throws() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PaddedNumberConverter(-1));
 
         [Test]
         public void Convert_Long_PadsToTheWidth() =>

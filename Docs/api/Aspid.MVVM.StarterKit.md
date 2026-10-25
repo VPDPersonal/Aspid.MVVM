@@ -1932,8 +1932,8 @@ clicked.
 
  [ElementListViewItemsSourceMonoBinder](Aspid.MVVM.StarterKit.ElementListViewItemsSourceMonoBinder.md)
 
-[`VisualElementMonoBinder<T>`](Aspid.MVVM.StarterKit.VisualElementMonoBinder-1.md) that binds ListView.itemsSource to a read-only
-collection.
+[`VisualElementMonoBinder<T>`](Aspid.MVVM.StarterKit.VisualElementMonoBinder-1.md) that binds [`itemsSource`](https://docs.unity3d.com/ScriptReference/UIElements-BaseVerticalCollectionView-itemsSource.html)
+of a [`ListView`](https://docs.unity3d.com/ScriptReference/UIElements-ListView.html) to a read-only collection.
 
  [ElementSliderValueMonoBinder](Aspid.MVVM.StarterKit.ElementSliderValueMonoBinder.md)
 
@@ -2947,37 +2947,37 @@ Writes the name of a locale.
  [LocalizeStringEventEntryBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryBinder.md)
 
 [`TargetBinder<T1, T2>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntryEnumGroupMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryEnumGroupMonoBinder.md)
 
 [`EnumGroupMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.EnumGroupMonoBinder-2.md) that sets
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name on each element.
 
  [LocalizeStringEventEntryEnumMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryEnumMonoBinder.md)
 
 [`EnumMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.EnumMonoBinder-2.md) that sets
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntryMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryMonoBinder.md)
 
 [`ComponentMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntrySwitcherBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntrySwitcherBinder.md)
 
 [`SwitcherBinder<T1, T2>`](Aspid.MVVM.StarterKit.SwitcherBinder-2.md) that switches
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntrySwitcherMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntrySwitcherMonoBinder.md)
 
 [`SwitcherMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.SwitcherMonoBinder-2.md) that switches
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventToSourceMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventToSourceMonoBinder.md)

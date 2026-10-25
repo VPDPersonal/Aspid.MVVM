@@ -10,7 +10,7 @@ namespace Aspid.MVVM.StarterKit
     /// A negative value is raised to zero.
     /// </remarks>
     [GenerateSerializableBinder]
-    [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "m_Parameters.widthMultiplier")]
+    [AddBinderContextMenu(typeof(LineRenderer), serializePropertyNames: "widthMultiplier")]
     [AddComponentMenu("Aspid/MVVM/Binders/LineRenderer/LineRenderer Binder – Width Multiplier")]
     public class LineRendererWidthMultiplierMonoBinder : ComponentFloatMonoBinder<LineRenderer>
     {

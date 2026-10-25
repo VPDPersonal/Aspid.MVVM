@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Tests
     /// with a comma decimal point, and the component-count refusals.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToVector2ConverterTests
     {
         // The collision the two halves have to agree about: a German device writes one and a half
@@ -21,7 +21,7 @@ namespace Aspid.MVVM.Tests
         // device culture the pair would come out "1,5,2,5", which no split recovers — both halves
         // step back to the invariant reading so that what ConvertBack writes, Convert reads.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_RoundTripsWhenTheCultureCollidesWithTheSeparator()
         {
             var converter = new StringToVector2Converter(",", default, CultureInfoMode.CurrentCulture);
@@ -35,7 +35,7 @@ namespace Aspid.MVVM.Tests
         // The other side of the same branch: with a separator the culture's decimal separator does
         // not collide with, the chosen culture is kept rather than always forced to invariant.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_NonCollidingSeparator_KeepsTheChosenCulture()
         {
             var converter = new StringToVector2Converter("; ", default, CultureInfoMode.CurrentCulture);

@@ -14,7 +14,7 @@ namespace Aspid.MVVM.Tests
     /// modes and the round trip under a comma-decimal culture.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToDoubleConverterTests
     {
         // NumberStyles.Float carries AllowExponent and the surrounding whitespace, and the family
@@ -111,7 +111,7 @@ namespace Aspid.MVVM.Tests
         // Both halves resolve the culture at call time from the same field, so the pair agrees on a
         // device that writes one and a half as "1,5".
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_RoundTripsUnderACommaDecimalCulture()
         {
             var converter = new StringToDoubleConverter(0d);

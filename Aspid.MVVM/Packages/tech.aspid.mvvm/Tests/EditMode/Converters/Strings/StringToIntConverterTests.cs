@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Tests
     /// failure and the authored clamp bounds.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToIntConverterTests
     {
         // Blank text is an unfilled field rather than a malformed number, so it takes the fallback

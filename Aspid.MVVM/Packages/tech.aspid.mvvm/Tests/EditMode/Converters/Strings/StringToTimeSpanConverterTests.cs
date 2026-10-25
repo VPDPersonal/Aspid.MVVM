@@ -14,7 +14,7 @@ namespace Aspid.MVVM.Tests
     /// accepts, the exact-format refusal and the round trip.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToTimeSpanConverterTests
     {
 
@@ -88,7 +88,7 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_WithNoFormat_RoundTripsUnderACommaDecimalCulture()
         {
             var converter = new StringToTimeSpanConverter();

@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Tests
     /// authored clamp bounds.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToLongConverterTests
     {
         [Test]

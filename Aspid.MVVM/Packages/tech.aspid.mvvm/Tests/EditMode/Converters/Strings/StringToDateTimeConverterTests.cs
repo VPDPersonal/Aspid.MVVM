@@ -15,7 +15,7 @@ namespace Aspid.MVVM.Tests
     /// fallback and the round trip.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToDateTimeConverterTests
     {
         [Test]

@@ -67,19 +67,19 @@ namespace Aspid.MVVM.Tests
         // The separator field ships empty, and empty is the one value that cannot mean "no
         // separator": it means "whatever the device is set to".
         [Test]
-        [SetCulture("")]
+        [UseCulture("")]
         public void Convert_EmptySeparator_FollowsTheDeviceCulture() =>
             Assert.AreEqual("1,234,567", new ThousandsSeparatorConverter().Convert(1234567L));
 
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_EmptySeparator_FollowsTheDeviceCulture_German() =>
             Assert.AreEqual("1.234.567", new ThousandsSeparatorConverter().Convert(1234567L));
 
         // An authored separator replaces the culture's separator but not its grouping, and it does so
         // whichever culture the device happens to be set to.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_AuthoredSeparator_SurvivesTheDeviceCulture() =>
             Assert.AreEqual("1_234_567", new ThousandsSeparatorConverter("_").Convert(1234567L));
 

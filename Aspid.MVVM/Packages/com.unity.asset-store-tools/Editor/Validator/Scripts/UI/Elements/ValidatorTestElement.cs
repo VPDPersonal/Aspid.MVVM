@@ -97,6 +97,8 @@ namespace AssetStoreTools.Validator.UI.Elements
                 doubleClickSelectsWord = false,
                 tripleClickSelectsLine = false
             };
+            // BUG: a tag elements can only contain 127 characters
+            testCaseDescription.Q<TextElement>().enableRichText = true;
             testCaseDescription.AddToClassList("validator-test-content-textfield");
 
 #if UNITY_2022_1_OR_NEWER
@@ -152,21 +154,21 @@ namespace AssetStoreTools.Validator.UI.Elements
             var resultMessage = new VisualElement { name = "ResultMessageElement" };
             resultMessage.AddToClassList("validator-test-content-result-messages-content");
 
-            var informationButton = new Button();
-            informationButton.AddToClassList("validator-test-content-result-messages-content-button");
-
-            if (clickAction != null)
-            {
-                informationButton.tooltip = clickAction.Tooltip;
-                informationButton.clicked += clickAction.Execute;
-                informationButton.SetEnabled(true);
-            }
-
             var informationDescription = new Label { name = "InfoDesc", text = resultText };
             informationDescription.AddToClassList("validator-test-content-result-messages-content-label");
 
-            informationButton.Add(informationDescription);
-            resultMessage.Add(informationButton);
+            VisualElement labelParent = resultMessage;
+            if (clickAction != null)
+            {
+                var informationButton = new Button { tooltip = clickAction.Tooltip };
+                informationButton.AddToClassList("validator-test-content-result-messages-content-button");
+                informationButton.clicked += clickAction.Execute;
+
+                resultMessage.Add(informationButton);
+                labelParent = informationButton;
+            }
+
+            labelParent.Add(informationDescription);
 
             for (int i = 0; i < message.MessageObjectCount; i++)
             {

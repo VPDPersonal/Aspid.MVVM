@@ -21,7 +21,7 @@ Every relocated script kept its `.meta` GUID, so prefabs, scenes and ScriptableO
 
 ## 1. Project and packages
 
-- **Unity `6000.0`** is the minimum; the Editor project is on `6000.4.0f1`.
+- **Unity `6000.0`** is the minimum; the Editor project is on `6000.6.5f1`.
 - Two git packages are required and not auto-resolved:
 
 ```json

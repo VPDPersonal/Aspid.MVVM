@@ -1,0 +1,162 @@
+name: PR checks
+
+# pull_request_target: runs the base branch's copy with a write token, so labels work on fork PRs too.
+# It never checks out the PR's code — everything below reads the PR through the API only.
+on:
+  pull_request_target:
+    # No ready_for_review: neither job depends on the draft state.
+    types: [opened, edited, reopened, synchronize, labeled, unlabeled]
+
+# Each job asks for its own permissions.
+permissions: {}
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Conventional Commits title with a known scope; sets the type, breaking-change and area labels.
+  title:
+    name: PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # The labels need pull-requests and issues.
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const TYPES = {
+              feat: 'type: feature', fix: 'type: fix', perf: 'type: performance', refactor: 'type: refactor',
+              docs: 'type: documentation', test: 'type: test', chore: 'type: chore', ci: 'type: ci', style: 'type: style',
+              build: 'type: build', revert: 'type: revert',
+            };
+            const SCOPES = [
+              // features
+              'viewmodels', 'bindable-members', 'binders', 'converters', 'commands', 'collections', 'views',
+              'virtualized-list', 'dynamic-viewmodel', 'di', 'localization',
+              // layers
+              'core', 'unity', 'starterkit', 'editor', 'generators', 'analyzers', 'unity-generators', 'samples',
+              'tests', 'package', 'submodule',
+              // repository
+              'site', 'docs', 'readme', 'changelog', 'migration', 'release', 'ci', 'github', 'skills', 'claude', 'deps',
+            ];
+            // Longest prefix wins; a file can add several areas. A submodule bump is the submodule's path itself.
+            const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
+            const AREAS = [
+              [PKG + 'Source/', 'area: runtime'],
+              [PKG + 'Unity/Runtime/', 'area: runtime'],
+              [PKG + 'StarterKit/Runtime/', 'area: runtime'],
+              [PKG + 'Unity/Editor/', 'area: editor'],
+              [PKG + 'StarterKit/Editor/', 'area: editor'],
+              [PKG + 'Tests/', 'area: tests'],
+              [PKG + 'Samples~/', 'area: samples'],
+              [PKG + 'Documentation/', 'area: docs'],
+              [PKG + 'Aspid.MVVM.Generators.dll', 'area: generator'],
+              [PKG + 'Unity/Aspid.MVVM.Unity.Generators.dll', 'area: generator'],
+              [PKG + 'Aspid.MVVM.Analyzers.dll', 'area: analyzer'],
+              ['Aspid.MVVM.Generators', 'area: generator'],
+              ['Aspid.MVVM.Unity.Generators', 'area: generator'],
+              ['Aspid.MVVM.Analyzers', 'area: analyzer'],
+              ['Docs/', 'area: website'],
+              ['README', 'area: docs'],
+              ['CHANGELOG', 'area: docs'],
+              ['MIGRATION', 'area: docs'],
+              ['.claude/', 'area: claude'],
+              ['CLAUDE.md', 'area: claude'],
+              ['.github/', 'area: ci'],
+              ['scripts/', 'area: ci'],
+              ['global.json', 'area: ci'],
+              ['Directory.Build.props', 'area: ci'],
+            ];
+
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const title = pr.title;
+            const errors = [];
+
+            const m = /^([a-z]+)(?:\(([a-z0-9-]+)\))?(!)?: (.+)$/.exec(title);
+            if (!m) errors.push('Title must be `type(scope): summary` (Conventional Commits).');
+            else {
+              const [, type, scope, , summary] = m;
+              if (!TYPES[type]) errors.push(`Unknown type \`${type}\`; use one of: ${Object.keys(TYPES).join(', ')}.`);
+              if (scope && !SCOPES.includes(scope)) errors.push(`Unknown scope \`${scope}\`; use one of: ${SCOPES.join(', ')} (or none).`);
+              if (/\.$/.test(summary)) errors.push('Summary has no trailing period.');
+            }
+            if (title.length > 72) errors.push(`Title is ${title.length} characters; keep it within 72.`);
+
+            // Labels are updated even when the title fails, so a later fix only has to touch the title.
+            const current = pr.labels.map(l => l.name);
+            const add = new Set();
+            const remove = new Set();
+            if (m && TYPES[m[1]]) {
+              add.add(TYPES[m[1]]);
+              current.filter(l => l.startsWith('type: ') && l !== TYPES[m[1]]).forEach(l => remove.add(l));
+            }
+            // The title alone decides breaking-change; an unparsable title leaves the label as it is.
+            if (m?.[3]) add.add('breaking-change');
+            else if (m && current.includes('breaking-change')) remove.add('breaking-change');
+
+            const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number });
+            for (const { filename } of files) {
+              for (const [prefix, label] of AREAS)
+                if (filename.startsWith(prefix)) add.add(label);
+              // A nested CLAUDE.md or AGENTS.md is agent configuration wherever it lives.
+              if (/\/(CLAUDE|AGENTS)\.md$/.test(filename)) add.add('area: claude');
+            }
+            // An area no changed file reaches any more (the PR moved on) loses its label.
+            for (const label of new Set(AREAS.map(([, area]) => area)))
+              if (current.includes(label) && !add.has(label)) remove.add(label);
+
+            const toAdd = [...add].filter(l => !current.includes(l));
+            if (toAdd.length) await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: toAdd });
+            for (const name of remove)
+              await github.rest.issues.removeLabel({ owner, repo, issue_number: pr.number, name }).catch(() => {});
+
+            if (errors.length) core.setFailed(errors.join('\n'));
+
+  # Shipped package code changed → the same entry in CHANGELOG.md and CHANGELOG.ru.md, or the `no-changelog` label.
+  # release.yml takes the release notes from the English file; the Russian one is its translation.
+  changelog:
+    name: CHANGELOG
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Reads the PR only.
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
+            const pr = context.payload.pull_request;
+            if (pr.labels.some(l => l.name === 'no-changelog')) return core.info('`no-changelog` label set.');
+
+            const { owner, repo } = context.repo;
+            const files = (await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number }))
+              .map(f => f.filename);
+            // The code a user installs: the assemblies, the samples (their tutorials aside), the Roslyn DLLs and
+            // package.json. Tests and the docs pages ship too, but change nothing a user sees.
+            const shipped = files.filter(f =>
+              ['Source/', 'Unity/', 'StarterKit/'].some(folder => f.startsWith(PKG + folder)) ||
+              (f.startsWith(PKG + 'Samples~/') && !/\/README(?:\.ru)?\.md(?:\.meta)?$/.test(f)) ||
+              (f.startsWith(PKG) && /^(?:[^/]+\.dll|package\.json)$/.test(f.slice(PKG.length))));
+            if (!shipped.length) return core.info('No shipped package code changed.');
+            const english = files.includes('CHANGELOG.md'), russian = files.includes('CHANGELOG.ru.md');
+            if (english && russian) return core.info('CHANGELOG updated.');
+
+            const list = `${shipped.slice(0, 3).join(', ')}${shipped.length > 3 ? ', …' : ''}`;
+            if (english)
+              core.setFailed(
+                `Package code changed (${list}) and CHANGELOG.md did, but CHANGELOG.ru.md did not. ` +
+                'Add the same entry to CHANGELOG.ru.md: it is the translation of CHANGELOG.md.');
+            else if (russian)
+              core.setFailed(
+                `Package code changed (${list}) and CHANGELOG.ru.md did, but the English CHANGELOG.md did not. ` +
+                'Add the same entry to CHANGELOG.md: release.yml takes the release notes from it.');
+            else
+              core.setFailed(
+                `Package code changed (${list}) but neither CHANGELOG.md nor CHANGELOG.ru.md did. ` +
+                'Add the same entry to both, or the `no-changelog` label if users see no change.');

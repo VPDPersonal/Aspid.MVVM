@@ -5,6 +5,11 @@ name: Release
 # Both create an immutable upm/<version> tag for pinning.
 #
 # Trigger: push a `v*` tag, or run manually via "Run workflow" with the version as input.
+#
+# Everything is checked before anything is published: first the checks of the version (preflight), then every check
+# and test of a pull request (ci.yml, Unity not skipped: the committed Roslyn DLLs, the .NET tests, the Unity tests on
+# every version); the release job publishes last.
+# If a job fails, use "Re-run failed jobs", not "Re-run all jobs": the finished jobs are kept.
 
 on:
   push:
@@ -30,15 +35,29 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  # The version checks run first, so a wrong version, tag or CHANGELOG fails before CI starts.
+  preflight:
+    name: Preflight
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      channel: ${{ steps.version.outputs.channel }}
+      target_branch: ${{ steps.version.outputs.target_branch }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+      notes: ${{ steps.changelog.outputs.notes }}
     steps:
       - name: Determine version and channel
         id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            VERSION="${{ inputs.version }}"
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            VERSION="$INPUT_VERSION"
           else
             VERSION="${GITHUB_REF_NAME}"
           fi
@@ -71,33 +90,17 @@ jobs:
           echo "Releasing $VERSION (channel=$CHANNEL, branch=$TARGET_BRANCH, tag=$TAG)"
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          # Submodules are initialized manually in the next step. The default
-          # checkout would try the SSH URLs from .gitmodules; we rewrite them
-          # to HTTPS first so the anonymous public clones work.
-
-      - name: Initialize submodules over HTTPS
-        # The three Roslyn submodules use git@github.com:... in .gitmodules.
-        # Workflow only has the default GITHUB_TOKEN, so we rewrite to HTTPS.
-        # If any of these submodules becomes private later, this step must be
-        # updated to use a PAT / Deploy Key with read access.
-        run: |
-          set -euo pipefail
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
-          git submodule update --init --recursive
-
-      - name: Configure git identity
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          filter: blob:none
 
       - name: Ensure release tag does not already exist
         if: github.event_name == 'workflow_dispatch'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
           set -euo pipefail
-          TAG="${{ steps.version.outputs.tag }}"
           if git rev-parse --verify --quiet "refs/tags/$TAG" >/dev/null; then
             echo "::error::Tag $TAG already exists locally"
             exit 1
@@ -108,18 +111,21 @@ jobs:
           fi
 
       - name: Ensure UPM tag does not already exist
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          UPM_TAG="upm/${{ steps.version.outputs.version }}"
+          UPM_TAG="upm/$VERSION"
           if git ls-remote --exit-code --tags origin "$UPM_TAG" >/dev/null 2>&1; then
             echo "::error::Tag $UPM_TAG already exists on origin"
             exit 1
           fi
 
       - name: Validate package.json version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          VERSION="${{ steps.version.outputs.version }}"
           PKG_VERSION=$(jq -r .version "$PACKAGE_PATH/package.json")
           if [[ "$PKG_VERSION" != "$VERSION" ]]; then
             echo "::error::package.json version ($PKG_VERSION) does not match release version ($VERSION)"
@@ -129,9 +135,10 @@ jobs:
 
       - name: Extract CHANGELOG section
         id: changelog
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          VERSION="${{ steps.version.outputs.version }}"
           if [[ ! -f "$CHANGELOG_PATH" ]]; then
             echo "::error::CHANGELOG file not found at $CHANGELOG_PATH"
             exit 1
@@ -154,63 +161,52 @@ jobs:
             echo "__CHANGELOG_EOF__"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+  # Every check and test of CI on the commit being released; here missing Unity secrets fail instead of skipping Unity.
+  ci:
+    name: CI
+    needs: preflight
+    uses: ./.github/workflows/ci.yml
+    with:
+      require-unity: true
+    secrets:
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+    # A called workflow gets no more than these: a job of ci.yml that asks for more (actions: read of unity-plan)
+    # makes the whole run a startup failure.
+    permissions:
+      actions: read
+      contents: read
+
+  release:
+    needs: [preflight, ci]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERSION: ${{ needs.preflight.outputs.version }}
+      TAG: ${{ needs.preflight.outputs.tag }}
+      CHANNEL: ${{ needs.preflight.outputs.channel }}
+      TARGET_BRANCH: ${{ needs.preflight.outputs.target_branch }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          dotnet-version: '9.0.x'
+          fetch-depth: 0
 
-      - name: Build Roslyn generators and analyzer
+      - name: Configure git identity
         run: |
-          set -euo pipefail
-          dotnet build -c Release Aspid.MVVM.Generators/Aspid.MVVM.Generators.sln
-          dotnet build -c Release Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.sln
-          dotnet build -c Release Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators.sln
-
-      - name: Run generator and analyzer tests
-        run: |
-          set -euo pipefail
-          dotnet test -c Release Aspid.MVVM.Generators/Aspid.MVVM.Generators.sln --no-build
-          dotnet test -c Release Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.sln --no-build
-
-      - name: Verify committed generator DLLs match the freshly-built ones
-        # Directory.Build.targets / CopyToUnity copies the built DLLs over the
-        # committed ones. If git sees no diff afterwards, the source tree and
-        # the shipped binaries are in sync; if it sees a diff, somebody forgot
-        # to commit the latest DLL refresh and we abort before publishing.
-        run: |
-          set -euo pipefail
-          DLLS=(
-            "$PACKAGE_PATH/Aspid.MVVM.Generators.dll"
-            "$PACKAGE_PATH/Aspid.MVVM.Analyzers.dll"
-            "$PACKAGE_PATH/Unity/Aspid.MVVM.Unity.Generators.dll"
-          )
-          for dll in "${DLLS[@]}"; do
-            if [[ ! -s "$dll" ]]; then
-              echo "::error::Generator DLL is missing or empty: $dll"
-              exit 1
-            fi
-            echo "  ok: $dll ($(wc -c < "$dll") bytes)"
-          done
-          if ! git diff --quiet -- "${DLLS[@]}"; then
-            echo "::error::Committed generator DLLs differ from the freshly-built output."
-            echo "::error::Rebuild the generator solutions locally and commit the refreshed DLLs before tagging."
-            git diff --stat -- "${DLLS[@]}"
-            exit 1
-          fi
-          echo "All generator DLLs match the build output."
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create and push release tag
         if: github.event_name == 'workflow_dispatch'
         run: |
           set -euo pipefail
-          TAG="${{ steps.version.outputs.tag }}"
           git tag -a "$TAG" -m "Release $TAG"
           git push origin "$TAG"
 
       - name: Checkout release tag
         run: |
           set -euo pipefail
-          TAG="${{ steps.version.outputs.tag }}"
           git fetch origin "refs/tags/$TAG:refs/tags/$TAG" --no-tags 2>/dev/null || true
           git checkout "$TAG"
 
@@ -233,8 +229,6 @@ jobs:
       - name: Publish UPM subtree
         run: |
           set -euo pipefail
-          VERSION="${{ steps.version.outputs.version }}"
-          TARGET_BRANCH="${{ steps.version.outputs.target_branch }}"
           UPM_TAG="upm/$VERSION"
 
           SPLIT_SHA=$(git subtree split --prefix="$PACKAGE_PATH" HEAD)
@@ -244,12 +238,12 @@ jobs:
           git tag "$UPM_TAG" "$SPLIT_SHA"
           git push origin "$UPM_TAG"
 
-          echo "Published $UPM_TAG to branch '$TARGET_BRANCH' (channel: ${{ steps.version.outputs.channel }})"
+          echo "Published $UPM_TAG to branch '$TARGET_BRANCH' (channel: $CHANNEL)"
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          name: ${{ steps.version.outputs.tag }}
-          body: ${{ steps.changelog.outputs.notes }}
-          prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
+          tag_name: ${{ needs.preflight.outputs.tag }}
+          name: ${{ needs.preflight.outputs.tag }}
+          body: ${{ needs.preflight.outputs.notes }}
+          prerelease: ${{ needs.preflight.outputs.prerelease == 'true' }}

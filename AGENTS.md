@@ -172,13 +172,16 @@ Submodules:
 
 ## Documentation
 
-- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill `docs-site`
+Project skills live in `.claude/skills/`; `.agents/skills/` links there for other agents. On Windows the link needs
+a clone with `-c core.symlinks=true` (Developer Mode on); without it, read `.claude/skills/` directly.
+
+- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill [docs-site](.claude/skills/docs-site/SKILL.md)
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
 - **XML doc conventions**: global skill `asp-xmldoc`
-- **Code style**: skill `aspid-code-style` — member ordering, formatting, nullable, comments
-- **StarterKit layout**: skill `starterkit-layout` — folder taxonomy and naming inside `StarterKit/`
-- **Writing a converter**: skill `starterkit-converter-authoring`
-- **Writing a binder**: skill `starterkit-binder-authoring`
+- **Code style**: skill [aspid-code-style](.claude/skills/aspid-code-style/SKILL.md) — member ordering, formatting, nullable, comments
+- **StarterKit layout**: skill [starterkit-layout](.claude/skills/starterkit-layout/SKILL.md) — folder taxonomy and naming inside `StarterKit/`
+- **Writing a converter**: skill [starterkit-converter-authoring](.claude/skills/starterkit-converter-authoring/SKILL.md)
+- **Writing a binder**: skill [starterkit-binder-authoring](.claude/skills/starterkit-binder-authoring/SKILL.md)
 - Key entry points for new contributors:
   - `README.md` — project overview
   - `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/01. Counter/` — minimal example

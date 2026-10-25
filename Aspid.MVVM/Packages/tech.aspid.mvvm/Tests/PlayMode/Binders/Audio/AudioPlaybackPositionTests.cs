@@ -20,6 +20,10 @@ namespace Aspid.MVVM.Tests
     {
         private const int SampleRate = 44100;
 
+        // The source is playing, so the playhead can advance between an assignment and the read that follows it: by one
+        // DSP buffer (1024 samples, 21 ms at 48 kHz) on 6000.0 to 6000.2 in a headless container, by nothing elsewhere.
+        private const float PlayheadDrift = 0.05f;
+
         /// <summary>
         /// Pins the premise: this is Unity's behaviour, not the binder's.
         /// </summary>
@@ -37,14 +41,14 @@ namespace Aspid.MVVM.Tests
             Assert.IsTrue(audioSource.isPlaying, "The source is not playing — time stores nothing while it is not");
 
             audioSource.time = 0.5f;
-            Assert.AreEqual(0.5f, audioSource.time, 0.01f, "A valid position was not kept");
+            Assert.That(audioSource.time, Is.InRange(0.5f, 0.5f + PlayheadDrift), "A valid position was not kept");
 
             LogAssert.Expect(LogType.Error, new Regex("invalid seek position"));
             audioSource.time = 100f;
 
             Assert.That(
                 audioSource.time,
-                Is.EqualTo(0.5f).Within(0.01f).Or.EqualTo(audioSource.clip.length).Within(0.01f),
+                Is.InRange(0.5f, 0.5f + PlayheadDrift).Or.EqualTo(audioSource.clip.length).Within(0.01f),
                 "Unity changed behaviour: a refused seek moved the position somewhere other than where it was or the end of the clip");
         }
 
@@ -72,7 +76,7 @@ namespace Aspid.MVVM.Tests
 
             ((IBinder<float>)binder).SetValue(-10f);
 
-            Assert.AreEqual(0f, audioSource.time, "A negative position was not clamped");
+            Assert.That(audioSource.time, Is.InRange(0f, PlayheadDrift), "A negative position was not clamped");
         }
 
         private AudioSource NewPlayingSource()

@@ -193,12 +193,12 @@ to the binder once and then releases it; rejects every [`BindMode`](Aspid.MVVM.B
 
  [OneTimeEnumBindableMember\<T\>](Aspid.MVVM.OneTimeEnumBindableMember-1.md)
 
-Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
+Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
 exposed as a per-type singleton via [`OneTimeEnumBindableMember<T>.Get`](Aspid.MVVM.OneTimeEnumBindableMember-1.md#Aspid_MVVM_OneTimeEnumBindableMember_1_Get__0_) for one-time enum bindings.
 
  [OneTimeStructBindableMember\<T\>](Aspid.MVVM.OneTimeStructBindableMember-1.md)
 
-Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype),
+Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype),
 exposed as a per-type singleton via [`OneTimeStructBindableMember<T>.Get`](Aspid.MVVM.OneTimeStructBindableMember-1.md#Aspid_MVVM_OneTimeStructBindableMember_1_Get__0_).
 
  [OneTimeStructBindableMember\<T, TBoxed\>](Aspid.MVVM.OneTimeStructBindableMember-2.md)
@@ -223,19 +223,19 @@ and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) binders.
 
  [OneWayEnumBindableMember\<T\>](Aspid.MVVM.OneWayEnumBindableMember-1.md)
 
-Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
-allowing enum-typed binders ([`IBinder<T>`](Aspid.MVVM.IBinder-1.md)) to receive the boxed enum value alongside
+Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
+allowing enum-typed binders ([`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)) to receive the boxed enum value alongside
 the strongly-typed <code class="typeparamref">T</code>.
 
  [OneWayStructBindableMember\<T\>](Aspid.MVVM.OneWayStructBindableMember-1.md)
 
-Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
+Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
 for any value-type payload that does not need a more specific boxing target.
 
  [OneWayStructBindableMember\<T, TBoxed\>](Aspid.MVVM.OneWayStructBindableMember-2.md)
 
 Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued one-way bindings that dispatches changes to
-both [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) and [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) subscribers — the latter receive the
+both [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) and [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code> subscribers — the latter receive the
 value pre-boxed as <code class="typeparamref">TBoxed</code>. Additionally exposes a get/set [`OneWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Value)
 and a [`OneWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Changed) event. Accepts only [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) and
 [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) binders.
@@ -255,12 +255,12 @@ captured setter [`Action<T>`](https://learn.microsoft.com/dotnet/api/system.acti
 
  [OneWayToSourceEnumBindableMember\<T\>](Aspid.MVVM.OneWayToSourceEnumBindableMember-1.md)
 
-Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)
+Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)
 for one-way-to-source enum bindings, forwarding View-side enum changes back to the ViewModel.
 
  [OneWayToSourceStructBindableMember\<T\>](Aspid.MVVM.OneWayToSourceStructBindableMember-1.md)
 
-Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
+Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
 for any value-type payload that does not need a more specific boxing target.
 
  [OneWayToSourceStructBindableMember\<T, TBoxed\>](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md)
@@ -268,7 +268,7 @@ for any value-type payload that does not need a more specific boxing target.
 Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued one-way-to-source bindings that forwards
 View-side value changes back to the ViewModel through a captured setter [`Action<T>`](https://learn.microsoft.com/dotnet/api/system.action-1);
 additionally exposes the latest [`OneWayToSourceStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Value) and a [`OneWayToSourceStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Changed) event.
-Accepts [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), and
+Accepts [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code>, and
 [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md) in [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) or [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) mode.
 
  [RebindableBinderExtensions](Aspid.MVVM.RebindableBinderExtensions.md)
@@ -373,20 +373,20 @@ through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IAnyReverseBin
 
  [TwoWayEnumBindableMember\<T\>](Aspid.MVVM.TwoWayEnumBindableMember-1.md)
 
-Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)
+Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)
 for two-way enum bindings, supporting both strongly-typed and boxed-enum binders.
 
  [TwoWayStructBindableMember\<T\>](Aspid.MVVM.TwoWayStructBindableMember-1.md)
 
-Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
+Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
 for any value-type payload that does not need a more specific boxing target.
 
  [TwoWayStructBindableMember\<T, TBoxed\>](Aspid.MVVM.TwoWayStructBindableMember-2.md)
 
 Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued two-way bindings that supports every
 [`BindMode`](Aspid.MVVM.BindMode.md) except [`BindMode.None`](Aspid.MVVM.BindMode.md), dispatching forward updates through
-[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) and reverse updates
-through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
+[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code> / [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) and reverse updates
+through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code> / [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 Additionally exposes a get/set [`TwoWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Value) and a [`TwoWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Changed) event.
 
  [UnbindSafelyNullReferenceException](Aspid.MVVM.UnbindSafelyNullReferenceException.md)

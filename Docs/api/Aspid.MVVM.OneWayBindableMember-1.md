@@ -57,12 +57,6 @@ public OneWayBindableMember(T? value)
 
 The initial value of the bindable member.
 
-#### Exceptions
-
- [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
-
-Thrown when <code class="paramref">mode</code> is neither [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) nor [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
-
 ## Properties
 
 ### Mode {#Aspid_MVVM_OneWayBindableMember_1_Mode}

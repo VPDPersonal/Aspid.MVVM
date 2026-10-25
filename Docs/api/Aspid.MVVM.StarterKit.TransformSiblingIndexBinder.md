@@ -73,6 +73,8 @@ For deserialization only.
 
 ### TransformSiblingIndexBinder\(Transform, BindMode\) {#Aspid_MVVM_StarterKit_TransformSiblingIndexBinder__ctor_UnityEngine_Transform_Aspid_MVVM_BindMode_}
 
+Initializes a new instance of the [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) class with the specified target and binding mode.
+
 ```csharp
 public TransformSiblingIndexBinder(Transform target, BindMode mode = BindMode.OneWay)
 ```
@@ -81,7 +83,17 @@ public TransformSiblingIndexBinder(Transform target, BindMode mode = BindMode.On
 
 `target` Transform
 
+The target object this binder will operate on.
+
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
+
+The binding mode to use for the binder.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+Thrown if <code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Methods
 

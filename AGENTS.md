@@ -120,7 +120,7 @@ scripts/set-version.sh 1.1.0-rc.1
 
 ### Releases
 
-Only a pushed `v<version>` tag on a commit of `main` starts `.github/workflows/release.yml`: preflight (SemVer, the commit is in `main`, `upm/<version>` is new, package.json, the CHANGELOG section) → the whole `ci.yml` with Unity required → one atomic push of the `upm` (stable) or `upm-preview` (prerelease) subtree branch and its `upm/<version>` tag, with CHANGELOG/MIGRATION (+ `.ru`) bundled into the package → the GitHub release (`gh`). There is no manual run: the `Release tags` ruleset lets only admins push `v*` tags. Skill `asp-mvvm-release` walks the release (bump PR, merge, tag, watching the run).
+Only a pushed `v<version>` tag on a commit of `main` starts `.github/workflows/release.yml`: preflight (SemVer, the commit is in `main`, `upm/<version>` is new, package.json, the CHANGELOG section) → the whole `ci.yml` with Unity required → one atomic push of the `upm` (stable) or `upm-preview` (prerelease) subtree branch and its `upm/<version>` tag, with CHANGELOG/MIGRATION (+ `.ru`) bundled into the package → the GitHub release (`gh`). There is no manual run: the `Release tags` ruleset lets only admins push `v*` tags. Skill [asp-mvvm-release](.claude/skills/asp-mvvm-release/SKILL.md) walks the release (bump PR, merge, tag, watching the run).
 
 ### Unity Editor automation (Unity CLI)
 
@@ -179,14 +179,17 @@ Submodules:
 
 ## Documentation
 
-- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill `docs-site`
+Project skills live in `.claude/skills/`; `.agents/skills/` links there for other agents. On Windows the link needs
+a clone with `-c core.symlinks=true` (Developer Mode on); without it, read `.claude/skills/` directly.
+
+- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill [docs-site](.claude/skills/docs-site/SKILL.md)
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
 - **XML doc conventions**: global skill `asp-xmldoc`
-- **Code style**: skill `aspid-code-style` — member ordering, formatting, nullable, comments
-- **StarterKit layout**: skill `starterkit-layout` — folder taxonomy and naming inside `StarterKit/`
-- **Writing a converter**: skill `starterkit-converter-authoring`
-- **Writing a binder**: skill `starterkit-binder-authoring`
-- **Releasing a version**: skill `asp-mvvm-release` (`/asp-mvvm-release <version>`)
+- **Code style**: skill [aspid-code-style](.claude/skills/aspid-code-style/SKILL.md) — member ordering, formatting, nullable, comments
+- **StarterKit layout**: skill [starterkit-layout](.claude/skills/starterkit-layout/SKILL.md) — folder taxonomy and naming inside `StarterKit/`
+- **Writing a converter**: skill [starterkit-converter-authoring](.claude/skills/starterkit-converter-authoring/SKILL.md)
+- **Writing a binder**: skill [starterkit-binder-authoring](.claude/skills/starterkit-binder-authoring/SKILL.md)
+- **Releasing a version**: skill [asp-mvvm-release](.claude/skills/asp-mvvm-release/SKILL.md) (`/asp-mvvm-release <version>`)
 - Key entry points for new contributors:
   - `README.md` — project overview
   - `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/01. Counter/` — minimal example

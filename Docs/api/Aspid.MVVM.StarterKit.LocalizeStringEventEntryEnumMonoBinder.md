@@ -12,7 +12,7 @@ Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)
 Assembly: Aspid.MVVM.StarterKit.dll  
 
 [`EnumMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.EnumMonoBinder-2.md) that sets
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
 ```csharp

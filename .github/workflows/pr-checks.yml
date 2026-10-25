@@ -65,6 +65,8 @@ jobs:
               ['CHANGELOG', 'area: docs'],
               ['MIGRATION', 'area: docs'],
               ['.claude/', 'area: claude'],
+              ['.agents/', 'area: claude'],
+              ['AGENTS.md', 'area: claude'],
               ['CLAUDE.md', 'area: claude'],
               ['.github/', 'area: ci'],
               ['scripts/', 'area: ci'],

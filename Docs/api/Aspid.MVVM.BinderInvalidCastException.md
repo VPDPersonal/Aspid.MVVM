@@ -70,7 +70,7 @@ Always thrown.
 ### Struct\<T, TBoxed\>\(IBinder\) {#Aspid_MVVM_BinderInvalidCastException_Struct__2_Aspid_MVVM_IBinder_}
 
 Throws a [`BinderInvalidCastException`](Aspid.MVVM.BinderInvalidCastException.md) when a struct binder does not implement
-[`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), or [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
+[`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code>, or [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
 
 ```csharp
 public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)

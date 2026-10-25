@@ -118,3 +118,23 @@ The number to round.
 
 The rounded number. An undeclared mode reports an error and returns the value unchanged.
 
+### ApplyToInteger\(double\) {#Aspid_MVVM_StarterKit_RoundNumberConverter_ApplyToInteger_System_Double_}
+
+Rounds the number to a whole one, ignoring the decimal places.
+
+```csharp
+protected override double ApplyToInteger(double value)
+```
+
+#### Parameters
+
+`value` [double](https://learn.microsoft.com/dotnet/api/system.double)
+
+The number to round.
+
+#### Returns
+
+ [double](https://learn.microsoft.com/dotnet/api/system.double)
+
+The rounded number. An undeclared mode reports an error and returns the value unchanged.
+

@@ -24,3 +24,22 @@ No CI checks these rules yet: keep to them by hand.
   draft; do not pass them.
 - A change in `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/` or `Aspid.MVVM.Unity.Generators/` gets its own PR in
   that submodule repo. The PR here bumps the submodule and the committed DLL.
+
+## Review loop
+
+The bot review rules with the verdict format are in `.github/claude-review.md`. The `review` job of
+`.github/workflows/claude.yml` runs them when a PR opens ready or leaves draft; the re-review comment runs them through
+its `mention` job.
+
+Logic paths:
+
+- package: `Aspid.MVVM/Packages/tech.aspid.mvvm/` except `Documentation/` and `*.md`, including the committed
+  generator and analyzer DLLs;
+- .NET: the submodules `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/`, `Aspid.MVVM.Unity.Generators/`;
+- dev project: `Aspid.MVVM/Packages/manifest.json`, `Aspid.MVVM/Packages/packages-lock.json`, `Aspid.MVVM/Assets/`,
+  `Aspid.MVVM/ProjectSettings/`;
+- site: `Docs/` except `api/` and `static/`;
+- CI: `.github/workflows/`, `.github/claude-review.md`.
+
+Other paths are text: `Documentation/`, sample `README.md` and `README.ru.md`, `Docs/api/`, `Docs/static/`,
+`.claude/skills/`, root `*.md`. A fix there needs no re-review.

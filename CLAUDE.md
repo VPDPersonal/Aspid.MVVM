@@ -113,7 +113,14 @@ dotnet test Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests
 
 # Run the tests of the CI scripts
 node --test scripts/*.test.mjs
+
+# Set the release version: package.json, README install URLs, the dated CHANGELOG sections and links
+scripts/set-version.sh 1.1.0-rc.1
 ```
+
+### Releases
+
+Only a pushed `v<version>` tag on a commit of `main` starts `.github/workflows/release.yml`: preflight (SemVer, the commit is in `main`, `upm/<version>` is new, package.json, the CHANGELOG section) → the whole `ci.yml` with Unity required → one atomic push of the `upm` (stable) or `upm-preview` (prerelease) subtree branch and its `upm/<version>` tag, with CHANGELOG/MIGRATION (+ `.ru`) bundled into the package → the GitHub release (`gh`). There is no manual run: the `Release tags` ruleset lets only admins push `v*` tags. Skill `asp-mvvm-release` walks the release (bump PR, merge, tag, watching the run).
 
 ### Unity Editor automation (Unity CLI)
 
@@ -179,6 +186,7 @@ Submodules:
 - **StarterKit layout**: skill `starterkit-layout` — folder taxonomy and naming inside `StarterKit/`
 - **Writing a converter**: skill `starterkit-converter-authoring`
 - **Writing a binder**: skill `starterkit-binder-authoring`
+- **Releasing a version**: skill `asp-mvvm-release` (`/asp-mvvm-release <version>`)
 - Key entry points for new contributors:
   - `README.md` — project overview
   - `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/01. Counter/` — minimal example

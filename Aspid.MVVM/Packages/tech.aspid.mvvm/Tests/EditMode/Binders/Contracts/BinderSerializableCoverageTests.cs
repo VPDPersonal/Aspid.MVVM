@@ -21,8 +21,10 @@ namespace Aspid.MVVM.Tests
         [Test]
         public void ABinderInASerializableFamily_IsAlsoSerializable()
         {
+            // A floor well below the real count (275 when it was set), not the count itself: it only has to
+            // catch a sweep that stopped finding binders, and adding or merging a binder must not trip it.
             var candidates = Candidates().ToArray();
-            Assert.Greater(candidates.Length, 300, "The sweep found no binders — the check would pass vacuously");
+            Assert.Greater(candidates.Length, 200, "The sweep found no binders, so the check would pass vacuously");
 
             var inconsistent = candidates
                 // By the generic definition, not the constructed type: SwitcherBinder<TMP_Text, TMP_FontAsset> and

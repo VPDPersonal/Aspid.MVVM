@@ -38,7 +38,9 @@ namespace Aspid.MVVM.Tests
                 Inspect(source, root, complaints, ref guards);
             }
 
-            Assert.Greater(guards, 100, "The sweep found no mode guards — the check would pass vacuously");
+            // A floor well below the real count (94 when it was set), not the count itself. The serializable twins
+            // are generated, so their guards are not in the package sources and do not count here.
+            Assert.Greater(guards, 50, "The sweep found no mode guards, so the check would pass vacuously");
 
             if (complaints.Count > 0)
                 Assert.Fail(Report(complaints));

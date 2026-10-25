@@ -213,6 +213,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `GenericToString<TFrom>.ToStringValue` — override `Format(T value, string format)` on `ValueToStringConverter<T>`.
 - The pre-Unity-6 compatibility gate: `using Converter = …` aliases, `ToConvertSpecific()` branches, `UNITY_6000_0_OR_NEWER` branches, `PhysicMaterial` fallbacks.
 - The vendored `com.unity.asset-store-tools` in the Editor project — it is not part of the package.
+- TMP Examples & Extras in the Editor project; TMP Essential Resources are back in the default `Assets/TextMesh Pro`.
 
 ### Fixed
 

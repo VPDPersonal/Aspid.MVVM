@@ -213,6 +213,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `GenericToString<TFrom>.ToStringValue` — переопределяйте `Format(T value, string format)` у `ValueToStringConverter<T>`.
 - Слой совместимости с Unity до 6: алиасы `using Converter = …`, ветки `ToConvertSpecific()`, ветки `UNITY_6000_0_OR_NEWER`, фолбэки `PhysicMaterial`.
 - `com.unity.asset-store-tools`, вложенный в проект редактора, — он не входит в пакет.
+- TMP Examples & Extras в проекте редактора; TMP Essential Resources снова лежат в стандартной `Assets/TextMesh Pro`.
 
 ### Исправлено
 

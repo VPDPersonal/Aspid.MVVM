@@ -71,7 +71,7 @@ namespace Aspid.MVVM
         #region Build Methods
         private void Build()
         {
-            this.AddStyleSheetsFromResource(AspidStyles.DefaultStyleSheet)
+            this.AddStyleSheetFromResources(AspidStyles.DefaultStyleSheet)
                 .AddClass(AspidStyles.InspectorStyleClass);
 
             Add(BuildHeader());
@@ -118,7 +118,7 @@ namespace Aspid.MVVM
         #endregion
 
         protected virtual string GetScriptName() =>
-            Editor.TargetAsView.GetScriptName();
+            Editor.TargetAsView.GetDisplayName();
 
         protected virtual string GetScriptSubtext() =>
             string.Empty;

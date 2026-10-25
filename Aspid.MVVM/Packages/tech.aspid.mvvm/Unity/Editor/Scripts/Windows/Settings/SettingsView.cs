@@ -54,7 +54,6 @@ namespace Aspid.MVVM
                 .AddChild(_profilerSwitch)
                 .AddChild(_binderLogSwitch)
                 .AddChild(_editorChecksSwitch)
-                .AddChild(AspidSettingsUI.CreateRowNote("Applying rewrites the scripting defines and recompiles the project."))
                 .AddChild(_actions));
 
             AspidSettingsUI.AddSection(content, "Welcome", WelcomeSettingsUI.BuildControls);
@@ -84,12 +83,8 @@ namespace Aspid.MVVM
                     .SetLineTheme(ThemeStyle.Type.Dark))
                 .AddClass(AspidSettingsUI.HeaderTitleClass);
 
-            var description = new Label("Every Aspid.MVVM setting in one place. The stripe on each row shows where the value is stored.")
-                .AddClass(AspidSettingsUI.HeaderDescriptionClass);
-
             return new VisualElement().AddClass(AspidSettingsUI.HeaderClass)
                 .AddChild(heading)
-                .AddChild(description)
                 .AddChild(AspidSettingsUI.BuildScopeLegend());
         }
 

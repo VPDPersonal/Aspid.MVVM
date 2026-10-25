@@ -35,12 +35,4 @@ namespace Aspid.MVVM.Tests
                 "The item inserted at the front did not become first in the hierarchy");
         }
     }
-
-    internal sealed class TestObservableListBinder : ObservableListViewModelMonoBinder<StubView>
-    {
-        public void UseFactory(StubViewFactory factory) =>
-            typeof(ObservableListViewModelMonoBinder<StubView>)
-                .GetField("_viewFactory", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
-                .SetValue(this, factory);
-    }
 }

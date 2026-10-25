@@ -138,10 +138,10 @@
 
 - Пакет стал встроенным UPM-пакетом в `Packages/tech.aspid.mvvm`; Unity-проект перенесён в `Aspid.MVVM/`.
 - `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` — git-сабмодули.
-- `Aspid.Collections` (`tech.aspid.collections`) и `Aspid.FastTools` (`tech.aspid.fasttools`, тег `upm-preview/1.0.0-rc.8`) — UPM git-зависимости.
+- `Aspid.Collections` (`tech.aspid.collections`) и `Aspid.FastTools` (`tech.aspid.fasttools`, тег `upm-preview/1.0.0-rc.9`) — UPM git-зависимости.
 - Release workflow публикует поддеревья `upm` (stable) и `upm-preview` с неизменяемыми тегами `upm/<version>`, проверяет дрейф DLL генераторов и берёт release notes из этого файла.
 - Workflow Claude PR Assistant и Code Review; автоматизация редактора через Unity CLI с сервером `.mcp.json`; корневой `CLAUDE.md`.
-- Целевой редактор `6000.4.0f1`.
+- Целевой редактор `6000.6.5f1`.
 
 ### Изменено
 
@@ -212,6 +212,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `IBindableValue<T>`, `IReadOnlyBindableValue<T>` — используйте `Value` у value-биндеров.
 - `GenericToString<TFrom>.ToStringValue` — переопределяйте `Format(T value, string format)` у `ValueToStringConverter<T>`.
 - Слой совместимости с Unity до 6: алиасы `using Converter = …`, ветки `ToConvertSpecific()`, ветки `UNITY_6000_0_OR_NEWER`, фолбэки `PhysicMaterial`.
+- `com.unity.asset-store-tools`, вложенный в проект редактора, — он не входит в пакет.
 
 ### Исправлено
 

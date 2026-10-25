@@ -35,7 +35,7 @@ namespace Aspid.MVVM
                 EditorPrefs.SetBool(playerPrefKey + "Bind", !isSelected);
                 
                 UpdateBindButton(bindFieldsContainer);
-            }).SetText("Bind");
+            }).SetTextSelf("Bind");
             
             _otherButton = new Button(clickEvent: () =>
             {
@@ -43,7 +43,7 @@ namespace Aspid.MVVM
                 EditorPrefs.SetBool(playerPrefKey + "Other", !isSelected);
                 
                 UpdateOtherButton(otherFieldsContainer);
-            }).SetText("Other");
+            }).SetTextSelf("Other");
 
             _commandButton = new Button(clickEvent: () =>
             {
@@ -51,7 +51,7 @@ namespace Aspid.MVVM
                 EditorPrefs.SetBool(playerPrefKey + "Command", !isSelected);
               
                 UpdateCommandButton(commandFieldsContainer);
-            }).SetText("Commands");
+            }).SetTextSelf("Commands");
             
             UpdateBindButton(bindFieldsContainer);
             UpdateOtherButton(otherFieldsContainer);

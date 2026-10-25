@@ -24,6 +24,9 @@
 /[Aa]ssets/Samples/
 /[Aa]ssets/Samples.meta
 
+# Auto-generated Project Auditor settings. Default values only, dev-project-local.
+/[Pp]roject[Ss]ettings/ProjectAuditorSettings.asset
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 

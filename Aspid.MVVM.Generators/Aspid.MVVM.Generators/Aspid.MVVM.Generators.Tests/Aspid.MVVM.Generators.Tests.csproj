@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+
+        <RootNamespace>MVVMGenerators.Tests</RootNamespace>
+
+        <LangVersion>13</LangVersion>
+
+        <!-- Тестовый хост net9.0 запускается на машине, где установлен только рантайм 10:
+             без roll-forward `dotnet test` падает ещё до первого теста. -->
+        <RollForward>LatestMajor</RollForward>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.2"/>
+        <PackageReference Include="xunit" Version="2.4.2"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Aspid.MVVM.Generators\Aspid.MVVM.Generators.csproj" />
+    </ItemGroup>
+
+
+</Project>

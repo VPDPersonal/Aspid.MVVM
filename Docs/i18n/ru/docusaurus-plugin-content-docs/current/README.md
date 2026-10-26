@@ -136,7 +136,7 @@ AMVVM005  The CanExecute method/property was not found
 - [Уроки](../../docusaurus-plugin-content-docs-tutorials/current/01.%20Counter/README.md) — шесть примеров, по одной идее на каждый, от счётчика до своего биндера.
 - [Справочник API](https://vpdpersonal.github.io/Aspid.MVVM/api/Aspid.MVVM) — типы, методы и свойства пакета.
 - [Изменения](https://vpdpersonal.github.io/Aspid.MVVM/ru/changelog) — изменения и исправления по версиям.
-- [Генераторы кода](https://github.com/VPDPersonal/Aspid.MVVM.Generators) — генераторы и анализаторы Roslyn, на которых работают атрибуты.
+- [Генераторы кода](https://github.com/VPDPersonal/Aspid.MVVM/tree/main/Aspid.MVVM.Generators) — генераторы и анализаторы Roslyn, на которых работают атрибуты.
 
 ## Помощь и поддержка
 

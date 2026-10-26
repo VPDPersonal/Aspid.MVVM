@@ -59,13 +59,8 @@ Most diagnostics come with an automatic fix:
 
 ## Installation
 
-The analyzers ship with the Aspid.MVVM package. If you cloned from source:
-
-```bash
-git submodule update --init --recursive
-```
-
-Make sure the `Aspid.MVVM.Analyzers` submodule is initialized.
+The analyzers ship with the Aspid.MVVM package as `Aspid.MVVM.Analyzers.dll`; there is nothing else to install. Their
+source is in the `Aspid.MVVM.Analyzers/` folder of the repository.
 
 ---
 

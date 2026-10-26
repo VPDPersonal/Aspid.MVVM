@@ -40,11 +40,7 @@
 
 ```bash
 git clone https://github.com/VPDPersonal/Aspid.MVVM.git
-cd Aspid.MVVM
-git submodule update --init --recursive
 ```
-
-> **Важно:** Проект использует 5 git-подмодулей. Без `git submodule update --init --recursive` код не скомпилируется.
 
 ***
 

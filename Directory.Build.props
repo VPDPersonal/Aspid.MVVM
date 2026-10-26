@@ -3,9 +3,9 @@
     <!--
         The Roslyn DLLs that scripts/build-roslyn-dlls.sh copies into the package are committed, and the Roslyn DLLs job
         of ci.yml rebuilds them and diffs them, so identical sources must yield an identical binary on any machine.
-        The submodules have no Directory.Build.props of their own, so MSBuild finds this one when they are built inside
-        this repository. Three things otherwise leak the build environment into the PE: the SDK's source control queries
-        stamp the submodule commit into the informational version (a merge commit with the same tree as its branch then
+        The three Roslyn solutions have no Directory.Build.props of their own, so MSBuild finds this one. Three things
+        otherwise leak the build environment into the PE: the SDK's source control queries stamp the commit into the
+        informational version (a merge commit with the same tree as its branch then
         gives other bytes), the debug directory carries a PDB id derived from the absolute checkout path, and so do the
         source paths without ContinuousIntegrationBuild.
     -->

@@ -28,13 +28,13 @@ Projects/Aspid.MVVM/
 │       │   ├── Unity/                 # Unity integration layer
 │       │   └── Samples~/              # Path 01–06 (Counter, Greeter, BindModes, Stats, TodoList, CustomBinder) + features (VirtualizedList, DynamicViewModel, DiIntegration, ExampleScripts); scenes and code only, the tutorials live in Docs/tutorials/
 │       └── tech.aspid.fasttools/      # Aspid.FastTools (embedded local UPM package)
-├── Aspid.MVVM.Generators/             # Roslyn source generator (submodule)
+├── Aspid.MVVM.Generators/             # Roslyn source generator
 │   ├── Aspid.MVVM.Generators/         # Generator implementation
 │   └── Aspid.MVVM.Generators.Tests/   # Generator unit tests
-├── Aspid.MVVM.Analyzers/              # Roslyn code analyzer (submodule)
+├── Aspid.MVVM.Analyzers/              # Roslyn code analyzer
 │   ├── Aspid.MVVM.Analyzers/          # Analyzer implementation
 │   └── Aspid.MVVM.Analyzers.Tests/    # Analyzer unit tests
-├── Aspid.MVVM.Unity.Generators/       # Unity-specific generators (submodule)
+├── Aspid.MVVM.Unity.Generators/       # Unity-specific generators
 ├── Docs/                              # Docusaurus site (GitHub Pages): docs/, tutorials/ (one README.md per sample), i18n/ru/ translations; the package holds no docs or media
 └── README.md
 ```
@@ -150,23 +150,17 @@ AI agents can consume the same command surface as MCP tools: the repo ships `.mc
 
 ## Gotchas
 
-- **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Unity/Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Packages/tech.aspid.mvvm/` and are checked into the repo. After changing a generator or bumping a submodule, run `scripts/build-roslyn-dlls.sh` and commit the refreshed DLLs — Unity consumes the DLL, not source. The Roslyn DLLs job of CI rebuilds them and fails on any byte of difference; the root `Directory.Build.props` makes the Release build reproducible.
-- **Submodules are required.** Cloning without `--recurse-submodules` leaves the generator/analyzer repos empty; Unity won't compile. `Aspid.Collections` is consumed as a UPM git package (not a submodule).
+- **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Unity/Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Packages/tech.aspid.mvvm/` and are checked into the repo. After changing a generator or an analyzer, run `scripts/build-roslyn-dlls.sh` and commit the refreshed DLLs — Unity consumes the DLL, not source. The Roslyn DLLs job of CI rebuilds them and fails on any byte of difference; the root `Directory.Build.props` makes the Release build reproducible.
 - **The .NET SDK is pinned** to `10.0.300` by the root `global.json` (`rollForward: disable`): another compiler gives other DLL bytes. The test projects target `net9.0`, so `dotnet test` also needs the .NET 9 runtime.
 - **Classes using `[ViewModel]`, `[Bind]`, `[RelayCommand]` must be `partial`** — the generator emits a second partial; without the modifier you get compile errors instead of generated members.
 
-## Git Submodules
+## Roslyn sources
 
-The project uses 3 git submodules. After cloning, initialize with:
-
-```bash
-git submodule update --init --recursive
-```
-
-Submodules:
-- `Aspid.MVVM.Generators`
-- `Aspid.MVVM.Analyzers`
-- `Aspid.MVVM.Unity.Generators`
+`Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/` and `Aspid.MVVM.Unity.Generators/` were separate repositories
+consumed as git submodules; their full history is merged here, and their old tags carry the `generators/`,
+`analyzers/` and `unity-generators/` prefixes. A change to one of them goes in the same PR as the DLL it rebuilds.
+A clone made before the merge runs `git submodule deinit -f --all` once before it checks out a commit without the
+submodules; otherwise git cannot replace the old submodule folders with tracked ones.
 
 `Aspid.Collections` is consumed as a UPM git package (`tech.aspid.collections`).
 

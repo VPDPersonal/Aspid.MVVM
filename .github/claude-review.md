@@ -19,10 +19,10 @@ The package is `Aspid.MVVM/Packages/tech.aspid.mvvm/`. Check, in this order:
    - no Unity API that 6000.0 lacks, unless a `#if UNITY_6000_1_OR_NEWER` or later guard covers it;
    - no `UnityEditor` API reachable from runtime code (`Source/`, `Unity/Runtime/`, `StarterKit/Runtime/`) outside an
      `#if UNITY_EDITOR` block.
-3. Generators and analyzers: their source lives in the submodules `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/`
+3. Generators and analyzers: their source lives in `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/`
    and `Aspid.MVVM.Unity.Generators/`; this repo commits the built DLLs (`Aspid.MVVM.Generators.dll`,
-   `Aspid.MVVM.Analyzers.dll`, `Unity/Aspid.MVVM.Unity.Generators.dll`). A DLL that changes without a bump of its
-   submodule is `[blocking]`: nothing in the repo then has its source.
+   `Aspid.MVVM.Analyzers.dll`, `Unity/Aspid.MVVM.Unity.Generators.dll`). A DLL that changes without a change of its
+   source folder is `[blocking]`: nothing in the repo then has its source.
 4. Public API: XML docs on each new or changed member, by the conventions in `AGENTS.md`. Also:
    - a change that users see in shipped package code has the same entry under the top `Unreleased` version in
      `CHANGELOG.md` and `CHANGELOG.ru.md`, or the PR has the `needs-changelog` label (`gh pr view --json labels`);

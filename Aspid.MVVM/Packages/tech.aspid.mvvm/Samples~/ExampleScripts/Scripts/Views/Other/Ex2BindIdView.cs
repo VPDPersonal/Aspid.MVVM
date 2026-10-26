@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit;
 
@@ -6,7 +7,7 @@ using Aspid.MVVM.StarterKit;
 namespace Aspid.MVVM.Samples.ExampleScripts.Views.Other
 {
     [View]
-    public partial class Ex2BindIdView
+    public partial class Ex2BindIdView : MonoView
     {
         // Generated ID: Id1
         [BindId("Id1")]
@@ -19,12 +20,12 @@ namespace Aspid.MVVM.Samples.ExampleScripts.Views.Other
         // Generated ID: Id3
         [BindId("Id3")]
         [AsBinder(typeof(ImageSpriteBinder))]
-        private Image _asBinder;
+        [SerializeField] private Image _asBinder;
         
         // Generated ID: Id4
         [BindId("Id4")]
         [AsBinder(typeof(ImageSpriteBinder))]
-        private Image[] _asBinders;
+        [SerializeField] private Image[] _asBinders;
         
         // Generated ID: Id5
         [BindId("Id5")]
@@ -37,11 +38,11 @@ namespace Aspid.MVVM.Samples.ExampleScripts.Views.Other
         // Generated ID: Id7
         [BindId("Id7")]
         [AsBinder(typeof(ImageSpriteBinder))]
-        private Image AsBinder { get; }
-        
+        private Image AsBinder => _asBinder;
+
         // Generated ID: Id8
         [BindId("Id8")]
         [AsBinder(typeof(ImageSpriteBinder))]
-        private Image[] AsBinders { get; }
+        private Image[] AsBinders => _asBinders;
     }
 }

@@ -90,6 +90,7 @@ Wraps a Unity component in the given binder type (see below).
 Lets Unity components act as binders directly, without a separate MonoBinder component:
 
 ```csharp
+using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit;
 
@@ -98,15 +99,55 @@ public partial class ExampleView : MonoView
 {
     // Image is wrapped in an ImageSpriteBinder
     [AsBinder(typeof(ImageSpriteBinder))]
-    private Image _icon;
+    [SerializeField] private Image _icon;
 
     // Image[] is wrapped in ImageSpriteBinder[]
     [AsBinder(typeof(ImageSpriteBinder))]
-    private Image[] _images;
+    [SerializeField] private Image[] _images;
 }
 ```
 
-The Source Generator emits code that creates an `ImageSpriteBinder` from the `Image` component at initialization.
+On the first initialization the Source Generator creates the binder once and caches it: `new ImageSpriteBinder(_icon)`,
+and one binder per element of an array. The component goes into the first parameter of the binder constructor, so it
+must not be `null`: mark the field `[SerializeField]` and assign it in the Inspector.
+
+### Constructor arguments
+
+The arguments after the type go to the binder constructor after the component, in order. They are attribute
+arguments, so only constants fit: strings, numbers, `bool`, enums, `typeof`, `null`. Named arguments are not
+supported: to reach a later parameter, pass the default of every parameter before it.
+
+```csharp
+// new AnimatorSetFloatBinder(_speed, "Speed")
+[AsBinder(typeof(AnimatorSetFloatBinder), "Speed")]
+[SerializeField] private Animator _speed;
+
+// new AnimatorSetFloatBinder(_jumpHeight, "JumpHeight", null, BindMode.OneTime)
+// null fills the converter parameter that stands before mode
+[AsBinder(typeof(AnimatorSetFloatBinder), "JumpHeight", null, BindMode.OneTime)]
+[SerializeField] private Animator _jumpHeight;
+```
+
+### nameof: passing a View member
+
+An argument written as `nameof(X)` goes into the generated code as the member `X` itself, not as the string `"X"`.
+This is how a value that an attribute cannot hold reaches the constructor, such as a converter:
+
+```csharp
+private static readonly IConverter<bool, bool> Invert = new BoolInvertConverter();
+
+// new GameObjectVisibleBinder(_isDead, Invert)
+[AsBinder(typeof(GameObjectVisibleBinder), nameof(Invert))]
+[SerializeField] private GameObject _isDead;
+```
+
+The binders are created inside the View, so `X` can be any member visible there, a static or an instance one
+(a serialized converter field, for example). Only the last part of the name is kept: `nameof(Converters.Invert)`
+becomes `Invert`, which must resolve inside the View.
+
+> [!NOTE]
+> `[AsBinder]` fixes the binder type and its arguments in code. When a designer has to pick the binder, the converter
+> or the mode in the Inspector, use a `MonoBinder` component instead.
 
 ---
 
@@ -132,7 +173,7 @@ public partial class CustomView : MonoView
 {
     [BindId("PlayerIcon")]
     [AsBinder(typeof(ImageSpriteBinder))]
-    private Image _icon;
+    [SerializeField] private Image _icon;
 }
 ```
 

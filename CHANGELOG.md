@@ -291,6 +291,10 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Sample paths in `package.json` pointed at a non-existent folder, so imports came out empty.
 - Eleven editor `.uss.meta` files had no importer block, and the sample `README.ru.md` files had no `.meta`.
 
+#### Samples & documentation
+
+- `[AsBinder]` examples in the Views page and `ExampleScripts` left the component field unserialized, so the binder constructor threw on `null`; the page now covers constructor arguments and `nameof`.
+
 ---
 
 ## [1.0.5] — 2025-10-17

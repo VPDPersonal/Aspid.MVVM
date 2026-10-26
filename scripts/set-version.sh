@@ -40,7 +40,8 @@ OLD=$OLD perl -pi -e 's/^(  "version": ")\Q$ENV{OLD}\E(",)$/$1$ENV{NEW}$2/' "$PK
 # The channel URL and the pinned one; other packages' URLs (Aspid.FastTools, Aspid.Collections) keep their channel.
 perl -pi -e 's/Aspid\.MVVM\.git#upm\/[0-9A-Za-z.+-]+/Aspid.MVVM.git#upm\/$ENV{NEW}/g;
   s/Aspid\.MVVM\.git#upm(?:-preview)?(?![\/0-9A-Za-z-])/Aspid.MVVM.git#$ENV{BRANCH}/g' README.md
-# The unreleased heading becomes the version's, dated, under a new empty [Unreleased]. The version's link points at
+# The unreleased heading becomes the version's, dated, and a new empty [Unreleased] goes above the first section
+# (a prerelease section written above the line heading stays below it). The version's link points at
 # its release, and the [Unreleased] link compares the version with HEAD. A link of the version to another URL (the
 # "compare/...HEAD" of an unreleased line) is replaced, not defined twice.
 DATE=$(date +%Y-%m-%d) REPO=https://github.com/VPDPersonal/Aspid.MVVM
@@ -48,7 +49,8 @@ export DATE REPO
 for f in CHANGELOG.md CHANGELOG.ru.md; do
   if ! has_section "$f" ' — [0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
     V=$NEW perl -CSDA -Mutf8 -0pi -e '$v = $ENV{V};
-      s/^## \['"$UNRELEASED"'/## [Unreleased]\n\n## [$ENV{NEW}] — $ENV{DATE}/m or die "$ARGV: no unreleased heading\n"' "$f"
+      s/^## \['"$UNRELEASED"'/## [$ENV{NEW}] — $ENV{DATE}/m or die "$ARGV: no unreleased heading\n";
+      s/^(?=## \[)/## [Unreleased]\n\n/m' "$f"
   fi
   perl -CSDA -Mutf8 -0pi -e 'my $link = "[$ENV{NEW}]: $ENV{REPO}/releases/tag/v$ENV{NEW}";
     s/^\[\Q$ENV{NEW}\E\]: .*$/$link/m or s/^(?=\[[0-9][^\]]*\]: )/$link\n/m or $_ .= "\n$link\n";

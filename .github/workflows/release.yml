@@ -175,16 +175,21 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # The published package ships CHANGELOG and MIGRATION too (the Changelog link of the Package Manager). They are
-      # copied into the package and committed here, so the subtree split below publishes them. The commit stays in
-      # this runner: the release tag points at $GITHUB_SHA.
+      # The published package ships CHANGELOG and MIGRATION too, with their .meta files (the Changelog link of the
+      # Package Manager). They are copied into the package and committed here, so the subtree split below publishes
+      # them. The commit stays in this runner: the release tag points at $GITHUB_SHA.
       - name: Bundle release docs into the package
         run: |
           set -euo pipefail
           for f in CHANGELOG.md CHANGELOG.ru.md MIGRATION.md MIGRATION.ru.md; do
             if [[ -f "$f" ]]; then
               cp "$f" "$PACKAGE_PATH/$f"
-              git add --force "$PACKAGE_PATH/$f"
+              # The installed package is immutable, so Unity cannot create a missing .meta there. The GUID is derived
+              # from the file name, so every release ships the same one.
+              GUID=$(printf '%s' "tech.aspid.mvvm/$f" | md5sum | cut -c1-32)
+              printf 'fileFormatVersion: 2\nguid: %s\nTextScriptImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n' \
+                "$GUID" > "$PACKAGE_PATH/$f.meta"
+              git add --force "$PACKAGE_PATH/$f" "$PACKAGE_PATH/$f.meta"
             fi
           done
           git commit --quiet -m "chore(release): bundle the changelog and migration guide into the package for $TAG"

@@ -122,7 +122,7 @@ test('a prerelease of a line whose notes sit under the line heading needs its ow
 
   // A dated section written by hand is kept, and gets its release link.
   for (const file of CHANGELOGS) {
-    write(dir, file, read(dir, file).replace(/^(## \[1\.1\.0\] — .*\n)/m, '$1\n## [1.1.0-rc.1] — 2026-10-01\n\n- The preview.\n'));
+    write(dir, file, read(dir, file).replace(/^(?=## \[1\.1\.0\] — )/m, '## [1.1.0-rc.1] — 2026-10-01\n\n- The preview.\n\n'));
   }
   const again = setVersion(dir, '1.1.0-rc.1');
   assert.equal(again.status, 0, output(again));
@@ -131,6 +131,13 @@ test('a prerelease of a line whose notes sit under the line heading needs its ow
     assert.match(notes, /^## \[1\.1\.0-rc\.1\] — 2026-10-01$/m, file);
     assert.match(notes, /^## \[1\.1\.0\] — (Unreleased|Не выпущено)$/m, file);
     assert.ok(notes.includes(`[1.1.0-rc.1]: ${REPO}/releases/tag/v1.1.0-rc.1\n`), file);
+  }
+
+  // The stable release that follows puts the new [Unreleased] at the top, above the prerelease section.
+  const stable = setVersion(dir, '1.1.0');
+  assert.equal(stable.status, 0, output(stable));
+  for (const file of CHANGELOGS) {
+    assert.match(read(dir, file), /---\n\n## \[Unreleased\]\n\n## \[1\.1\.0-rc\.1\] — 2026-10-01\n[\s\S]*\n## \[1\.1\.0\] — \d{4}-\d{2}-\d{2}\n/, file);
   }
 });
 

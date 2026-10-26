@@ -240,10 +240,14 @@ jobs:
 
           echo "Published $UPM_TAG to branch '$TARGET_BRANCH' (channel: $CHANNEL)"
 
+      # The gh CLI instead of a third-party action, which would run with this job's contents: write token.
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.preflight.outputs.tag }}
-          name: ${{ needs.preflight.outputs.tag }}
-          body: ${{ needs.preflight.outputs.notes }}
-          prerelease: ${{ needs.preflight.outputs.prerelease == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTES: ${{ needs.preflight.outputs.notes }}
+          PRERELEASE: ${{ needs.preflight.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$NOTES" > "$RUNNER_TEMP/release-notes.md"
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" --prerelease="$PRERELEASE"

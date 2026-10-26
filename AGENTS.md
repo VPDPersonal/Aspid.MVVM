@@ -95,7 +95,7 @@ The framework uses Source Generators to eliminate boilerplate and reflection:
 - **Analyzer tests**: `Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests/`
 - **Runtime tests**: Unity Test Framework, Zenject integration tests
 - **Manual validation**: Sample projects under `Samples~` (each sample's `README.md` is its tutorial)
-- **CI** (`.github/workflows/ci.yml`): package files, version files, `scripts/*.test.mjs`, the committed Roslyn DLLs, the .NET tests, and the Unity EditMode + PlayMode tests on every Unity 6000.x line (`UNITY_VERSIONS`) in a throwaway project from `scripts/make-unity-test-project.sh`. `pr-checks.yml` checks the PR title (Conventional Commits, known scope) and that shipped package code comes with an entry in both CHANGELOGs (or the `no-changelog` label). The `unity-quick` label limits a PR to the first and the last Unity version.
+- **CI** (`.github/workflows/ci.yml`): package files, version files, `scripts/*.test.mjs`, the committed Roslyn DLLs, the .NET tests, and the Unity EditMode + PlayMode tests on every Unity 6000.x line (`UNITY_VERSIONS`) in a throwaway project from `scripts/make-unity-test-project.sh`. `pr-checks.yml` checks the PR title (Conventional Commits, known scope) and that shipped package code comes with an entry in both CHANGELOGs (or the `needs-changelog` label until the entry is written). The `unity-quick` label limits a PR to the first and the last Unity version.
 
 ## Commands
 

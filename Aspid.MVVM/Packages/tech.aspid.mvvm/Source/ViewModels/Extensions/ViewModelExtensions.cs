@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -13,7 +13,7 @@ namespace Aspid.MVVM
     /// </summary>
     public static class ViewModelExtensions
     {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
         public static readonly Unity.Profiling.ProfilerMarker DisposeViewModelMarker = new(name: "DisposeViewModel");
         
         private static class Markers<T>
@@ -33,7 +33,7 @@ namespace Aspid.MVVM
         public static void DisposeViewModel<T>(this T viewModel)
             where T : class, IViewModel, IDisposable
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.DisposeViewModelMarker.Auto())
 #endif
             {
@@ -48,7 +48,7 @@ namespace Aspid.MVVM
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisposeViewModel(this IViewModel viewModel)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (DisposeViewModelMarker.Auto())
 #endif
             {

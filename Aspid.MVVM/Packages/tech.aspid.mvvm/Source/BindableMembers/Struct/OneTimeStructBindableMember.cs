@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -26,9 +26,9 @@ namespace Aspid.MVVM
         /// <returns>A singleton instance of <see cref="OneTimeStructBindableMember{T}"/> configured with the specified value.</returns>
         public static OneTimeStructBindableMember<T> Get(T value)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (GetMarker.Auto())
-#endif  
+#endif
             {
                 _instance.Value = value;
                 return _instance;
@@ -47,9 +47,9 @@ namespace Aspid.MVVM
         where T : struct, TBoxed
         where TBoxed : class
     {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
         protected static readonly Unity.Profiling.ProfilerMarker GetMarker = new(name: $"OneTimeStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Get");
-#endif  
+#endif
         
         /// <summary>
         /// Gets the current value.
@@ -75,7 +75,7 @@ namespace Aspid.MVVM
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

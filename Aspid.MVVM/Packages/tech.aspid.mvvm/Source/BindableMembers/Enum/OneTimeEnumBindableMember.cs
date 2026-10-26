@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -26,7 +26,7 @@ namespace Aspid.MVVM
         /// <returns>A singleton instance of <see cref="OneTimeEnumBindableMember{T}"/> configured with the specified value.</returns>
         public static OneTimeEnumBindableMember<T> Get(T value)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (GetMarker.Auto())
 #endif
             {

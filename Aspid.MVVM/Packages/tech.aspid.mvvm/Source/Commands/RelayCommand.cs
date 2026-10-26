@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -71,7 +71,7 @@ namespace Aspid.MVVM
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -84,7 +84,7 @@ namespace Aspid.MVVM
         /// </summary>
         public void Execute()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -98,7 +98,7 @@ namespace Aspid.MVVM
         /// </summary>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -173,7 +173,7 @@ namespace Aspid.MVVM
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T? param)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -187,7 +187,7 @@ namespace Aspid.MVVM
         /// <param name="param">The parameter passed to the command for execution.</param>
         public void Execute(T? param)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -201,7 +201,7 @@ namespace Aspid.MVVM
         /// </summary>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -278,7 +278,7 @@ namespace Aspid.MVVM
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -293,7 +293,7 @@ namespace Aspid.MVVM
         /// <param name="param2">The second parameter passed to the command for execution.</param>
         public void Execute(T1? param1, T2? param2)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -307,7 +307,7 @@ namespace Aspid.MVVM
         /// </summary>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -385,7 +385,7 @@ namespace Aspid.MVVM
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -401,7 +401,7 @@ namespace Aspid.MVVM
         /// <param name="param3">The third parameter passed to the command for execution.</param>
         public void Execute(T1? param1, T2? param2, T3? param3)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -415,7 +415,7 @@ namespace Aspid.MVVM
         /// </summary>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -495,7 +495,7 @@ namespace Aspid.MVVM
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -512,7 +512,7 @@ namespace Aspid.MVVM
         /// <param name="param4">The fourth parameter passed to the command for execution.</param>
         public void Execute(T1? param1, T2? param2, T3? param3, T4? param4)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -526,7 +526,7 @@ namespace Aspid.MVVM
         /// </summary>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

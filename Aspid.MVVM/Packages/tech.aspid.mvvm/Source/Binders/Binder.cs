@@ -1,3 +1,7 @@
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
+#endif
+
 using System;
 using UnityEngine;
 
@@ -51,19 +55,14 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)
         {
-#if ENABLE_PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
                 if (IsBound)
                 {
-                    var message = $"Binder is already bound. Type: {GetType().Name}";
-                    
-#if UNITY_2022_1_OR_NEWER
-                    UnityEngine.Debug.LogError(message);    
+                    Debug.LogError($"Binder is already bound. Type: {GetType().Name}");
                     return;
-#endif
-                    throw new Exception(message);
                 }
                 
                 if (!CanBind) return;
@@ -107,7 +106,7 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Unbind()
         {
-#if ENABLE_PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

@@ -59,7 +59,7 @@ export default function searchPlugin(context) {
             entries.push({
               title: plainText(heading || doc.title),
               url: indexUrl(doc.permalink, {trailingSlash: context.siteConfig.trailingSlash, baseUrl: context.baseUrl}),
-              section: {default: 'Docs', tutorials: 'Tutorials', api: 'API', changelog: 'Changelog'}[id] ?? id,
+              section: {default: 'Docs', tutorials: 'Tutorials', api: 'API', changelog: 'Changelog', migration: 'Migration'}[id] ?? id,
               description: plainText(doc.description || ''),
               text: plainText(markdown),
             });

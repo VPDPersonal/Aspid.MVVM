@@ -136,6 +136,7 @@ AMVVM005  The CanExecute method/property was not found
 - [Tutorials](../tutorials/01.%20Counter/README.md) — six samples that teach one concept each, from a counter to a custom binder.
 - [API reference](https://vpdpersonal.github.io/Aspid.MVVM/api/Aspid.MVVM) — package types, methods and properties.
 - [Changelog](https://vpdpersonal.github.io/Aspid.MVVM/changelog) — changes and fixes by version.
+- [Migration](https://vpdpersonal.github.io/Aspid.MVVM/migration/1.1) — what to change in a project when upgrading to a new version.
 - [Source generators](https://github.com/VPDPersonal/Aspid.MVVM.Generators) — the Roslyn generators and analyzers behind the attributes.
 
 ## Help and support

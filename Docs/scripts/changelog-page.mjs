@@ -19,7 +19,7 @@ export function changelogBody(markdown, title) {
 }
 
 /**
- * A relative link to another repository file (`[MIGRATION.md](MIGRATION.md)`) works on GitHub only; on the site it
+ * A relative link to another repository file (`[LICENSE](LICENSE)`) works on GitHub only; on the site it
  * opens the file on GitHub. Links to the other changelog are left alone: `changelogBody` drops their line.
  */
 export function repositoryLinks(markdown, blobUrl) {

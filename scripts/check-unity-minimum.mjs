@@ -11,10 +11,11 @@ import { fileURLToPath } from 'node:url';
 process.chdir(fileURLToPath(new URL('..', import.meta.url)));
 
 const PACKAGE_JSON = 'Aspid.MVVM/Packages/tech.aspid.mvvm/package.json';
-// Files that name the minimum in prose. The CHANGELOGs are not here: their old sections keep the old minimum.
+// Files that name the minimum in prose. The CHANGELOGs are not here: their old sections keep the old minimum. Nor are the
+// older migration guides: only the newest one (and its translation) names the current minimum.
 export const MENTIONS = [
-  'MIGRATION.md',
-  'MIGRATION.ru.md',
+  'Docs/migration/1.1.md',
+  'Docs/i18n/ru/docusaurus-plugin-content-docs-migration/current/1.1.md',
   '.claude/skills/aspid-code-style/SKILL.md',
 ];
 const MATRIX = '.github/workflows/ci.yml';

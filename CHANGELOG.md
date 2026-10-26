@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] — Unreleased
 
-Everything since `1.0.5`. Minimum Unity is now **`6000.0`**. Upgrade checklist: [MIGRATION.md](MIGRATION.md).
+Everything since `1.0.5`. Minimum Unity is now **`6000.0`**. Upgrade checklist: [migration guide](https://vpdpersonal.github.io/Aspid.MVVM/migration/1.1).
 A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` channel.
 
 ### Highlights

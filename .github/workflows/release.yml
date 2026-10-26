@@ -21,8 +21,9 @@ permissions:
 
 env:
   PACKAGE_PATH: Aspid.MVVM/Packages/tech.aspid.mvvm
-  # CHANGELOG / MIGRATION are canonical at the repository root (so they surface on the GitHub landing page). They are
-  # copied into the package at publish time, see the "Bundle release docs into the package" step.
+  # The CHANGELOGs are canonical at the repository root (so they surface on the GitHub landing page). They are copied
+  # into the package at publish time, see the "Bundle the changelogs into the package" step. The migration guides live
+  # on the docs site only (Docs/migration/).
   CHANGELOG_PATH: CHANGELOG.md
 
 jobs:
@@ -175,13 +176,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # The published package ships CHANGELOG and MIGRATION too, with their .meta files (the Changelog link of the
+      # The published package ships the CHANGELOGs too, with their .meta files (the Changelog link of the
       # Package Manager). They are copied into the package and committed here, so the subtree split below publishes
       # them. The commit stays in this runner: the release tag points at $GITHUB_SHA.
-      - name: Bundle release docs into the package
+      - name: Bundle the changelogs into the package
         run: |
           set -euo pipefail
-          for f in CHANGELOG.md CHANGELOG.ru.md MIGRATION.md MIGRATION.ru.md; do
+          for f in CHANGELOG.md CHANGELOG.ru.md; do
             if [[ -f "$f" ]]; then
               cp "$f" "$PACKAGE_PATH/$f"
               # The installed package is immutable, so Unity cannot create a missing .meta there. The GUID is derived
@@ -192,7 +193,7 @@ jobs:
               git add --force "$PACKAGE_PATH/$f" "$PACKAGE_PATH/$f.meta"
             fi
           done
-          git commit --quiet -m "chore(release): bundle the changelog and migration guide into the package for $TAG"
+          git commit --quiet -m "chore(release): bundle the changelogs into the package for $TAG"
 
       # One atomic push: the UPM branch and its tag are both published, or neither is.
       - name: Publish UPM subtree

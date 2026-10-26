@@ -4,6 +4,7 @@ using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Binders.Data;
 using static Aspid.Generators.Helper.Classes;
 using static Aspid.Generators.Helper.Unity.UnityClasses;
+using static Aspid.MVVM.Generators.Generators.Descriptions.Defines;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
@@ -41,7 +42,9 @@ public static class BinderLogBody
             var modifier = data.Symbol.IsSealed ? "private" : "protected";
             var className = data.Declaration.Identifier.Text;
         
-            code.AppendLine($"{modifier} static readonly {ProfilerMarker} SetValueMarker = new(\"{className}.SetValue\");");
+            code.AppendLine($"#if {ASPID_MVVM_PROFILER}")
+                .AppendLine($"{modifier} static readonly {ProfilerMarker} SetValueMarker = new(\"{className}.SetValue\");")
+                .AppendLine("#endif");
             return code.AppendLine();
         }
 
@@ -95,7 +98,9 @@ public static class BinderLogBody
                       {
                           try
                           {
+                              #if {{ASPID_MVVM_PROFILER}}
                               using (SetValueMarker.Auto())
+                              #endif
                               {
                                   SetValue({{parameterName}});
                               }
@@ -110,7 +115,9 @@ public static class BinderLogBody
                       }
                       else
                       {
+                          #if {{ASPID_MVVM_PROFILER}}
                           using (SetValueMarker.Auto())
+                          #endif
                           {
                               SetValue({{parameterName}});
                           }
@@ -133,7 +140,9 @@ public static class BinderLogBody
                       {
                           try
                           {
+                              #if {{ASPID_MVVM_PROFILER}}
                               using (SetValueMarker.Auto())
+                              #endif
                               {
                                   SetValue({{parameterName}});
                               }
@@ -148,7 +157,9 @@ public static class BinderLogBody
                       }
                       else
                       {
+                          #if {{ASPID_MVVM_PROFILER}}
                           using (SetValueMarker.Auto())
+                          #endif
                           {
                               SetValue({{parameterName}});
                           }

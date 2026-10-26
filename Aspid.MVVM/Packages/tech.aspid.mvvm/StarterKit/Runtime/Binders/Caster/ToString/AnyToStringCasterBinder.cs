@@ -1,4 +1,8 @@
 #nullable enable
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -50,7 +54,9 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue<T>(T value)
         {
+#if ASPID_MVVM_PROFILER
             using var _ = this.Marker();
+#endif
             _setValue(_converter.Convert(value));
         }
     }

@@ -153,7 +153,7 @@ public static class InitializeBody
     {
         return code.AppendMultiline(
             $"""
-             #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+             #if {Defines.ASPID_MVVM_PROFILER}
              {GeneratedCodeViewAttribute}
              {EditorBrowsableAttributeNever}
              private static readonly {ProfilerMarker} __initializeMarker = new("{className}.Initialize");
@@ -200,7 +200,7 @@ public static class InitializeBody
         code.BeginBlock()
             .AppendMultiline(
                 $"""
-                #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+                #if {Defines.ASPID_MVVM_PROFILER}
                 using (__initializeMarker.Auto())
                 #endif
                 """)
@@ -251,7 +251,7 @@ public static class InitializeBody
         code.BeginBlock()
             .AppendMultiline(
                 $"""
-                 #if !{Defines.ASPID_MVVM_UNITY_PROFILER_DISABLED}
+                 #if {Defines.ASPID_MVVM_PROFILER}
                  using (__deinitializeMarker.Auto())
                  #endif
                  """)

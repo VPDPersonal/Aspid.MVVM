@@ -173,7 +173,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Slider, scrollbar and dropdown binders report the value the control actually holds after Unity clamps it.
 - The Greeter sample uses the shipped `RichTextColorConverter`.
 - `Source` is compiled by Unity only: the `UnityEngine` stand-ins and the `#if UNITY_*` guards are gone, and inspector attributes are written unconditionally.
-- Core profiler markers compile only under `ENABLE_PROFILER` (Editor and development builds), so a release player carries no marker fields or classes; `ASPID_MVVM_UNITY_PROFILER_DISABLED` now also turns off the markers of `Binder.Bind()` / `Unbind()`.
+- Profiler markers of the core, `MonoBinder`, `DynamicViewModel` and the generated Views and ViewModels compile only under `ENABLE_PROFILER` (Editor and development builds), so a release player carries no marker fields or classes; `ASPID_MVVM_UNITY_PROFILER_DISABLED` now also turns off the markers of `Binder.Bind()` / `Unbind()`, `AnyToStringCasterBinder` and the generated `[BinderLog]` `SetValue`.
 - `InitializeComponent<T>` checks the VContainer resolver for `null` explicitly, so Rider no longer reports a possibly unassigned local.
 
 #### Renamed

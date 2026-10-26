@@ -90,6 +90,7 @@ public partial class ExampleView : MonoView
 Позволяет использовать Unity-компоненты напрямую как биндеры без добавления отдельного MonoBinder-компонента:
 
 ```csharp
+using UnityEngine;
 using UnityEngine.UI;
 using Aspid.MVVM.StarterKit;
 
@@ -98,15 +99,55 @@ public partial class ExampleView : MonoView
 {
     // Image оборачивается в ImageSpriteBinder
     [AsBinder(typeof(ImageSpriteBinder))]
-    private Image _icon;
+    [SerializeField] private Image _icon;
 
     // Массив Image оборачивается в ImageSpriteBinder[]
     [AsBinder(typeof(ImageSpriteBinder))]
-    private Image[] _images;
+    [SerializeField] private Image[] _images;
 }
 ```
 
-Source Generator создаст код, который при инициализации создаёт `ImageSpriteBinder` из компонента `Image`.
+При первой инициализации Source Generator один раз создаёт биндер и кеширует его: `new ImageSpriteBinder(_icon)`,
+а для массива — по биндеру на каждый элемент. Компонент передаётся первым параметром конструктора биндера, поэтому он
+не должен быть `null`: пометьте поле `[SerializeField]` и назначьте его в инспекторе.
+
+### Аргументы конструктора
+
+Аргументы после типа передаются в конструктор биндера после компонента, по порядку. Это аргументы атрибута, поэтому
+подходят только константы: строки, числа, `bool`, перечисления, `typeof`, `null`. Именованные аргументы не
+поддерживаются: чтобы дойти до дальнего параметра, передайте значения по умолчанию всех параметров перед ним.
+
+```csharp
+// new AnimatorSetFloatBinder(_speed, "Speed")
+[AsBinder(typeof(AnimatorSetFloatBinder), "Speed")]
+[SerializeField] private Animator _speed;
+
+// new AnimatorSetFloatBinder(_jumpHeight, "JumpHeight", null, BindMode.OneTime)
+// null заполняет параметр конвертера, который стоит перед mode
+[AsBinder(typeof(AnimatorSetFloatBinder), "JumpHeight", null, BindMode.OneTime)]
+[SerializeField] private Animator _jumpHeight;
+```
+
+### nameof: передача члена View
+
+Аргумент, записанный как `nameof(X)`, попадает в сгенерированный код как сам член `X`, а не как строка `"X"`.
+Так в конструктор передаётся значение, которое атрибут хранить не может, например конвертер:
+
+```csharp
+private static readonly IConverter<bool, bool> Invert = new BoolInvertConverter();
+
+// new GameObjectVisibleBinder(_isDead, Invert)
+[AsBinder(typeof(GameObjectVisibleBinder), nameof(Invert))]
+[SerializeField] private GameObject _isDead;
+```
+
+Биндеры создаются внутри View, поэтому `X` может быть любым видимым там членом, статическим или экземплярным
+(например, сериализованным полем конвертера). От имени остаётся только последняя часть: `nameof(Converters.Invert)`
+превращается в `Invert`, и это имя должно разрешаться внутри View.
+
+> [!NOTE]
+> `[AsBinder]` фиксирует тип биндера и его аргументы в коде. Если биндер, конвертер или режим должен выбирать
+> дизайнер в инспекторе, используйте компонент `MonoBinder`.
 
 ---
 
@@ -132,7 +173,7 @@ public partial class CustomView : MonoView
 {
     [BindId("PlayerIcon")]
     [AsBinder(typeof(ImageSpriteBinder))]
-    private Image _icon;
+    [SerializeField] private Image _icon;
 }
 ```
 

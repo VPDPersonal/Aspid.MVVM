@@ -159,6 +159,8 @@ AI agents can consume the same command surface as MCP tools: the repo ships `.mc
 `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/` and `Aspid.MVVM.Unity.Generators/` were separate repositories
 consumed as git submodules; their full history is merged here, and their old tags carry the `generators/`,
 `analyzers/` and `unity-generators/` prefixes. A change to one of them goes in the same PR as the DLL it rebuilds.
+A clone made before the merge runs `git submodule deinit -f --all` once before it checks out a commit without the
+submodules; otherwise git cannot replace the old submodule folders with tracked ones.
 
 `Aspid.Collections` is consumed as a UPM git package (`tech.aspid.collections`).
 

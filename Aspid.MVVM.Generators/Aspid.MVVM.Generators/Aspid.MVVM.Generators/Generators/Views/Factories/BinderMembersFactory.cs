@@ -148,11 +148,12 @@ public static class BinderMembersFactory
     
     /// <summary>
     /// A member is a binder when its type implements <c>IBinder</c> or is the <c>IBinder</c> interface itself —
-    /// the helper looks only through the implemented interfaces, so the bare interface has to be matched by name.
+    /// the helper looks only through the implemented interfaces, so the bare interface has to be matched by name,
+    /// without the nullable annotation an <c>IBinder?</c> member carries.
     /// </summary>
     private static bool IsBinder(ITypeSymbol type) =>
         type.HasAnyInterfaceInSelfAndBases(Classes.IBinder)
-        || type.ToDisplayString() == Classes.IBinder.FullName;
+        || type.WithNullableAnnotation(NullableAnnotation.NotAnnotated).ToDisplayString() == Classes.IBinder.FullName;
     
     private static ITypeSymbol? GetType(ISymbol member)
     {

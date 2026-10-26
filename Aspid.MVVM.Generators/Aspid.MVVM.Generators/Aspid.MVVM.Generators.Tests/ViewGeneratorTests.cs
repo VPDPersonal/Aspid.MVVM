@@ -71,6 +71,33 @@ public sealed class ViewGeneratorTests
     }
 
     /// <summary>
+    /// A generic base View names no ViewModel in its own partial, so the View that closes it with a ViewModel type
+    /// still emits the binder fields for that ViewModel.
+    /// </summary>
+    [Fact]
+    public void AViewClosingAGenericBaseKeepsTheGeneratedField()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            public class PlayerViewModel : IViewModel
+            {
+                [Bind] private int _health;
+            }
+
+            [View]
+            public partial class BaseView<T> : MonoBehaviour, IView<T> where T : IViewModel { }
+
+            [View]
+            public partial class DerivedView : BaseView<PlayerViewModel> { }
+            """);
+
+        Assert.Single(Regex.Matches(generated, @"MonoBinder\[\] _health;"));
+        Assert.Contains("partial class DerivedView", generated);
+    }
+
+    /// <summary>
     /// A field typed as the bare <c>IBinder</c> interface is a binder: it is bound and unbound with the View,
     /// like a field of a concrete binder type.
     /// </summary>
@@ -85,6 +112,29 @@ public sealed class ViewGeneratorTests
             public partial class PlayerView : MonoBehaviour, IView<IViewModel>
             {
                 [SerializeField] private IBinder _score;
+            }
+            """);
+
+        Assert.Contains("_score.BindSafely(", generated);
+        Assert.Contains("_score.UnbindSafely(", generated);
+    }
+
+    /// <summary>
+    /// The nullable annotation does not hide the bare <c>IBinder</c> interface: an <c>IBinder?</c> field under
+    /// <c>#nullable enable</c> is a binder too.
+    /// </summary>
+    [Fact]
+    public void ANullableFieldTypedAsTheBareBinderInterfaceIsABinder()
+    {
+        var generated = Run("""
+            #nullable enable
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<IViewModel>
+            {
+                [SerializeField] private IBinder? _score;
             }
             """);
 

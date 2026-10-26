@@ -173,7 +173,7 @@
 - Биндеры Slider, Scrollbar и Dropdown отдают то значение, которое контрол реально принял после ограничения Unity.
 - Сэмпл Greeter использует штатный `RichTextColorConverter`.
 - `Source` компилирует только Unity: заглушек типов `UnityEngine` и guard'ов `#if UNITY_*` больше нет, атрибуты инспектора пишутся без условий.
-- Маркеры профайлера в ядре компилируются только под `ENABLE_PROFILER` (редактор и development-сборки), поэтому в релизном плеере нет ни полей, ни классов маркеров; `ASPID_MVVM_UNITY_PROFILER_DISABLED` теперь выключает и маркеры `Binder.Bind()` / `Unbind()`.
+- Маркеры профайлера в ядре, `MonoBinder`, `DynamicViewModel` и сгенерированных View и ViewModel компилируются только под `ENABLE_PROFILER` (редактор и development-сборки), поэтому в релизном плеере нет ни полей, ни классов маркеров; `ASPID_MVVM_UNITY_PROFILER_DISABLED` теперь выключает и маркеры `Binder.Bind()` / `Unbind()` и `AnyToStringCasterBinder`.
 - `InitializeComponent<T>` явно проверяет резолвер VContainer на `null`, и Rider больше не предупреждает о возможно неприсвоенной локальной переменной.
 
 #### Переименовано

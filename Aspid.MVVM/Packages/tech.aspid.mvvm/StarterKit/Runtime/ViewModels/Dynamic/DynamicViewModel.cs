@@ -1,3 +1,7 @@
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -148,7 +152,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters)
         {
-#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

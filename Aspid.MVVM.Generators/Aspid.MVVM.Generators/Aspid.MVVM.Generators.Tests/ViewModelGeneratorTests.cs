@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Aspid.MVVM.Generators.Generators.ViewModels;
@@ -113,6 +114,31 @@ public sealed class ViewModelGeneratorTests
         Assert.Contains("IPlayerViewModel.Health =>", generated);
         Assert.Contains("IPlayerViewModel.Mana =>", generated);
     }
+
+    /// <summary>
+    /// The marker of <c>FindBindableMember</c> compiles only under <c>ENABLE_PROFILER</c>, so a release player
+    /// carries no marker field.
+    /// </summary>
+    [Fact]
+    public void TheProfilerMarkerCompilesOnlyUnderEnableProfiler()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind] private int _health;
+            }
+            """);
+
+        Assert.Contains("__findBindableMemberMarker", generated);
+        Assert.Equal(2, CountOf(generated, "#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED"));
+        Assert.DoesNotContain("#if !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
+    }
+
+    private static int CountOf(string text, string value) =>
+        Regex.Matches(text, Regex.Escape(value)).Count;
 
     private static string Run(string declaration)
     {

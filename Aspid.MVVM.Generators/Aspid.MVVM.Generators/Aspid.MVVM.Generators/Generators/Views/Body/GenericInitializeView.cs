@@ -76,7 +76,7 @@ public static class GenericInitializeView
             {modifier} void InitializeInternal({typeName} viewModel)
             """)
             .BeginBlock()
-            .AppendLine($"#if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}")
+            .AppendLine($"#if {ASPID_MVVM_PROFILER}")
             .AppendLine($"using (__initialize{genericView.Type.ToDisplayString().Replace(".", "_")}Marker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
@@ -163,7 +163,7 @@ public static class GenericInitializeView
         
         return code.AppendMultiline(
             $"""
-            #if !{ASPID_MVVM_UNITY_PROFILER_DISABLED}
+            #if {ASPID_MVVM_PROFILER}
             {GeneratedCodeViewAttribute}
             {EditorBrowsableAttributeNever}
             private readonly static {ProfilerMarker} __initialize{viewModelTypeName.Replace(".", "_")}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");

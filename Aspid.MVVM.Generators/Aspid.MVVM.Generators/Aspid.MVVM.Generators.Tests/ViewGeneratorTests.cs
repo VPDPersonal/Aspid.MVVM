@@ -142,6 +142,32 @@ public sealed class ViewGeneratorTests
         Assert.Contains("_score.UnbindSafely(", generated);
     }
 
+    /// <summary>
+    /// The <c>Initialize</c> and <c>Deinitialize</c> markers compile only under <c>ENABLE_PROFILER</c>, so a release
+    /// player carries no marker field.
+    /// </summary>
+    [Fact]
+    public void TheProfilerMarkersCompileOnlyUnderEnableProfiler()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            public class PlayerViewModel : IViewModel
+            {
+                [Bind] private int _health;
+            }
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<PlayerViewModel> { }
+            """);
+
+        Assert.Contains("__initializeMarker", generated);
+        Assert.Contains("__deinitializeMarker", generated);
+        Assert.Contains("#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
+        Assert.DoesNotContain("#if !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
+    }
+
     private static string Run(string declaration)
     {
         var compilation = CSharpCompilation.Create(

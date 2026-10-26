@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -31,9 +31,9 @@ namespace Aspid.MVVM
             get => _value;
             set
             {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
                 using (this.Marker())
-#endif 
+#endif
                 {
                     _value = value;
                     Changed?.Invoke(value);
@@ -65,7 +65,7 @@ namespace Aspid.MVVM
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -105,7 +105,7 @@ namespace Aspid.MVVM
         /// <param name="binder">The binder to remove.</param>
         void IBinderRemover.Remove(IBinder binder)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

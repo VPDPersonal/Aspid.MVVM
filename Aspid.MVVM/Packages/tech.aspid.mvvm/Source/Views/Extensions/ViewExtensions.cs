@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -12,7 +12,7 @@ namespace Aspid.MVVM
     /// </summary>
     public static class ViewExtensions
     {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
         public static readonly Unity.Profiling.ProfilerMarker DisposeViewMarker = new(name: "DisposeView");
         
         private static class Markers<T>
@@ -66,7 +66,7 @@ namespace Aspid.MVVM
         public static IViewModel? DisposeView<T>(this T? view)
             where T : IView, IDisposable
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.DisposeViewMarker.Auto())
 #endif
             {
@@ -86,7 +86,7 @@ namespace Aspid.MVVM
         /// <returns>The associated <see cref="IViewModel"/>, or <see langword="null"/> if none is present.</returns>
         public static IViewModel? DisposeView(this IView? view)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (DisposeViewMarker.Auto())
 #endif
             {

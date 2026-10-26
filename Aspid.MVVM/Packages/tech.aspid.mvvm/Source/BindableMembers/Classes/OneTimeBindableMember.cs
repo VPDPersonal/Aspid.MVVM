@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -15,7 +15,7 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The reference type of the bound value.</typeparam>
     public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>
     {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
         private static readonly Unity.Profiling.ProfilerMarker _getMarker = new(name: $"OneTimeBindableMember<{typeof(T).Name}>.Get");
 #endif
         
@@ -45,7 +45,7 @@ namespace Aspid.MVVM
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -75,7 +75,7 @@ namespace Aspid.MVVM
         /// <returns>A singleton instance of <see cref="OneTimeBindableMember{T}"/> configured with the specified value.</returns>
         public static OneTimeBindableMember<T> Get(T? value)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (_getMarker.Auto())
 #endif
             {

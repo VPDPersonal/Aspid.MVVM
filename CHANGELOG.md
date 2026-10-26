@@ -172,7 +172,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Slider and audio-source ranges: a crossed `min` / `max` pair is swapped and logged, a non-finite endpoint is refused.
 - Slider, scrollbar and dropdown binders report the value the control actually holds after Unity clamps it.
 - The Greeter sample uses the shipped `RichTextColorConverter`.
-- Inspector attributes in Unity-independent layers are no longer wrapped in `#if UNITY_2022_1_OR_NEWER`.
+- `Source` is compiled by Unity only: the `UnityEngine` stand-ins and the `#if UNITY_*` guards are gone, and inspector attributes are written unconditionally.
+- Core profiler markers compile only under `ENABLE_PROFILER` (Editor and development builds), so a release player carries no marker fields or classes; `ASPID_MVVM_UNITY_PROFILER_DISABLED` now also turns off the markers of `Binder.Bind()` / `Unbind()`.
 - `InitializeComponent<T>` checks the VContainer resolver for `null` explicitly, so Rider no longer reports a possibly unassigned local.
 
 #### Renamed
@@ -217,6 +218,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - The pre-Unity-6 compatibility gate: `using Converter = …` aliases, `ToConvertSpecific()` branches, `UNITY_6000_0_OR_NEWER` branches, `PhysicMaterial` fallbacks.
 - The vendored `com.unity.asset-store-tools` in the Editor project — it is not part of the package.
 - TMP Examples & Extras in the Editor project; TMP Essential Resources are back in the default `Assets/TextMesh Pro`.
+- `BindSafelyNullReferenceException`, `UnbindSafelyNullReferenceException` — never thrown in Unity: `BindSafely` / `UnbindSafely` skip a `null` binder and log it under `DEBUG`.
+- `Aspid.MVVM.Generators.Sample` — debug the generator through `Aspid.MVVM.Generators.Tests`.
 
 ### Fixed
 

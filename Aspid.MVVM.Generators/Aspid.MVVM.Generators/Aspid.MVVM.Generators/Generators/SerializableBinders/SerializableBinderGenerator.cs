@@ -360,7 +360,7 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
     /// </summary>
     /// <remarks>
     /// Only the branches that open before the declaration and close after it count. A <c>#if</c> that closes earlier —
-    /// the <c>#define PROFILER</c> header the package puts at the top of a file, say — says nothing about the class,
+    /// the <c>#define ASPID_MVVM_PROFILER</c> header the package puts at the top of a file, say — says nothing about the class,
     /// and carrying it over would compile the twin out of existence wherever the header's condition is false.
     /// </remarks>
     private static string[] Conditions(

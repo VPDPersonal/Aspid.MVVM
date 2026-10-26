@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System.Diagnostics;
@@ -15,7 +15,7 @@ namespace Aspid.MVVM
     /// </summary>
     public static partial class BinderExtensions
     {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
         private static partial class Markers<T>
             where T : IBinder
         {
@@ -36,7 +36,7 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -58,7 +58,7 @@ namespace Aspid.MVVM
         public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -71,21 +71,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Binds an array of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The array of binders to bind.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="BindSafelyNullReferenceException">
-        /// Thrown if any individual binder in the array is <see langword="null"/>.
-        /// In Unity (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T[]? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -98,21 +96,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Safely binds an array of binders to the specified binder adder.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The array of binders.</param>
         /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="BindSafelyNullReferenceException">
-        /// Thrown if any individual binder in the array is <see langword="null"/>.
-        /// In Unity (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T[]? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -150,21 +146,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Binds a list of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The list of binders.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="BindSafelyNullReferenceException">
-        /// Thrown if any individual binder in the list is <see langword="null"/>.
-        /// In Unity (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this List<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -177,21 +171,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Safely binds a list of binders to the specified binder adder.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The list of binders.</param>
         /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="BindSafelyNullReferenceException">
-        /// Thrown if any individual binder in the list is <see langword="null"/>.
-        /// In Unity (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this List<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -228,21 +220,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Binds an enumerable of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
         /// <param name="result">The result of a bindable member lookup.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="BindSafelyNullReferenceException">
-        /// Thrown if any individual binder in the sequence is <see langword="null"/>.
-        /// In Unity (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this IEnumerable<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -255,21 +245,19 @@ namespace Aspid.MVVM
         /// <summary>
         /// Safely binds an enumerable of binders to the specified binder adder.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The enumerable of binders.</param>
         /// <param name="binderAdder">The binder adder to bind to.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="BindSafelyNullReferenceException">
-        /// Thrown if any individual binder in the sequence is <see langword="null"/>.
-        /// In Unity (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this IEnumerable<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.BindSafelyMarker.Auto())
 #endif
             {
@@ -307,12 +295,7 @@ namespace Aspid.MVVM
         private static void BuildBindSafelyBinderNullMessage(int index, object? owner, string? memberName)
         {
             var message = BuildBinderNullMessage(operation: "BindSafely", index, owner, memberName);
-            
-#if UNITY_2020_3_OR_NEWER
             UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-            throw new BindSafelyNullReferenceException(message);
-#endif
         }
 
         /// <summary>
@@ -327,13 +310,8 @@ namespace Aspid.MVVM
         {
             var message = $"{BuildBinderContext(operation, index, owner, memberName)} threw {exception.GetType().Name}: {exception.Message}";
 
-#if UNITY_2020_3_OR_NEWER
             UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
             UnityEngine.Debug.LogException(exception, owner as UnityEngine.Object);
-#else
-            System.Console.Error.WriteLine(message);
-            System.Console.Error.WriteLine(exception);
-#endif
         }
 
         /// <summary>
@@ -349,9 +327,7 @@ namespace Aspid.MVVM
         {
             if (binder is null) return true;
 
-#if UNITY_2020_3_OR_NEWER
             if (binder is UnityEngine.Object unityObject) return !unityObject;
-#endif
             return false;
         }
 
@@ -367,10 +343,8 @@ namespace Aspid.MVVM
 
             var typeName = owner.GetType().Name;
 
-#if UNITY_2020_3_OR_NEWER
             if (owner is UnityEngine.Object uo)
                 return $"[{typeName}] [{operation}] Binder at index {index} '{memberPart}' of view '{typeName}' (GameObject '{uo.name}')";
-#endif
             return $"[{typeName}] [{operation}] Binder at index {index} '{memberPart}' of view '{typeName}'";
         }
     }

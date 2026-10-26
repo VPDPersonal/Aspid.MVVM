@@ -172,7 +172,8 @@
 - Диапазоны Slider и AudioSource: перевёрнутая пара `min` / `max` меняется местами с записью в лог, неконечная граница отклоняется.
 - Биндеры Slider, Scrollbar и Dropdown отдают то значение, которое контрол реально принял после ограничения Unity.
 - Сэмпл Greeter использует штатный `RichTextColorConverter`.
-- Атрибуты инспектора в слоях без зависимости от Unity больше не обёрнуты в `#if UNITY_2022_1_OR_NEWER`.
+- `Source` компилирует только Unity: заглушек типов `UnityEngine` и guard'ов `#if UNITY_*` больше нет, атрибуты инспектора пишутся без условий.
+- Маркеры профайлера в ядре компилируются только под `ENABLE_PROFILER` (редактор и development-сборки), поэтому в релизном плеере нет ни полей, ни классов маркеров; `ASPID_MVVM_UNITY_PROFILER_DISABLED` теперь выключает и маркеры `Binder.Bind()` / `Unbind()`.
 - `InitializeComponent<T>` явно проверяет резолвер VContainer на `null`, и Rider больше не предупреждает о возможно неприсвоенной локальной переменной.
 
 #### Переименовано
@@ -217,6 +218,8 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - Слой совместимости с Unity до 6: алиасы `using Converter = …`, ветки `ToConvertSpecific()`, ветки `UNITY_6000_0_OR_NEWER`, фолбэки `PhysicMaterial`.
 - `com.unity.asset-store-tools`, вложенный в проект редактора, — он не входит в пакет.
 - TMP Examples & Extras в проекте редактора; TMP Essential Resources снова лежат в стандартной `Assets/TextMesh Pro`.
+- `BindSafelyNullReferenceException`, `UnbindSafelyNullReferenceException` — в Unity они никогда не выбрасывались: `BindSafely` / `UnbindSafely` пропускают `null`-биндер и под `DEBUG` пишут ошибку в лог.
+- `Aspid.MVVM.Generators.Sample` — генератор отлаживается через `Aspid.MVVM.Generators.Tests`.
 
 ### Исправлено
 

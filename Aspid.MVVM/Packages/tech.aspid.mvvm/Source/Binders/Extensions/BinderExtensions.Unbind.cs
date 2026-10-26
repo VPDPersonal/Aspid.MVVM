@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System.Diagnostics;
@@ -11,7 +11,7 @@ namespace Aspid.MVVM
 {
     public static partial class BinderExtensions
     {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
         private static partial class Markers<T>
             where T : IBinder
         {
@@ -30,7 +30,7 @@ namespace Aspid.MVVM
         public static void UnbindSafely<T>(this T? binder, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
@@ -42,20 +42,18 @@ namespace Aspid.MVVM
         /// <summary>
         /// Safely unbinds an array of binders.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The array of binders to unbind.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="UnbindSafelyNullReferenceException">
-        /// Thrown if any element in the sequence is <see langword="null"/>.
-        /// In Unity builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T[]? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
@@ -91,20 +89,18 @@ namespace Aspid.MVVM
         /// <summary>
         /// Safely unbinds a list of binders.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The list of binders to unbind.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="UnbindSafelyNullReferenceException">
-        /// Thrown if any element in the sequence is <see langword="null"/>.
-        /// In Unity builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
@@ -139,20 +135,18 @@ namespace Aspid.MVVM
         /// <summary>
         /// Safely unbinds a sequence of binders.
         /// </summary>
+        /// <remarks>
+        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// </remarks>
         /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
         /// <param name="binders">The enumerable of binders to unbind.</param>
         /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
         /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
-        /// <exception cref="UnbindSafelyNullReferenceException">
-        /// Thrown if any element in the sequence is <see langword="null"/>.
-        /// In Unity builds (<c>UNITY_2020_3_OR_NEWER</c>), skips the <see langword="null"/> binder instead of throwing.
-        /// When <c>DEBUG</c> is also defined, additionally logs an error via <c>UnityEngine.Debug.LogError</c>.
-        /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
@@ -189,12 +183,7 @@ namespace Aspid.MVVM
         private static void BuildUnbindSafelyBinderNullMessage(int index, object? owner, string? memberName)
         {
             var message = BuildBinderNullMessage(operation: "UnbindSafely", index, owner, memberName);
-            
-#if UNITY_2020_3_OR_NEWER
             UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
-#else
-            throw new UnbindSafelyNullReferenceException(message);
-#endif
         }
     }
 }

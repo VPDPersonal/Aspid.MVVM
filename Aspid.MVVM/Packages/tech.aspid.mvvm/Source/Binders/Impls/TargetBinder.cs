@@ -60,9 +60,7 @@ namespace Aspid.MVVM
         /// </remarks>
         private static bool IsTargetAlive(TTarget target)
         {
-#if UNITY_2020_3_OR_NEWER
             if (target is UnityEngine.Object unityObject) return unityObject;
-#endif
             return target is not null;
         }
     }

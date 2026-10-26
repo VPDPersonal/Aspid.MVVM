@@ -123,13 +123,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Thrown if any individual binder in the array is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### BindSafely\<T\>\(T\[\]?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1___0___Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
@@ -163,13 +159,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Thrown if any individual binder in the array is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### BindSafely\<T\>\(List\<T\>?, in FindBindableMemberResult, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_List___0__Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_}
 
@@ -203,13 +195,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Thrown if any individual binder in the list is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### BindSafely\<T\>\(List\<T\>?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_List___0__Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
@@ -243,13 +231,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Thrown if any individual binder in the list is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### BindSafely\<T\>\(IEnumerable\<T\>?, in FindBindableMemberResult, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_IEnumerable___0__Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_}
 
@@ -283,13 +267,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Thrown if any individual binder in the sequence is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### BindSafely\<T\>\(IEnumerable\<T\>?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_IEnumerable___0__Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
@@ -323,13 +303,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Thrown if any individual binder in the sequence is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### UnbindSafely\<T\>\(T?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_}
 
@@ -387,13 +363,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [UnbindSafelyNullReferenceException](Aspid.MVVM.UnbindSafelyNullReferenceException.md)
-
-Thrown if any element in the sequence is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity builds (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### UnbindSafely\<T\>\(List\<T\>?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1_System_Collections_Generic_List___0__System_Object_System_String_}
 
@@ -423,13 +395,9 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [UnbindSafelyNullReferenceException](Aspid.MVVM.UnbindSafelyNullReferenceException.md)
-
-Thrown if any element in the sequence is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity builds (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 
 ### UnbindSafely\<T\>\(IEnumerable\<T\>?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1_System_Collections_Generic_IEnumerable___0__System_Object_System_String_}
 
@@ -459,11 +427,7 @@ Optional name of the field that holds <code class="paramref">binders</code>, use
 
 The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
 
-#### Exceptions
+#### Remarks
 
- [UnbindSafelyNullReferenceException](Aspid.MVVM.UnbindSafelyNullReferenceException.md)
-
-Thrown if any element in the sequence is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-In Unity builds (<code>UNITY_2020_3_OR_NEWER</code>), skips the <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder instead of throwing.
-When <code>DEBUG</code> is also defined, additionally logs an error via <code>UnityEngine.Debug.LogError</code>.
+Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
 

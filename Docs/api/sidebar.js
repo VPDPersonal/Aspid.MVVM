@@ -73,11 +73,6 @@ export default { api: [
           },
           {
             "type": "doc",
-            "id": "Aspid.MVVM.BindSafelyNullReferenceException",
-            "label": "BindSafelyNullReferenceException"
-          },
-          {
-            "type": "doc",
             "id": "Aspid.MVVM.Binder",
             "label": "Binder"
           },
@@ -355,11 +350,6 @@ export default { api: [
             "type": "doc",
             "id": "Aspid.MVVM.TwoWayStructBindableMember-1",
             "label": "TwoWayStructBindableMember<T>"
-          },
-          {
-            "type": "doc",
-            "id": "Aspid.MVVM.UnbindSafelyNullReferenceException",
-            "label": "UnbindSafelyNullReferenceException"
           },
           {
             "type": "doc",

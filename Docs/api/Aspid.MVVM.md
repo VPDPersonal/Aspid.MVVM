@@ -83,11 +83,6 @@ Provides extension methods for [`BindMode`](Aspid.MVVM.BindMode.md) providing mo
 Attribute used to override allowed binding modes for a class.
 This attribute is conditional and only active when the "UNITY_EDITOR" symbol is defined.
 
- [BindSafelyNullReferenceException](Aspid.MVVM.BindSafelyNullReferenceException.md)
-
-Exception thrown when a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder is encountered during a
-[`BinderExtensions.BindSafely%60<T>`](Aspid.MVVM.BinderExtensions.md) operation.
-
  [Binder](Aspid.MVVM.Binder.md)
 
 Abstract base class for binder implementations.
@@ -389,11 +384,6 @@ Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued two
 through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code> / [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 Additionally exposes a get/set [`TwoWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Value) and a [`TwoWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Changed) event.
 
- [UnbindSafelyNullReferenceException](Aspid.MVVM.UnbindSafelyNullReferenceException.md)
-
-Exception thrown when a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binder is encountered during an
-[`BinderExtensions.UnbindSafely%60<T>`](Aspid.MVVM.BinderExtensions.md) operation.
-
  [UsedInModesAttribute](Aspid.MVVM.UsedInModesAttribute.md)
 
 Marks a serialized field as used only under the specified binding modes, so the Inspector
@@ -452,14 +442,14 @@ Extends [`IBinder`](Aspid.MVVM.IBinder.md) with reverse data binding capability 
 
 Represents a bindable member that allows setting a value and notifies listeners when the value changes.
 
+ [IBinder\<T\>](Aspid.MVVM.IBinder-1.md)
+
+Extends [`IBinder`](Aspid.MVVM.IBinder.md) with the ability to receive typed values from the ViewModel.
+
  [IBinder](Aspid.MVVM.IBinder.md)
 
 Base interface for binder implementations.
 Defines the binding lifecycle — binding to and unbinding from an [`IViewModel`](Aspid.MVVM.IViewModel.md).
-
- [IBinder\<T\>](Aspid.MVVM.IBinder-1.md)
-
-Extends [`IBinder`](Aspid.MVVM.IBinder.md) with the ability to receive typed values from the ViewModel.
 
  [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
@@ -481,10 +471,6 @@ Represents a bindable member that exposes a read-only value and allows binders t
 
 Provides the ability to force a rebind, re-establishing the connection to the current ViewModel.
 
- [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
-
-An interface for a command that can be executed with a parameter.
-
  [IRelayCommand\<T1, T2, T3\>](Aspid.MVVM.IRelayCommand-3.md)
 
 An interface for a command that can be executed with three parameters.
@@ -500,6 +486,10 @@ An interface for a command that can be executed with four parameters.
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
 An interface for a command that can be executed without parameters.
+
+ [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
+
+An interface for a command that can be executed with a parameter.
 
  [IReverseBinder\<T\>](Aspid.MVVM.IReverseBinder-1.md)
 

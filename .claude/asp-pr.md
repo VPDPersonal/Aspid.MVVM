@@ -1,6 +1,7 @@
 # PR rules for Aspid.MVVM
 
-No CI checks these rules yet: keep to them by hand.
+`.github/workflows/pr-checks.yml` checks the title, sets the `type:*`, `breaking-change` and `area:*` labels from it
+and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
 
 - Types: `feat` `fix` `perf` `refactor` `style` `docs` `test` `build` `ci` `chore` `revert`.
 - Scopes (or none): `core` `starterkit` `binders` `converters` `collections` `editor` `samples` `generators`
@@ -17,7 +18,9 @@ No CI checks these rules yet: keep to them by hand.
   - `breaking-change` with `!`;
   - `area:*` from the paths: `area: runtime` (package code outside `Editor/` and `Tests/`), `area: editor`
     (`Editor/` folders), `area: samples` (`Samples~/`), `area: docs` (`Documentation/`, `Docs/`, root `*.md`),
-    `area: ci` (`.github/`);
+    `area: ci` (`.github/`, `scripts/`, `global.json`, `Directory.Build.props`), `area: generator` and
+    `area: analyzer` (a submodule and its DLL), `area: claude` (`.claude/`, `.agents/`, `AGENTS.md`, `CLAUDE.md`);
+    `pr-checks.yml` sets the `type:*`, `breaking-change` and `area:*` labels itself, on every change of the PR;
   - `dependencies` for a package, tool or submodule bump;
   - `status: blocked` when the PR waits for another PR or for the owner.
 - `.github/workflows/pr-ready-labels.yml` sets `status: needs-review` and `status: work-in-progress` on ready and

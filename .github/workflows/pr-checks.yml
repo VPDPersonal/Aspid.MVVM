@@ -28,51 +28,49 @@ jobs:
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
+            // The types, scopes and labels of .claude/asp-pr.md.
             const TYPES = {
               feat: 'type: feature', fix: 'type: fix', perf: 'type: performance', refactor: 'type: refactor',
-              docs: 'type: documentation', test: 'type: test', chore: 'type: chore', ci: 'type: ci', style: 'type: style',
-              build: 'type: build', revert: 'type: revert',
+              style: 'type: style', docs: 'type: documentation', test: 'type: test', ci: 'type: ci',
+              build: 'type: chore', chore: 'type: chore', revert: 'type: chore',
             };
             const SCOPES = [
-              // features
-              'viewmodels', 'bindable-members', 'binders', 'converters', 'commands', 'collections', 'views',
-              'virtualized-list', 'dynamic-viewmodel', 'di', 'localization',
-              // layers
-              'core', 'unity', 'starterkit', 'editor', 'generators', 'analyzers', 'unity-generators', 'samples',
-              'tests', 'package', 'submodule',
+              // package
+              'core', 'starterkit', 'binders', 'converters', 'collections', 'editor', 'samples', 'generators',
+              'analyzers', 'package',
               // repository
-              'site', 'docs', 'readme', 'changelog', 'migration', 'release', 'ci', 'github', 'skills', 'claude', 'deps',
+              'project', 'site', 'api', 'changelog', 'release', 'ci', 'github', 'skills', 'claude', 'deps',
             ];
-            // Longest prefix wins; a file can add several areas. A submodule bump is the submodule's path itself.
             const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
+            // A submodule bump changes the submodule's path itself.
+            const SUBMODULES = {
+              'Aspid.MVVM.Generators': 'area: generator',
+              'Aspid.MVVM.Unity.Generators': 'area: generator',
+              'Aspid.MVVM.Analyzers': 'area: analyzer',
+            };
             const AREAS = [
-              [PKG + 'Source/', 'area: runtime'],
-              [PKG + 'Unity/Runtime/', 'area: runtime'],
-              [PKG + 'StarterKit/Runtime/', 'area: runtime'],
-              [PKG + 'Unity/Editor/', 'area: editor'],
-              [PKG + 'StarterKit/Editor/', 'area: editor'],
-              [PKG + 'Tests/', 'area: tests'],
-              [PKG + 'Samples~/', 'area: samples'],
-              [PKG + 'Documentation/', 'area: docs'],
-              [PKG + 'Aspid.MVVM.Generators.dll', 'area: generator'],
-              [PKG + 'Unity/Aspid.MVVM.Unity.Generators.dll', 'area: generator'],
-              [PKG + 'Aspid.MVVM.Analyzers.dll', 'area: analyzer'],
-              ['Aspid.MVVM.Generators', 'area: generator'],
-              ['Aspid.MVVM.Unity.Generators', 'area: generator'],
-              ['Aspid.MVVM.Analyzers', 'area: analyzer'],
-              ['Docs/', 'area: website'],
-              ['README', 'area: docs'],
-              ['CHANGELOG', 'area: docs'],
-              ['MIGRATION', 'area: docs'],
-              ['.claude/', 'area: claude'],
-              ['.agents/', 'area: claude'],
-              ['AGENTS.md', 'area: claude'],
-              ['CLAUDE.md', 'area: claude'],
-              ['.github/', 'area: ci'],
-              ['scripts/', 'area: ci'],
-              ['global.json', 'area: ci'],
-              ['Directory.Build.props', 'area: ci'],
+              'area: runtime', 'area: editor', 'area: samples', 'area: docs', 'area: ci', 'area: generator',
+              'area: analyzer', 'area: claude',
             ];
+            const areasOf = (file) => {
+              const areas = [];
+              if (file.startsWith(PKG)) {
+                const path = file.slice(PKG.length);
+                if (path.startsWith('Samples~/')) areas.push('area: samples');
+                else if (/^Documentation(\/|\.meta$)/.test(path)) areas.push('area: docs');
+                else if (/(^|\/)Editor\//.test(path)) areas.push('area: editor');
+                else if (!/^Tests(\/|\.meta$)/.test(path)) areas.push('area: runtime');
+                if (/Generators\.dll(\.meta)?$/.test(path)) areas.push('area: generator');
+                if (/Analyzers\.dll(\.meta)?$/.test(path)) areas.push('area: analyzer');
+              }
+              if (SUBMODULES[file.split('/')[0]]) areas.push(SUBMODULES[file.split('/')[0]]);
+              if (file.startsWith('Docs/') || /^[^/]+\.md$/.test(file)) areas.push('area: docs');
+              if (/^(\.github|scripts)\//.test(file) || ['global.json', 'Directory.Build.props'].includes(file))
+                areas.push('area: ci');
+              // Agent configuration, wherever a CLAUDE.md or AGENTS.md lives.
+              if (/^\.(claude|agents)\//.test(file) || /(^|\/)(CLAUDE|AGENTS)\.md$/.test(file)) areas.push('area: claude');
+              return areas;
+            };
 
             const pr = context.payload.pull_request;
             const { owner, repo } = context.repo;
@@ -102,14 +100,9 @@ jobs:
             else if (m && current.includes('breaking-change')) remove.add('breaking-change');
 
             const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number });
-            for (const { filename } of files) {
-              for (const [prefix, label] of AREAS)
-                if (filename.startsWith(prefix)) add.add(label);
-              // A nested CLAUDE.md or AGENTS.md is agent configuration wherever it lives.
-              if (/\/(CLAUDE|AGENTS)\.md$/.test(filename)) add.add('area: claude');
-            }
+            for (const { filename } of files) areasOf(filename).forEach(label => add.add(label));
             // An area no changed file reaches any more (the PR moved on) loses its label.
-            for (const label of new Set(AREAS.map(([, area]) => area)))
+            for (const label of AREAS)
               if (current.includes(label) && !add.has(label)) remove.add(label);
 
             const toAdd = [...add].filter(l => !current.includes(l));
@@ -119,8 +112,9 @@ jobs:
 
             if (errors.length) core.setFailed(errors.join('\n'));
 
-  # Shipped package code changed → the same entry in CHANGELOG.md and CHANGELOG.ru.md, or the `no-changelog` label.
-  # release.yml takes the release notes from the English file; the Russian one is its translation.
+  # Shipped package code changed → the same entry in CHANGELOG.md and CHANGELOG.ru.md, or the `needs-changelog` label
+  # until the entry is written (.claude/asp-pr.md). release.yml takes the release notes from the English file; the
+  # Russian one is its translation.
   changelog:
     name: CHANGELOG
     runs-on: ubuntu-latest
@@ -134,17 +128,16 @@ jobs:
           script: |
             const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
             const pr = context.payload.pull_request;
-            if (pr.labels.some(l => l.name === 'no-changelog')) return core.info('`no-changelog` label set.');
+            if (pr.labels.some(l => l.name === 'needs-changelog')) return core.info('`needs-changelog` label set.');
 
             const { owner, repo } = context.repo;
             const files = (await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number }))
               .map(f => f.filename);
-            // The code a user installs: the assemblies, the samples (their tutorials aside), the Roslyn DLLs and
-            // package.json. Tests and the docs pages ship too, but change nothing a user sees.
+            // The package except Documentation/, Tests/ and Markdown: the assemblies, the samples, the Roslyn DLLs and
+            // package.json, which users install. The docs pages, the tests and the tutorials change nothing they get.
             const shipped = files.filter(f =>
-              ['Source/', 'Unity/', 'StarterKit/'].some(folder => f.startsWith(PKG + folder)) ||
-              (f.startsWith(PKG + 'Samples~/') && !/\/README(?:\.ru)?\.md(?:\.meta)?$/.test(f)) ||
-              (f.startsWith(PKG) && /^(?:[^/]+\.dll|package\.json)$/.test(f.slice(PKG.length))));
+              f.startsWith(PKG) && !/^(?:Documentation|Tests)(?:\/|\.meta$)/.test(f.slice(PKG.length)) &&
+              !/\.md(?:\.meta)?$/.test(f));
             if (!shipped.length) return core.info('No shipped package code changed.');
             const english = files.includes('CHANGELOG.md'), russian = files.includes('CHANGELOG.ru.md');
             if (english && russian) return core.info('CHANGELOG updated.');
@@ -161,4 +154,4 @@ jobs:
             else
               core.setFailed(
                 `Package code changed (${list}) but neither CHANGELOG.md nor CHANGELOG.ru.md did. ` +
-                'Add the same entry to both, or the `no-changelog` label if users see no change.');
+                'Add the same entry to both, or the `needs-changelog` label until it is written.');

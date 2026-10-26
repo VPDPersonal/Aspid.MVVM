@@ -41,7 +41,7 @@ Do not report:
 - Style and naming that `AGENTS.md` and the `aspid-code-style` and `starterkit-layout` skills do not cover.
 - The wording of translations: `Documentation/ru/`, `README.ru.md` files, `CHANGELOG.ru.md`, `MIGRATION.ru.md`.
 - The content of generated or third-party files: `Docs/api/`, the committed DLLs, `packages-lock.json`,
-  `package-lock.json`, `Aspid.MVVM/Assets/Plugins/`, `Aspid.MVVM/Assets/_Assets/TextMesh Pro/`.
+  `package-lock.json`, `Aspid.MVVM/Assets/Plugins/`, `Aspid.MVVM/Assets/TextMesh Pro/`.
 - The `asp-branch`, `asp-commit` and `asp-pr` skills in `.claude/skills/`: they are copied from Aspid.AgentKit as it
   ships them.
 

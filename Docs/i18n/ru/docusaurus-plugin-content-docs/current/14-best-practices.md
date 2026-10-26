@@ -268,14 +268,7 @@ _view.DeinitializeView()?.DisposeViewModel();
 Destroy(viewGameObject);
 ```
 
-### 4. Не инициализирован git submodule
-
-```bash
-# Ошибки компиляции после клонирования
-git submodule update --init --recursive
-```
-
-### 5. Имя поля View не совпадает с ViewModel
+### 4. Имя поля View не совпадает с ViewModel
 
 ```csharp
 // ViewModel:
@@ -286,7 +279,7 @@ git submodule update --init --recursive
 [SerializeField] private MonoBinder _playerName;  // ✅
 ```
 
-### 6. Циклические обновления TwoWay
+### 5. Циклические обновления TwoWay
 
 Биндеры из StarterKit содержат защиту от циклов. При создании кастомного TwoWay-биндера:
 

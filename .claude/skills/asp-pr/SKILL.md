@@ -241,7 +241,6 @@ Defaults. The repo's review rules for the bot (for example `.github/claude-revie
 
 - **Stacked PRs** («пр стэком», «стэк пр», «мерж весь стэк»). Load the `gh-stack` skill. Create, push, rebase and merge with `gh stack`. This skill still writes the title and body of each PR.
 - **Epic branch.** Merge each PR into the epic branch. Merge the epic PR last.
-- **Submodule.** After the merge, update the submodule in the parent repo with its own commit (`asp-commit`) and PR.
 
 ## Special cases
 

@@ -21,7 +21,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - Converters: catalogue grown from 17 to ~190, `ITwoWayConverter`, `ConverterAsset`, composition primitives, culture-aware formatting.
 - Editor: UI Toolkit inspectors, rebuilt `DebugViewModelPanel`, Welcome / Settings window, FastTools type picker for `[SerializeReference]`.
 - `MonoView` is concrete, `DynamicViewModel` is a typed property bag, `ViewInitializer` gained a DI construction stage.
-- Package is an embedded UPM package; `Aspid.Collections` and `Aspid.FastTools` are UPM git dependencies; generators live in submodules.
+- Package is an embedded UPM package; `Aspid.Collections` and `Aspid.FastTools` are UPM git dependencies; the generator and analyzer sources live in this repository.
 - Documentation site on Docusaurus (`en` / `ru`), samples rebuilt as a learning path, ~3000 EditMode tests.
 
 ### Added
@@ -137,10 +137,10 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 #### Project & infrastructure
 
 - Package promoted to an embedded UPM package under `Packages/tech.aspid.mvvm`; Unity project moved into `Aspid.MVVM/`.
-- `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are git submodules.
+- `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` moved into this repository with their full history; they are no longer git submodules.
 - `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.9`) are UPM git dependencies.
 - Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags and takes release notes from this file; it runs the whole CI first.
-- CI on every pull request: package files, version files, reproducible Roslyn DLLs rebuilt from the submodules, .NET tests, and EditMode + PlayMode tests on every Unity 6000.x line; PR title and CHANGELOG checks.
+- CI on every pull request: package files, version files, reproducible Roslyn DLLs rebuilt from their sources, .NET tests, and EditMode + PlayMode tests on every Unity 6000.x line; PR title and CHANGELOG checks.
 - Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI with an `.mcp.json` server; root `CLAUDE.md`.
 - Editor target `6000.6.5f1`.
 

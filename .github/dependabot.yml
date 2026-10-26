@@ -1,7 +1,6 @@
 # Weekly, one grouped PR per ecosystem, titled `chore(deps): …` so it passes the PR title check.
-# NuGet is left out on purpose: Roslyn versions in the generator/analyzer projects are pinned to what Unity ships, and
-# they live in the submodules. Git submodules are left out too: a bump must come with the rebuilt DLLs
-# (scripts/build-roslyn-dlls.sh), which Dependabot cannot commit.
+# NuGet is left out on purpose: Roslyn versions in the generator/analyzer projects are pinned to what Unity ships, and a
+# bump must come with the rebuilt DLLs (scripts/build-roslyn-dlls.sh), which Dependabot cannot commit.
 # Actions are pinned by full commit SHA with a `# vX.Y.Z` comment; Dependabot moves both. Pin a new action the same way.
 version: 2
 updates:

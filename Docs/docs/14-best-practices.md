@@ -268,14 +268,7 @@ _view.DeinitializeView()?.DisposeViewModel();
 Destroy(viewGameObject);
 ```
 
-### 4. Git submodule not initialized
-
-```bash
-# Compile errors after cloning
-git submodule update --init --recursive
-```
-
-### 5. View field name does not match the ViewModel
+### 4. View field name does not match the ViewModel
 
 ```csharp
 // ViewModel:
@@ -286,7 +279,7 @@ git submodule update --init --recursive
 [SerializeField] private MonoBinder _playerName;  // ✅
 ```
 
-### 6. TwoWay update loops
+### 5. TwoWay update loops
 
 StarterKit binders have loop protection. When writing a custom TwoWay binder:
 

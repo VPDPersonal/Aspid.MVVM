@@ -19,14 +19,14 @@ and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
   - `area:*` from the paths: `area: runtime` (package code outside `Editor/` and `Tests/`), `area: editor`
     (`Editor/` folders), `area: samples` (`Samples~/`), `area: docs` (`Docs/`, root `*.md`),
     `area: ci` (`.github/`, `scripts/`, `global.json`, `Directory.Build.props`), `area: generator` and
-    `area: analyzer` (a submodule and its DLL), `area: claude` (`.claude/`, `.agents/`, `AGENTS.md`, `CLAUDE.md`);
+    `area: analyzer` (a source folder and its DLL), `area: claude` (`.claude/`, `.agents/`, `AGENTS.md`, `CLAUDE.md`);
     `pr-checks.yml` sets the `type:*`, `breaking-change` and `area:*` labels itself, on every change of the PR;
-  - `dependencies` for a package, tool or submodule bump;
+  - `dependencies` for a package or tool bump;
   - `status: blocked` when the PR waits for another PR or for the owner.
 - `.github/workflows/pr-ready-labels.yml` sets `status: needs-review` and `status: work-in-progress` on ready and
   draft; do not pass them.
-- A change in `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/` or `Aspid.MVVM.Unity.Generators/` gets its own PR in
-  that submodule repo. The PR here bumps the submodule and the committed DLL.
+- A change in `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/` or `Aspid.MVVM.Unity.Generators/` goes in the same PR
+  as the DLL that `scripts/build-roslyn-dlls.sh` rebuilds from it.
 
 ## Review loop
 
@@ -38,7 +38,7 @@ Logic paths:
 
 - package: `Aspid.MVVM/Packages/tech.aspid.mvvm/` except `*.md`, including the committed
   generator and analyzer DLLs;
-- .NET: the submodules `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/`, `Aspid.MVVM.Unity.Generators/`;
+- .NET: `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/`, `Aspid.MVVM.Unity.Generators/`;
 - dev project: `Aspid.MVVM/Packages/manifest.json`, `Aspid.MVVM/Packages/packages-lock.json`, `Aspid.MVVM/Assets/`,
   `Aspid.MVVM/ProjectSettings/`;
 - site: `Docs/` except `api/`, `static/`, `docs/`, `tutorials/` and the Markdown in `i18n/`;

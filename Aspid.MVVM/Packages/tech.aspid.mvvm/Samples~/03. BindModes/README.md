@@ -70,7 +70,7 @@ A `readonly` field becomes `OneTime` on its own. `[OneTimeBind]` is spelled out 
 
 ## One member, several binders
 
-`Volume` is bound twice: the slider (`TwoWay`) and a label (`OneWay`). `IsMuted` is bound twice as well: the toggle (`TwoWay`) and the slider's `interactable` through `SelectableInteractableMonoBinder` with a `BoolInvertConverter` in its slot. While muted, the slider is disabled.
+`Volume` is bound twice: the slider (`TwoWay`) and a label (`OneWay`), whose `Truncate` converter keeps four characters, so `0.6212505` shows as `0.62`. `IsMuted` is bound twice as well: the toggle (`TwoWay`) and the slider's `interactable` through `SelectableInteractableMonoBinder` with a `BoolInvertConverter` in its slot. While muted, the slider is disabled.
 
 The ViewModel describes state once. How many UI elements look at it is up to the scene.
 

@@ -4,20 +4,28 @@
   "private": true,
   "scripts": {
     "sync-i18n": "node scripts/sync-i18n.mjs",
+    "sync-changelog": "node scripts/sync-changelog.mjs",
+    "sync": "npm run sync-i18n && npm run sync-changelog",
     "api": "node scripts/docfx-projects.mjs && rm -rf api && docfx metadata docfx/docfx.json && node scripts/docfx-postprocess.mjs",
-    "prestart": "npm run sync-i18n",
-    "prebuild": "npm run sync-i18n",
+    "prestart": "npm run sync",
+    "prestart:ru": "npm run sync",
+    "prebuild": "npm run sync",
     "start": "docusaurus start",
     "start:ru": "docusaurus start --locale ru",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
     "write-translations": "docusaurus write-translations",
-    "version": "docusaurus docs:version"
+    "version": "docusaurus docs:version",
+    "check-selectors": "node scripts/check-selectors.mjs",
+    "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.1",
     "@docusaurus/preset-classic": "^3.9.1",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@fontsource/ibm-plex-serif": "5.3.0",
     "@mdx-js/react": "^3.1.0",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.1.1",
@@ -26,7 +34,12 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.9.1",
-    "@docusaurus/types": "^3.9.1"
+    "@docusaurus/types": "^3.9.1",
+    "@docusaurus/utils": "^3.9.1",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx": "^3.1.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "overrides": {
     "postcss-selector-parser": "^7.1.6",

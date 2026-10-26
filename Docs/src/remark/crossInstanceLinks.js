@@ -10,10 +10,14 @@
  * the same language. The locale segment is dropped here: Docusaurus prefixes absolute routes with the
  * current locale itself.
  */
+import { existsSync } from 'node:fs';
+
+const SAMPLES_DIR = new URL('../../../Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/', import.meta.url);
 const DOCS_RE = /^(?:\.\.\/)+Documentation\/(?:([a-z]{2}(?:-[A-Za-z]{2,4})?)\/)?(.+?)(?:\.md)?(#.*)?$/;
 // `Samples~/` is optional so links between sibling tutorials (`../02.%20Greeter/README.ru.md`) are covered too:
-// the translated copies are all named README.md, so the `.ru` file link only exists in the package.
-const SAMPLES_RE = /^(?:\.\.\/)+(?:Samples~\/)?([^/]+)\/README(?:\.([a-z]{2}(?:-[A-Za-z]{2,4})?))?\.md(#.*)?$/i;
+// the translated copies are all named README.md, so the `.ru` file link only exists in the package. Without it the
+// folder must be a sample, so a doc's `../StarterKit/README.md` stays a link inside the docs.
+const SAMPLES_RE = /^(?:\.\.\/)+(Samples~\/)?([^/]+)\/README(?:\.([a-z]{2}(?:-[A-Za-z]{2,4})?))?\.md(#.*)?$/i;
 
 function kebab(name) {
   return name
@@ -40,13 +44,15 @@ function docSlug(path) {
 function rewrite(url) {
   const decoded = decodeURIComponent(url);
 
-  const samples = decoded.match(SAMPLES_RE);
-  if (samples) return `/tutorials/${sampleSlug(samples[1])}${samples[3] ?? ''}`;
-
   const docs = decoded.match(DOCS_RE);
   if (docs) {
     const slug = docSlug(docs[2]);
     return `/docs${slug ? `/${slug}` : ''}${docs[3] ?? ''}`;
+  }
+
+  const samples = decoded.match(SAMPLES_RE);
+  if (samples && (samples[1] || existsSync(new URL(`${samples[2]}/`, SAMPLES_DIR)))) {
+    return `/tutorials/${sampleSlug(samples[2])}${samples[4] ?? ''}`;
   }
 
   return null;

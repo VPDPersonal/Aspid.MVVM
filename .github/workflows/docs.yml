@@ -1,8 +1,8 @@
 name: Docs
 
 # Builds the Docusaurus site in Docs/ and publishes it to GitHub Pages.
-# Content comes from the package (Documentation/ and Samples~/*/README.md),
-# so any change there rebuilds the site.
+# Content comes from the package (Documentation/ and Samples~/*/README.md) and the root
+# changelogs, so any change there rebuilds the site.
 
 on:
   push:
@@ -11,12 +11,14 @@ on:
       - 'Docs/**'
       - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/**'
       - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/*/README*.md'
+      - 'CHANGELOG*.md'
       - '.github/workflows/docs.yml'
   pull_request:
     paths:
       - 'Docs/**'
       - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/**'
       - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/*/README*.md'
+      - 'CHANGELOG*.md'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -34,12 +36,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The pages show their last update date, read from the git history.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: Docs/package-lock.json
       - run: npm ci
+        working-directory: Docs
+      - run: npm test
         working-directory: Docs
       - run: npm run build
         working-directory: Docs

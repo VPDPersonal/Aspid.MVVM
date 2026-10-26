@@ -1,0 +1,103 @@
+/* The README badge chips on the site: colours from the badge SVGs, following the site theme instead of the OS. */
+
+.badge {
+  --badge-outline: #363d38;
+  --badge-text: #e5e9e5;
+  --badge-unity: #89c99a;
+  --badge-gold: #d7bd77;
+  --badge-shield: #85add4;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 12px 0 11px;
+  color: var(--badge-text);
+  border: 1px solid var(--badge-outline);
+  border-radius: 6px;
+  font: 500 13px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  white-space: nowrap;
+  transition: border-color 0.15s ease;
+}
+html[data-theme='light'] .badge {
+  --badge-outline: #cfd5cf;
+  --badge-text: #222925;
+  --badge-unity: #397649;
+  --badge-gold: #7c5b12;
+  --badge-shield: #487aa8;
+}
+.icon { flex: none; width: 16px; height: 16px; overflow: visible; }
+.unity .icon { color: var(--badge-unity); }
+.preview .icon, .accent { color: var(--badge-gold); }
+.license .icon { width: 18px; height: 18px; color: var(--badge-shield); }
+
+/* Outranks the accent colour and hover underline of the global `.markdown a:not(...)` rule. */
+:global(.markdown) a.badge:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)) {
+  color: var(--badge-text);
+  text-decoration: none;
+}
+/* The hover outline takes the badge's own icon colour, not the site accent. */
+.unity { --badge-mark: var(--badge-unity); }
+.preview { --badge-mark: var(--badge-gold); }
+.license { --badge-mark: var(--badge-shield); }
+:global(.markdown) a.badge:hover { border-color: var(--badge-mark); }
+
+/* Unity: the mark turns a third, onto itself. */
+.unity .icon { transition: transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.unity:hover .icon { transform: rotate(120deg); }
+
+/* Preview: the brew heats up, boils, the flask shudders and the brew bursts out of the neck. All parts share one clock. */
+.preview { --brew: 1.5s; }
+.liquid { opacity: 0.22; transform-box: fill-box; transform-origin: 50% 100%; }
+.bubble, .spark, .flash { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.preview:hover .icon { animation: shudder var(--brew) ease-out; transform-origin: 50% 80%; }
+.preview:hover .liquid { animation: boil var(--brew) ease-in-out; }
+.preview:hover .bubble { animation: rise 0.42s ease-in 3; }
+.preview:hover .spark { animation: burst var(--brew) cubic-bezier(0.2, 0.7, 0.3, 1); }
+.preview:hover .flash { animation: flash var(--brew) ease-out; }
+@keyframes shudder {
+  0%, 44% { transform: none; }
+  48% { transform: translate(-0.6px, 0) rotate(-4deg); }
+  52% { transform: translate(0.6px, 0) rotate(4deg); }
+  56% { transform: translate(-0.6px, 0) rotate(-5deg); }
+  60% { transform: translate(0.6px, 0) rotate(5deg); }
+  66% { transform: scale(1.25); }
+  78% { transform: scale(0.94); }
+  100% { transform: none; }
+}
+@keyframes boil {
+  0% { opacity: 0.22; transform: none; }
+  20% { opacity: 0.35; transform: scaleY(1.05); }
+  35% { transform: scaleY(0.97); }
+  50% { opacity: 0.4; transform: scaleY(1.12); }
+  64% { opacity: 0.5; transform: scaleY(1.2); }
+  70% { opacity: 0.08; transform: scaleY(0.35); }
+  100% { opacity: 0.22; transform: none; }
+}
+@keyframes rise { 0% { opacity: 0; transform: scale(0.5); } 25% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(-3.4px) scale(1.2); } }
+@keyframes burst {
+  0%, 63% { opacity: 0; transform: none; }
+  67% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+}
+@keyframes flash {
+  0%, 63% { opacity: 0; transform: scale(0.4); }
+  67% { opacity: 1; }
+  90%, 100% { opacity: 0; transform: scale(4); }
+}
+
+/* MIT: the shield is pressed down in place like a stamp, springs back, the impact rings out and the tick is set. */
+.ring { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.license:hover .stamp { animation: stamp 0.55s; transform-origin: 50% 60%; }
+.license:hover .ring { animation: ring 0.6s ease-out 0.18s; }
+.license:hover .check { animation: tick 0.45s ease-out 0.22s both; }
+@keyframes stamp {
+  0% { transform: none; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  32% { transform: scale(0.8); animation-timing-function: cubic-bezier(0.3, 1.6, 0.5, 1); }
+  100% { transform: none; }
+}
+@keyframes ring { 0% { opacity: 0.8; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.6); } }
+@keyframes tick { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .badge *, .badge:hover * { animation: none !important; transition: none !important; transform: none !important; }
+}

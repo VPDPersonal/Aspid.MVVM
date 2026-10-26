@@ -55,7 +55,7 @@ public sealed partial class AudioSettingsViewModel
 
 ## Один член — несколько биндеров
 
-`Volume` привязан дважды: слайдер (`TwoWay`) и текст (`OneWay`). `IsMuted` — тоже дважды: тумблер (`TwoWay`) и `interactable` слайдера (`OneWay`) через `SelectableInteractableMonoBinder` с `BoolInvertConverter` в слоте: пока Muted включён, слайдер выключен.
+`Volume` привязан дважды: слайдер (`TwoWay`) и текст (`OneWay`), у которого конвертер `Truncate` оставляет четыре символа, так что `0.6212505` показывается как `0.62`. `IsMuted` — тоже дважды: тумблер (`TwoWay`) и `interactable` слайдера (`OneWay`) через `SelectableInteractableMonoBinder` с `BoolInvertConverter` в слоте: пока Muted включён, слайдер выключен.
 
 Так и должно быть: ViewModel описывает состояние один раз, а сколько элементов UI на него смотрят — дело сцены.
 

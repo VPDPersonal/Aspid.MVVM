@@ -1,0 +1,199 @@
+/*
+ * Accent variants of the Venom theme, picked in the sidebar footer appearance menu (src/components/NavigationPanel/AppearanceSwitcher.js).
+ * Green is the default and lives in custom.css; each variant below redefines the accent tokens for both themes and
+ * takes its hues from the matching package logo (mono: a greyscale copy of the green one). Success admonitions stay green (--venom-emerald) whatever the accent.
+ */
+
+/* Only the logo in the current accent is shown (src/theme/Logo). */
+html:not([data-accent]) .accent-logo:not([data-accent-logo='green']),
+html[data-accent='red'] .accent-logo:not([data-accent-logo='red']),
+html[data-accent='blue'] .accent-logo:not([data-accent-logo='blue']),
+html[data-accent='yellow'] .accent-logo:not([data-accent-logo='yellow']),
+html[data-accent='mono'] .accent-logo:not([data-accent-logo='mono']) {
+  display: none;
+}
+
+/* ---------- Red ---------- */
+
+html[data-theme='light'][data-accent='red'] {
+  /* Text accent: the mark hue darkened only to 4.5:1 on white; the mark itself only needs a UI mark's 3:1. */
+  --venom-accent: #d24343;
+  --venom-accent-2: #d24343;
+  --venom-accent-deep: #b23939;
+  --venom-accent-ink: #ffffff;
+  --venom-accent-mark: #e04848;
+  --venom-glow: rgba(224, 72, 72, 0.2);
+  --venom-glow-2: rgba(210, 67, 67, 0.14);
+  --venom-glow-soft: rgba(224, 72, 72, 0.11);
+  --ifm-color-primary: #d24343;
+  --ifm-color-primary-dark: #bd3c3c;
+  --ifm-color-primary-darker: #b23939;
+  --ifm-color-primary-darkest: #932f2f;
+  --ifm-color-primary-light: #d65656;
+  --ifm-color-primary-lighter: #d95f5f;
+  --ifm-color-primary-lightest: #e07b7b;
+}
+
+html[data-theme='dark'][data-accent='red'] {
+  --venom-accent: #e06464;
+  --venom-accent-2: #f2b4b4;
+  --venom-accent-deep: #973636;
+  --venom-accent-ink: #1c0707;
+  --venom-glow: rgba(224, 100, 100, 0.2);
+  --venom-glow-2: rgba(151, 54, 54, 0.22);
+  --venom-glow-soft: rgba(224, 100, 100, 0.1);
+  --venom-ripple: #e06464;
+  --ifm-color-primary: #e06464;
+  --ifm-color-primary-dark: #db4949;
+  --ifm-color-primary-darker: #d83b3b;
+  --ifm-color-primary-darkest: #bd2626;
+  --ifm-color-primary-light: #e57f7f;
+  --ifm-color-primary-lighter: #e88c8c;
+  --ifm-color-primary-lightest: #f0b5b5;
+}
+
+html[data-theme='light'][data-accent='red'].docs-doc-page {
+  /* Text on the grey canvas (sidebar, TOC) keeps 4.5:1 there. */
+  --venom-canvas-accent: #b93c3c;
+  --venom-ripple: #e06464;
+}
+
+/* ---------- Blue ---------- */
+
+html[data-theme='light'][data-accent='blue'] {
+  /* Text accent: the mark hue darkened only to 4.5:1 on white; the mark itself only needs a UI mark's 3:1. */
+  --venom-accent: #287ac0;
+  --venom-accent-2: #287ac0;
+  --venom-accent-deep: #2268a3;
+  --venom-accent-ink: #ffffff;
+  --venom-accent-mark: #2f8fe0;
+  --venom-glow: rgba(47, 143, 224, 0.2);
+  --venom-glow-2: rgba(40, 122, 192, 0.14);
+  --venom-glow-soft: rgba(47, 143, 224, 0.11);
+  --ifm-color-primary: #287ac0;
+  --ifm-color-primary-dark: #246ead;
+  --ifm-color-primary-darker: #2268a3;
+  --ifm-color-primary-darkest: #1c5586;
+  --ifm-color-primary-light: #3e87c6;
+  --ifm-color-primary-lighter: #488ec9;
+  --ifm-color-primary-lightest: #68a2d3;
+}
+
+html[data-theme='dark'][data-accent='blue'] {
+  --venom-accent: #4ea5da;
+  --venom-accent-2: #acd6f0;
+  --venom-accent-deep: #27628e;
+  --venom-accent-ink: #04121d;
+  --venom-glow: rgba(78, 165, 218, 0.2);
+  --venom-glow-2: rgba(39, 98, 142, 0.22);
+  --venom-glow-soft: rgba(78, 165, 218, 0.1);
+  --venom-ripple: #4ea5da;
+  --ifm-color-primary: #4ea5da;
+  --ifm-color-primary-dark: #3699d5;
+  --ifm-color-primary-darker: #2c92d0;
+  --ifm-color-primary-darkest: #2478ab;
+  --ifm-color-primary-light: #66b1df;
+  --ifm-color-primary-lighter: #73b8e2;
+  --ifm-color-primary-lightest: #97cae9;
+}
+
+html[data-theme='light'][data-accent='blue'].docs-doc-page {
+  /* Text on the grey canvas (sidebar, TOC) keeps 4.5:1 there. */
+  --venom-canvas-accent: #236ba8;
+  --venom-ripple: #4ea5da;
+}
+
+/* ---------- Yellow ---------- */
+
+html[data-theme='light'][data-accent='yellow'] {
+  /* Light yellow leans amber: a darkened true yellow turns olive, a darkened amber stays golden. Text is that hue at
+     4.5:1 on white, marks at 3:1; filled buttons use the bright amber itself with dark ink. */
+  --venom-accent: #9e6d00;
+  --venom-accent-2: #9e6d00;
+  --venom-accent-deep: #865d00;
+  --venom-accent-ink: #ffffff;
+  --venom-accent-mark: #c68800;
+  --venom-accent-fill: #f0a500;
+  --venom-accent-fill-ink: #1f1600;
+  --venom-glow: rgba(198, 136, 0, 0.2);
+  --venom-glow-2: rgba(158, 109, 0, 0.14);
+  --venom-glow-soft: rgba(198, 136, 0, 0.12);
+  --ifm-color-primary: #9e6d00;
+  --ifm-color-primary-dark: #8e6200;
+  --ifm-color-primary-darker: #865d00;
+  --ifm-color-primary-darkest: #6f4c00;
+  --ifm-color-primary-light: #a87c1a;
+  --ifm-color-primary-lighter: #ad8326;
+  --ifm-color-primary-lightest: #bb994c;
+}
+
+html[data-theme='dark'][data-accent='yellow'] {
+  --venom-accent: #dcbc45;
+  --venom-accent-2: #f0e0a2;
+  --venom-accent-deep: #826b1a;
+  --venom-accent-ink: #161103;
+  --venom-glow: rgba(220, 188, 69, 0.2);
+  --venom-glow-2: rgba(130, 107, 26, 0.22);
+  --venom-glow-soft: rgba(220, 188, 69, 0.1);
+  --venom-ripple: #dcbc45;
+  --ifm-color-primary: #dcbc45;
+  --ifm-color-primary-dark: #d7b32d;
+  --ifm-color-primary-darker: #cfab27;
+  --ifm-color-primary-darkest: #aa8d20;
+  --ifm-color-primary-light: #e1c55d;
+  --ifm-color-primary-lighter: #e3c969;
+  --ifm-color-primary-lightest: #ead68e;
+}
+
+html[data-theme='light'][data-accent='yellow'].docs-doc-page {
+  /* Text on the grey canvas (sidebar, TOC) keeps 4.5:1 there. */
+  --venom-canvas-accent: #8b6000;
+  --venom-ripple: #f0a500;
+}
+
+/* ---------- Mono: graphite and paper, no hue ---------- */
+
+html[data-theme='light'][data-accent='mono'] {
+  --venom-accent: #2a2c31;
+  --venom-accent-2: #121316;
+  --venom-accent-deep: #3a3d45;
+  --venom-accent-ink: #ffffff;
+  /* Mono keeps the body colour for text; marks (bars, underlines, outlines) and tints use a mid grey, so a selection
+     still stands out from the text and the lines around it. */
+  --venom-accent-mark: #8a8f99;
+  /* A filled button in the body colour reads as a black slab; it takes a mid grey instead. */
+  --venom-accent-fill: #6b7079;
+  --venom-glow: rgba(138, 143, 153, 0.22);
+  --venom-glow-2: rgba(58, 61, 69, 0.12);
+  --venom-glow-soft: rgba(138, 143, 153, 0.14);
+  --ifm-color-primary: #2a2c31;
+  --ifm-color-primary-dark: #26282c;
+  --ifm-color-primary-darker: #24252a;
+  --ifm-color-primary-darkest: #1d1f22;
+  --ifm-color-primary-light: #2e3036;
+  --ifm-color-primary-lighter: #303338;
+  --ifm-color-primary-lightest: #373940;
+}
+
+html[data-theme='dark'][data-accent='mono'] {
+  --venom-accent: #e2e3e8;
+  --venom-accent-2: #f0f0f2;
+  --venom-accent-deep: #5a5f6b;
+  --venom-accent-ink: #0a0b0f;
+  --venom-glow: rgba(226, 227, 232, 0.16);
+  --venom-glow-2: rgba(90, 95, 107, 0.22);
+  --venom-glow-soft: rgba(226, 227, 232, 0.08);
+  --venom-ripple: #c8c9d0;
+  --ifm-color-primary: #e2e3e8;
+  --ifm-color-primary-dark: #c8cad4;
+  --ifm-color-primary-darker: #bcbeca;
+  --ifm-color-primary-darkest: #9599ab;
+  --ifm-color-primary-light: #fcfcfc;
+  --ifm-color-primary-lighter: #ffffff;
+  --ifm-color-primary-lightest: #ffffff;
+}
+
+html[data-theme='light'][data-accent='mono'].docs-doc-page {
+  --venom-accent: #2a2c31;
+  --venom-ripple: #8a8e98;
+}

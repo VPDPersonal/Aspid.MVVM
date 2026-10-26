@@ -1,0 +1,11 @@
+{
+  "sidebar.tutorials.category.Path": {
+    "message": "Путь"
+  },
+  "sidebar.tutorials.category.Features": {
+    "message": "Возможности"
+  },
+  "sidebar.tutorials.doc.Overview": {
+    "message": "Обзор"
+  }
+}

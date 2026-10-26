@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 107520761}
   - component: {fileID: 107520760}
   m_Layer: 0
-  m_Name: UnityEngine.EventSystems.EventSystem
+  m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 800823903}
   - component: {fileID: 800823907}
   m_Layer: 5
-  m_Name: Start Stop UnityEngine.UI.Button
+  m_Name: Start Stop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 1060959700}
   - component: {fileID: 1060959697}
   m_Layer: 5
-  m_Name: Reset UnityEngine.UI.Button
+  m_Name: Reset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,7 +1421,7 @@ GameObject:
   - component: {fileID: 1072136778}
   - component: {fileID: 1072136782}
   m_Layer: 5
-  m_Name: Lap UnityEngine.UI.Button
+  m_Name: Lap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

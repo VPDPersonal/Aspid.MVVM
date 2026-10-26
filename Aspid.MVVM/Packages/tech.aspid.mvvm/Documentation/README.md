@@ -1,194 +1,151 @@
-![Aspid.MVVMHeaderImage.png](Images/Aspid.MVVMHeaderImage.png)![](https://img.shields.io/badge/2022.3%2B-000000?style=flat\&logo=unity\&logoColor=white\&color=4fa35d)
+<img src="Images/Aspid.MVVMHeaderImage.png" alt="Aspid.MVVM" />
 
-# Introduction
+[![Unity 6000.0+](Images/status-badge-unity.svg)](https://assetstore.unity.com/packages/slug/298463)
+[![Preview 1.1.0-beta.1](Images/status-badge-preview.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.1.0-beta.1)
+[![MIT License](Images/status-badge-license.svg)](https://github.com/VPDPersonal/Aspid.MVVM/blob/main/LICENSE)
 
-**Aspid.MVVM is a high-performance MVVM framework** for Unity, built on Source Generator, designed\
-with a focus on simplicity, scalability, and clear separation of business logic from presentation.
+Aspid.MVVM is a high-performance MVVM framework for Unity, built on Source Generator: it separates business logic from presentation without reflection, boxing or boilerplate code.
 
-The framework enables a clean architecture where the View, logic, and data are distinctly separated.\
-This allows programmers and designers to work in parallel without interfering with each other, enabling\
-teams to scale projects without descending into chaos.
+[Documentation](https://vpdpersonal.github.io/Aspid.MVVM/docs)
 
-***
+## Installation
 
-### [[Documentation](https://vpdpersonal.github.io/Aspid.MVVM/)] [[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)] [[Donate](#donate)] [[Get Started](#get-started)]
+In **Window → Package Manager**, choose **+ → Install package from git URL…**, paste this URL and click **Install**:
 
-***
+```text
+https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview
+```
 
-## Source Code
+The URL installs the latest preview; **Update** in the Package Manager installs the next one.
 
-### [[Aspid.MVVM](https://github.com/VPDPersonal/Aspid.MVVM/tree/main)] [[Aspid.MVVM.Generators](https://github.com/VPDPersonal/Aspid.MVVM.Generators)]
+Requires Unity 6000.0 or newer. If you got the package from the Asset Store, skip the git URL and install it from **My Assets** in the Package Manager. The full walk-through is in [Getting Started](01-getting-started.md).
 
-### [[Aspid.MVVM.Unity.Generators](https://github.com/VPDPersonal/Aspid.MVVM.Unity.Generators)] [[Aspid.MVVM.Analyzers](https://github.com/VPDPersonal/Aspid.MVVM.Analyzers)]
+## Features
 
-***
+### Core
 
-## ⚡️Key Features
+#### [ViewModels](04-viewmodels.md)
 
-### Data Binding
+The Source Generator turns a field with `[Bind]` into a notifying property. No base class, no wrappers, no boilerplate.
 
-* **Aspid.MVVM** supports four primary data binding modes between View and ViewModel:
+```csharp
+[ViewModel]
+public sealed partial class CounterViewModel
+{
+    [Bind] private int _count;
+}
+```
 
-* **OneWay** – Automatically updates the View when the ViewModel changes.
+#### [Binding Modes](03-binding-modes.md)
 
-* **TwoWay** – Bidirectional synchronization between View and ViewModel.
+OneWay, TwoWay, OneTime and OneWayToSource. The ViewModel sets the upper bound, every binder picks its own mode in the Inspector.
 
-* **OneTime** – Sets the value once during initialization.
+```csharp
+[OneWayBind] private int _health;
+[TwoWayBind] private string _inputText;
+```
 
-* **OneWayToSource** – Updates the ViewModel when the View changes.
+#### [Commands](07-commands.md)
 
-Binding modes can be easily specified:
+`[RelayCommand]` turns a method into a command with `CanExecute` support and up to four parameters.
 
-* In the **View**: Directly via the Unity Inspector.
+```csharp
+[RelayCommand(CanExecute = nameof(CanSubmit))]
+private void Submit() { }
 
-* In the **ViewModel**: Using attributes to restrict allowed binding modes.
+private bool CanSubmit() => !string.IsNullOrEmpty(Text);
+```
 
-**Bindings operate without reflection or boxing/unboxing, ensuring high performance.**
+#### [Views](05-views.md)
 
-### ViewModel
+A View is a MonoBehaviour that hands ViewModel members to binders. The generator writes the initialization code.
 
-With the built-in Source Generator, you can bind any data type:
-
-* No need to inherit from specialized base classes.
-
-* No wrappers or wrapped properties required.
-
-* No boilerplate code, using attributes for configuration.
-
-### Commands
-
-A power command mechanism:
-
-* Supports up to four parameters — simply select the desired signature.
-
-* The `[RelayCommand]` attribute transforms a regular method into a command with `CanExecute` support.
-
-### Observable Collections
-
-A set of flexible, covariant observable collections:
-
-* `ObservableList<T>`
-
-* `ObservableDictionary<TKey, TValue>`
-
-* `ObservableHasSet<T>`
-
-* `ObservableStack<T>`
-
-* `ObservableQueue<T>`
-
-Features:
-
-* Easy synchronization between two dependent collections.
-
-* Support for filtering and sorting without modifying the source collection.
+```csharp
+[View]
+public sealed partial class PlayerView : MonoView
+{
+    [SerializeField] private MonoBinder[] _health;
+}
+```
 
 ### StarterKit
 
-A ready-to-use set of components for a quick start:
+#### [Binders](06-binders.md)
 
-* **Binders**: Quickly connect to the desired component property.
+Ready-made binders for uGUI, TextMeshPro, Transform, Animator, AudioSource and more connect a ViewModel member to a component property.
 
-* **Value Converters**: Transform values for display without altering the ViewModel.
+```csharp
+public interface IBinder<in T> : IBinder
+{
+    void SetValue(T value);
+}
+```
 
-* **List Components**: Including:
+#### [Converters](08-converters.md)
 
-  * **Virtualized List**: Efficiently handles thousands of elements.
+Transform values on their way to the View without altering the ViewModel. Pick one in the Inspector or write your own.
 
-* **Dynamic ViewModel**: For simple structured data without writing a specialized ViewModel.
+```csharp
+public interface IConverter<in TFrom, out TTo> : IConverter
+{
+    TTo Convert(TFrom value);
+}
+```
 
-* **View Initialization Components**: Initialize Views by ViewModel via the Unity Inspector, with support for popular DI frameworks: Zenject, VContainer.
+#### [Collections](09-collections.md)
 
-### Convenient Debugging:
+Observable lists, dictionaries, sets, stacks and queues with filtering, sorting and synchronization between dependent collections.
 
-* View and modify ViewModel state directly in the Unity Inspector, even for plain C# classes.
+```csharp
+IReadOnlyObservableListSync<TodoItemViewModel> items =
+    todos.CreateSync(item => new TodoItemViewModel(item));
+```
 
-* `[BinderLog]` attribute for automatic logging of value changes.
+#### [Dynamic ViewModel](10-dynamic-viewmodel.md)
 
-* Clear visual errors in the editor for incorrect bindings.
+Builds a typed ViewModel at runtime for simple structured data, without a dedicated class.
 
-### High Performance
+```csharp
+var viewModel = new DynamicViewModel();
+IDynamicProperty<int> health = viewModel.Add("Health", 100);
+view.Initialize(viewModel);
+```
 
-**Aspid.MVVM** is designed with performance in mind:
+### Integration & tooling
 
-* No reflection in bindings.
+#### [View Initializers](11-view-initializers.md)
 
-* No boxing/unboxing when passing values.
+Initialize a View from the Inspector, without bootstrap code. [DI integration](12-di-integration.md) resolves the ViewModel through Zenject or VContainer.
 
-* Minimized memory allocations.
+```csharp
+// Without ViewInitializer a script is needed:
+private void Awake() => _view.Initialize(new PlayerViewModel());
+```
 
-### Extensibility
+#### [Analyzers](13-analyzers.md)
 
-The framework is easily extensible:
+Roslyn analyzers flag a missing `partial`, a wrong `CanExecute` signature or a backing field used where the property was meant, with code fixes.
 
-* Create custom binders, converters, components, and more.
+```text
+AMVVM001  A class with [ViewModel] must be partial
+AMVVM005  The CanExecute method/property was not found
+```
 
-* Extend the framework to suit project needs without modifying its core.
+## Resources
 
-### Cross-Platform Support
+- [Tutorials](../Samples~/01.%20Counter/README.md) — six samples that teach one concept each, from a counter to a custom binder.
+- [API reference](https://vpdpersonal.github.io/Aspid.MVVM/api/Aspid.MVVM) — package types, methods and properties.
+- [Changelog](https://vpdpersonal.github.io/Aspid.MVVM/changelog) — changes and fixes by version.
+- [Source generators](https://github.com/VPDPersonal/Aspid.MVVM.Generators) — the Roslyn generators and analyzers behind the attributes.
 
-**Aspid.MVVM** works on all Unity-supported platforms:
+## Help and support
 
-* PC, mobile devices, consoles.
+Report bugs or ask questions in [GitHub Issues](https://github.com/VPDPersonal/Aspid.MVVM/issues). Include your Unity version, package version and steps to reproduce a problem.
 
-* Create different Views for different platforms without changing the ViewModel or business logic.
+If the package helps you, star it on [GitHub](https://github.com/VPDPersonal/Aspid.MVVM).
 
-***
+Distributed under the [MIT License](https://github.com/VPDPersonal/Aspid.MVVM/blob/main/LICENSE).
 
-## Who is Aspid.MVVM For?
+## Support the project
 
-### Unity Developers, who want to:
-
-* Simplify maintenance of complex UI and other presentations.
-
-* Improve code structure, avoiding "spaghetti code" in large projects.
-
-* Achieve an architecture suitable for testing and extension.
-
-### Teams, aiming to:
-
-* Enable parallel work for designers and developers.
-
-* Implement modular development and testing.
-
-* Build scalable applications.
-
-### Projects, where the following are critical:
-
-* Flexibility in adapting to changing requirements.
-
-* Robust architecture.
-
-* High performance.
-
-***
-
-## Donate
-
-This project is developed on a voluntary basis. If you find it useful, you can support its development financially. This helps allocate more time to improving and maintaining Aspid.MVVM.
-
-You can donate via the following platforms:
-
-* [[Unity Asset Store](https://assetstore.unity.com/packages/slug/298463)]
-
-***
-
-## Get Started
-
-Here are some helpful pages to quickly and easily get started with our product:
-
-* [Getting Started](01-getting-started.md)
-* [Architecture](02-architecture.md)
-* [ViewModels](04-viewmodels.md)
-* [Views](05-views.md)
-* [Binders](06-binders.md)
-* [Commands](07-commands.md)
-* [Tutorials](../Samples~/01.%20Counter/README.md)
-
-***
-
-## Aspid.MVVM makes MVVM in Unity not only possible but also convenient.
-
-***
-
-⠀
+Aspid.MVVM is developed in spare time. If it helps you, support its development on the [Unity Asset Store](https://assetstore.unity.com/packages/slug/298463).

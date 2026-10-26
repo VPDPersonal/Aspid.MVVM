@@ -38,11 +38,11 @@ namespace Aspid.MVVM.Samples.ExampleScripts.Views.Other
         // Generated ID: Id7
         [BindId("Id7")]
         [AsBinder(typeof(ImageSpriteBinder))]
-        private Image AsBinder { get; }
-        
+        private Image AsBinder => _asBinder;
+
         // Generated ID: Id8
         [BindId("Id8")]
         [AsBinder(typeof(ImageSpriteBinder))]
-        private Image[] AsBinders { get; }
+        private Image[] AsBinders => _asBinders;
     }
 }

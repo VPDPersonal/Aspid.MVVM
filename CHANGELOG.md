@@ -173,6 +173,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Slider, scrollbar and dropdown binders report the value the control actually holds after Unity clamps it.
 - The Greeter sample uses the shipped `RichTextColorConverter`.
 - Inspector attributes in Unity-independent layers are no longer wrapped in `#if UNITY_2022_1_OR_NEWER`.
+- `InitializeComponent<T>` checks the VContainer resolver for `null` explicitly, so Rider no longer reports a possibly unassigned local.
 
 #### Renamed
 

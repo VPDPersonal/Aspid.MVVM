@@ -54,7 +54,15 @@ namespace Aspid.MVVM.Tests
             Assert.IsFalse(audioSource.isPlaying, "Pause did not take effect");
 
             Invoke(unpause);
-            Assert.IsTrue(audioSource.isPlaying, "Resume did not take effect");
+            if (audioSource.isPlaying) yield break;
+
+            // Without an audio device (a headless CI container) an audio update can drop a paused voice, and then nothing
+            // resumes it. Unity's own UnPause tells that apart from a binder that did not call it.
+            audioSource.UnPause();
+            if (!audioSource.isPlaying)
+                Assert.Ignore("This audio output dropped the paused voice, so a resume cannot be observed here");
+
+            Assert.Fail("Resume did not take effect");
         }
 
         /// <summary>

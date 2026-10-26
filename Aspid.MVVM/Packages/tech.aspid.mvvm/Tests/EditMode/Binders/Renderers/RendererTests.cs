@@ -36,7 +36,7 @@ namespace Aspid.MVVM.Tests
             var renderer = Spawn<MeshRenderer>("Renderer");
             var binder = renderer.gameObject.AddComponent<RendererSortingLayerNameMonoBinder>();
 
-            LogAssert.Expect(LogType.Error, new Regex("No sorting layer named"));
+            LogAssert.Expect(LogType.Error, new Regex("no sorting layer is named"));
             ((IBinder<string>)binder).SetValue("NoSuchLayer");
 
             Assert.AreEqual("Default", renderer.sortingLayerName, "The nonexistent layer was written anyway");

@@ -68,7 +68,7 @@ namespace Aspid.MVVM.Tests
         {
             var (_, binder) = New<RendererPropertyBlockFloatMonoBinder>(string.Empty);
 
-            LogAssert.Expect(LogType.Error, new Regex("No shader property name set"));
+            LogAssert.Expect(LogType.Error, new Regex("no shader property name is set"));
             binder.Bind(new OneWayStructBindableMember<float>(0f));
 
             Assert.DoesNotThrow(() => ((IBinder<float>)binder).SetValue(1f), "A value without a property name threw");

@@ -1,7 +1,10 @@
 using UnityEngine;
 using NUnit.Framework;
+using System.Reflection;
+using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -69,6 +72,42 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(BindMode.OneWayToSource, binder.Mode, "The default mode is not OneWayToSource");
         }
 
+        // The value travels to the ViewModel, so the converter runs backwards: ConvertBack, never Convert.
+        [Test]
+        public void IsPlaying_WithATwoWayConverter_SendsTheConvertedBackValue()
+        {
+            var binder = NewIsPlaying(new NegateTwoWay());
+
+            var received = new List<bool>();
+            binder.Bind(new OneWayToSourceStructBindableMember<bool>(received.Add));
+
+            Assert.AreEqual(new List<bool> { true }, received, "The value was not converted back");
+        }
+
+        [Test]
+        public void IsPlaying_WithAOneWayConverter_SendsTheValueUnconvertedAndWarns()
+        {
+            var binder = NewIsPlaying(new NegateOneWay());
+
+            LogAssert.Expect(LogType.Warning, new Regex("converts one way only"));
+
+            var received = new List<bool>();
+            binder.Bind(new OneWayToSourceStructBindableMember<bool>(received.Add));
+
+            Assert.AreEqual(new List<bool> { false }, received, "The forward converter ran towards the ViewModel");
+        }
+
+        private AudioSourceIsPlayingToSourceMonoBinder NewIsPlaying(IConverter<bool, bool> converter)
+        {
+            var binder = NewSource().gameObject.AddComponent<AudioSourceIsPlayingToSourceMonoBinder>();
+
+            typeof(AudioSourceIsPlayingToSourceMonoBinder)
+                .GetField("_converter", BindingFlags.Instance | BindingFlags.NonPublic)!
+                .SetValue(binder, converter);
+
+            return binder;
+        }
+
         private AudioSourcePlayOneShotMonoBinder NewPlayOneShot() =>
             NewSource().gameObject.AddComponent<AudioSourcePlayOneShotMonoBinder>();
 
@@ -77,5 +116,17 @@ namespace Aspid.MVVM.Tests
 
         private AudioClip NewClip() =>
             Track(AudioClip.Create("Clip", 128, 1, 44100, stream: false));
+
+        private sealed class NegateOneWay : IConverter<bool, bool>
+        {
+            public bool Convert(bool value) => !value;
+        }
+
+        private sealed class NegateTwoWay : ITwoWayConverter<bool, bool>
+        {
+            public bool Convert(bool value) => !value;
+
+            public bool ConvertBack(bool value) => !value;
+        }
     }
 }

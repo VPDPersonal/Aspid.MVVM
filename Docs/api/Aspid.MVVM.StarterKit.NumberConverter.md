@@ -85,6 +85,30 @@ The number to transform.
 
 The result, in [`Double`](https://learn.microsoft.com/dotnet/api/system.double).
 
+### ApplyToInteger\(double\) {#Aspid_MVVM_StarterKit_NumberConverter_ApplyToInteger_System_Double_}
+
+Transforms the specified number on the way to an [`Int32`](https://learn.microsoft.com/dotnet/api/system.int32) or [`Int64`](https://learn.microsoft.com/dotnet/api/system.int64) result.
+
+```csharp
+protected virtual double ApplyToInteger(double value)
+```
+
+#### Parameters
+
+`value` [double](https://learn.microsoft.com/dotnet/api/system.double)
+
+The number to transform.
+
+#### Returns
+
+ [double](https://learn.microsoft.com/dotnet/api/system.double)
+
+The result, in [`Double`](https://learn.microsoft.com/dotnet/api/system.double), before it is truncated and saturated.
+
+#### Remarks
+
+Default: [`NumberConverter.Apply`](Aspid.MVVM.StarterKit.NumberConverter.md#Aspid_MVVM_StarterKit_NumberConverter_Apply_System_Double_).
+
 ### Convert\(int\) {#Aspid_MVVM_StarterKit_NumberConverter_Convert_System_Int32_}
 
 Converts the specified number.

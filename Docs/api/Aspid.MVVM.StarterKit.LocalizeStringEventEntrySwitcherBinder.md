@@ -12,7 +12,7 @@ Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)
 Assembly: Aspid.MVVM.StarterKit.dll  
 
 [`SwitcherBinder<T1, T2>`](Aspid.MVVM.StarterKit.SwitcherBinder-2.md) that switches
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
 ```csharp

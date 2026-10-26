@@ -91,16 +91,51 @@ namespace Aspid.MVVM.Tests
             }
         }
 
-        // The reverse path is either inherited from the fixed base or declared locally. Both spell it
-        // the same way, which is why the name is the thing to look for.
+        // The reverse path is either GetConvertedBackValue, inherited from the fixed base, or a ConvertBack
+        // call inside one of the binder's own methods, as the binders with their own converter field make it.
         private static bool HasReversePath(Type type)
         {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public |
+                BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+
             for (var current = type; current is not null && current != typeof(object); current = current.BaseType)
             {
-                var methods = current.GetMethods(
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+                var methods = current.GetMethods(flags);
 
-                if (methods.Any(method => method.Name is "GetConvertedBackValue")) return true;
+                if (methods.Any(method => method.Name is "GetConvertedBackValue" || CallsConvertBack(method))) return true;
+            }
+
+            return false;
+        }
+
+        // Every call and callvirt operand in the IL is resolved and checked by name. The bytes are scanned rather
+        // than decoded, so an operand-sized run of other instructions can also be tried; it resolves to nothing
+        // or to another method.
+        private static bool CallsConvertBack(MethodInfo method)
+        {
+            const byte call = 0x28;
+            const byte callvirt = 0x6F;
+
+            var il = method.GetMethodBody()?.GetILAsByteArray();
+            if (il is null) return false;
+
+            for (var index = 0; index + 4 < il.Length; index++)
+            {
+                if (il[index] is not (call or callvirt)) continue;
+
+                var token = BitConverter.ToInt32(il, index + 1);
+                if (token >> 24 is not (0x06 or 0x0A or 0x2B)) continue;
+
+                try
+                {
+                    var callee = method.Module.ResolveMethod(
+                        token,
+                        method.DeclaringType?.GetGenericArguments(),
+                        method.IsGenericMethod ? method.GetGenericArguments() : null);
+
+                    if (callee.Name is "ConvertBack") return true;
+                }
+                catch (ArgumentException) { }
             }
 
             return false;

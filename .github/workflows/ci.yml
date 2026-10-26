@@ -1,0 +1,584 @@
+name: CI
+
+# Every check of a pull request except the PR title and CHANGELOG checks (pr-checks.yml): cheap repository checks, the
+# Roslyn DLLs, the .NET tests and the Unity EditMode and PlayMode tests. No job has a path filter: a workflow skipped by
+# a filter reports nothing, and a required check that never reports blocks the pull request. The Unity plan job decides
+# itself whether the Unity tests run, and the Roslyn DLLs and .NET test jobs skip their steps when nothing they read
+# changed; all of them still report.
+
+on:
+  pull_request:
+    # The default types plus the label events, so that adding or removing `unity-quick` reruns the checks. A label that
+    # pr-checks.yml sets with GITHUB_TOKEN starts no workflow; any label a person changes reruns the checks, and the
+    # Unity tests only when `unity-quick` changes what they must cover (see the Unity plan job).
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  push:
+    branches: [main]
+  # A maintainer starts it on a branch of this repository, for a commit whose PR cannot run the Unity tests itself
+  # (a fork or Dependabot PR without Unity secrets). Here the Unity tests always run and are not skipped.
+  workflow_dispatch:
+  # release.yml runs every check and test on the commit it publishes; there the Unity tests may not be skipped.
+  workflow_call:
+    inputs:
+      require-unity:
+        description: 'Fail instead of skipping the Unity tests when the Unity account secrets are unavailable.'
+        type: boolean
+        default: false
+    secrets:
+      UNITY_EMAIL:
+        required: false
+      UNITY_PASSWORD:
+        required: false
+
+permissions:
+  contents: read
+
+# PR runs share one group per branch and cancel each other. A run for a label other than `unity-quick` cancels nothing:
+# it changes no input, so it waits for the running one and then skips the Unity tests that passed there, instead of
+# restarting them halfway. A push to main or a release (workflow_call) gets one group per commit: a group keeps only one
+# pending run, so a shared group would cancel the run of a commit in the middle.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: >-
+    ${{ github.event_name == 'pull_request' && (!contains(fromJSON('["labeled", "unlabeled"]'), github.event.action)
+    || github.event.label.name == 'unity-quick') }}
+
+jobs:
+  # A file without a .meta, a guid used twice, a sample or asmdef reference that leads nowhere: Unity repairs these in a
+  # local package and ignores or breaks them in the installed one.
+  package-files:
+    name: Package files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            scripts
+            Aspid.MVVM/Packages/tech.aspid.mvvm
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: node scripts/check-package-files.mjs
+
+  # The install URLs that follow the package.json version, and the minimum Unity version that the files with a
+  # hand-written copy and the Unity matrix still agree on.
+  versions:
+    name: Version files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            .claude/skills
+            .github/workflows
+            scripts
+            Aspid.MVVM/Packages/tech.aspid.mvvm
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: node scripts/check-version.mjs
+      - run: node scripts/check-unity-minimum.mjs
+
+  # The tests of scripts/*.test.mjs. They check fixtures in temporary folders; unity-inputs.test.mjs also reads this
+  # workflow and, through git, the tree of the commit.
+  script-tests:
+    name: Script tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            .github/workflows
+            scripts
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: node --test scripts/*.test.mjs
+
+  # A change to a generator or the analyzer reaches Unity only through the DLL in the package. A Release build of the
+  # submodules rewrites the three DLLs there (scripts/build-roslyn-dlls.sh); a clean `git diff` shows that the committed
+  # ones come from the sources at the commits the submodules point to.
+  roslyn-dlls:
+    name: Roslyn DLLs
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          filter: blob:none
+          # The .gitmodules URLs are SSH ones; checkout fetches the public submodules over HTTPS with its token.
+          submodules: true
+          sparse-checkout: |
+            scripts
+            Aspid.MVVM.Generators
+            Aspid.MVVM.Analyzers
+            Aspid.MVVM.Unity.Generators
+            Aspid.MVVM/Packages/tech.aspid.mvvm
+      # Skips the rest when nothing the job reads changed: the folders of its sparse checkout (a submodule bump is a
+      # change of its folder), global.json, Directory.Build.props and this workflow. The base is the one of the Unity
+      # plan job: for a PR the main it merges into, for a push to main the previous commit. A release and a manual run
+      # always build. A failed diff runs the job. The dotnet-tests job reuses this step through the anchor.
+      - &changes
+        id: changes
+        env:
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+          BEFORE: ${{ github.event.before }}
+          REQUIRE_UNITY: ${{ inputs.require-unity }}
+        run: |
+          base=""
+          if [ "$REQUIRE_UNITY" != true ]; then
+            if [ "$EVENT" = pull_request ] && git rev-parse -q --verify HEAD^2 >/dev/null; then
+              base="$(git rev-parse HEAD^1)"
+            elif [ "$EVENT" = push ] && [ "$REF" = refs/heads/main ] \
+              && [ "$(git rev-parse -q --verify HEAD^1)" = "$BEFORE" ]; then
+              base="$BEFORE"
+            fi
+          fi
+          read -ra paths <<<"$(git sparse-checkout list | tr '\n' ' ')"
+          paths+=(global.json Directory.Build.props .github/workflows/ci.yml)
+          if [ -n "$base" ] && git diff --quiet --no-renames "$base" HEAD -- "${paths[@]}"; then
+            echo "::notice::Nothing this job reads changed since ${base:0:7}; it is skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+      # The SDK pinned in global.json built the committed DLLs. It goes into a folder of its own: the runner's
+      # preinstalled SDKs would otherwise win the roll-forward of the generators' own global.json.
+      - if: steps.changes.outputs.run == 'true'
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
+        with:
+          global-json-file: global.json
+      # Delete them first: a build that stops copying a DLL into the package then shows as a deleted file in the diff,
+      # instead of leaving the committed one in place.
+      - name: Rebuild the three DLLs in Release
+        if: steps.changes.outputs.run == 'true'
+        run: |
+          rm -f Aspid.MVVM/Packages/tech.aspid.mvvm/Aspid.MVVM.Generators.dll \
+            Aspid.MVVM/Packages/tech.aspid.mvvm/Aspid.MVVM.Analyzers.dll \
+            Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Aspid.MVVM.Unity.Generators.dll
+          scripts/build-roslyn-dlls.sh
+      - name: Compare with the committed DLLs
+        if: steps.changes.outputs.run == 'true'
+        run: |
+          if ! git diff --exit-code --stat -- 'Aspid.MVVM/Packages/tech.aspid.mvvm/*.dll'; then
+            echo "::error::A committed Roslyn DLL differs from a Release build of the submodule it comes from. Run scripts/build-roslyn-dlls.sh with the SDK of global.json, then commit the DLLs."
+            exit 1
+          fi
+
+  dotnet-tests:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Generators
+            path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators.Tests
+          - name: Analyzers
+            path: Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests
+          - name: Unity generators
+            path: Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators.Tests
+    steps:
+      # Only what the solutions read, with the submodules.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          filter: blob:none
+          submodules: true
+          sparse-checkout: |
+            Aspid.MVVM.Generators
+            Aspid.MVVM.Analyzers
+            Aspid.MVVM.Unity.Generators
+      # The changes step of the roslyn-dlls job.
+      - *changes
+
+      # The test projects target net9.0; the SDK pinned in global.json builds them, the 9.0 runtime (installed via the
+      # 9.0.x SDK) runs them. A folder of its own, as in the roslyn-dlls job.
+      - if: steps.changes.outputs.run == 'true'
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
+        with:
+          global-json-file: global.json
+          dotnet-version: 9.0.x
+
+      - name: Run ${{ matrix.name }} tests
+        if: steps.changes.outputs.run == 'true'
+        run: dotnet test "${{ matrix.path }}" --nologo
+
+  # Runs the Unity tests only for a change that can affect them and only with a license to run them.
+  # What the Unity tests read is digested by scripts/unity-inputs.mjs: the package without its Markdown, license text and
+  # Documentation folder, the dev project's manifest, lock file and TMP Essential Resources, make-unity-test-project.sh,
+  # the unity-tests job and UNITY_VERSIONS. They are skipped when
+  #  - the commit under test has the digest of its base (a PR: the main it merges into; a push: the previous commit),
+  #    so nothing they read changed: docs, a CHANGELOG line, a license text, another job of this workflow;
+  #  - or a run of this repository passed them on the same digest and versions. The unity job marks such a run with an
+  #    artifact named after both. This covers a push of docs after a tested commit, a label event, a merge of main
+  #    that brings nothing for them, and the push to main after the merge of a PR that tested every version on the
+  #    same content. A fork's run cannot mark one: its artifacts carry the fork as their head repository.
+  # A release (require-unity) and a manual run always test.
+  # The "Unity" check must not be green when a change that reaches the Unity tests was not run through them: a PR without
+  # the secrets (a fork PR, or a Dependabot PR, which reads its own secret store), a release (require-unity) and a manual
+  # run fail the plan instead of skipping. A maintainer then reads the change and runs this workflow with
+  # workflow_dispatch on a branch of this repository; for Dependabot PRs the owner can also add UNITY_EMAIL and
+  # UNITY_PASSWORD as Dependabot secrets. Only a push without the secrets (a fork's own push) skips with a notice.
+  # A PR with the `unity-quick` label tests only the first and the last version of UNITY_VERSIONS: the minimum still
+  # catches a newer API, the newest line a removed one. The push to main after the merge of such a PR runs every
+  # version.
+  # Secrets: UNITY_EMAIL and UNITY_PASSWORD of a Unity account with a Personal license; GameCI activates a seat with
+  # them in each job. Do not add the .ulf from Unity Hub (UNITY_LICENSE): it is bound to the Hub machine, and on
+  # 6000.0.53f1 GameCI keeps retrying it instead of falling back to the account.
+  unity-plan:
+    name: Unity plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      run: ${{ steps.plan.outputs.run }}
+      versions: ${{ steps.plan.outputs.versions }}
+      passed-artifact: ${{ steps.plan.outputs.passed-artifact }}
+    steps:
+      # The commit under test and its parents; for a PR the merge commit that the Unity tests check out, whose first
+      # parent is the main it merges into. Without blobs: unity-inputs.mjs reads the trees and fetches only ci.yml.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout: scripts
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - id: plan
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          REQUIRE_UNITY: ${{ inputs.require-unity }}
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          QUICK: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'unity-quick') }}
+          # Every Unity 6000.x line: the oldest release of the minimum line that the git dependencies allow
+          # (Aspid.FastTools needs 6000.0.53f1), then the newest patch of each later line.
+          # scripts/check-unity-minimum.mjs checks that the first version is on the minimum line of package.json.
+          UNITY_VERSIONS: 6000.0.53f1 6000.1.17f1 6000.2.15f1 6000.3.26f1 6000.4.12f1 6000.5.11f1 6000.6.5f1
+        run: |
+          read -ra versions <<<"$UNITY_VERSIONS"
+          tested=all
+          if [ "$QUICK" = true ]; then
+            versions=("${versions[0]}" "${versions[-1]}")
+            tested=quick
+          fi
+          echo "versions=$(jq -cn '$ARGS.positional' --args "${versions[@]}")" >> "$GITHUB_OUTPUT"
+
+          # The commit to compare with. None for a release and a manual run, and none for a new branch or a push whose
+          # previous commit is gone.
+          base=""
+          if [ "$REQUIRE_UNITY" != true ]; then
+            if [ "$EVENT" = pull_request ] && git rev-parse -q --verify HEAD^2 >/dev/null; then
+              base="$(git rev-parse HEAD^1)"
+            elif [ "$EVENT" = push ] && [ -n "${BEFORE//0/}" ] \
+              && git fetch -q --depth=1 --filter=blob:none --no-tags origin "$BEFORE"; then
+              base="$BEFORE"
+            fi
+          fi
+
+          # No digest when the script fails (ci.yml without the unity-tests job, a moved package): nothing is skipped.
+          digests="$(node scripts/unity-inputs.mjs HEAD ${base:+"$base"})" || digests=""
+          digest="$(sed -n 1p <<<"$digests")"
+          base_digest="$(sed -n 2p <<<"$digests")"
+          [ -z "$digest" ] || echo "passed-artifact=unity-passed-$digest-$tested" >> "$GITHUB_OUTPUT"
+
+          # A pass on every version also holds for a quick run. Another attempt of this run does not count: a rerun
+          # of all its jobs asks to test again. A failed call trusts no run.
+          passed=""
+          if [ -n "$digest" ] && [ "$REQUIRE_UNITY" != true ] && [ "$EVENT" != workflow_dispatch ]; then
+            names=("unity-passed-$digest-all")
+            [ "$tested" = all ] || names+=("unity-passed-$digest-$tested")
+            for name in "${names[@]}"; do
+              passed="$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=$name&per_page=100" --jq '[.artifacts[]
+                | select((.expired | not) and .workflow_run.head_repository_id == .workflow_run.repository_id
+                  and .workflow_run.id != '"$GITHUB_RUN_ID"')][0].workflow_run.id // empty')" || passed=""
+              [ -z "$passed" ] || break
+            done
+          fi
+
+          if [ -n "$base_digest" ] && [ "$digest" = "$base_digest" ]; then
+            echo "No change reaches the Unity tests; they are skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          elif [ -n "$passed" ]; then
+            echo "::notice::The Unity tests passed on the same inputs in $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$passed; they are skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          elif [ -z "$UNITY_EMAIL" ] || [ -z "$UNITY_PASSWORD" ]; then
+            if [ "$REQUIRE_UNITY" = true ] || [ "$EVENT" = workflow_dispatch ]; then
+              echo "::error::UNITY_EMAIL or UNITY_PASSWORD is not available; the Unity tests must run here."
+              exit 1
+            elif [ "$EVENT" = pull_request ]; then
+              echo "::error::The Unity tests must run for this change, but this run has no Unity secrets (a fork or Dependabot PR). A maintainer must run them after reading the change, because the Unity Editor executes its code with the Unity account secrets: push this commit to a branch of this repository and start the CI workflow on that branch (Actions > CI > Run workflow)."
+              exit 1
+            fi
+            echo "::notice::UNITY_EMAIL or UNITY_PASSWORD is not available; the Unity tests are skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            [ "$QUICK" != true ] || echo "::notice::The unity-quick label is set; only Unity ${versions[*]} are tested."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  # Compiles the package, its tests and all samples in a throwaway project with the git packages of the dev project and
+  # runs the EditMode and PlayMode tests on every version of UNITY_VERSIONS in the plan job (only the first and the last
+  # with `unity-quick`). A line without a version is not tested: Unity changes APIs and behaviour without a define.
+  # Each version needs a GameCI image (unityci/editor). Add a version to UNITY_VERSIONS when a new Unity line ships.
+  # The job is part of the "Unity" check below.
+  # There is no Library cache: it saves at most the first import, and 6000.6 was SIGKILLed with a restored one in
+  # Aspid.FastTools, which runs the same job.
+  unity-tests:
+    name: Unity tests (${{ matrix.unity }})
+    needs: unity-plan
+    if: needs.unity-plan.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    # Both passes take a few minutes; the rest is room for a slow image pull and an activation retry.
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        unity: ${{ fromJSON(needs.unity-plan.outputs.versions) }}
+    env:
+      UNITY_VERSION: ${{ matrix.unity }}
+      # The game-ci CLI that game-ci/unity-test-runner v4.4.0 runs, pinned by version and archive checksum. No name
+      # here starts with GAME_CI: the CLI reads such variables as its own options and stops on unknown ones.
+      GAMECI_VERSION: v0.1.72
+      GAMECI_SHA256: 1de550a620ee92e05e920b6db7d431621440b60b2577f04b4a997dc92a58cb0a
+    steps:
+      # What the test project reads: the package and the dev project's manifest and lock (one folder), the TMP
+      # Essential Resources (with the folder's .meta next to it) and the script that builds the project.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: |
+            Aspid.MVVM/Packages
+            Aspid.MVVM/Assets/TextMesh Pro
+            scripts
+
+      - name: Create the test project
+        run: scripts/make-unity-test-project.sh ci-unity-project "$UNITY_VERSION"
+
+      - name: Download the game-ci CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          dir="$RUNNER_TEMP/game-ci"
+          gh release download "$GAMECI_VERSION" --repo game-ci/cli --pattern game-ci-linux-x64.tar.gz --dir "$dir"
+          echo "$GAMECI_SHA256  $dir/game-ci-linux-x64.tar.gz" | sha256sum --check --quiet
+          tar -xzf "$dir/game-ci-linux-x64.tar.gz" -C "$dir"
+          echo "GAMECI=$dir/game-ci" >> "$GITHUB_ENV"
+
+      # Two passes, EditMode then PlayMode, on one Personal seat. The runner has no GPU, and no test opens a window, so
+      # both run under -nographics. The second pass reuses the Library of the first.
+      # The seat is activated once and returned once: every activation is a login to the Unity account, which allows
+      # only a few in a short time ("User reaches maximum same user attempt retry count", 143.002), and a second
+      # activation seconds after a return often gets no seat. game-ci mounts $HOME as /root in each container, so the
+      # passes find the license that `game-ci activate` left there.
+      # Unity sometimes assigns no seat at all when many jobs activate the same account at once, or assigns one and then
+      # fails to write the license file ("User token expired") while game-ci still reports success. So an activation
+      # counts only with the line about the updated license file; otherwise it gets one more attempt after a pause.
+      - id: activate
+        name: Activate a Unity Personal seat
+        env: &unity-account
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          log="$RUNNER_TEMP/activate.log"
+          for attempt in 1 2; do
+            "$GAMECI" activate --engine=unity ci-unity-project --engineVersion="$UNITY_VERSION" \
+              --targetPlatform=StandaloneLinux64 2>&1 | tee "$log"
+            if grep -q "Successfully updated UnityEntitlementLicense.xml" "$log"; then
+              exit 0
+            fi
+            if [ "$attempt" = 1 ]; then
+              echo "::warning::The activation failed; trying once more after a pause."
+              sleep $((60 + RANDOM % 60))
+            fi
+          done
+          exit 1
+
+      # A pass without a results file broke before its tests ran: 6000.6 is sometimes SIGKILLed (137) as it opens the
+      # Library of the first pass. It gets one more try on a fresh Library and the same seat. The exit code does not tell
+      # a broken run from failed tests: game-ci exits 1 for both. The project has no Code Coverage package, so coverage
+      # is off: it only added -debugCodeOptimization. Both container variables go in one --dockerEnv, one per line: of
+      # repeated --dockerEnv flags the CLI keeps only the last.
+      - id: editmode
+        name: EditMode tests
+        env:
+          PASS: editmode
+        run: &unity-pass |
+          run_pass() {
+            "$GAMECI" test --docker --engine=unity ci-unity-project --testPlatforms="$PASS" \
+              --engineVersion="$UNITY_VERSION" --artifactsPath="unity-test-results/$PASS" \
+              --customParameters="-nographics" \
+              --dockerEnv="$(printf 'SKIP_ACTIVATION=true\nCOVERAGE_ENABLED=false')"
+          }
+          results="unity-test-results/$PASS/$PASS-results.xml"
+          # Unity 6000.6 keeps a Data Store in Library/DataStore, an LMDB database whose lock files hold the process ids
+          # of the container that wrote them. Each container starts its process ids anew, so the second pass drops
+          # the lock files of the first; LMDB writes new ones. The retry below still covers a kill.
+          sudo rm -f ci-unity-project/Library/DataStore/uds.lock ci-unity-project/Library/DataStore/uds.db-lock
+          code=0
+          run_pass || code=$?
+          if [ ! -f "$results" ]; then
+            echo "::warning::Unity $PASS broke (exit code $code); trying once more on a fresh Library."
+            # Whether the runner killed Unity for memory: 6000.6 loses its Editor or its script compiler this way.
+            echo "::group::Memory after the broken pass"
+            free -m
+            df -h /dev/shm
+            sudo dmesg | grep -iE "killed process|out of memory|oom" | tail -20 || true
+            echo "::endgroup::"
+            sudo rm -rf ci-unity-project/Library "unity-test-results/$PASS"
+            code=0
+            run_pass || code=$?
+          fi
+          echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+          [ -f "$results" ] && echo "results=true" >> "$GITHUB_OUTPUT" || echo "results=false" >> "$GITHUB_OUTPUT"
+
+      - id: playmode
+        name: PlayMode tests
+        env:
+          PASS: playmode
+        run: *unity-pass
+
+      # Also after a failed or cancelled pass, and after a failed activation that may still hold a seat: a seat that
+      # is never returned stays taken and breaks the next runs on the account. The log line decides, not the exit
+      # code: game-ci v0.1.72 returns the seat and then exits 1, since its build check finds no build output.
+      - name: Return the Unity seat
+        if: always() && steps.activate.outcome != 'skipped'
+        continue-on-error: true
+        env: *unity-account
+        run: |
+          log="$RUNNER_TEMP/return-license.log"
+          "$GAMECI" return-license --engine=unity ci-unity-project --engineVersion="$UNITY_VERSION" \
+            --targetPlatform=StandaloneLinux64 2>&1 | tee "$log"
+          if ! grep -q "Successfully returned the entitlement license" "$log"; then
+            echo "::warning::The Unity seat may still be taken; see the return log above."
+            exit 1
+          fi
+
+      - name: Summarize the test results
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os
+          import xml.etree.ElementTree as ET
+
+          lines = [f"### Unity tests {os.environ['UNITY_VERSION']}", "",
+                   "| Pass | Result | Total | Passed | Failed | Skipped | Time |", "|---|---|---|---|---|---|---|"]
+          failed = []
+          fixtures = []
+          skipped = []
+          for name in ("editmode", "playmode"):
+              path = f"unity-test-results/{name}/{name}-results.xml"
+              if not os.path.exists(path):
+                  lines.append(f"| {name} | no results | | | | | |")
+                  continue
+              run = ET.parse(path).getroot()
+              lines.append(f"| {name} | {run.get('result')} | {run.get('total')} | {run.get('passed')} | "
+                           f"{run.get('failed')} | {run.get('skipped')} | {float(run.get('duration')):.0f} s |")
+              failed += [(case.get("fullname"), case.findtext("failure/message", "").strip().splitlines()[:1],
+                          case.findtext("failure/stack-trace", "").strip().splitlines()[:1])
+                         for case in run.iter("test-case") if case.get("result") == "Failed"]
+              skipped += [(name, case.get("fullname"), case.findtext("reason/message", "").strip())
+                          for case in run.iter("test-case") if case.get("result") == "Skipped"]
+              fixtures += [(float(suite.get("duration")), name, suite.get("fullname"), suite.get("total"))
+                           for suite in run.iter("test-suite") if suite.get("type") == "TestFixture"]
+          if failed:
+              lines += ["", f"Failed tests ({len(failed)}):", ""]
+              lines += [f"- `{name}`: {' '.join(message)}" for name, message, _ in failed[:50]]
+          # The slowest fixtures, set-up included, show where a test pass spends its time. They go to the log as well,
+          # where they can be read without downloading the results artifact.
+          slowest = sorted(fixtures, reverse=True)[:15]
+          if slowest:
+              lines += ["", "<details><summary>Slowest fixtures</summary>", "",
+                        "| Time | Pass | Fixture | Tests |", "|---|---|---|---|"]
+              lines += [f"| {duration:.1f} s | {name} | `{fixture}` | {total} |" for duration, name, fixture, total in slowest]
+              lines += ["", "</details>"]
+              for duration, name, fixture, total in slowest:
+                  print(f"{duration:7.2f} s  {name:8}  {fixture} ({total})")
+          if skipped:
+              lines += ["", f"<details><summary>Skipped tests ({len(skipped)})</summary>", ""]
+              lines += [f"- {name}: `{test}` {reason}" for name, test, reason in skipped[:50]]
+              lines += ["", "</details>"]
+              for name, test, reason in skipped:
+                  print(f"skipped  {name:8}  {test}: {reason}")
+          # The message and the first frame of each failure, so a failure can be read without the results artifact.
+          for name, message, frame in failed[:10]:
+              print(f"::error title=Unity {os.environ['UNITY_VERSION']}::{name}: {' '.join(message + frame)}")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("\n".join(lines) + "\n")
+          PY
+
+      - name: Fail on a failed test run
+        if: always() && steps.activate.outcome == 'success'
+        env:
+          EDITMODE: ${{ steps.editmode.outputs.exit-code }}:${{ steps.editmode.outputs.results }}
+          PLAYMODE: ${{ steps.playmode.outputs.exit-code }}:${{ steps.playmode.outputs.results }}
+        run: |
+          status=0
+          for pass in "EditMode:$EDITMODE" "PlayMode:$PLAYMODE"; do
+            IFS=: read -r name code results <<<"$pass"
+            if [ "$code" = 0 ] && [ "$results" = true ]; then
+              continue
+            elif [ "$results" = true ]; then
+              echo "::error::Unity $name: some tests failed; see the summary."
+            else
+              echo "::error::Unity $name broke before it wrote results (exit code ${code:-none})."
+            fi
+            status=1
+          done
+          exit $status
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: unity-test-results-${{ matrix.unity }}
+          path: unity-test-results
+
+  # The one Unity check to require. A skipped matrix job reports no per-version names, so a required
+  # "Unity tests (…)" check would wait forever; this job always reports.
+  unity:
+    name: Unity
+    needs: [unity-plan, unity-tests]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          PLAN: ${{ needs.unity-plan.result }}
+          RUN: ${{ needs.unity-plan.outputs.run }}
+          TESTS: ${{ needs.unity-tests.result }}
+        run: |
+          if [ "$PLAN" != success ]; then
+            echo "::error::Unity plan: $PLAN."
+            exit 1
+          fi
+          if [ "$RUN" = true ] && [ "$TESTS" != success ]; then
+            echo "::error::Unity tests: $TESTS."
+            exit 1
+          fi
+          echo "Unity tests: $TESTS."
+      # Marks the inputs of a run that tested and passed, for the plan of later runs. The name says what passed.
+      - if: needs.unity-plan.outputs.run == 'true' && needs.unity-plan.outputs.passed-artifact != ''
+        run: echo "$GITHUB_SHA" > "$RUNNER_TEMP/unity-passed.txt"
+      - if: needs.unity-plan.outputs.run == 'true' && needs.unity-plan.outputs.passed-artifact != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.unity-plan.outputs.passed-artifact }}
+          path: ${{ runner.temp }}/unity-passed.txt
+          overwrite: true

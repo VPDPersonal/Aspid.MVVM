@@ -70,7 +70,7 @@ Always thrown.
 ### Struct\<TBoxed\>\(IBinder\) {#Aspid_MVVM_ReverseBinderInvalidCastException_1_Struct__1_Aspid_MVVM_IBinder_}
 
 Throws a [`ReverseBinderInvalidCastException<T>`](Aspid.MVVM.ReverseBinderInvalidCastException-1.md) when a struct binder does not implement
-[`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) or [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md).
+[`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) or [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code>.
 
 ```csharp
 public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)

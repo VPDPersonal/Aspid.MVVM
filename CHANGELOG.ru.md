@@ -139,7 +139,8 @@
 - Пакет стал встроенным UPM-пакетом в `Packages/tech.aspid.mvvm`; Unity-проект перенесён в `Aspid.MVVM/`.
 - `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` — git-сабмодули.
 - `Aspid.Collections` (`tech.aspid.collections`) и `Aspid.FastTools` (`tech.aspid.fasttools`, тег `upm-preview/1.0.0-rc.9`) — UPM git-зависимости.
-- Release workflow публикует поддеревья `upm` (stable) и `upm-preview` с неизменяемыми тегами `upm/<version>`, проверяет дрейф DLL генераторов и берёт release notes из этого файла.
+- Release workflow публикует поддеревья `upm` (stable) и `upm-preview` с неизменяемыми тегами `upm/<version>` и берёт release notes из английского CHANGELOG; перед публикацией он прогоняет весь CI.
+- CI на каждый pull request: файлы пакета, файлы версии, воспроизводимые Roslyn DLL, пересобранные из сабмодулей, .NET-тесты, EditMode- и PlayMode-тесты на каждой линейке Unity 6000.x; проверки заголовка PR и CHANGELOG.
 - Workflow Claude PR Assistant и Code Review; автоматизация редактора через Unity CLI с сервером `.mcp.json`; корневой `CLAUDE.md`.
 - Целевой редактор `6000.6.5f1`.
 
@@ -242,6 +243,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `UnityEventStringMonoBinder` бросал на `null`.
 - Генератор игнорировал ограничения `enum` / `struct` на обобщённых bindable-членах.
 - Guard `ProfilerMarker` в `MonoBinder.Unbind()` ломал компиляцию до Unity 2022.1.
+- `MonoView`, добавленный из кода через `AddComponent`, бросал `NullReferenceException` из `Initialize`: его список биндеров не десериализовался и оставался `null`.
 
 #### Коллекции
 
@@ -266,6 +268,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - Биндеры записей локализации молча отдавали `null` для записи по id; теперь биндер объясняет причину.
 - `RectTransformSetters.SetSizeDelta` отдавал `Vector3(w, h, 0)` в `OneWayToSource`; добавлен канал `Vector2`.
 - `min` / `max` у `AudioSource` и `Slider` могли остаться перевёрнутыми.
+- `DebugLogBinder` писал вместо `null`-результата конвертера `ToString()` значения; к `ToString()` теперь переходит только пустой слот конвертера.
 
 #### Конвертеры
 
@@ -279,7 +282,9 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `MonoBinderEditor.OnDisable` бросал для View, не являющегося `MonoView`.
 - Выпадающий список `BindMode` сохранял выбор только для rebindable-владельцев и делил один кэш на всё мультивыделение.
 - Контекстное меню Add Binder передавало в `AddComponent` абстрактный тип target для полей TextMeshPro.
+- Контекстное меню Add Binder игнорировало `SubPath` у `[AddBinderContextMenu]`: DLL Unity-генератора в пакете была собрана до его поддержки.
 - Пути сэмплов в `package.json` указывали на несуществующую папку, и импорт давал пустой результат.
+- У одиннадцати `.uss.meta` редактора не было блока импортёра, а у `README.ru.md` сэмплов — `.meta`.
 
 ---
 

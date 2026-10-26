@@ -22,11 +22,13 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Which components come from the bound vector; the rest come from the reference one.")]
         [SerializeField] private Mode _mode;
 
+        // _preConvertor and _postConvertor are frozen: renaming a serialized field drops the prefab-instance
+        // overrides authored against it, and [FormerlySerializedAs] does not reach them.
         [Tooltip("Applied to the bound vector before the components are selected.")]
-        [SerializeReference] private IConverter<Vector2, Vector2>? _preConverter;
+        [SerializeReference] private IConverter<Vector2, Vector2>? _preConvertor;
 
         [Tooltip("Applied to the combined result.")]
-        [SerializeReference] private IConverter<Vector2, Vector2>? _postConverter;
+        [SerializeReference] private IConverter<Vector2, Vector2>? _postConvertor;
 
         /// <remarks>Default: both components from the bound vector, with no pre- or post-converter.</remarks>
         public Vector2CombineConverter()
@@ -65,8 +67,8 @@ namespace Aspid.MVVM.StarterKit
             IConverter<Vector2, Vector2>? postConverter)
         {
             _mode = mode;
-            _preConverter = preConverter;
-            _postConverter = postConverter;
+            _preConvertor = preConverter;
+            _postConvertor = postConverter;
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace Aspid.MVVM.StarterKit
 
         private Vector2 Combine(Vector2 from, Vector2 to)
         {
-            from = _preConverter?.Convert(from) ?? from;
+            from = _preConvertor?.Convert(from) ?? from;
 
             from = _mode switch
             {
@@ -133,7 +135,7 @@ namespace Aspid.MVVM.StarterKit
                 _ => Undeclared(from)
             };
 
-            return _postConverter?.Convert(from) ?? from;
+            return _postConvertor?.Convert(from) ?? from;
         }
 
         private Vector2 Undeclared(Vector2 from)

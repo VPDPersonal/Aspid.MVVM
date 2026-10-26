@@ -139,7 +139,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Package promoted to an embedded UPM package under `Packages/tech.aspid.mvvm`; Unity project moved into `Aspid.MVVM/`.
 - `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are git submodules.
 - `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.9`) are UPM git dependencies.
-- Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags, verifies generator DLL drift and takes release notes from this file.
+- Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags and takes release notes from this file; it runs the whole CI first.
+- CI on every pull request: package files, version files, reproducible Roslyn DLLs rebuilt from the submodules, .NET tests, and EditMode + PlayMode tests on every Unity 6000.x line; PR title and CHANGELOG checks.
 - Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI with an `.mcp.json` server; root `CLAUDE.md`.
 - Editor target `6000.6.5f1`.
 
@@ -242,6 +243,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `UnityEventStringMonoBinder` threw on a `null` value.
 - Generator ignored `enum` / `struct` constraints on generic bindable members.
 - `MonoBinder.Unbind()` `ProfilerMarker` guard broke compilation before Unity 2022.1.
+- A `MonoView` added from code with `AddComponent` threw a `NullReferenceException` from `Initialize`: its binder list was never deserialized and stayed `null`.
 
 #### Collections
 
@@ -266,6 +268,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Localization entry binders passed a silent `null` for an entry referenced by id; the binder now says why.
 - `RectTransformSetters.SetSizeDelta` reported `Vector3(w, h, 0)` in `OneWayToSource`; a `Vector2` channel is raised too.
 - `AudioSource` and `Slider` min / max could be left inverted.
+- `DebugLogBinder` logged a converter's `null` result as the value's `ToString()`; only an empty converter slot falls back to it now.
 
 #### Converters
 
@@ -279,7 +282,9 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `MonoBinderEditor.OnDisable` threw for a View that is not a `MonoView`.
 - `BindMode` dropdown kept the choice only for rebindable owners and shared one cache across a multi-selection.
 - Add Binder context menu passed the abstract target type to `AddComponent` for TextMeshPro fields.
+- Add Binder context menu ignored `SubPath` of `[AddBinderContextMenu]`: the shipped Unity generator DLL was built before it supported it.
 - Sample paths in `package.json` pointed at a non-existent folder, so imports came out empty.
+- Eleven editor `.uss.meta` files had no importer block, and the sample `README.ru.md` files had no `.meta`.
 
 ---
 

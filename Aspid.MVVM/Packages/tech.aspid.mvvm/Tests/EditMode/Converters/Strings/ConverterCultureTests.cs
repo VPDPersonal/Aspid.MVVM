@@ -16,7 +16,7 @@ namespace Aspid.MVVM.Tests
     /// English one.
     /// </remarks>
     [TestFixture]
-    [SetCulture("de-DE")]
+    [UseCulture("de-DE")]
     public sealed class ConverterCultureTests
     {
         [Test]

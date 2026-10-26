@@ -26,8 +26,7 @@ Projects/Aspid.MVVM/
 │       │   │   ├── Commands/          # Command implementations
 │       │   │   └── ViewModels/        # DynamicViewModel
 │       │   ├── Unity/                 # Unity integration layer
-│       │   ├── Documentation/         # Main docs (Markdown, English) + Documentation/ru/ translation; rendered by Docs/
-│       │   └── Samples~/              # Path 01–06 (Counter, Greeter, BindModes, Stats, TodoList, CustomBinder) + features (VirtualizedList, DynamicViewModel, DiIntegration, ExampleScripts); each README.md is the tutorial, README.ru.md its translation
+│       │   └── Samples~/              # Path 01–06 (Counter, Greeter, BindModes, Stats, TodoList, CustomBinder) + features (VirtualizedList, DynamicViewModel, DiIntegration, ExampleScripts); scenes and code only, the tutorials live in Docs/tutorials/
 │       └── tech.aspid.fasttools/      # Aspid.FastTools (embedded local UPM package)
 ├── Aspid.MVVM.Generators/             # Roslyn source generator (submodule)
 │   ├── Aspid.MVVM.Generators/         # Generator implementation
@@ -36,7 +35,7 @@ Projects/Aspid.MVVM/
 │   ├── Aspid.MVVM.Analyzers/          # Analyzer implementation
 │   └── Aspid.MVVM.Analyzers.Tests/    # Analyzer unit tests
 ├── Aspid.MVVM.Unity.Generators/       # Unity-specific generators (submodule)
-├── Docs/                              # Docusaurus site (GitHub Pages); content lives in the package
+├── Docs/                              # Docusaurus site (GitHub Pages): docs/, tutorials/ (one README.md per sample), i18n/ru/ translations; the package holds no docs or media
 └── README.md
 ```
 
@@ -182,7 +181,7 @@ Submodules:
 Project skills live in `.claude/skills/`; `.agents/skills/` links there for other agents. On Windows the link needs
 a clone with `-c core.symlinks=true` (Developer Mode on); without it, read `.claude/skills/` directly.
 
-- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, built from the package Markdown; see skill [docs-site](.claude/skills/docs-site/SKILL.md)
+- Full docs: https://vpdpersonal.github.io/Aspid.MVVM/ — Docusaurus site in `Docs/`, pages in `Docs/docs` and `Docs/tutorials`; see skill [docs-site](.claude/skills/docs-site/SKILL.md)
 - Unity Asset Store: https://assetstore.unity.com/packages/slug/298463
 - **XML doc conventions**: global skill `asp-xmldoc`
 - **Code style**: skill [aspid-code-style](.claude/skills/aspid-code-style/SKILL.md) — member ordering, formatting, nullable, comments

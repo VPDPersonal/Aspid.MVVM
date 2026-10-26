@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 91702293}
   - component: {fileID: 91702290}
   m_Layer: 5
-  m_Name: Reset UnityEngine.UI.Button
+  m_Name: Reset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1778,7 +1778,7 @@ GameObject:
   - component: {fileID: 991970655}
   - component: {fileID: 991970651}
   m_Layer: 5
-  m_Name: Volume UnityEngine.UI.Slider
+  m_Name: Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2790,15 +2790,20 @@ MonoBehaviour:
   _mode: 1
   _component: {fileID: 1331020728}
   _converter:
-    rid: -2
+    rid: 7288617559345332401
   _isDebug: 0
   _log: []
   _cultureInfoMode: 0
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 7288617559345332401
+      type: {class: TruncateStringConverter, ns: Aspid.MVVM.StarterKit, asm: Aspid.MVVM.StarterKit}
+      data:
+        _maxLength: 4
+        _ellipsis: 
+        _side: 0
+        _atWordBoundary: 0
 --- !u!1 &1540345992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2864,7 +2869,7 @@ GameObject:
   - component: {fileID: 1548380226}
   - component: {fileID: 1548380223}
   m_Layer: 5
-  m_Name: Muted UnityEngine.UI.Toggle
+  m_Name: Muted
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3824,7 +3829,7 @@ GameObject:
   - component: {fileID: 2134222206}
   - component: {fileID: 2134222205}
   m_Layer: 0
-  m_Name: UnityEngine.EventSystems.EventSystem
+  m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,0 +1,44 @@
+.page { padding: 8px 0 24px; }
+.header { max-width: 780px; margin-bottom: 42px; }
+.header h1 { font-size: clamp(2.3rem, 5vw, 3.5rem); line-height: 1.1; letter-spacing: -.04em; margin-bottom: 22px; }
+.header p { font-size: 1.15rem; line-height: 1.6; color: var(--venom-fg); margin-bottom: 0; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.card { container-type: inline-size; display: flex; flex-direction: column; color: var(--venom-fg); background: var(--venom-block-surface); border: 2px solid var(--venom-line-strong); border-radius: 12px; overflow: hidden; transition: border-color .18s ease, transform .18s ease; }
+.card:hover { color: var(--venom-fg); text-decoration: none; border-color: var(--venom-accent-mark); transform: translateY(-3px); }
+.card:focus-visible { outline: 3px solid var(--venom-accent-mark); outline-offset: 4px; }
+.preview { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: var(--venom-panel); border-bottom: 1px solid var(--venom-line-strong); display: flex; align-items: center; justify-content: center; }
+/* The card clips the corners; undo the framed-media rule from custom.css. */
+.preview img { width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 0; }
+/* Scene GIFs carry the article surface as their background. */
+.scene { background: transparent; }
+.content { display: flex; flex: 1; flex-direction: column; padding: 26px; }
+/* The title scales with its card, so the longest name ("SerializeReferences") fits on one line. */
+.content .feature { font: 500 clamp(1.05rem, 6.4cqi, 1.75rem)/1.2 var(--ifm-heading-font-family); letter-spacing: -.025em; color: var(--venom-fg-strong); margin-bottom: 14px; }
+.content > p { font-size: 1rem; line-height: 1.7; color: var(--venom-fg); margin-bottom: 0; }
+/* A last card left alone in its row spans it: the preview keeps its column's width, the text sits beside it. */
+@media (min-width: 701px) {
+  .card:last-child:nth-child(odd) { grid-column: 1 / -1; flex-direction: row; align-items: flex-start; }
+  .card:last-child:nth-child(odd) .preview { flex: 0 0 calc(50% - 16px); border-bottom: 0; border-right: 1px solid var(--venom-line-strong); }
+  .card:last-child:nth-child(odd) .content { align-self: stretch; justify-content: center; }
+  /* Half the cqi of a one-column card, so the title matches the others. */
+  .card:last-child:nth-child(odd) .content .feature { font-size: clamp(1.05rem, calc(3.2cqi - 1px), 1.75rem); }
+}
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; gap: 22px; } .header { margin-bottom: 30px; } .content { padding: 22px; } }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+/* A sample without a capture shows its step on the dot grid, in the accent. */
+.placeholder {
+  flex-direction: column;
+  gap: 6px;
+  background-image: var(--venom-dot-pattern);
+  background-size: 14px 14px;
+}
+.step { font: 500 clamp(2.6rem, 18cqi, 4.5rem)/1 var(--ifm-heading-font-family); letter-spacing: -.04em; color: var(--venom-accent); }
+.kind { font: 500 .8rem/1 var(--ifm-font-family-monospace); letter-spacing: .12em; text-transform: uppercase; color: var(--venom-muted); }
+.card:hover .step { transform: translateY(-2px); }
+.step { transition: transform .18s ease; }
+@media (prefers-reduced-motion: reduce) { .step { transition: none; } .card:hover .step { transform: none; } }
+/* A sample without a scene shows its code on the card's surface, cut at the preview's edge. */
+.code { align-items: flex-start; justify-content: flex-start; padding: 18px 20px; }
+.code > div { width: 100%; margin: 0; border: 0; box-shadow: none; background: transparent; }
+.code pre { margin: 0; padding: 0; background: transparent; font-size: clamp(.6rem, 2.4cqi, .85rem); overflow: hidden; }
+.code button { display: none; }

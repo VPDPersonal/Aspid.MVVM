@@ -31,15 +31,12 @@ const JOB = 'unity-tests';
 // A new format of the digest text must not match a digest of the old one.
 const FORMAT = 'unity-inputs 1';
 
-// Package files that Unity imports as plain text or not at all and that no Unity test reads: Markdown (the sample
-// tutorials included), the license text and the Documentation folder, which holds the pages of the docs site. With
-// their .meta. check-package-files.mjs fails when an asset refers to one of them by its guid or a package file names one
+// Package files that Unity imports as plain text or not at all and that no Unity test reads: Markdown and the license
+// texts, with their .meta. The docs pages and the sample tutorials live in Docs/, outside the package. check-package-files.mjs fails when an asset refers to one of them by its guid or a package file names one
 // in quotes; then the file is an input and must leave this list.
 export const isIgnored = (path) =>
   /\.md(\.meta)?$/.test(path) ||
-  /(^|\/)LICEN[CS]E[^/]*$/.test(path) ||
-  path.startsWith(`${PACKAGE}/Documentation/`) ||
-  path === `${PACKAGE}/Documentation.meta`;
+  /(^|\/)LICEN[CS]E[^/]*$/.test(path);
 
 const isComment = (line) => line.trim() === '' || /^\s*#/.test(line);
 

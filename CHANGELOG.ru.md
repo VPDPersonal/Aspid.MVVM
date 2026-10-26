@@ -128,10 +128,10 @@
 
 #### Сэмплы и документация
 
-- Сэмплы перестроены в учебный путь: `01. Counter` → `06. CustomBinder`, плюс `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; у каждого `README`, свой `.asmdef` и компактный шрифт `Sample SDF` (iA Writer Quattro S, как в сэмплах Aspid.FastTools).
-- Сайт документации на Docusaurus (GitHub Pages): английский оригинал с русским переводом, туториалы в README сэмплов, API-справка DocFX.
+- Сэмплы перестроены в учебный путь: `01. Counter` → `06. CustomBinder`, плюс `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; у каждого свой `.asmdef`, компактный шрифт `Sample SDF` (iA Writer Quattro S, как в сэмплах Aspid.FastTools) и туториал на сайте документации.
+- Сайт документации на Docusaurus (GitHub Pages), устроенный как сайт Aspid.FastTools: английский оригинал с русским переводом, туториал к каждому сэмплу с записью его сцены, история изменений и API-справка DocFX.
 - XML-документация на всех публичных биндерах, конвертерах и типах редактора; у каждого сериализуемого поля есть `[Tooltip]`; все четыре сборки собираются с `-doc` без ошибок.
-- `Documentation/08-converters.md` переписан под актуальный каталог.
+- Страница о конвертерах переписана под актуальный каталог.
 - ~3000 EditMode-тестов, включая контрактные: tooltip'ы, группы picker'а, пути меню, имена свойств в контекстном меню, разрешение `<include>`, документация guard'ов `BindMode`.
 
 #### Проект и инфраструктура
@@ -204,6 +204,7 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 
 ### Удалено
 
+- Папка `Documentation` и файлы `README` сэмплов — руководство и туториалы на [сайте документации](https://vpdpersonal.github.io/Aspid.MVVM/); в пакете нет ни документации, ни медиа.
 - `AddComponentContextMenuAttribute` — используйте `AddBinderContextMenuAttribute` / `AddBinderContextMenuByTypeAttribute` (`Path = "..."`).
 - `AddPropertyContextMenu` — меню свойств обрабатывает пайплайн редактора.
 - Исходники `Aspid.Collections` внутри пакета — теперь пакет `tech.aspid.collections`; вместе с ними `IViewModelCollectionFilter`, составные фильтры и компараторы коллекций.

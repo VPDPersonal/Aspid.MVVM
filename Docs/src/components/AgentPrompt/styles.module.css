@@ -1,0 +1,16 @@
+/* The request and the table share one frame: the prompt is the table's top strip, drawn like the sessions' prompt. */
+.frame { margin-bottom: var(--ifm-leading); }
+.prompt {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--venom-fg-strong);
+  background: var(--venom-block-surface);
+  border: 2px solid var(--venom-line-strong);
+  border-bottom: 1px solid var(--venom-line);
+  border-radius: 12px 12px 0 0;
+  font: 400 0.875rem/1.6 var(--ifm-font-family-monospace);
+}
+.sign { flex: none; color: #d97757; font-weight: 600; }
+.text { white-space: pre-line; }
+.frame.frame > :global(.doc-table-scroll) { margin-bottom: 0; border-top: 0; border-radius: 0 0 12px 12px; }

@@ -8,7 +8,7 @@ and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
   `analyzers` `package` · `project` `site` `api` `changelog` `release` `ci` `github` `skills` `claude` `deps`.
 - `!` before the colon marks a breaking change: a public API of the package is removed or changed. The PR then also
   updates `MIGRATION.md` and `MIGRATION.ru.md`.
-- Shipped package code changed (`Aspid.MVVM/Packages/tech.aspid.mvvm/` except `Documentation/`, `Tests/` and Markdown;
+- Shipped package code changed (`Aspid.MVVM/Packages/tech.aspid.mvvm/` except `Tests/` and Markdown;
   the generator and analyzer DLLs; the package `package.json`) → the same entry under the top `Unreleased` version in
   `CHANGELOG.md` and `CHANGELOG.ru.md`. No entry yet → the `needs-changelog` label.
 - Labels to pass at `gh pr create`:
@@ -17,7 +17,7 @@ and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
     `ci` → `type: ci`, `build` `chore` `revert` → `type: chore`;
   - `breaking-change` with `!`;
   - `area:*` from the paths: `area: runtime` (package code outside `Editor/` and `Tests/`), `area: editor`
-    (`Editor/` folders), `area: samples` (`Samples~/`), `area: docs` (`Documentation/`, `Docs/`, root `*.md`),
+    (`Editor/` folders), `area: samples` (`Samples~/`), `area: docs` (`Docs/`, root `*.md`),
     `area: ci` (`.github/`, `scripts/`, `global.json`, `Directory.Build.props`), `area: generator` and
     `area: analyzer` (a submodule and its DLL), `area: claude` (`.claude/`, `.agents/`, `AGENTS.md`, `CLAUDE.md`);
     `pr-checks.yml` sets the `type:*`, `breaking-change` and `area:*` labels itself, on every change of the PR;
@@ -36,13 +36,13 @@ its `mention` job.
 
 Logic paths:
 
-- package: `Aspid.MVVM/Packages/tech.aspid.mvvm/` except `Documentation/` and `*.md`, including the committed
+- package: `Aspid.MVVM/Packages/tech.aspid.mvvm/` except `*.md`, including the committed
   generator and analyzer DLLs;
 - .NET: the submodules `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/`, `Aspid.MVVM.Unity.Generators/`;
 - dev project: `Aspid.MVVM/Packages/manifest.json`, `Aspid.MVVM/Packages/packages-lock.json`, `Aspid.MVVM/Assets/`,
   `Aspid.MVVM/ProjectSettings/`;
-- site: `Docs/` except `api/` and `static/`;
+- site: `Docs/` except `api/`, `static/`, `docs/`, `tutorials/` and the Markdown in `i18n/`;
 - CI: `.github/workflows/`, `.github/claude-review.md`.
 
-Other paths are text: `Documentation/`, sample `README.md` and `README.ru.md`, `Docs/api/`, `Docs/static/`,
+Other paths are text: `Docs/docs/`, `Docs/tutorials/`, `Docs/i18n/`, `Docs/api/`, `Docs/static/`,
 `.claude/skills/`, root `*.md`. A fix there needs no re-review.

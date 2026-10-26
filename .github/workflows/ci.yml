@@ -215,8 +215,8 @@ jobs:
         run: dotnet test "${{ matrix.path }}" --nologo
 
   # Runs the Unity tests only for a change that can affect them and only with a license to run them.
-  # What the Unity tests read is digested by scripts/unity-inputs.mjs: the package without its Markdown, license text and
-  # Documentation folder, the dev project's manifest, lock file and TMP Essential Resources, make-unity-test-project.sh,
+  # What the Unity tests read is digested by scripts/unity-inputs.mjs: the package without its Markdown and license texts,
+  # the dev project's manifest, lock file and TMP Essential Resources, make-unity-test-project.sh,
   # the unity-tests job and UNITY_VERSIONS. They are skipped when
   #  - the commit under test has the digest of its base (a PR: the main it merges into; a push: the previous commit),
   #    so nothing they read changed: docs, a CHANGELOG line, a license text, another job of this workflow;

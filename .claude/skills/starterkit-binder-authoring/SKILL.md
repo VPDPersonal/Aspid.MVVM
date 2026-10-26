@@ -102,5 +102,5 @@ namespace Aspid.MVVM.StarterKit
 
 ## Documentation
 
-- `Documentation/StarterKit/README.md` and the family's `*-binders.md`: one row per binder, the modes column includes `OneWayToSource`, a ranges/clamps table where applicable.
+- `Docs/docs/StarterKit/README.md` and the family's `*-binders.md` (with the `ru` twins in `Docs/i18n/ru/docusaurus-plugin-content-docs/current/StarterKit/`): one row per binder, the modes column includes `OneWayToSource`, a ranges/clamps table where applicable.
 - The binder `<summary>` is one line: `<see cref="Base{T}"/> that binds <see cref="Component.property"/>.`; cref generic bases by their parameter names, never `{Graphic, Color}`.

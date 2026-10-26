@@ -1,0 +1,69 @@
+.panel { display: flex; flex-direction: column; width: var(--doc-sidebar-width); height: 100%; min-height: 0; }
+/* The mobile drawer fills the viewport; its height is the drawer's, so the list scrolls between header and footer. */
+.panelMobile { width: 100%; height: 100dvh; }
+
+/* Everything shares the menu's edges: boxes start at 0.5rem (menu padding), text and icons at 1.25rem (link padding). */
+.header { flex: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 0 0.5rem; padding: 0.75rem 0 0.85rem; border-bottom: 1px solid var(--venom-canvas-line, var(--venom-line)); }
+.tools { display: flex; align-items: stretch; gap: 0.5rem; }
+.tools > :first-child { flex: 1 1 auto; min-width: 0; }
+.tools > button { flex: none; width: 2.5rem; justify-content: center; border-radius: 10px; }
+.brandRow { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.close { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; color: var(--venom-fg); border-radius: 10px; }
+.close:hover { color: var(--venom-accent); background: var(--venom-glow-soft); }
+.close svg { width: 22px; height: 22px; }
+.brandLink { display: flex; align-items: center; gap: 0.6rem; min-width: 0; padding: 0.25rem 0; color: var(--venom-fg-strong); }
+.brandLink:hover { color: var(--venom-fg-strong); text-decoration: none; }
+.brandLogo { flex: none; display: flex; height: 1.75rem; }
+.brandLogo img { height: 100%; width: auto; }
+.brandTitle { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 600 1rem/1.2 var(--ifm-heading-font-family); letter-spacing: -0.01em; }
+
+.switcher { position: relative; display: flex; }
+.switcherButton { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%; height: 2.5rem; padding: 0 0.75rem; color: var(--venom-fg-strong); background: var(--venom-reading-surface); border: 1px solid var(--venom-line-strong); border-radius: 10px; font: 600 0.875rem/1.5 var(--ifm-font-family-base); text-align: left; cursor: pointer; }
+.switcherButton:hover, .switcherButton[aria-expanded='true'] { border-color: var(--venom-accent-mark); }
+.switcherButton > svg { flex: none; color: var(--venom-muted); transition: transform var(--ifm-transition-fast); }
+.switcherButton[aria-expanded='true'] > svg { transform: rotate(180deg); }
+.switcherMenu { position: absolute; z-index: 20; inset: calc(100% + 0.35rem) 0 auto; margin: 0; padding: 0.35rem; list-style: none; background: var(--venom-reading-surface); border: 1px solid var(--venom-line-strong); border-radius: 10px; box-shadow: 0 12px 40px #0005; }
+.switcherMenuUp { inset: auto 0 calc(100% + 0.35rem) auto; min-width: 10rem; }
+.switcherItem { display: block; padding: 0.45rem 0.75rem; border-radius: 6px; color: var(--venom-fg); font-size: 0.875rem; line-height: 1.5; }
+.switcherItem:hover { color: var(--venom-fg-strong); background: var(--venom-glow-soft); text-decoration: none; }
+.switcherItemActive, .switcherItemActive:hover { color: var(--venom-accent); font-weight: 600; }
+/* Appearance menu: theme options, then the accent logos in one row. */
+.menuSeparator { margin: 0.35rem 0.25rem; border-top: 1px solid var(--venom-line-strong); }
+.themeRow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.25rem; padding: 0.1rem 0.35rem; }
+.themeOption { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; height: 2rem; padding: 0 0.3rem; color: var(--venom-fg); background: transparent; border: 0; border-radius: 6px; font: 500 0.8125rem/1 var(--ifm-font-family-base); white-space: nowrap; cursor: pointer; transition: color 0.15s ease, background-color 0.15s ease, transform 0.12s ease; }
+.themeOption:active { transform: scale(0.95); }
+.themeOption svg { width: 1rem; height: 1rem; flex: none; }
+.themeOption:hover { color: var(--venom-fg-strong); background: var(--venom-glow-soft); }
+.themeOption[aria-pressed='true'] { color: var(--venom-accent); background: var(--venom-glow-soft); box-shadow: inset 0 0 0 1.5px var(--venom-accent-mark); }
+.accentRow { display: flex; gap: 0.25rem; padding: 0.1rem 0.35rem; }
+.accentOption { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: 0; background: transparent; border: 0; border-radius: 6px; cursor: pointer; }
+.accentOption:hover { background: var(--venom-glow-soft); }
+.accentOption[aria-pressed='true'] { background: var(--venom-glow-soft); box-shadow: inset 0 0 0 1.5px var(--venom-accent-mark); }
+.accentOption img { width: 1.25rem; height: 1.25rem; }
+
+/* The wrapped theme sidebar: its own `height: 100%` becomes the flexible middle zone, the menu scrolls. */
+.list { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.list > div { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; height: auto; width: auto; padding-top: 0; }
+.list :global(.menu) { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+
+.footer { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 0.25rem; margin: 0 0.5rem; padding: 0.5rem 0.375rem; border-top: 1px solid var(--venom-canvas-line, var(--venom-line)); }
+/* On desktop the panel sits beside the article card: the brand row and the footer icons share the card's top and bottom edges. */
+.panel:not(.panelMobile) .header { padding-top: 0; }
+.panel:not(.panelMobile) .footer { padding-bottom: 0; }
+.icon, .footer :global(.clean-btn), .locale { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: 0; color: var(--venom-fg); background: transparent; border: 0; border-radius: 10px; cursor: pointer; }
+.icon:hover, .footer :global(.clean-btn:hover), .locale:hover, .locale[aria-expanded='true'] { color: var(--venom-accent); background: var(--venom-glow-soft); text-decoration: none; }
+.locale svg { width: 20px; height: 20px; }
+/* The appearance button shows the current theme; both icons render so the static page is right before hydration. */
+html[data-theme='dark'] .themeIconLight, html[data-theme='light'] .themeIconDark { display: none; }
+
+/* Icon buttons ease into their hover tint and press in on click, like the floating TOC button. */
+.icon, .footer :global(.clean-btn), .locale { transition: color 0.15s ease, background-color 0.15s ease, transform 0.12s ease; }
+.icon:active, .footer :global(.clean-btn:active), .locale:active { transform: scale(0.9); }
+/* Unity: the cube turns a third, which lands it back on the same shape. */
+.unity:is(:hover, :focus-visible) svg { animation: turn 0.7s cubic-bezier(0.3, 1.4, 0.5, 1); }
+@keyframes turn { to { transform: rotate(120deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .icon, .footer :global(.clean-btn), .locale { transition: none; }
+  .unity svg { animation: none; }
+  .themeOption { transition: none; }
+}

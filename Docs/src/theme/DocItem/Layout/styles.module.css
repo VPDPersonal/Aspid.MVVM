@@ -1,0 +1,24 @@
+.docItemContainer header + *,
+.docItemContainer article > *:first-child {
+  margin-top: 0;
+}
+
+/* Only the desktop column shows this copy; the page-wide footer serves mobile. */
+.columnFooter { display: none; }
+
+@media (min-width: 997px) {
+  .docItemCol {
+    max-width: 75% !important;
+  }
+
+  .pageFooter { margin-top: auto; }
+
+  .pageFooter :global(.theme-doc-footer) {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto !important;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .columnFooter { display: block; }
+}

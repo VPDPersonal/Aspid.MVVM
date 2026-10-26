@@ -1,0 +1,294 @@
+/*
+ * Animated previews inside the docs introduction's feature cards, edge to edge: the code on top and its effect below,
+ * split by one rule. Unity mock-ups (Inspector) keep the editor skin, like the captures; everything else (snippet, Profiler
+ * timeline, Claude Code session, names list) sits on the article surface inside the card's frame.
+ */
+
+.featurePreview {
+  --preview-surface: var(--venom-reading-surface);
+  --preview-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --preview-accent-soft: color-mix(in srgb, var(--venom-accent-mark) 12%, transparent);
+  /* Every preview keeps its content 8px from the card's edges, like the captures beside it (custom.css). */
+  --preview-inset: 8px;
+}
+html[data-theme='light'] .featurePreview {
+  --preview-accent-soft: color-mix(in srgb, var(--venom-accent-mark) 12%, transparent);
+}
+
+.snippet {
+  /* The text's own box, not its taller line, starts at the inset: half the line's leading sits above it. */
+  --snippet-pad-y: calc(var(--preview-inset) - 0.215em);
+  margin: 0;
+  padding: var(--snippet-pad-y) 0;
+  overflow-x: auto;
+  background: var(--venom-block-surface);
+  border: 0;
+  border-bottom: 1px solid var(--venom-line-strong);
+  border-radius: 0;
+  font: 400 0.7rem/1.75 var(--ifm-font-family-monospace);
+  white-space: pre;
+}
+/* The 2px bar of a marked line counts toward the inset. */
+.snippetLine { display: block; padding: 0 var(--preview-inset) 0 calc(var(--preview-inset) - 2px); border-left: 2px solid transparent; transition: background-color 0.35s ease, border-color 0.35s ease; }
+.snippetLine[data-active] { background: var(--preview-accent-soft); border-left-color: var(--venom-accent-mark); }
+/* In a frame of its own (AgentSession), the snippet reaches 2px over the frame's left edge, so the marked lines' bars sit
+   on the frame line rather than inside it; the extra padding keeps the code where it was. */
+.framed .snippet { margin-left: -2px; }
+.framed .snippetLine { padding-left: var(--preview-inset); }
+.framed .diff[data-edited] .snippetLine[data-indented] { padding-left: calc(var(--preview-inset) + 4ch); }
+/* In an introduction card the snippet keeps its place (its divider meets the frame cleanly) and only the lines reach over
+   the frame; the card clips at its outer edge where the browser can (custom.css), so the snippet no longer scrolls. */
+@supports (overflow-clip-margin: border-box) {
+  :global(.feature-card__live).featurePreview .snippet { overflow: visible; }
+  :global(.feature-card__live).featurePreview .snippetLine { margin-left: -2px; padding-left: var(--preview-inset); }
+  :global(.feature-card__live).featurePreview .diff[data-edited] .snippetLine[data-indented] { padding-left: calc(var(--preview-inset) + 4ch); }
+}
+/* With the card clipping at its outer edge, a filled or gridded bottom row would reach over the frame's inner curve at the
+   card's bottom-left corner (the preview is the card's left column only on wide layouts): it rounds that corner itself. */
+@supports (overflow-clip-margin: border-box) {
+  @media (min-width: 701px) {
+    :global(.feature-card__live).featurePreview .inspector,
+    :global(.feature-card__live).featurePreview .uiStage { border-bottom-left-radius: calc(var(--ifm-pre-border-radius) - 2px); }
+  }
+}
+
+/* ---------- ProfilerMarkers ---------- */
+
+.profilerBody { display: grid; height: 100%; }
+.timeline { --timeline-grid: rgb(255 255 255 / 0.05); --timeline-ring: rgb(255 255 255 / 0.5); --timeline-glow: rgb(255 255 255 / 0.18); overflow: hidden; }
+html[data-theme='light'] .timeline { --timeline-grid: rgb(0 0 0 / 0.07); --timeline-ring: rgb(0 0 0 / 0.35); --timeline-glow: rgb(0 0 0 / 0.1); }
+.timelineBar { display: flex; justify-content: space-between; padding: 7px var(--preview-inset); color: var(--venom-muted); border-bottom: 1px solid var(--venom-line); font: 500 0.66rem/1 var(--ifm-font-family-monospace); letter-spacing: 0.08em; text-transform: uppercase; }
+.timelineTrack {
+  position: relative;
+  padding: var(--preview-inset) 0;
+  overflow: hidden;
+  background-image: repeating-linear-gradient(90deg, transparent 0 79px, var(--timeline-grid) 79px 80px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.timelineStrip { display: flex; width: max-content; animation: ticker 22s linear infinite; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+.frame { display: flex; flex-direction: column; gap: 4px; width: 420px; margin-right: 12px; }
+.frameRow { display: flex; gap: 4px; padding-left: 10%; }
+.bar { display: block; min-width: 0; overflow: hidden; padding: 5px 8px; color: #0c0e11; border-radius: 4px; font: 600 0.68rem/1.3 var(--ifm-font-family-monospace); text-overflow: ellipsis; white-space: nowrap; transition: opacity 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease; }
+/* The marker whose line the snippet highlights stays lit; the rest dim. */
+.timeline[data-focus] .bar { opacity: 0.32; filter: saturate(0.6); }
+.timeline[data-focus='step'] .bar[data-marker='step'],
+.timeline[data-focus='steer'] .bar[data-marker='steer'],
+.timeline[data-focus='integrate'] .bar[data-marker='integrate'] { opacity: 1; filter: none; box-shadow: 0 0 0 1px var(--timeline-ring), 0 0 14px var(--timeline-glow); }
+.barStep { background: #86cf91; }
+.barSteer { background: #86b9ec; }
+.barIntegrate { background: #ecc676; }
+.playhead { position: absolute; top: 0; bottom: 0; left: 58%; width: 1px; background: #ff6b81; box-shadow: 0 0 10px #ff6b81; }
+
+/* ---------- VisualElement Extensions ---------- */
+
+.uiBody { display: grid; flex: 1; grid-template-rows: auto 1fr; height: 100%; }
+.uiStage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 120px;
+  /* `round` fits a whole number of ~16px cells into the box. Each cell draws its top and left line; the grid layers are
+     clipped to the content box, which the 1px padding starts one pixel in, so the first lines give way to the snippet's
+     rule and the card's edge, and no half cell is left at any edge. */
+  padding: 1px 0 0 1px;
+  background:
+    linear-gradient(var(--venom-line) 1px, transparent 1px) 0 0 / 16px 16px round padding-box content-box,
+    linear-gradient(90deg, var(--venom-line) 1px, transparent 1px) 0 0 / 16px 16px round padding-box content-box;
+}
+.uiPanel {
+  position: relative;
+  padding: 0;
+  background: repeating-linear-gradient(45deg, rgb(92 180 107 / 0.42) 0 5px, rgb(92 180 107 / 0.2) 5px 10px);
+  outline: 1.5px dashed #6aa5ff;
+  outline-offset: 0;
+  border-radius: 2px;
+  transition: padding 0.6s var(--preview-ease);
+}
+.uiPanel[data-x] { padding-inline: 26px; }
+.uiPanel[data-y] { padding-block: 18px; }
+.uiContent { display: grid; place-items: center; min-width: 120px; min-height: 38px; padding: 4px 12px; background: #1b2940; }
+html[data-theme='light'] .uiContent { background: #dbe8fb; }
+.uiPadX, .uiPadY { position: absolute; color: #9fdca9; font: 600 10px/1 var(--ifm-font-family-monospace); opacity: 0; transition: opacity 0.4s ease; }
+.uiPadX { left: 0; top: 50%; width: 26px; text-align: center; transform: translateY(-50%); }
+.uiPadY { top: 0; left: 50%; height: 18px; line-height: 18px; transform: translateX(-50%); }
+.uiPanel[data-x] .uiPadX, .uiPanel[data-y] .uiPadY { opacity: 1; }
+html[data-theme='light'] .uiPadX, html[data-theme='light'] .uiPadY { color: #1f6a31; }
+.uiLabel { display: block; color: var(--venom-fg-strong); font: 600 13px/1.25 var(--ifm-font-family-base); opacity: 0; transform: scale(0.8); transition: opacity 0.4s ease, transform 0.4s var(--preview-ease), font-size 0.5s var(--preview-ease); }
+.uiLabel[data-show] { opacity: 1; transform: none; }
+.uiLabel[data-big] { font-size: 22px; }
+.uiCaption { position: absolute; left: var(--preview-inset); bottom: var(--preview-inset); padding: 2px 7px; color: var(--venom-accent); background: var(--preview-surface); border: 1px solid var(--venom-line); border-radius: 6px; font: 500 0.68rem/1.4 var(--ifm-font-family-monospace); }
+
+/* ---------- SerializedProperty Extensions ---------- */
+
+.propertyBody { display: grid; flex: 1; grid-template-rows: auto 1fr; height: 100%; }
+.inspector { position: relative; overflow: hidden; padding-bottom: 46px; color: #d2d2d2; background: #383838; font: 12.5px/1.4 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.inspectorHead { display: flex; align-items: center; gap: 8px; padding: 7px var(--preview-inset); background: #3e3e3e; border-bottom: 1px solid #242424; font-weight: 600; }
+.inspectorIcon { display: inline-grid; place-items: center; width: 16px; height: 16px; color: #2d6b39; background: #e6e6e6; border-radius: 3px; font: 700 11px/1 var(--ifm-font-family-monospace); }
+.inspectorRow { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: 8px; padding: 6px var(--preview-inset); }
+.inspectorField { padding: 2px 7px; color: #e6e6e6; background: #2a2a2a; border: 1px solid #202020; border-radius: 3px; font-variant-numeric: tabular-nums; }
+.inspectorField[data-flash] { animation: flash 1s ease; }
+@keyframes flash { 0% { background: color-mix(in srgb, var(--venom-accent) 60%, transparent); border-color: var(--venom-accent); } 100% { background: #2a2a2a; border-color: #202020; } }
+.toast { position: absolute; left: var(--preview-inset); right: var(--preview-inset); bottom: var(--preview-inset); display: flex; align-items: center; gap: 8px; padding: 6px 10px; color: #d6d6d6; background: #262626; border: 1px solid #1a1a1a; border-radius: 6px; opacity: 0; transform: translateY(10px); transition: opacity 0.35s ease, transform 0.35s var(--preview-ease); }
+.toast[data-show] { opacity: 1; transform: none; }
+.toast kbd { padding: 0 5px; color: #eee; background: #3a3a3a; border: 1px solid #1a1a1a; border-radius: 4px; box-shadow: none; font: 600 11px/1.5 var(--ifm-font-family-monospace); }
+
+/* ---------- Editor Helpers ---------- */
+
+/* The code takes the spare height, so the rows keep the inset between them as well as around them. */
+.namesBody { display: grid; flex: 1; grid-template-rows: 1fr auto; height: 100%; }
+/* Its two lines sit in the middle of that height. */
+.namesBody > .snippet { display: flex; flex-direction: column; justify-content: center; }
+.names { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--preview-inset); margin: 0; padding: var(--preview-inset); list-style: none; }
+.names li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 10px;
+  text-align: center;
+  border: 1px solid var(--venom-line);
+  border-radius: 10px;
+  transition: border-color 0.4s ease, background-color 0.4s ease;
+}
+/* The list's gap spaces the rows: `ul` outranks the article's `.markdown li + li` margin. */
+ul.names li + li { margin-top: 0; }
+/* The row whose call the snippet highlights; a resolved row keeps its label but not the highlight. */
+.names li[data-active] { background: color-mix(in srgb, var(--venom-accent-mark) 8%, transparent); border-color: color-mix(in srgb, var(--venom-accent-mark) 50%, var(--venom-line)); }
+.names code { display: inline-flex; flex: none; align-items: center; gap: 6px; max-width: 100%; overflow: hidden; padding: 0; color: var(--venom-muted); background: none; border: 0; font-size: 0.78rem; text-overflow: ellipsis; white-space: nowrap; vertical-align: baseline; transition: color 0.4s ease; }
+.names li[data-done] code { color: var(--venom-fg); }
+.namesArrow { color: var(--venom-divider); line-height: 1; transform: rotate(-90deg); transition: color 0.4s ease, transform 0.4s var(--preview-ease); }
+.names li[data-done] .namesArrow { transform: rotate(-90deg) translateY(2px); }
+.names li[data-active] .namesArrow { color: var(--venom-accent); }
+.namesLabel { flex: 1; min-width: 0; max-width: 100%; overflow: hidden; color: var(--venom-fg-strong); font: 500 0.85rem/1.3 var(--ifm-heading-font-family); text-align: right; text-overflow: ellipsis; white-space: nowrap; opacity: 0.32; transform: translateX(-6px); transition: opacity 0.45s ease, transform 0.45s var(--preview-ease); }
+.names li[data-done] .namesLabel { opacity: 1; transform: none; }
+/* A narrow card wraps the label under its method rather than cutting it: the (2) is the point. */
+.names li { flex-wrap: wrap; row-gap: 4px; }
+.names li .namesLabel { flex: 1 0 auto; }
+
+/* ---------- Agent Skills ---------- */
+
+.pluginBody { display: grid; flex: 1; grid-template-rows: auto 1fr; height: 100%; }
+.session { color: var(--venom-fg); border-bottom: 1px solid var(--venom-line-strong); font: 400 0.7rem/1.6 var(--ifm-font-family-monospace); }
+/* The bar's text box is taller than its 1em line, so the top padding adds what sticks out above the line. */
+.sessionBar { display: flex; justify-content: space-between; padding: calc(var(--preview-inset) + 0.16em) var(--preview-inset) 7px; color: var(--venom-muted); border-bottom: 1px solid var(--venom-line); font: 500 0.66rem/1 var(--ifm-font-family-monospace); letter-spacing: 0.08em; text-transform: uppercase; }
+.sessionLog { display: grid; gap: 4px; padding: var(--preview-inset); }
+.prompt { display: flex; align-items: center; min-width: 0; padding: 4px 8px; border: 1px solid var(--venom-line-strong); border-radius: 6px; }
+.promptSign { flex: none; margin-right: 8px; color: #d97757; font-weight: 600; }
+/* The request types in: its width grows in character steps. */
+.promptTyped { flex: none; max-width: 0; overflow: hidden; color: var(--venom-fg-strong); white-space: nowrap; }
+.promptTyped[data-typed] { max-width: 100%; transition: max-width 1s steps(40); }
+.caret { flex: none; width: 6px; height: 1.1em; margin-left: 1px; background: var(--venom-fg); animation: blink 1s steps(1) infinite; }
+.caret[data-hide] { visibility: hidden; }
+/* The Agent Skills page: the request waits for Send (an arrow, like a chat's send button), which turns into Replay
+   once the edit has landed. Send glows now and then, so the reader sees it can be pressed. */
+.promptSend {
+  display: grid;
+  flex: none;
+  place-items: center;
+  /* The button is the prompt's right end: it stretches over the field's padding and border, so their outlines coincide. */
+  align-self: stretch;
+  width: 32px;
+  margin: -5px -9px -5px auto;
+  padding: 0;
+  color: var(--venom-accent);
+  background: var(--preview-accent-soft);
+  border: 1px solid var(--venom-line-strong);
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+.promptSend svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.promptSend:hover { background: color-mix(in srgb, var(--venom-accent-mark) 24%, transparent); }
+/* The pulse fills the button from inside, so its outline stays the same 1px line as the prompt's. */
+.promptSend:not([data-replay]):not(:disabled) { animation: sendPulse 2.6s ease-in-out infinite; }
+.promptSend:not([data-replay]):not(:disabled):hover { animation: none; }
+@keyframes sendPulse {
+  0%, 60%, 100% { background-color: var(--preview-accent-soft); }
+  30% { background-color: color-mix(in srgb, var(--venom-accent-mark) 32%, transparent); }
+}
+.promptSend[data-replay] { color: var(--venom-muted); background: transparent; }
+.promptSend[data-replay]:hover { color: var(--venom-fg-strong); background: var(--preview-accent-soft); }
+.promptSend:disabled { cursor: default; opacity: 0.35; }
+.promptSend:focus-visible { outline: 2px solid var(--venom-accent-mark); outline-offset: 2px; }
+/* Nothing moves until Send: the caret waits without blinking. */
+.prompt:has(.promptSend) .caret { animation: none; }
+/* The request is already typed, so on a narrow screen it wraps instead of pushing Send out of the field. */
+.prompt:has(.promptSend) .promptTyped { flex: 0 1 auto; min-width: 0; white-space: normal; }
+@keyframes blink { 50% { opacity: 0; } }
+.event { display: flex; align-items: center; gap: 8px; padding-left: 9px; opacity: 0; transform: translateY(4px); transition: opacity 0.3s ease, transform 0.3s var(--preview-ease); }
+.event[data-show] { opacity: 1; transform: none; }
+.event b { color: var(--venom-fg-strong); font-weight: 600; }
+.eventDot { flex: none; width: 7px; height: 7px; background: #d97757; border-radius: 50%; animation: pulse 0.9s ease-in-out infinite alternate; }
+.eventDot[data-done] { background: var(--venom-accent-mark); animation: none; }
+@keyframes pulse { to { opacity: 0.35; } }
+.eventDiff { color: var(--venom-accent); }
+/* The edit: new lines open up in the diff colour and the body shifts into the new block. */
+/* Keeps the edited method's eight lines of room throughout, so the card does not grow when the edit lands. */
+.diff { min-height: calc(7 * 1.75em + 2 * var(--snippet-pad-y)); border-bottom: 0; }
+.diff .snippetLine[data-added] { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.45s var(--preview-ease), opacity 0.35s ease, background-color 0.35s ease; }
+.diff[data-edited] .snippetLine[data-added] { max-height: 2em; opacity: 1; background: var(--preview-accent-soft); border-left-color: var(--venom-accent-mark); }
+.diff .snippetLine[data-indented] { transition: padding 0.45s var(--preview-ease); }
+.diff[data-edited] .snippetLine[data-indented] { padding-left: calc(var(--preview-inset) - 2px + 4ch); }
+
+/* ---------- EnumValues ---------- */
+
+/* The clip (1576×1080) holds every frame's content in columns 28–1548 and rows 214–888. The video is scaled so that
+   content spans the box less the inset on each side, and the content's centre (row 551) sits at the box's centre, so a
+   card taller than the content only adds background around it. */
+.featurePreview:has(.enumPreview) { container-type: inline-size; }
+.enumPreview {
+  --enum-scale: calc((100cqw - 2 * var(--preview-inset)) / 1520);
+  position: relative;
+  flex: 1;
+  min-height: calc(674 * var(--enum-scale) + 2 * var(--preview-inset));
+  overflow: hidden;
+  background: #333;
+}
+.enumPreview video {
+  position: absolute;
+  top: calc(50% - 551 * var(--enum-scale));
+  left: calc(var(--preview-inset) - 28 * var(--enum-scale));
+  width: calc(1576 * var(--enum-scale));
+  max-width: none;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featurePreview *, .featurePreview *::before, .featurePreview *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  .timelineStrip { animation: none !important; }
+}
+
+/* The light site theme shows Unity's light editor skin; colours come from its DefaultCommonLight theme. */
+html[data-theme='light'] .inspector { color: #090909; background: #c8c8c8; }
+html[data-theme='light'] .enumPreview { background: #c8c8c8; }
+html[data-theme='light'] .inspectorHead { background: #cbcbcb; border-bottom-color: #7f7f7f; }
+html[data-theme='light'] .inspectorIcon { background: #f0f0f0; box-shadow: inset 0 0 0 1px #aaa; }
+html[data-theme='light'] .inspectorField { color: #090909; background: #f0f0f0; border-color: #b7b7b7; }
+html[data-theme='light'] .inspectorField[data-flash] { animation-name: flashLight; }
+@keyframes flashLight { 0% { background: color-mix(in srgb, var(--venom-accent) 35%, transparent); border-color: var(--venom-accent); } 100% { background: #f0f0f0; border-color: #b7b7b7; } }
+html[data-theme='light'] .toast { color: #090909; background: #e4e4e4; border-color: #b2b2b2; }
+html[data-theme='light'] .toast kbd { color: #090909; background: #f0f0f0; border-color: #b2b2b2; }
+
+/* ---------- Aspid.MVVM: ViewModels, a command changes the bound property and the View follows ---------- */
+
+.counterBody { display: grid; flex: 1; grid-template-rows: auto 1fr; height: 100%; }
+.counterStage { display: grid; place-items: center; align-content: center; gap: 12px; padding: var(--preview-inset); background: var(--preview-surface); }
+.counterValue { color: var(--venom-fg-strong); font: 500 2.2rem/1 var(--ifm-heading-font-family); font-variant-numeric: tabular-nums; }
+.counterValue[data-flash] { animation: pop 0.6s var(--preview-ease); }
+@keyframes pop { 0% { color: var(--venom-accent); transform: scale(1.18); } 100% { transform: none; } }
+.counterButtons { display: flex; gap: 8px; }
+.counterButton { min-width: 44px; padding: 4px 12px; color: var(--venom-fg); background: var(--venom-block-surface); border: 1px solid var(--venom-line-strong); border-radius: 6px; font: 600 0.8rem/1.4 var(--ifm-font-family-monospace); text-align: center; transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease; }
+.counterButton[data-press] { background: var(--preview-accent-soft); border-color: var(--venom-accent-mark); transform: translateY(1px); }
+.counterButton[data-disabled] { opacity: 0.4; }
+.counterField { min-width: 150px; padding: 4px 10px; color: var(--venom-fg); background: var(--venom-block-surface); border: 1px solid var(--venom-line-strong); border-radius: 6px; font: 500 0.8rem/1.4 var(--ifm-font-family-monospace); }
+.counterField[data-empty] { color: var(--venom-muted); }
+.counterCaption { color: var(--venom-muted); font: 500 0.68rem/1.4 var(--ifm-font-family-monospace); }
+
+/* ---------- Aspid.MVVM: Binding Modes, the direction of each mode ---------- */
+
+.modeArrow { color: var(--venom-divider); font: 600 0.9rem/1 var(--ifm-font-family-monospace); transition: color 0.4s ease; }
+.names li[data-active] .modeArrow { color: var(--venom-accent); }

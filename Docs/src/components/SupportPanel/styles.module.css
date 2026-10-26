@@ -1,0 +1,82 @@
+/* The introduction's closing call to action, drawn like the install panel: the prompt on the left, two links on the right. */
+
+.support {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 1rem;
+  padding: 22px 26px;
+  background: var(--venom-block-surface);
+  border: 2px solid var(--venom-line-strong);
+  border-radius: 12px;
+}
+.copy { min-width: 0; }
+.title { max-width: none; margin: 0 0 6px; color: var(--venom-fg-strong); font: 500 1.2rem/1.3 var(--ifm-heading-font-family); letter-spacing: -0.02em; }
+.hint { max-width: none; margin: 0; color: var(--venom-muted); font-size: 0.88rem; line-height: 1.55; }
+.actions { display: flex; flex: none; gap: 10px; }
+
+/* Outranks the accent colour and hover underline of the global `.markdown a:not(...)` rule. */
+:global(.markdown) :is(a.primary, a.secondary):not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: 500 0.78rem/1.4 var(--ifm-font-family-monospace);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+:global(.markdown) a.primary:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)) {
+  color: var(--venom-accent-fill-ink);
+  background: var(--venom-accent-fill);
+}
+:global(.markdown) a.primary:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)):hover {
+  background: color-mix(in srgb, var(--venom-accent-fill) 85%, var(--venom-fg-strong));
+}
+/* In the light theme the mix runs in OKLCH, so the amber fill darkens to deeper amber rather than to olive. */
+:global(html[data-theme='light']) :global(.markdown) a.primary:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)):hover {
+  background: color-mix(in oklch, var(--venom-accent-fill) 88%, var(--venom-fg-strong));
+  text-decoration: none;
+}
+:global(.markdown) a.primary::after { content: '→'; transition: transform 0.15s; }
+:global(.markdown) a.primary:hover::after { transform: translateX(3px); }
+:global(.markdown) a.secondary:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)) {
+  color: var(--venom-fg);
+  border-color: var(--venom-line-strong);
+}
+:global(.markdown) a.secondary:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)):hover {
+  color: var(--venom-fg-strong);
+  border-color: #e3b341;
+}
+/* Every few seconds a sheen crosses the button; hovering spins the star and keeps the sheen running. The button is gold
+   throughout, apart from the green primary action beside it. */
+:global(.markdown) a.secondary { position: relative; overflow: hidden; }
+:global(.markdown) a.secondary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgb(227 179 65 / 0.16) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: sheen 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sheen { 0%, 70% { transform: translateX(-100%); } 90%, 100% { transform: translateX(100%); } }
+.star { flex: none; width: 17px; height: 17px; fill: #e3b341; transition: transform 0.5s var(--ifm-transition-timing-default, ease), filter 0.5s ease; }
+:global(.markdown) a.secondary:hover .star { transform: scale(1.2) rotate(144deg); filter: drop-shadow(0 0 6px rgb(227 179 65 / 0.6)); }
+:global(.markdown) a.secondary:hover::before { animation: sweep 1.3s ease-in-out infinite; }
+@keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+@media (max-width: 700px) {
+  .support { flex-direction: column; align-items: stretch; padding: 20px 22px; }
+  .actions { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support *, .support *::before, .support *::after { animation: none !important; transition: none !important; }
+}

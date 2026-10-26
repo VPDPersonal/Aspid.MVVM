@@ -885,7 +885,7 @@ GameObject:
   - component: {fileID: 744396415}
   - component: {fileID: 744396412}
   m_Layer: 5
-  m_Name: Clear UnityEngine.UI.Button
+  m_Name: Clear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1759,7 +1759,7 @@ GameObject:
   - component: {fileID: 1902853658}
   - component: {fileID: 1902853657}
   m_Layer: 0
-  m_Name: UnityEngine.EventSystems.EventSystem
+  m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

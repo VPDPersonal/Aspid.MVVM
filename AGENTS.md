@@ -145,9 +145,6 @@ unity command script eval --code 'return Application.unityVersion;'
 When several Unity Editors are open, add `--project-path ./Aspid.MVVM` — otherwise the CLI can't
 pick an instance and errors out.
 
-AI agents can consume the same command surface as MCP tools: the repo ships `.mcp.json` with a
-`unity-editor` stdio server (`unity mcp --project-path ./Aspid.MVVM`).
-
 ## Gotchas
 
 - **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Unity/Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Packages/tech.aspid.mvvm/` and are checked into the repo. After changing a generator or an analyzer, run `scripts/build-roslyn-dlls.sh` and commit the refreshed DLLs — Unity consumes the DLL, not source. The Roslyn DLLs job of CI rebuilds them and fails on any byte of difference; the root `Directory.Build.props` makes the Release build reproducible.

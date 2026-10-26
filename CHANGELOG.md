@@ -141,7 +141,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.9`) are UPM git dependencies.
 - Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags and takes release notes from this file; it runs the whole CI first.
 - CI on every pull request: package files, version files, reproducible Roslyn DLLs rebuilt from their sources, .NET tests, and EditMode + PlayMode tests on every Unity 6000.x line; PR title and CHANGELOG checks.
-- Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI with an `.mcp.json` server; root `CLAUDE.md`.
+- Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI; root `CLAUDE.md`.
 - Editor target `6000.6.5f1`.
 
 ### Changed

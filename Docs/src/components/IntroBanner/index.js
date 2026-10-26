@@ -9,7 +9,7 @@ const WAVE_POWER = 2; // the wave the assembled logo sends out: as strong as a f
 const LATEST_START = 2700;
 
 /**
- * The README banner on the introduction. GitHub shows the PNG (`Documentation/Images/Aspid.MVVMHeaderImage.png`); the site
+ * The README banner on the introduction. GitHub shows the PNG (`Docs/docs/Images/Aspid.MVVMHeaderImage.png`); the site
  * rebuilds it from the logo and live text, without a background: on wide screens the article panel leaves the banner open
  * (`custom.css`), so the page's dot canvas, its light and ripples included, shows through. Narrower, the banner paints the
  * dots itself, and `DotAmbient` draws its glow and sparks in the `__ambient` layer above them. The page hides its title,

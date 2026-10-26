@@ -55,7 +55,7 @@ const TMP_SETTINGS = 'Aspid.MVVM/Assets/TextMesh Pro/Resources/TMP Settings.asse
 const FILES = [
   ['100644', 'a1', `${PACKAGE}/package.json`],
   ['100644', 'a2', `${PACKAGE}/Source/Item.cs`],
-  ['100644', 'a3', `${PACKAGE}/Documentation/01-getting-started.md`],
+  ['100644', 'a3', `${PACKAGE}/Samples~/01. Counter/Fonts/LICENSE-iA-Writer-Quattro.md`],
   ['100644', 'a4', DEV_PACKAGES[0]],
   ['100644', 'a5', DEV_PACKAGES[1]],
   ['100644', 'a6', TMP_SETTINGS],
@@ -68,18 +68,13 @@ const reader = (files = FILES, workflow = WORKFLOW) => (command) =>
 
 const digestOf = (files, workflow) => digest(inputs('HEAD', reader(files, workflow)));
 
-test('Markdown, the license and the Documentation folder are ignored with their .meta', () => {
+test('Markdown and the license texts are ignored with their .meta', () => {
   for (const path of [
     `${PACKAGE}/README.md`,
     `${PACKAGE}/README.md.meta`,
-    `${PACKAGE}/Samples~/01. Counter/README.md`,
-    `${PACKAGE}/Samples~/01. Counter/README.ru.md`,
     `${PACKAGE}/LICENSE.md`,
     `${PACKAGE}/LICENSE.md.meta`,
-    `${PACKAGE}/Documentation/01-getting-started.md`,
-    `${PACKAGE}/Documentation/Images/diagram.png`,
-    `${PACKAGE}/Documentation/Images/diagram.png.meta`,
-    `${PACKAGE}/Documentation.meta`,
+    `${PACKAGE}/Samples~/01. Counter/Fonts/LICENSE-iA-Writer-Quattro.md`,
   ]) {
     assert.ok(isIgnored(path), path);
   }
@@ -96,7 +91,7 @@ test('code, assets, the DLLs and the dev project files that the test project rea
     `${PACKAGE}/Unity/Editor/Resources/Styles/Aspid-MVVM-MonoBinder.uss`,
     `${PACKAGE}/Samples~/01. Counter/Scenes/Counter.unity`,
     `${PACKAGE}/Tests/EditMode/Aspid.MVVM.Tests.EditMode.asmdef`,
-    `${PACKAGE}/DocumentationTools/Page.cs`,
+    `${PACKAGE}/Documentation/Images/diagram.png`,
     ...DEV_PACKAGES,
     TMP_SETTINGS,
   ]) {
@@ -112,7 +107,7 @@ test('the TMP Essential Resources are the three folders and their .meta', () => 
 
 test('an ignored file does not change the digest, an input does', () => {
   const base = digestOf();
-  assert.equal(digestOf([...FILES, ['100644', 'b1', `${PACKAGE}/Documentation/Images/diagram.png`]]), base);
+  assert.equal(digestOf([...FILES, ['100644', 'b1', `${PACKAGE}/Samples~/01. Counter/Fonts/LICENSE-iA-Writer-Quattro.md.meta`]]), base);
   assert.equal(digestOf(FILES.map(([mode, id, path]) => [mode, path.endsWith('.md') ? 'b2' : id, path])), base);
   assert.notEqual(digestOf([...FILES, ['100644', 'b3', `${PACKAGE}/Source/Other.cs`]]), base);
   assert.notEqual(digestOf(FILES.map(([mode, id, path]) => [mode, path === DEV_PACKAGES[1] ? 'b5' : id, path])), base);

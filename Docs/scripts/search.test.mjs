@@ -70,8 +70,7 @@ test('the search text of every page has no link or escape leftovers', () => {
     return entry.isFile() && /\.mdx?$/.test(entry.name) ? [file] : [];
   });
   const leftover = /\]\([^)\s]*\.md[^)]*\)|\[ \[|\] \]|\\[()[\]<>]/;
-  const packageDir = '../Aspid.MVVM/Packages/tech.aspid.mvvm';
-  const bad = [`${packageDir}/Documentation`, `${packageDir}/Samples~`, 'api', 'i18n']
+  const bad = ['docs', 'tutorials', 'api', 'i18n']
     .flatMap((directory) => pages(path.join(siteDir, directory)))
     .filter((file) => leftover.test(plainText(readFileSync(file, 'utf8'))));
   assert.deepEqual(bad.map((file) => path.relative(siteDir, file)), []);
@@ -82,7 +81,7 @@ test('empty queries suggest documentation and tutorials', () => {
 });
 test('index URLs follow trailingSlash: false except the locale root', async () => {
   const siteDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-  const doc = (permalink) => ({permalink, title: 'Counter', source: '@site/../Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/01. Counter/README.md'});
+  const doc = (permalink) => ({permalink, title: 'Counter', source: '@site/tutorials/01. Counter/README.md'});
   const allContent = {'docusaurus-plugin-content-docs': {tutorials: {loadedVersions: [{docs: [
     doc('/Aspid.MVVM/ru/'), doc('/Aspid.MVVM/ru/tutorials/'), doc('/Aspid.MVVM/ru/tutorials/counter/'),
     doc('/Aspid.MVVM/ru/docs/binding-modes'),

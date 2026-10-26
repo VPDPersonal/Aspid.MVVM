@@ -128,10 +128,10 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 #### Samples & documentation
 
-- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has a `README`, its own `.asmdef` and a compact `Sample SDF` font (iA Writer Quattro S, as in the Aspid.FastTools samples).
-- Documentation site on Docusaurus (GitHub Pages), English original with a Russian translation, tutorials in the sample READMEs, DocFX API reference.
+- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has its own `.asmdef`, a compact `Sample SDF` font (iA Writer Quattro S, as in the Aspid.FastTools samples) and a tutorial on the docs site.
+- Documentation site on Docusaurus (GitHub Pages), built like the Aspid.FastTools site: English original with a Russian translation, a tutorial per sample with a recording of its scene, the changelog and a DocFX API reference.
 - XML docs on every public binder, converter and Editor type; every serialized field has a `[Tooltip]`; all four assemblies build clean with `-doc`.
-- `Documentation/08-converters.md` rewritten around the shipped catalogue.
+- The Converters page rewritten around the shipped catalogue.
 - ~3000 EditMode tests, including contract tests for tooltips, picker groups, menu paths, context-menu property names, `<include>` resolution and `BindMode` guard docs.
 
 #### Project & infrastructure
@@ -204,6 +204,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Removed
 
+- The `Documentation` folder and the sample `README` files — the guide and the tutorials are on the [docs site](https://vpdpersonal.github.io/Aspid.MVVM/); the package holds no docs or media.
 - `AddComponentContextMenuAttribute` — use `AddBinderContextMenuAttribute` / `AddBinderContextMenuByTypeAttribute` (`Path = "..."`).
 - `AddPropertyContextMenu` — property menus are handled by the Editor pipeline.
 - `Aspid.Collections` source under the package — now the `tech.aspid.collections` package; with it `IViewModelCollectionFilter`, the composite filters and the collection comparers.

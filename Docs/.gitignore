@@ -3,13 +3,9 @@ build/
 .docusaurus/
 .cache-loader/
 npm-install.log
-# Copied from the package and the root changelogs by scripts/sync-i18n.mjs and scripts/sync-changelog.mjs;
-# the site's own UI strings (i18n/<locale>/*.json) are tracked.
+# Generated from the root CHANGELOG.md and CHANGELOG.<locale>.md by scripts/sync-i18n.mjs and scripts/sync-changelog.mjs.
 changelog/
 i18n/*/CHANGELOG.md
-i18n/*/docusaurus-plugin-content-docs/current/
-i18n/*/docusaurus-plugin-content-docs/Images/
-i18n/*/docusaurus-plugin-content-docs-tutorials/current/
 i18n/*/docusaurus-plugin-content-docs-changelog/current/
 docfx/projects/
 .serve-all.log

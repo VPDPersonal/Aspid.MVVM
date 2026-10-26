@@ -1,45 +1,42 @@
 ---
 name: docs-site
-description: How Aspid.MVVM documentation is authored and published — Docusaurus site in `Docs/` that reads Markdown straight from the UPM package (`Documentation/` and each sample's `README.md`), GitHub Pages deploy, `en`/`ru` locales, versioning. Use when writing or editing any `.md` under `Packages/tech.aspid.mvvm`, adding a tutorial or sample, translating a page, cutting a docs version, changing `Docs/` config, or when the user asks "where does this doc go", "how do I link to", "add a page", "run the docs site".
+description: How Aspid.MVVM documentation is authored and published — Docusaurus site in `Docs/` with the pages in `Docs/docs`, the sample tutorials in `Docs/tutorials` and translations in `Docs/i18n`, GitHub Pages deploy, `en`/`ru` locales, versioning. Use when writing or editing any page under `Docs/`, adding a tutorial or sample, translating a page, cutting a docs version, changing `Docs/` config, or when the user asks "where does this doc go", "how do I link to", "add a page", "run the docs site".
 ---
 
 # Documentation site
 
-One source of truth: Markdown files inside the UPM package. The same file is read by
-GitHub, by Unity (as a `TextAsset` in the Inspector) and by the Docusaurus site in `Docs/`.
-Nothing is copied. Write GitHub Flavored Markdown; the site adapts to it, never the other way round.
+All documentation lives in `Docs/`, laid out as on the Aspid.FastTools site. The UPM package holds no docs or media:
+only code, assets, sample scenes and license texts. Pages are GitHub Flavored Markdown, so GitHub renders them too;
+the site adapts to them, never the other way round.
 
 ## Layout
 
 | What | Where | Site route |
 |---|---|---|
-| Main docs (guide, StarterKit reference) | `Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/**/*.md` | `/docs/...` |
-| Tutorials | `Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/<Sample>/README.md` | `/tutorials/<slug>` |
-| Translations | `Documentation/<locale>/**` (same tree) and `Samples~/<Sample>/README.<locale>.md` | `/<locale>/...` |
+| Main docs (guide, StarterKit reference) | `Docs/docs/**/*.md`, images in `Docs/docs/Images/` | `/docs/...` |
+| Tutorials | `Docs/tutorials/<Sample>/README.md` (folder named like `Samples~/<Sample>`), overview `Docs/tutorials/index.mdx` | `/tutorials/<slug>` |
+| Translations | `Docs/i18n/<locale>/docusaurus-plugin-content-docs/current/**`, `…-docs-tutorials/current/<Sample>/README.md` | `/<locale>/...` |
+| UI strings | `Docs/i18n/<locale>/code.json`, `*/current.json`, `docusaurus-theme-classic/navbar.json` | |
 | Changelog | `CHANGELOG.md`, `CHANGELOG.<locale>.md` (repo root) | `/changelog` |
 | Site config | `Docs/docusaurus.config.js`, `Docs/sidebars.js`, `Docs/sidebarsTutorials.js`, `Docs/sidebarsApi.js` | |
 | CI | `.github/workflows/docs.yml` → GitHub Pages `https://vpdpersonal.github.io/Aspid.MVVM/` | |
 
-Two docs plugin instances: the default one (`docs`) points at `Documentation/` (translation folders
-excluded), the second (`id: 'tutorials'`) points at `Samples~/` with `include: ['*/README.md']`. Only
-Markdown matching `include` is read; scripts, scenes and `.meta` files are never touched.
+Two docs plugin instances: the default one (`docs`) reads `Docs/docs` (`SUMMARY.md` excluded), the second
+(`id: 'tutorials'`) reads `Docs/tutorials` with `include: ['index.mdx', '*/README.md']`.
 
-Translations live in the package too. `Docs/scripts/sync-i18n.mjs` (run by `prestart`/`prebuild`) copies
-`Documentation/<locale>/`, every `README.<locale>.md` and the root `CHANGELOG.<locale>.md` into the `Docs/i18n/`
-layout Docusaurus expects; then `Docs/scripts/sync-changelog.mjs` turns the changelogs into the `/changelog` page
-(`Docs/changelog/`, a version list as its sidebar). The copies are build artifacts and are gitignored; never edit
-them by hand. The site's own UI strings, `Docs/i18n/<locale>/*.json` and `*/current.json`, are tracked. Copies, not
-symlinks: webpack resolves symlinks to the real path and the relative links inside a translation stop resolving.
-Each copied page gets `last_update.date` from its source's last commit, and the "Edit" link of a translation opens
-its source in the package (`Documentation/<locale>/…`, `README.<locale>.md`).
+Every page and translation is tracked where Docusaurus reads it; "Edit" links open that file
+(`editLocalizedFiles`). Only the changelog is generated: `Docs/scripts/sync-i18n.mjs` copies the root
+`CHANGELOG.<locale>.md` to `Docs/i18n/<locale>/CHANGELOG.md`, and `Docs/scripts/sync-changelog.mjs` turns the changelogs
+into the `/changelog` page (`Docs/changelog/`, a version list as its sidebar). Both run before `start` and `build`; their
+output is gitignored.
 
 `SUMMARY.md` is a GitBook leftover kept as the GitHub table of contents. It is excluded from
 the site; `Docs/sidebars.js` groups the guide pages (Basics, Core, Advanced) and autogenerates StarterKit.
 
-## Writing rules (so all three renderers agree)
+## Writing rules (so GitHub and the site agree)
 
-- **No front matter.** Unity and GitHub would show it as text. Title comes from the first `# H1`,
-  slug and order come from the file/folder name.
+- **Front matter** only where a page needs it (`index.mdx`); a guide page takes its title from the first `# H1`,
+  slug and order from the file/folder name.
 - **Admonitions**: GitHub style only.
   ```md
   > [!NOTE]
@@ -47,22 +44,20 @@ the site; `Docs/sidebars.js` groups the guide pages (Basics, Core, Advanced) and
   ```
   Allowed: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`. Never `:::note`.
 - **Links** are relative paths to the `.md` file, spaces as `%20`:
-  `[Greeter](../02.%20Greeter/README.md)`, `[Binders](../../Documentation/06-binders.md)`.
-  GitHub follows them as files. Docusaurus resolves links inside one plugin instance itself; links
-  that cross from a sample README into `Documentation/` (or back, `../Samples~/<Folder>/README.md`)
-  are rewritten to site routes by `Docs/src/remark/crossInstanceLinks.js`. Never link by site URL.
+  `[Greeter](../02.%20Greeter/README.md)`, `[Binders](../../docs/06-binders.md)`, `[Counter](../tutorials/01.%20Counter/README.md)`.
+  GitHub follows them as files. Docusaurus resolves links inside one plugin instance itself; links between
+  `docs/` and `tutorials/` (and their i18n twins) are rewritten to site routes by `Docs/src/remark/crossInstanceLinks.js`.
+  Never link by site URL, except from the introduction, whose absolute site links become routes on the site.
 - **One `# H1` per file.** Extra H1s in the body get no anchor id on the site; use `##`.
-- **Anchors** to headings must match a heading that exists; the build warns on stale ones.
-- **Images** live next to the file (`Documentation/Images/`), referenced relatively.
-- **Sample `README.md`** doubles as the tutorial. Keep the sample facts at the top (scene table,
-  files) and the fonts note at the bottom; the tutorial body goes between.
-- The package is English. A translation is a sibling file: `Documentation/ru/06-binders.md` next to
-  `Documentation/06-binders.md`, `README.ru.md` next to `README.md`. Missing pages fall back to English.
-- A translated file links translated targets (`../../Documentation/ru/06-binders.md`,
-  `../02.%20Greeter/README.ru.md`) so GitHub stays in the same language; the site drops the locale segment
-  and prefixes the route with the current locale itself.
-- Adding a language: create `Documentation/<locale>/` and/or `README.<locale>.md` files and add the locale
-  to `LOCALES` in `docusaurus.config.js`. Nothing else.
+- **Anchors** to headings must match a heading that exists; CI fails on stale ones.
+- **Images** live in `Docs/docs/Images/` (or a tutorial's own `Images/`), referenced relatively; a `-light` twin
+  next to an image is shown in the light theme.
+- **Sample tutorials**: keep the sample facts at the top (scene table, files) and the fonts note at the bottom; the
+  tutorial body goes between. The sample's scenes and code stay in `Samples~/<Sample>/` in the package.
+- A translation mirrors its English page under `Docs/i18n/<locale>/…/current/` with the same path and links
+  translated targets with relative paths inside `i18n/` (`../../docusaurus-plugin-content-docs-tutorials/current/01.%20Counter/README.md`);
+  shared images are linked from `Docs/docs/Images/`. Missing pages fall back to English.
+- Adding a language: add the locale to `LOCALES` in `docusaurus.config.js` and its folders under `Docs/i18n/`.
 
 ## Slugs and ids (tutorials)
 
@@ -73,23 +68,22 @@ and the doc id used in `sidebarsTutorials.js` is `counter/readme`. `crossInstanc
 of the same slug rules; change both together.
 
 Main docs use the default parser: `03-binding-modes.md` → `/docs/binding-modes`,
-`StarterKit/README.md` → `/docs/StarterKit`, `Documentation/README.md` → `/docs`. The site root `/`
+`StarterKit/README.md` → `/docs/StarterKit`, `docs/README.md` → `/docs`. The site root `/`
 redirects to `/docs` (`Docs/src/pages/index.js`).
 
 ## Adding a tutorial / sample
 
-1. Create `Samples~/<NN. Name>/README.md` (plus its `.meta`, but not the folder in git index — leave new files untracked for review).
-2. Add `<slug>/readme` to `Docs/sidebarsTutorials.js` under `Path` or `Features`, and a card to
+1. Create the sample in `Samples~/<NN. Name>/` (scenes, scripts, `.meta` files) and register it in the package
+   `package.json` → `samples`.
+2. Write the tutorial at `Docs/tutorials/<NN. Name>/README.md`; optionally its translation at
+   `Docs/i18n/ru/docusaurus-plugin-content-docs-tutorials/current/<NN. Name>/README.md`.
+3. Add `<slug>/readme` to `Docs/sidebarsTutorials.js` under `Path` or `Features`, and a card to
    `Docs/src/components/SamplesGallery/index.js`.
-3. Register the sample in `package.json` → `samples` as usual.
-4. Optionally add `README.ru.md` next to it.
-
-Missing translations fall back to English automatically.
 
 ## Adding a main doc page
 
-Drop the file into `Documentation/` (numbered prefix `NN-` orders it) and add its entry to `SUMMARY.md`.
-Optionally add the translation at `Documentation/ru/<same name>`. Nothing to change in `Docs/`.
+Drop the file into `Docs/docs/` (numbered prefix `NN-` orders it), add it to `Docs/sidebars.js` and to `SUMMARY.md`.
+Optionally add the translation at `Docs/i18n/ru/docusaurus-plugin-content-docs/current/<same name>`.
 
 ## Versioning
 
@@ -100,7 +94,7 @@ cd Docs
 npm run version 1.1.0          # main docs → Docs/versioned_docs/version-1.1.0
 ```
 
-Tutorials are not versioned: a tutorial always describes the sample shipped with the same package version.
+Tutorials are not versioned: a tutorial always describes the sample of the package version in the working tree.
 The site has no version dropdown; a docs snapshot (`npm run version`) keeps its own pages.
 
 ## Local run / check
@@ -108,7 +102,7 @@ The site has no version dropdown; a docs snapshot (`npm run version`) keeps its 
 ```bash
 cd Docs
 npm ci
-npm start                # http://localhost:3000/Aspid.MVVM/ (prestart syncs translations)
+npm start                # http://localhost:3000/Aspid.MVVM/ (prestart syncs the changelogs)
 npm run start:ru         # Russian locale (dev server serves one locale at a time)
 npm test                 # unit tests of the site scripts and remark plugins (CI runs them)
 npm run build            # what CI runs; fails on broken links
@@ -158,14 +152,14 @@ logos in `Docs/static/img/logo*.png` are the package icons from `Unity/Editor/Re
 - `src/theme/Root`: the dot-grid background with its ambient glow, spotlight and click ripples (`src/components/Dot*`).
 - `src/theme/DocItem/Layout`: the article panel, a floating TOC below 1400px (`FloatingToc`), the footer inside the
   article column. `src/theme/MDXComponents/Img`: zoomable images.
-- The introduction (`Documentation/README.md`) is rebuilt by `src/remark/introBanner.js`: the
+- The introduction (`Docs/docs/README.md`) is rebuilt by `src/remark/introBanner.js`: the
   `Images/Aspid.MVVMHeaderImage.png` banner becomes the animated `IntroBanner` (`src/intro.js` arms its entrance), and,
   when the README follows the FastTools layout, `status-badge-*.svg` badges become chips, the install section with
   a `.git#upm…` URL the `InstallPanel`, `####` feature headings cards, a `[Link](…) — summary` list tiles, the help
   section a `SupportPanel` and the donation sentence a `DonatePanel`. Absolute links to the site become routes.
 - A feature card can play a live preview instead of its README code block: register a component under the doc slug
   in `PREVIEWS` of `src/components/FeaturePreview` (ViewModels, Binding Modes and Commands have one).
-- `Samples~/index.mdx` is the tutorials overview (`/tutorials`): a card per sample from
+- `Docs/tutorials/index.mdx` is the tutorials overview (`/tutorials`): a card per sample from
   `src/components/SamplesGallery`. Add a new sample there too; a card shows its step until it gets a capture.
   The captures are dark/light GIF pairs in `Docs/static/img/samples/`, recorded in a hidden batch-mode Editor by
   `Docs/media/samples-gallery/` (its README has the steps); `capture: true` on a card shows them.
@@ -180,6 +174,6 @@ Build a copy of `Docs/` (with a real copy of `node_modules`, not a symlink) inst
 
 ## Deploy
 
-`.github/workflows/docs.yml` builds on every push to `main` touching `Docs/`, `Documentation/` or a
-sample `README.md`, and on PRs (build only). Pages source must be set to "GitHub Actions" once in the
+`.github/workflows/docs.yml` builds on every push to `main` touching `Docs/` or a root changelog, and on PRs
+(build only). Pages source must be set to "GitHub Actions" once in the
 repository settings.

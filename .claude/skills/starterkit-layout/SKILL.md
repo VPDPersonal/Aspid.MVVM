@@ -50,4 +50,4 @@ One assembly, `Aspid.MVVM.StarterKit` (`StarterKit/Runtime`), with editor code n
 - Every new file and folder gets a `.meta` (folder: `folderAsset: yes`, fresh guid). Move with `git mv` together with the `.meta`.
 - Do not stage new files: the user reviews them as untracked first.
 - Rename serialized types and fields directly, without `[FormerlySerializedAs]`: the user has a tool that repairs serialized references.
-- After a move, update references: other scripts, tests, `Documentation/*.md`, `Samples~`.
+- After a move, update references: other scripts, tests, `Docs/docs/**/*.md` (and the `ru` twins in `Docs/i18n/`), `Samples~`.

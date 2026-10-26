@@ -11,32 +11,35 @@ import remarkThemedImages from '../src/remark/themedImages.js';
 import {attribute, element, find, transform} from './remark-tree.mjs';
 
 const site = fileURLToPath(new URL('..', import.meta.url));
-const pkg = path.join(site, '..', 'Aspid.MVVM', 'Packages', 'tech.aspid.mvvm');
-const page = (...segments) => path.join(pkg, ...segments);
+const page = (...segments) => path.join(site, ...segments);
+const ruDocs = ['i18n', 'ru', 'docusaurus-plugin-content-docs', 'current'];
+const ruTutorials = ['i18n', 'ru', 'docusaurus-plugin-content-docs-tutorials', 'current'];
 const urls = tree => find(tree, node => node.type === 'link' || node.type === 'definition').map(node => node.url);
 const links = (file, ...targets) => urls(transform(remarkCrossInstanceLinks(), targets.map(url => `[x](${url})`).join('\n\n'), file));
 
 test('a tutorial links a doc and a doc links a tutorial as routes', () => {
-  assert.deepEqual(links(page('Samples~', '01. Counter', 'README.md'), '../../Documentation/03-binding-modes.md#oneway', '../../Documentation/README.md'),
+  assert.deepEqual(links(page('tutorials', '01. Counter', 'README.md'), '../../docs/03-binding-modes.md#oneway', '../../docs/README.md'),
     ['/docs/binding-modes#oneway', '/docs']);
-  assert.deepEqual(links(page('Documentation', '01-getting-started.md'), '../Samples~/01.%20Counter/README.md', '../Samples~/VirtualizedList/README.md#setup'),
+  assert.deepEqual(links(page('docs', '01-getting-started.md'), '../tutorials/01.%20Counter/README.md', '../tutorials/VirtualizedList/README.md#setup'),
     ['/tutorials/counter', '/tutorials/virtualized-list#setup']);
-  assert.deepEqual(links(page('Documentation', 'StarterKit', 'text-binders.md'), '../StarterKit/README.md'), ['../StarterKit/README.md']);
 });
 
 test('translated pages link translated targets and get the same routes', () => {
-  assert.deepEqual(links(page('Documentation', 'ru', '01-getting-started.md'), '../../Samples~/01.%20Counter/README.ru.md'), ['/tutorials/counter']);
-  assert.deepEqual(links(page('Samples~', '01. Counter', 'README.ru.md'), '../../Documentation/ru/03-binding-modes.md', '../02.%20Greeter/README.ru.md'),
-    ['/docs/binding-modes', '/tutorials/greeter']);
+  assert.deepEqual(links(page(...ruDocs, '01-getting-started.md'), '../../docusaurus-plugin-content-docs-tutorials/current/01.%20Counter/README.md'), ['/tutorials/counter']);
+  assert.deepEqual(links(page(...ruTutorials, '01. Counter', 'README.md'), '../../../docusaurus-plugin-content-docs/current/03-binding-modes.md'), ['/docs/binding-modes']);
+});
+
+test('the tutorials index goes to the gallery', () => {
+  assert.deepEqual(links(page('docs', 'README.md'), '../tutorials/index.mdx'), ['/tutorials']);
 });
 
 test('links inside one instance, external links, anchors and images stay as they are', () => {
-  const same = ['03-binding-modes.md', 'https://example.test/a.md', '#oneway', 'Images/demo.gif'];
-  assert.deepEqual(links(page('Documentation', '02-architecture.md'), ...same), same);
+  const same = ['03-binding-modes.md', 'StarterKit/README.md', 'https://example.test/a.md', '#oneway', 'Images/demo.gif'];
+  assert.deepEqual(links(page('docs', '02-architecture.md'), ...same), same);
 });
 
 test('a link definition is rewritten like a link', () => {
-  const tree = transform(remarkCrossInstanceLinks(), '[x][counter]\n\n[counter]: ../Samples~/01.%20Counter/README.md\n', page('Documentation', '01-getting-started.md'));
+  const tree = transform(remarkCrossInstanceLinks(), '[x][counter]\n\n[counter]: ../tutorials/01.%20Counter/README.md\n', page('docs', '01-getting-started.md'));
   assert.deepEqual(urls(tree), ['/tutorials/counter']);
 });
 

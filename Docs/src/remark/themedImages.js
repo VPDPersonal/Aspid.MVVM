@@ -2,18 +2,18 @@ import {existsSync} from 'node:fs';
 import path from 'node:path';
 
 /**
- * Samples whose `demo`/`scene` captures show a scene rather than an editor window: the `Samples~/<Folder>/` names
+ * Samples whose `demo`/`scene` captures show a scene rather than an editor window: the `tutorials/<Folder>/` names
  * (`01. Counter`). None has such captures yet; an empty list matches nothing.
  */
 const SCENE_SAMPLES = [];
 const escape = (name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const never = /(?!)/;
-// A tutorial page lives in `Samples~/<Folder>/` or its i18n twin.
+// A tutorial page lives in `tutorials/<Folder>/` or its i18n twin.
 const sceneSampleFolder = SCENE_SAMPLES.length
   ? new RegExp(`[/\\\\](?:${SCENE_SAMPLES.map(escape).join('|')})[/\\\\]`, 'i') : never;
-// A doc page links the sample's own `Samples~/<Folder>/Images/`.
+// A doc page links the sample's own `tutorials/<Folder>/Images/`.
 const sceneSampleUrl = SCENE_SAMPLES.length
-  ? new RegExp(`Samples~/(?:${SCENE_SAMPLES.map((name) => escape(encodeURI(name))).join('|')})/`) : never;
+  ? new RegExp(`tutorials/(?:${SCENE_SAMPLES.map((name) => escape(encodeURI(name))).join('|')})/`) : never;
 
 /** A sibling `image-light.png` supplies the light theme; Markdown stays usable outside the site. */
 export default function remarkThemedImages() {

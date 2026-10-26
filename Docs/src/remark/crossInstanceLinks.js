@@ -1,23 +1,24 @@
 /**
- * Rewrites Markdown links that cross the boundary between the two docs plugin instances.
+ * Rewrites Markdown links that cross the boundary between the docs and tutorials plugin instances.
  *
- * A sample README links to the main docs as `../../Documentation/03-binding-modes.md`, and a doc
- * links to a tutorial as `../Samples~/01.%20Counter/README.md`. GitHub follows these as files,
- * but Docusaurus resolves `.md` links only inside the current plugin. This plugin turns them into
- * site routes before Docusaurus sees them, so the file links stay the single source of truth.
+ * A tutorial links to the main docs as `../../docs/03-binding-modes.md`, and a doc links to a tutorial as
+ * `../tutorials/01.%20Counter/README.md`. GitHub follows these as files, but Docusaurus resolves `.md` links only inside the
+ * current plugin. This plugin resolves each link against the page's own file and turns a target in the other instance
+ * into a site route, so the file links stay the single source of truth.
  *
- * Translated sources link translated targets (`Documentation/ru/...`, `README.ru.md`) so GitHub lands on
- * the same language. The locale segment is dropped here: Docusaurus prefixes absolute routes with the
+ * Translations live in `i18n/<locale>/docusaurus-plugin-content-docs[-tutorials]/current/` and link translated
+ * targets, so GitHub stays in the same language. Routes carry no locale: Docusaurus prefixes absolute routes with the
  * current locale itself.
  */
-import { existsSync } from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 
-const SAMPLES_DIR = new URL('../../../Aspid.MVVM/Packages/tech.aspid.mvvm/Samples~/', import.meta.url);
-const DOCS_RE = /^(?:\.\.\/)+Documentation\/(?:([a-z]{2}(?:-[A-Za-z]{2,4})?)\/)?(.+?)(?:\.md)?(#.*)?$/;
-// `Samples~/` is optional so links between sibling tutorials (`../02.%20Greeter/README.ru.md`) are covered too:
-// the translated copies are all named README.md, so the `.ru` file link only exists in the package. Without it the
-// folder must be a sample, so a doc's `../StarterKit/README.md` stays a link inside the docs.
-const SAMPLES_RE = /^(?:\.\.\/)+(Samples~\/)?([^/]+)\/README(?:\.([a-z]{2}(?:-[A-Za-z]{2,4})?))?\.md(#.*)?$/i;
+const siteDir = fileURLToPath(new URL('../..', import.meta.url));
+const LOCALE = '[a-z]{2}(?:-[A-Za-z]{2,4})?';
+const INSTANCES = [
+  {route: '/docs', root: new RegExp(`^(?:docs|i18n/${LOCALE}/docusaurus-plugin-content-docs/current)/(.+)$`), slug: docSlug},
+  {route: '/tutorials', root: new RegExp(`^(?:tutorials|i18n/${LOCALE}/docusaurus-plugin-content-docs-tutorials/current)/(.+)$`), slug: tutorialSlug},
+];
 
 function kebab(name) {
   return name
@@ -26,36 +27,44 @@ function kebab(name) {
     .toLowerCase();
 }
 
-/** `01. Counter` → `counter`, `VirtualizedList` → `virtualized-list`. Must match samplePrefixParser. */
-function sampleSlug(folder) {
-  const match = folder.match(/^(\d+)\.\s*(.+)$/);
-  return kebab(match ? match[2] : folder);
-}
-
-/** `03-binding-modes` → `binding-modes`; `StarterKit/README` → `StarterKit`; `README` → ``. */
-function docSlug(path) {
-  return path
+/** `03-type-selector.md` → `type-selector`; `README.md` → ``. */
+function docSlug(file) {
+  return file
+    .replace(/\.mdx?$/, '')
     .split('/')
     .map((segment) => segment.replace(/^\d+-/, ''))
     .filter((segment) => !/^readme$/i.test(segment))
     .join('/');
 }
 
-function rewrite(url) {
-  const decoded = decodeURIComponent(url);
+/** `01. Counter/README.md` → `counter`, `index.mdx` → ``. Must match samplePrefixParser. */
+function tutorialSlug(file) {
+  const folder = file.split('/')[0];
+  if (/^index\.mdx?$/.test(folder)) return '';
+  const match = folder.match(/^(\d+)\.\s*(.+)$/);
+  return kebab(match ? match[2] : folder);
+}
 
-  const docs = decoded.match(DOCS_RE);
-  if (docs) {
-    const slug = docSlug(docs[2]);
-    return `/docs${slug ? `/${slug}` : ''}${docs[3] ?? ''}`;
+/** The plugin instance a site file belongs to, with its path inside that instance. */
+function locate(file) {
+  const relative = path.relative(siteDir, file).split(path.sep).join('/');
+  for (const instance of INSTANCES) {
+    const match = relative.match(instance.root);
+    if (match) return {instance, file: match[1]};
   }
-
-  const samples = decoded.match(SAMPLES_RE);
-  if (samples && (samples[1] || existsSync(new URL(`${samples[2]}/`, SAMPLES_DIR)))) {
-    return `/tutorials/${sampleSlug(samples[2])}${samples[4] ?? ''}`;
-  }
-
   return null;
+}
+
+function rewrite(url, page) {
+  if (/^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(url)) return null;
+  const [, file, hash = ''] = /^([^?#]*)(?:\?[^#]*)?(#.*)?$/.exec(url);
+  if (!/\.mdx?$/i.test(file)) return null;
+  const source = locate(page);
+  const targetFile = path.resolve(path.dirname(page), decodeURIComponent(file));
+  const target = locate(targetFile);
+  if (!source || !target || source.instance === target.instance) return null;
+  const slug = target.instance.slug(target.file);
+  return `${target.instance.route}${slug ? `/${slug}` : ''}${hash}`;
 }
 
 function visit(node, callback) {
@@ -65,9 +74,10 @@ function visit(node, callback) {
 
 export default function remarkCrossInstanceLinks() {
   return (tree, file) => {
+    if (!file.path) return;
     visit(tree, (node) => {
       if ((node.type === 'link' || node.type === 'definition') && typeof node.url === 'string') {
-        const target = rewrite(node.url);
+        const target = rewrite(node.url, file.path);
         if (target) node.url = target;
       }
     });

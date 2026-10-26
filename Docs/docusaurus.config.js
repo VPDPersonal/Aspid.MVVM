@@ -14,8 +14,6 @@ import {INTRO_BOOT_SCRIPT} from './src/intro.js';
 const TITLE = 'Aspid.MVVM';
 const PACKAGE = '../Aspid.MVVM/Packages/tech.aspid.mvvm';
 const LOCALES = ['en', 'ru'];
-// Translations live in `Documentation/<locale>/`; they must not be picked up as English pages.
-const TRANSLATION_FOLDERS = LOCALES.filter((locale) => locale !== 'en').map((locale) => `${locale}/**`);
 const REPO = 'https://github.com/VPDPersonal/Aspid.MVVM';
 const ASSET_STORE = 'https://assetstore.unity.com/packages/slug/298463';
 const SITE_URL = 'https://vpdpersonal.github.io';
@@ -98,14 +96,9 @@ function samplePrefixParser(filename) {
 const markdownOptions = {
   beforeDefaultRemarkPlugins: [remarkGithubAdmonitionsToDirectives, remarkCrossInstanceLinks, remarkAgentPrompt, remarkLiveDiagrams, remarkThemedImages],
   showLastUpdateTime: true,
-  // A translation is edited where it lives in the package: `Documentation/<locale>/…`, `README.<locale>.md`,
-  // `index.<locale>.mdx` (scripts/sync-i18n.mjs copies them into i18n/).
-  editUrl: ({ versionDocsDirPath, docPath, locale }) => {
-    const dir = versionDocsDirPath.replace(/^\.\.\//, '');
-    if (locale === 'en') return `${REPO}/edit/main/${dir}/${docPath}`;
-    if (dir.endsWith('/Documentation')) return `${REPO}/edit/main/${dir}/${locale}/${docPath}`;
-    return `${REPO}/edit/main/${dir}/${docPath.replace(/\.(mdx?)$/, `.${locale}.$1`)}`;
-  },
+  // English pages under `Docs/<instance>/`, translations under `Docs/i18n/<locale>/<plugin>/current/`.
+  editUrl: `${REPO}/edit/main/Docs/`,
+  editLocalizedFiles: true,
 };
 
 /** @type {import('@docusaurus/types').Config} */
@@ -168,14 +161,13 @@ const config = {
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        // Main documentation lives inside the UPM package so it ships to Unity users as-is.
-        // Translations sit next to it in `Documentation/<locale>/` and are wired in by scripts/sync-i18n.mjs.
+        // English pages in `docs/`, translations in `i18n/<locale>/docusaurus-plugin-content-docs/current/`.
         docs: {
-          path: `${PACKAGE}/Documentation`,
+          path: 'docs',
           routeBasePath: 'docs',
           breadcrumbs: false,
           sidebarPath: './sidebars.js',
-          exclude: ['**/SUMMARY.md', '**/*.meta', ...TRANSLATION_FOLDERS],
+          exclude: ['**/SUMMARY.md'],
           versions: { current: { label: PACKAGE_VERSION } },
           ...markdownOptions,
           beforeDefaultRemarkPlugins: [[remarkIntroBanner, {baseUrl: BASE_URL, siteUrl: SITE_URL, title: TITLE}], ...markdownOptions.beforeDefaultRemarkPlugins],
@@ -191,17 +183,17 @@ const config = {
     './src/plugins/search/index.js',
     './src/plugins/fonts/index.js',
     [
-      // Tutorials are the README.md of each sample: one source for GitHub, Unity and the site.
-      // Translations are `README.<locale>.md` beside it, wired in by scripts/sync-i18n.mjs.
+      // One page per sample in `tutorials/<Sample>/README.md`, translations in
+      // `i18n/<locale>/docusaurus-plugin-content-docs-tutorials/current/<Sample>/README.md`.
       '@docusaurus/plugin-content-docs',
       /** @type {import('@docusaurus/plugin-content-docs').Options} */
       ({
         id: 'tutorials',
-        path: `${PACKAGE}/Samples~`,
+        path: 'tutorials',
         routeBasePath: 'tutorials',
         breadcrumbs: false,
         sidebarPath: './sidebarsTutorials.js',
-        // `index.mdx` is the site's overview of the samples (src/components/SamplesGallery); Unity skips `Samples~`.
+        // `index.mdx` is the overview of the samples (src/components/SamplesGallery).
         include: ['index.mdx', '*/README.md'],
         numberPrefixParser: samplePrefixParser,
         ...markdownOptions,

@@ -8,7 +8,7 @@ const options = {baseUrl: '/Aspid.MVVM/', siteUrl: 'https://vpdpersonal.github.i
 const banner = (markdown) => transform(remarkIntroBanner(options), markdown, 'README.md');
 
 test('the package introduction: its Markdown banner becomes the site banner, the badges stay in the lede', () => {
-  const markdown = fs.readFileSync(new URL('../../Aspid.MVVM/Packages/tech.aspid.mvvm/Documentation/README.md', import.meta.url), 'utf8');
+  const markdown = fs.readFileSync(new URL('../docs/README.md', import.meta.url), 'utf8');
   const tree = banner(markdown);
   assert.equal(tree.children[0].name, 'IntroBanner');
   assert.equal(attribute(tree.children[0], 'src'), `Images/${BANNER}`);

@@ -24,11 +24,11 @@ public partial class ViewGenerator
             ? Inheritor.InheritorViewAttribute
             : Inheritor.None;
         
-        var members = BinderMembersFactory.Create(symbol, context.SemanticModel);
-        var inheritedDeclaredIds = BinderMembersFactory.CollectInheritedIds(symbol, context.SemanticModel);
-
         Debug.Assert(context.TargetNode is TypeDeclarationSyntax);
         var candidate = Unsafe.As<TypeDeclarationSyntax>(context.TargetNode);
+        
+        var members = BinderMembersFactory.Create(symbol, context.SemanticModel);
+        var inheritedDeclaredIds = BinderMembersFactory.CollectInheritedIds(symbol, candidate, context.SemanticModel);
 
         return new ViewData(symbol, inheritor, candidate, members, GetGenericViews(symbol), inheritedDeclaredIds);
     }

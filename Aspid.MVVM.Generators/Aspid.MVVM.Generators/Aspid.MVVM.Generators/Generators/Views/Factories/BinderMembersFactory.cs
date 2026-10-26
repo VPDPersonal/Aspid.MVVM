@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.Views.Helpers;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 
@@ -12,9 +13,16 @@ namespace Aspid.MVVM.Generators.Generators.Views.Factories;
 
 public static class BinderMembersFactory
 {
-    public static ImmutableArray<string> CollectInheritedIds(INamedTypeSymbol symbol, SemanticModel semanticModel)
+    /// <summary>
+    /// Collects the binder ids every base View already owns — the members it declares and the binder fields the
+    /// generator emits for it — so a derived View does not emit a field Unity would see serialized twice.
+    /// </summary>
+    public static ImmutableArray<string> CollectInheritedIds(
+        INamedTypeSymbol symbol,
+        TypeDeclarationSyntax declaration,
+        SemanticModel semanticModel)
     {
-        var ids = ImmutableArray.CreateBuilder<string>();
+        var ids = new HashSet<string>();
 
         for (var baseType = symbol.BaseType; baseType is not null; baseType = baseType.BaseType)
         {
@@ -22,9 +30,11 @@ public static class BinderMembersFactory
 
             foreach (var member in Create(baseType, semanticModel))
                 ids.Add(member.Id.SourceValue);
+
+            VirtualBinderFields.CollectGeneratedIds(baseType, declaration, ids);
         }
 
-        return ids.ToImmutable();
+        return ids.ToImmutableArray();
     }
 
     public static ImmutableArray<BinderMember> Create(INamedTypeSymbol symbolClass, SemanticModel semanticModel)
@@ -112,7 +122,7 @@ public static class BinderMembersFactory
             {
                 binderMembers.Add(new AsBinderMember(member, Classes.ViewBinder, null));
             }
-            else if (type.HasAnyInterfaceInSelfAndBases(Classes.IBinder))
+            else if (IsBinder(type))
             {
                 switch (member)
                 {
@@ -135,6 +145,15 @@ public static class BinderMembersFactory
 
         return binderMembers.ToImmutableArray();
     }
+    
+    /// <summary>
+    /// A member is a binder when its type implements <c>IBinder</c> or is the <c>IBinder</c> interface itself —
+    /// the helper looks only through the implemented interfaces, so the bare interface has to be matched by name,
+    /// without the nullable annotation an <c>IBinder?</c> member carries.
+    /// </summary>
+    private static bool IsBinder(ITypeSymbol type) =>
+        type.HasAnyInterfaceInSelfAndBases(Classes.IBinder)
+        || type.WithNullableAnnotation(NullableAnnotation.NotAnnotated).ToDisplayString() == Classes.IBinder.FullName;
     
     private static ITypeSymbol? GetType(ISymbol member)
     {

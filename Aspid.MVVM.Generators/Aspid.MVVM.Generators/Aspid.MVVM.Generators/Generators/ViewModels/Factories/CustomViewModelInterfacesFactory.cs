@@ -30,6 +30,7 @@ public static class CustomViewModelInterfacesFactory
                          {
                              var type = p.Type.ToDisplayStringGlobal();
                              return type.Contains(IBinderAdder)
+                                 || type.Contains(IBindableMember)
                                  || type.Contains(IReadOnlyBindableMember)
                                  || type.Contains(IReadOnlyValueBindableMember);
                          }))

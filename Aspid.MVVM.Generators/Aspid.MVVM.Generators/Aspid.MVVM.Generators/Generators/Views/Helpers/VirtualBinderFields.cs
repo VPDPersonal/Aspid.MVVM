@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using Aspid.Generators.Helper;
 using Aspid.Generators.Helper.Unity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
@@ -37,6 +38,35 @@ public static class VirtualBinderFields
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Adds the ids of the binder fields the generator emits for <paramref name="viewSymbol"/> itself — every
+    /// bindable member of each ViewModel type named by an <c>IView&lt;T&gt;</c> declared on that View.
+    /// </summary>
+    /// <remarks>
+    /// Reads the open definition: a generic base View is generated from it, where a type parameter names no ViewModel,
+    /// so the derived View still owns the fields for the type arguments it closes the base with.
+    /// </remarks>
+    public static void CollectGeneratedIds(INamedTypeSymbol viewSymbol, TypeDeclarationSyntax declaration, ISet<string> ids)
+    {
+        if (!IsAutoBinderFieldsEnabled(viewSymbol)) return;
+        if (InheritsFromScriptableObject(viewSymbol)) return;
+
+        foreach (var @interface in viewSymbol.OriginalDefinition.Interfaces)
+        {
+            if (!@interface.IsGenericType) continue;
+            if (@interface.Name != Classes.IView.Name) continue;
+
+            var viewModelType = @interface.TypeArguments[0];
+            if (viewModelType.TypeKind is TypeKind.Interface or TypeKind.TypeParameter) continue;
+
+            for (var type = viewModelType; type is not null; type = type.BaseType)
+            {
+                foreach (var bindable in BindableMembersFactory.Create(type, declaration, out _))
+                    ids.Add(bindable.Id.SourceValue);
+            }
+        }
     }
 
     private static void CollectFromType(

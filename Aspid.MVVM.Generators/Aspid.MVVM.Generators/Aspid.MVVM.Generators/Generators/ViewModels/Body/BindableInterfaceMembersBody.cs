@@ -27,7 +27,7 @@ public static class BindableInterfaceMembersBody
     {
         foreach (var member in data.Members)
         {
-            if (member.Mode is BindMode.None) return code;
+            if (member.Mode is BindMode.None) continue;
             if (!data.CustomViewModelInterfaces.TryGetValue(member.Id.SourceValue, out var customInterface)) continue;
             
             var property = customInterface.Property;
@@ -36,12 +36,7 @@ public static class BindableInterfaceMembersBody
             if (propertyType != IBinderAdder)
             {
                 if (!propertyType.Contains(member.Type)) continue;
-
-                if (!propertyType.Contains(IReadOnlyValueBindableMember))
-                {
-                    if (!member.Bindable.PropertyType.Contains(IReadOnlyBindableMember))
-                        continue;
-                }
+                if (!IsAssignable(propertyType, member.Bindable.PropertyType)) continue;
             }
             
             var interfaceType = customInterface.Interface.ToDisplayStringGlobal();
@@ -52,5 +47,17 @@ public static class BindableInterfaceMembersBody
         }
 
         return code;
+    }
+
+    /// <summary>
+    /// Whether the generated bindable property can back the interface property: a two-way slot needs a two-way
+    /// member, a read-only slot takes a read-only or two-way member, and a value slot takes any bindable member.
+    /// </summary>
+    private static bool IsAssignable(string interfaceType, string generatedType)
+    {
+        if (interfaceType.Contains(IBindableMember)) return generatedType.Contains(IBindableMember);
+        if (interfaceType.Contains(IReadOnlyBindableMember)) return generatedType.Contains(IReadOnlyBindableMember) || generatedType.Contains(IBindableMember);
+        
+        return true;
     }
 }

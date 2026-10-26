@@ -245,6 +245,9 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Generator ignored `enum` / `struct` constraints on generic bindable members.
 - `MonoBinder.Unbind()` `ProfilerMarker` guard broke compilation before Unity 2022.1.
 - A `MonoView` added from code with `AddComponent` threw a `NullReferenceException` from `Initialize`: its binder list was never deserialized and stayed `null`.
+- A derived View re-emitted the auto binder field its base View already had, so Unity serialized the slot twice.
+- Generator skipped View members typed as the bare `IBinder` interface.
+- A custom ViewModel interface property typed `IBindableMember<T>` was ignored, and a read-only member could back a two-way slot.
 
 #### Collections
 

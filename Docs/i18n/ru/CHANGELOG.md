@@ -141,7 +141,7 @@
 - `Aspid.Collections` (`tech.aspid.collections`) и `Aspid.FastTools` (`tech.aspid.fasttools`, тег `upm-preview/1.0.0-rc.9`) — UPM git-зависимости.
 - Release workflow публикует поддеревья `upm` (stable) и `upm-preview` с неизменяемыми тегами `upm/<version>` и берёт release notes из английского CHANGELOG; перед публикацией он прогоняет весь CI.
 - CI на каждый pull request: файлы пакета, файлы версии, воспроизводимые Roslyn DLL, пересобранные из исходников, .NET-тесты, EditMode- и PlayMode-тесты на каждой линейке Unity 6000.x; проверки заголовка PR и CHANGELOG.
-- Workflow Claude PR Assistant и Code Review; автоматизация редактора через Unity CLI с сервером `.mcp.json`; корневой `CLAUDE.md`.
+- Workflow Claude PR Assistant и Code Review; автоматизация редактора через Unity CLI; корневой `CLAUDE.md`.
 - Целевой редактор `6000.6.5f1`.
 
 ### Изменено

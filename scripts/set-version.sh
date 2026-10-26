@@ -1,6 +1,6 @@
 #!/bin/sh
 # Set the package version everywhere it is written by hand: package.json and the README install URLs (the channel
-# branch and the pinned upm/<version> tag). The unreleased notes of CHANGELOG.md and CHANGELOG.ru.md become the
+# branch and the pinned upm/<version> tag). The unreleased notes of CHANGELOG.md and Docs/i18n/ru/CHANGELOG.md become the
 # version's section, dated today, with its release link.
 # The version also picks the channel .github/workflows/release.yml publishes to: a prerelease (1.1.0-rc.1) installs
 # from `upm-preview`, a stable version (1.1.0) from `upm`.
@@ -21,7 +21,7 @@ UNRELEASED='(?:Unreleased\]|\Q$v\E\] — (?:Unreleased|Не выпущено))$'
 #   has_section <file> [<pattern after the "]">]
 has_section() { perl -CSDA -Mutf8 -ne 'BEGIN { ($v, $t) = splice @ARGV, 0, 2 } $f = 1 if /^## \[\Q$v\E\]$t/; END { exit !$f }' "$NEW" "${2:-}" "$1"; }
 # Checked for both files before any change. A CHANGELOG that already has the version's dated section keeps it.
-for f in CHANGELOG.md CHANGELOG.ru.md; do
+for f in CHANGELOG.md Docs/i18n/ru/CHANGELOG.md; do
   if has_section "$f" ' — [0-9]{4}-[0-9]{2}-[0-9]{2}$'; then continue; fi
   V=$NEW perl -CSDA -Mutf8 -ne 'BEGIN { $v = $ENV{V} } if (/^## \[/) { last if $on; $on = /^## \['"$UNRELEASED"'/; next }
     $notes = 1 if $on && /\S/ && !/^#/; END { exit !$notes }' "$f" ||
@@ -46,7 +46,7 @@ perl -pi -e 's/Aspid\.MVVM\.git#upm\/[0-9A-Za-z.+-]+/Aspid.MVVM.git#upm\/$ENV{NE
 # "compare/...HEAD" of an unreleased line) is replaced, not defined twice.
 DATE=$(date +%Y-%m-%d) REPO=https://github.com/VPDPersonal/Aspid.MVVM
 export DATE REPO
-for f in CHANGELOG.md CHANGELOG.ru.md; do
+for f in CHANGELOG.md Docs/i18n/ru/CHANGELOG.md; do
   if ! has_section "$f" ' — [0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
     V=$NEW perl -CSDA -Mutf8 -0pi -e '$v = $ENV{V};
       s/^## \['"$UNRELEASED"'/## [$ENV{NEW}] — $ENV{DATE}/m or die "$ARGV: no unreleased heading\n";

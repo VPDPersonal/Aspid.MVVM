@@ -24,7 +24,7 @@ export function changelogBody(markdown, title) {
  */
 export function repositoryLinks(markdown, blobUrl) {
   return markdown.replace(/\]\((?![a-z][a-z\d+.-]*:|#|\/)([^)\s]+)\)/gi, (link, target) =>
-    /^CHANGELOG(?:\.[a-z]{2})?\.md$/.test(target) ? link : `](${blobUrl}${target})`);
+    /^CHANGELOG(?:\.[a-z]{2})?\.md$/.test(target.replace(/^(?:\.\.\/)+/, '')) ? link : `](${blobUrl}${target})`);
 }
 
 /** The page file: front matter with the date of the source's last commit (when git has one) and the body. */

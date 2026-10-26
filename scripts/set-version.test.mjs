@@ -13,7 +13,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } f
 const scripts = fileURLToPath(new URL('.', import.meta.url));
 const PACKAGE_JSON = 'Aspid.MVVM/Packages/tech.aspid.mvvm/package.json';
 const REPO = 'https://github.com/VPDPersonal/Aspid.MVVM';
-const CHANGELOGS = ['CHANGELOG.md', 'CHANGELOG.ru.md'];
+const CHANGELOGS = ['CHANGELOG.md', 'Docs/i18n/ru/CHANGELOG.md'];
 const FILES = [PACKAGE_JSON, 'README.md', ...CHANGELOGS];
 
 const packageJson = (version) =>
@@ -46,7 +46,7 @@ function sandbox(t, { version = '1.1.0-beta.1', en = '## [Unreleased]', ru = '##
   write(dir, PACKAGE_JSON, packageJson(version));
   write(dir, 'README.md', readme(version.includes('-') ? 'upm-preview' : 'upm', version));
   write(dir, 'CHANGELOG.md', changelog(en));
-  write(dir, 'CHANGELOG.ru.md', changelog(ru));
+  write(dir, 'Docs/i18n/ru/CHANGELOG.md', changelog(ru));
   run('git', ['init', '--quiet'], dir);
   return dir;
 }
@@ -154,11 +154,11 @@ test('a version that is not SemVer is refused before any file changes', (t) => {
 
 test('a CHANGELOG with nothing to release is refused before any file changes', (t) => {
   const dir = sandbox(t);
-  write(dir, 'CHANGELOG.ru.md', read(dir, 'CHANGELOG.ru.md').replace(/### Fixed\n\n- A note for the release\.\n\n/, ''));
+  write(dir, 'Docs/i18n/ru/CHANGELOG.md', read(dir, 'Docs/i18n/ru/CHANGELOG.md').replace(/### Fixed\n\n- A note for the release\.\n\n/, ''));
   const before = snapshot(dir);
   const result = setVersion(dir, '1.1.0');
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /^CHANGELOG\.ru\.md: no "## \[Unreleased\]"/m);
+  assert.match(result.stderr, /^Docs\/i18n\/ru\/CHANGELOG\.md: no "## \[Unreleased\]"/m);
   assert.deepEqual(snapshot(dir), before);
 });
 

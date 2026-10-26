@@ -11,7 +11,7 @@ and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
   `Docs/i18n/ru/docusaurus-plugin-content-docs-migration/current/`.
 - Shipped package code changed (`Aspid.MVVM/Packages/tech.aspid.mvvm/` except `Tests/` and Markdown;
   the generator and analyzer DLLs; the package `package.json`) → the same entry under the top `Unreleased` version in
-  `CHANGELOG.md` and `CHANGELOG.ru.md`. No entry yet → the `needs-changelog` label.
+  `CHANGELOG.md` and `Docs/i18n/ru/CHANGELOG.md`. No entry yet → the `needs-changelog` label.
 - Labels to pass at `gh pr create`:
   - one `type:*` from the title type: `feat` → `type: feature`, `fix` → `type: fix`, `perf` → `type: performance`,
     `refactor` → `type: refactor`, `style` → `type: style`, `docs` → `type: documentation`, `test` → `type: test`,

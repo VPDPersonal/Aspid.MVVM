@@ -4,8 +4,7 @@
  *   CHANGELOG.md (repository root) → changelog/index.md (+ changelog/sidebars.json)
  *   i18n/<locale>/CHANGELOG.md     → i18n/<locale>/docusaurus-plugin-content-docs-changelog/current/index.md
  *
- * `i18n/<locale>/CHANGELOG.md` is the copy scripts/sync-i18n.mjs makes of the root `CHANGELOG.<locale>.md`, so the
- * history date is read from that source. Links to other repository files (`LICENSE`) open them on GitHub.
+ * Links to other repository files (`LICENSE`) open them on GitHub.
  *
  * Both outputs are gitignored and rebuilt before `start` and `build`. A copy is not tracked by git, so Docusaurus
  * cannot read its history; each page gets `last_update.date` from the source file's last commit instead.
@@ -41,8 +40,8 @@ function lastCommitDate(file) {
   }
 }
 
-function writeChangelog(source, destination, title, history = source) {
-  const date = lastCommitDate(history);
+function writeChangelog(source, destination, title) {
+  const date = lastCommitDate(source);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
   fs.writeFileSync(destination, changelogPage(repositoryLinks(fs.readFileSync(source, 'utf8'), BLOB), title, date));
 }
@@ -59,8 +58,7 @@ for (const locale of locales) {
   const title = fs.existsSync(navbar) ? JSON.parse(fs.readFileSync(navbar, 'utf8'))['item.label.Changelog']?.message : undefined;
   const destination = path.join(i18nDir, locale, 'docusaurus-plugin-content-docs-changelog', 'current');
   fs.rmSync(destination, { recursive: true, force: true });
-  writeChangelog(path.join(i18nDir, locale, 'CHANGELOG.md'), path.join(destination, 'index.md'), title,
-    path.join(repoDir, `CHANGELOG.${locale}.md`));
+  writeChangelog(path.join(i18nDir, locale, 'CHANGELOG.md'), path.join(destination, 'index.md'), title);
 }
 
 console.log(`[sync-changelog] locales: en${locales.map((locale) => `, ${locale}`).join('')}`);

@@ -5,7 +5,7 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 проект придерживается [семантического версионирования](https://semver.org/spec/v2.0.0.html).
 
-> 🌐 English version: [CHANGELOG.md](CHANGELOG.md)
+> 🌐 English version: [CHANGELOG.md](../../../CHANGELOG.md)
 
 ---
 

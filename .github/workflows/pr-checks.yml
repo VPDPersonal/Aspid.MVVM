@@ -111,7 +111,7 @@ jobs:
 
             if (errors.length) core.setFailed(errors.join('\n'));
 
-  # Shipped package code changed → the same entry in CHANGELOG.md and CHANGELOG.ru.md, or the `needs-changelog` label
+  # Shipped package code changed → the same entry in CHANGELOG.md and Docs/i18n/ru/CHANGELOG.md, or the `needs-changelog` label
   # until the entry is written (.claude/asp-pr.md). release.yml takes the release notes from the English file; the
   # Russian one is its translation.
   changelog:
@@ -138,19 +138,19 @@ jobs:
               f.startsWith(PKG) && !/^Tests(?:\/|\.meta$)/.test(f.slice(PKG.length)) &&
               !/\.md(?:\.meta)?$/.test(f));
             if (!shipped.length) return core.info('No shipped package code changed.');
-            const english = files.includes('CHANGELOG.md'), russian = files.includes('CHANGELOG.ru.md');
+            const english = files.includes('CHANGELOG.md'), russian = files.includes('Docs/i18n/ru/CHANGELOG.md');
             if (english && russian) return core.info('CHANGELOG updated.');
 
             const list = `${shipped.slice(0, 3).join(', ')}${shipped.length > 3 ? ', …' : ''}`;
             if (english)
               core.setFailed(
-                `Package code changed (${list}) and CHANGELOG.md did, but CHANGELOG.ru.md did not. ` +
-                'Add the same entry to CHANGELOG.ru.md: it is the translation of CHANGELOG.md.');
+                `Package code changed (${list}) and CHANGELOG.md did, but Docs/i18n/ru/CHANGELOG.md did not. ` +
+                'Add the same entry to Docs/i18n/ru/CHANGELOG.md: it is the translation of CHANGELOG.md.');
             else if (russian)
               core.setFailed(
-                `Package code changed (${list}) and CHANGELOG.ru.md did, but the English CHANGELOG.md did not. ` +
+                `Package code changed (${list}) and Docs/i18n/ru/CHANGELOG.md did, but the English CHANGELOG.md did not. ` +
                 'Add the same entry to CHANGELOG.md: release.yml takes the release notes from it.');
             else
               core.setFailed(
-                `Package code changed (${list}) but neither CHANGELOG.md nor CHANGELOG.ru.md did. ` +
+                `Package code changed (${list}) but neither CHANGELOG.md nor Docs/i18n/ru/CHANGELOG.md did. ` +
                 'Add the same entry to both, or the `needs-changelog` label until it is written.');

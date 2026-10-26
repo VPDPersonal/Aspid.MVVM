@@ -42,8 +42,8 @@ jobs:
               'project', 'site', 'api', 'changelog', 'release', 'ci', 'github', 'skills', 'claude', 'deps',
             ];
             const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
-            // A submodule bump changes the submodule's path itself.
-            const SUBMODULES = {
+            // The sources of the Roslyn DLLs.
+            const ROSLYN_SOURCES = {
               'Aspid.MVVM.Generators': 'area: generator',
               'Aspid.MVVM.Unity.Generators': 'area: generator',
               'Aspid.MVVM.Analyzers': 'area: analyzer',
@@ -62,7 +62,7 @@ jobs:
                 if (/Generators\.dll(\.meta)?$/.test(path)) areas.push('area: generator');
                 if (/Analyzers\.dll(\.meta)?$/.test(path)) areas.push('area: analyzer');
               }
-              if (SUBMODULES[file.split('/')[0]]) areas.push(SUBMODULES[file.split('/')[0]]);
+              if (ROSLYN_SOURCES[file.split('/')[0]]) areas.push(ROSLYN_SOURCES[file.split('/')[0]]);
               if (file.startsWith('Docs/') || /^[^/]+\.md$/.test(file)) areas.push('area: docs');
               if (/^(\.github|scripts)\//.test(file) || ['global.json', 'Directory.Build.props'].includes(file))
                 areas.push('area: ci');

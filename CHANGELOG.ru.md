@@ -21,7 +21,7 @@
 - Конвертеры: каталог вырос с 17 до ~190, `ITwoWayConverter`, `ConverterAsset`, композиционные примитивы, форматирование с учётом культуры.
 - Редактор: инспекторы на UI Toolkit, переписанный `DebugViewModelPanel`, окно Welcome / Settings, type picker FastTools для `[SerializeReference]`.
 - `MonoView` стал конкретным классом, `DynamicViewModel` — типизированный набор свойств, у `ViewInitializer` появилась DI-стадия конструирования.
-- Пакет — встроенный UPM-пакет; `Aspid.Collections` и `Aspid.FastTools` подключаются как UPM git-зависимости; генераторы — в сабмодулях.
+- Пакет — встроенный UPM-пакет; `Aspid.Collections` и `Aspid.FastTools` подключаются как UPM git-зависимости; исходники генераторов и анализатора — в этом репозитории.
 - Сайт документации на Docusaurus (`en` / `ru`), сэмплы перестроены в учебный путь, ~3000 EditMode-тестов.
 
 ### Добавлено
@@ -137,10 +137,10 @@
 #### Проект и инфраструктура
 
 - Пакет стал встроенным UPM-пакетом в `Packages/tech.aspid.mvvm`; Unity-проект перенесён в `Aspid.MVVM/`.
-- `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` — git-сабмодули.
+- `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` перенесены в этот репозиторий со всей историей и больше не git-сабмодули.
 - `Aspid.Collections` (`tech.aspid.collections`) и `Aspid.FastTools` (`tech.aspid.fasttools`, тег `upm-preview/1.0.0-rc.9`) — UPM git-зависимости.
 - Release workflow публикует поддеревья `upm` (stable) и `upm-preview` с неизменяемыми тегами `upm/<version>` и берёт release notes из английского CHANGELOG; перед публикацией он прогоняет весь CI.
-- CI на каждый pull request: файлы пакета, файлы версии, воспроизводимые Roslyn DLL, пересобранные из сабмодулей, .NET-тесты, EditMode- и PlayMode-тесты на каждой линейке Unity 6000.x; проверки заголовка PR и CHANGELOG.
+- CI на каждый pull request: файлы пакета, файлы версии, воспроизводимые Roslyn DLL, пересобранные из исходников, .NET-тесты, EditMode- и PlayMode-тесты на каждой линейке Unity 6000.x; проверки заголовка PR и CHANGELOG.
 - Workflow Claude PR Assistant и Code Review; автоматизация редактора через Unity CLI с сервером `.mcp.json`; корневой `CLAUDE.md`.
 - Целевой редактор `6000.6.5f1`.
 

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Aspid.MVVM.Unity.Generators.Sample</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Aspid.MVVM.Unity.Generators\Aspid.MVVM.Unity.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="DDD.UbiquitousLanguageRegistry.txt"/>
+    </ItemGroup>
+
+</Project>

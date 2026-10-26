@@ -137,7 +137,7 @@ AMVVM005  The CanExecute method/property was not found
 - [Справочник API](https://vpdpersonal.github.io/Aspid.MVVM/api/Aspid.MVVM) — типы, методы и свойства пакета.
 - [Изменения](https://vpdpersonal.github.io/Aspid.MVVM/ru/changelog) — изменения и исправления по версиям.
 - [Миграция](https://vpdpersonal.github.io/Aspid.MVVM/ru/migration/1.1) — что поменять в проекте при переходе на новую версию.
-- [Генераторы кода](https://github.com/VPDPersonal/Aspid.MVVM.Generators) — генераторы и анализаторы Roslyn, на которых работают атрибуты.
+- [Генераторы кода](https://github.com/VPDPersonal/Aspid.MVVM/tree/main/Aspid.MVVM.Generators) — генераторы и анализаторы Roslyn, на которых работают атрибуты.
 
 ## Помощь и поддержка
 

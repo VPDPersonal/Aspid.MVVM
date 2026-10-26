@@ -31,12 +31,7 @@ A step-by-step guide from installation to the first working example.
 
 ```bash
 git clone https://github.com/VPDPersonal/Aspid.MVVM.git
-cd Aspid.MVVM
-git submodule update --init --recursive
 ```
-
-> [!IMPORTANT]
-> The project uses git submodules. Without `git submodule update --init --recursive` the code does not compile.
 
 ***
 

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "DebugRoslynSourceGenerator": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../Aspid.MVVM.Generators.Sample/Aspid.MVVM.Generators.Sample.csproj"
+    }
+  }
+}

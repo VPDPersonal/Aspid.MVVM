@@ -101,8 +101,8 @@ jobs:
       - run: node --test scripts/*.test.mjs
 
   # A change to a generator or the analyzer reaches Unity only through the DLL in the package. A Release build of the
-  # submodules rewrites the three DLLs there (scripts/build-roslyn-dlls.sh); a clean `git diff` shows that the committed
-  # ones come from the sources at the commits the submodules point to.
+  # three solutions rewrites the DLLs there (scripts/build-roslyn-dlls.sh); a clean `git diff` shows that the committed
+  # ones come from the sources of the same commit.
   roslyn-dlls:
     name: Roslyn DLLs
     runs-on: ubuntu-latest
@@ -112,16 +112,14 @@ jobs:
         with:
           fetch-depth: 2
           filter: blob:none
-          # The .gitmodules URLs are SSH ones; checkout fetches the public submodules over HTTPS with its token.
-          submodules: true
           sparse-checkout: |
             scripts
             Aspid.MVVM.Generators
             Aspid.MVVM.Analyzers
             Aspid.MVVM.Unity.Generators
             Aspid.MVVM/Packages/tech.aspid.mvvm
-      # Skips the rest when nothing the job reads changed: the folders of its sparse checkout (a submodule bump is a
-      # change of its folder), global.json, Directory.Build.props and this workflow. The base is the one of the Unity
+      # Skips the rest when nothing the job reads changed: the folders of its sparse checkout, global.json,
+      # Directory.Build.props and this workflow. The base is the one of the Unity
       # plan job: for a PR the main it merges into, for a push to main the previous commit. A release and a manual run
       # always build. A failed diff runs the job. The dotnet-tests job reuses this step through the anchor.
       - &changes
@@ -149,8 +147,8 @@ jobs:
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
           fi
-      # The SDK pinned in global.json built the committed DLLs. It goes into a folder of its own: the runner's
-      # preinstalled SDKs would otherwise win the roll-forward of the generators' own global.json.
+      # The SDK pinned in global.json built the committed DLLs. It goes into a folder of its own, away from the
+      # runner's preinstalled SDKs.
       - if: steps.changes.outputs.run == 'true'
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         env:
@@ -170,7 +168,7 @@ jobs:
         if: steps.changes.outputs.run == 'true'
         run: |
           if ! git diff --exit-code --stat -- 'Aspid.MVVM/Packages/tech.aspid.mvvm/*.dll'; then
-            echo "::error::A committed Roslyn DLL differs from a Release build of the submodule it comes from. Run scripts/build-roslyn-dlls.sh with the SDK of global.json, then commit the DLLs."
+            echo "::error::A committed Roslyn DLL differs from a Release build of its sources. Run scripts/build-roslyn-dlls.sh with the SDK of global.json, then commit the DLLs."
             exit 1
           fi
 
@@ -189,12 +187,11 @@ jobs:
           - name: Unity generators
             path: Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators/Aspid.MVVM.Unity.Generators.Tests
     steps:
-      # Only what the solutions read, with the submodules.
+      # Only what the solutions read.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 2
           filter: blob:none
-          submodules: true
           sparse-checkout: |
             Aspid.MVVM.Generators
             Aspid.MVVM.Analyzers

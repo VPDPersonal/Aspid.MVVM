@@ -201,7 +201,7 @@ const config = {
       }),
     ],
     [
-      // The root CHANGELOG.md (and CHANGELOG.<locale>.md), copied in by scripts/sync-changelog.mjs.
+      // The root CHANGELOG.md (and i18n/<locale>/CHANGELOG.md), copied in by scripts/sync-changelog.mjs.
       '@docusaurus/plugin-content-docs',
       /** @type {import('@docusaurus/plugin-content-docs').Options} */
       ({
@@ -211,7 +211,7 @@ const config = {
         breadcrumbs: false,
         sidebarPath: './changelog/sidebars.json',
         showLastUpdateTime: true,
-        editUrl: ({ locale }) => `${REPO}/edit/main/CHANGELOG${locale === 'en' ? '' : `.${locale}`}.md`,
+        editUrl: ({ locale }) => `${REPO}/edit/main/${locale === 'en' ? '' : `Docs/i18n/${locale}/`}CHANGELOG.md`,
         beforeDefaultRemarkPlugins: [remarkGithubAdmonitionsToDirectives],
       }),
     ],

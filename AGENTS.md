@@ -119,7 +119,7 @@ scripts/set-version.sh 1.1.0-rc.1
 
 ### Releases
 
-Only a pushed `v<version>` tag on a commit of `main` starts `.github/workflows/release.yml`: preflight (SemVer, the commit is in `main`, `upm/<version>` is new, package.json, the CHANGELOG section) → the whole `ci.yml` with Unity required → one atomic push of the `upm` (stable) or `upm-preview` (prerelease) subtree branch and its `upm/<version>` tag, with CHANGELOG (+ `.ru`) bundled into the package → the GitHub release (`gh`). There is no manual run: the `Release tags` ruleset lets only admins push `v*` tags. Skill [asp-mvvm-release](.claude/skills/asp-mvvm-release/SKILL.md) walks the release (bump PR, merge, tag, watching the run).
+Only a pushed `v<version>` tag on a commit of `main` starts `.github/workflows/release.yml`: preflight (SemVer, the commit is in `main`, `upm/<version>` is new, package.json, the CHANGELOG section) → the whole `ci.yml` with Unity required → one atomic push of the `upm` (stable) or `upm-preview` (prerelease) subtree branch and its `upm/<version>` tag, with the English CHANGELOG bundled into the package → the GitHub release (`gh`). There is no manual run: the `Release tags` ruleset lets only admins push `v*` tags. Skill [asp-mvvm-release](.claude/skills/asp-mvvm-release/SKILL.md) walks the release (bump PR, merge, tag, watching the run).
 
 ### Unity Editor automation (Unity CLI)
 

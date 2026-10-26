@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "sync-i18n": "node scripts/sync-i18n.mjs",
     "sync-changelog": "node scripts/sync-changelog.mjs",
-    "sync": "npm run sync-i18n && npm run sync-changelog",
+    "sync": "npm run sync-changelog",
     "api": "node scripts/docfx-projects.mjs && rm -rf api && docfx metadata docfx/docfx.json && node scripts/docfx-postprocess.mjs",
     "prestart": "npm run sync",
     "prestart:ru": "npm run sync",

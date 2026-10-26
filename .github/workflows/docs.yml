@@ -1,19 +1,19 @@
 name: Docs
 
 # Builds the Docusaurus site in Docs/ and publishes it to GitHub Pages.
-# Content lives in Docs/ (docs/, tutorials/, migration/, i18n/) and the root changelogs, so any change there rebuilds the site.
+# Content lives in Docs/ (docs/, tutorials/, migration/, i18n/) and the root CHANGELOG.md, so any change there rebuilds the site.
 
 on:
   push:
     branches: [main]
     paths:
       - 'Docs/**'
-      - 'CHANGELOG*.md'
+      - 'CHANGELOG.md'
       - '.github/workflows/docs.yml'
   pull_request:
     paths:
       - 'Docs/**'
-      - 'CHANGELOG*.md'
+      - 'CHANGELOG.md'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 

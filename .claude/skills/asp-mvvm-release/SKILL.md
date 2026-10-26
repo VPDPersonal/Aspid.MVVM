@@ -37,7 +37,7 @@ Do every step without questions. Stop at the first failure and report it.
    `1.1.0-rc.10` > `1.1.0-rc.9`, and `1.1.0` > `1.1.0-rc.9`.
 3. Create the branch: `git switch -c chore/release-<version> origin/main`.
 4. Check the CHANGELOGs. `set-version.sh` releases the notes under `## [Unreleased]` or under the version's own
-   heading marked unreleased (`## [1.1.0] — Unreleased`, `## [1.1.0] — Не выпущено` in `CHANGELOG.ru.md`).
+   heading marked unreleased (`## [1.1.0] — Unreleased`, `## [1.1.0] — Не выпущено` in `Docs/i18n/ru/CHANGELOG.md`).
    A prerelease of a line whose notes sit under the line's heading (`1.1.0-rc.1` under `## [1.1.0] — Unreleased`)
    needs its own section: write `## [<version>] — <today>` above the line's heading in both CHANGELOGs, with a short
    summary of the preview, in the style of the file. Keep the line's heading as it is.
@@ -59,7 +59,7 @@ Do every step without questions. Stop at the first failure and report it.
    - the `roslyn-dlls` job: `scripts/build-roslyn-dlls.sh`, then `git status --short -- Aspid.MVVM/Packages/tech.aspid.mvvm`.
 8. A DLL diff in step 7 means stale DLLs on `main`. Run `git checkout --` on the DLLs. Stop and report.
 9. Find the old version in prose:
-   `git grep -n -F '<old>' -- . ':!CHANGELOG.md' ':!CHANGELOG.ru.md' ':!scripts/'`.
+   `git grep -n -F '<old>' -- . ':!CHANGELOG.md' ':!Docs/i18n/ru/CHANGELOG.md' ':!scripts/'`.
    Also look at the README install section (the `Preview (1.1.0)` summary, the channel text). Do not edit the hits.
    Put them into the report.
 10. Wait for both `unity-verify` agents. A failed test stops the release.

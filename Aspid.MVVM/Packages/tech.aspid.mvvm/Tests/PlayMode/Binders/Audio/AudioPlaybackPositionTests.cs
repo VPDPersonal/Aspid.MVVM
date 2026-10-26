@@ -38,9 +38,15 @@ namespace Aspid.MVVM.Tests
         {
             // Long enough that the clip does not end, and the source stop, while the error is being logged.
             var audioSource = NewPlayingSource(seconds: 3);
-            yield return null;
 
-            Assert.IsTrue(audioSource.isPlaying, "The source is not playing — time stores nothing while it is not");
+            // Time stores nothing while the source is not playing. Without an audio device (a headless CI container) the
+            // source can take a few frames to start, or not start at all.
+            yield return null;
+            for (var frame = 1; frame < 10 && !audioSource.isPlaying; frame++)
+                yield return null;
+
+            if (!audioSource.isPlaying)
+                Assert.Ignore("This audio output did not start the source, so a seek cannot be observed here");
 
             audioSource.time = 0.5f;
             Assert.That(audioSource.time, Is.InRange(0.5f, 0.5f + PlayheadDrift), "A valid position was not kept");

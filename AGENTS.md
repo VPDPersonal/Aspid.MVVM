@@ -47,7 +47,7 @@ Projects/Aspid.MVVM/
 - **Unity 2022.3+** — target runtime
 - **Zenject / VContainer** — DI framework integrations
 - **UniTask** — async utilities
-- **.NET 9.0 SDK** — for generator/analyzer projects (`global.json`)
+- **.NET SDK 10.0.300** — for generator/analyzer projects (root `global.json`); test projects target `net9.0`
 
 ## Architecture
 
@@ -95,20 +95,24 @@ The framework uses Source Generators to eliminate boilerplate and reflection:
 - **Analyzer tests**: `Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests/`
 - **Runtime tests**: Unity Test Framework, Zenject integration tests
 - **Manual validation**: Sample projects under `Samples~` (each sample's `README.md` is its tutorial)
+- **CI** (`.github/workflows/ci.yml`): package files, version files, `scripts/*.test.mjs`, the committed Roslyn DLLs, the .NET tests, and the Unity EditMode + PlayMode tests on every Unity 6000.x line (`UNITY_VERSIONS`) in a throwaway project from `scripts/make-unity-test-project.sh`. `pr-checks.yml` checks the PR title (Conventional Commits, known scope) and that shipped package code comes with an entry in both CHANGELOGs (or the `needs-changelog` label until the entry is written). The `unity-quick` label limits a PR to the first and the last Unity version.
 
 ## Commands
 
 Generator/analyzer solutions build independently of Unity:
 
 ```bash
-# Build source generator (produces DLL consumed by Unity)
-dotnet build Aspid.MVVM.Generators/Aspid.MVVM.Generators.sln
+# Rebuild the three Roslyn DLLs in Release and copy them into the package (commit the result)
+scripts/build-roslyn-dlls.sh
 
 # Run generator tests
 dotnet test Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators.Tests/
 
 # Run analyzer tests
 dotnet test Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests/
+
+# Run the tests of the CI scripts
+node --test scripts/*.test.mjs
 ```
 
 ### Unity Editor automation (Unity CLI)
@@ -140,9 +144,9 @@ AI agents can consume the same command surface as MCP tools: the repo ships `.mc
 
 ## Gotchas
 
-- **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Packages/tech.aspid.mvvm/` and are checked into the repo. After changing a generator, rebuild its solution and commit the refreshed DLL — Unity consumes the DLL, not source.
+- **Generator artifacts are committed.** Built DLLs (`Aspid.MVVM.Generators.dll`, `Aspid.MVVM.Analyzers.dll`, `Unity/Aspid.MVVM.Unity.Generators.dll`) live under `Aspid.MVVM/Packages/tech.aspid.mvvm/` and are checked into the repo. After changing a generator or bumping a submodule, run `scripts/build-roslyn-dlls.sh` and commit the refreshed DLLs — Unity consumes the DLL, not source. The Roslyn DLLs job of CI rebuilds them and fails on any byte of difference; the root `Directory.Build.props` makes the Release build reproducible.
 - **Submodules are required.** Cloning without `--recurse-submodules` leaves the generator/analyzer repos empty; Unity won't compile. `Aspid.Collections` is consumed as a UPM git package (not a submodule).
-- **`.NET 9.0 SDK` is pinned** via `global.json` in each generator/analyzer root. Older SDKs fail to build.
+- **The .NET SDK is pinned** to `10.0.300` by the root `global.json` (`rollForward: disable`): another compiler gives other DLL bytes. The test projects target `net9.0`, so `dotnet test` also needs the .NET 9 runtime.
 - **Classes using `[ViewModel]`, `[Bind]`, `[RelayCommand]` must be `partial`** — the generator emits a second partial; without the modifier you get compile errors instead of generated members.
 
 ## Git Submodules

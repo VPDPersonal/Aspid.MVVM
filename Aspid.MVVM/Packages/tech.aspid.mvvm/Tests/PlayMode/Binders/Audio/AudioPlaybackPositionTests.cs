@@ -20,32 +20,37 @@ namespace Aspid.MVVM.Tests
     {
         private const int SampleRate = 44100;
 
+        // The source is playing, so the playhead can advance between an assignment and the read that follows it: by one
+        // DSP buffer (1024 samples, 21 ms at 48 kHz) on 6000.0 to 6000.2 in a headless container, by nothing elsewhere.
+        private const float PlayheadDrift = 0.05f;
+
         /// <summary>
         /// Pins the premise: this is Unity's behaviour, not the binder's.
         /// </summary>
         /// <remarks>
-        /// Where the refusal leaves the playhead depends on the audio output: with a device it stays where it was, and
-        /// on a machine without one (a headless CI container) it reads as the end of the clip. It never takes the
-        /// position asked for, which is what the binder's clamp is there for.
+        /// Where the refusal leaves the playhead depends on the audio output and on time: with a device it stays where it
+        /// was, on a machine without one (a headless CI container) it reads as the end of the clip, and the source keeps
+        /// playing while Unity logs the error, which in CI takes long enough to move it by a few tenths of a second. It
+        /// never takes the position asked for and never goes back, which is what the binder's clamp is there for.
         /// </remarks>
         [UnityTest]
         public IEnumerator UnityTime_RefusesAPositionOutsideTheClip_AndSaysSo()
         {
-            var audioSource = NewPlayingSource();
-            yield return null;
-
-            Assert.IsTrue(audioSource.isPlaying, "The source is not playing — time stores nothing while it is not");
+            // Long enough that the clip does not end, and the source stop, while the error is being logged.
+            var audioSource = NewPlayingSource(seconds: 3);
+            yield return WaitUntilPlaying(audioSource);
+            IgnoreUnlessPlaying(audioSource);
 
             audioSource.time = 0.5f;
-            Assert.AreEqual(0.5f, audioSource.time, 0.01f, "A valid position was not kept");
+            Assert.That(audioSource.time, Is.InRange(0.5f, 0.5f + PlayheadDrift), "A valid position was not kept");
 
             LogAssert.Expect(LogType.Error, new Regex("invalid seek position"));
             audioSource.time = 100f;
 
             Assert.That(
                 audioSource.time,
-                Is.EqualTo(0.5f).Within(0.01f).Or.EqualTo(audioSource.clip.length).Within(0.01f),
-                "Unity changed behaviour: a refused seek moved the position somewhere other than where it was or the end of the clip");
+                Is.InRange(0.5f, audioSource.clip.length),
+                "Unity changed behaviour: a refused seek moved the position out of the clip or back before where it was");
         }
 
         [UnityTest]
@@ -53,7 +58,8 @@ namespace Aspid.MVVM.Tests
         {
             var audioSource = NewPlayingSource();
             var binder = audioSource.gameObject.AddComponent<AudioSourceTimeMonoBinder>();
-            yield return null;
+            yield return WaitUntilPlaying(audioSource);
+            IgnoreUnlessPlaying(audioSource);
 
             ((IBinder<float>)binder).SetValue(100f);
 
@@ -68,17 +74,33 @@ namespace Aspid.MVVM.Tests
         {
             var audioSource = NewPlayingSource();
             var binder = audioSource.gameObject.AddComponent<AudioSourceTimeMonoBinder>();
-            yield return null;
+            yield return WaitUntilPlaying(audioSource);
+            IgnoreUnlessPlaying(audioSource);
 
             ((IBinder<float>)binder).SetValue(-10f);
 
-            Assert.AreEqual(0f, audioSource.time, "A negative position was not clamped");
+            Assert.That(audioSource.time, Is.InRange(0f, PlayheadDrift), "A negative position was not clamped");
         }
 
-        private AudioSource NewPlayingSource()
+        // Time stores nothing while the source is not playing. Without an audio device (a headless CI container) the
+        // source can take a few frames to start, or not start at all; then no position can be observed.
+        private static IEnumerator WaitUntilPlaying(AudioSource audioSource)
+        {
+            yield return null;
+            for (var frame = 1; frame < 10 && !audioSource.isPlaying; frame++)
+                yield return null;
+        }
+
+        private static void IgnoreUnlessPlaying(AudioSource audioSource)
+        {
+            if (!audioSource.isPlaying)
+                Assert.Ignore("This audio output did not start the source, so a position cannot be observed here");
+        }
+
+        private AudioSource NewPlayingSource(int seconds = 1)
         {
             var gameObject = Spawn("Audio");
-            var clip = Track(AudioClip.Create("guard", SampleRate, 1, SampleRate, false));
+            var clip = Track(AudioClip.Create("guard", SampleRate * seconds, 1, SampleRate, false));
 
             var audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.clip = clip;

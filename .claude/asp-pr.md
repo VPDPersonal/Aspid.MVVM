@@ -7,7 +7,8 @@ and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
 - Scopes (or none): `core` `starterkit` `binders` `converters` `collections` `editor` `samples` `generators`
   `analyzers` `package` · `project` `site` `api` `changelog` `release` `ci` `github` `skills` `claude` `deps`.
 - `!` before the colon marks a breaking change: a public API of the package is removed or changed. The PR then also
-  updates `MIGRATION.md` and `MIGRATION.ru.md`.
+  updates the migration guide of the next version, `Docs/migration/<version>.md` and its translation in
+  `Docs/i18n/ru/docusaurus-plugin-content-docs-migration/current/`.
 - Shipped package code changed (`Aspid.MVVM/Packages/tech.aspid.mvvm/` except `Tests/` and Markdown;
   the generator and analyzer DLLs; the package `package.json`) → the same entry under the top `Unreleased` version in
   `CHANGELOG.md` and `CHANGELOG.ru.md`. No entry yet → the `needs-changelog` label.

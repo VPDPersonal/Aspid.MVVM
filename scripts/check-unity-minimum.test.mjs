@@ -12,7 +12,8 @@ import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 const script = fileURLToPath(new URL('check-unity-minimum.mjs', import.meta.url));
 const PACKAGE_JSON = 'Aspid.MVVM/Packages/tech.aspid.mvvm/package.json';
 const MATRIX = '.github/workflows/ci.yml';
-const PROSE = ['MIGRATION.md', 'MIGRATION.ru.md', '.claude/skills/aspid-code-style/SKILL.md'];
+const GUIDE = 'Docs/migration/1.1.md';
+const PROSE = [GUIDE, 'Docs/i18n/ru/docusaurus-plugin-content-docs-migration/current/1.1.md', '.claude/skills/aspid-code-style/SKILL.md'];
 
 const matrix = (versions) => `jobs:\n  unity-plan:\n    steps:\n      - env:\n          UNITY_VERSIONS: ${versions}\n`;
 const valid = () => ({
@@ -46,8 +47,8 @@ test('the same minimum line everywhere and a matrix that starts on it pass', (t)
 });
 
 test('a prose file without the minimum line is reported, and 6000.01 is no mention of 6000.0', (t) => {
-  assertFails(check(t, { 'MIGRATION.md': 'Unity `6000.3` or newer.\n' }), 'MIGRATION.md', /no mention of the minimum Unity 6000\.0/);
-  assertFails(check(t, { 'MIGRATION.md': 'Unity `6000.01`.\n' }), 'MIGRATION.md', /no mention/);
+  assertFails(check(t, { [GUIDE]: 'Unity `6000.3` or newer.\n' }), GUIDE, /no mention of the minimum Unity 6000\.0/);
+  assertFails(check(t, { [GUIDE]: 'Unity `6000.01`.\n' }), GUIDE, /no mention/);
 });
 
 test('a matrix that starts on another line or below the minimum release is reported', (t) => {

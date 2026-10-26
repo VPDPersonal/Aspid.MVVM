@@ -27,7 +27,8 @@ The package is `Aspid.MVVM/Packages/tech.aspid.mvvm/`. Check, in this order:
    - a change that users see in shipped package code has the same entry under the top `Unreleased` version in
      `CHANGELOG.md` and `CHANGELOG.ru.md`, or the PR has the `needs-changelog` label (`gh pr view --json labels`);
      neither is a `[minor]`;
-   - a removed or changed public member has a migration note in `MIGRATION.md` and `MIGRATION.ru.md`;
+   - a removed or changed public member has a migration note in the guide of the next version, `Docs/migration/<version>.md`, and its
+     translation in `Docs/i18n/ru/`;
    - a page in `Docs/docs/`, a sample tutorial in `Docs/tutorials/` or a skill in `.claude/skills/` that describes the changed API
      or behavior is updated;
    - a change to public API or XML docs without a regenerated `Docs/api/` (`cd Docs && npm run api`) is a `[minor]`,
@@ -39,7 +40,7 @@ Do not report:
 
 - The PR title and labels, apart from the `needs-changelog` case above.
 - Style and naming that `AGENTS.md` and the `aspid-code-style` and `starterkit-layout` skills do not cover.
-- The wording of translations: `Docs/i18n/ru/`, `CHANGELOG.ru.md`, `MIGRATION.ru.md`.
+- The wording of translations: `Docs/i18n/ru/`, `CHANGELOG.ru.md`.
 - The content of generated or third-party files: `Docs/api/`, the committed DLLs, `packages-lock.json`,
   `package-lock.json`, `Aspid.MVVM/Assets/Plugins/`, `Aspid.MVVM/Assets/TextMesh Pro/`.
 - The `asp-branch`, `asp-commit` and `asp-pr` skills in `.claude/skills/`: they are copied from Aspid.AgentKit as it

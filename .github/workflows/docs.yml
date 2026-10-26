@@ -1,7 +1,7 @@
 name: Docs
 
 # Builds the Docusaurus site in Docs/ and publishes it to GitHub Pages.
-# Content lives in Docs/ (docs/, tutorials/, i18n/) and the root changelogs, so any change there rebuilds the site.
+# Content lives in Docs/ (docs/, tutorials/, migration/, i18n/) and the root changelogs, so any change there rebuilds the site.
 
 on:
   push:

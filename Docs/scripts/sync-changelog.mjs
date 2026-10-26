@@ -5,7 +5,7 @@
  *   i18n/<locale>/CHANGELOG.md     → i18n/<locale>/docusaurus-plugin-content-docs-changelog/current/index.md
  *
  * `i18n/<locale>/CHANGELOG.md` is the copy scripts/sync-i18n.mjs makes of the root `CHANGELOG.<locale>.md`, so the
- * history date is read from that source. Links to other repository files (`MIGRATION.md`) open them on GitHub.
+ * history date is read from that source. Links to other repository files (`LICENSE`) open them on GitHub.
  *
  * Both outputs are gitignored and rebuilt before `start` and `build`. A copy is not tracked by git, so Docusaurus
  * cannot read its history; each page gets `last_update.date` from the source file's last commit instead.

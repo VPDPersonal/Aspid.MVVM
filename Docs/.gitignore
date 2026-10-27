@@ -1,11 +1,15 @@
-node_modules/
-build/
-.docusaurus/
-.cache-loader/
-npm-install.log
+# Dependencies and the Docusaurus build
+/node_modules/
+/build/
+/.docusaurus/
+
 # Generated from the root CHANGELOG.md and i18n/<locale>/CHANGELOG.md by scripts/sync-changelog.mjs.
-changelog/
-i18n/*/docusaurus-plugin-content-docs-changelog/current/
-docfx/projects/
-.serve-all.log
+/changelog/
+/i18n/*/docusaurus-plugin-content-docs-changelog/current/
+
+# DocFX projects written by scripts/docfx-projects.mjs
+/docfx/projects/
+
+# npm logs and the log and port files of scripts/serve-all.sh
+*.log
 .serve-all.port

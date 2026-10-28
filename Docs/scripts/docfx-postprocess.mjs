@@ -66,10 +66,12 @@ function resolveXref(uid) {
 }
 
 function convertXrefs(markdown) {
-  return markdown.replace(/<xref href="([^"]+)"[^>]*><\/xref>/g, (_, rawUid) => {
+  return markdown.replace(/<xref href="([^"]+)"[^>]*><\/xref>/g, (_, rawHref) => {
+    // A labeled cref (`<see cref="X">label</see>`) arrives as `uid?text=label`.
+    const [rawUid, query = ''] = rawHref.split('?');
     const uid = rawUid.replace(/%7B/gi, '{').replace(/%7D/gi, '}');
     const { href, text } = resolveXref(uid);
-    const label = `\`${text}\``;
+    const label = `\`${new URLSearchParams(query).get('text') ?? text}\``;
     return href ? `[${label}](${href})` : label;
   });
 }

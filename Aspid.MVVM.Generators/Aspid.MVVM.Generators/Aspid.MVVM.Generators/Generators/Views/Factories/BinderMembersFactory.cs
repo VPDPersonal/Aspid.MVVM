@@ -43,7 +43,7 @@ public static class BinderMembersFactory
         
         foreach (var member in symbolClass.GetMembers())
         {
-            if (member.HasAnyAttributeInSelf()) continue;
+            if (member.HasAnyAttributeInSelf(Classes.IgnoreAttribute)) continue;
 
             var type = GetType(member);
             if (type is null) continue;

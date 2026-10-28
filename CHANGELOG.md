@@ -252,6 +252,9 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - A derived View re-emitted the auto binder field its base View already had, so Unity serialized the slot twice.
 - Generator skipped View members typed as the bare `IBinder` interface.
 - A custom ViewModel interface property typed `IBindableMember<T>` was ignored, and a read-only member could back a two-way slot.
+- `[IgnoreBind]` on a View member no longer excluded it: the generator bound ignored binder fields and properties anyway.
+- Only the first `[BindAlso]` of a member counted when it named a property without a bind attribute; the other properties were never notified.
+- `[BindAlso]` naming a `OneWayToSource` target generated a bare `();` call that did not compile; targets without change notification are skipped.
 
 #### Collections
 

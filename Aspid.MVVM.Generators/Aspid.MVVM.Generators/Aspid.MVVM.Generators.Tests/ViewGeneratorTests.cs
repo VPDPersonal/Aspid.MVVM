@@ -39,6 +39,9 @@ public sealed class ViewGeneratorTests
 
             [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
             public class BindAttribute : Attribute { public BindAttribute() { } public BindAttribute(BindMode mode) { } }
+
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+            public sealed class IgnoreBindAttribute : Attribute { }
         }
         """;
 
@@ -140,6 +143,28 @@ public sealed class ViewGeneratorTests
 
         Assert.Contains("_score.BindSafely(", generated);
         Assert.Contains("_score.UnbindSafely(", generated);
+    }
+
+    /// <summary>A binder field or property marked <c>[IgnoreBind]</c> is left out of the generated binding.</summary>
+    [Fact]
+    public void AnIgnoredBinderMemberIsNotBound()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<IViewModel>
+            {
+                [SerializeField] private IBinder _score;
+                [SerializeField, IgnoreBind] private IBinder _ignoredField;
+                [IgnoreBind] private IBinder IgnoredProperty => _score;
+            }
+            """);
+
+        Assert.Contains("_score.BindSafely(", generated);
+        Assert.DoesNotContain("_ignoredField", generated);
+        Assert.DoesNotContain("IgnoredProperty", generated);
     }
 
     /// <summary>

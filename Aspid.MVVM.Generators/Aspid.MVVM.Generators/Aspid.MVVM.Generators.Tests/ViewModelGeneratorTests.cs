@@ -37,6 +37,9 @@ public sealed class ViewModelGeneratorTests
 
             [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
             public class BindAttribute : Attribute { public BindAttribute() { } public BindAttribute(BindMode mode) { } }
+
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+            public sealed class BindAlsoAttribute : Attribute { public BindAlsoAttribute(string propertyName) { } }
         }
         """;
 
@@ -113,6 +116,65 @@ public sealed class ViewModelGeneratorTests
 
         Assert.Contains("IPlayerViewModel.Health =>", generated);
         Assert.Contains("IPlayerViewModel.Mana =>", generated);
+    }
+
+    /// <summary>
+    /// Every <c>[BindAlso]</c> on a member counts: each plain property it names gets a bindable member and is
+    /// notified when the member changes.
+    /// </summary>
+    [Fact]
+    public void EveryBindAlsoTargetIsNotified()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind]
+                [BindAlso(nameof(Percent))]
+                [BindAlso(nameof(Label))]
+                private int _health;
+
+                public float Percent => _health / 100f;
+
+                public string Label => _health.ToString();
+            }
+            """);
+
+        Assert.Contains("OnPercentPropertyChanged();", generated);
+        Assert.Contains("OnLabelPropertyChanged();", generated);
+        Assert.Contains("PercentBindable", generated);
+        Assert.Contains("LabelBindable", generated);
+    }
+
+    /// <summary>
+    /// A <c>OneWayToSource</c> target has no change notification, so <c>[BindAlso]</c> skips it instead of emitting
+    /// a call with no method name.
+    /// </summary>
+    [Fact]
+    public void ABindAlsoTargetWithoutNotificationIsSkipped()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind]
+                [BindAlso(nameof(Input))]
+                [BindAlso(nameof(Mana))]
+                private int _health;
+
+                [Bind(BindMode.OneWayToSource)] private int _input;
+
+                [Bind] private int _mana;
+            }
+            """);
+
+        Assert.DoesNotMatch(new Regex(@"^\s*\(\);", RegexOptions.Multiline), generated);
+        Assert.DoesNotContain("OnInputPropertyChanged", generated);
+        Assert.Contains("OnManaPropertyChanged();", generated);
     }
 
     /// <summary>

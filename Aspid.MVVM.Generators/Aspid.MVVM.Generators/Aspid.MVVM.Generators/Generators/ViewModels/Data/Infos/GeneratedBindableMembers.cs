@@ -40,8 +40,11 @@ public readonly struct GeneratedBindableMembers
         var fieldType = $"{OneTimeBindableMember}<{type}>";
         var propertyType = $"{IReadOnlyValueBindableMember}<{type}>";
         var propertyName = $"{memberName}Bindable";
+        
+        // MemberNameCommand -> __memberNameCommandBindable
+        var fieldName = $"__{char.ToLowerInvariant(memberName[0])}{memberName.Substring(1)}Bindable";
 
-        var declaration = RecognizeDeclaration(mode, memberName, null, fieldType, propertyName, propertyType);
+        var declaration = RecognizeDeclaration(mode, memberName, fieldName, fieldType, propertyName, propertyType);
         
         return new GeneratedBindableMembers(null, declaration, propertyName, propertyType, null);
     }
@@ -206,11 +209,25 @@ public readonly struct GeneratedBindableMembers
     {
         if (mode is BindMode.OneTime)
         {
+            // The member is kept per ViewModel and refreshed on every access, so a binding gets the current value
+            // without allocating and without sharing the member between ViewModels.
             return
-                $"""
-                {GeneratedCodeViewModelAttribute}
-                public {propertyType} {propertyName} => 
-                    {fieldType}.Get({memberName});
+                $$"""
+                {{EditorBrowsableAttributeNever}}
+                {{GeneratedCodeViewModelAttribute}}
+                private {{fieldType}} {{fieldName}};
+                
+                {{GeneratedCodeViewModelAttribute}}
+                public {{propertyType}} {{propertyName}}
+                {
+                    get
+                    {
+                        if ({{fieldName}} is null) {{fieldName}} = new({{memberName}});
+                        else {{fieldName}}.Value = {{memberName}};
+                        
+                        return {{fieldName}};
+                    }
+                }
                 """;
         }
 

@@ -205,7 +205,7 @@ UI changes (the user types text)
 |-------|-------|----------|
 | `OneWayBindableMember<T>` | OneWay | Stores the value, `Changed` event, push on subscribe |
 | `TwoWayBindableMember<T>` | TwoWay | Plus a subscription to `IReverseBinder.ValueChanged` |
-| `OneTimeBindableMember<T>` | OneTime | Singleton per T, one-shot push, `Add` returns `null` |
+| `OneTimeBindableMember<T>` | OneTime | One per ViewModel member, one-shot push, `Add` returns `null` |
 | `OneWayToSourceBindableMember<T>` | OneWayToSource | Reverse binding only, no push to the View |
 
 ---

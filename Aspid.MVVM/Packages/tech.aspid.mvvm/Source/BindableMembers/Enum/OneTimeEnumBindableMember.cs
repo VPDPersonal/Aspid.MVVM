@@ -14,26 +14,28 @@ namespace Aspid.MVVM
     public sealed class OneTimeEnumBindableMember<T> : OneTimeStructBindableMember<T, Enum>
         where T : struct, Enum
     {
-        private static readonly OneTimeEnumBindableMember<T> _instance = new();
-    
-        private OneTimeEnumBindableMember() { }
+        /// <summary>
+        /// Creates a member holding <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The enum value to push to the binder.</param>
+        public OneTimeEnumBindableMember(T value) : base(value) { }
     
         /// <summary>
-        /// Returns the shared instance with <see cref="OneTimeStructBindableMember{T, TBoxed}.Value"/> set to <paramref name="value"/>.
+        /// Creates a member holding <paramref name="value"/>.
         /// </summary>
         /// <remarks>
-        /// Every call returns the same instance and overwrites its value, so bind it before the next call.
+        /// Every call allocates a new instance. To bind without allocations, keep one instance and update its
+        /// <see cref="OneTimeStructBindableMember{T, TBoxed}.Value"/>, as the generated ViewModel code does.
         /// </remarks>
-        /// <param name="value">The value to push to the binder.</param>
-        /// <returns>The shared instance for <typeparamref name="T"/>.</returns>
+        /// <param name="value">The enum value to push to the binder.</param>
+        /// <returns>A new instance holding <paramref name="value"/>.</returns>
         public static OneTimeEnumBindableMember<T> Get(T value)
         {
 #if ASPID_MVVM_PROFILER
             using (GetMarker.Auto())
 #endif
             {
-                _instance.Value = value;
-                return _instance;
+                return new OneTimeEnumBindableMember<T>(value);
             }
         }
     }

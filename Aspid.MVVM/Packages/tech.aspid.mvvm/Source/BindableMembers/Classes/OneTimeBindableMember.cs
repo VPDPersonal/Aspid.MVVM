@@ -17,19 +17,24 @@ namespace Aspid.MVVM
         private static readonly Unity.Profiling.ProfilerMarker _getMarker = new(name: $"OneTimeBindableMember<{typeof(T).Name}>.Get");
 #endif
         
-        private static readonly OneTimeBindableMember<T> _instance = new();
-    
         /// <summary>
-        /// Gets the value set by the last <see cref="Get(T)"/> call.
+        /// Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
         /// </summary>
-        public T? Value { get; private set; }
+        public T? Value { get; set; }
         
         /// <summary>
         /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneTime;
 
-        private OneTimeBindableMember() { }
+        /// <summary>
+        /// Creates a member holding <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value to push to the binder.</param>
+        public OneTimeBindableMember(T? value)
+        {
+            Value = value;
+        }
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
@@ -64,21 +69,21 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Returns the shared instance with <see cref="Value"/> set to <paramref name="value"/>.
+        /// Creates a member holding <paramref name="value"/>.
         /// </summary>
         /// <remarks>
-        /// Every call returns the same instance and overwrites its value, so bind it before the next call.
+        /// Every call allocates a new instance. To bind without allocations, keep one instance and update its
+        /// <see cref="Value"/>, as the generated ViewModel code does.
         /// </remarks>
         /// <param name="value">The value to push to the binder.</param>
-        /// <returns>The shared instance for <typeparamref name="T"/>.</returns>
+        /// <returns>A new instance holding <paramref name="value"/>.</returns>
         public static OneTimeBindableMember<T> Get(T? value)
         {
 #if ASPID_MVVM_PROFILER
             using (_getMarker.Auto())
 #endif
             {
-                _instance.Value = value;
-                return _instance;
+                return new OneTimeBindableMember<T>(value);
             }
         }
     }

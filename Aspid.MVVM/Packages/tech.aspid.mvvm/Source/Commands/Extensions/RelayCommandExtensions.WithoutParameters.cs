@@ -7,57 +7,69 @@ namespace Aspid.MVVM
     {
         #region CreateCommandWithoutParameters Methods
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that executes the original command with the specified argument.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the command parameter.</typeparam>
-        /// <param name="command">The source command with a parameter.</param>
-        /// <param name="param">The value to pass to the command.</param>
-        /// <returns>A parameterless command that wraps the original command with the provided parameter.</returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T">The command parameter type.</typeparam>
+        /// <param name="command">The command to wrap.</param>
+        /// <param name="param">The parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParameters<T>(this IRelayCommand<T> command, T param) =>
             new RelayCommand(() => command.Execute(param), () => command.CanExecute(param));
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that executes the original command with the specified arguments.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/> and <paramref name="param2"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <param name="command">The source command with two parameters.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <returns>A parameterless command that wraps the original command with the provided parameters.</returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <param name="command">The command to wrap.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParameters<T1, T2>(this IRelayCommand<T1, T2> command, T1 param1, T2 param2) =>
             new RelayCommand(() => command.Execute(param1, param2), () => command.CanExecute(param1, param2));
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that executes the original command with the specified arguments.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/>, <paramref name="param2"/> and <paramref name="param3"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-        /// <param name="command">The source command with three parameters.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <param name="param3">The third value to pass to the command.</param>
-        /// <returns>A parameterless command that wraps the original command with the provided parameters.</returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2, T3}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <typeparam name="T3">The third command parameter type.</typeparam>
+        /// <param name="command">The command to wrap.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param3">The third parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParameters<T1, T2, T3>(this IRelayCommand<T1, T2, T3> command, T1 param1, T2 param2, T3 param3) =>
             new RelayCommand(() => command.Execute(param1, param2, param3), () => command.CanExecute(param1, param2, param3));
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that executes the original command with the specified arguments.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/>, <paramref name="param2"/>, <paramref name="param3"/> and <paramref name="param4"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-        /// <typeparam name="T4">The type of the fourth command parameter.</typeparam>
-        /// <param name="command">The source command with four parameters.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <param name="param3">The third value to pass to the command.</param>
-        /// <param name="param4">The fourth value to pass to the command.</param>
-        /// <returns>A parameterless command that wraps the original command with the provided parameters.</returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2, T3, T4}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <typeparam name="T3">The third command parameter type.</typeparam>
+        /// <typeparam name="T4">The fourth command parameter type.</typeparam>
+        /// <param name="command">The command to wrap.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param3">The third parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param4">The fourth parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParameters<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4> command, T1 param1, T2 param2, T3 param3, T4 param4) =>
             new RelayCommand(() => command.Execute(param1, param2, param3, param4), () => command.CanExecute(param1, param2, param3, param4));
@@ -65,32 +77,32 @@ namespace Aspid.MVVM
         
         #region CreateCommandWithoutParameters Or Get Empty RelayCommand<T> Methods
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameter.
-        /// If the original command is <see langword="null"/>, returns a non-executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param"/>, or returns
+        /// <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the command parameter.</typeparam>
-        /// <param name="command">The source command with a parameter, or <see langword="null"/>.</param>
-        /// <param name="param">The value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameter,
-        /// or <see cref="RelayCommand.Empty"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T">The command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param">The parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T>(this IRelayCommand<T>? command, T param) => command is not null
             ? new RelayCommand(() => command.Execute(param), () => command.CanExecute(param))
             : RelayCommand.Empty;
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameter.
-        /// If the original command is <see langword="null"/>, returns an executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param"/>, or returns
+        /// <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the command parameter.</typeparam>
-        /// <param name="command">The source command with a parameter, or <see langword="null"/>.</param>
-        /// <param name="param">The value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameter,
-        /// or <see cref="RelayCommand.EmptyExecution"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T">The command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param">The parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T>(this IRelayCommand<T>? command, T param) => command is not null
             ? new RelayCommand(() => command.Execute(param), () => command.CanExecute(param))
@@ -99,36 +111,36 @@ namespace Aspid.MVVM
 
         #region CreateCommandWithoutParameters Or Get Empty RelayCommand<T1, T2> Methods
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameters.
-        /// If the original command is <see langword="null"/>, returns a non-executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/> and <paramref name="param2"/>, or returns
+        /// <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <param name="command">The source command with two parameters, or <see langword="null"/>.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameters,
-        /// or <see cref="RelayCommand.Empty"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2>(this IRelayCommand<T1, T2>? command, T1 param1, T2 param2) => command is not null
             ? new RelayCommand(() => command.Execute(param1, param2), () => command.CanExecute(param1, param2))
             : RelayCommand.Empty;
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameters.
-        /// If the original command is <see langword="null"/>, returns an executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/> and <paramref name="param2"/>, or returns
+        /// <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <param name="command">The source command with two parameters, or <see langword="null"/>.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameters,
-        /// or <see cref="RelayCommand.EmptyExecution"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2>(this IRelayCommand<T1, T2>? command, T1 param1, T2 param2) => command is not null
             ? new RelayCommand(() => command.Execute(param1, param2), () => command.CanExecute(param1, param2))
@@ -137,40 +149,40 @@ namespace Aspid.MVVM
 
         #region CreateCommandWithoutParameters Or Get Empty RelayCommand<T1, T2, T3> Methods
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameters.
-        /// If the original command is <see langword="null"/>, returns a non-executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/>, <paramref name="param2"/> and <paramref name="param3"/>, or returns
+        /// <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-        /// <param name="command">The source command with three parameters, or <see langword="null"/>.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <param name="param3">The third value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameters,
-        /// or <see cref="RelayCommand.Empty"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2, T3}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <typeparam name="T3">The third command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param3">The third parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2, T3>(this IRelayCommand<T1, T2, T3>? command, T1 param1, T2 param2, T3 param3) => command is not null
             ? new RelayCommand(() => command.Execute(param1, param2, param3), () => command.CanExecute(param1, param2, param3))
             : RelayCommand.Empty;
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameters.
-        /// If the original command is <see langword="null"/>, returns an executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/>, <paramref name="param2"/> and <paramref name="param3"/>, or returns
+        /// <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-        /// <param name="command">The source command with three parameters, or <see langword="null"/>.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <param name="param3">The third value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameters,
-        /// or <see cref="RelayCommand.EmptyExecution"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2, T3}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <typeparam name="T3">The third command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param3">The third parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2, T3>(this IRelayCommand<T1, T2, T3>? command, T1 param1, T2 param2, T3 param3) => command is not null
             ? new RelayCommand(() => command.Execute(param1, param2, param3), () => command.CanExecute(param1, param2, param3))
@@ -179,44 +191,44 @@ namespace Aspid.MVVM
         
         #region CreateCommandWithoutParameters Or Get Empty RelayCommand<T1, T2, T3, T4> Methods
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameters.
-        /// If the original command is <see langword="null"/>, returns a non-executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/>, <paramref name="param2"/>, <paramref name="param3"/> and <paramref name="param4"/>, or returns
+        /// <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-        /// <typeparam name="T4">The type of the fourth command parameter.</typeparam>
-        /// <param name="command">The source command with four parameters, or <see langword="null"/>.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <param name="param3">The third value to pass to the command.</param>
-        /// <param name="param4">The fourth value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameters,
-        /// or <see cref="RelayCommand.Empty"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2, T3, T4}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <typeparam name="T3">The third command parameter type.</typeparam>
+        /// <typeparam name="T4">The fourth command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param3">The third parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param4">The fourth parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.Empty"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4>? command, T1 param1, T2 param2, T3 param3, T4 param4) => command is not null
             ? new RelayCommand(() => command.Execute(param1, param2, param3, param4), () => command.CanExecute(param1, param2, param3, param4))
             : RelayCommand.Empty;
 
         /// <summary>
-        /// Creates a parameterless <see cref="IRelayCommand"/> that wraps the original command and uses the specified parameters.
-        /// If the original command is <see langword="null"/>, returns an executable empty command.
+        /// Creates an <see cref="IRelayCommand"/> that runs <paramref name="command"/> with <paramref name="param1"/>, <paramref name="param2"/>, <paramref name="param3"/> and <paramref name="param4"/>, or returns
+        /// <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-        /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-        /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-        /// <typeparam name="T4">The type of the fourth command parameter.</typeparam>
-        /// <param name="command">The source command with four parameters, or <see langword="null"/>.</param>
-        /// <param name="param1">The first value to pass to the command.</param>
-        /// <param name="param2">The second value to pass to the command.</param>
-        /// <param name="param3">The third value to pass to the command.</param>
-        /// <param name="param4">The fourth value to pass to the command.</param>
-        /// <returns>
-        /// A parameterless command that invokes the original command with the given parameters,
-        /// or <see cref="RelayCommand.EmptyExecution"/> if the command is <see langword="null"/>.
-        /// </returns>
+        /// <remarks>
+        /// The new command does not forward <see cref="IRelayCommand{T1, T2, T3, T4}.CanExecuteChanged"/> of <paramref name="command"/>.
+        /// </remarks>
+        /// <typeparam name="T1">The first command parameter type.</typeparam>
+        /// <typeparam name="T2">The second command parameter type.</typeparam>
+        /// <typeparam name="T3">The third command parameter type.</typeparam>
+        /// <typeparam name="T4">The fourth command parameter type.</typeparam>
+        /// <param name="command">The command to wrap, or <see langword="null"/>.</param>
+        /// <param name="param1">The first parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param2">The second parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param3">The third parameter passed to <paramref name="command"/>.</param>
+        /// <param name="param4">The fourth parameter passed to <paramref name="command"/>.</param>
+        /// <returns>The parameterless command; <see cref="RelayCommand.EmptyExecution"/> when <paramref name="command"/> is <see langword="null"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4>? command, T1 param1, T2 param2, T3 param3, T4 param4) => command is not null
             ? new RelayCommand(() => command.Execute(param1, param2, param3, param4), () => command.CanExecute(param1, param2, param3, param4))

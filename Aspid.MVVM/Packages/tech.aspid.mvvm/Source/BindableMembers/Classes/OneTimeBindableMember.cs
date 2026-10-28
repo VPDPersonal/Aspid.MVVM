@@ -8,11 +8,9 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="IBinderAdder"/> exposed as a per-type singleton that pushes a single <see cref="Value"/>
-    /// to the binder once and then releases it; rejects every <see cref="BindMode"/> other than
-    /// <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/>.
+    /// <see cref="IReadOnlyValueBindableMember{T}"/> that pushes its value to a binder once and keeps no subscription.
     /// </summary>
-    /// <typeparam name="T">The reference type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>
     {
 #if ASPID_MVVM_PROFILER
@@ -22,26 +20,23 @@ namespace Aspid.MVVM
         private static readonly OneTimeBindableMember<T> _instance = new();
     
         /// <summary>
-        /// Gets the current value.
+        /// Gets the value set by the last <see cref="Get(T)"/> call.
         /// </summary>
         public T? Value { get; private set; }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneTime;
 
         private OneTimeBindableMember() { }
 
-        /// <summary>
-        /// Adds a one-time binding to the specified binder with the associated value.
-        /// </summary>
-        /// <param name="binder">The binder to be used for the binding.</param>
-        /// <returns>
-        /// Always returns <see langword="null"/> because removal of this binding is not supported.
-        /// </returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binding mode is <see cref="BindMode.OneWayToSource"/>, <see cref="BindMode.TwoWay"/>, or <see cref="BindMode.None"/>.
+        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// </exception>
+        /// <exception cref="BinderInvalidCastException">
+        /// <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
@@ -69,10 +64,13 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates a reusable instance and assigns the provided value for one-time binding.
+        /// Returns the shared instance with <see cref="Value"/> set to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The value to be provided to the binder.</param>
-        /// <returns>A singleton instance of <see cref="OneTimeBindableMember{T}"/> configured with the specified value.</returns>
+        /// <remarks>
+        /// Every call returns the same instance and overwrites its value, so bind it before the next call.
+        /// </remarks>
+        /// <param name="value">The value to push to the binder.</param>
+        /// <returns>The shared instance for <typeparamref name="T"/>.</returns>
         public static OneTimeBindableMember<T> Get(T? value)
         {
 #if ASPID_MVVM_PROFILER

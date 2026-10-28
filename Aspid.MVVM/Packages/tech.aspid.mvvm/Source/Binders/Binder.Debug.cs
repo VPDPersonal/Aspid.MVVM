@@ -17,6 +17,7 @@ namespace Aspid.MVVM
         partial void OnUnboundDebug() =>
             __bindData = null;
         
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Never)]
         void IRebindableBinder.Rebind()
         {

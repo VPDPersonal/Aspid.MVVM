@@ -2,10 +2,15 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="BaseBindAttribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
-    /// directs the Source Generator to emit a bindable property locked to <see cref="BindMode.OneWay"/>.
-    /// On <see langword="readonly"/> fields the mode resolves to <see cref="BindMode.OneTime"/>, matching
-    /// <see cref="BindAttribute"/> with <see cref="BindMode.OneTime"/>.
+    /// Generates a <see cref="BindMode.OneWay"/> bindable member for the field or property of a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
+    /// <remarks>
+    /// Ignored on a <see langword="readonly"/> field and a set-only property.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [OneWayBind] private int _score;
+    /// </code>
+    /// </example>
     public sealed class OneWayBindAttribute : BaseBindAttribute { }
 }

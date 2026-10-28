@@ -4,22 +4,23 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Exception thrown when a binder is not of the expected type during a binding operation.
-    /// Provides factory methods for generating descriptive error messages for class and struct binders.
+    /// <see cref="InvalidCastException"/> thrown when a binder lacks the interface a bindable member pushes values through.
     /// </summary>
+    /// <remarks>
+    /// The message names the binder type and, for a component, its GameObject path.
+    /// </remarks>
     public sealed class BinderInvalidCastException : InvalidCastException
     {
         private BinderInvalidCastException(string message)
             : base(message) { }
 
         /// <summary>
-        /// Throws a <see cref="BinderInvalidCastException"/> when a class binder does not implement
-        /// <see cref="IBinder{T}"/> or <see cref="IAnyBinder"/>.
+        /// Throws for a binder that implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
         /// </summary>
-        /// <typeparam name="T">The expected bound value type.</typeparam>
-        /// <param name="binder">The binder that failed the type check.</param>
-        /// <returns>This method never returns; the return type exists to support <see langword="throw"/> expressions.</returns>
-        /// <exception cref="BinderInvalidCastException">Always thrown.</exception>
+        /// <typeparam name="T">The value type of the bindable member.</typeparam>
+        /// <param name="binder">The binder that failed the check.</param>
+        /// <returns>Never returns; the return type allows a <see langword="throw"/> expression at the call site.</returns>
+        /// <exception cref="BinderInvalidCastException">Always.</exception>
         public static BinderInvalidCastException Class<T>(IBinder binder)
         {
             var anyBinderType = "IAnyBinder".GetInterfaceMessage();
@@ -31,14 +32,14 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Throws a <see cref="BinderInvalidCastException"/> when a struct binder does not implement
-        /// <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/>, or <see cref="IAnyBinder"/>.
+        /// Throws for a binder that implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
+        /// <typeparamref name="TBoxed"/> and <see cref="IAnyBinder"/>.
         /// </summary>
-        /// <typeparam name="T">The expected unboxed struct type.</typeparam>
-        /// <typeparam name="TBoxed">The expected boxed type.</typeparam>
-        /// <param name="binder">The binder that failed the type check.</param>
-        /// <returns>This method never returns; the return type exists to support <see langword="throw"/> expressions.</returns>
-        /// <exception cref="BinderInvalidCastException">Always thrown.</exception>
+        /// <typeparam name="T">The struct type of the bindable member.</typeparam>
+        /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>.</typeparam>
+        /// <param name="binder">The binder that failed the check.</param>
+        /// <returns>Never returns; the return type allows a <see langword="throw"/> expression at the call site.</returns>
+        /// <exception cref="BinderInvalidCastException">Always.</exception>
         public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)
         {
             var anyBinderType = "IAnyBinder".GetInterfaceMessage();

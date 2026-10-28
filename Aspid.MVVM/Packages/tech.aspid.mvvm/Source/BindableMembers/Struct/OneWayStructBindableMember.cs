@@ -8,36 +8,29 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
-    /// for any value-type payload that does not need a more specific boxing target.
+    /// Concrete <see cref="OneWayStructBindableMember{T, TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>.
     /// </summary>
-    /// <typeparam name="T">The struct type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound struct type.</typeparam>
     public sealed class OneWayStructBindableMember<T> : OneWayStructBindableMember<T, ValueType>
         where T : struct
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T}"/> class with the specified initial value.
-        /// </summary>
-        /// <param name="value">The initial value of the bindable member.</param>
+        /// <inheritdoc/>
         public OneWayStructBindableMember(T value)
             : base(value) { }
     }
 
     /// <summary>
-    /// Abstract base <see cref="IBinderAdder"/> for struct-valued one-way bindings that dispatches changes to
-    /// both <see cref="IBinder{T}"/> and <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/> subscribers — the latter receive the
-    /// value pre-boxed as <typeparamref name="TBoxed"/>. Additionally exposes a get/set <see cref="Value"/>
-    /// and a <see cref="Changed"/> event. Accepts only <see cref="BindMode.OneWay"/> and
-    /// <see cref="BindMode.OneTime"/> binders.
+    /// <see cref="IBindableMember{T}"/> that pushes every value change to its binders, boxing it for an
+    /// <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/>.
     /// </summary>
-    /// <typeparam name="T">The struct type of the bound value.</typeparam>
-    /// <typeparam name="TBoxed">The reference type used as the boxing target for <typeparamref name="T"/> (typically <see cref="ValueType"/> or <see cref="Enum"/>).</typeparam>
+    /// <typeparam name="T">The bound struct type.</typeparam>
+    /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>, such as <see cref="ValueType"/> or <see cref="Enum"/>.</typeparam>
     public abstract class OneWayStructBindableMember<T, TBoxed> : IBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
         /// <summary>
-        /// Raised when the value changes.
+        /// Occurs when <see cref="Value"/> is set.
         /// </summary>
         public event Action<T>? Changed;
         
@@ -46,7 +39,7 @@ namespace Aspid.MVVM
         private T _value;
         
         /// <summary>
-        /// Gets or sets the current value. Setting the value will trigger the <see cref="Changed"/> event.
+        /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
         /// </summary>
         public T Value
         {
@@ -65,26 +58,26 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayStructBindableMember{T,TBoxed}"/> class with the specified initial value.
+        /// Creates a member holding <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The initial value of the bindable member.</param>
+        /// <param name="value">The initial value.</param>
         protected OneWayStructBindableMember(T value)
         {
             _value = value;
         }
 
-        /// <summary>
-        /// Adds the binder to the event with the current value and subscribes to the value change event.
-        /// </summary>
-        /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>An <see cref="IBinderRemover"/> to enable removal of the binder later, or <see langword="null"/> for <see cref="BindMode.OneTime"/> binders.</returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
+        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// </exception>
+        /// <exception cref="BinderInvalidCastException">
+        /// <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
+        /// <typeparamref name="TBoxed"/> and <see cref="IAnyBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
@@ -126,10 +119,11 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Removes the binder from the event subscription.
-        /// </summary>
-        /// <param name="binder">The binder to remove.</param>
+        /// <inheritdoc/>
+        /// <exception cref="BinderInvalidCastException">
+        /// <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
+        /// <typeparamref name="TBoxed"/> and <see cref="IAnyBinder"/>.
+        /// </exception>
         void IBinderRemover.Remove(IBinder binder)
         {
 #if ASPID_MVVM_PROFILER
@@ -147,9 +141,9 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Sets the current value and raises the <see cref="Changed"/> event.
+        /// Sets <see cref="Value"/> to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The new value to set and notify.</param>
+        /// <param name="value">The new value.</param>
         public void Invoke(T value) => 
             Value = value;
     }

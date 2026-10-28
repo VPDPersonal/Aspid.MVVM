@@ -8,7 +8,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Provides extension methods for <see cref="IView"/> providing helpers for reinitialization and safe disposal.
+    /// Provides extension methods for <see cref="IView"/>.
     /// </summary>
     public static class ViewExtensions
     {
@@ -24,11 +24,11 @@ namespace Aspid.MVVM
 #endif
         
         /// <summary>
-        /// Deinitializes the view from its current ViewModel and optionally reinitializes it with a new one.
+        /// Deinitializes <paramref name="view"/> and initializes it with <paramref name="newViewModel"/>.
         /// </summary>
-        /// <param name="view">The view to reinitialize.</param>
-        /// <param name="newViewModel">The new ViewModel to initialize the view with, or <see langword="null"/> to only deinitialize.</param>
-        /// <returns>The previously associated <see cref="IViewModel"/>, or <see langword="null"/> if none was present.</returns>
+        /// <param name="view">The view, or <see langword="null"/>.</param>
+        /// <param name="newViewModel">The ViewModel to initialize the view with; <see langword="null"/> leaves it deinitialized.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
         public static IViewModel? Reinitialize(this IView? view, IViewModel? newViewModel)
         {
             if (view is null) return null;
@@ -41,11 +41,11 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Deinitializes the view and returns the associated <see cref="IViewModel"/>.
+        /// Deinitializes <paramref name="view"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the view that implements <see cref="IView"/>.</typeparam>
-        /// <param name="view">The view to be deinitialized.</param>
-        /// <returns>The associated <see cref="IViewModel"/>, or <see langword="null"/> if none is present.</returns>
+        /// <typeparam name="T">The view type.</typeparam>
+        /// <param name="view">The view, or <see langword="null"/>.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
         public static IViewModel? DeinitializeView<T>(this T? view)
             where T : IView
         {
@@ -58,11 +58,11 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Disposes the view and returns the associated <see cref="IViewModel"/>.
+        /// Disposes <paramref name="view"/>.
         /// </summary>
-        /// <param name="view">The view to be disposed.</param>
-        /// <typeparam name="T">The type of the view that implements <see cref="IView"/> and <see cref="IDisposable"/>.</typeparam>
-        /// <returns>The associated <see cref="IViewModel"/>, or <see langword="null"/> if none is present.</returns>
+        /// <typeparam name="T">The view type.</typeparam>
+        /// <param name="view">The view, or <see langword="null"/>.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
         public static IViewModel? DisposeView<T>(this T? view)
             where T : IView, IDisposable
         {
@@ -80,10 +80,10 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Disposes the view if it implements <see cref="IDisposable"/> and returns the associated <see cref="IViewModel"/>.
+        /// Disposes <paramref name="view"/> if it implements <see cref="IDisposable"/>; otherwise, deinitializes it.
         /// </summary>
-        /// <param name="view">The view to be disposed.</param>
-        /// <returns>The associated <see cref="IViewModel"/>, or <see langword="null"/> if none is present.</returns>
+        /// <param name="view">The view, or <see langword="null"/>.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
         public static IViewModel? DisposeView(this IView? view)
         {
 #if ASPID_MVVM_PROFILER

@@ -6,29 +6,40 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="Attribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
-    /// overrides the default <see langword="private"/> access modifier of the generated property's get and set
-    /// accessors. Requires a companion <see cref="BindAttribute"/>, <see cref="OneWayBindAttribute"/>,
-    /// <see cref="TwoWayBindAttribute"/>, <see cref="OneTimeBindAttribute"/>, or <see cref="OneWayToSourceBindAttribute"/>
-    /// on the same field.
+    /// Sets the access modifiers of the property generated for a bind field of a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
+    /// <remarks>
+    /// Without it, both accessors are <see langword="private"/>; on a field without a bind attribute, it is ignored.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [Bind]
+    /// [Access(Access.Public)]
+    /// private int _health;
+    /// </code>
+    /// <code>
+    /// [Bind]
+    /// [Access(Get = Access.Public, Set = Access.Protected)]
+    /// private int _health;
+    /// </code>
+    /// </example>
     [AttributeUsage(validOn: AttributeTargets.Field)]
     public sealed class AccessAttribute : Attribute
     {
         /// <summary>
-        /// Gets or sets the access modifier for the get accessor.
+        /// Gets or sets the access modifier of the getter, overriding the constructor argument.
         /// </summary>
         public Access Get { get; set; }
         
         /// <summary>
-        /// Gets or sets the access modifier for the set accessor.
+        /// Gets or sets the access modifier of the setter, overriding the constructor argument.
         /// </summary>
         public Access Set { get; set; }
         
         /// <summary>
-        /// Sets the access modifier for generated properties. Defaults to <see cref="Access.Private"/>.
+        /// Creates an attribute that applies <paramref name="access"/> to both accessors.
         /// </summary>
-        /// <param name="access">Access modifier for the get and set accessors.</param>
+        /// <param name="access">The access modifier of the getter and the setter.</param>
         public AccessAttribute(Access access = Access.Private) { }
     }
 }

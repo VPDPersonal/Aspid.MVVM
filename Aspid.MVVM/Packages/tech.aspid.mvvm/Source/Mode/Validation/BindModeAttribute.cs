@@ -7,44 +7,56 @@ using Attribute = UnityEngine.PropertyAttribute;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Attribute used to specify allowed binding modes for a property in the Unity Editor.
-    /// This attribute is conditional and only active when the "UNITY_EDITOR" symbol is defined.
+    /// Limits the binding modes that the Inspector offers for a <see cref="BindMode"/> field.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The allowed modes are <see cref="Modes"/> plus the groups that <see cref="IsOne"/> and <see cref="IsTwo"/> add; with none of
+    /// them, or with <see cref="IsAll"/>, every mode except <see cref="BindMode.None"/> is allowed.
+    /// </para>
+    /// <para>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [BindMode(BindMode.OneWay, BindMode.OneTime)]
+    /// [SerializeField] private BindMode _mode;
+    /// </code>
+    /// <code>
+    /// [BindMode(IsTwo = true)]
+    /// [SerializeField] private BindMode _mode;
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class BindModeAttribute : Attribute
     {
         /// <summary>
-        /// Indicates whether all binding modes (except <see cref="BindMode.None"/>) are allowed.
-        /// If <see langword="true"/>, all modes except <see cref="BindMode.None"/> are enabled.
+        /// Gets or sets a value indicating whether every mode except <see cref="BindMode.None"/> is allowed.
         /// </summary>
         public bool IsAll { get; set; }
 
         /// <summary>
-        /// Indicates whether only <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/> are allowed.
-        /// If <see langword="true"/>, only these two modes are enabled.
+        /// Gets or sets a value indicating whether <see cref="BindMode.OneWay"/> and <see cref="BindMode.OneTime"/> are allowed in
+        /// addition to <see cref="Modes"/>.
         /// </summary>
         public bool IsOne { get; set; }
 
         /// <summary>
-        /// Indicates whether only <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> are allowed.
-        /// If <see langword="true"/>, only these two modes are enabled.
+        /// Gets or sets a value indicating whether <see cref="BindMode.TwoWay"/> and <see cref="BindMode.OneWayToSource"/> are
+        /// allowed in addition to <see cref="Modes"/>.
         /// </summary>
         public bool IsTwo { get; set; }
         
         /// <summary>
-        /// Gets the array of allowed binding modes for the property.
+        /// Gets the explicitly allowed modes.
         /// </summary>
         public BindMode[] Modes { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindModeAttribute"/> class with the specified binding modes.
-        /// If no modes are provided and neither <see cref="IsOne"/> nor <see cref="IsTwo"/> is set, the behavior is equivalent to <see cref="IsAll"/>.
-        /// If <see cref="IsOne"/> and <see cref="IsTwo"/> are both <see langword="true"/>, the behavior is equivalent to <see cref="IsAll"/>.
-        /// If <see cref="IsOne"/> or <see cref="IsTwo"/> is <see langword="true"/> and modes are provided, the allowed modes are a combination of the specified modes and the modes defined by the properties.
+        /// Creates an attribute that allows <paramref name="modes"/>.
         /// </summary>
-        /// <param name="modes">The binding modes that are allowed for the property.</param>
+        /// <param name="modes">The allowed modes; none to allow every mode unless <see cref="IsOne"/> or <see cref="IsTwo"/> is set.</param>
         public BindModeAttribute(params BindMode[] modes)
         {
             Modes = modes;

@@ -20,12 +20,12 @@ namespace Aspid.MVVM
 #endif
         
         /// <summary>
-        /// Safely unbinds a single binder.
+        /// Unbinds <paramref name="binder"/>; does nothing when it is <see langword="null"/> or a destroyed Unity object.
         /// </summary>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binder">The binder instance to unbind.</param>
-        /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
-        /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binder">The binder to unbind, or <see langword="null"/>.</param>
+        /// <param name="owner">Unused; matches the collection overloads.</param>
+        /// <param name="memberName">Unused; matches the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T? binder, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -40,15 +40,16 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely unbinds an array of binders.
+        /// Unbinds each binder in <paramref name="binders"/>.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to unbind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The array of binders to unbind.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to unbind, or <see langword="null"/>.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this T[]? binders, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -87,15 +88,16 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely unbinds a list of binders.
+        /// Unbinds each binder in <paramref name="binders"/>.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to unbind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The list of binders to unbind.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to unbind, or <see langword="null"/>.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -133,15 +135,16 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely unbinds a sequence of binders.
+        /// Unbinds each binder in <paramref name="binders"/>.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to unbind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The enumerable of binders to unbind.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to unbind, or <see langword="null"/>.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner = null, string? memberName = null)
             where T : IBinder

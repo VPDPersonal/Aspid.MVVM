@@ -3,29 +3,39 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="BaseBindAttribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
-    /// directs the Source Generator to emit a bindable property for the field.
-    /// The default constructor selects <see cref="BindMode.TwoWay"/> for mutable fields and <see cref="BindMode.OneTime"/>
-    /// for <see langword="readonly"/> fields. When the mode-taking constructor is used on a <see langword="readonly"/> field,
-    /// <see cref="BindMode.OneTime"/> and <see cref="BindMode.OneWay"/> both resolve to <see cref="BindMode.OneTime"/>;
-    /// any other mode is rejected.
+    /// Generates a bindable member for the field or property of a <see cref="ViewModelAttribute">[ViewModel]</see> class, and a property for a field.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Without a mode, a mutable field binds <see cref="BindMode.TwoWay"/> and a <see langword="readonly"/> field
+    /// <see cref="BindMode.OneTime"/>; a property binds <see cref="BindMode.OneWay"/> when it is get-only,
+    /// <see cref="BindMode.OneWayToSource"/> when it is set-only and <see cref="BindMode.TwoWay"/> otherwise.
+    /// </para>
+    /// <para>
+    /// A mode the member cannot support is ignored together with the member: a <see langword="readonly"/> field takes only
+    /// <see cref="BindMode.OneTime"/>, a get-only property <see cref="BindMode.OneTime"/> or <see cref="BindMode.OneWay"/>, and
+    /// a set-only property <see cref="BindMode.OneWayToSource"/>.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [Bind] private int _health;
+    /// </code>
+    /// <code>
+    /// [Bind(BindMode.OneWay)] private string _title;
+    /// </code>
+    /// </example>
     public sealed class BindAttribute : BaseBindAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindAttribute"/> class with the default binding mode.
-        /// For non-readonly fields, the default mode is <see cref="BindMode.TwoWay"/>.
-        /// For readonly fields, the default mode is <see cref="BindMode.OneTime"/>.
+        /// Creates an attribute whose binding mode follows from the member.
         /// </summary>
         public BindAttribute() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindAttribute"/> class with the specified binding mode.
-        /// For readonly fields, only <see cref="BindMode.OneTime"/> and <see cref="BindMode.OneWay"/> are supported, 
-        /// both of which will behave as <see cref="BindMode.OneTime"/>.
-        /// Other modes are not supported for readonly fields.
+        /// Creates an attribute with an explicit binding mode.
         /// </summary>
-        /// <param name="mode">The desired binding mode for the field.</param>
+        /// <param name="mode">The binding mode. A mode the member cannot support skips the member.</param>
         public BindAttribute(BindMode mode) { }
     }
 }

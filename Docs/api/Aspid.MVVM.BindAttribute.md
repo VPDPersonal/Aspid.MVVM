@@ -11,12 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`BaseBindAttribute`](Aspid.MVVM.BaseBindAttribute.md) applied to fields of a type carrying [`ViewModelAttribute`](Aspid.MVVM.ViewModelAttribute.md);
-directs the Source Generator to emit a bindable property for the field.
-The default constructor selects [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) for mutable fields and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md)
-for <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> fields. When the mode-taking constructor is used on a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field,
-[`BindMode.OneTime`](Aspid.MVVM.BindMode.md) and [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) both resolve to [`BindMode.OneTime`](Aspid.MVVM.BindMode.md);
-any other mode is rejected.
+Generates a bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class, and a property for a field.
 
 ```csharp
 public sealed class BindAttribute : BaseBindAttribute
@@ -31,13 +26,37 @@ public sealed class BindAttribute : BaseBindAttribute
 
 
 
+## Examples
+
+
+```csharp
+[Bind] private int _health;
+```
+
+
+```csharp
+[Bind(BindMode.OneWay)] private string _title;
+```
+
+
+## Remarks
+
+<p>
+Without a mode, a mutable field binds [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) and a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field
+[`BindMode.OneTime`](Aspid.MVVM.BindMode.md); a property binds [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) when it is get-only,
+[`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) when it is set-only and [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) otherwise.
+</p>
+<p>
+A mode the member cannot support is ignored together with the member: a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field takes only
+[`BindMode.OneTime`](Aspid.MVVM.BindMode.md), a get-only property [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWay`](Aspid.MVVM.BindMode.md), and
+a set-only property [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+</p>
+
 ## Constructors
 
 ### BindAttribute\(\) {#Aspid_MVVM_BindAttribute__ctor}
 
-Initializes a new instance of the [`BindAttribute`](Aspid.MVVM.BindAttribute.md) class with the default binding mode.
-For non-readonly fields, the default mode is [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md).
-For readonly fields, the default mode is [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Creates an attribute whose binding mode follows from the member.
 
 ```csharp
 public BindAttribute()
@@ -45,10 +64,7 @@ public BindAttribute()
 
 ### BindAttribute\(BindMode\) {#Aspid_MVVM_BindAttribute__ctor_Aspid_MVVM_BindMode_}
 
-Initializes a new instance of the [`BindAttribute`](Aspid.MVVM.BindAttribute.md) class with the specified binding mode.
-For readonly fields, only [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) and [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) are supported, 
-both of which will behave as [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
-Other modes are not supported for readonly fields.
+Creates an attribute with an explicit binding mode.
 
 ```csharp
 public BindAttribute(BindMode mode)
@@ -58,5 +74,5 @@ public BindAttribute(BindMode mode)
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The desired binding mode for the field.
+The binding mode. A mode the member cannot support skips the member.
 

@@ -11,8 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) applied to fields or properties of a type carrying [`ViewAttribute`](Aspid.MVVM.ViewAttribute.md);
-directs the Source Generator to emit binding code that wires the member to the supplied [`IBinder`](Aspid.MVVM.IBinder.md) type.
+Wraps the field or property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder of [`AsBinderAttribute.Type`](Aspid.MVVM.AsBinderAttribute.md#Aspid_MVVM_AsBinderAttribute_Type), created with the member as its first
+constructor argument.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
@@ -27,11 +27,30 @@ public sealed class AsBinderAttribute : Attribute
 
 
 
+## Examples
+
+
+```csharp
+[AsBinder(typeof(ImageSpriteBinder))]
+[SerializeField] private Image _icon;
+```
+
+
+```csharp
+[AsBinder(typeof(AnimatorSetFloatBinder), "Speed")]
+[SerializeField] private Animator _speed;
+```
+
+
+## Remarks
+
+For an array, creates one binder per element.
+
 ## Constructors
 
 ### AsBinderAttribute\(Type, params object\[\]\) {#Aspid_MVVM_AsBinderAttribute__ctor_System_Type_System_Object___}
 
-Initializes a new instance of the [`AsBinderAttribute`](Aspid.MVVM.AsBinderAttribute.md) with the specified [`IBinder`](Aspid.MVVM.IBinder.md) type and optional arguments.
+Creates an attribute that wraps the member in a binder of <code class="paramref">type</code>.
 
 ```csharp
 public AsBinderAttribute(Type type, params object[] arguments)
@@ -41,17 +60,18 @@ public AsBinderAttribute(Type type, params object[] arguments)
 
 `type` [Type](https://learn.microsoft.com/dotnet/api/system.type)
 
-The type of [`IBinder`](Aspid.MVVM.IBinder.md) that will be used to bind the field or property.
+The binder type: a non-abstract [`IBinder`](Aspid.MVVM.IBinder.md); any other type skips the member.
 
 `arguments` [object](https://learn.microsoft.com/dotnet/api/system.object)\[\]
 
-Additional arguments that can be passed to the constructor of the [`IBinder`](Aspid.MVVM.IBinder.md) type.
+The binder constructor arguments that follow the member; a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/operators/nameof">nameof</a> expression passes the named member
+of the View.
 
 ## Fields
 
 ### Type {#Aspid_MVVM_AsBinderAttribute_Type}
 
-Gets the [`IBinder`](Aspid.MVVM.IBinder.md) type used to bind the field or property.
+Gets the binder type.
 
 ```csharp
 public readonly Type Type
@@ -60,4 +80,8 @@ public readonly Type Type
 #### Field Value
 
  [Type](https://learn.microsoft.com/dotnet/api/system.type)
+
+#### Remarks
+
+Exists only when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
 

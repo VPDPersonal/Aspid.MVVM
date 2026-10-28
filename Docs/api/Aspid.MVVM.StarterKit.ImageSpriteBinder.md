@@ -108,20 +108,15 @@ protected override sealed Sprite Property { get; set; }
 
 ### OnUnbound\(\) {#Aspid_MVVM_StarterKit_ImageSpriteBinder_OnUnbound}
 
-Called after unbinding. Override to add post-unbinding logic.
+Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
 
 ```csharp
 protected override void OnUnbound()
 ```
 
-#### Remarks
-
-Runs once the binder is detached and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
-This is where a subscription taken in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) is released.
-
 ### SetValue\(Texture2D\) {#Aspid_MVVM_StarterKit_ImageSpriteBinder_SetValue_UnityEngine_Texture2D_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(Texture2D value)

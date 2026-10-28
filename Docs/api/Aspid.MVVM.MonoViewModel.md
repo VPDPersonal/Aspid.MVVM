@@ -52,7 +52,7 @@ public virtual void Dispose()
 
 ### FindBindableMember\(in FindBindableMemberParameters\) {#Aspid_MVVM_MonoViewModel_FindBindableMember_Aspid_MVVM_FindBindableMemberParameters__}
 
-Searches for a bindable member in the ViewModel based on the provided parameters.
+Finds the bindable member with the identifier in <code class="paramref">parameters</code>.
 
 ```csharp
 public virtual FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters)
@@ -62,13 +62,14 @@ public virtual FindBindableMemberResult FindBindableMember(in FindBindableMember
 
 `parameters` [FindBindableMemberParameters](Aspid.MVVM.FindBindableMemberParameters.md)
 
-The parameters specifying the bindable member to find.
+The lookup query.
 
 #### Returns
 
  [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-A [`FindBindableMemberResult`](Aspid.MVVM.FindBindableMemberResult.md) that contains information about the bindable member search result.
+A result holding the member; a result whose [`FindBindableMemberResult.IsFound`](Aspid.MVVM.FindBindableMemberResult.md#Aspid_MVVM_FindBindableMemberResult_IsFound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>
+when no member has the identifier.
 
 ### NotifyAll\(\) {#Aspid_MVVM_MonoViewModel_NotifyAll}
 

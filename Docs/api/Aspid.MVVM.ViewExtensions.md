@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Provides extension methods for [`IView`](Aspid.MVVM.IView.md) providing helpers for reinitialization and safe disposal.
+Provides extension methods for [`IView`](Aspid.MVVM.IView.md).
 
 ```csharp
 public static class ViewExtensions
@@ -40,7 +40,7 @@ public static readonly ProfilerMarker DisposeViewMarker
 
 ### DeinitializeView\<T\>\(T?\) {#Aspid_MVVM_ViewExtensions_DeinitializeView__1___0_}
 
-Deinitializes the view and returns the associated [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Deinitializes <code class="paramref">view</code>.
 
 ```csharp
 public static IViewModel? DeinitializeView<T>(this T? view) where T : IView
@@ -50,23 +50,23 @@ public static IViewModel? DeinitializeView<T>(this T? view) where T : IView
 
 `view` T?
 
-The view to be deinitialized.
+The view, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The associated [`IViewModel`](Aspid.MVVM.IViewModel.md), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if none is present.
+The ViewModel the view had; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it had none or <code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
 `T` 
 
-The type of the view that implements [`IView`](Aspid.MVVM.IView.md).
+The view type.
 
 ### DisposeView\<T\>\(T?\) {#Aspid_MVVM_ViewExtensions_DisposeView__1___0_}
 
-Disposes the view and returns the associated [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Disposes <code class="paramref">view</code>.
 
 ```csharp
 public static IViewModel? DisposeView<T>(this T? view) where T : IView, IDisposable
@@ -76,23 +76,23 @@ public static IViewModel? DisposeView<T>(this T? view) where T : IView, IDisposa
 
 `view` T?
 
-The view to be disposed.
+The view, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The associated [`IViewModel`](Aspid.MVVM.IViewModel.md), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if none is present.
+The ViewModel the view had; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it had none or <code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
 `T` 
 
-The type of the view that implements [`IView`](Aspid.MVVM.IView.md) and [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable).
+The view type.
 
 ### DisposeView\(IView?\) {#Aspid_MVVM_ViewExtensions_DisposeView_Aspid_MVVM_IView_}
 
-Disposes the view if it implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) and returns the associated [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Disposes <code class="paramref">view</code> if it implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable); otherwise, deinitializes it.
 
 ```csharp
 public static IViewModel? DisposeView(this IView? view)
@@ -102,17 +102,17 @@ public static IViewModel? DisposeView(this IView? view)
 
 `view` [IView](Aspid.MVVM.IView.md)?
 
-The view to be disposed.
+The view, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The associated [`IViewModel`](Aspid.MVVM.IViewModel.md), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if none is present.
+The ViewModel the view had; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it had none or <code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### Reinitialize\(IView?, IViewModel?\) {#Aspid_MVVM_ViewExtensions_Reinitialize_Aspid_MVVM_IView_Aspid_MVVM_IViewModel_}
 
-Deinitializes the view from its current ViewModel and optionally reinitializes it with a new one.
+Deinitializes <code class="paramref">view</code> and initializes it with <code class="paramref">newViewModel</code>.
 
 ```csharp
 public static IViewModel? Reinitialize(this IView? view, IViewModel? newViewModel)
@@ -122,15 +122,15 @@ public static IViewModel? Reinitialize(this IView? view, IViewModel? newViewMode
 
 `view` [IView](Aspid.MVVM.IView.md)?
 
-The view to reinitialize.
+The view, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `newViewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The new ViewModel to initialize the view with, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to only deinitialize.
+The ViewModel to initialize the view with; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> leaves it deinitialized.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The previously associated [`IViewModel`](Aspid.MVVM.IViewModel.md), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if none was present.
+The ViewModel the view had; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it had none or <code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 

@@ -99,8 +99,8 @@ The binding mode.
 
 ### CanBind {#Aspid_MVVM_StarterKit_AudioMixerSnapshotBinder_CanBind}
 
-Indicates whether binding is allowed.
-The default value is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
+Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_Bind_Aspid_MVVM_IBinderAdder_) attaches the binder; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> unless
+overridden.
 
 ```csharp
 public override bool CanBind { get; }

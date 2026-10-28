@@ -102,7 +102,7 @@ public LocalizeStringEventVariableBinder(LocalizeStringEvent target, string vari
 
 ### SetValue\(bool\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Boolean_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(bool value)
@@ -116,7 +116,7 @@ The value received from the ViewModel.
 
 ### SetValue\(string\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_String_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(string value)
@@ -130,7 +130,7 @@ The value received from the ViewModel.
 
 ### SetValue\(Object\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_UnityEngine_Object_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(Object value)
@@ -144,7 +144,7 @@ The value received from the ViewModel.
 
 ### SetValue\(int\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Int32_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(int value)
@@ -158,7 +158,7 @@ The value received from the ViewModel.
 
 ### SetValue\(uint\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_UInt32_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(uint value)
@@ -172,7 +172,7 @@ The value received from the ViewModel.
 
 ### SetValue\(long\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Int64_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(long value)
@@ -186,7 +186,7 @@ The value received from the ViewModel.
 
 ### SetValue\(ulong\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_UInt64_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(ulong value)
@@ -200,7 +200,7 @@ The value received from the ViewModel.
 
 ### SetValue\(byte\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Byte_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(byte value)
@@ -214,7 +214,7 @@ The value received from the ViewModel.
 
 ### SetValue\(sbyte\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_SByte_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(sbyte value)
@@ -228,7 +228,7 @@ The value received from the ViewModel.
 
 ### SetValue\(short\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Int16_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(short value)
@@ -242,7 +242,7 @@ The value received from the ViewModel.
 
 ### SetValue\(ushort\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_UInt16_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(ushort value)
@@ -256,7 +256,7 @@ The value received from the ViewModel.
 
 ### SetValue\(float\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Single_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(float value)
@@ -270,7 +270,7 @@ The value received from the ViewModel.
 
 ### SetValue\(double\) {#Aspid_MVVM_StarterKit_LocalizeStringEventVariableBinder_SetValue_System_Double_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(double value)

@@ -73,7 +73,7 @@ For deserialization only.
 
 ### TransformSiblingIndexBinder\(Transform, BindMode\) {#Aspid_MVVM_StarterKit_TransformSiblingIndexBinder__ctor_UnityEngine_Transform_Aspid_MVVM_BindMode_}
 
-Initializes a new instance of the [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) class with the specified target and binding mode.
+Creates a binder for <code class="paramref">target</code>.
 
 ```csharp
 public TransformSiblingIndexBinder(Transform target, BindMode mode = BindMode.OneWay)
@@ -83,37 +83,31 @@ public TransformSiblingIndexBinder(Transform target, BindMode mode = BindMode.On
 
 `target` Transform
 
-The target object this binder will operate on.
+The object to bind.
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The binding mode to use for the binder.
+The binding mode.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Methods
 
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_TransformSiblingIndexBinder_OnBound}
 
-Called after binding is established. Override to add post-binding logic.
+Called after the binder attaches and receives the first value. Override to subscribe to the component.
 
 ```csharp
 protected override void OnBound()
 ```
 
-#### Remarks
-
-Runs after the ViewModel's first value has been applied and after [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>. This is where a binder subscribes to its component — see
-[`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) for why the earlier hook is the wrong place.
-
 ### SetValue\(int\) {#Aspid_MVVM_StarterKit_TransformSiblingIndexBinder_SetValue_System_Int32_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(int value)
@@ -127,7 +121,7 @@ The value received from the ViewModel.
 
 ### ValueChanged {#Aspid_MVVM_StarterKit_TransformSiblingIndexBinder_ValueChanged}
 
-Raised when the View's value changes and needs to be propagated back to the ViewModel.
+Occurs when the View produces a value for the ViewModel.
 
 ```csharp
 public event Action<int> ValueChanged

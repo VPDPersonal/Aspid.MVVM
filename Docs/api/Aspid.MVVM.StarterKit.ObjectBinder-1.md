@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cTObject%3e`](Aspid.MVVM.StarterKit.md) that binds a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html)
+Abstract base [`Binder<TObject>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html)
 reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
 ```csharp
@@ -23,7 +23,7 @@ public abstract class ObjectBinder<TObject> : Binder<TObject>, IRebindableBinder
 
 `TObject` 
 
-The type of [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) the property holds.
+The type of [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) the property holds.
 
 #### Inheritance
 

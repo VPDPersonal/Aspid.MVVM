@@ -112,14 +112,9 @@ protected override sealed Color Property { get; set; }
 
 ### OnUnbound\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsColorBinder_OnUnbound}
 
-Called after unbinding. Override to add post-unbinding logic.
+Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
 
 ```csharp
 protected override void OnUnbound()
 ```
-
-#### Remarks
-
-Runs once the binder is detached and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
-This is where a subscription taken in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) is released.
 

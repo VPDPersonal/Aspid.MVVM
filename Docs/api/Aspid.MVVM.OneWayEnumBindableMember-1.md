@@ -11,9 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
-allowing enum-typed binders ([`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)) to receive the boxed enum value alongside
-the strongly-typed <code class="typeparamref">T</code>.
+Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 ```csharp
 public sealed class OneWayEnumBindableMember<T> : OneWayStructBindableMember<T, Enum>, IBindableMember<T>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover where T : struct, Enum
@@ -23,7 +21,7 @@ public sealed class OneWayEnumBindableMember<T> : OneWayStructBindableMember<T, 
 
 `T` 
 
-The enum type of the bound value.
+The bound enum type.
 
 #### Inheritance
 
@@ -45,7 +43,7 @@ The enum type of the bound value.
 
 ### OneWayEnumBindableMember\(T\) {#Aspid_MVVM_OneWayEnumBindableMember_1__ctor__0_}
 
-Initializes a new instance of the [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) class with the specified initial value.
+Creates a member holding <code class="paramref">value</code>.
 
 ```csharp
 public OneWayEnumBindableMember(T value)
@@ -55,5 +53,5 @@ public OneWayEnumBindableMember(T value)
 
 `value` T
 
-The initial value of the bindable member.
+The initial value.
 

@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum),
-exposed as a per-type singleton via [`OneTimeEnumBindableMember<T>.Get`](Aspid.MVVM.OneTimeEnumBindableMember-1.md#Aspid_MVVM_OneTimeEnumBindableMember_1_Get__0_) for one-time enum bindings.
+Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 ```csharp
 public sealed class OneTimeEnumBindableMember<T> : OneTimeStructBindableMember<T, Enum>, IReadOnlyValueBindableMember<T>, IBinderAdder where T : struct, Enum
@@ -22,7 +21,7 @@ public sealed class OneTimeEnumBindableMember<T> : OneTimeStructBindableMember<T
 
 `T` 
 
-The enum type of the bound value.
+The bound enum type.
 
 #### Inheritance
 
@@ -41,7 +40,7 @@ The enum type of the bound value.
 
 ### Get\(T\) {#Aspid_MVVM_OneTimeEnumBindableMember_1_Get__0_}
 
-Creates a reusable instance and assigns the provided enum value for one-time binding.
+Returns the shared instance with [`OneTimeStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneTimeStructBindableMember-2.md#Aspid_MVVM_OneTimeStructBindableMember_2_Value) set to <code class="paramref">value</code>.
 
 ```csharp
 public static OneTimeEnumBindableMember<T> Get(T value)
@@ -51,11 +50,15 @@ public static OneTimeEnumBindableMember<T> Get(T value)
 
 `value` T
 
-The enum value to provide to the binder.
+The value to push to the binder.
 
 #### Returns
 
  [OneTimeEnumBindableMember](Aspid.MVVM.OneTimeEnumBindableMember-1.md)\<T\>
 
-A singleton instance of [`OneTimeEnumBindableMember<T>`](Aspid.MVVM.OneTimeEnumBindableMember-1.md) configured with the specified value.
+The shared instance for <code class="typeparamref">T</code>.
+
+#### Remarks
+
+Every call returns the same instance and overwrites its value, so bind it before the next call.
 

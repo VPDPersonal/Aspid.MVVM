@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed marker [`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) that drives the Source Generator to emit an [`IView`](Aspid.MVVM.IView.md)
-implementation for the decorated class or struct and to analyze code blocks within the type.
+Generates the [`IView`](Aspid.MVVM.IView.md) implementation of the class, which binds its binder fields and properties.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Class|AttributeTargets.Struct, Inherited = false)]
@@ -27,15 +26,25 @@ public sealed class ViewAttribute : Attribute
 
 
 
+## Examples
+
+
+```csharp
+[View]
+public partial class PlayerView : MonoView { }
+```
+
+
+## Remarks
+
+The class must be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/partial-method">partial</a>; a struct is ignored.
+
 ## Properties
 
 ### AutoBinderFields {#Aspid_MVVM_ViewAttribute_AutoBinderFields}
 
-Indicates whether the Source Generator should emit binder fields for
-[`IView<T>`](Aspid.MVVM.IView-1.md) bindable members that are not already declared on the View.
-Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>. Set to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to suppress this generation
-for the decorated View — useful for Views that wire binders manually or do not need an
-inspector-driven layout.
+Gets or sets a value indicating whether a View that implements [`IView<T>`](Aspid.MVVM.IView-1.md) gets a serialized
+<code>MonoBinder</code> array for each bindable member of <code>T</code> that it does not declare. <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> by default.
 
 ```csharp
 public bool AutoBinderFields { get; set; }
@@ -44,4 +53,8 @@ public bool AutoBinderFields { get; set; }
 #### Property Value
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+
+#### Remarks
+
+Has no effect when <code>T</code> is an interface or the View derives from <code>ScriptableObject</code>.
 

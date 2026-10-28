@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Represents a bindable member that allows setting a value and notifies listeners when the value changes.
+[`IReadOnlyBindableMember<T>`](Aspid.MVVM.IReadOnlyBindableMember-1.md) whose value can also be set.
 
 ```csharp
 public interface IBindableMember<T> : IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder
@@ -21,7 +21,7 @@ public interface IBindableMember<T> : IReadOnlyBindableMember<T>, IReadOnlyValue
 
 `T` 
 
-The type of the value being bound.
+The bound value type.
 
 #### Implements
 
@@ -34,7 +34,7 @@ The type of the value being bound.
 
 ### Value {#Aspid_MVVM_IBindableMember_1_Value}
 
-Sets the value of the bindable member.
+Sets the current value and raises [`IReadOnlyBindableMember<T>.Changed`](Aspid.MVVM.IReadOnlyBindableMember-1.md#Aspid_MVVM_IReadOnlyBindableMember_1_Changed).
 
 ```csharp
 T? Value { set; }

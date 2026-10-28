@@ -11,8 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed marker [`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) that drives the Source Generator to emit an [`IViewModel`](Aspid.MVVM.IViewModel.md)
-implementation for the decorated class or struct and to analyze code blocks within the type.
+Generates the [`IViewModel`](Aspid.MVVM.IViewModel.md) implementation of the class from its bind members and
+[`[RelayCommand]`](Aspid.MVVM.RelayCommandAttribute.md) methods.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Class|AttributeTargets.Struct, Inherited = false)]
@@ -25,4 +25,18 @@ public sealed class ViewModelAttribute : Attribute
 [Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
 [ViewModelAttribute](Aspid.MVVM.ViewModelAttribute.md)
 
+
+
+## Examples
+
+
+```csharp
+[ViewModel]
+public partial class PlayerViewModel { }
+```
+
+
+## Remarks
+
+The class must be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/partial-method">partial</a>; a struct is ignored.
 

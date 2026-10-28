@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Represents a read-only bindable member that exposes a value and notifies listeners when the value changes.
+[`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that reports value changes.
 
 ```csharp
 public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T>, IBinderAdder
@@ -21,7 +21,7 @@ public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T
 
 `T` 
 
-The type of the value being exposed.
+The bound value type.
 
 #### Implements
 
@@ -31,7 +31,7 @@ The type of the value being exposed.
 
 ### Changed {#Aspid_MVVM_IReadOnlyBindableMember_1_Changed}
 
-Raised when the value changes.
+Occurs when the value changes.
 
 ```csharp
 event Action<out T?>? Changed

@@ -1505,12 +1505,12 @@ Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRel
 
  [ComponentFloatMonoBinder\<TComponent\>](Aspid.MVVM.StarterKit.ComponentFloatMonoBinder-1.md)
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+float%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`ComponentMonoBinder<TComponent, float>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [ComponentIntMonoBinder\<TComponent\>](Aspid.MVVM.StarterKit.ComponentIntMonoBinder-1.md)
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+int%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`ComponentMonoBinder<TComponent, int>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [ComponentMonoBinder\<TComponent, TProperty\>](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md)
@@ -1520,8 +1520,8 @@ applying an optional converter in both directions. In [`BindMode.OneWayToSource`
 
  [ComponentObjectMonoBinder\<TComponent, TObject\>](Aspid.MVVM.StarterKit.ComponentObjectMonoBinder-2.md)
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+TObject%3e`](Aspid.MVVM.StarterKit.md) that binds
-a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
+Abstract base [`ComponentMonoBinder<TComponent, TObject>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds
+a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [ComponentToSourceMonoBinder](Aspid.MVVM.StarterKit.ComponentToSourceMonoBinder.md)
 
@@ -2090,7 +2090,7 @@ fires with [`EventTriggerCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.Ev
 
  [FloatBinder](Aspid.MVVM.StarterKit.FloatBinder.md)
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cfloat%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`Binder<float>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [FloatConverterAsset](Aspid.MVVM.StarterKit.FloatConverterAsset.md)
@@ -2099,7 +2099,7 @@ accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBi
 
  [FloatMonoBinder](Aspid.MVVM.StarterKit.FloatMonoBinder.md)
 
-Abstract base [`StarterKit.MonoBinder<T>?text=MonoBinder%3cfloat%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`MonoBinder<float>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [FloatToBoolConverterAsset](Aspid.MVVM.StarterKit.FloatToBoolConverterAsset.md)
@@ -2247,11 +2247,11 @@ Reads a color off a [`Gradient`](https://docs.unity3d.com/ScriptReference/Gradie
 
  [GraphicColorChannelEnumGroupMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelEnumGroupMonoBinder.md)
 
-[`StarterKit.EnumGroupMonoBinder<T1, T2>?text=EnumGroupMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) per group element.
+[`EnumGroupMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.EnumGroupMonoBinder-2.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) per group element.
 
  [GraphicColorChannelEnumMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelEnumMonoBinder.md)
 
-[`StarterKit.EnumMonoBinder<T1, T2>?text=EnumMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`EnumMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.EnumMonoBinder-2.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
  [GraphicColorChannelMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelMonoBinder.md)
 
@@ -2259,11 +2259,11 @@ Reads a color off a [`Gradient`](https://docs.unity3d.com/ScriptReference/Gradie
 
  [GraphicColorChannelSwitcherBinder](Aspid.MVVM.StarterKit.GraphicColorChannelSwitcherBinder.md)
 
-[`StarterKit.SwitcherBinder<T1, T2>?text=SwitcherBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`SwitcherBinder<Graphic, float>`](Aspid.MVVM.StarterKit.SwitcherBinder-2.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
  [GraphicColorChannelSwitcherMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelSwitcherMonoBinder.md)
 
-[`StarterKit.SwitcherMonoBinder<T1, T2>?text=SwitcherMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`SwitcherMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.SwitcherMonoBinder-2.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
  [GraphicColorEnumGroupMonoBinder](Aspid.MVVM.StarterKit.GraphicColorEnumGroupMonoBinder.md)
 
@@ -2723,7 +2723,7 @@ and reports edits back as text and, for numeric fields, as numbers.
 
  [IntBinder](Aspid.MVVM.StarterKit.IntBinder.md)
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cint%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`Binder<int>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [IntConverterAsset](Aspid.MVVM.StarterKit.IntConverterAsset.md)
@@ -2732,7 +2732,7 @@ accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder
 
  [IntMonoBinder](Aspid.MVVM.StarterKit.IntMonoBinder.md)
 
-Abstract base [`StarterKit.MonoBinder<T>?text=MonoBinder%3cint%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`MonoBinder<int>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [IntToBoolConverterAsset](Aspid.MVVM.StarterKit.IntToBoolConverterAsset.md)
@@ -3170,21 +3170,21 @@ Converts a number to another numeric type under a chosen overflow policy.
 
  [ObjectBinder\<TObject\>](Aspid.MVVM.StarterKit.ObjectBinder-1.md)
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cTObject%3e`](Aspid.MVVM.StarterKit.md) that binds a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html)
+Abstract base [`Binder<TObject>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html)
 reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [ObjectCollectionCountMonoBinder](Aspid.MVVM.StarterKit.ObjectCollectionCountMonoBinder.md)
 
-[`StarterKit.CollectionCountMonoBinder<T>?text=CollectionCountMonoBinder%3cobject%3e`](Aspid.MVVM.StarterKit.md) for a collection of any reference type.
+[`CollectionCountMonoBinder<object>`](Aspid.MVVM.StarterKit.CollectionCountMonoBinder-1.md) for a collection of any reference type.
 
  [ObjectMonoBinder\<TObject\>](Aspid.MVVM.StarterKit.ObjectMonoBinder-1.md)
 
-Abstract base [`StarterKit.MonoBinder<T>?text=MonoBinder%3cTObject%3e`](Aspid.MVVM.StarterKit.md) that binds a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html)
+Abstract base [`MonoBinder<TObject>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html)
 reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [ObjectNameBinder](Aspid.MVVM.StarterKit.ObjectNameBinder.md)
 
-[`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cObject%2c+string%3e`](Aspid.MVVM.StarterKit.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target.
+[`TargetBinder<Object, string>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target.
 
  [ObjectNameConverter](Aspid.MVVM.StarterKit.ObjectNameConverter.md)
 
@@ -3192,7 +3192,7 @@ Reads the name of a Unity object.
 
  [ObjectNameMonoBinder](Aspid.MVVM.StarterKit.ObjectNameMonoBinder.md)
 
-[`StarterKit.MonoBinder<T>?text=MonoBinder%3cstring%3e`](Aspid.MVVM.StarterKit.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target object.
+[`MonoBinder<string>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target object.
 
  [ObjectToBoolConverterAsset](Aspid.MVVM.StarterKit.ObjectToBoolConverterAsset.md)
 
@@ -4679,7 +4679,7 @@ is sent to the ViewModel on binding.
 
  [TargetFloatBinder\<TTarget\>](Aspid.MVVM.StarterKit.TargetFloatBinder-1.md)
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+float%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`TargetBinder<TTarget, float>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [TargetFrameRateBinder](Aspid.MVVM.StarterKit.TargetFrameRateBinder.md)
@@ -4692,13 +4692,13 @@ accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBi
 
  [TargetIntBinder\<TTarget\>](Aspid.MVVM.StarterKit.TargetIntBinder-1.md)
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+int%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`TargetBinder<TTarget, int>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [TargetObjectBinder\<TTarget, TObject\>](Aspid.MVVM.StarterKit.TargetObjectBinder-2.md)
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+TObject%3e`](Aspid.MVVM.StarterKit.md) that binds a
-[`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
+Abstract base [`TargetBinder<TTarget, TObject>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds a
+[`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [TextAlignmentBinder](Aspid.MVVM.StarterKit.TextAlignmentBinder.md)
 
@@ -5620,7 +5620,7 @@ Serializable sort order for collection binders.
 
  [IColorBinder](Aspid.MVVM.StarterKit.IColorBinder.md)
 
-[`MVVM.IBinder<T>?text=IBinder%3cColor%3e`](Aspid.MVVM.md) that also accepts an HTML color string such as <code>#FF0000</code> or <code>red</code>.
+[`IBinder<Color>`](Aspid.MVVM.IBinder-1.md) that also accepts an HTML color string such as <code>#FF0000</code> or <code>red</code>.
 
  [IComponentInitializable](Aspid.MVVM.StarterKit.IComponentInitializable.md)
 

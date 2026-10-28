@@ -155,7 +155,7 @@ public BindMode Mode { get; }
 
 ### Bind\(IBinderAdder\) {#Aspid_MVVM_MonoBinder_Bind_Aspid_MVVM_IBinderAdder_}
 
-Binds this binder using the specified [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md).
+Attaches the binder to the bindable member behind <code class="paramref">binderAdder</code>.
 
 ```csharp
 public void Bind(IBinderAdder binderAdder)
@@ -165,7 +165,7 @@ public void Bind(IBinderAdder binderAdder)
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder that registers this binder with the ViewModel.
+The bindable member to attach to.
 
 ### OnBinding\(\) {#Aspid_MVVM_MonoBinder_OnBinding}
 
@@ -230,7 +230,7 @@ When overriding, always call <code>base.Reset()</code>.
 
 ### Unbind\(\) {#Aspid_MVVM_MonoBinder_Unbind}
 
-Unbinds this binder from the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Detaches the binder from its bindable member.
 
 ```csharp
 public void Unbind()

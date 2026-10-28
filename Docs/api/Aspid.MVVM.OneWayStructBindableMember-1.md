@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
-for any value-type payload that does not need a more specific boxing target.
+Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
 ```csharp
 public sealed class OneWayStructBindableMember<T> : OneWayStructBindableMember<T, ValueType>, IBindableMember<T>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover where T : struct
@@ -22,7 +21,7 @@ public sealed class OneWayStructBindableMember<T> : OneWayStructBindableMember<T
 
 `T` 
 
-The struct type of the bound value.
+The bound struct type.
 
 #### Inheritance
 
@@ -44,7 +43,7 @@ The struct type of the bound value.
 
 ### OneWayStructBindableMember\(T\) {#Aspid_MVVM_OneWayStructBindableMember_1__ctor__0_}
 
-Initializes a new instance of the [`OneWayStructBindableMember<T>`](Aspid.MVVM.OneWayStructBindableMember-1.md) class with the specified initial value.
+Creates a member holding <code class="paramref">value</code>.
 
 ```csharp
 public OneWayStructBindableMember(T value)
@@ -54,5 +53,5 @@ public OneWayStructBindableMember(T value)
 
 `value` T
 
-The initial value of the bindable member.
+The initial value.
 

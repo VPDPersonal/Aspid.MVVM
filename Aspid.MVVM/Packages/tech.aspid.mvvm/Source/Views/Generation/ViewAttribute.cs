@@ -23,7 +23,7 @@ namespace Aspid.MVVM
         /// <c>MonoBinder</c> array for each bindable member of <c>T</c> that it does not declare. <see langword="true"/> by default.
         /// </summary>
         /// <remarks>
-        /// Has no effect when <c>T</c> is an interface.
+        /// Has no effect when <c>T</c> is an interface or the View derives from <c>ScriptableObject</c>.
         /// </remarks>
         public bool AutoBinderFields { get; set; } = true;
     }

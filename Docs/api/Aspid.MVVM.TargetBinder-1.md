@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Abstract base [`Binder`](Aspid.MVVM.Binder.md) that provides a typed <code class="typeparamref">TTarget</code> reference
-available to derived classes for binding logic.
+[`Binder`](Aspid.MVVM.Binder.md) that operates on a serialized <code class="typeparamref">TTarget</code>.
 
 ```csharp
 [Serializable]
@@ -23,7 +22,7 @@ public abstract class TargetBinder<TTarget> : Binder, IBinder, IRebindableBinder
 
 `TTarget` 
 
-The type of the target object that this binder operates on.
+The type of the object the binder operates on.
 
 #### Inheritance
 
@@ -62,18 +61,15 @@ The type of the target object that this binder operates on.
 
 ### TargetBinder\(\) {#Aspid_MVVM_TargetBinder_1__ctor}
 
+Creates a binder without a target for Unity deserialization, which then restores the serialized fields.
+
 ```csharp
 protected TargetBinder()
 ```
 
-#### Remarks
-
-For deserialization only: Unity builds a serialized instance without running a constructor's arguments and
-assigns the fields itself.
-
 ### TargetBinder\(TTarget, BindMode\) {#Aspid_MVVM_TargetBinder_1__ctor__0_Aspid_MVVM_BindMode_}
 
-Initializes a new instance of the [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) class with the specified target and binding mode.
+Creates a binder for <code class="paramref">target</code>.
 
 ```csharp
 protected TargetBinder(TTarget target, BindMode mode = BindMode.OneWay)
@@ -83,23 +79,23 @@ protected TargetBinder(TTarget target, BindMode mode = BindMode.OneWay)
 
 `target` TTarget
 
-The target object this binder will operate on.
+The object to bind.
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The binding mode to use for the binder.
+The binding mode.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
 ### CanBind {#Aspid_MVVM_TargetBinder_1_CanBind}
 
-Indicates whether binding is allowed: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> when [`TargetBinder<T>.Target`](Aspid.MVVM.TargetBinder-1.md#Aspid_MVVM_TargetBinder_1_Target) is missing.
+Gets a value indicating whether [`TargetBinder<T>.Target`](Aspid.MVVM.TargetBinder-1.md#Aspid_MVVM_TargetBinder_1_Target) is set and, for a Unity object, not destroyed.
 
 ```csharp
 public override bool CanBind { get; }
@@ -109,17 +105,9 @@ public override bool CanBind { get; }
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-#### Remarks
-
-The constructor rejects a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> target, but a serialized instance never runs it — Unity
-assigns [`TargetBinder<T>.Target`](Aspid.MVVM.TargetBinder-1.md#Aspid_MVVM_TargetBinder_1_Target) directly — so the field can arrive empty, or pointing at an object that has
-since been destroyed. Binding on either produces an exception from whatever <code>OnBound</code> touches first,
-which names the Unity type rather than the binder or its View. Refusing to bind is quieter and leaves the
-rest of the View working.
-
 ### Target {#Aspid_MVVM_TargetBinder_1_Target}
 
-Gets the target object this binder is associated with.
+Gets the object the binder operates on.
 
 ```csharp
 protected TTarget Target { get; }

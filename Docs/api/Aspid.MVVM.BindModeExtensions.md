@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Provides extension methods for [`BindMode`](Aspid.MVVM.BindMode.md) providing mode classification checks and validation helpers.
+Provides extension methods for [`BindMode`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public static class BindModeExtensions
@@ -28,7 +28,7 @@ public static class BindModeExtensions
 
 ### IsNone\(BindMode\) {#Aspid_MVVM_BindModeExtensions_IsNone_Aspid_MVVM_BindMode_}
 
-Returns true when the mode is [`BindMode.None`](Aspid.MVVM.BindMode.md).
+Determines whether <code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 [Obsolete("Compare with BindMode.None directly. Nothing in the package calls this, and the name reads as a question about validity rather than about one enum member. Will be removed in the next major version.")]
@@ -45,11 +45,11 @@ The binding mode to check.
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the mode is [`BindMode.None`](Aspid.MVVM.BindMode.md); otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> for [`BindMode.None`](Aspid.MVVM.BindMode.md); otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ### IsOne\(BindMode\) {#Aspid_MVVM_BindModeExtensions_IsOne_Aspid_MVVM_BindMode_}
 
-Returns true when the mode represents one-way styles: [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Determines whether <code class="paramref">mode</code> pushes values only from the ViewModel to the View.
 
 ```csharp
 public static bool IsOne(this BindMode mode)
@@ -65,11 +65,11 @@ The binding mode to check.
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the mode is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md); otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> for [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md); otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ### IsTwo\(BindMode\) {#Aspid_MVVM_BindModeExtensions_IsTwo_Aspid_MVVM_BindMode_}
 
-Returns true when the mode represents two-way styles: [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+Determines whether <code class="paramref">mode</code> pushes values from the View to the ViewModel.
 
 ```csharp
 public static bool IsTwo(this BindMode mode)
@@ -85,11 +85,12 @@ The binding mode to check.
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the mode is [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md); otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> for [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md); otherwise,
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ### ThrowExceptionIfMatches\(BindMode, BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfMatches_Aspid_MVVM_BindMode_Aspid_MVVM_BindMode_}
 
-Throws an [`ArgumentException`](https://learn.microsoft.com/dotnet/api/system.argumentexception) if the binding mode matches the specified invalid mode.
+Throws when <code class="paramref">mode</code> equals <code class="paramref">invalidMode</code>.
 
 ```csharp
 public static void ThrowExceptionIfMatches(this BindMode mode, BindMode invalidMode)
@@ -99,21 +100,21 @@ public static void ThrowExceptionIfMatches(this BindMode mode, BindMode invalidM
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The current binding mode to check.
+The binding mode to check.
 
 `invalidMode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The invalid binding mode to compare against.
+The disallowed mode.
 
 #### Exceptions
 
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-Thrown when the mode matches the invalid mode.
+<code class="paramref">mode</code> equals <code class="paramref">invalidMode</code>.
 
 ### ThrowExceptionIfNone\(BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNone_Aspid_MVVM_BindMode_}
 
-Throws an [`ArgumentException`](https://learn.microsoft.com/dotnet/api/system.argumentexception) if the binding mode is [`BindMode.None`](Aspid.MVVM.BindMode.md).
+Throws when <code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public static void ThrowExceptionIfNone(this BindMode mode)
@@ -129,11 +130,11 @@ The binding mode to check.
 
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-Thrown when the mode is [`BindMode.None`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md).
 
 ### ThrowExceptionIfNotMatches\(BindMode, BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNotMatches_Aspid_MVVM_BindMode_Aspid_MVVM_BindMode_}
 
-Throws an [`ArgumentException`](https://learn.microsoft.com/dotnet/api/system.argumentexception) if the binding mode does not match the specified valid mode.
+Throws unless <code class="paramref">mode</code> equals <code class="paramref">validMode</code>.
 
 ```csharp
 public static void ThrowExceptionIfNotMatches(this BindMode mode, BindMode validMode)
@@ -143,21 +144,21 @@ public static void ThrowExceptionIfNotMatches(this BindMode mode, BindMode valid
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The current binding mode to check.
+The binding mode to check.
 
 `validMode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The valid binding mode to compare against.
+The only allowed mode.
 
 #### Exceptions
 
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-Thrown when the mode is not equal to the valid mode.
+<code class="paramref">mode</code> differs from <code class="paramref">validMode</code>.
 
 ### ThrowExceptionIfNotOne\(BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNotOne_Aspid_MVVM_BindMode_}
 
-Throws if the binding mode is not one-way style ([`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md)).
+Throws unless <code class="paramref">mode</code> is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public static void ThrowExceptionIfNotOne(this BindMode mode)
@@ -167,17 +168,17 @@ public static void ThrowExceptionIfNotOne(this BindMode mode)
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The binding mode to validate.
+The binding mode to check.
 
 #### Exceptions
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-Thrown when the mode is not [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> is neither [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) nor [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ### ThrowExceptionIfNotTwo\(BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNotTwo_Aspid_MVVM_BindMode_}
 
-Throws if the binding mode is not two-way style ([`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md)).
+Throws unless <code class="paramref">mode</code> is [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public static void ThrowExceptionIfNotTwo(this BindMode mode)
@@ -187,17 +188,17 @@ public static void ThrowExceptionIfNotTwo(this BindMode mode)
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The binding mode to validate.
+The binding mode to check.
 
 #### Exceptions
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-Thrown when the mode is not [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> is neither [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) nor [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 
 ### ThrowExceptionIfOne\(BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfOne_Aspid_MVVM_BindMode_}
 
-Throws an [`InvalidOperationException`](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception) if the binding mode is either [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Throws when <code class="paramref">mode</code> is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 [Obsolete("Nothing in the package throws for the one-way modes: a binder that supports only the reverse direction uses ThrowExceptionIfNotTwo, and one that supports only the forward direction has nothing to reject. Will be removed in the next major version.")]
@@ -214,11 +215,11 @@ The binding mode to check.
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-Thrown when the mode is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ### ThrowExceptionIfTwo\(BindMode\) {#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfTwo_Aspid_MVVM_BindMode_}
 
-Throws an [`InvalidOperationException`](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception) if the binding mode is either [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+Throws when <code class="paramref">mode</code> is [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public static void ThrowExceptionIfTwo(this BindMode mode)
@@ -234,5 +235,5 @@ The binding mode to check.
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-Thrown when the mode is [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> is [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 

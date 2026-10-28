@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-[`Binder`](Aspid.MVVM.Binder.md) that initializes an [`IView`](Aspid.MVVM.IView.md) when a bound [`IViewModel`](Aspid.MVVM.IViewModel.md) is received,
-and deinitializes it on unbind.
+[`Binder`](Aspid.MVVM.Binder.md) that initializes an [`IView`](Aspid.MVVM.IView.md) with each ViewModel it receives.
 
 ```csharp
 public class ViewBinder : Binder, IRebindableBinder, IBinder<IViewModel?>, IBinder
@@ -56,7 +55,7 @@ public class ViewBinder : Binder, IRebindableBinder, IBinder<IViewModel?>, IBind
 
 ### ViewBinder\(IView\) {#Aspid_MVVM_ViewBinder__ctor_Aspid_MVVM_IView_}
 
-Initializes a new instance of the [`ViewBinder`](Aspid.MVVM.ViewBinder.md) class with the specified view.
+Creates a binder for <code class="paramref">view</code>.
 
 ```csharp
 public ViewBinder(IView view)
@@ -66,13 +65,13 @@ public ViewBinder(IView view)
 
 `view` [IView](Aspid.MVVM.IView.md)
 
-The view that will be bound to the ViewModel.
+The view to bind.
 
 ## Fields
 
 ### View {#Aspid_MVVM_ViewBinder_View}
 
-The [`IView`](Aspid.MVVM.IView.md) instance that this binder manages.
+The view the binder initializes.
 
 ```csharp
 protected readonly IView View
@@ -86,7 +85,7 @@ protected readonly IView View
 
 ### DeinitializeView\(\) {#Aspid_MVVM_ViewBinder_DeinitializeView}
 
-Deinitializes the [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View), clearing its current ViewModel.
+Deinitializes [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View).
 
 ```csharp
 protected void DeinitializeView()
@@ -108,7 +107,7 @@ The ViewModel to initialize the view with.
 
 ### OnUnbound\(\) {#Aspid_MVVM_ViewBinder_OnUnbound}
 
-Called after unbinding. Deinitializes the view.
+Called after the binder detaches to deinitialize [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View).
 
 ```csharp
 protected override void OnUnbound()
@@ -116,8 +115,7 @@ protected override void OnUnbound()
 
 ### SetValue\(IViewModel?\) {#Aspid_MVVM_ViewBinder_SetValue_Aspid_MVVM_IViewModel_}
 
-Deinitializes the current view and reinitializes it with the received ViewModel value.
-If <code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, only deinitialization is performed.
+Deinitializes [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View) and initializes it with <code class="paramref">viewModel</code>.
 
 ```csharp
 public void SetValue(IViewModel? viewModel)
@@ -127,5 +125,5 @@ public void SetValue(IViewModel? viewModel)
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The new ViewModel, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to deinitialize without reinitializing.
+The ViewModel received from the bindable member; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> leaves the view deinitialized.
 

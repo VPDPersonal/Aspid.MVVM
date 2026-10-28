@@ -11,11 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) applied to fields of a type carrying [`ViewModelAttribute`](Aspid.MVVM.ViewModelAttribute.md);
-overrides the default <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/private">private</a> access modifier of the generated property's get and set
-accessors. Requires a companion [`BindAttribute`](Aspid.MVVM.BindAttribute.md), [`OneWayBindAttribute`](Aspid.MVVM.OneWayBindAttribute.md),
-[`TwoWayBindAttribute`](Aspid.MVVM.TwoWayBindAttribute.md), [`OneTimeBindAttribute`](Aspid.MVVM.OneTimeBindAttribute.md), or [`OneWayToSourceBindAttribute`](Aspid.MVVM.OneWayToSourceBindAttribute.md)
-on the same field.
+Sets the access modifiers of the property generated for a bind field of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Field)]
@@ -30,11 +26,32 @@ public sealed class AccessAttribute : Attribute
 
 
 
+## Examples
+
+
+```csharp
+[Bind]
+[Access(Access.Public)]
+private int _health;
+```
+
+
+```csharp
+[Bind]
+[Access(Get = Access.Public, Set = Access.Protected)]
+private int _health;
+```
+
+
+## Remarks
+
+Without it, both accessors are <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/private">private</a>; on a field without a bind attribute, it is ignored.
+
 ## Constructors
 
 ### AccessAttribute\(Access\) {#Aspid_MVVM_AccessAttribute__ctor_Aspid_MVVM_Access_}
 
-Sets the access modifier for generated properties. Defaults to [`Access.Private`](Aspid.MVVM.Access.md).
+Creates an attribute that applies <code class="paramref">access</code> to both accessors.
 
 ```csharp
 public AccessAttribute(Access access = Access.Private)
@@ -44,13 +61,13 @@ public AccessAttribute(Access access = Access.Private)
 
 `access` [Access](Aspid.MVVM.Access.md)
 
-Access modifier for the get and set accessors.
+The access modifier of the getter and the setter.
 
 ## Properties
 
 ### Get {#Aspid_MVVM_AccessAttribute_Get}
 
-Gets or sets the access modifier for the get accessor.
+Gets or sets the access modifier of the getter, overriding the constructor argument.
 
 ```csharp
 public Access Get { get; set; }
@@ -62,7 +79,7 @@ public Access Get { get; set; }
 
 ### Set {#Aspid_MVVM_AccessAttribute_Set}
 
-Gets or sets the access modifier for the set accessor.
+Gets or sets the access modifier of the setter, overriding the constructor argument.
 
 ```csharp
 public Access Set { get; set; }

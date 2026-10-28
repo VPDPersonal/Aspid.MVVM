@@ -11,9 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) exposed as a per-type singleton that pushes a single [`OneTimeBindableMember<T>.Value`](Aspid.MVVM.OneTimeBindableMember-1.md#Aspid_MVVM_OneTimeBindableMember_1_Value)
-to the binder once and then releases it; rejects every [`BindMode`](Aspid.MVVM.BindMode.md) other than
-[`BindMode.OneWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+[`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that pushes its value to a binder once and keeps no subscription.
 
 ```csharp
 public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>, IBinderAdder
@@ -23,7 +21,7 @@ public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>, 
 
 `T` 
 
-The reference type of the bound value.
+The bound value type.
 
 #### Inheritance
 
@@ -41,7 +39,7 @@ The reference type of the bound value.
 
 ### Mode {#Aspid_MVVM_OneTimeBindableMember_1_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member; always [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -53,7 +51,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneTimeBindableMember_1_Value}
 
-Gets the current value.
+Gets the value set by the last [`OneTimeBindableMember<T>.Get`](Aspid.MVVM.OneTimeBindableMember-1.md#Aspid_MVVM_OneTimeBindableMember_1_Get__0_) call.
 
 ```csharp
 public T? Value { get; }
@@ -67,7 +65,7 @@ public T? Value { get; }
 
 ### Get\(T?\) {#Aspid_MVVM_OneTimeBindableMember_1_Get__0_}
 
-Creates a reusable instance and assigns the provided value for one-time binding.
+Returns the shared instance with [`OneTimeBindableMember<T>.Value`](Aspid.MVVM.OneTimeBindableMember-1.md#Aspid_MVVM_OneTimeBindableMember_1_Value) set to <code class="paramref">value</code>.
 
 ```csharp
 public static OneTimeBindableMember<T> Get(T? value)
@@ -77,11 +75,15 @@ public static OneTimeBindableMember<T> Get(T? value)
 
 `value` T?
 
-The value to be provided to the binder.
+The value to push to the binder.
 
 #### Returns
 
  [OneTimeBindableMember](Aspid.MVVM.OneTimeBindableMember-1.md)\<T\>
 
-A singleton instance of [`OneTimeBindableMember<T>`](Aspid.MVVM.OneTimeBindableMember-1.md) configured with the specified value.
+The shared instance for <code class="typeparamref">T</code>.
+
+#### Remarks
+
+Every call returns the same instance and overwrites its value, so bind it before the next call.
 

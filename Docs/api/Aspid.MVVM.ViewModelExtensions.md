@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Provides extension methods for [`IViewModel`](Aspid.MVVM.IViewModel.md) providing lifecycle helpers such as disposal.
+Provides extension methods for [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
 ```csharp
 public static class ViewModelExtensions
@@ -40,7 +40,7 @@ public static readonly ProfilerMarker DisposeViewModelMarker
 
 ### DisposeViewModel\<T\>\(T\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModel__1___0_}
 
-Disposes the ViewModel instance and returns the disposal marker.
+Disposes <code class="paramref">viewModel</code>.
 
 ```csharp
 public static void DisposeViewModel<T>(this T viewModel) where T : class, IViewModel, IDisposable
@@ -50,17 +50,17 @@ public static void DisposeViewModel<T>(this T viewModel) where T : class, IViewM
 
 `viewModel` T
 
-The ViewModel instance to dispose of.
+The ViewModel to dispose.
 
 #### Type Parameters
 
 `T` 
 
-The type of the ViewModel that implements [`IViewModel`](Aspid.MVVM.IViewModel.md) and [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable).
+The ViewModel type.
 
 ### DisposeViewModel\(IViewModel\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_}
 
-Disposes of the ViewModel instance if it implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable).
+Disposes <code class="paramref">viewModel</code> if it implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable); otherwise, does nothing.
 
 ```csharp
 public static void DisposeViewModel(this IViewModel viewModel)
@@ -70,5 +70,5 @@ public static void DisposeViewModel(this IViewModel viewModel)
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The ViewModel instance to dispose of.
+The ViewModel to dispose.
 

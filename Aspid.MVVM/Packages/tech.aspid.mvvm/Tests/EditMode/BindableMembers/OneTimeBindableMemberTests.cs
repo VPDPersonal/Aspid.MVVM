@@ -58,7 +58,7 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual("new", Push(member));
         }
 
-        private static T? Push<T>(IBinderAdder member)
+        private static T? Push<T>(IReadOnlyValueBindableMember<T> member)
         {
             var received = new List<T?>();
             new DelegateOneTimeBinder<T>(received.Add).Bind(member);

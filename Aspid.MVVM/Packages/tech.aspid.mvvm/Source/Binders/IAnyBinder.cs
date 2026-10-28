@@ -2,14 +2,17 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Extends <see cref="IBinder"/> with the ability to receive values of any type from the ViewModel.
+    /// <see cref="IBinder"/> that receives values of any type from the ViewModel.
     /// </summary>
+    /// <remarks>
+    /// A bindable member prefers <see cref="IBinder{T}"/> when a binder implements both.
+    /// </remarks>
     public interface IAnyBinder : IBinder
     {
         /// <summary>
-        /// Sets the bound property to <paramref name="value"/>.
+        /// Applies <paramref name="value"/> to the View.
         /// </summary>
-        /// <typeparam name="T">The type of value received from the ViewModel.</typeparam>
+        /// <typeparam name="T">The value type of the bindable member.</typeparam>
         /// <param name="value">The value received from the ViewModel.</param>
         public void SetValue<T>(T value);
     }

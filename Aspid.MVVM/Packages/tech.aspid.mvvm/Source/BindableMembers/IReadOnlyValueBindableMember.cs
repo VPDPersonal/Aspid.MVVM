@@ -2,13 +2,13 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a bindable member that exposes a read-only value and allows binders to be added.
+    /// <see cref="IBinderAdder"/> that exposes its current value.
     /// </summary>
-    /// <typeparam name="T">The type of the value being exposed.</typeparam>
+    /// <typeparam name="T">The bound value type.</typeparam>
     public interface IReadOnlyValueBindableMember<out T> : IBinderAdder
     {
         /// <summary>
-        /// Gets the current value of the bindable member.
+        /// Gets the current value.
         /// </summary>
         public T? Value { get; }
     }

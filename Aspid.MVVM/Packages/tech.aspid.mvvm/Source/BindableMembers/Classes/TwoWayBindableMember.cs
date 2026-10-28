@@ -8,16 +8,17 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="IBinderAdder"/> that supports every <see cref="BindMode"/> except <see cref="BindMode.None"/>,
-    /// dispatching forward updates through <see cref="IBinder{T}"/> / <see cref="IAnyBinder"/> and reverse updates
-    /// through <see cref="IReverseBinder{T}"/> / <see cref="IAnyReverseBinder"/>; additionally exposes a get/set
-    /// <see cref="Value"/> and a <see cref="Changed"/> event.
+    /// <see cref="IBindableMember{T}"/> that pushes value changes to its binders and passes values from its reverse binders
+    /// to a setter.
     /// </summary>
-    /// <typeparam name="T">The reference type of the bound value.</typeparam>
+    /// <remarks>
+    /// A value reported by a reverse binder goes only to the setter; <see cref="Value"/> changes once the ViewModel sets it.
+    /// </remarks>
+    /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class TwoWayBindableMember<T> : IBindableMember<T>, IBinderRemover
     {
         /// <summary>
-        /// Raised when the value changes.
+        /// Occurs when <see cref="Value"/> is set.
         /// </summary>
         public event Action<T?>? Changed;
 
@@ -25,7 +26,7 @@ namespace Aspid.MVVM
         private readonly Action<T?> _setValue;
         
         /// <summary>
-        /// Gets or sets the current value. Setting the value will trigger the <see cref="Changed"/> event.
+        /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
         /// </summary>
         public T? Value
         {
@@ -43,39 +44,33 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.TwoWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.TwoWay;  
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TwoWayBindableMember{T}"/> class with the specified value and a setter action.
+        /// Creates a member holding <paramref name="value"/> that passes reported values to <paramref name="setValue"/>.
         /// </summary>
-        /// <param name="value">The initial value of the bindable member.</param>
-        /// <param name="setValue">
-        /// The action used to set the value when the event is triggered.
-        /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <param name="value">The initial value.</param>
+        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
         public TwoWayBindableMember(T? value, Action<T?> setValue)
         {
             _value = value;
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <summary>
-        /// Adds the binder to the event with the current value and subscribes to the value change event.
-        /// </summary>
-        /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>Returns itself to enable removal of the binder later, or <see langword="null"/> for <see cref="BindMode.OneTime"/>.</returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if <paramref name="binder"/>'s <see cref="IBinder.Mode"/> is <see cref="BindMode.None"/> or an unknown value.
+        /// The mode of <paramref name="binder"/> is <see cref="BindMode.None"/> or undefined.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
-        /// Thrown if the forward direction is required (<see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/>, <see cref="BindMode.OneTime"/>)
-        /// and <paramref name="binder"/> is neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
+        /// The mode reaches the View (<see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>)
+        /// and <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
         /// </exception>
         /// <exception cref="ReverseBinderInvalidCastException{T}">
-        /// Thrown if the reverse direction is required (<see cref="BindMode.TwoWay"/>, <see cref="BindMode.OneWayToSource"/>)
-        /// and <paramref name="binder"/> is neither <see cref="IReverseBinder{T}"/> nor <see cref="IAnyReverseBinder"/>.
+        /// The mode reaches the ViewModel (<see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>)
+        /// and <paramref name="binder"/> implements neither <see cref="IReverseBinder{T}"/> nor <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
@@ -140,10 +135,15 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Removes the binder's subscription from the event based on its binding mode.
-        /// </summary>
-        /// <param name="binder">The binder instance to remove.</param>
+        /// <inheritdoc/>
+        /// <exception cref="BinderInvalidCastException">
+        /// The mode reaches the View and <paramref name="binder"/> implements neither <see cref="IBinder{T}"/>
+        /// nor <see cref="IAnyBinder"/>.
+        /// </exception>
+        /// <exception cref="ReverseBinderInvalidCastException{T}">
+        /// The mode reaches the ViewModel and <paramref name="binder"/> implements neither <see cref="IReverseBinder{T}"/>
+        /// nor <see cref="IAnyReverseBinder"/>.
+        /// </exception>
         void IBinderRemover.Remove(IBinder binder)
         {
 #if ASPID_MVVM_PROFILER
@@ -185,9 +185,9 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Sets the current value and raises the <see cref="Changed"/> event.
+        /// Sets <see cref="Value"/> to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The new value to set and notify.</param>
+        /// <param name="value">The new value.</param>
         public void Invoke(T? value) =>
             Value = value;
         

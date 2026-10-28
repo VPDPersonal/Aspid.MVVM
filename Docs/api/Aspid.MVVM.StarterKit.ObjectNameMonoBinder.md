@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`StarterKit.MonoBinder<T>?text=MonoBinder%3cstring%3e`](Aspid.MVVM.StarterKit.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target object.
+[`MonoBinder<string>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target object.
 
 ```csharp
 [AddComponentMenu("Aspid/MVVM/Binders/Object/Object Binder – Name")]

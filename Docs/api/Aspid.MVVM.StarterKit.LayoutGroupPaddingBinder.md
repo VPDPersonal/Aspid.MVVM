@@ -114,7 +114,7 @@ protected override sealed RectOffset Property { get; set; }
 
 ### SetValue\(int\) {#Aspid_MVVM_StarterKit_LayoutGroupPaddingBinder_SetValue_System_Int32_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(int value)

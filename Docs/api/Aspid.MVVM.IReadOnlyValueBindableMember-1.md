@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Represents a bindable member that exposes a read-only value and allows binders to be added.
+[`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) that exposes its current value.
 
 ```csharp
 public interface IReadOnlyValueBindableMember<out T> : IBinderAdder
@@ -21,7 +21,7 @@ public interface IReadOnlyValueBindableMember<out T> : IBinderAdder
 
 `T` 
 
-The type of the value being exposed.
+The bound value type.
 
 #### Implements
 
@@ -32,7 +32,7 @@ The type of the value being exposed.
 
 ### Value {#Aspid_MVVM_IReadOnlyValueBindableMember_1_Value}
 
-Gets the current value of the bindable member.
+Gets the current value.
 
 ```csharp
 T? Value { get; }

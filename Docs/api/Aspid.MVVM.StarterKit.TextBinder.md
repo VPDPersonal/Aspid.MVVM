@@ -113,7 +113,7 @@ protected override sealed string Property { get; set; }
 
 ### SetValue\(int\) {#Aspid_MVVM_StarterKit_TextBinder_SetValue_System_Int32_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(int value)
@@ -127,7 +127,7 @@ The value received from the ViewModel.
 
 ### SetValue\(long\) {#Aspid_MVVM_StarterKit_TextBinder_SetValue_System_Int64_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(long value)
@@ -141,7 +141,7 @@ The value received from the ViewModel.
 
 ### SetValue\(float\) {#Aspid_MVVM_StarterKit_TextBinder_SetValue_System_Single_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(float value)
@@ -155,7 +155,7 @@ The value received from the ViewModel.
 
 ### SetValue\(double\) {#Aspid_MVVM_StarterKit_TextBinder_SetValue_System_Double_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(double value)

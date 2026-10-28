@@ -5,14 +5,25 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Instructs the Source Generator to generate an explicit <see cref="IBinder{T}"/> <see cref="IBinder{T}.SetValue(T)"/> implementation
-    /// with added logging, wrapping the annotated method.
+    /// Generates an explicit <see cref="IBinder{T}.SetValue(T)"/> implementation that records each value in an Inspector log
+    /// before calling the marked method.
     /// </summary>
     /// <remarks>
-    /// Must be applied only to <see cref="IBinder{T}.SetValue(T)"/> methods that implicitly implement <see cref="IBinder{T}"/>
-    /// in a <see langword="partial"/> class.
-    /// The attribute is stripped in non-<c>UNITY_EDITOR</c> builds, so no logging is generated outside the Editor.
+    /// <para>
+    /// Mark a <c>SetValue</c> method with one parameter that implicitly implements <see cref="IBinder{T}"/>, or
+    /// <see cref="IAnyBinder"/> when it is generic, in a <see langword="partial"/> type.
+    /// </para>
+    /// <para>
+    /// The log records values while its Inspector toggle is on, in the Editor only; <c>ASPID_MVVM_BINDER_LOG_DISABLED</c>
+    /// removes it.
+    /// </para>
     /// </remarks>
+    /// <example>
+    /// <code>
+    /// [BinderLog]
+    /// public void SetValue(string value) => _text.text = value;
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Method)]
     public sealed class BinderLogAttribute : Attribute { }

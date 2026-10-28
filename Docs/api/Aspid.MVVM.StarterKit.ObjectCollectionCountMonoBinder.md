@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`StarterKit.CollectionCountMonoBinder<T>?text=CollectionCountMonoBinder%3cobject%3e`](Aspid.MVVM.StarterKit.md) for a collection of any reference type.
+[`CollectionCountMonoBinder<object>`](Aspid.MVVM.StarterKit.CollectionCountMonoBinder-1.md) for a collection of any reference type.
 
 ```csharp
 [AddComponentMenu("Aspid/MVVM/Binders/Collection/Collection Binder – Count")]

@@ -11,8 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+TObject%3e`](Aspid.MVVM.StarterKit.md) that binds
-a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
+Abstract base [`ComponentMonoBinder<TComponent, TObject>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds
+a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
 ```csharp
 public abstract class ComponentObjectMonoBinder<TComponent, TObject> : ComponentMonoBinder<TComponent, TObject>, IMonoBinderValidatable, IRebindableBinder, IBinder<TObject>, IReverseBinder<TObject>, IBinder where TComponent : Component where TObject : Object
@@ -26,7 +26,7 @@ The type of [`Component`](https://docs.unity3d.com/ScriptReference/Component.htm
 
 `TObject` 
 
-The type of [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) the property holds.
+The type of [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) the property holds.
 
 #### Inheritance
 

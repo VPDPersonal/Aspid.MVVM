@@ -104,30 +104,19 @@ The binding mode.
 
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_InputFieldBinder_OnBound}
 
-Called after binding is established. Override to add post-binding logic.
+Called after the binder attaches and receives the first value. Override to subscribe to the component.
 
 ```csharp
 protected override void OnBound()
 ```
 
-#### Remarks
-
-Runs after the ViewModel's first value has been applied and after [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>. This is where a binder subscribes to its component — see
-[`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) for why the earlier hook is the wrong place.
-
 ### OnUnbound\(\) {#Aspid_MVVM_StarterKit_InputFieldBinder_OnUnbound}
 
-Called after unbinding. Override to add post-unbinding logic.
+Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
 
 ```csharp
 protected override void OnUnbound()
 ```
-
-#### Remarks
-
-Runs once the binder is detached and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
-This is where a subscription taken in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) is released.
 
 ### SetValue\(string?\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_String_}
 
@@ -145,7 +134,7 @@ The text received from the ViewModel.
 
 ### SetValue\(int\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_Int32_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(int value)
@@ -159,7 +148,7 @@ The value received from the ViewModel.
 
 ### SetValue\(long\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_Int64_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(long value)
@@ -173,7 +162,7 @@ The value received from the ViewModel.
 
 ### SetValue\(float\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_Single_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(float value)
@@ -187,7 +176,7 @@ The value received from the ViewModel.
 
 ### SetValue\(double\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_Double_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(double value)
@@ -201,7 +190,7 @@ The value received from the ViewModel.
 
 ### ValueChanged {#Aspid_MVVM_StarterKit_InputFieldBinder_ValueChanged}
 
-Raised when the View's value changes and needs to be propagated back to the ViewModel.
+Occurs when the View produces a value for the ViewModel.
 
 ```csharp
 public event Action<string?>? ValueChanged

@@ -2,36 +2,32 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents the binding mode that determines the direction of data flow between the ViewModel and the View.
+    /// Specifies the direction of data flow between the ViewModel and the View.
     /// </summary>
     public enum BindMode
     {
         /// <summary>
-        /// No binding is applied. This is the default value.
+        /// No binding; every bindable member rejects it.
         /// </summary>
         None = 0,
         
         /// <summary>
-        /// One-way binding: Updates from the ViewModel to the View are propagated.
-        /// Changes in the View do not affect the ViewModel.
+        /// Pushes every ViewModel change to the View.
         /// </summary>
         OneWay = 1,
         
         /// <summary>
-        /// Two-way binding: Updates are propagated in both directions.
-        /// Changes in the View are reflected in the ViewModel, and vice versa.
+        /// Pushes ViewModel changes to the View and View changes to the ViewModel.
         /// </summary>
         TwoWay = 2,
         
         /// <summary>
-        /// One-time binding: The value is propagated from the ViewModel to the View only once.
-        /// Subsequent changes in the ViewModel do not affect the View.
+        /// Pushes the ViewModel value to the View once, on bind.
         /// </summary>
         OneTime = 3,
         
         /// <summary>
-        /// One-way to source binding: Updates from the View to the ViewModel are propagated.
-        /// Changes in the ViewModel do not affect the View.
+        /// Pushes View changes to the ViewModel.
         /// </summary>
         OneWayToSource = 4,
     }

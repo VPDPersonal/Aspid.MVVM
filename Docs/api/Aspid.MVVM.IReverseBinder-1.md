@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Extends [`IBinder`](Aspid.MVVM.IBinder.md) with reverse data binding capability — propagating values from the View back to the ViewModel.
+[`IBinder`](Aspid.MVVM.IBinder.md) that reports values of <code class="typeparamref">T</code> from the View back to the ViewModel.
 
 ```csharp
 public interface IReverseBinder<out T> : IBinder
@@ -21,7 +21,7 @@ public interface IReverseBinder<out T> : IBinder
 
 `T` 
 
-The type of value propagated to the ViewModel.
+The reported value type.
 
 #### Implements
 
@@ -50,7 +50,7 @@ The type of value propagated to the ViewModel.
 
 ### ValueChanged {#Aspid_MVVM_IReverseBinder_1_ValueChanged}
 
-Raised when the View's value changes and needs to be propagated back to the ViewModel.
+Occurs when the View produces a value for the ViewModel.
 
 ```csharp
 event Action<out T?>? ValueChanged

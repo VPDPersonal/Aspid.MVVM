@@ -225,7 +225,7 @@ The value received from the ViewModel.
 
 ### ValueChanged {#Aspid_MVVM_StarterKit_TargetBinder_2_ValueChanged}
 
-Raised when the View's value changes and needs to be propagated back to the ViewModel.
+Occurs when the View produces a value for the ViewModel.
 
 ```csharp
 public event Action<TProperty?>? ValueChanged

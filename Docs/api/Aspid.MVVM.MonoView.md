@@ -53,8 +53,7 @@ MonoBehaviour ←
 
 ### ViewModel {#Aspid_MVVM_MonoView_ViewModel}
 
-Gets the associated ViewModel.
-If the view is not initialized, it may return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Gets the ViewModel the view is initialized with; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it is not initialized.
 
 ```csharp
 public IViewModel ViewModel { get; protected set; }
@@ -68,7 +67,7 @@ public IViewModel ViewModel { get; protected set; }
 
 ### Deinitialize\(\) {#Aspid_MVVM_MonoView_Deinitialize}
 
-Deinitializes the view, resetting the ViewModel property to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Unbinds the binders and clears [`IView.ViewModel`](Aspid.MVVM.IView.md#Aspid_MVVM_IView_ViewModel).
 
 ```csharp
 public void Deinitialize()
@@ -90,7 +89,7 @@ public virtual void Dispose()
 
 ### Initialize\(IViewModel\) {#Aspid_MVVM_MonoView_Initialize_Aspid_MVVM_IViewModel_}
 
-Initializes the view with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md) for binding.
+Initializes the view with <code class="paramref">viewModel</code>, binding its binders to the ViewModel's members.
 
 ```csharp
 public void Initialize(IViewModel viewModel)
@@ -100,7 +99,7 @@ public void Initialize(IViewModel viewModel)
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The [`IViewModel`](Aspid.MVVM.IViewModel.md) object used to initialize the View.
+The ViewModel to bind.
 
 ### InitializeInternal\(IViewModel\) {#Aspid_MVVM_MonoView_InitializeInternal_Aspid_MVVM_IViewModel_}
 

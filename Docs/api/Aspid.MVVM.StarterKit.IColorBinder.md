@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`MVVM.IBinder<T>?text=IBinder%3cColor%3e`](Aspid.MVVM.md) that also accepts an HTML color string such as <code>#FF0000</code> or <code>red</code>.
+[`IBinder<Color>`](Aspid.MVVM.IBinder-1.md) that also accepts an HTML color string such as <code>#FF0000</code> or <code>red</code>.
 
 ```csharp
 public interface IColorBinder : IBinder<Color>, IBinder<string>, IBinder

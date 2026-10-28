@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Extends [`IBinder`](Aspid.MVVM.IBinder.md) with reverse data binding capability — propagating non-generic values from the View back to the ViewModel.
+[`IBinder`](Aspid.MVVM.IBinder.md) that reports untyped values from the View back to the ViewModel.
 
 ```csharp
 public interface IAnyReverseBinder : IBinder
@@ -44,13 +44,12 @@ public interface IAnyReverseBinder : IBinder
 
 ## Remarks
 
-Use with caution: since [`IAnyReverseBinder.ValueChanged`](Aspid.MVVM.IAnyReverseBinder.md#Aspid_MVVM_IAnyReverseBinder_ValueChanged) carries a non-generic <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/reference-types">object</a>,
-the type contract between the View and ViewModel is not enforced at compile time.
-A type mismatch will only be detected at runtime.
+The value type is checked only at runtime: the bindable member throws [`ArgumentException`](https://learn.microsoft.com/dotnet/api/system.argumentexception) for a value
+that is not of its type.
 
 ### ValueChanged {#Aspid_MVVM_IAnyReverseBinder_ValueChanged}
 
-Raised when the View's value changes and needs to be propagated back to the ViewModel.
+Occurs when the View produces a value for the ViewModel.
 
 ```csharp
 event Action<object>? ValueChanged

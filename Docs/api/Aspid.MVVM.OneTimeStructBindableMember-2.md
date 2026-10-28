@@ -11,9 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued one-time bindings that pushes a single
-[`OneTimeStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneTimeStructBindableMember-2.md#Aspid_MVVM_OneTimeStructBindableMember_2_Value) to the binder and then releases it; supports binders typed against
-<code class="typeparamref">T</code>, <code class="typeparamref">TBoxed</code>, or [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
+[`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that pushes its value to a binder once and keeps no subscription,
+boxing it for an [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code>.
 
 ```csharp
 public abstract class OneTimeStructBindableMember<T, TBoxed> : IReadOnlyValueBindableMember<T>, IBinderAdder where T : struct, TBoxed where TBoxed : class
@@ -23,11 +22,11 @@ public abstract class OneTimeStructBindableMember<T, TBoxed> : IReadOnlyValueBin
 
 `T` 
 
-The struct type of the bound value.
+The bound struct type.
 
 `TBoxed` 
 
-The reference type used as the boxing target for <code class="typeparamref">T</code> (typically [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)).
+The boxed form of <code class="typeparamref">T</code>, such as [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 #### Inheritance
 
@@ -57,7 +56,7 @@ protected static readonly ProfilerMarker GetMarker
 
 ### Mode {#Aspid_MVVM_OneTimeStructBindableMember_2_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member; always [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -69,7 +68,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneTimeStructBindableMember_2_Value}
 
-Gets the current value.
+Gets the value pushed to the next binder.
 
 ```csharp
 public T Value { get; }

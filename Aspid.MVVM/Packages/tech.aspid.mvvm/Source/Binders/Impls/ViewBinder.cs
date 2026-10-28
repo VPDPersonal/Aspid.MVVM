@@ -2,30 +2,28 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// <see cref="Binder"/> that initializes an <see cref="IView"/> when a bound <see cref="IViewModel"/> is received,
-    /// and deinitializes it on unbind.
+    /// <see cref="Binder"/> that initializes an <see cref="IView"/> with each ViewModel it receives.
     /// </summary>
     public class ViewBinder : Binder, IBinder<IViewModel?>
     {
         /// <summary>
-        /// The <see cref="IView"/> instance that this binder manages.
+        /// The view the binder initializes.
         /// </summary>
         protected readonly IView View;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewBinder"/> class with the specified view.
+        /// Creates a binder for <paramref name="view"/>.
         /// </summary>
-        /// <param name="view">The view that will be bound to the ViewModel.</param>
+        /// <param name="view">The view to bind.</param>
         public ViewBinder(IView view)
         {
             View = view;
         }
 
         /// <summary>
-        /// Deinitializes the current view and reinitializes it with the received ViewModel value.
-        /// If <paramref name="viewModel"/> is <see langword="null"/>, only deinitialization is performed.
+        /// Deinitializes <see cref="View"/> and initializes it with <paramref name="viewModel"/>.
         /// </summary>
-        /// <param name="viewModel">The new ViewModel, or <see langword="null"/> to deinitialize without reinitializing.</param>
+        /// <param name="viewModel">The ViewModel received from the bindable member; <see langword="null"/> leaves the view deinitialized.</param>
         public void SetValue(IViewModel? viewModel)
         {
             DeinitializeView();
@@ -35,7 +33,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called after unbinding. Deinitializes the view.
+        /// Called after the binder detaches to deinitialize <see cref="View"/>.
         /// </summary>
         protected override void OnUnbound() =>
             DeinitializeView();
@@ -48,7 +46,7 @@ namespace Aspid.MVVM
             View.Initialize(viewModel);
 
         /// <summary>
-        /// Deinitializes the <see cref="View"/>, clearing its current ViewModel.
+        /// Deinitializes <see cref="View"/>.
         /// </summary>
         protected void DeinitializeView() =>
             View.Deinitialize();

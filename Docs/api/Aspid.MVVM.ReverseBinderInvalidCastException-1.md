@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Exception thrown when a binder is not of the expected reverse binder type during a one-way-to-source binding operation.
-Provides factory methods for generating descriptive error messages for class and struct reverse binders.
+[`InvalidCastException`](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) thrown when a binder lacks the interface a bindable member receives values through.
 
 ```csharp
 public sealed class ReverseBinderInvalidCastException<T> : InvalidCastException, ISerializable
@@ -22,7 +21,7 @@ public sealed class ReverseBinderInvalidCastException<T> : InvalidCastException,
 
 `T` 
 
-The expected reverse-bound value type.
+The value type of the bindable member.
 
 #### Inheritance
 
@@ -38,12 +37,15 @@ The expected reverse-bound value type.
 
 
 
+## Remarks
+
+The message names the binder type and, for a component, its GameObject path.
+
 ## Methods
 
 ### Class\(IBinder\) {#Aspid_MVVM_ReverseBinderInvalidCastException_1_Class_Aspid_MVVM_IBinder_}
 
-Throws a [`ReverseBinderInvalidCastException<T>`](Aspid.MVVM.ReverseBinderInvalidCastException-1.md) when a class binder does not implement
-[`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md).
+Throws for a binder that implements neither [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) nor [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 
 ```csharp
 public static ReverseBinderInvalidCastException<T> Class(IBinder binder)
@@ -53,24 +55,24 @@ public static ReverseBinderInvalidCastException<T> Class(IBinder binder)
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder that failed the type check.
+The binder that failed the check.
 
 #### Returns
 
  [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
 
-This method never returns; the return type exists to support <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expressions.
+Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
 
 #### Exceptions
 
  [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
 
-Always thrown.
+Always.
 
 ### Struct\<TBoxed\>\(IBinder\) {#Aspid_MVVM_ReverseBinderInvalidCastException_1_Struct__1_Aspid_MVVM_IBinder_}
 
-Throws a [`ReverseBinderInvalidCastException<T>`](Aspid.MVVM.ReverseBinderInvalidCastException-1.md) when a struct binder does not implement
-[`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) or [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code>.
+Throws for a binder that implements none of [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of
+<code class="typeparamref">TBoxed</code> and [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 
 ```csharp
 public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)
@@ -80,23 +82,23 @@ public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder that failed the type check.
+The binder that failed the check.
 
 #### Returns
 
  [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
 
-This method never returns; the return type exists to support <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expressions.
+Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
 
 #### Type Parameters
 
 `TBoxed` 
 
-The expected boxed type.
+The boxed form of <code>T</code>.
 
 #### Exceptions
 
  [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
 
-Always thrown.
+Always.
 

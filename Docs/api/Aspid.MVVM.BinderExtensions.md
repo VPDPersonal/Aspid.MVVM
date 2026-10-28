@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Provides extension methods for safely binding and unbinding [`IBinder`](Aspid.MVVM.IBinder.md) instances to [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) targets.
-Null-safe variants guard against <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> binders or collections.
+Provides extension methods for binding and unbinding [`IBinder`](Aspid.MVVM.IBinder.md) instances and their collections.
 
 ```csharp
 public static class BinderExtensions
@@ -29,7 +28,8 @@ public static class BinderExtensions
 
 ### BindSafely\<T\>\(T?, in FindBindableMemberResult, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_}
 
-Binds a single binder to the provided [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) if the bindable member was found.
+Binds <code class="paramref">binder</code> to the found bindable member; does nothing when <code class="paramref">binder</code> is
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or no member was found.
 
 ```csharp
 public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result, object? owner = null, string? memberName = null) where T : IBinder
@@ -39,29 +39,30 @@ public static void BindSafely<T>(this T? binder, in FindBindableMemberResult res
 
 `binder` T?
 
-The binder instance to bind.
+The binder to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `result` [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-The result of a bindable member lookup.
+The result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Unused; accepted for signature parity with the collection overloads.
+Unused; matches the collection overloads.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Unused; accepted for signature parity with the collection overloads.
+Unused; matches the collection overloads.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 ### BindSafely\<T\>\(T?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
-Safely binds a single binder to the specified binder adder.
+Binds <code class="paramref">binder</code> to <code class="paramref">binderAdder</code>; does nothing when <code class="paramref">binder</code> is
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ```csharp
 public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder, object? owner = null, string? memberName = null) where T : IBinder
@@ -71,29 +72,29 @@ public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder, objec
 
 `binder` T?
 
-The binder instance to bind.
+The binder to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder to bind to.
+The bindable member to bind to.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Unused; accepted for signature parity with the collection overloads.
+Unused; matches the collection overloads.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Unused; accepted for signature parity with the collection overloads.
+Unused; matches the collection overloads.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 ### BindSafely\<T\>\(T\[\]?, in FindBindableMemberResult, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1___0___Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_}
 
-Binds an array of binders to the provided [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) if the bindable member was found.
+Binds each binder in <code class="paramref">binders</code> to the found bindable member; does nothing when no member was found.
 
 ```csharp
 public static void BindSafely<T>(this T[]? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null) where T : IBinder
@@ -103,33 +104,34 @@ public static void BindSafely<T>(this T[]? binders, in FindBindableMemberResult 
 
 `binders` T\[\]?
 
-The array of binders to bind.
+The binders to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `result` [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-The result of a bindable member lookup.
+The result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to bind the rest.</p>
 
 ### BindSafely\<T\>\(T\[\]?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1___0___Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
-Safely binds an array of binders to the specified binder adder.
+Binds each binder in <code class="paramref">binders</code> to <code class="paramref">binderAdder</code>.
 
 ```csharp
 public static void BindSafely<T>(this T[]? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null) where T : IBinder
@@ -139,33 +141,34 @@ public static void BindSafely<T>(this T[]? binders, IBinderAdder binderAdder, ob
 
 `binders` T\[\]?
 
-The array of binders.
+The binders to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder to bind to.
+The bindable member to bind to.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to bind the rest.</p>
 
 ### BindSafely\<T\>\(List\<T\>?, in FindBindableMemberResult, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_List___0__Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_}
 
-Binds a list of binders to the provided [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) if the bindable member was found.
+Binds each binder in <code class="paramref">binders</code> to the found bindable member; does nothing when no member was found.
 
 ```csharp
 public static void BindSafely<T>(this List<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null) where T : IBinder
@@ -175,33 +178,34 @@ public static void BindSafely<T>(this List<T>? binders, in FindBindableMemberRes
 
 `binders` [List](https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1)\<T\>?
 
-The list of binders.
+The binders to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `result` [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-The result of a bindable member lookup.
+The result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to bind the rest.</p>
 
 ### BindSafely\<T\>\(List\<T\>?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_List___0__Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
-Safely binds a list of binders to the specified binder adder.
+Binds each binder in <code class="paramref">binders</code> to <code class="paramref">binderAdder</code>.
 
 ```csharp
 public static void BindSafely<T>(this List<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null) where T : IBinder
@@ -211,33 +215,34 @@ public static void BindSafely<T>(this List<T>? binders, IBinderAdder binderAdder
 
 `binders` [List](https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1)\<T\>?
 
-The list of binders.
+The binders to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder to bind to.
+The bindable member to bind to.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to bind the rest.</p>
 
 ### BindSafely\<T\>\(IEnumerable\<T\>?, in FindBindableMemberResult, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_IEnumerable___0__Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_}
 
-Binds an enumerable of binders to the provided [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) if the bindable member was found.
+Binds each binder in <code class="paramref">binders</code> to the found bindable member; does nothing when no member was found.
 
 ```csharp
 public static void BindSafely<T>(this IEnumerable<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null) where T : IBinder
@@ -247,33 +252,34 @@ public static void BindSafely<T>(this IEnumerable<T>? binders, in FindBindableMe
 
 `binders` [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1)\<T\>?
 
-The enumerable of binders.
+The binders to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `result` [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-The result of a bindable member lookup.
+The result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to bind the rest.</p>
 
 ### BindSafely\<T\>\(IEnumerable\<T\>?, IBinderAdder, object?, string?\) {#Aspid_MVVM_BinderExtensions_BindSafely__1_System_Collections_Generic_IEnumerable___0__Aspid_MVVM_IBinderAdder_System_Object_System_String_}
 
-Safely binds an enumerable of binders to the specified binder adder.
+Binds each binder in <code class="paramref">binders</code> to <code class="paramref">binderAdder</code>.
 
 ```csharp
 public static void BindSafely<T>(this IEnumerable<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null) where T : IBinder
@@ -283,33 +289,34 @@ public static void BindSafely<T>(this IEnumerable<T>? binders, IBinderAdder bind
 
 `binders` [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1)\<T\>?
 
-The enumerable of binders.
+The binders to bind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder to bind to.
+The bindable member to bind to.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to bind the rest.</p>
 
 ### UnbindSafely\<T\>\(T?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_}
 
-Safely unbinds a single binder.
+Unbinds <code class="paramref">binder</code>; does nothing when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a destroyed Unity object.
 
 ```csharp
 public static void UnbindSafely<T>(this T? binder, object? owner = null, string? memberName = null) where T : IBinder
@@ -319,25 +326,25 @@ public static void UnbindSafely<T>(this T? binder, object? owner = null, string?
 
 `binder` T?
 
-The binder instance to unbind.
+The binder to unbind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Unused; accepted for signature parity with the collection overloads.
+Unused; matches the collection overloads.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Unused; accepted for signature parity with the collection overloads.
+Unused; matches the collection overloads.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 ### UnbindSafely\<T\>\(T\[\]?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0___System_Object_System_String_}
 
-Safely unbinds an array of binders.
+Unbinds each binder in <code class="paramref">binders</code>.
 
 ```csharp
 public static void UnbindSafely<T>(this T[]? binders, object? owner = null, string? memberName = null) where T : IBinder
@@ -347,29 +354,30 @@ public static void UnbindSafely<T>(this T[]? binders, object? owner = null, stri
 
 `binders` T\[\]?
 
-The array of binders to unbind.
+The binders to unbind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to unbind the rest.</p>
 
 ### UnbindSafely\<T\>\(List\<T\>?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1_System_Collections_Generic_List___0__System_Object_System_String_}
 
-Safely unbinds a list of binders.
+Unbinds each binder in <code class="paramref">binders</code>.
 
 ```csharp
 public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, string? memberName = null) where T : IBinder
@@ -379,29 +387,30 @@ public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, 
 
 `binders` [List](https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1)\<T\>?
 
-The list of binders to unbind.
+The binders to unbind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to unbind the rest.</p>
 
 ### UnbindSafely\<T\>\(IEnumerable\<T\>?, object?, string?\) {#Aspid_MVVM_BinderExtensions_UnbindSafely__1_System_Collections_Generic_IEnumerable___0__System_Object_System_String_}
 
-Safely unbinds a sequence of binders.
+Unbinds each binder in <code class="paramref">binders</code>.
 
 ```csharp
 public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner = null, string? memberName = null) where T : IBinder
@@ -411,23 +420,24 @@ public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner =
 
 `binders` [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1)\<T\>?
 
-The enumerable of binders to unbind.
+The binders to unbind, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 `owner` [object](https://learn.microsoft.com/dotnet/api/system.object)?
 
-Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.
+The View that holds <code class="paramref">binders</code>, named in log messages and used as their context when it is a Unity object; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 `memberName` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-Optional name of the field that holds <code class="paramref">binders</code>, used in diagnostics.
+The name of the member that holds <code class="paramref">binders</code>, named in log messages; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 #### Type Parameters
 
 `T` 
 
-The binder type that implements [`IBinder`](Aspid.MVVM.IBinder.md).
+The binder type.
 
 #### Remarks
 
-Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.
+<p>Skips a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed binder; under <code>DEBUG</code>, also logs an error.</p>
+<p>Logs an exception thrown by a binder and goes on to unbind the rest.</p>
 

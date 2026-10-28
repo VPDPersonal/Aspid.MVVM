@@ -11,10 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) that supports every [`BindMode`](Aspid.MVVM.BindMode.md) except [`BindMode.None`](Aspid.MVVM.BindMode.md),
-dispatching forward updates through [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) and reverse updates
-through [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) / [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md); additionally exposes a get/set
-[`TwoWayBindableMember<T>.Value`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Value) and a [`TwoWayBindableMember<T>.Changed`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Changed) event.
+[`IBindableMember<T>`](Aspid.MVVM.IBindableMember-1.md) that pushes value changes to its binders and passes values from its reverse binders
+to a setter.
 
 ```csharp
 public sealed class TwoWayBindableMember<T> : IBindableMember<T>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover
@@ -24,7 +22,7 @@ public sealed class TwoWayBindableMember<T> : IBindableMember<T>, IReadOnlyBinda
 
 `T` 
 
-The reference type of the bound value.
+The bound value type.
 
 #### Inheritance
 
@@ -41,11 +39,15 @@ The reference type of the bound value.
 
 
 
+## Remarks
+
+A value reported by a reverse binder goes only to the setter; [`TwoWayBindableMember<T>.Value`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Value) changes once the ViewModel sets it.
+
 ## Constructors
 
 ### TwoWayBindableMember\(T?, Action\<T?\>\) {#Aspid_MVVM_TwoWayBindableMember_1__ctor__0_System_Action__0__}
 
-Initializes a new instance of the [`TwoWayBindableMember<T>`](Aspid.MVVM.TwoWayBindableMember-1.md) class with the specified value and a setter action.
+Creates a member holding <code class="paramref">value</code> that passes reported values to <code class="paramref">setValue</code>.
 
 ```csharp
 public TwoWayBindableMember(T? value, Action<T?> setValue)
@@ -55,23 +57,23 @@ public TwoWayBindableMember(T? value, Action<T?> setValue)
 
 `value` T?
 
-The initial value of the bindable member.
+The initial value.
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>
 
-The action used to set the value when the event is triggered.
+The callback that writes a value reported by a reverse binder to the ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
 ### Mode {#Aspid_MVVM_TwoWayBindableMember_1_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member; always [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -83,7 +85,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_TwoWayBindableMember_1_Value}
 
-Gets or sets the current value. Setting the value will trigger the [`TwoWayBindableMember<T>.Changed`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Changed) event.
+Gets or sets the current value; setting it raises [`TwoWayBindableMember<T>.Changed`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Changed) even for an equal value.
 
 ```csharp
 public T? Value { get; set; }
@@ -97,7 +99,7 @@ public T? Value { get; set; }
 
 ### Invoke\(T?\) {#Aspid_MVVM_TwoWayBindableMember_1_Invoke__0_}
 
-Sets the current value and raises the [`TwoWayBindableMember<T>.Changed`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Changed) event.
+Sets [`TwoWayBindableMember<T>.Value`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Value) to <code class="paramref">value</code>.
 
 ```csharp
 public void Invoke(T? value)
@@ -107,11 +109,11 @@ public void Invoke(T? value)
 
 `value` T?
 
-The new value to set and notify.
+The new value.
 
 ### Changed {#Aspid_MVVM_TwoWayBindableMember_1_Changed}
 
-Raised when the value changes.
+Occurs when [`TwoWayBindableMember<T>.Value`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Value) is set.
 
 ```csharp
 public event Action<T?>? Changed

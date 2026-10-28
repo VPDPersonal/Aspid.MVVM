@@ -8,10 +8,9 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneTimeStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>,
-    /// exposed as a per-type singleton via <see cref="Get(T)"/> for one-time enum bindings.
+    /// Concrete <see cref="OneTimeStructBindableMember{T, TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>.
     /// </summary>
-    /// <typeparam name="T">The enum type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound enum type.</typeparam>
     public sealed class OneTimeEnumBindableMember<T> : OneTimeStructBindableMember<T, Enum>
         where T : struct, Enum
     {
@@ -20,10 +19,13 @@ namespace Aspid.MVVM
         private OneTimeEnumBindableMember() { }
     
         /// <summary>
-        /// Creates a reusable instance and assigns the provided enum value for one-time binding.
+        /// Returns the shared instance with <see cref="OneTimeStructBindableMember{T, TBoxed}.Value"/> set to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The enum value to provide to the binder.</param>
-        /// <returns>A singleton instance of <see cref="OneTimeEnumBindableMember{T}"/> configured with the specified value.</returns>
+        /// <remarks>
+        /// Every call returns the same instance and overwrites its value, so bind it before the next call.
+        /// </remarks>
+        /// <param name="value">The value to push to the binder.</param>
+        /// <returns>The shared instance for <typeparamref name="T"/>.</returns>
         public static OneTimeEnumBindableMember<T> Get(T value)
         {
 #if ASPID_MVVM_PROFILER

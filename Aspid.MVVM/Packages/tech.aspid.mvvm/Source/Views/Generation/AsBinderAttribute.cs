@@ -6,25 +6,44 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="Attribute"/> applied to fields or properties of a type carrying <see cref="ViewAttribute"/>;
-    /// directs the Source Generator to emit binding code that wires the member to the supplied <see cref="IBinder"/> type.
+    /// Wraps the field or property of a <see cref="ViewAttribute">[View]</see> class in a binder of <see cref="Type"/>, created with the member as its first
+    /// constructor argument.
     /// </summary>
+    /// <remarks>
+    /// For an array, creates one binder per element.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [AsBinder(typeof(ImageSpriteBinder))]
+    /// [SerializeField] private Image _icon;
+    /// </code>
+    /// <code>
+    /// [AsBinder(typeof(AnimatorSetFloatBinder), "Speed")]
+    /// [SerializeField] private Animator _speed;
+    /// </code>
+    /// </example>
     [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class AsBinderAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
         /// <summary>
-        /// Gets the <see cref="IBinder"/> type used to bind the field or property.
+        /// Gets the binder type.
         /// </summary>
+        /// <remarks>
+        /// Exists only when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.
+        /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public readonly Type Type;
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsBinderAttribute"/> with the specified <see cref="IBinder"/> type and optional arguments.
+        /// Creates an attribute that wraps the member in a binder of <paramref name="type"/>.
         /// </summary>
-        /// <param name="type">The type of <see cref="IBinder"/> that will be used to bind the field or property.</param>
-        /// <param name="arguments">Additional arguments that can be passed to the constructor of the <see cref="IBinder"/> type.</param>
+        /// <param name="type">The binder type: a non-abstract <see cref="IBinder"/>; any other type skips the member.</param>
+        /// <param name="arguments">
+        /// The binder constructor arguments that follow the member; a <see langword="nameof"/> expression passes the named member
+        /// of the View.
+        /// </param>
         public AsBinderAttribute(Type type, params object[] arguments)
         {
 #if UNITY_EDITOR || DEBUG

@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Interface for adding event bindings to a bindable member.
+Defines the side of a bindable member that accepts binders.
 
 ```csharp
 public interface IBinderAdder
@@ -22,7 +22,7 @@ public interface IBinderAdder
 
 ### Mode {#Aspid_MVVM_IBinderAdder_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member.
 
 ```csharp
 BindMode Mode { get; }
@@ -36,7 +36,8 @@ BindMode Mode { get; }
 
 ### Add\(IBinder\) {#Aspid_MVVM_IBinderAdder_Add_Aspid_MVVM_IBinder_}
 
-Adds a binding to the bindable member using the specified binder.
+Subscribes <code class="paramref">binder</code> according to its [`IBinder.Mode`](Aspid.MVVM.IBinder.md#Aspid_MVVM_IBinder_Mode) and, for a mode that reaches the View,
+pushes the current value to it.
 
 ```csharp
 IBinderRemover? Add(IBinder binder)
@@ -46,12 +47,12 @@ IBinderRemover? Add(IBinder binder)
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder to be used for adding the binding.
+The binder to add.
 
 #### Returns
 
  [IBinderRemover](Aspid.MVVM.IBinderRemover.md)?
 
-An [`IBinderRemover`](Aspid.MVVM.IBinderRemover.md) that can remove the added binding, 
-or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if the binding could not be added.
+The remover that detaches <code class="paramref">binder</code>; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when nothing stays subscribed,
+as for [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 

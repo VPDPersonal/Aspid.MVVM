@@ -8,50 +8,44 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="IBinderAdder"/> that forwards View-side value changes back to the ViewModel through a
-    /// captured setter <see cref="Action{T}"/>; additionally exposes the latest <see cref="Value"/> and a
-    /// <see cref="Changed"/> event. Accepts only <see cref="BindMode.OneWayToSource"/> and
-    /// <see cref="BindMode.TwoWay"/> reverse binders.
+    /// <see cref="IReadOnlyBindableMember{T}"/> that passes values from its reverse binders to a setter.
     /// </summary>
-    /// <typeparam name="T">The reference type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneWayToSourceBindableMember<T> : IReadOnlyBindableMember<T>, IBinderRemover
     {
         /// <summary>
-        /// Raised when the value changes.
+        /// Occurs after a reverse binder reports a value and the setter has run.
         /// </summary>
         public event Action<T?>? Changed;
         
         private readonly Action<T?> _setValue;
         
         /// <summary>
-        /// Gets the current value.
+        /// Gets the last value reported by a reverse binder.
         /// </summary>
         public T? Value { get; private set; }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWayToSource;    
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayToSourceBindableMember{T}"/> class with the specified value setter action.
+        /// Creates a member that passes reported values to <paramref name="setValue"/>.
         /// </summary>
-        /// <param name="setValue">
-        /// The action used to set the value when the event is triggered.
-        /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
         public OneWayToSourceBindableMember(Action<T?> setValue)
         {
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <summary>
-        /// Adds a binder to the event if it supports reverse binding for one-way-to-source or two-way modes.
-        /// </summary>
-        /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>Returns itself to allow unsubscription later.</returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/> or <see cref="IAnyReverseBinder"/>.
+        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.TwoWay"/> nor <see cref="BindMode.OneWayToSource"/>.
+        /// </exception>
+        /// <exception cref="ReverseBinderInvalidCastException{T}">
+        /// <paramref name="binder"/> implements neither <see cref="IReverseBinder{T}"/> nor <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {
@@ -72,10 +66,10 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Removes the binder's subscription from the event.
-        /// </summary>
-        /// <param name="binder">The binder to unsubscribe from the event.</param>
+        /// <inheritdoc/>
+        /// <exception cref="ReverseBinderInvalidCastException{T}">
+        /// <paramref name="binder"/> implements neither <see cref="IReverseBinder{T}"/> nor <see cref="IAnyReverseBinder"/>.
+        /// </exception>
         void IBinderRemover.Remove(IBinder binder)
         {
 #if ASPID_MVVM_PROFILER

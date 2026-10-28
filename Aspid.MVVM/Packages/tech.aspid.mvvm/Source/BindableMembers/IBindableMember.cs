@@ -2,13 +2,13 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a bindable member that allows setting a value and notifies listeners when the value changes.
+    /// <see cref="IReadOnlyBindableMember{T}"/> whose value can also be set.
     /// </summary>
-    /// <typeparam name="T">The type of the value being bound.</typeparam>
+    /// <typeparam name="T">The bound value type.</typeparam>
     public interface IBindableMember<T> : IReadOnlyBindableMember<T>
     {
         /// <summary>
-        /// Sets the value of the bindable member.
+        /// Sets the current value and raises <see cref="IReadOnlyBindableMember{T}.Changed"/>.
         /// </summary>
         public new T? Value { set; }
     }

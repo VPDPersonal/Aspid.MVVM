@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Provides the ability to force a rebind, re-establishing the connection to the current ViewModel.
+Defines a binder that can attach again to its current bindable member.
 
 ```csharp
 public interface IRebindableBinder
@@ -20,5 +20,5 @@ public interface IRebindableBinder
 
 ## Remarks
 
-Only available when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
+Exists only when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
 

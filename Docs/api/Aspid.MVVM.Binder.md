@@ -11,9 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Abstract base class for binder implementations.
-Manages the binding lifecycle — binding to and unbinding from an [`IViewModel`](Aspid.MVVM.IViewModel.md).
-Derived classes must implement [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) to define the specific binding behavior.
+Serializable [`IBinder`](Aspid.MVVM.IBinder.md) that tracks its binding state and calls lifecycle hooks around binding.
 
 ```csharp
 [Serializable]
@@ -76,20 +74,23 @@ public abstract class Binder : IBinder, IRebindableBinder
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderExtensions.UnbindSafely\<Binder\>\(Binder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
 
+## Remarks
+
+A derived class implements [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) or both to exchange values.
+
 ## Constructors
 
 ### Binder\(\) {#Aspid_MVVM_Binder__ctor}
+
+Creates a [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) binder for Unity deserialization, which then restores the serialized mode.
 
 ```csharp
 protected Binder()
 ```
 
-#### Remarks
-
-For deserialization only: Unity builds a serialized instance without running a constructor's
-arguments and assigns the fields itself.
-
 ### Binder\(BindMode\) {#Aspid_MVVM_Binder__ctor_Aspid_MVVM_BindMode_}
+
+Creates a binder with the given binding mode.
 
 ```csharp
 protected Binder(BindMode mode = BindMode.OneWay)
@@ -99,14 +100,14 @@ protected Binder(BindMode mode = BindMode.OneWay)
 
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
-The binding mode to use for the binder.
+The binding mode.
 
 ## Properties
 
 ### CanBind {#Aspid_MVVM_Binder_CanBind}
 
-Indicates whether binding is allowed.
-The default value is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
+Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_Bind_Aspid_MVVM_IBinderAdder_) attaches the binder; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> unless
+overridden.
 
 ```csharp
 public virtual bool CanBind { get; }
@@ -118,7 +119,7 @@ public virtual bool CanBind { get; }
 
 ### IsBound {#Aspid_MVVM_Binder_IsBound}
 
-Indicates whether the binder is currently bound to a ViewModel.
+Gets a value indicating whether the binder is attached to a bindable member.
 
 ```csharp
 public bool IsBound { get; }
@@ -130,7 +131,7 @@ public bool IsBound { get; }
 
 ### Mode {#Aspid_MVVM_Binder_Mode}
 
-Gets the binding mode that determines the direction of data flow.
+Gets the binding mode set by the constructor or in the Inspector.
 
 ```csharp
 public BindMode Mode { get; }
@@ -144,7 +145,8 @@ public BindMode Mode { get; }
 
 ### Bind\(IBinderAdder\) {#Aspid_MVVM_Binder_Bind_Aspid_MVVM_IBinderAdder_}
 
-Binds this binder using the specified [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md).
+Attaches the binder through <code class="paramref">binderAdder</code>, calling [`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) before and
+[`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) after.
 
 ```csharp
 public void Bind(IBinderAdder binderAdder)
@@ -154,11 +156,15 @@ public void Bind(IBinderAdder binderAdder)
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder that registers this binder with the ViewModel.
+The bindable member to attach to.
+
+#### Remarks
+
+Does nothing when [`Binder.CanBind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_CanBind) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>, and logs an error when the binder is already bound.
 
 ### OnBinding\(\) {#Aspid_MVVM_Binder_OnBinding}
 
-Called before binding is established. Override to add pre-binding logic.
+Called before the binder attaches and receives the first value. Override to prepare for that value.
 
 ```csharp
 protected virtual void OnBinding()
@@ -166,58 +172,37 @@ protected virtual void OnBinding()
 
 #### Remarks
 
-The order is: [`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding), then the ViewModel pushes its current value, then
-[`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) becomes <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, then [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound).
-
-<p></p>
-
-That first push happens <em>after</em> this hook, which is why a binder that listens to its component
-subscribes in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) and not here: subscribing here means hearing the ViewModel's own
-first value come back as if the user had entered it.
+Subscribe to the component in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) instead: a subscription made here reports the first value from the
+ViewModel back as if the user had entered it.
 
 ### OnBound\(\) {#Aspid_MVVM_Binder_OnBound}
 
-Called after binding is established. Override to add post-binding logic.
+Called after the binder attaches and receives the first value. Override to subscribe to the component.
 
 ```csharp
 protected virtual void OnBound()
 ```
 
-#### Remarks
-
-Runs after the ViewModel's first value has been applied and after [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>. This is where a binder subscribes to its component — see
-[`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) for why the earlier hook is the wrong place.
-
 ### OnUnbinding\(\) {#Aspid_MVVM_Binder_OnUnbinding}
 
-Called before unbinding. Override to add pre-unbinding logic.
+Called before the binder detaches, while values it reports still reach the ViewModel. Override to report a last value.
 
 ```csharp
 protected virtual void OnUnbinding()
 ```
 
-#### Remarks
-
-Runs while [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is still <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> and the binder is still
-attached to the ViewModel, so anything sent from here still arrives.
-
 ### OnUnbound\(\) {#Aspid_MVVM_Binder_OnUnbound}
 
-Called after unbinding. Override to add post-unbinding logic.
+Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
 
 ```csharp
 protected virtual void OnUnbound()
 ```
 
-#### Remarks
-
-Runs once the binder is detached and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
-This is where a subscription taken in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) is released.
-
 ### Unbind\(\) {#Aspid_MVVM_Binder_Unbind}
 
-Unbinds this binder from the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Detaches the binder, calling [`Binder.OnUnbinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnUnbinding) before and [`Binder.OnUnbound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnUnbound) after; does nothing when it
+is not bound.
 
 ```csharp
 public void Unbind()

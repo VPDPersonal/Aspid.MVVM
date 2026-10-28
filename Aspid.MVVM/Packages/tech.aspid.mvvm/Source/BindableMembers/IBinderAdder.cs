@@ -2,22 +2,23 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Interface for adding event bindings to a bindable member.
+    /// Defines the side of a bindable member that accepts binders.
     /// </summary>
     public interface IBinderAdder
     {
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member.
         /// </summary>
         public BindMode Mode { get; }
         
         /// <summary>
-        /// Adds a binding to the bindable member using the specified binder.
+        /// Subscribes <paramref name="binder"/> according to its <see cref="IBinder.Mode"/> and, for a mode that reaches the View,
+        /// pushes the current value to it.
         /// </summary>
-        /// <param name="binder">The binder to be used for adding the binding.</param>
+        /// <param name="binder">The binder to add.</param>
         /// <returns>
-        /// An <see cref="IBinderRemover"/> that can remove the added binding, 
-        /// or <see langword="null"/> if the binding could not be added.
+        /// The remover that detaches <paramref name="binder"/>; <see langword="null"/> when nothing stays subscribed,
+        /// as for <see cref="BindMode.OneTime"/>.
         /// </returns>
         public IBinderRemover? Add(IBinder binder);
     }

@@ -2,9 +2,15 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="BaseBindAttribute"/> applied to fields of a type carrying <see cref="ViewModelAttribute"/>;
-    /// directs the Source Generator to emit a bindable property locked to <see cref="BindMode.TwoWay"/>.
-    /// Cannot be applied to <see langword="readonly"/> fields.
+    /// Generates a <see cref="BindMode.TwoWay"/> bindable member for the field or property of a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
+    /// <remarks>
+    /// Ignored on a <see langword="readonly"/> field and a get-only or set-only property.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [TwoWayBind] private string _name;
+    /// </code>
+    /// </example>
     public sealed class TwoWayBindAttribute : BaseBindAttribute { }
 }

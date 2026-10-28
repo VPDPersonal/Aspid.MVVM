@@ -10,8 +10,7 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Provides extension methods for safely binding and unbinding <see cref="IBinder"/> instances to <see cref="IBinderAdder"/> targets.
-    /// Null-safe variants guard against <see langword="null"/> binders or collections.
+    /// Provides extension methods for binding and unbinding <see cref="IBinder"/> instances and their collections.
     /// </summary>
     public static partial class BinderExtensions
     {
@@ -25,13 +24,14 @@ namespace Aspid.MVVM
         
         #region Single BindSafely
         /// <summary>
-        /// Binds a single binder to the provided <see cref="IBinderAdder"/> if the bindable member was found.
+        /// Binds <paramref name="binder"/> to the found bindable member; does nothing when <paramref name="binder"/> is
+        /// <see langword="null"/> or no member was found.
         /// </summary>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binder">The binder instance to bind.</param>
-        /// <param name="result">The result of a bindable member lookup.</param>
-        /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
-        /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binder">The binder to bind, or <see langword="null"/>.</param>
+        /// <param name="result">The result of <see cref="IViewModel.FindBindableMember"/>.</param>
+        /// <param name="owner">Unused; matches the collection overloads.</param>
+        /// <param name="memberName">Unused; matches the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T? binder, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -47,13 +47,14 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds a single binder to the specified binder adder.
+        /// Binds <paramref name="binder"/> to <paramref name="binderAdder"/>; does nothing when <paramref name="binder"/> is
+        /// <see langword="null"/>.
         /// </summary>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binder">The binder instance to bind.</param>
-        /// <param name="binderAdder">The binder adder to bind to.</param>
-        /// <param name="owner">Unused; accepted for signature parity with the collection overloads.</param>
-        /// <param name="memberName">Unused; accepted for signature parity with the collection overloads.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binder">The binder to bind, or <see langword="null"/>.</param>
+        /// <param name="binderAdder">The bindable member to bind to.</param>
+        /// <param name="owner">Unused; matches the collection overloads.</param>
+        /// <param name="memberName">Unused; matches the collection overloads.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T? binder, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -69,16 +70,17 @@ namespace Aspid.MVVM
 
         #region Array BindSafely
         /// <summary>
-        /// Binds an array of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
+        /// Binds each binder in <paramref name="binders"/> to the found bindable member; does nothing when no member was found.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to bind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The array of binders to bind.</param>
-        /// <param name="result">The result of a bindable member lookup.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to bind, or <see langword="null"/>.</param>
+        /// <param name="result">The result of <see cref="IViewModel.FindBindableMember"/>.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T[]? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -94,16 +96,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds an array of binders to the specified binder adder.
+        /// Binds each binder in <paramref name="binders"/> to <paramref name="binderAdder"/>.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to bind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The array of binders.</param>
-        /// <param name="binderAdder">The binder adder to bind to.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to bind, or <see langword="null"/>.</param>
+        /// <param name="binderAdder">The bindable member to bind to.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this T[]? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -144,16 +147,17 @@ namespace Aspid.MVVM
 
         #region List BindSafely
         /// <summary>
-        /// Binds a list of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
+        /// Binds each binder in <paramref name="binders"/> to the found bindable member; does nothing when no member was found.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to bind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The list of binders.</param>
-        /// <param name="result">The result of a bindable member lookup.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to bind, or <see langword="null"/>.</param>
+        /// <param name="result">The result of <see cref="IViewModel.FindBindableMember"/>.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this List<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -169,16 +173,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds a list of binders to the specified binder adder.
+        /// Binds each binder in <paramref name="binders"/> to <paramref name="binderAdder"/>.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to bind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The list of binders.</param>
-        /// <param name="binderAdder">The binder adder to bind to.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to bind, or <see langword="null"/>.</param>
+        /// <param name="binderAdder">The bindable member to bind to.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this List<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -218,16 +223,17 @@ namespace Aspid.MVVM
 
         #region IEnumerable BindSafely
         /// <summary>
-        /// Binds an enumerable of binders to the provided <see cref="IBinderAdder"/> if the bindable member was found.
+        /// Binds each binder in <paramref name="binders"/> to the found bindable member; does nothing when no member was found.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to bind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The enumerable of binders.</param>
-        /// <param name="result">The result of a bindable member lookup.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to bind, or <see langword="null"/>.</param>
+        /// <param name="result">The result of <see cref="IViewModel.FindBindableMember"/>.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this IEnumerable<T>? binders, in FindBindableMemberResult result, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -243,16 +249,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Safely binds an enumerable of binders to the specified binder adder.
+        /// Binds each binder in <paramref name="binders"/> to <paramref name="binderAdder"/>.
         /// </summary>
         /// <remarks>
-        /// Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.
+        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
+        /// <para>Logs an exception thrown by a binder and goes on to bind the rest.</para>
         /// </remarks>
-        /// <typeparam name="T">The binder type that implements <see cref="IBinder"/>.</typeparam>
-        /// <param name="binders">The enumerable of binders.</param>
-        /// <param name="binderAdder">The binder adder to bind to.</param>
-        /// <param name="owner">Optional owner object (typically the View instance) used to enrich diagnostics; if it is a Unity object it is also used as the log context.</param>
-        /// <param name="memberName">Optional name of the field that holds <paramref name="binders"/>, used in diagnostics.</param>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to bind, or <see langword="null"/>.</param>
+        /// <param name="binderAdder">The bindable member to bind to.</param>
+        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
+        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void BindSafely<T>(this IEnumerable<T>? binders, IBinderAdder binderAdder, object? owner = null, string? memberName = null)
             where T : IBinder
@@ -298,14 +305,7 @@ namespace Aspid.MVVM
             UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
         }
 
-        /// <summary>
-        /// Reports a binder that threw, so the surrounding loop can carry on with the rest.
-        /// </summary>
-        /// <remarks>
-        /// Unlike the null diagnostic this is not <see cref="ConditionalAttribute">[Conditional("DEBUG")]</see>: a
-        /// binder failing in a player build is exactly when the report is needed, and swallowing it silently would
-        /// be worse than the abort it replaces.
-        /// </remarks>
+        // Not [Conditional("DEBUG")]: a binder that fails in a player build needs the report most.
         private static void ReportBinderFailure(string operation, int index, object? owner, string? memberName, System.Exception exception)
         {
             var message = $"{BuildBinderContext(operation, index, owner, memberName)} threw {exception.GetType().Name}: {exception.Message}";
@@ -314,15 +314,7 @@ namespace Aspid.MVVM
             UnityEngine.Debug.LogException(exception, owner as UnityEngine.Object);
         }
 
-        /// <summary>
-        /// Reports whether a slot holds no usable binder.
-        /// </summary>
-        /// <remarks>
-        /// A <c>MonoBinder</c> is a component, so a slot can hold one that has since been destroyed. Its managed
-        /// wrapper is not <see langword="null"/> to C#, so a plain <c>is null</c> lets it through and the loop calls
-        /// <c>Bind</c> on it — which throws from whatever Unity API it touches first. Unity's own conversion is what
-        /// tells the two apart.
-        /// </remarks>
+        // A destroyed MonoBinder is not null to C#; only Unity's own bool conversion sees it.
         private static bool IsMissing<T>(T binder)
         {
             if (binder is null) return true;

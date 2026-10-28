@@ -4,19 +4,27 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed marker <see cref="Attribute"/> that drives the Source Generator to emit an <see cref="IView"/>
-    /// implementation for the decorated class or struct and to analyze code blocks within the type.
+    /// Generates the <see cref="IView"/> implementation of the class, which binds its binder fields and properties.
     /// </summary>
+    /// <remarks>
+    /// The class must be <see langword="partial"/>; a struct is ignored.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [View]
+    /// public partial class PlayerView : MonoView { }
+    /// </code>
+    /// </example>
     [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
     public sealed class ViewAttribute : Attribute
     {
         /// <summary>
-        /// Indicates whether the Source Generator should emit binder fields for
-        /// <see cref="IView{T}"/> bindable members that are not already declared on the View.
-        /// Defaults to <see langword="true"/>. Set to <see langword="false"/> to suppress this generation
-        /// for the decorated View — useful for Views that wire binders manually or do not need an
-        /// inspector-driven layout.
+        /// Gets or sets a value indicating whether a View that implements <see cref="IView{T}"/> gets a serialized
+        /// <c>MonoBinder</c> array for each bindable member of <c>T</c> that it does not declare. <see langword="true"/> by default.
         /// </summary>
+        /// <remarks>
+        /// Has no effect when <c>T</c> is an interface or the View derives from <c>ScriptableObject</c>.
+        /// </remarks>
         public bool AutoBinderFields { get; set; } = true;
     }
 }

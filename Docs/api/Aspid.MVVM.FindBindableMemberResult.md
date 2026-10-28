@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Represents the result of a binding operation, indicating whether a bindable member was successfully located.
+Represents the result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
 ```csharp
 public readonly struct FindBindableMemberResult
@@ -23,7 +23,7 @@ public readonly struct FindBindableMemberResult
 
 ### FindBindableMemberResult\(IBinderAdder?\) {#Aspid_MVVM_FindBindableMemberResult__ctor_Aspid_MVVM_IBinderAdder_}
 
-Initializes a new instance of the [`FindBindableMemberResult`](Aspid.MVVM.FindBindableMemberResult.md) struct.
+Creates a result for <code class="paramref">adder</code>.
 
 ```csharp
 public FindBindableMemberResult(IBinderAdder? adder = null)
@@ -33,13 +33,13 @@ public FindBindableMemberResult(IBinderAdder? adder = null)
 
 `adder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)?
 
-The event adder for the bindable member, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if not found.
+The found bindable member; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when none was found.
 
 ## Fields
 
 ### Adder {#Aspid_MVVM_FindBindableMemberResult_Adder}
 
-Gets the binder adder for the bindable member, if found.
+The found bindable member; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when none was found.
 
 ```csharp
 public readonly IBinderAdder? Adder
@@ -51,7 +51,7 @@ public readonly IBinderAdder? Adder
 
 ### IsFound {#Aspid_MVVM_FindBindableMemberResult_IsFound}
 
-Indicates whether the bindable member was successfully found.
+Indicates whether the bindable member was found.
 
 ```csharp
 public readonly bool IsFound

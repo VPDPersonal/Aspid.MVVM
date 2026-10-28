@@ -4,9 +4,18 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed marker <see cref="Attribute"/> that drives the Source Generator to emit an <see cref="IViewModel"/>
-    /// implementation for the decorated class or struct and to analyze code blocks within the type.
+    /// Generates the <see cref="IViewModel"/> implementation of the class from its bind members and
+    /// <see cref="RelayCommandAttribute">[RelayCommand]</see> methods.
     /// </summary>
+    /// <remarks>
+    /// The class must be <see langword="partial"/>; a struct is ignored.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [ViewModel]
+    /// public partial class PlayerViewModel { }
+    /// </code>
+    /// </example>
     [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
     public sealed class ViewModelAttribute : Attribute { }
 }

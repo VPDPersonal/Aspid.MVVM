@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Interface for a ViewModel that supports data binding functionality.
+Defines a ViewModel whose bindable members a View looks up by identifier.
 
 ```csharp
 public interface IViewModel
@@ -26,7 +26,7 @@ public interface IViewModel
 
 ### FindBindableMember\(in FindBindableMemberParameters\) {#Aspid_MVVM_IViewModel_FindBindableMember_Aspid_MVVM_FindBindableMemberParameters__}
 
-Searches for a bindable member in the ViewModel based on the provided parameters.
+Finds the bindable member with the identifier in <code class="paramref">parameters</code>.
 
 ```csharp
 FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters)
@@ -36,11 +36,12 @@ FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters para
 
 `parameters` [FindBindableMemberParameters](Aspid.MVVM.FindBindableMemberParameters.md)
 
-The parameters specifying the bindable member to find.
+The lookup query.
 
 #### Returns
 
  [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-A [`FindBindableMemberResult`](Aspid.MVVM.FindBindableMemberResult.md) that contains information about the bindable member search result.
+A result holding the member; a result whose [`FindBindableMemberResult.IsFound`](Aspid.MVVM.FindBindableMemberResult.md#Aspid_MVVM_FindBindableMemberResult_IsFound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>
+when no member has the identifier.
 

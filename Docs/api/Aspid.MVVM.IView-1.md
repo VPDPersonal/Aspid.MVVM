@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Generic interface for initializing a View with a strongly-typed ViewModel.
+[`IView`](Aspid.MVVM.IView.md) that accepts a ViewModel of <code class="typeparamref">T</code>.
 
 ```csharp
 public interface IView<in T> : IView where T : IViewModel
@@ -21,7 +21,7 @@ public interface IView<in T> : IView where T : IViewModel
 
 `T` 
 
-The specific type of the ViewModel to be used for initialization. Must implement [`IViewModel`](Aspid.MVVM.IViewModel.md).
+The ViewModel type the view binds to.
 
 #### Implements
 
@@ -39,7 +39,7 @@ The specific type of the ViewModel to be used for initialization. Must implement
 
 ### Initialize\(T\) {#Aspid_MVVM_IView_1_Initialize__0_}
 
-Initializes the view with a strongly-typed <code class="typeparamref">T</code> ViewModel.
+Initializes the view with <code class="paramref">viewModel</code>, binding its binders to the ViewModel's members.
 
 ```csharp
 void Initialize(T viewModel)
@@ -49,5 +49,5 @@ void Initialize(T viewModel)
 
 `viewModel` T
 
-The <code class="typeparamref">T</code> ViewModel instance to initialize the View.
+The ViewModel to bind.
 

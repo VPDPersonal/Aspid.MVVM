@@ -8,73 +8,61 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>
-    /// for any value-type payload that does not need a more specific boxing target.
+    /// Concrete <see cref="OneWayToSourceStructBindableMember{T, TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>.
     /// </summary>
-    /// <typeparam name="T">The struct type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound struct type.</typeparam>
     public sealed class OneWayToSourceStructBindableMember<T> : OneWayToSourceStructBindableMember<T, ValueType>
         where T : struct
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayToSourceStructBindableMember{T}"/> class with the specified value setter action.
-        /// </summary>
-        /// <param name="setValue">
-        /// The action used to set the value when the event is triggered.
-        /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <inheritdoc/>
         public OneWayToSourceStructBindableMember(Action<T> setValue) 
             : base(setValue) { }
     }
 
     /// <summary>
-    /// Abstract base <see cref="IBinderAdder"/> for struct-valued one-way-to-source bindings that forwards
-    /// View-side value changes back to the ViewModel through a captured setter <see cref="Action{T}"/>;
-    /// additionally exposes the latest <see cref="Value"/> and a <see cref="Changed"/> event.
-    /// Accepts <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/>, and
-    /// <see cref="IAnyReverseBinder"/> in <see cref="BindMode.OneWayToSource"/> or <see cref="BindMode.TwoWay"/> mode.
+    /// <see cref="IReadOnlyBindableMember{T}"/> that passes values from its reverse binders to a setter, unboxing them from an
+    /// <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/>.
     /// </summary>
-    /// <typeparam name="T">The struct type of the bound value.</typeparam>
-    /// <typeparam name="TBoxed">The reference type used as the boxing target for <typeparamref name="T"/> (typically <see cref="ValueType"/> or <see cref="Enum"/>).</typeparam>
+    /// <typeparam name="T">The bound struct type.</typeparam>
+    /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>, such as <see cref="ValueType"/> or <see cref="Enum"/>.</typeparam>
     public abstract class OneWayToSourceStructBindableMember<T, TBoxed> : IReadOnlyBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
         /// <summary>
-        /// Raised when the value changes.
+        /// Occurs after a reverse binder reports a value and the setter has run.
         /// </summary>
         public event Action<T>? Changed;
         
         private readonly Action<T> _setValue;
         
         /// <summary>
-        /// Gets the current value.
+        /// Gets the last value reported by a reverse binder.
         /// </summary>
         public T Value { get; private set; }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWayToSource;  
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> class with the specified value setter action.
+        /// Creates a member that passes reported values to <paramref name="setValue"/>.
         /// </summary>
-        /// <param name="setValue">
-        /// The action used to set the value when the event is triggered.
-        /// </param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="setValue"/> is <see langword="null"/>.</exception>
+        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
         protected OneWayToSourceStructBindableMember(Action<T> setValue)
         {
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        /// <summary>
-        /// Adds a binder to the event if it supports reverse binding for one-way-to-source or two-way modes.
-        /// </summary>
-        /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>Returns itself to allow unsubscription later.</returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the <paramref name="binder"/> does not have a valid binding mode or is not of type <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/>, or <see cref="IAnyReverseBinder"/>.
+        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.TwoWay"/> nor <see cref="BindMode.OneWayToSource"/>.
+        /// </exception>
+        /// <exception cref="ReverseBinderInvalidCastException{T}">
+        /// <paramref name="binder"/> implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
+        /// <typeparamref name="TBoxed"/> and <see cref="IAnyReverseBinder"/>.
         /// </exception>
         IBinderRemover IBinderAdder.Add(IBinder binder)
         {
@@ -96,10 +84,11 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Removes the binder's subscription from the event.
-        /// </summary>
-        /// <param name="binder">The binder to unsubscribe from the event.</param>
+        /// <inheritdoc/>
+        /// <exception cref="ReverseBinderInvalidCastException{T}">
+        /// <paramref name="binder"/> implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
+        /// <typeparamref name="TBoxed"/> and <see cref="IAnyReverseBinder"/>.
+        /// </exception>
         void IBinderRemover.Remove(IBinder binder)
         {
 #if ASPID_MVVM_PROFILER

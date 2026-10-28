@@ -75,7 +75,7 @@ public DebugLogBinder(IConverter<object, string> converter = null, BindMode mode
 
 ### SetValue\<T\>\(T\) {#Aspid_MVVM_StarterKit_DebugLogBinder_SetValue__1___0_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue<T>(T value)
@@ -91,11 +91,11 @@ The value received from the ViewModel.
 
 `T` 
 
-The type of value received from the ViewModel.
+The value type of the bindable member.
 
 ### ValueChanged {#Aspid_MVVM_StarterKit_DebugLogBinder_ValueChanged}
 
-Raised when the View's value changes and needs to be propagated back to the ViewModel.
+Occurs when the View produces a value for the ViewModel.
 
 ```csharp
 public event Action<object> ValueChanged

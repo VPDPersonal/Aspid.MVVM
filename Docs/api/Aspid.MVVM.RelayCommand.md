@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) implementation that wraps an [`Action`](https://learn.microsoft.com/dotnet/api/system.action) as the execute callback
-and an optional [`Func<T>`](https://learn.microsoft.com/dotnet/api/system.func-1) predicate to gate execution.
+[`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs a delegate, optionally gated by a predicate.
 
 ```csharp
 public sealed class RelayCommand : IRelayCommand
@@ -37,7 +36,7 @@ public sealed class RelayCommand : IRelayCommand
 
 ### RelayCommand\(Action\) {#Aspid_MVVM_RelayCommand__ctor_System_Action_}
 
-Initializes a new instance of the [`RelayCommand`](Aspid.MVVM.RelayCommand.md) class, taking an action to execute the command.
+Creates a command that can always execute.
 
 ```csharp
 public RelayCommand(Action execute)
@@ -47,18 +46,17 @@ public RelayCommand(Action execute)
 
 `execute` [Action](https://learn.microsoft.com/dotnet/api/system.action)
 
-The action that will be executed by the command.
+The action to run.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">execute</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">execute</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### RelayCommand\(Action, Func\<bool\>?\) {#Aspid_MVVM_RelayCommand__ctor_System_Action_System_Func_System_Boolean__}
 
-Initializes a new instance of the [`RelayCommand`](Aspid.MVVM.RelayCommand.md) class, taking an action to execute the command 
-and a function to check whether it can be executed.
+Creates a command gated by <code class="paramref">canExecute</code>.
 
 ```csharp
 public RelayCommand(Action execute, Func<bool>? canExecute)
@@ -68,23 +66,24 @@ public RelayCommand(Action execute, Func<bool>? canExecute)
 
 `execute` [Action](https://learn.microsoft.com/dotnet/api/system.action)
 
-The action that will be executed by the command.
+The action to run.
 
 `canExecute` [Func](https://learn.microsoft.com/dotnet/api/system.func-1)\<[bool](https://learn.microsoft.com/dotnet/api/system.boolean)\>?
 
-A function that returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the command can be executed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+The predicate that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to always allow it.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">execute</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">execute</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
 ### Empty {#Aspid_MVVM_RelayCommand_Empty}
 
-Gets an empty command that cannot be executed.
+Gets a shared command that does nothing and whose [`RelayCommand.CanExecute`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_CanExecute) returns
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ```csharp
 public static RelayCommand Empty { get; }
@@ -96,8 +95,8 @@ public static RelayCommand Empty { get; }
 
 ### EmptyExecution {#Aspid_MVVM_RelayCommand_EmptyExecution}
 
-Gets an empty command that can be executed but performs no action.
-Useful as a placeholder when a non-null executable command is required.
+Gets a shared command that does nothing and whose [`RelayCommand.CanExecute`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_CanExecute) returns
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
 
 ```csharp
 public static RelayCommand EmptyExecution { get; }
@@ -111,7 +110,7 @@ public static RelayCommand EmptyExecution { get; }
 
 ### CanExecute\(\) {#Aspid_MVVM_RelayCommand_CanExecute}
 
-Determines whether the command can be executed.
+Determines whether the command can execute by calling its predicate.
 
 ```csharp
 public bool CanExecute()
@@ -121,11 +120,11 @@ public bool CanExecute()
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the command can be executed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+The result of the predicate; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when there is none.
 
 ### Execute\(\) {#Aspid_MVVM_RelayCommand_Execute}
 
-Executes the command if it can be executed.
+Runs the action when [`RelayCommand.CanExecute`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_CanExecute) returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
 
 ```csharp
 public void Execute()
@@ -133,7 +132,7 @@ public void Execute()
 
 ### NotifyCanExecuteChanged\(\) {#Aspid_MVVM_RelayCommand_NotifyCanExecuteChanged}
 
-Notifies that the ability to execute the command has changed.
+Raises the [`IRelayCommand.CanExecuteChanged`](Aspid.MVVM.IRelayCommand.md#Aspid_MVVM_IRelayCommand_CanExecuteChanged) event.
 
 ```csharp
 public void NotifyCanExecuteChanged()
@@ -141,7 +140,7 @@ public void NotifyCanExecuteChanged()
 
 ### CanExecuteChanged {#Aspid_MVVM_RelayCommand_CanExecuteChanged}
 
-Raised when the ability to execute the command changes.
+Occurs when the result of [`IRelayCommand.CanExecute`](Aspid.MVVM.IRelayCommand.md#Aspid_MVVM_IRelayCommand_CanExecute) may have changed.
 
 ```csharp
 public event Action<IRelayCommand>? CanExecuteChanged

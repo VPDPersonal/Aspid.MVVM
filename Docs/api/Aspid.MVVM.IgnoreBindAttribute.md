@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Attribute used to indicate that a field or property should be ignored by the source code generator for binding in View.
+Excludes the field or property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class from the generated binding code.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
@@ -23,5 +23,15 @@ public sealed class IgnoreBindAttribute : Attribute
 [object](https://learn.microsoft.com/dotnet/api/system.object) ← 
 [Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
 [IgnoreBindAttribute](Aspid.MVVM.IgnoreBindAttribute.md)
+
+
+
+## Examples
+
+
+```csharp
+[IgnoreBind]
+[SerializeField] private MonoBinder[] _previewBinders;
+```
 
 

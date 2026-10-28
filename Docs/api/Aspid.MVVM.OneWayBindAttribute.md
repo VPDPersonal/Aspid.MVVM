@@ -11,10 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`BaseBindAttribute`](Aspid.MVVM.BaseBindAttribute.md) applied to fields of a type carrying [`ViewModelAttribute`](Aspid.MVVM.ViewModelAttribute.md);
-directs the Source Generator to emit a bindable property locked to [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
-On <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> fields the mode resolves to [`BindMode.OneTime`](Aspid.MVVM.BindMode.md), matching
-[`BindAttribute`](Aspid.MVVM.BindAttribute.md) with [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Generates a [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
 public sealed class OneWayBindAttribute : BaseBindAttribute
@@ -27,4 +24,17 @@ public sealed class OneWayBindAttribute : BaseBindAttribute
 [BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
 [OneWayBindAttribute](Aspid.MVVM.OneWayBindAttribute.md)
 
+
+
+## Examples
+
+
+```csharp
+[OneWayBind] private int _score;
+```
+
+
+## Remarks
+
+Ignored on a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field and a set-only property.
 

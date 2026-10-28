@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Provides extension methods for <see cref="IViewModel"/> providing lifecycle helpers such as disposal.
+    /// Provides extension methods for <see cref="IViewModel"/>.
     /// </summary>
     public static class ViewModelExtensions
     {
@@ -25,10 +25,10 @@ namespace Aspid.MVVM
 #endif
         
         /// <summary>
-        /// Disposes the ViewModel instance and returns the disposal marker.
+        /// Disposes <paramref name="viewModel"/>.
         /// </summary>
-        /// <param name="viewModel">The ViewModel instance to dispose of.</param>
-        /// <typeparam name="T">The type of the ViewModel that implements <see cref="IViewModel"/> and <see cref="IDisposable"/>.</typeparam>
+        /// <typeparam name="T">The ViewModel type.</typeparam>
+        /// <param name="viewModel">The ViewModel to dispose.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisposeViewModel<T>(this T viewModel)
             where T : class, IViewModel, IDisposable
@@ -42,9 +42,9 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Disposes of the ViewModel instance if it implements <see cref="IDisposable"/>.
+        /// Disposes <paramref name="viewModel"/> if it implements <see cref="IDisposable"/>; otherwise, does nothing.
         /// </summary>
-        /// <param name="viewModel">The ViewModel instance to dispose of.</param>
+        /// <param name="viewModel">The ViewModel to dispose.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisposeViewModel(this IViewModel viewModel)
         {

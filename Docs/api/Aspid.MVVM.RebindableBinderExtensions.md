@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Provides extension methods for [`IBinder`](Aspid.MVVM.IBinder.md) instances that implement [`IRebindableBinder`](Aspid.MVVM.IRebindableBinder.md).
+Provides extension methods for rebinding an [`IBinder`](Aspid.MVVM.IBinder.md).
 
 ```csharp
 public static class RebindableBinderExtensions
@@ -24,15 +24,11 @@ public static class RebindableBinderExtensions
 
 
 
-## Remarks
-
-Only active in <code>DEBUG</code> or <code>UNITY_EDITOR</code> builds.
-
 ## Methods
 
 ### Rebind\(IBinder\) {#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_}
 
-Rebinds the binder if it implements [`IRebindableBinder`](Aspid.MVVM.IRebindableBinder.md); otherwise, does nothing.
+Rebinds <code class="paramref">binder</code> when it implements [`IRebindableBinder`](Aspid.MVVM.IRebindableBinder.md); otherwise, does nothing.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -44,9 +40,9 @@ public static void Rebind(this IBinder binder)
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder instance to attempt to rebind.
+The binder to rebind.
 
 #### Remarks
 
-Call sites are stripped by the compiler in builds where neither <code>DEBUG</code> nor <code>UNITY_EDITOR</code> is defined.
+Calls are removed from builds that define neither <code>DEBUG</code> nor <code>UNITY_EDITOR</code>.
 

@@ -8,10 +8,9 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneTimeStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>,
-    /// exposed as a per-type singleton via <see cref="Get(T)"/>.
+    /// Concrete <see cref="OneTimeStructBindableMember{T, TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="ValueType"/>.
     /// </summary>
-    /// <typeparam name="T">The struct type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound struct type.</typeparam>
     public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>
         where T : struct
     {
@@ -20,10 +19,13 @@ namespace Aspid.MVVM
         private OneTimeStructBindableMember() { }
     
         /// <summary>
-        /// Creates a reusable instance and assigns the provided value for one-time binding.
+        /// Returns the shared instance with <see cref="OneTimeStructBindableMember{T, TBoxed}.Value"/> set to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The value to be provided to the binder.</param>
-        /// <returns>A singleton instance of <see cref="OneTimeStructBindableMember{T}"/> configured with the specified value.</returns>
+        /// <remarks>
+        /// Every call returns the same instance and overwrites its value, so bind it before the next call.
+        /// </remarks>
+        /// <param name="value">The value to push to the binder.</param>
+        /// <returns>The shared instance for <typeparamref name="T"/>.</returns>
         public static OneTimeStructBindableMember<T> Get(T value)
         {
 #if ASPID_MVVM_PROFILER
@@ -37,12 +39,11 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// Abstract base <see cref="IBinderAdder"/> for struct-valued one-time bindings that pushes a single
-    /// <see cref="Value"/> to the binder and then releases it; supports binders typed against
-    /// <typeparamref name="T"/>, <typeparamref name="TBoxed"/>, or <see cref="IAnyBinder"/>.
+    /// <see cref="IReadOnlyValueBindableMember{T}"/> that pushes its value to a binder once and keeps no subscription,
+    /// boxing it for an <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/>.
     /// </summary>
-    /// <typeparam name="T">The struct type of the bound value.</typeparam>
-    /// <typeparam name="TBoxed">The reference type used as the boxing target for <typeparamref name="T"/> (typically <see cref="ValueType"/> or <see cref="Enum"/>).</typeparam>
+    /// <typeparam name="T">The bound struct type.</typeparam>
+    /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>, such as <see cref="ValueType"/> or <see cref="Enum"/>.</typeparam>
     public abstract class OneTimeStructBindableMember<T, TBoxed> : IReadOnlyValueBindableMember<T>
         where T : struct, TBoxed
         where TBoxed : class
@@ -52,26 +53,24 @@ namespace Aspid.MVVM
 #endif
         
         /// <summary>
-        /// Gets the current value.
+        /// Gets the value pushed to the next binder.
         /// </summary>
         public T Value { get; private protected set; }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneTime;    
     
         private protected OneTimeStructBindableMember() { }
 
-        /// <summary>
-        /// Adds a one-time binding to the specified binder with the associated value.
-        /// </summary>
-        /// <param name="binder">The binder to be used for the binding.</param>
-        /// <returns>
-        /// Always returns <see langword="null"/> because removal of this binding is not supported.
-        /// </returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binding mode is <see cref="BindMode.OneWayToSource"/>, <see cref="BindMode.TwoWay"/>, or <see cref="BindMode.None"/>.
+        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// </exception>
+        /// <exception cref="BinderInvalidCastException">
+        /// <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
+        /// <typeparamref name="TBoxed"/> and <see cref="IAnyBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {

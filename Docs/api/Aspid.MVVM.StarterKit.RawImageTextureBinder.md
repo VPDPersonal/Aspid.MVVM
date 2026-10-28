@@ -107,7 +107,7 @@ protected override sealed Texture Property { get; set; }
 
 ### SetValue\(Sprite\) {#Aspid_MVVM_StarterKit_RawImageTextureBinder_SetValue_UnityEngine_Sprite_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(Sprite value)

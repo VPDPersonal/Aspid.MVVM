@@ -9,50 +9,60 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base class for binder implementations.
-    /// Manages the binding lifecycle — binding to and unbinding from an <see cref="IViewModel"/>.
-    /// Derived classes must implement <see cref="IBinder{T}"/> to define the specific binding behavior.
+    /// Serializable <see cref="IBinder"/> that tracks its binding state and calls lifecycle hooks around binding.
     /// </summary>
+    /// <remarks>
+    /// A derived class implements <see cref="IBinder{T}"/>, <see cref="IReverseBinder{T}"/> or both to exchange values.
+    /// </remarks>
     [Serializable]
     public abstract partial class Binder : IBinder
     {
         // ReSharper disable once MemberInitializerValueIgnored
-        [Tooltip("Binding mode that controls the direction of data flow between the View and ViewModel.")]
+        [Tooltip("The direction of data flow between the ViewModel and the View.")]
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
 
         private IBinderRemover? _binderRemover;
 
         /// <summary>
-        /// Indicates whether binding is allowed.
-        /// The default value is <see langword="true"/>.
+        /// Gets a value indicating whether <see cref="Bind(IBinderAdder)"/> attaches the binder; <see langword="true"/> unless
+        /// overridden.
         /// </summary>
         public virtual bool CanBind => true;
 
         /// <summary>
-        /// Indicates whether the binder is currently bound to a ViewModel.
+        /// Gets a value indicating whether the binder is attached to a bindable member.
         /// </summary>
         public bool IsBound { get; private set; }
 
         /// <summary>
-        /// Gets the binding mode that determines the direction of data flow.
+        /// Gets the binding mode set by the constructor or in the Inspector.
         /// </summary>
         public BindMode Mode => _mode;
 
-        /// <remarks>
-        /// For deserialization only: Unity builds a serialized instance without running a constructor's
-        /// arguments and assigns the fields itself.
-        /// </remarks>
+        /// <summary>
+        /// Creates a <see cref="BindMode.OneWay"/> binder for Unity deserialization, which then restores the serialized mode.
+        /// </summary>
         protected Binder()
             : this(BindMode.OneWay) { }
 
-        /// <param name="mode">The binding mode to use for the binder.</param>
+        /// <summary>
+        /// Creates a binder with the given binding mode.
+        /// </summary>
+        /// <param name="mode">The binding mode.</param>
         protected Binder(BindMode mode = BindMode.OneWay)
         {
             _mode = mode;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Attaches the binder through <paramref name="binderAdder"/>, calling <see cref="OnBinding"/> before and
+        /// <see cref="OnBound"/> after.
+        /// </summary>
+        /// <remarks>
+        /// Does nothing when <see cref="CanBind"/> is <see langword="false"/>, and logs an error when the binder is already bound.
+        /// </remarks>
+        /// <param name="binderAdder">The bindable member to attach to.</param>
         public void Bind(IBinderAdder binderAdder)
         {
 #if ASPID_MVVM_PROFILER
@@ -81,29 +91,23 @@ namespace Aspid.MVVM
         partial void OnBoundDebug(IBinderAdder binderAdder);
 
         /// <summary>
-        /// Called before binding is established. Override to add pre-binding logic.
+        /// Called before the binder attaches and receives the first value. Override to prepare for that value.
         /// </summary>
         /// <remarks>
-        /// The order is: <see cref="OnBinding"/>, then the ViewModel pushes its current value, then
-        /// <see cref="IsBound"/> becomes <see langword="true"/>, then <see cref="OnBound"/>.
-        /// <para/>
-        /// That first push happens <em>after</em> this hook, which is why a binder that listens to its component
-        /// subscribes in <see cref="OnBound"/> and not here: subscribing here means hearing the ViewModel's own
-        /// first value come back as if the user had entered it.
+        /// Subscribe to the component in <see cref="OnBound"/> instead: a subscription made here reports the first value from the
+        /// ViewModel back as if the user had entered it.
         /// </remarks>
         protected virtual void OnBinding() { }
 
         /// <summary>
-        /// Called after binding is established. Override to add post-binding logic.
+        /// Called after the binder attaches and receives the first value. Override to subscribe to the component.
         /// </summary>
-        /// <remarks>
-        /// Runs after the ViewModel's first value has been applied and after <see cref="IsBound"/> is
-        /// <see langword="true"/>. This is where a binder subscribes to its component — see
-        /// <see cref="OnBinding"/> for why the earlier hook is the wrong place.
-        /// </remarks>
         protected virtual void OnBound() { }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Detaches the binder, calling <see cref="OnUnbinding"/> before and <see cref="OnUnbound"/> after; does nothing when it
+        /// is not bound.
+        /// </summary>
         public void Unbind()
         {
 #if ASPID_MVVM_PROFILER
@@ -130,21 +134,13 @@ namespace Aspid.MVVM
         partial void OnUnboundDebug();
 
         /// <summary>
-        /// Called before unbinding. Override to add pre-unbinding logic.
+        /// Called before the binder detaches, while values it reports still reach the ViewModel. Override to report a last value.
         /// </summary>
-        /// <remarks>
-        /// Runs while <see cref="IsBound"/> is still <see langword="true"/> and the binder is still
-        /// attached to the ViewModel, so anything sent from here still arrives.
-        /// </remarks>
         protected virtual void OnUnbinding() { }
 
         /// <summary>
-        /// Called after unbinding. Override to add post-unbinding logic.
+        /// Called after the binder detaches. Override to release what <see cref="OnBound"/> subscribed to.
         /// </summary>
-        /// <remarks>
-        /// Runs once the binder is detached and <see cref="IsBound"/> is <see langword="false"/>.
-        /// This is where a subscription taken in <see cref="OnBound"/> is released.
-        /// </remarks>
         protected virtual void OnUnbound() { }
     }
 }

@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Exception thrown when a binder is not of the expected type during a binding operation.
-Provides factory methods for generating descriptive error messages for class and struct binders.
+[`InvalidCastException`](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) thrown when a binder lacks the interface a bindable member pushes values through.
 
 ```csharp
 public sealed class BinderInvalidCastException : InvalidCastException, ISerializable
@@ -32,12 +31,15 @@ public sealed class BinderInvalidCastException : InvalidCastException, ISerializ
 
 
 
+## Remarks
+
+The message names the binder type and, for a component, its GameObject path.
+
 ## Methods
 
 ### Class\<T\>\(IBinder\) {#Aspid_MVVM_BinderInvalidCastException_Class__1_Aspid_MVVM_IBinder_}
 
-Throws a [`BinderInvalidCastException`](Aspid.MVVM.BinderInvalidCastException.md) when a class binder does not implement
-[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) or [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
+Throws for a binder that implements neither [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) nor [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
 
 ```csharp
 public static BinderInvalidCastException Class<T>(IBinder binder)
@@ -47,30 +49,30 @@ public static BinderInvalidCastException Class<T>(IBinder binder)
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder that failed the type check.
+The binder that failed the check.
 
 #### Returns
 
  [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
 
-This method never returns; the return type exists to support <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expressions.
+Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
 
 #### Type Parameters
 
 `T` 
 
-The expected bound value type.
+The value type of the bindable member.
 
 #### Exceptions
 
  [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
 
-Always thrown.
+Always.
 
 ### Struct\<T, TBoxed\>\(IBinder\) {#Aspid_MVVM_BinderInvalidCastException_Struct__2_Aspid_MVVM_IBinder_}
 
-Throws a [`BinderInvalidCastException`](Aspid.MVVM.BinderInvalidCastException.md) when a struct binder does not implement
-[`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code>, or [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
+Throws for a binder that implements none of [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of
+<code class="typeparamref">TBoxed</code> and [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
 
 ```csharp
 public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)
@@ -80,27 +82,27 @@ public static BinderInvalidCastException Struct<T, TBoxed>(IBinder binder)
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder that failed the type check.
+The binder that failed the check.
 
 #### Returns
 
  [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
 
-This method never returns; the return type exists to support <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expressions.
+Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
 
 #### Type Parameters
 
 `T` 
 
-The expected unboxed struct type.
+The struct type of the bindable member.
 
 `TBoxed` 
 
-The expected boxed type.
+The boxed form of <code class="typeparamref">T</code>.
 
 #### Exceptions
 
  [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
 
-Always thrown.
+Always.
 

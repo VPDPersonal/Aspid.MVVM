@@ -297,6 +297,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 #### Samples & documentation
 
 - `[AsBinder]` examples in the Views page and `ExampleScripts` left the component field unserialized, so the binder constructor threw on `null`; the page now covers constructor arguments and `nameof`.
+- XML docs in `Source` follow the `asp-xmldoc` rules and no longer contradict the generator: `[Bind(BindMode.OneWay)]` on a `readonly` field is skipped rather than resolved to `OneTime`, `[ViewModel]` and `[View]` ignore structs, and a `BaseBindAttribute` subclass generates nothing.
+- Labeled crefs (`<see cref="X">label</see>`) in the API reference linked the namespace page instead of the type.
 
 ---
 

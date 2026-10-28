@@ -5,6 +5,7 @@ using Aspid.Generators.Helper.Unity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
 using Aspid.MVVM.Generators.Generators.Views.Data;
+using Aspid.MVVM.Generators.Generators.Views.Factories;
 using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
@@ -26,6 +27,7 @@ public static class VirtualBinderFields
             declared.Add(member.Id.SourceValue);
         foreach (var id in data.InheritedDeclaredIds)
             declared.Add(id);
+        BinderMembersFactory.CollectIgnoredIds(data.Symbol, declared);
 
         foreach (var genericView in data.GenericViews)
         {

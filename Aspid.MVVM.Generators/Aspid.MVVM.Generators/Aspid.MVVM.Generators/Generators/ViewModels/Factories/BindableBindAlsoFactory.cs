@@ -17,12 +17,14 @@ public static class BindableBindAlsoFactory
         foreach (var member in members)
         {
             if (!member.HasAnyAttributeInSelf(BindAttribute, OneWayBindAttribute, TwoWayBindAttribute)) continue;
-            if (!member.TryGetAnyAttributeInSelf(out var attribute, BindAlsoAttribute)) continue;
-            
-            var value = attribute!.ConstructorArguments[0].Value;
-            if (value is null) continue;
-                    
-            set.Add(value.ToString());
+
+            foreach (var attribute in member.GetAttributesInSelf(BindAlsoAttribute))
+            {
+                var value = attribute.ConstructorArguments[0].Value;
+                if (value is null) continue;
+
+                set.Add(value.ToString());
+            }
         }
 
         foreach (var member in members)

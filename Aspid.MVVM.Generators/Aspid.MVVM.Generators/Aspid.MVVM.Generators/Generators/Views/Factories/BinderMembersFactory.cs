@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Aspid.MVVM.Generators.Generators.Ids.Data;
 using Aspid.MVVM.Generators.Generators.Views.Helpers;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 using Classes = Aspid.MVVM.Generators.Generators.Descriptions.Classes;
@@ -31,10 +32,24 @@ public static class BinderMembersFactory
             foreach (var member in Create(baseType, semanticModel))
                 ids.Add(member.Id.SourceValue);
 
+            CollectIgnoredIds(baseType, ids);
             VirtualBinderFields.CollectGeneratedIds(baseType, declaration, ids);
         }
 
         return ids.ToImmutableArray();
+    }
+
+    /// <summary>
+    /// Adds the ids of the members marked <c>[IgnoreBind]</c>: the View binds them by hand, so they are left out of
+    /// the generated binding but still count as declared, and no auto binder field is emitted under the same name.
+    /// </summary>
+    public static void CollectIgnoredIds(INamedTypeSymbol symbol, ISet<string> ids)
+    {
+        foreach (var member in symbol.GetMembers())
+        {
+            if (member.HasAnyAttributeInSelf(Classes.IgnoreAttribute))
+                ids.Add(new IdData(member).SourceValue);
+        }
     }
 
     public static ImmutableArray<BinderMember> Create(INamedTypeSymbol symbolClass, SemanticModel semanticModel)
@@ -43,7 +58,7 @@ public static class BinderMembersFactory
         
         foreach (var member in symbolClass.GetMembers())
         {
-            if (member.HasAnyAttributeInSelf()) continue;
+            if (member.HasAnyAttributeInSelf(Classes.IgnoreAttribute)) continue;
 
             var type = GetType(member);
             if (type is null) continue;

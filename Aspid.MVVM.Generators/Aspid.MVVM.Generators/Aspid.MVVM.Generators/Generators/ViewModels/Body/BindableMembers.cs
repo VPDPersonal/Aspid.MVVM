@@ -8,7 +8,6 @@ using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 using SymbolExtensions = Aspid.MVVM.Generators.Helpers.SymbolExtensions;
-using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
@@ -45,8 +44,9 @@ public static class BindableMembers
             }
         }
 
+        // A target without change notification (OneTime, OneWayToSource, a command) has no method to call.
         return data.Members.Where(bindAlso => 
-            set.Contains(bindAlso.Name) && bindAlso.Mode is not BindMode.OneTime and not BindMode.None);
+            set.Contains(bindAlso.Name) && !string.IsNullOrWhiteSpace(bindAlso.Bindable.OnPropertyChangedName));
     }
     
     extension(CodeWriter code)
@@ -83,7 +83,7 @@ public static class BindableMembers
                     
                     foreach (var bindAlso in GetBindableBindAlso(member.Member, data))
                     {
-                        code.AppendLineIf(!string.IsNullOrWhiteSpace(member.Bindable.OnPropertyChangedName), $"{bindAlso.Bindable.OnPropertyChangedName}();");
+                        code.AppendLine($"{bindAlso.Bindable.OnPropertyChangedName}();");
                     }
 
                     code.EndBlock();

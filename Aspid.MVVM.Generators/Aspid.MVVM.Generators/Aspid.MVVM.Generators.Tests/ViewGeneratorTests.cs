@@ -39,6 +39,9 @@ public sealed class ViewGeneratorTests
 
             [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
             public class BindAttribute : Attribute { public BindAttribute() { } public BindAttribute(BindMode mode) { } }
+
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+            public sealed class IgnoreBindAttribute : Attribute { }
         }
         """;
 
@@ -142,6 +145,66 @@ public sealed class ViewGeneratorTests
         Assert.Contains("_score.UnbindSafely(", generated);
     }
 
+    /// <summary>A binder field or property marked <c>[IgnoreBind]</c> is left out of the generated binding.</summary>
+    [Fact]
+    public void AnIgnoredBinderMemberIsNotBound()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<IViewModel>
+            {
+                [SerializeField] private IBinder _score;
+                [SerializeField, IgnoreBind] private IBinder _ignoredField;
+                [IgnoreBind] private IBinder IgnoredProperty => _score;
+            }
+            """);
+
+        Assert.Contains("_score.BindSafely(", generated);
+        Assert.DoesNotContain("_ignoredField", generated);
+        Assert.DoesNotContain("IgnoredProperty", generated);
+    }
+
+    /// <summary>
+    /// A member marked <c>[IgnoreBind]</c> is bound by hand but still declared: no auto binder field is emitted for
+    /// the ViewModel member of the same name, in the View itself or in a View derived from it.
+    /// </summary>
+    [Fact]
+    public void AnIgnoredBinderMemberStillBlocksTheAutoBinderField()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            public class PlayerViewModel : IViewModel
+            {
+                [Bind] private int _health;
+                [Bind] private int _mana;
+            }
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<PlayerViewModel>
+            {
+                [SerializeField, IgnoreBind] private IBinder _health;
+            }
+
+            [View]
+            public partial class BaseView : MonoBehaviour
+            {
+                [SerializeField, IgnoreBind] private IBinder _health;
+            }
+
+            [View]
+            public partial class DerivedView : BaseView, IView<PlayerViewModel> { }
+            """);
+
+        Assert.DoesNotContain("MonoBinder[] _health;", generated);
+        Assert.Equal(2, CountOf(generated, "MonoBinder[] _mana;"));
+        Assert.DoesNotContain("_health.BindSafely(", generated);
+    }
+
     /// <summary>
     /// The <c>Initialize</c> and <c>Deinitialize</c> markers compile only under <c>ENABLE_PROFILER</c>, so a release
     /// player carries no marker field.
@@ -167,6 +230,9 @@ public sealed class ViewGeneratorTests
         Assert.Contains("#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
         Assert.DoesNotContain("#if !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
     }
+
+    private static int CountOf(string text, string value) =>
+        Regex.Matches(text, Regex.Escape(value)).Count;
 
     private static string Run(string declaration)
     {

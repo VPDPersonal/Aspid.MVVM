@@ -11,11 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Serves as the base class for all binding-related attributes.
-Derive from this class to implement custom binding attributes for use with ViewModels.
-This class itself does not contain any logic and is used primarily as a marker for attribute hierarchy.
-Classes that inherit from [`BaseBindAttribute`](Aspid.MVVM.BaseBindAttribute.md) must be manually added to the Source Generator 
-to generate the appropriate binding logic. This process does not happen automatically.
+[`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) shared by [`BindAttribute`](Aspid.MVVM.BindAttribute.md) and the bind attributes with a fixed mode.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
@@ -36,4 +32,9 @@ public abstract class BaseBindAttribute : Attribute
 [OneWayToSourceBindAttribute](Aspid.MVVM.OneWayToSourceBindAttribute.md), 
 [TwoWayBindAttribute](Aspid.MVVM.TwoWayBindAttribute.md)
 
+
+
+## Remarks
+
+The Source Generator recognizes the bind attributes by name, so a custom subclass generates nothing.
 

@@ -60,20 +60,21 @@ namespace Aspid.MVVM.Tests
                 "1h 5m ago",
                 new RelativeTimeConverter(4).Convert(DateTime.Now.AddHours(-1).AddMinutes(-5)));
 
-        // Four is the whole ladder — day, hour, minute, second — and asking for more must not walk
-        // off the end of it.
+        // Four is the whole ladder (day, hour, minute, second), and a count above it, which only older
+        // authored data can hold past [Range(1, 4)], must not walk off the end of it.
         [Test]
         public void Convert_MaxUnitsBeyondFour_WritesAtMostFour() =>
             Assert.AreEqual(
                 "1d 2h 3m 4s ago",
-                new RelativeTimeConverter(10)
+                With(new RelativeTimeConverter(4), "_maxUnits", 10)
                     .Convert(DateTime.Now.AddDays(-1).AddHours(-2).AddMinutes(-3).AddSeconds(-4)));
 
-        // Zero and negative units cannot be written, so the constructor says so rather than quietly
-        // picking a count the caller did not ask for.
+        // Zero and negative units cannot be written, and the ladder has four rungs, so the constructor
+        // says so rather than quietly picking a count the caller did not ask for.
         [TestCase(0)]
         [TestCase(-3)]
-        public void Constructor_MaxUnitsBelowOne_Throws(int maxUnits) =>
+        [TestCase(5)]
+        public void Constructor_MaxUnitsOutsideTheLadder_Throws(int maxUnits) =>
             Assert.Throws<ArgumentOutOfRangeException>(() => new RelativeTimeConverter(maxUnits));
 
         // The largest unit accumulates rather than rolling into months, so forty days is 40d and not

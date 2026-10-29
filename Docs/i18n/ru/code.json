@@ -1,0 +1,17 @@
+{
+  "theme.TOCCollapsible.toggleButtonLabel": {"message": "Содержание"},
+  "featureCard.more": {"message": "Подробнее"},
+  "homepage.description": {"message": "MVVM-фреймворк для Unity на Source Generator"},
+  "appearance.label": {"message": "Оформление"},
+  "appearance.dark": {"message": "Тёмная"},
+  "appearance.light": {"message": "Светлая"},
+  "appearance.theme": {"message": "Тема"},
+  "accent.label": {"message": "Акцент"},
+  "section.label": {"message": "Раздел"},
+  "accent.green": {"message": "Зелёный"},
+  "accent.red": {"message": "Красный"},
+  "accent.blue": {"message": "Синий"},
+  "accent.yellow": {"message": "Жёлтый"},
+  "accent.mono": {"message": "Монохромный"},
+  "theme.admonition.warning": {"message": "внимание", "description": "Docusaurus ships the ru label untranslated"}
+}

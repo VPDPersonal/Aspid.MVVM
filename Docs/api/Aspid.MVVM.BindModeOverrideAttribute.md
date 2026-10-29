@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Attribute used to override allowed binding modes for a class.
-This attribute is conditional and only active when the "UNITY_EDITOR" symbol is defined.
+Replaces the [`BindModeAttribute`](Aspid.MVVM.BindModeAttribute.md) limits of every [`BindMode`](Aspid.MVVM.BindMode.md) field of the class and its subclasses in the Inspector.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -29,14 +28,29 @@ public sealed class BindModeOverrideAttribute : Attribute
 
 
 
+## Examples
+
+
+```csharp
+[BindModeOverride(BindMode.OneWay, BindMode.OneTime)]
+public class FillAmountBinder : MonoBinder { }
+```
+
+
+## Remarks
+
+<p>
+The allowed modes are [`BindModeOverrideAttribute.Modes`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_Modes) plus the groups that [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) and [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) add; with none of
+them, or with [`BindModeOverrideAttribute.IsAll`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsAll), every mode except [`BindMode.None`](Aspid.MVVM.BindMode.md) is allowed.
+</p>
+<p>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</p>
+<p>A subclass with its own [`BindModeOverrideAttribute`](Aspid.MVVM.BindModeOverrideAttribute.md) uses that one instead.</p>
+
 ## Constructors
 
 ### BindModeOverrideAttribute\(params BindMode\[\]\) {#Aspid_MVVM_BindModeOverrideAttribute__ctor_Aspid_MVVM_BindMode___}
 
-Initializes a new instance of the [`BindModeOverrideAttribute`](Aspid.MVVM.BindModeOverrideAttribute.md) class with the specified binding modes.
-If no modes are provided and neither [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) nor [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) is set, the behavior is equivalent to [`BindModeOverrideAttribute.IsAll`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsAll).
-If [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) and [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) are both <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, the behavior is equivalent to [`BindModeOverrideAttribute.IsAll`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsAll).
-If [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) or [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> and modes are provided, the allowed modes are a combination of the specified modes and the modes defined by the properties.
+Creates an attribute that allows <code class="paramref">modes</code>.
 
 ```csharp
 public BindModeOverrideAttribute(params BindMode[] modes)
@@ -46,14 +60,13 @@ public BindModeOverrideAttribute(params BindMode[] modes)
 
 `modes` [BindMode](Aspid.MVVM.BindMode.md)\[\]
 
-The binding modes that are allowed for the class.
+The allowed modes; none to allow every mode unless [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) or [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) is set.
 
 ## Properties
 
 ### IsAll {#Aspid_MVVM_BindModeOverrideAttribute_IsAll}
 
-Indicates whether all binding modes (except [`BindMode.None`](Aspid.MVVM.BindMode.md)) are allowed.
-If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, all modes except [`BindMode.None`](Aspid.MVVM.BindMode.md) are enabled.
+Gets or sets a value indicating whether every mode except [`BindMode.None`](Aspid.MVVM.BindMode.md) is allowed.
 
 ```csharp
 public bool IsAll { get; set; }
@@ -65,8 +78,8 @@ public bool IsAll { get; set; }
 
 ### IsOne {#Aspid_MVVM_BindModeOverrideAttribute_IsOne}
 
-Indicates whether only [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) are allowed.
-If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, only these two modes are enabled.
+Gets or sets a value indicating whether [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) are allowed in
+addition to [`BindModeOverrideAttribute.Modes`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_Modes).
 
 ```csharp
 public bool IsOne { get; set; }
@@ -78,8 +91,8 @@ public bool IsOne { get; set; }
 
 ### IsTwo {#Aspid_MVVM_BindModeOverrideAttribute_IsTwo}
 
-Indicates whether only [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) are allowed.
-If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, only these two modes are enabled.
+Gets or sets a value indicating whether [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) and [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) are
+allowed in addition to [`BindModeOverrideAttribute.Modes`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_Modes).
 
 ```csharp
 public bool IsTwo { get; set; }
@@ -91,7 +104,7 @@ public bool IsTwo { get; set; }
 
 ### Modes {#Aspid_MVVM_BindModeOverrideAttribute_Modes}
 
-Gets the array of allowed binding modes for the class.
+Gets the explicitly allowed modes.
 
 ```csharp
 public BindMode[] Modes { get; }

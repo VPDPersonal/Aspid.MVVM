@@ -197,7 +197,7 @@ namespace Aspid.MVVM
         protected override string GetScriptName()
         {
             var view = Editor.TargetAsView;
-            return view ? view.GetScriptNameWithIndex() : string.Empty;
+            return view ? view.GetDisplayNameWithIndex() : string.Empty;
         }
 
         protected override string GetScriptSubtext()

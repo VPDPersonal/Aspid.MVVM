@@ -4,20 +4,17 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Provides extension methods for <see cref="IBinder"/> instances that implement <see cref="IRebindableBinder"/>.
+    /// Provides extension methods for rebinding an <see cref="IBinder"/>.
     /// </summary>
-    /// <remarks>
-    /// Only active in <c>DEBUG</c> or <c>UNITY_EDITOR</c> builds.
-    /// </remarks>
     public static class RebindableBinderExtensions
     {
         /// <summary>
-        /// Rebinds the binder if it implements <see cref="IRebindableBinder"/>; otherwise, does nothing.
+        /// Rebinds <paramref name="binder"/> when it implements <see cref="IRebindableBinder"/>; otherwise, does nothing.
         /// </summary>
         /// <remarks>
-        /// Call sites are stripped by the compiler in builds where neither <c>DEBUG</c> nor <c>UNITY_EDITOR</c> is defined.
+        /// Calls are removed from builds that define neither <c>DEBUG</c> nor <c>UNITY_EDITOR</c>.
         /// </remarks>
-        /// <param name="binder">The binder instance to attempt to rebind.</param>
+        /// <param name="binder">The binder to rebind.</param>
         [Conditional(conditionString: "DEBUG")]
         [Conditional(conditionString: "UNITY_EDITOR")]
         public static void Rebind(this IBinder binder)

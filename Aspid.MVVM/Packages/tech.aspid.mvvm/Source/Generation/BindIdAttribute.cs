@@ -6,23 +6,41 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Attribute used to override the binding ID for fields, properties, or [RelayCommand] in a ViewModel and View.
+    /// Sets the identifier that pairs a ViewModel member with the View binders of the same identifier.
     /// </summary>
+    /// <remarks>
+    /// Without it, the identifier is the member name without its prefix, capitalized, with a <c>Command</c> suffix for a
+    /// <see cref="RelayCommandAttribute">[RelayCommand]</see> method; the attribute value replaces all of it.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [Bind]
+    /// [BindId("Health")]
+    /// private int _hp;
+    /// </code>
+    /// <code>
+    /// [BindId("Health")]
+    /// [SerializeField] private MonoBinder[] _hpBinders;
+    /// </code>
+    /// </example>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method)]
     public sealed class BindIdAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG
         /// <summary>
-        /// Gets the binding ID associated with the target field, property, or <c>[RelayCommand]</c>.
+        /// Gets the identifier.
         /// </summary>
+        /// <remarks>
+        /// Exists only when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.
+        /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public readonly string Id;
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindIdAttribute"/> class with a specified ID.
+        /// Creates an attribute with the identifier <paramref name="id"/>.
         /// </summary>
-        /// <param name="id">The binding ID to be associated with the target field, property, or [RelayCommand].</param>
+        /// <param name="id">The identifier that replaces the generated one.</param>
         public BindIdAttribute(string id)
         {
 #if UNITY_EDITOR || DEBUG

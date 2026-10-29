@@ -1,3 +1,7 @@
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
+#endif
+
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -58,7 +62,7 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Bind(IBinderAdder binderAdder)
         {
-#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -101,7 +105,7 @@ namespace Aspid.MVVM
         /// <inheritdoc/>
         public void Unbind()
         {
-#if !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

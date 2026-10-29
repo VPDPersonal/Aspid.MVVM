@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -8,32 +8,29 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="IBinderAdder"/> that pushes value changes from the ViewModel to subscribed
-    /// <see cref="IBinder{T}"/> / <see cref="IAnyBinder"/> instances; additionally exposes a get/set
-    /// <see cref="Value"/> and a <see cref="Changed"/> event. Accepts only <see cref="BindMode.OneWay"/>
-    /// and <see cref="BindMode.OneTime"/> binders.
+    /// <see cref="IBindableMember{T}"/> that pushes every value change to its binders.
     /// </summary>
-    /// <typeparam name="T">The reference type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneWayBindableMember<T> : IBindableMember<T>, IBinderRemover
     {
         /// <summary>
-        /// Raised when the value changes.
+        /// Occurs when <see cref="Value"/> is set.
         /// </summary>
         public event Action<T?>? Changed;
 
         private T? _value;
         
         /// <summary>
-        /// Gets or sets the current value. Setting the value will trigger the <see cref="Changed"/> event.
+        /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
         /// </summary>
         public T? Value
         {
             get => _value;
             set
             {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
                 using (this.Marker())
-#endif 
+#endif
                 {
                     _value = value;
                     Changed?.Invoke(value);
@@ -42,30 +39,29 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Gets the binding mode for this member.
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;    
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OneWayBindableMember{T}"/> class with the specified initial value.
+        /// Creates a member holding <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The initial value of the bindable member.</param>
+        /// <param name="value">The initial value.</param>
         public OneWayBindableMember(T? value)
         {
             _value = value;
         }
 
-        /// <summary>
-        /// Adds the binder to the event with the current value and subscribes to the value change event.
-        /// </summary>
-        /// <param name="binder">The binder to bind to the event.</param>
-        /// <returns>An <see cref="IBinderRemover"/> to enable removal of the binder later, or <see langword="null"/> for <see cref="BindMode.OneTime"/> binders.</returns>
+        /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the binding mode is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.
+        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// </exception>
+        /// <exception cref="BinderInvalidCastException">
+        /// <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
         /// </exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -99,13 +95,13 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Removes the binder from the event subscription.
-        /// </summary>
-        /// <param name="binder">The binder to remove.</param>
+        /// <inheritdoc/>
+        /// <exception cref="BinderInvalidCastException">
+        /// <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
+        /// </exception>
         void IBinderRemover.Remove(IBinder binder)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -119,9 +115,9 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Sets the current value and raises the <see cref="Changed"/> event.
+        /// Sets <see cref="Value"/> to <paramref name="value"/>.
         /// </summary>
-        /// <param name="value">The new value to set and notify.</param>
+        /// <param name="value">The new value.</param>
         public void Invoke(T? value) =>
             Value = value;
     }

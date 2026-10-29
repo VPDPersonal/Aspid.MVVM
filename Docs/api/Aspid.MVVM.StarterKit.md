@@ -859,20 +859,15 @@ with [`ButtonCommandBinder<T1, T2, T3, T4>.Param1`](Aspid.MVVM.StarterKit.Button
 
 [`ButtonCommandMonoBinder<T>`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-1.md) with an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> parameter.
 
+ [ButtonCommandMonoBinder](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on [`onClick`](https://docs.unity3d.com/ScriptReference/UI-Button-onClick.html).
+
  [ButtonCommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-4.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on [`onClick`](https://docs.unity3d.com/ScriptReference/UI-Button-onClick.html)
 with [`ButtonCommandMonoBinder<T1, T2, T3, T4>.Param1`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-4.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_4_Param1), [`ButtonCommandMonoBinder<T1, T2, T3, T4>.Param2`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-4.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_4_Param2),
 [`ButtonCommandMonoBinder<T1, T2, T3, T4>.Param3`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-4.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_4_Param3), [`ButtonCommandMonoBinder<T1, T2, T3, T4>.Param4`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-4.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_4_Param4).
-
- [ButtonCommandMonoBinder](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on [`onClick`](https://docs.unity3d.com/ScriptReference/UI-Button-onClick.html).
-
- [ButtonCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-1.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on [`onClick`](https://docs.unity3d.com/ScriptReference/UI-Button-onClick.html)
-with [`ButtonCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_1_Param).
 
  [ButtonCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-3.md)
 
@@ -883,6 +878,11 @@ with [`ButtonCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.Button
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on [`onClick`](https://docs.unity3d.com/ScriptReference/UI-Button-onClick.html)
 with [`ButtonCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_2_Param1), [`ButtonCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_2_Param2).
+
+ [ButtonCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-1.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on [`onClick`](https://docs.unity3d.com/ScriptReference/UI-Button-onClick.html)
+with [`ButtonCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.ButtonCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_1_Param).
 
  [ButtonCommandObjectMonoBinder](Aspid.MVVM.StarterKit.ButtonCommandObjectMonoBinder.md)
 
@@ -1231,14 +1231,14 @@ Observable and filtered lists are rebuilt on every change: [`CollectionMonoBinde
 
 Keeps a few items off one end of a sequence.
 
+ [CollectionViewModelBinder](Aspid.MVVM.StarterKit.CollectionViewModelBinder.md)
+
+[`CollectionViewModelBinder<T>`](Aspid.MVVM.StarterKit.CollectionViewModelBinder-1.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
+
  [CollectionViewModelBinder\<TView\>](Aspid.MVVM.StarterKit.CollectionViewModelBinder-1.md)
 
 [`CollectionBinder<T>`](Aspid.MVVM.StarterKit.CollectionBinder-1.md) that shows bound ViewModels in a fixed set of pre-placed views, in order.
 Views beyond the item count are deactivated; items beyond the view count are not shown. Every change rebuilds the whole set.
-
- [CollectionViewModelBinder](Aspid.MVVM.StarterKit.CollectionViewModelBinder.md)
-
-[`CollectionViewModelBinder<T>`](Aspid.MVVM.StarterKit.CollectionViewModelBinder-1.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
 
  [CollectionViewModelMonoBinder](Aspid.MVVM.StarterKit.CollectionViewModelMonoBinder.md)
 
@@ -1482,10 +1482,6 @@ Helpers for command binders: swapping the bound command while keeping the
 
 [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) and exposes [`CommandMonoBinder.CanExecute`](Aspid.MVVM.StarterKit.CommandMonoBinder.md#Aspid_MVVM_StarterKit_CommandMonoBinder_CanExecute) and [`CommandMonoBinder.Execute`](Aspid.MVVM.StarterKit.CommandMonoBinder.md#Aspid_MVVM_StarterKit_CommandMonoBinder_Execute) for it.
 
- [CommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md)
-
-Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.IRelayCommand-4.md) and exposes [`CommandMonoBinder<T1, T2, T3, T4>.CanExecute`](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md) and [`CommandMonoBinder<T1, T2, T3, T4>.Execute`](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md) for it.
-
  [CommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.CommandMonoBinder-3.md)
 
 Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRelayCommand<T1, T2, T3>`](Aspid.MVVM.IRelayCommand-3.md) and exposes [`CommandMonoBinder<T1, T2, T3>.CanExecute`](Aspid.MVVM.StarterKit.CommandMonoBinder-3.md) and [`CommandMonoBinder<T1, T2, T3>.Execute`](Aspid.MVVM.StarterKit.CommandMonoBinder-3.md) for it.
@@ -1498,6 +1494,10 @@ Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRel
 
 Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRelayCommand<T>`](Aspid.MVVM.IRelayCommand-1.md) and exposes [`CommandMonoBinder<T>.CanExecute`](Aspid.MVVM.StarterKit.CommandMonoBinder-1.md#Aspid_MVVM_StarterKit_CommandMonoBinder_1_CanExecute__0_) and [`CommandMonoBinder<T>.Execute`](Aspid.MVVM.StarterKit.CommandMonoBinder-1.md#Aspid_MVVM_StarterKit_CommandMonoBinder_1_Execute__0_) for it.
 
+ [CommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md)
+
+Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.IRelayCommand-4.md) and exposes [`CommandMonoBinder<T1, T2, T3, T4>.CanExecute`](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md) and [`CommandMonoBinder<T1, T2, T3, T4>.Execute`](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md) for it.
+
  [ComparisonCollectionOrder\<T\>](Aspid.MVVM.StarterKit.ComparisonCollectionOrder-1.md)
 
 [`ICollectionOrder<T>`](Aspid.MVVM.StarterKit.ICollectionOrder-1.md) that wraps a [`Comparison<T>`](https://learn.microsoft.com/dotnet/api/system.comparison-1) or an
@@ -1505,12 +1505,12 @@ Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that holds a bound [`IRel
 
  [ComponentFloatMonoBinder\<TComponent\>](Aspid.MVVM.StarterKit.ComponentFloatMonoBinder-1.md)
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+float%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`ComponentMonoBinder<TComponent, float>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [ComponentIntMonoBinder\<TComponent\>](Aspid.MVVM.StarterKit.ComponentIntMonoBinder-1.md)
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+int%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`ComponentMonoBinder<TComponent, int>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [ComponentMonoBinder\<TComponent, TProperty\>](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md)
@@ -1520,8 +1520,8 @@ applying an optional converter in both directions. In [`BindMode.OneWayToSource`
 
  [ComponentObjectMonoBinder\<TComponent, TObject\>](Aspid.MVVM.StarterKit.ComponentObjectMonoBinder-2.md)
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+TObject%3e`](Aspid.MVVM.StarterKit.md) that binds
-a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
+Abstract base [`ComponentMonoBinder<TComponent, TObject>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds
+a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [ComponentToSourceMonoBinder](Aspid.MVVM.StarterKit.ComponentToSourceMonoBinder.md)
 
@@ -1702,13 +1702,13 @@ order.
 
 [`DelayMonoBinder<T>`](Aspid.MVVM.StarterKit.DelayMonoBinder-1.md) that forwards every <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/reference-types">string</a> after the interval.
 
- [DelegateOneTimeBinder\<T\>](Aspid.MVVM.StarterKit.DelegateOneTimeBinder-1.md)
-
-[`DelegateOneWayBinder<T>`](Aspid.MVVM.StarterKit.DelegateOneWayBinder-1.md) fixed to [`BindMode.OneTime`](Aspid.MVVM.BindMode.md): the setter runs once, for the first value.
-
  [DelegateOneTimeBinder\<TTarget, T\>](Aspid.MVVM.StarterKit.DelegateOneTimeBinder-2.md)
 
 [`DelegateOneWayBinder<T1, T2>`](Aspid.MVVM.StarterKit.DelegateOneWayBinder-2.md) fixed to [`BindMode.OneTime`](Aspid.MVVM.BindMode.md): the setter runs once, for the first value.
+
+ [DelegateOneTimeBinder\<T\>](Aspid.MVVM.StarterKit.DelegateOneTimeBinder-1.md)
+
+[`DelegateOneWayBinder<T>`](Aspid.MVVM.StarterKit.DelegateOneWayBinder-1.md) fixed to [`BindMode.OneTime`](Aspid.MVVM.BindMode.md): the setter runs once, for the first value.
 
  [DelegateOneWayBinder\<T\>](Aspid.MVVM.StarterKit.DelegateOneWayBinder-1.md)
 
@@ -1804,27 +1804,27 @@ the selected index and [`DropdownCommandBinder<T1, T2, T3>.Param1`](Aspid.MVVM.S
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on `onValueChanged` with
 the selected index.
 
- [DropdownCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-2.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-`onValueChanged` with the selected index and [`DropdownCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_2_Param1),
-[`DropdownCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_2_Param2).
-
  [DropdownCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-3.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
 `onValueChanged` with the selected index and [`DropdownCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_3_Param1),
 [`DropdownCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_3_Param2), [`DropdownCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_3_Param3).
 
- [DropdownCommandMonoBinder](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-`onValueChanged` with the selected index.
-
  [DropdownCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-1.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
 `onValueChanged` with the selected index and [`DropdownCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_1_Param).
+
+ [DropdownCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-2.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
+`onValueChanged` with the selected index and [`DropdownCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_2_Param1),
+[`DropdownCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_DropdownCommandMonoBinder_2_Param2).
+
+ [DropdownCommandMonoBinder](Aspid.MVVM.StarterKit.DropdownCommandMonoBinder.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
+`onValueChanged` with the selected index.
 
  [DropdownExtensions](Aspid.MVVM.StarterKit.DropdownExtensions.md)
 
@@ -1932,8 +1932,8 @@ clicked.
 
  [ElementListViewItemsSourceMonoBinder](Aspid.MVVM.StarterKit.ElementListViewItemsSourceMonoBinder.md)
 
-[`VisualElementMonoBinder<T>`](Aspid.MVVM.StarterKit.VisualElementMonoBinder-1.md) that binds ListView.itemsSource to a read-only
-collection.
+[`VisualElementMonoBinder<T>`](Aspid.MVVM.StarterKit.VisualElementMonoBinder-1.md) that binds [`itemsSource`](https://docs.unity3d.com/ScriptReference/UIElements-BaseVerticalCollectionView-itemsSource.html)
+of a [`ListView`](https://docs.unity3d.com/ScriptReference/UIElements-ListView.html) to a read-only collection.
 
  [ElementSliderValueMonoBinder](Aspid.MVVM.StarterKit.ElementSliderValueMonoBinder.md)
 
@@ -1999,16 +1999,16 @@ through an `EnumValues<T>` table, passing the result through an optional convert
 
 Builds the option list of a dropdown out of an enum's members.
 
- [EnumToDropdownOptionDataConverterAsset](Aspid.MVVM.StarterKit.EnumToDropdownOptionDataConverterAsset.md)
-
-[`ConverterAsset<T1, T2>`](Aspid.MVVM.StarterKit.ConverterAsset-2.md) for boxed [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum) values turned into
-dropdown options.
-
  [EnumToDropdownOptionDataConverterAsset\<T\>](Aspid.MVVM.StarterKit.EnumToDropdownOptionDataConverterAsset-1.md)
 
 [`ConverterAsset<T1, T2>`](Aspid.MVVM.StarterKit.ConverterAsset-2.md) base for a concrete enum type turned into dropdown
 options. Unity cannot create an asset of an open generic, so subclass with
 <code class="typeparamref">T</code> closed.
+
+ [EnumToDropdownOptionDataConverterAsset](Aspid.MVVM.StarterKit.EnumToDropdownOptionDataConverterAsset.md)
+
+[`ConverterAsset<T1, T2>`](Aspid.MVVM.StarterKit.ConverterAsset-2.md) for boxed [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum) values turned into
+dropdown options.
 
  [EnumToNumberConverter\<TEnum\>](Aspid.MVVM.StarterKit.EnumToNumberConverter-1.md)
 
@@ -2018,15 +2018,15 @@ Converts an enum value to a number and back.
 
 Converts an enum value to text.
 
+ [EnumToStringConverterAsset](Aspid.MVVM.StarterKit.EnumToStringConverterAsset.md)
+
+[`ConverterAsset<T1, T2>`](Aspid.MVVM.StarterKit.ConverterAsset-2.md) for boxed [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum) values rendered as text.
+
  [EnumToStringConverterAsset\<T\>](Aspid.MVVM.StarterKit.EnumToStringConverterAsset-1.md)
 
 [`ConverterAsset<T1, T2>`](Aspid.MVVM.StarterKit.ConverterAsset-2.md) base for a concrete enum type rendered as text.
 Unity cannot create an asset of an open generic, so subclass with <code class="typeparamref">T</code>
 closed.
-
- [EnumToStringConverterAsset](Aspid.MVVM.StarterKit.EnumToStringConverterAsset.md)
-
-[`ConverterAsset<T1, T2>`](Aspid.MVVM.StarterKit.ConverterAsset-2.md) for boxed [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum) values rendered as text.
 
  [EnumToValueConverter\<TEnum, T\>](Aspid.MVVM.StarterKit.EnumToValueConverter-2.md)
 
@@ -2044,10 +2044,10 @@ Turns Euler angles into a rotation.
 
 [`MonoView`](Aspid.MVVM.MonoView.md) that raises [`UnityEvent`](https://docs.unity3d.com/ScriptReference/Events-UnityEvent.html)s when it is initialized and deinitialized.
 
- [EventTriggerCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-2.md)
+ [EventTriggerCommandBinder](Aspid.MVVM.StarterKit.EventTriggerCommandBinder.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command when the selected [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event
-fires with [`EventTriggerCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-2.md#Aspid_MVVM_StarterKit_EventTriggerCommandBinder_2_Param1), [`EventTriggerCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-2.md#Aspid_MVVM_StarterKit_EventTriggerCommandBinder_2_Param2).
+fires.
 
  [EventTriggerCommandBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-3.md)
 
@@ -2059,20 +2059,15 @@ fires with [`EventTriggerCommandBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKi
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command when the selected [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event
 fires with [`EventTriggerCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-1.md#Aspid_MVVM_StarterKit_EventTriggerCommandBinder_1_Param).
 
- [EventTriggerCommandBinder](Aspid.MVVM.StarterKit.EventTriggerCommandBinder.md)
+ [EventTriggerCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-2.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command when the selected [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event
-fires.
+fires with [`EventTriggerCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-2.md#Aspid_MVVM_StarterKit_EventTriggerCommandBinder_2_Param1), [`EventTriggerCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.EventTriggerCommandBinder-2.md#Aspid_MVVM_StarterKit_EventTriggerCommandBinder_2_Param2).
 
  [EventTriggerCommandMonoBinder](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command when the selected
 [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event fires.
-
- [EventTriggerCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command when the selected
-[`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event fires with [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param1), [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param2), [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param3).
 
  [EventTriggerCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-1.md)
 
@@ -2084,13 +2079,18 @@ fires.
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command when the selected
 [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event fires with [`EventTriggerCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_2_Param1), [`EventTriggerCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_2_Param2).
 
+ [EventTriggerCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command when the selected
+[`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event fires with [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param1), [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param2), [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param3).
+
  [EventTriggerToSourceMonoBinder](Aspid.MVVM.StarterKit.EventTriggerToSourceMonoBinder.md)
 
 [`ComponentToSourceMonoBinder<T>`](Aspid.MVVM.StarterKit.ComponentToSourceMonoBinder-1.md) for [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html).
 
  [FloatBinder](Aspid.MVVM.StarterKit.FloatBinder.md)
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cfloat%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`Binder<float>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [FloatConverterAsset](Aspid.MVVM.StarterKit.FloatConverterAsset.md)
@@ -2099,7 +2099,7 @@ accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBi
 
  [FloatMonoBinder](Aspid.MVVM.StarterKit.FloatMonoBinder.md)
 
-Abstract base [`StarterKit.MonoBinder<T>?text=MonoBinder%3cfloat%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`MonoBinder<float>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [FloatToBoolConverterAsset](Aspid.MVVM.StarterKit.FloatToBoolConverterAsset.md)
@@ -2247,11 +2247,11 @@ Reads a color off a [`Gradient`](https://docs.unity3d.com/ScriptReference/Gradie
 
  [GraphicColorChannelEnumGroupMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelEnumGroupMonoBinder.md)
 
-[`StarterKit.EnumGroupMonoBinder<T1, T2>?text=EnumGroupMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) per group element.
+[`EnumGroupMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.EnumGroupMonoBinder-2.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) per group element.
 
  [GraphicColorChannelEnumMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelEnumMonoBinder.md)
 
-[`StarterKit.EnumMonoBinder<T1, T2>?text=EnumMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`EnumMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.EnumMonoBinder-2.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
  [GraphicColorChannelMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelMonoBinder.md)
 
@@ -2259,11 +2259,11 @@ Reads a color off a [`Gradient`](https://docs.unity3d.com/ScriptReference/Gradie
 
  [GraphicColorChannelSwitcherBinder](Aspid.MVVM.StarterKit.GraphicColorChannelSwitcherBinder.md)
 
-[`StarterKit.SwitcherBinder<T1, T2>?text=SwitcherBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`SwitcherBinder<Graphic, float>`](Aspid.MVVM.StarterKit.SwitcherBinder-2.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
  [GraphicColorChannelSwitcherMonoBinder](Aspid.MVVM.StarterKit.GraphicColorChannelSwitcherMonoBinder.md)
 
-[`StarterKit.SwitcherMonoBinder<T1, T2>?text=SwitcherMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`SwitcherMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.SwitcherMonoBinder-2.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
  [GraphicColorEnumGroupMonoBinder](Aspid.MVVM.StarterKit.GraphicColorEnumGroupMonoBinder.md)
 
@@ -2575,10 +2575,9 @@ on each element.
 
 [`SwitcherMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.SwitcherMonoBinder-2.md) that switches `characterValidation`.
 
- [InputFieldCommandBinder\<T\>](Aspid.MVVM.StarterKit.InputFieldCommandBinder-1.md)
+ [InputFieldCommandBinder](Aspid.MVVM.StarterKit.InputFieldCommandBinder.md)
 
-[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on the selected field event with the text
-and [`InputFieldCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-1.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_1_Param).
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on the selected field event with the text.
 
  [InputFieldCommandBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.InputFieldCommandBinder-3.md)
 
@@ -2586,24 +2585,15 @@ and [`InputFieldCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.InputFieldCommand
 and [`InputFieldCommandBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_3_Param1), [`InputFieldCommandBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_3_Param2),
 [`InputFieldCommandBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_3_Param3).
 
- [InputFieldCommandBinder](Aspid.MVVM.StarterKit.InputFieldCommandBinder.md)
-
-[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on the selected field event with the text.
-
  [InputFieldCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.InputFieldCommandBinder-2.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on the selected field event with the text
 and [`InputFieldCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-2.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_2_Param1), [`InputFieldCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-2.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_2_Param2).
 
- [InputFieldCommandMonoBinder](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder.md)
+ [InputFieldCommandBinder\<T\>](Aspid.MVVM.StarterKit.InputFieldCommandBinder-1.md)
 
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on the selected field event with the text.
-
- [InputFieldCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on the selected field event with the text
-and [`InputFieldCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_3_Param1), [`InputFieldCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_3_Param2),
-[`InputFieldCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_3_Param3).
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on the selected field event with the text
+and [`InputFieldCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.InputFieldCommandBinder-1.md#Aspid_MVVM_StarterKit_InputFieldCommandBinder_1_Param).
 
  [InputFieldCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-2.md)
 
@@ -2614,6 +2604,16 @@ and [`InputFieldCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.InputFi
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on the selected field event with the text
 and [`InputFieldCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_1_Param).
+
+ [InputFieldCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on the selected field event with the text
+and [`InputFieldCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_3_Param1), [`InputFieldCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_3_Param2),
+[`InputFieldCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_InputFieldCommandMonoBinder_3_Param3).
+
+ [InputFieldCommandMonoBinder](Aspid.MVVM.StarterKit.InputFieldCommandMonoBinder.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on the selected field event with the text.
 
  [InputFieldContentTypeBinder](Aspid.MVVM.StarterKit.InputFieldContentTypeBinder.md)
 
@@ -2723,7 +2723,7 @@ and reports edits back as text and, for numeric fields, as numbers.
 
  [IntBinder](Aspid.MVVM.StarterKit.IntBinder.md)
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cint%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`Binder<int>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [IntConverterAsset](Aspid.MVVM.StarterKit.IntConverterAsset.md)
@@ -2732,7 +2732,7 @@ accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder
 
  [IntMonoBinder](Aspid.MVVM.StarterKit.IntMonoBinder.md)
 
-Abstract base [`StarterKit.MonoBinder<T>?text=MonoBinder%3cint%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`MonoBinder<int>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [IntToBoolConverterAsset](Aspid.MVVM.StarterKit.IntToBoolConverterAsset.md)
@@ -2947,37 +2947,37 @@ Writes the name of a locale.
  [LocalizeStringEventEntryBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryBinder.md)
 
 [`TargetBinder<T1, T2>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntryEnumGroupMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryEnumGroupMonoBinder.md)
 
 [`EnumGroupMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.EnumGroupMonoBinder-2.md) that sets
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name on each element.
 
  [LocalizeStringEventEntryEnumMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryEnumMonoBinder.md)
 
 [`EnumMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.EnumMonoBinder-2.md) that sets
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntryMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntryMonoBinder.md)
 
 [`ComponentMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntrySwitcherBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntrySwitcherBinder.md)
 
 [`SwitcherBinder<T1, T2>`](Aspid.MVVM.StarterKit.SwitcherBinder-2.md) that switches
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventEntrySwitcherMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventEntrySwitcherMonoBinder.md)
 
 [`SwitcherMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.SwitcherMonoBinder-2.md) that switches
-the LocalizedString.TableEntryReference of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
+the [`TableEntryReference`](https://docs.unity3d.com/ScriptReference/Localization-LocalizedReference-TableEntryReference.html) of [`StringReference`](https://docs.unity3d.com/ScriptReference/Localization-Components-LocalizeStringEvent-StringReference.html)
 by key name.
 
  [LocalizeStringEventToSourceMonoBinder](Aspid.MVVM.StarterKit.LocalizeStringEventToSourceMonoBinder.md)
@@ -3170,21 +3170,21 @@ Converts a number to another numeric type under a chosen overflow policy.
 
  [ObjectBinder\<TObject\>](Aspid.MVVM.StarterKit.ObjectBinder-1.md)
 
-Abstract base [`StarterKit.Binder<T>?text=Binder%3cTObject%3e`](Aspid.MVVM.StarterKit.md) that binds a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html)
+Abstract base [`Binder<TObject>`](Aspid.MVVM.StarterKit.Binder-1.md) that binds a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html)
 reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [ObjectCollectionCountMonoBinder](Aspid.MVVM.StarterKit.ObjectCollectionCountMonoBinder.md)
 
-[`StarterKit.CollectionCountMonoBinder<T>?text=CollectionCountMonoBinder%3cobject%3e`](Aspid.MVVM.StarterKit.md) for a collection of any reference type.
+[`CollectionCountMonoBinder<object>`](Aspid.MVVM.StarterKit.CollectionCountMonoBinder-1.md) for a collection of any reference type.
 
  [ObjectMonoBinder\<TObject\>](Aspid.MVVM.StarterKit.ObjectMonoBinder-1.md)
 
-Abstract base [`StarterKit.MonoBinder<T>?text=MonoBinder%3cTObject%3e`](Aspid.MVVM.StarterKit.md) that binds a [`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html)
+Abstract base [`MonoBinder<TObject>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds a [`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html)
 reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [ObjectNameBinder](Aspid.MVVM.StarterKit.ObjectNameBinder.md)
 
-[`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cObject%2c+string%3e`](Aspid.MVVM.StarterKit.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target.
+[`TargetBinder<Object, string>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target.
 
  [ObjectNameConverter](Aspid.MVVM.StarterKit.ObjectNameConverter.md)
 
@@ -3192,7 +3192,7 @@ Reads the name of a Unity object.
 
  [ObjectNameMonoBinder](Aspid.MVVM.StarterKit.ObjectNameMonoBinder.md)
 
-[`StarterKit.MonoBinder<T>?text=MonoBinder%3cstring%3e`](Aspid.MVVM.StarterKit.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target object.
+[`MonoBinder<string>`](Aspid.MVVM.StarterKit.MonoBinder-1.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target object.
 
  [ObjectToBoolConverterAsset](Aspid.MVVM.StarterKit.ObjectToBoolConverterAsset.md)
 
@@ -3226,14 +3226,14 @@ and reflects its changes onto a View.
 Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that follows an `IReadOnlyObservableDictionary<T1, T2>`
 and reflects its changes onto a View.
 
+ [ObservableDictionaryViewModelBinder\<TKey, TViewModel\>](Aspid.MVVM.StarterKit.ObservableDictionaryViewModelBinder-2.md)
+
+[`ObservableDictionaryViewModelBinder<T1, T2, T3>`](Aspid.MVVM.StarterKit.ObservableDictionaryViewModelBinder-3.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
+
  [ObservableDictionaryViewModelBinder\<TKey, TViewModel, TView\>](Aspid.MVVM.StarterKit.ObservableDictionaryViewModelBinder-3.md)
 
 [`ObservableDictionaryBinder<T1, T2>`](Aspid.MVVM.StarterKit.ObservableDictionaryBinder-2.md) that creates a view per entry through a keyed factory
 and releases it when the entry leaves. A replacement releases the old view and creates a new one.
-
- [ObservableDictionaryViewModelBinder\<TKey, TViewModel\>](Aspid.MVVM.StarterKit.ObservableDictionaryViewModelBinder-2.md)
-
-[`ObservableDictionaryViewModelBinder<T1, T2, T3>`](Aspid.MVVM.StarterKit.ObservableDictionaryViewModelBinder-3.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
 
  [ObservableDictionaryViewModelMonoBinder](Aspid.MVVM.StarterKit.ObservableDictionaryViewModelMonoBinder.md)
 
@@ -3254,21 +3254,21 @@ add, remove, replace, move and reset changes onto a View.
 Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that follows a plain, observable or filtered list and reflects its
 add, remove, replace, move and reset changes onto a View.
 
- [ObservableListViewModelBinder\<TView\>](Aspid.MVVM.StarterKit.ObservableListViewModelBinder-1.md)
-
-[`ObservableListBinder<T>`](Aspid.MVVM.StarterKit.ObservableListBinder-1.md) that creates a view per ViewModel in list order, with an optional filter and sort order.
-
  [ObservableListViewModelBinder](Aspid.MVVM.StarterKit.ObservableListViewModelBinder.md)
 
 [`ObservableListViewModelBinder<T>`](Aspid.MVVM.StarterKit.ObservableListViewModelBinder-1.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
 
- [ObservableListViewModelMonoBinder](Aspid.MVVM.StarterKit.ObservableListViewModelMonoBinder.md)
+ [ObservableListViewModelBinder\<TView\>](Aspid.MVVM.StarterKit.ObservableListViewModelBinder-1.md)
 
-[`ObservableListViewModelMonoBinder<T>`](Aspid.MVVM.StarterKit.ObservableListViewModelMonoBinder-1.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
+[`ObservableListBinder<T>`](Aspid.MVVM.StarterKit.ObservableListBinder-1.md) that creates a view per ViewModel in list order, with an optional filter and sort order.
 
  [ObservableListViewModelMonoBinder\<TView\>](Aspid.MVVM.StarterKit.ObservableListViewModelMonoBinder-1.md)
 
 [`ObservableListMonoBinder<T>`](Aspid.MVVM.StarterKit.ObservableListMonoBinder-1.md) that creates a view per ViewModel in list order, with an optional filter and sort order.
+
+ [ObservableListViewModelMonoBinder](Aspid.MVVM.StarterKit.ObservableListViewModelMonoBinder.md)
+
+[`ObservableListViewModelMonoBinder<T>`](Aspid.MVVM.StarterKit.ObservableListViewModelMonoBinder-1.md) over [`MonoView`](Aspid.MVVM.MonoView.md).
 
  [OffsetThenScaleConverter](Aspid.MVVM.StarterKit.OffsetThenScaleConverter.md)
 
@@ -3947,16 +3947,15 @@ the normalized position and [`ScrollRectCommandBinder<T1, T2>.Param1`](Aspid.MVV
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with
 the normalized position and [`ScrollRectCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.ScrollRectCommandBinder-1.md#Aspid_MVVM_StarterKit_ScrollRectCommandBinder_1_Param).
 
+ [ScrollRectCommandMonoBinder](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with the normalized position.
+
  [ScrollRectCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-1.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with the normalized position and [`ScrollRectCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_1_Param).
-
- [ScrollRectCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with the normalized position and [`ScrollRectCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_3_Param1),
-[`ScrollRectCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_3_Param2), [`ScrollRectCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_3_Param3).
 
  [ScrollRectCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-2.md)
 
@@ -3964,10 +3963,11 @@ the normalized position and [`ScrollRectCommandBinder<T>.Param`](Aspid.MVVM.Star
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with the normalized position and [`ScrollRectCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_2_Param1),
 [`ScrollRectCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_2_Param2).
 
- [ScrollRectCommandMonoBinder](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder.md)
+ [ScrollRectCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with the normalized position.
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-onValueChanged.html) with the normalized position and [`ScrollRectCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_3_Param1),
+[`ScrollRectCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_3_Param2), [`ScrollRectCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.ScrollRectCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ScrollRectCommandMonoBinder_3_Param3).
 
  [ScrollRectHorizontalBinder](Aspid.MVVM.StarterKit.ScrollRectHorizontalBinder.md)
 
@@ -4055,11 +4055,6 @@ element.
 [`ComponentFloatMonoBinder<T>`](Aspid.MVVM.StarterKit.ComponentFloatMonoBinder-1.md) that binds
 [`verticalNormalizedPosition`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect-verticalNormalizedPosition.html).
 
- [ScrollbarCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-2.md)
-
-[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-2.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_2_Param1), [`ScrollbarCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-2.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_2_Param2).
-
  [ScrollbarCommandBinder](Aspid.MVVM.StarterKit.ScrollbarCommandBinder.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on
@@ -4071,15 +4066,15 @@ element.
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-3.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_3_Param1),
 [`ScrollbarCommandBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-3.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_3_Param2), [`ScrollbarCommandBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-3.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_3_Param3).
 
+ [ScrollbarCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-2.md)
+
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-2.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_2_Param1), [`ScrollbarCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-2.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_2_Param2).
+
  [ScrollbarCommandBinder\<T\>](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-1.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.ScrollbarCommandBinder-1.md#Aspid_MVVM_StarterKit_ScrollbarCommandBinder_1_Param).
-
- [ScrollbarCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder-1.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_ScrollbarCommandMonoBinder_1_Param).
 
  [ScrollbarCommandMonoBinder](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder.md)
 
@@ -4096,6 +4091,11 @@ element.
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ScrollbarCommandMonoBinder_2_Param1), [`ScrollbarCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ScrollbarCommandMonoBinder_2_Param2).
+
+ [ScrollbarCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder-1.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) with the scrollbar value and [`ScrollbarCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.ScrollbarCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_ScrollbarCommandMonoBinder_1_Param).
 
  [ScrollbarSizeBinder](Aspid.MVVM.StarterKit.ScrollbarSizeBinder.md)
 
@@ -4243,11 +4243,6 @@ One word for every count: Chinese, Japanese, Korean, Thai, Vietnamese, Turkish, 
 the slider value and [`SliderCommandBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.SliderCommandBinder-3.md#Aspid_MVVM_StarterKit_SliderCommandBinder_3_Param1),
 [`SliderCommandBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.SliderCommandBinder-3.md#Aspid_MVVM_StarterKit_SliderCommandBinder_3_Param2), [`SliderCommandBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.SliderCommandBinder-3.md#Aspid_MVVM_StarterKit_SliderCommandBinder_3_Param3).
 
- [SliderCommandBinder](Aspid.MVVM.StarterKit.SliderCommandBinder.md)
-
-[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with
-the slider value.
-
  [SliderCommandBinder\<T\>](Aspid.MVVM.StarterKit.SliderCommandBinder-1.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with
@@ -4258,15 +4253,20 @@ the slider value and [`SliderCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.Slid
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with
 the slider value and [`SliderCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.SliderCommandBinder-2.md#Aspid_MVVM_StarterKit_SliderCommandBinder_2_Param1), [`SliderCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.SliderCommandBinder-2.md#Aspid_MVVM_StarterKit_SliderCommandBinder_2_Param2).
 
+ [SliderCommandBinder](Aspid.MVVM.StarterKit.SliderCommandBinder.md)
+
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with
+the slider value.
+
+ [SliderCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-2.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with the slider value and [`SliderCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_2_Param1), [`SliderCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_2_Param2).
+
  [SliderCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-1.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with the slider value and [`SliderCommandMonoBinder<T>.Param`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-1.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_1_Param).
-
- [SliderCommandMonoBinder](Aspid.MVVM.StarterKit.SliderCommandMonoBinder.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with the slider value.
 
  [SliderCommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-3.md)
 
@@ -4274,10 +4274,10 @@ the slider value and [`SliderCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKi
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with the slider value and [`SliderCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_3_Param1),
 [`SliderCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_3_Param2), [`SliderCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_3_Param3).
 
- [SliderCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-2.md)
+ [SliderCommandMonoBinder](Aspid.MVVM.StarterKit.SliderCommandMonoBinder.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with the slider value and [`SliderCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_2_Param1), [`SliderCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.SliderCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_SliderCommandMonoBinder_2_Param2).
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Slider-onValueChanged.html) with the slider value.
 
  [SliderExtensions](Aspid.MVVM.StarterKit.SliderExtensions.md)
 
@@ -4679,7 +4679,7 @@ is sent to the ViewModel on binding.
 
  [TargetFloatBinder\<TTarget\>](Aspid.MVVM.StarterKit.TargetFloatBinder-1.md)
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+float%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`TargetBinder<TTarget, float>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [TargetFrameRateBinder](Aspid.MVVM.StarterKit.TargetFrameRateBinder.md)
@@ -4692,13 +4692,13 @@ accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBi
 
  [TargetIntBinder\<TTarget\>](Aspid.MVVM.StarterKit.TargetIntBinder-1.md)
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+int%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`TargetBinder<TTarget, int>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
  [TargetObjectBinder\<TTarget, TObject\>](Aspid.MVVM.StarterKit.TargetObjectBinder-2.md)
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+TObject%3e`](Aspid.MVVM.StarterKit.md) that binds a
-[`Object`](https://docs.unity3d.com/ScriptReference/Object?text=UnityEngine-Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
+Abstract base [`TargetBinder<TTarget, TObject>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds a
+[`UnityEngine.Object`](https://docs.unity3d.com/ScriptReference/Object.html) reference, normalizing destroyed references to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> in both directions.
 
  [TextAlignmentBinder](Aspid.MVVM.StarterKit.TextAlignmentBinder.md)
 
@@ -4971,16 +4971,6 @@ Measures how long there is until a moment.
 
 Provides extension methods for [`CultureInfoMode`](Aspid.MVVM.StarterKit.CultureInfoMode.md).
 
- [ToggleCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ToggleCommandBinder-2.md)
-
-[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with
-the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ToggleCommandBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_2_Param1), [`ToggleCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ToggleCommandBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_2_Param2).
-
- [ToggleCommandBinder\<T\>](Aspid.MVVM.StarterKit.ToggleCommandBinder-1.md)
-
-[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with
-the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.ToggleCommandBinder-1.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_1_Param).
-
  [ToggleCommandBinder](Aspid.MVVM.StarterKit.ToggleCommandBinder.md)
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with
@@ -4992,6 +4982,22 @@ the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html).
 the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.ToggleCommandBinder-3.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_3_Param1), [`ToggleCommandBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.ToggleCommandBinder-3.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_3_Param2),
 [`ToggleCommandBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.ToggleCommandBinder-3.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_3_Param3).
 
+ [ToggleCommandBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ToggleCommandBinder-2.md)
+
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with
+the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ToggleCommandBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_2_Param1), [`ToggleCommandBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ToggleCommandBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_2_Param2).
+
+ [ToggleCommandBinder\<T\>](Aspid.MVVM.StarterKit.ToggleCommandBinder-1.md)
+
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that executes a command on [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with
+the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandBinder<T>.Param`](Aspid.MVVM.StarterKit.ToggleCommandBinder-1.md#Aspid_MVVM_StarterKit_ToggleCommandBinder_1_Param).
+
+ [ToggleCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-2.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
+[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_2_Param1),
+[`ToggleCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_2_Param2).
+
  [ToggleCommandMonoBinder](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder.md)
 
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
@@ -5002,12 +5008,6 @@ the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) a
 [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
 [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_3_Param1),
 [`ToggleCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_3_Param2), [`ToggleCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_3_Param3).
-
- [ToggleCommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-2.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that executes a command on
-[`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Toggle-onValueChanged.html) with the new [`isOn`](https://docs.unity3d.com/ScriptReference/UI-Toggle-isOn.html) and [`ToggleCommandMonoBinder<T1, T2>.Param1`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_2_Param1),
-[`ToggleCommandMonoBinder<T1, T2>.Param2`](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-2.md#Aspid_MVVM_StarterKit_ToggleCommandMonoBinder_2_Param2).
 
  [ToggleCommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.ToggleCommandMonoBinder-1.md)
 
@@ -5620,7 +5620,7 @@ Serializable sort order for collection binders.
 
  [IColorBinder](Aspid.MVVM.StarterKit.IColorBinder.md)
 
-[`MVVM.IBinder<T>?text=IBinder%3cColor%3e`](Aspid.MVVM.md) that also accepts an HTML color string such as <code>#FF0000</code> or <code>red</code>.
+[`IBinder<Color>`](Aspid.MVVM.IBinder-1.md) that also accepts an HTML color string such as <code>#FF0000</code> or <code>red</code>.
 
  [IComponentInitializable](Aspid.MVVM.StarterKit.IComponentInitializable.md)
 
@@ -5638,13 +5638,13 @@ Converts a value of type <code class="typeparamref">TFrom</code> into a value of
 
 [`INumberBinder`](Aspid.MVVM.StarterKit.INumberBinder.md) whose implementors bind a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">double</a>; every other numeric type widens to it.
 
- [IDynamicProperty](Aspid.MVVM.StarterKit.IDynamicProperty.md)
-
-Provides non-generic access to a property stored by a [`DynamicViewModel`](Aspid.MVVM.StarterKit.DynamicViewModel.md).
-
  [IDynamicProperty\<T\>](Aspid.MVVM.StarterKit.IDynamicProperty-1.md)
 
 Provides typed access to a property stored by a [`DynamicViewModel`](Aspid.MVVM.StarterKit.DynamicViewModel.md).
+
+ [IDynamicProperty](Aspid.MVVM.StarterKit.IDynamicProperty.md)
+
+Provides non-generic access to a property stored by a [`DynamicViewModel`](Aspid.MVVM.StarterKit.DynamicViewModel.md).
 
  [IFloatBinder](Aspid.MVVM.StarterKit.IFloatBinder.md)
 
@@ -5702,33 +5702,25 @@ applying a scalar to every component.
 
 Reverse binder that reports a vector to both [`Vector2`](https://docs.unity3d.com/ScriptReference/Vector2.html) and [`Vector3`](https://docs.unity3d.com/ScriptReference/Vector3.html) members of the ViewModel.
 
- [IViewFactory\<T1, T2, TView\>](Aspid.MVVM.StarterKit.IViewFactory-3.md)
-
-Creates views for a ViewModel with two extra arguments. Keyed creation ignores the key.
-
  [IViewFactory\<T1, T2, T3, TView\>](Aspid.MVVM.StarterKit.IViewFactory-4.md)
 
 Creates views for a ViewModel with three extra arguments. Keyed creation ignores the key.
-
- [IViewFactory\<T, TView\>](Aspid.MVVM.StarterKit.IViewFactory-2.md)
-
-Creates views for a ViewModel with one extra argument. Keyed creation ignores the key.
 
  [IViewFactory\<TView\>](Aspid.MVVM.StarterKit.IViewFactory-1.md)
 
 Creates views for a ViewModel. Keyed creation ignores the key.
 
+ [IViewFactory\<T1, T2, TView\>](Aspid.MVVM.StarterKit.IViewFactory-3.md)
+
+Creates views for a ViewModel with two extra arguments. Keyed creation ignores the key.
+
+ [IViewFactory\<T, TView\>](Aspid.MVVM.StarterKit.IViewFactory-2.md)
+
+Creates views for a ViewModel with one extra argument. Keyed creation ignores the key.
+
  [IViewFactoryRelease\<T\>](Aspid.MVVM.StarterKit.IViewFactoryRelease-1.md)
 
 Returns views produced by a factory back to it.
-
- [IViewFactoryWithKey\<T, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-2.md)
-
-Creates views for a ViewModel identified by a key, with one extra argument.
-
- [IViewFactoryWithKey\<T1, T2, T3, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-4.md)
-
-Creates views for a ViewModel identified by a key, with three extra arguments.
 
  [IViewFactoryWithKey\<T1, T2, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-3.md)
 
@@ -5737,6 +5729,14 @@ Creates views for a ViewModel identified by a key, with two extra arguments.
  [IViewFactoryWithKey\<TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-1.md)
 
 Creates views for a ViewModel identified by a key.
+
+ [IViewFactoryWithKey\<T1, T2, T3, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-4.md)
+
+Creates views for a ViewModel identified by a key, with three extra arguments.
+
+ [IViewFactoryWithKey\<T, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-2.md)
+
+Creates views for a ViewModel identified by a key, with one extra argument.
 
 ### Enums
 

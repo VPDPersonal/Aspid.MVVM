@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype),
-exposed as a per-type singleton via [`OneTimeStructBindableMember<T>.Get`](Aspid.MVVM.OneTimeStructBindableMember-1.md#Aspid_MVVM_OneTimeStructBindableMember_1_Get__0_).
+Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
 ```csharp
 public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>, IReadOnlyValueBindableMember<T>, IBinderAdder where T : struct
@@ -22,7 +21,7 @@ public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember
 
 `T` 
 
-The struct type of the bound value.
+The bound struct type.
 
 #### Inheritance
 
@@ -41,7 +40,7 @@ The struct type of the bound value.
 
 ### Get\(T\) {#Aspid_MVVM_OneTimeStructBindableMember_1_Get__0_}
 
-Creates a reusable instance and assigns the provided value for one-time binding.
+Returns the shared instance with [`OneTimeStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneTimeStructBindableMember-2.md#Aspid_MVVM_OneTimeStructBindableMember_2_Value) set to <code class="paramref">value</code>.
 
 ```csharp
 public static OneTimeStructBindableMember<T> Get(T value)
@@ -51,11 +50,15 @@ public static OneTimeStructBindableMember<T> Get(T value)
 
 `value` T
 
-The value to be provided to the binder.
+The value to push to the binder.
 
 #### Returns
 
  [OneTimeStructBindableMember](Aspid.MVVM.OneTimeStructBindableMember-1.md)\<T\>
 
-A singleton instance of [`OneTimeStructBindableMember<T>`](Aspid.MVVM.OneTimeStructBindableMember-1.md) configured with the specified value.
+The shared instance for <code class="typeparamref">T</code>.
+
+#### Remarks
+
+Every call returns the same instance and overwrites its value, so bind it before the next call.
 

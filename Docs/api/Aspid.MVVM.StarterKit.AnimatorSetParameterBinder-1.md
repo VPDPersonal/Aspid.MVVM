@@ -165,30 +165,19 @@ public void NotifyCanExecuteChanged()
 
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_AnimatorSetParameterBinder_1_OnBound}
 
-Called after binding is established. Override to add post-binding logic.
+Called after the binder attaches and receives the first value. Override to subscribe to the component.
 
 ```csharp
 protected override sealed void OnBound()
 ```
 
-#### Remarks
-
-Runs after the ViewModel's first value has been applied and after [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>. This is where a binder subscribes to its component — see
-[`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) for why the earlier hook is the wrong place.
-
 ### OnUnbinding\(\) {#Aspid_MVVM_StarterKit_AnimatorSetParameterBinder_1_OnUnbinding}
 
-Called before unbinding. Override to add pre-unbinding logic.
+Called before the binder detaches, while values it reports still reach the ViewModel. Override to report a last value.
 
 ```csharp
 protected override sealed void OnUnbinding()
 ```
-
-#### Remarks
-
-Runs while [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is still <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> and the binder is still
-attached to the ViewModel, so anything sent from here still arrives.
 
 ### SetParameter\(T?\) {#Aspid_MVVM_StarterKit_AnimatorSetParameterBinder_1_SetParameter__0_}
 

@@ -1,0 +1,248 @@
+using System.Linq;
+using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Aspid.MVVM.Generators.Generators.ViewModels;
+using Xunit;
+
+namespace MVVMGenerators.Tests;
+
+/// <summary>
+/// Tests for the ViewModel generator's implementation of custom ViewModel interfaces: an interface that exposes
+/// bindable members as properties gets them backed by the members the generator emits.
+/// </summary>
+public sealed class ViewModelGeneratorTests
+{
+    private const string Framework = """
+        using System;
+
+        namespace Aspid.MVVM
+        {
+            public enum BindMode { None, OneWay, TwoWay, OneTime, OneWayToSource }
+
+            public interface IBinder { }
+            public interface IBinderRemover { }
+            public interface IBinderAdder { BindMode Mode { get; } IBinderRemover Add(IBinder binder); }
+            public interface IReadOnlyValueBindableMember<out T> : IBinderAdder { T Value { get; } }
+            public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T> { event Action<T> Changed; }
+            public interface IBindableMember<T> : IReadOnlyBindableMember<T> { new T Value { set; } }
+
+            public readonly struct FindBindableMemberParameters { }
+            public readonly struct FindBindableMemberResult { }
+
+            public interface IViewModel { FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters); }
+
+            [AttributeUsage(AttributeTargets.Class)]
+            public sealed class ViewModelAttribute : Attribute { }
+
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+            public class BindAttribute : Attribute { public BindAttribute() { } public BindAttribute(BindMode mode) { } }
+
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+            public sealed class BindAlsoAttribute : Attribute { public BindAlsoAttribute(string propertyName) { } }
+        }
+        """;
+
+    /// <summary>
+    /// An interface slot typed <c>IBindableMember</c> is a custom ViewModel interface property, and a two-way
+    /// member backs it.
+    /// </summary>
+    [Fact]
+    public void ATwoWaySlotIsImplementedByATwoWayMember()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            public interface IPlayerViewModel : IViewModel
+            {
+                IBindableMember<int> Health { get; }
+            }
+
+            [ViewModel]
+            public partial class PlayerViewModel : IPlayerViewModel
+            {
+                [Bind(BindMode.TwoWay)] private int _health;
+            }
+            """);
+
+        Assert.Contains("IPlayerViewModel.Health =>", generated);
+    }
+
+    /// <summary>
+    /// A read-only generated member cannot back a two-way slot, so the explicit implementation is not emitted
+    /// (it would not compile).
+    /// </summary>
+    [Fact]
+    public void ATwoWaySlotIsNotImplementedByAReadOnlyMember()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            public interface IPlayerViewModel : IViewModel
+            {
+                IBindableMember<int> Health { get; }
+            }
+
+            [ViewModel]
+            public partial class PlayerViewModel : IPlayerViewModel
+            {
+                [Bind(BindMode.OneWay)] private int _health;
+            }
+            """);
+
+        Assert.DoesNotContain("IPlayerViewModel.Health", generated);
+    }
+
+    /// <summary>A read-only slot accepts a read-only member as well as a two-way one.</summary>
+    [Fact]
+    public void AReadOnlySlotAcceptsAReadOnlyAndATwoWayMember()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            public interface IPlayerViewModel : IViewModel
+            {
+                IReadOnlyBindableMember<int> Health { get; }
+                IReadOnlyBindableMember<int> Mana { get; }
+            }
+
+            [ViewModel]
+            public partial class PlayerViewModel : IPlayerViewModel
+            {
+                [Bind(BindMode.OneWay)] private int _health;
+                [Bind(BindMode.TwoWay)] private int _mana;
+            }
+            """);
+
+        Assert.Contains("IPlayerViewModel.Health =>", generated);
+        Assert.Contains("IPlayerViewModel.Mana =>", generated);
+    }
+
+    /// <summary>
+    /// Every <c>[BindAlso]</c> on a member counts: each plain property it names gets a bindable member and is
+    /// notified when the member changes.
+    /// </summary>
+    [Fact]
+    public void EveryBindAlsoTargetIsNotified()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind]
+                [BindAlso(nameof(Percent))]
+                [BindAlso(nameof(Label))]
+                private int _health;
+
+                public float Percent => _health / 100f;
+
+                public string Label => _health.ToString();
+            }
+            """);
+
+        Assert.Contains("OnPercentPropertyChanged();", generated);
+        Assert.Contains("OnLabelPropertyChanged();", generated);
+        Assert.Contains("PercentBindable", generated);
+        Assert.Contains("LabelBindable", generated);
+    }
+
+    /// <summary>
+    /// A <c>OneWayToSource</c> target has no change notification, so <c>[BindAlso]</c> skips it instead of emitting
+    /// a call with no method name.
+    /// </summary>
+    [Fact]
+    public void ABindAlsoTargetWithoutNotificationIsSkipped()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind]
+                [BindAlso(nameof(Input))]
+                [BindAlso(nameof(Mana))]
+                private int _health;
+
+                [Bind(BindMode.OneWayToSource)] private int _input;
+
+                [Bind] private int _mana;
+            }
+            """);
+
+        Assert.DoesNotMatch(new Regex(@"^\s*\(\);", RegexOptions.Multiline), generated);
+        Assert.DoesNotContain("OnInputPropertyChanged", generated);
+        Assert.Contains("OnManaPropertyChanged();", generated);
+    }
+
+    /// <summary>
+    /// The marker of <c>FindBindableMember</c> compiles only under <c>ENABLE_PROFILER</c>, so a release player
+    /// carries no marker field.
+    /// </summary>
+    [Fact]
+    public void TheProfilerMarkerCompilesOnlyUnderEnableProfiler()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind] private int _health;
+            }
+            """);
+
+        Assert.Contains("__findBindableMemberMarker", generated);
+        Assert.Equal(2, CountOf(generated, "#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED"));
+        Assert.DoesNotContain("#if !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
+    }
+
+    /// <summary>
+    /// A one-time member is kept per ViewModel and refreshed on access, not taken from a static instance shared by
+    /// every ViewModel, so a member returned earlier keeps the value of its own ViewModel.
+    /// </summary>
+    [Fact]
+    public void AOneTimeMemberIsKeptPerViewModel()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind] private readonly string _name;
+                [Bind(BindMode.OneTime)] private int _level;
+            }
+            """);
+
+        Assert.DoesNotContain(".Get(", generated);
+        Assert.Contains("private global::Aspid.MVVM.OneTimeBindableMember<string> __nameBindable;", generated);
+        Assert.Contains("if (__nameBindable is null) __nameBindable = new(_name);", generated);
+        Assert.Contains("else __levelBindable.Value = _level;", generated);
+    }
+
+    private static int CountOf(string text, string value) =>
+        Regex.Matches(text, Regex.Escape(value)).Count;
+
+    private static string Run(string declaration)
+    {
+        var compilation = CSharpCompilation.Create(
+            assemblyName: "Probe.ViewModels",
+            syntaxTrees: new[]
+            {
+                CSharpSyntaxTree.ParseText(Framework),
+                CSharpSyntaxTree.ParseText(declaration),
+            },
+            references: new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
+            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        return string.Concat(CSharpGeneratorDriver
+            .Create(new ViewModelGenerator())
+            .RunGenerators(compilation)
+            .GetRunResult()
+            .GeneratedTrees
+            .Select(tree => tree.ToString()));
+    }
+}

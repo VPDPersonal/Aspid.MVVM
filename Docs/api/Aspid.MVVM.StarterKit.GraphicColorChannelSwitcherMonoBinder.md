@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`StarterKit.SwitcherMonoBinder<T1, T2>?text=SwitcherMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
+[`SwitcherMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.SwitcherMonoBinder-2.md) that switches the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html).
 
 ```csharp
 [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Channel Switcher")]

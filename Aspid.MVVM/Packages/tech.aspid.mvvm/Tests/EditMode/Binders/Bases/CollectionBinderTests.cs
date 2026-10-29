@@ -78,23 +78,4 @@ namespace Aspid.MVVM.Tests
         private TestCollectionBinder NewBinder() =>
             Spawn<TestCollectionBinder>();
     }
-
-    internal sealed class TestCollectionBinder : CollectionMonoBinder<string>
-    {
-        public List<string> Applied { get; } = new();
-
-        protected override void OnAdded(IReadOnlyCollection<string> values) =>
-            Applied.AddRange(values);
-
-        protected override void OnReset() =>
-            Applied.Clear();
-    }
-
-    internal sealed class TestCollectionViewModelBinder : CollectionViewModelMonoBinder<StubView>
-    {
-        public void SetViews(params StubView[] views) =>
-            typeof(CollectionViewModelMonoBinder<StubView>)
-                .GetField("_views", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
-                .SetValue(this, views);
-    }
 }

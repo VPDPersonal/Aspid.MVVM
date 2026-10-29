@@ -243,7 +243,7 @@ namespace Aspid.MVVM
 
             return debugFieldContainer;
 
-            Button CreateMetaButton() => new Button().SetName("meta-button").SetText("▲");
+            Button CreateMetaButton() => new Button().SetName("meta-button").SetTextSelf("▲");
         }
         
         private static VisualElement GetInputField(string label, IFieldContext context)

@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Represents the binding mode that determines the direction of data flow between the ViewModel and the View.
+Specifies the direction of data flow between the ViewModel and the View.
 
 ```csharp
 public enum BindMode
@@ -34,35 +34,31 @@ public enum BindMode
 
 `None = 0` 
 
-No binding is applied. This is the default value.
+No binding; every bindable member rejects it.
 
 
 
 `OneWay = 1` 
 
-One-way binding: Updates from the ViewModel to the View are propagated.
-Changes in the View do not affect the ViewModel.
+Pushes every ViewModel change to the View.
 
 
 
 `TwoWay = 2` 
 
-Two-way binding: Updates are propagated in both directions.
-Changes in the View are reflected in the ViewModel, and vice versa.
+Pushes ViewModel changes to the View and View changes to the ViewModel.
 
 
 
 `OneTime = 3` 
 
-One-time binding: The value is propagated from the ViewModel to the View only once.
-Subsequent changes in the ViewModel do not affect the View.
+Pushes the ViewModel value to the View once, on bind.
 
 
 
 `OneWayToSource = 4` 
 
-One-way to source binding: Updates from the View to the ViewModel are propagated.
-Changes in the ViewModel do not affect the View.
+Pushes View changes to the ViewModel.
 
 
 

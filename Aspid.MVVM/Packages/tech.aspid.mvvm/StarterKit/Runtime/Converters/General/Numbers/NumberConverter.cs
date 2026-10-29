@@ -23,11 +23,11 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The number to convert.</param>
         /// <returns>The result, saturated to the return type.</returns>
         public int Convert(int value) =>
-            NumericSaturation.ToInt(Apply(value));
+            NumericSaturation.ToInt(ApplyToInteger(value));
 
         /// <inheritdoc cref="Convert(int)"/>
         public long Convert(long value) =>
-            NumericSaturation.ToLong(Apply(value));
+            NumericSaturation.ToLong(ApplyToInteger(value));
 
         /// <inheritdoc cref="Convert(int)"/>
         public float Convert(float value) =>
@@ -38,22 +38,22 @@ namespace Aspid.MVVM.StarterKit
             Apply(value);
 
         int IConverter<long, int>.Convert(long value) =>
-            NumericSaturation.ToInt(Apply(value));
+            NumericSaturation.ToInt(ApplyToInteger(value));
 
         int IConverter<float, int>.Convert(float value) =>
-            NumericSaturation.ToInt(Apply(value));
+            NumericSaturation.ToInt(ApplyToInteger(value));
 
         int IConverter<double, int>.Convert(double value) =>
-            NumericSaturation.ToInt(Apply(value));
+            NumericSaturation.ToInt(ApplyToInteger(value));
 
         long IConverter<int, long>.Convert(int value) =>
-            NumericSaturation.ToLong(Apply(value));
+            NumericSaturation.ToLong(ApplyToInteger(value));
 
         long IConverter<float, long>.Convert(float value) =>
-            NumericSaturation.ToLong(Apply(value));
+            NumericSaturation.ToLong(ApplyToInteger(value));
 
         long IConverter<double, long>.Convert(double value) =>
-            NumericSaturation.ToLong(Apply(value));
+            NumericSaturation.ToLong(ApplyToInteger(value));
 
         float IConverter<int, float>.Convert(int value) =>
             NumericSaturation.ToFloat(Apply(value));
@@ -79,5 +79,14 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The number to transform.</param>
         /// <returns>The result, in <see cref="double"/>.</returns>
         protected abstract double Apply(double value);
+
+        /// <summary>
+        /// Transforms the specified number on the way to an <see cref="int"/> or <see cref="long"/> result.
+        /// </summary>
+        /// <param name="value">The number to transform.</param>
+        /// <returns>The result, in <see cref="double"/>, before it is truncated and saturated.</returns>
+        /// <remarks>Default: <see cref="Apply"/>.</remarks>
+        protected virtual double ApplyToInteger(double value) =>
+            Apply(value);
     }
 }

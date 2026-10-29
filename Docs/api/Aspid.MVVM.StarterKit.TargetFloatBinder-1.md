@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-Abstract base [`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cTTarget%2c+float%3e`](Aspid.MVVM.StarterKit.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
+Abstract base [`TargetBinder<TTarget, float>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">float</a> property,
 accepting every numeric type via [`IFloatBinder`](Aspid.MVVM.StarterKit.IFloatBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
 ```csharp

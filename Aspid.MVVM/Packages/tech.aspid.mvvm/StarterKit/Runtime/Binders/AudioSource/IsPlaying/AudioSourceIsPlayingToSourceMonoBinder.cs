@@ -15,7 +15,7 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Audio/AudioSource/AudioSource Binder – Is Playing To Source")]
     public sealed class AudioSourceIsPlayingToSourceMonoBinder : ComponentMonoBinder<AudioSource>, IReverseBinder<bool>
     {
-        [Tooltip("Optional converter applied to the reported value; empty leaves it as-is.")]
+        [Tooltip("Optional converter; only an ITwoWayConverter applies, through ConvertBack. Empty leaves the value as-is.")]
         [SerializeReference] private IConverter<bool, bool> _converter;
 
         private bool _wasPlaying;
@@ -29,6 +29,13 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnBound()
         {
+            if (_converter is not (null or ITwoWayConverter<bool, bool>))
+            {
+                this.LogWarning(
+                    problem: $"it is bound as {Mode} with {_converter.GetType().GetTypeName()}, which converts one way only",
+                    consequence: "Values sent back to the ViewModel are not converted.");
+            }
+
             _wasPlaying = CachedComponent.isPlaying;
             Raise(_wasPlaying);
         }
@@ -45,6 +52,6 @@ namespace Aspid.MVVM.StarterKit
         }
 
         private void Raise(bool isPlaying) =>
-            ValueChanged?.Invoke(_converter?.Convert(isPlaying) ?? isPlaying);
+            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(isPlaying) : isPlaying);
     }
 }

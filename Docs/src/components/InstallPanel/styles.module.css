@@ -1,0 +1,287 @@
+/*
+ * The install section of the docs introduction, drawn like a feature card: a Package Manager mock-up beside the steps,
+ * with the URL as a code block along the bottom. The mock-up stays dark in both themes, like the editor captures.
+ */
+
+.install {
+  --install-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --install-accent-soft: color-mix(in srgb, var(--venom-accent-mark) 12%, transparent);
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  container-type: inline-size;
+  background: var(--venom-block-surface);
+  border: 2px solid var(--venom-line-strong);
+  border-radius: 12px;
+}
+html[data-theme='light'] .install { --install-accent-soft: color-mix(in srgb, var(--venom-accent-mark) 12%, transparent); }
+
+.top { display: flex; border-bottom: 1px solid var(--venom-line-strong); }
+/* The steps take the width their menu paths need on one line; the mock-up gets the rest. */
+.preview { position: relative; display: flex; flex: 1 1 56%; min-width: 0; min-height: 230px; background: #282828; border-right: 1px solid var(--venom-line-strong); }
+
+/* Match the introduction feature cards: instruction length must not move the 56% column boundary. */
+.installationTop { display: grid; grid-template-columns: 56% minmax(0, 1fr); }
+.installationTop > .steps { width: auto; min-width: 0; }
+.installationTop .steps b { white-space: normal; }
+
+/* ---------- Steps ---------- */
+
+.steps { display: flex; flex: none; width: min-content; flex-direction: column; justify-content: center; gap: 6px; margin: 0; padding: 18px; list-style: none; }
+.steps li { margin: 0; }
+.steps button {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--venom-muted);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: 400 0.9rem/1.5 var(--ifm-font-family-base);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.35s ease, background-color 0.35s ease, border-color 0.35s ease;
+}
+.steps button:hover { color: var(--venom-fg); }
+.steps button:focus-visible { outline-offset: -1px; }
+.steps b { color: inherit; font-weight: 600; white-space: nowrap; }
+.steps li[data-active] button { color: var(--venom-fg-strong); background: var(--install-accent-soft); border-color: color-mix(in srgb, var(--venom-accent-mark) 50%, transparent); }
+.steps li[data-done] button { color: var(--venom-fg); }
+.stepIndex {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  color: var(--venom-muted);
+  border: 1px solid var(--venom-divider);
+  border-radius: 50%;
+  font: 600 0.72rem/1 var(--ifm-font-family-monospace);
+  transition: color 0.35s ease, background-color 0.35s ease, border-color 0.35s ease;
+}
+.steps li[data-active] .stepIndex { color: var(--venom-accent-fill-ink); background: var(--venom-accent-fill); border-color: var(--venom-accent-fill); }
+.steps li[data-done] .stepIndex { color: var(--venom-accent); border-color: var(--venom-accent); }
+
+/* ---------- URL bar ---------- */
+
+/* `minmax(0, 1fr)` keeps a long pinned URL scrolling inside its code block instead of widening the card. */
+.bar { display: grid; grid-template-columns: minmax(0, 1fr); }
+/* The URL runs edge to edge, like the code in the feature cards; the card's own border frames it. */
+.field :global(.theme-code-block) { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+/* The URL lines up with the version tabs above it. */
+.field :global(.theme-code-block) pre { padding-inline: 0; border-radius: 0; }
+.field :global(.theme-code-block) code { padding-inline: 18px; }
+/* The version tabs head the code block they switch, as a tab strip; the walk-through types the same URL. */
+/* Both lines use the same bottom edge and CSS height. A negative margin against a border drifts at fractional zoom,
+   because browsers snap border widths to physical pixels but do not snap margins the same way. */
+.meta { --meta-pad: 18px; position: relative; display: flex; align-items: stretch; justify-content: space-between; gap: 14px; padding: 0 var(--meta-pad); }
+.meta::after { content: ''; position: absolute; inset-inline: 0; bottom: 0; height: 2px; background: var(--venom-line-strong); pointer-events: none; }
+/* Every tab's underline runs the strip's side padding past its label on both sides, so each label sits centred on its
+   underline and the first one starts at the card's edge, where the rule does. The paddings keep the labels where they
+   were, the negative margins keep the tabs in place, and the gap is exactly two overhangs, so the underlines meet. */
+.segmented .versionTab > button {
+  position: relative;
+  margin-inline: calc(-1 * var(--meta-pad));
+  padding-inline: var(--meta-pad);
+}
+.segmented { display: flex; gap: calc(2 * var(--meta-pad)); }
+.segmented button {
+  margin: 0;
+  padding: 13px 0;
+  color: var(--venom-muted);
+  background: none;
+  border: 0;
+  font: 400 0.82rem/1.4 var(--ifm-font-family-base);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.segmented button:hover:not(:disabled) { color: var(--venom-fg); }
+.segmented .versionTab > button::after { content: ''; position: absolute; inset-inline: 0; bottom: 0; z-index: 1; height: 2px; background: transparent; pointer-events: none; transition: background-color 0.2s ease; }
+.segmented button[aria-pressed='true'] { color: var(--venom-fg); }
+.segmented .versionTab > button[aria-pressed='true']::after { background: var(--venom-accent-mark); }
+/* Channel menus open upwards because the card clips below the URL. */
+.segmented button:disabled { opacity: 0.4; cursor: not-allowed; }
+.versionTab { position: relative; display: flex; }
+.segmented .versionTab > button { display: inline-flex; align-items: center; gap: 7px; }
+/* Prose uses the interface font; only concrete version numbers use monospace. */
+.versionName { color: var(--venom-muted); }
+.versionName[data-pinned], .versionMenu button[data-pinned] { font-family: var(--ifm-font-family-monospace); font-size: 0.74rem; }
+.caret { width: 0; height: 0; border-inline: 4px solid transparent; border-top: 5px solid currentcolor; opacity: 0.7; transition: transform 0.2s ease; }
+.versionTab > button[aria-expanded='true'] .caret { transform: rotate(180deg); }
+.versionMenu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: calc(-1 * var(--meta-pad) + 4px);
+  z-index: 2;
+  min-width: calc(100% + 20px);
+  max-height: 220px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  background: var(--venom-reading-surface);
+  border: 1px solid var(--venom-line-strong);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.35);
+  list-style: none;
+}
+.versionMenu li, .versionMenu li + li { margin: 0; }
+.segmented .versionMenu button {
+  width: 100%;
+  margin: 0;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 6px;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.segmented .versionMenu button:hover, .segmented .versionMenu button:focus-visible { color: var(--venom-fg-strong); background: var(--install-accent-soft); }
+.versionMenu button[aria-checked='true'] { color: var(--venom-accent); }
+/* The site's focus ring sits 4px out and the card clips it; the tab's own underline marks focus instead. */
+.segmented button:focus-visible { outline: none; color: var(--venom-fg-strong); }
+.segmented .versionTab > button:focus-visible:not([aria-pressed='true'])::after { background: color-mix(in srgb, var(--venom-accent-mark) 50%, transparent); }
+/* Outranks the accent colour of the global `.markdown a:not(...)` rule, like the feature cards' links. */
+:global(.markdown) a.versions:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)) {
+  color: var(--venom-muted);
+  font: 400 0.82rem/1.4 var(--ifm-font-family-base);
+  letter-spacing: normal;
+  text-decoration: none;
+  text-transform: none;
+  transition: color 0.15s;
+}
+:global(.markdown) a.versions:not(:global(.card)):not(:global(.pagination-nav__link)):not([class*='card_']):not(:global(.table-of-contents__link)):hover { color: var(--venom-accent); }
+.versions { align-self: center; white-space: nowrap; }
+.versions::after { content: '→'; display: inline-block; margin-left: 0.5em; transition: transform 0.15s; }
+.versions:hover::after { transform: translateX(3px); }
+
+/* ---------- Package Manager mock-up ---------- */
+
+/* The Package Manager sits 8px inside the card, like the captures and previews of the feature cards, on the editor's
+   own background, framed by its window edge. */
+.pm { position: relative; display: flex; flex: 1; flex-direction: column; min-width: 0; color: #d2d2d2; background: #383838; font: 11.5px/1.4 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.pm[data-frame='0'] { animation: pmOpen 0.5s var(--install-ease); }
+@keyframes pmOpen { from { opacity: 0; transform: scale(0.97); } }
+.pmTitle { display: flex; background: #282828; border-bottom: 1px solid #1f1f1f; }
+.pmTitle span { margin-bottom: -1px; padding: 6px 12px; background: #383838; border-right: 1px solid #1f1f1f; font-weight: 600; }
+.pmToolbar { display: flex; align-items: center; gap: 10px; padding: 5px 8px; background: #3c3c3c; border-bottom: 1px solid #242424; }
+.pmPlus { padding: 1px 7px; background: #585858; border: 1px solid #2a2a2a; border-radius: 3px; transition: background-color 0.2s ease; }
+.pmPlus[data-press] { background: #4a6f9a; }
+.pmFilter { color: #b8b8b8; }
+.pmMain { display: grid; flex: 1; grid-template-columns: 44% 1fr; min-height: 0; }
+.pmList { margin: 0; padding: 0; background: #333; border-right: 1px solid #242424; list-style: none; }
+.pmList li { display: flex; justify-content: space-between; gap: 6px; margin: 0; padding: 5px 8px; border-bottom: 1px solid #2c2c2c; white-space: nowrap; }
+.pmList li span:last-child { color: #9a9a9a; }
+.pmList li span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.pmNew { max-height: 0; padding-block: 0 !important; overflow: hidden; background: #2c5d87; opacity: 0; transition: max-height 0.4s var(--install-ease), padding 0.4s var(--install-ease), opacity 0.3s ease; }
+.pmNew[data-show] { max-height: 30px; padding-block: 5px !important; opacity: 1; }
+.pmNew span:last-child { color: #d6e6f5 !important; }
+.pmDetail { display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; }
+.pmDetail strong { color: #eee; font-size: 14px; }
+.pmId { color: #9a9a9a; font-family: var(--ifm-font-family-monospace); font-size: 10.5px; }
+.pmBadge { align-self: flex-start; padding: 2px 7px; color: #bfe5c5; background: rgb(92 180 107 / 0.18); border: 1px solid rgb(92 180 107 / 0.45); border-radius: 4px; animation: pmFade 0.4s ease; }
+@keyframes pmFade { from { opacity: 0; transform: translateY(4px); } }
+.pmSkeleton { height: 8px; background: #444; border-radius: 4px; }
+
+.pmMenu {
+  position: absolute;
+  top: 52px;
+  left: 8px;
+  margin: 0;
+  padding: 3px 0;
+  background: #2f2f2f;
+  border: 1px solid #1c1c1c;
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.45);
+  list-style: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transform-origin: top left;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.25s var(--install-ease);
+}
+.pmMenu[data-open] { opacity: 1; transform: none; }
+.pmMenu li { margin: 0; padding: 3px 14px; white-space: nowrap; }
+.pmMenu[data-open] li[data-hover] { color: #fff; background: #3a79bb; transition: background-color 0.2s ease 0.45s; }
+
+.pmPopover {
+  position: absolute;
+  top: 52px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 7px;
+  background: #2f2f2f;
+  border: 1px solid #1c1c1c;
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.45);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.25s var(--install-ease);
+}
+.pmPopover[data-open] { opacity: 1; transform: none; }
+/* The field keeps its right edge on the latest character, so the URL scrolls as it is typed. */
+.pmInput { display: flex; flex: 1; justify-content: flex-end; min-width: 0; overflow: hidden; padding: 2px 6px; background: #1f1f1f; border: 1px solid #3a79bb; border-radius: 3px; }
+.pmTyped { flex: none; max-width: 0; overflow: hidden; color: #e6e6e6; font-family: var(--ifm-font-family-monospace); font-size: 10.5px; white-space: nowrap; }
+.pmTyped[data-typed] { max-width: 600px; transition: max-width 1.3s steps(48) 0.15s; }
+.pmInstall { padding: 2px 10px; background: #585858; border: 1px solid #2a2a2a; border-radius: 3px; transition: background-color 0.2s ease; }
+.pmInstall[data-press] { background: #4a6f9a; }
+.pmProgress { flex-basis: 100%; height: 2px; background: #3a79bb; transform: scaleX(0); transform-origin: left; }
+.pmProgress[data-run] { transform: scaleX(1); transition: transform 0.9s ease-in-out 0.1s; }
+
+/* Stacks by the card's own width, so a narrow docs column does not squeeze the mock-up beside the steps. */
+@container (max-width: 600px) {
+  .top { flex-direction: column; }
+  .installationTop { grid-template-columns: minmax(0, 1fr); }
+  .preview { flex-basis: auto; border-right: 0; border-bottom: 1px solid var(--venom-line-strong); }
+  .steps { padding: 12px; }
+  .segmented button { font-size: 0.78rem; }
+}
+/* A narrow card has no room for the tabs and the "all versions" link side by side: the link moves above the tabs,
+   right-aligned, so the tabs keep their underline on the strip's bottom rule. */
+@container (max-width: 680px) {
+  .meta { --meta-pad: 14px; flex-wrap: wrap; row-gap: 0; }
+  .versions { order: -1; flex-basis: 100%; padding-top: 10px; text-align: right; }
+}
+
+@container (max-width: 420px) {
+  .segmented { gap: 0; margin-inline: calc(-1 * var(--meta-pad)); width: calc(100% + 2 * var(--meta-pad)); }
+  .versionTab { flex: 1; min-width: 0; }
+  .segmented .versionTab > button { flex-wrap: wrap; column-gap: 6px; row-gap: 3px; width: 100%; margin-inline: 0; padding-inline: 8px; }
+  .segmented .versionTab > button > span:first-child { flex-basis: 100%; text-align: left; }
+  .versionMenu { left: 4px; min-width: calc(100% - 8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .install *, .install *::before, .install *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; transition-delay: 0s !important; }
+}
+
+/* The light site theme shows Unity's light editor skin; colours come from its DefaultCommonLight theme. */
+html[data-theme='light'] .preview { background: #a5a5a5; }
+html[data-theme='light'] .pm { color: #090909; background: #c8c8c8; border-color: #999; }
+html[data-theme='light'] .pmTitle { background: #a5a5a5; border-bottom-color: #999; }
+html[data-theme='light'] .pmTitle span { background: #c8c8c8; }
+html[data-theme='light'] .pmToolbar { background: #cbcbcb; border-bottom-color: #999; }
+html[data-theme='light'] .pmPlus, html[data-theme='light'] .pmInstall { background: #e4e4e4; border-color: #b2b2b2; }
+html[data-theme='light'] .pmPlus[data-press], html[data-theme='light'] .pmInstall[data-press] { background: #96c3fb; }
+html[data-theme='light'] .pmFilter { color: #090909; }
+html[data-theme='light'] .pmList { background: #c2c2c2; border-right-color: #999; }
+html[data-theme='light'] .pmList li { border-bottom-color: #b5b5b5; }
+html[data-theme='light'] .pmList li span:last-child { color: #555; }
+html[data-theme='light'] .pmNew { color: #fff; background: #3a72b0; }
+html[data-theme='light'] .pmDetail strong { color: #090909; }
+html[data-theme='light'] .pmId { color: #555; }
+html[data-theme='light'] .pmBadge { color: #1f6a31; background: rgb(47 138 69 / 0.14); border-color: rgb(47 138 69 / 0.45); }
+html[data-theme='light'] .pmSkeleton { background: #b0b0b0; }
+html[data-theme='light'] .pmMenu, html[data-theme='light'] .pmPopover { background: #c1c1c1; border-color: #999; box-shadow: 0 6px 18px rgb(0 0 0 / 0.2); }
+html[data-theme='light'] .pmInput { background: #f0f0f0; border-color: #1d5087; }
+html[data-theme='light'] .pmMenu[data-open] li[data-hover] { background: #3a72b0; }
+html[data-theme='light'] .pmTyped { color: #090909; }
+html[data-theme='light'] .pmProgress { background: #3a72b0; }

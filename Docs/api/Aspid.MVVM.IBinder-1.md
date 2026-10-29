@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Extends [`IBinder`](Aspid.MVVM.IBinder.md) with the ability to receive typed values from the ViewModel.
+[`IBinder`](Aspid.MVVM.IBinder.md) that receives values of <code class="typeparamref">T</code> from the ViewModel.
 
 ```csharp
 public interface IBinder<in T> : IBinder
@@ -21,7 +21,7 @@ public interface IBinder<in T> : IBinder
 
 `T` 
 
-The type of value that can be received from the ViewModel.
+The bound value type.
 
 #### Implements
 
@@ -52,7 +52,7 @@ The type of value that can be received from the ViewModel.
 
 ### SetValue\(T?\) {#Aspid_MVVM_IBinder_1_SetValue__0_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 void SetValue(T? value)

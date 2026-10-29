@@ -11,11 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued one-way-to-source bindings that forwards
-View-side value changes back to the ViewModel through a captured setter [`Action<T>`](https://learn.microsoft.com/dotnet/api/system.action-1);
-additionally exposes the latest [`OneWayToSourceStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Value) and a [`OneWayToSourceStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Changed) event.
-Accepts [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), and
-[`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md) in [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) or [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) mode.
+[`IReadOnlyBindableMember<T>`](Aspid.MVVM.IReadOnlyBindableMember-1.md) that passes values from its reverse binders to a setter, unboxing them from an
+[`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code>.
 
 ```csharp
 public abstract class OneWayToSourceStructBindableMember<T, TBoxed> : IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover where T : struct, TBoxed where TBoxed : class
@@ -25,11 +22,11 @@ public abstract class OneWayToSourceStructBindableMember<T, TBoxed> : IReadOnlyB
 
 `T` 
 
-The struct type of the bound value.
+The bound struct type.
 
 `TBoxed` 
 
-The reference type used as the boxing target for <code class="typeparamref">T</code> (typically [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)).
+The boxed form of <code class="typeparamref">T</code>, such as [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 #### Inheritance
 
@@ -49,7 +46,7 @@ The reference type used as the boxing target for <code class="typeparamref">T</c
 
 ### OneWayToSourceStructBindableMember\(Action\<T\>\) {#Aspid_MVVM_OneWayToSourceStructBindableMember_2__ctor_System_Action__0__}
 
-Initializes a new instance of the [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) class with the specified value setter action.
+Creates a member that passes reported values to <code class="paramref">setValue</code>.
 
 ```csharp
 protected OneWayToSourceStructBindableMember(Action<T> setValue)
@@ -59,19 +56,19 @@ protected OneWayToSourceStructBindableMember(Action<T> setValue)
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>
 
-The action used to set the value when the event is triggered.
+The callback that writes a value reported by a reverse binder to the ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
 ### Mode {#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member; always [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -83,7 +80,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Value}
 
-Gets the current value.
+Gets the last value reported by a reverse binder.
 
 ```csharp
 public T Value { get; }
@@ -95,7 +92,7 @@ public T Value { get; }
 
 ### Changed {#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Changed}
 
-Raised when the value changes.
+Occurs after a reverse binder reports a value and the setter has run.
 
 ```csharp
 public event Action<T>? Changed

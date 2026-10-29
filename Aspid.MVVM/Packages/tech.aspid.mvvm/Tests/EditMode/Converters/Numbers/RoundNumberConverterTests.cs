@@ -113,15 +113,11 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(3L, converter.Convert(2.5d));
         }
 
-        // [Min(0)] holds the Inspector at zero, so a negative count only arrives from data authored
-        // before the attribute; rounding to a whole number is the nearest thing to the request.
+        // [Min(0)] holds the Inspector at zero, so the constructor is the only way a negative count
+        // gets in, and it refuses one.
         [Test]
-        public void Round_NegativeDigits_ReportsAndRoundsToAWholeNumber()
-        {
-            LogAssert.Expect(LogType.Error, new Regex("RoundNumberConverter.*decimal-place count -2 is negative"));
-
-            Assert.AreEqual(3f, new RoundNumberConverter(RoundMode.Round, digits: -2).Convert(3.14159f), delta: 1e-6f);
-        }
+        public void Constructor_NegativeDigits_Throws() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new RoundNumberConverter(RoundMode.Round, digits: -2));
 
         [Test]
         public void Round_UndeclaredMode_ReportsAndReturnsTheValueUnchanged()

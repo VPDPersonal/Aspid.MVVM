@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Represents the parameters used to search for a bindable member in a ViewModel.
+Represents the query passed to [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
 ```csharp
 public readonly ref struct FindBindableMemberParameters
@@ -22,7 +22,7 @@ public readonly ref struct FindBindableMemberParameters
 
 ### FindBindableMemberParameters\(string\) {#Aspid_MVVM_FindBindableMemberParameters__ctor_System_String_}
 
-Initializes a new instance of the [`FindBindableMemberParameters`](Aspid.MVVM.FindBindableMemberParameters.md) struct with the specified identifier.
+Creates a query for the member with identifier <code class="paramref">id</code>.
 
 ```csharp
 public FindBindableMemberParameters(string id)
@@ -38,7 +38,7 @@ The identifier of the bindable member.
 
 ### Id {#Aspid_MVVM_FindBindableMemberParameters_Id}
 
-Gets the identifier of the bindable member to search for.
+The identifier of the bindable member, as generated or set by [`BindIdAttribute`](Aspid.MVVM.BindIdAttribute.md).
 
 ```csharp
 public readonly string Id

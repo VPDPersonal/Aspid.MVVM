@@ -1,0 +1,13 @@
+<Project>
+
+    <!-- Ships the DLL into the Unity package. Release-only: the Tests project references this one, so a Debug
+         `dotnet test` run would otherwise overwrite the shipped Release DLL with a Debug build. -->
+    <Target Name="CopyToUnity" AfterTargets="Build" Condition="'$(IsRoslynComponent)' == 'true' And '$(Configuration)' == 'Release'">
+        <PropertyGroup>
+            <_UnityDestination>$(MSBuildThisFileDirectory)../Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/</_UnityDestination>
+        </PropertyGroup>
+        <MakeDir Directories="$(_UnityDestination)" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(_UnityDestination)" SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

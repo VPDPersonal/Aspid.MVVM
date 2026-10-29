@@ -11,11 +11,8 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Abstract base [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) for struct-valued one-way bindings that dispatches changes to
-both [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) and [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) subscribers — the latter receive the
-value pre-boxed as <code class="typeparamref">TBoxed</code>. Additionally exposes a get/set [`OneWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Value)
-and a [`OneWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Changed) event. Accepts only [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) and
-[`BindMode.OneTime`](Aspid.MVVM.BindMode.md) binders.
+[`IBindableMember<T>`](Aspid.MVVM.IBindableMember-1.md) that pushes every value change to its binders, boxing it for an
+[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code>.
 
 ```csharp
 public abstract class OneWayStructBindableMember<T, TBoxed> : IBindableMember<T>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover where T : struct, TBoxed where TBoxed : class
@@ -25,11 +22,11 @@ public abstract class OneWayStructBindableMember<T, TBoxed> : IBindableMember<T>
 
 `T` 
 
-The struct type of the bound value.
+The bound struct type.
 
 `TBoxed` 
 
-The reference type used as the boxing target for <code class="typeparamref">T</code> (typically [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)).
+The boxed form of <code class="typeparamref">T</code>, such as [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 #### Inheritance
 
@@ -50,7 +47,7 @@ The reference type used as the boxing target for <code class="typeparamref">T</c
 
 ### OneWayStructBindableMember\(T\) {#Aspid_MVVM_OneWayStructBindableMember_2__ctor__0_}
 
-Initializes a new instance of the [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) class with the specified initial value.
+Creates a member holding <code class="paramref">value</code>.
 
 ```csharp
 protected OneWayStructBindableMember(T value)
@@ -60,19 +57,13 @@ protected OneWayStructBindableMember(T value)
 
 `value` T
 
-The initial value of the bindable member.
-
-#### Exceptions
-
- [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
-
-Thrown when <code class="paramref">mode</code> is neither [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) nor [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+The initial value.
 
 ## Properties
 
 ### Mode {#Aspid_MVVM_OneWayStructBindableMember_2_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member; always [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -84,7 +75,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneWayStructBindableMember_2_Value}
 
-Gets or sets the current value. Setting the value will trigger the [`OneWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Changed) event.
+Gets or sets the current value; setting it raises [`OneWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Changed) even for an equal value.
 
 ```csharp
 public T Value { get; set; }
@@ -98,7 +89,7 @@ public T Value { get; set; }
 
 ### Invoke\(T\) {#Aspid_MVVM_OneWayStructBindableMember_2_Invoke__0_}
 
-Sets the current value and raises the [`OneWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Changed) event.
+Sets [`OneWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Value) to <code class="paramref">value</code>.
 
 ```csharp
 public void Invoke(T value)
@@ -108,11 +99,11 @@ public void Invoke(T value)
 
 `value` T
 
-The new value to set and notify.
+The new value.
 
 ### Changed {#Aspid_MVVM_OneWayStructBindableMember_2_Changed}
 
-Raised when the value changes.
+Occurs when [`OneWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Value) is set.
 
 ```csharp
 public event Action<T>? Changed

@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Interface for removing event bindings from a bindable member.
+Defines the side of a bindable member that detaches binders.
 
 ```csharp
 public interface IBinderRemover
@@ -22,7 +22,7 @@ public interface IBinderRemover
 
 ### Remove\(IBinder\) {#Aspid_MVVM_IBinderRemover_Remove_Aspid_MVVM_IBinder_}
 
-Removes the binding associated with the specified binder.
+Unsubscribes <code class="paramref">binder</code> from the member.
 
 ```csharp
 void Remove(IBinder binder)
@@ -32,5 +32,5 @@ void Remove(IBinder binder)
 
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
-The binder whose binding needs to be removed.
+The binder previously passed to [`IBinderAdder.Add`](Aspid.MVVM.IBinderAdder.md#Aspid_MVVM_IBinderAdder_Add_Aspid_MVVM_IBinder_).
 

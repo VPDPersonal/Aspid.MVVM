@@ -1,4 +1,28 @@
-.claude/settings.local.json
-skills-lock.json
-.zed/
+# Rules for the whole repository. The Unity project (Aspid.MVVM/) and the docs site (Docs/) keep their own
+# .gitignore next to them.
+
+# OS
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs and editors
 .idea/
+.vs/
+.vscode/
+.zed/
+*.suo
+*.user
+*.userprefs
+
+# AI agents: personal settings and the worktrees Claude Code creates inside the repo
+.claude/settings.local.json
+.claude/worktrees/
+
+# .NET build output of the Roslyn solutions (Aspid.MVVM.Generators, Aspid.MVVM.Analyzers, Aspid.MVVM.Unity.Generators)
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+*.binlog

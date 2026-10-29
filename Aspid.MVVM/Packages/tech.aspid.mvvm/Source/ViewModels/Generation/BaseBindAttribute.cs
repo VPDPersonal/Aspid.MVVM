@@ -4,12 +4,11 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Serves as the base class for all binding-related attributes.
-    /// Derive from this class to implement custom binding attributes for use with ViewModels.
-    /// This class itself does not contain any logic and is used primarily as a marker for attribute hierarchy.
-    /// Classes that inherit from <see cref="BaseBindAttribute"/> must be manually added to the Source Generator 
-    /// to generate the appropriate binding logic. This process does not happen automatically.
+    /// <see cref="Attribute"/> shared by <see cref="BindAttribute"/> and the bind attributes with a fixed mode.
     /// </summary>
+    /// <remarks>
+    /// The Source Generator recognizes the bind attributes by name, so a custom subclass generates nothing.
+    /// </remarks>
     [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property)]
     public abstract class BaseBindAttribute : Attribute { }
 }

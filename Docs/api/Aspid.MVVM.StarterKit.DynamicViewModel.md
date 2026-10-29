@@ -191,7 +191,7 @@ The property identifier.
 
 ### FindBindableMember\(in FindBindableMemberParameters\) {#Aspid_MVVM_StarterKit_DynamicViewModel_FindBindableMember_Aspid_MVVM_FindBindableMemberParameters__}
 
-Searches for a bindable member in the ViewModel based on the provided parameters.
+Finds the bindable member with the identifier in <code class="paramref">parameters</code>.
 
 ```csharp
 public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters)
@@ -201,13 +201,14 @@ public FindBindableMemberResult FindBindableMember(in FindBindableMemberParamete
 
 `parameters` [FindBindableMemberParameters](Aspid.MVVM.FindBindableMemberParameters.md)
 
-The parameters specifying the bindable member to find.
+The lookup query.
 
 #### Returns
 
  [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-A [`FindBindableMemberResult`](Aspid.MVVM.FindBindableMemberResult.md) that contains information about the bindable member search result.
+A result holding the member; a result whose [`FindBindableMemberResult.IsFound`](Aspid.MVVM.FindBindableMemberResult.md#Aspid_MVVM_FindBindableMemberResult_IsFound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>
+when no member has the identifier.
 
 ### Get\<T\>\(string\) {#Aspid_MVVM_StarterKit_DynamicViewModel_Get__1_System_String_}
 

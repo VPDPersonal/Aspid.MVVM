@@ -61,7 +61,7 @@ protected override Component? Target { get; }
 
 ### VectorTo {#Aspid_MVVM_StarterKit_BoxCollider2DOffsetCombineConverter_VectorTo}
 
-Gets the reference vector to combine with, which is the collider's BoxCollider2D.offset.
+Gets the reference vector to combine with, which is the collider's [`offset`](https://docs.unity3d.com/ScriptReference/Collider2D-offset.html).
 
 ```csharp
 protected override Vector2 VectorTo { get; }

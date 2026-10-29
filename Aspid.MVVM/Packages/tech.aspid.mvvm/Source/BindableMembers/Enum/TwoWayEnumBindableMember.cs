@@ -4,10 +4,9 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="TwoWayStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>
-    /// for two-way enum bindings, supporting both strongly-typed and boxed-enum binders.
+    /// Concrete <see cref="TwoWayStructBindableMember{T, TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>.
     /// </summary>
-    /// <typeparam name="T">The enum type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound enum type.</typeparam>
     public sealed class TwoWayEnumBindableMember<T> : TwoWayStructBindableMember<T, Enum>
         where T : struct, Enum
     {

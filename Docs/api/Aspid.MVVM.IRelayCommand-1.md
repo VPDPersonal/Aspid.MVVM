@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-An interface for a command that can be executed with a parameter.
+Defines a command with one parameter.
 
 ```csharp
 public interface IRelayCommand<in T>
@@ -21,7 +21,7 @@ public interface IRelayCommand<in T>
 
 `T` 
 
-The type of the parameter passed to the command.
+The command parameter type.
 
 #### Extension Methods
 
@@ -35,7 +35,7 @@ The type of the parameter passed to the command.
 
 ### CanExecute\(T?\) {#Aspid_MVVM_IRelayCommand_1_CanExecute__0_}
 
-Determines whether the command can be executed with the given parameter.
+Determines whether the command can execute with the given parameter.
 
 ```csharp
 bool CanExecute(T? param)
@@ -45,17 +45,17 @@ bool CanExecute(T? param)
 
 `param` T?
 
-The parameter used to determine whether the command can be executed.
+The command parameter.
 
 #### Returns
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the command can be executed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the command can execute; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ### Execute\(T?\) {#Aspid_MVVM_IRelayCommand_1_Execute__0_}
 
-Executes the command with the given parameter.
+Executes the command.
 
 ```csharp
 void Execute(T? param)
@@ -65,11 +65,11 @@ void Execute(T? param)
 
 `param` T?
 
-The parameter used to execute the command.
+The command parameter.
 
 ### NotifyCanExecuteChanged\(\) {#Aspid_MVVM_IRelayCommand_1_NotifyCanExecuteChanged}
 
-Notifies that the execution state of the command has changed, raising the [`IRelayCommand<T>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-1.md#Aspid_MVVM_IRelayCommand_1_CanExecuteChanged) event.
+Raises the [`IRelayCommand<T>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-1.md#Aspid_MVVM_IRelayCommand_1_CanExecuteChanged) event.
 
 ```csharp
 void NotifyCanExecuteChanged()
@@ -77,7 +77,7 @@ void NotifyCanExecuteChanged()
 
 ### CanExecuteChanged {#Aspid_MVVM_IRelayCommand_1_CanExecuteChanged}
 
-Raised when the ability to execute the command changes.
+Occurs when the result of [`IRelayCommand<T>.CanExecute`](Aspid.MVVM.IRelayCommand-1.md#Aspid_MVVM_IRelayCommand_1_CanExecute__0_) may have changed.
 
 ```csharp
 event Action<IRelayCommand<in T>> CanExecuteChanged

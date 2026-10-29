@@ -4,10 +4,9 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Concrete <see cref="OneWayToSourceStructBindableMember{T,TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>
-    /// for one-way-to-source enum bindings, forwarding View-side enum changes back to the ViewModel.
+    /// Concrete <see cref="OneWayToSourceStructBindableMember{T, TBoxed}"/> that fixes <c>TBoxed</c> to <see cref="Enum"/>.
     /// </summary>
-    /// <typeparam name="T">The enum type of the bound value.</typeparam>
+    /// <typeparam name="T">The bound enum type.</typeparam>
     public sealed class OneWayToSourceEnumBindableMember<T> : OneWayToSourceStructBindableMember<T, Enum>
         where T : struct, Enum
     {

@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype)
-for any value-type payload that does not need a more specific boxing target.
+Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
 ```csharp
 public sealed class TwoWayStructBindableMember<T> : TwoWayStructBindableMember<T, ValueType>, IBindableMember<T>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover where T : struct
@@ -22,7 +21,7 @@ public sealed class TwoWayStructBindableMember<T> : TwoWayStructBindableMember<T
 
 `T` 
 
-The struct type of the bound value.
+The bound struct type.
 
 #### Inheritance
 
@@ -44,7 +43,7 @@ The struct type of the bound value.
 
 ### TwoWayStructBindableMember\(T, Action\<T\>\) {#Aspid_MVVM_TwoWayStructBindableMember_1__ctor__0_System_Action__0__}
 
-Initializes a new instance of the [`TwoWayStructBindableMember<T>`](Aspid.MVVM.TwoWayStructBindableMember-1.md) class with the specified value and a setter action.
+Creates a member holding <code class="paramref">value</code> that passes reported values to <code class="paramref">setValue</code>.
 
 ```csharp
 public TwoWayStructBindableMember(T value, Action<T> setValue)
@@ -54,15 +53,15 @@ public TwoWayStructBindableMember(T value, Action<T> setValue)
 
 `value` T
 
-The initial value of the bindable member.
+The initial value.
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>
 
-The action used to set the value when the event is triggered.
+The callback that writes a value reported by a reverse binder to the ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 

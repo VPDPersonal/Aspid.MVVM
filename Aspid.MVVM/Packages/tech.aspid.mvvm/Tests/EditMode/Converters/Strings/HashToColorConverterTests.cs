@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NUnit.Framework;
 using Aspid.MVVM.StarterKit;
@@ -35,12 +36,12 @@ namespace Aspid.MVVM.Tests
                 Color.magenta,
                 new HashToColorConverter(0.6f, fallback: Color.magenta).Convert(string.Empty));
 
-        // The Range attribute only holds the Inspector; the constructor takes any float, and HSVToRGB
-        // reads a saturation above one as a color outside the gamut.
-        [Test]
-        public void HashToColor_SaturationOutsideTheRange_IsHeldToIt() =>
-            Assert.AreEqual(
-                new HashToColorConverter(1f).Convert("Vladislav"),
-                new HashToColorConverter(4f).Convert("Vladislav"));
+        // HSVToRGB reads a saturation or value outside 0..1 as a color outside the gamut. [Range(0, 1)]
+        // holds the Inspector, so the constructor refuses one.
+        [TestCase(4f, 0.9f)]
+        [TestCase(-0.1f, 0.9f)]
+        [TestCase(0.6f, 1.5f)]
+        public void Constructor_SaturationOrValueOutsideTheRange_Throws(float saturation, float value) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => new HashToColorConverter(saturation, value));
     }
 }

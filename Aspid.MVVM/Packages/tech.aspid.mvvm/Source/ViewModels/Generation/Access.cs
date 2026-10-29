@@ -2,25 +2,25 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Defines access modifiers for properties generated from fields decorated with <see cref="BindAttribute"/>,
-    /// <see cref="OneWayBindAttribute"/>, <see cref="TwoWayBindAttribute"/>, <see cref="OneTimeBindAttribute"/>,
-    /// or <see cref="OneWayToSourceBindAttribute"/>.
-    /// Each value corresponds to a value from <c>Microsoft.CodeAnalysis.CSharp.SyntaxKind</c>.
+    /// Specifies the access modifier of an accessor of a property generated for a bind field.
     /// </summary>
+    /// <remarks>
+    /// The values match <c>Microsoft.CodeAnalysis.CSharp.SyntaxKind</c>.
+    /// </remarks>
     public enum Access
     {
         /// <summary>
-        /// The generated property has <see langword="private"/> access.
+        /// The <see langword="private"/> modifier.
         /// </summary>
         Private = 8344,
         
         /// <summary>
-        /// The generated property has <see langword="protected"/> access.
+        /// The <see langword="protected"/> modifier.
         /// </summary>
         Protected = 8346,
         
         /// <summary>
-        /// The generated property has <see langword="public"/> access.
+        /// The <see langword="public"/> modifier.
         /// </summary>
         Public = 8343,
     }

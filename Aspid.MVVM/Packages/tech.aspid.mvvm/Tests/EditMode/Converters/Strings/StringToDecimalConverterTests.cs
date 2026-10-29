@@ -13,7 +13,7 @@ namespace Aspid.MVVM.Tests
     /// and clamp bounds, and the round trip under a comma-decimal culture.
     /// </summary>
     [TestFixture]
-    [SetCulture("")]
+    [UseCulture("")]
     public sealed class StringToDecimalConverterTests
     {
         // AllowExponent on top of Number: a backend that serializes 1E5 would otherwise be readable
@@ -67,7 +67,7 @@ namespace Aspid.MVVM.Tests
         // The fallback is authored once and the player's text is typed every time, so the two are
         // read with different cultures on purpose: "1.5" in the field, "1,5" from a German player.
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_Fallback_IsInvariantWhilePlayerTextIsNot()
         {
             var converter = With(new StringToDecimalConverter(), "_fallback", "1.5");
@@ -90,7 +90,7 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        [SetCulture("de-DE")]
+        [UseCulture("de-DE")]
         public void Convert_RoundTripsUnderACommaDecimalCulture()
         {
             var converter = new StringToDecimalConverter(0m);

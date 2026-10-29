@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using Aspid.FastTools;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -51,6 +50,35 @@ namespace Aspid.MVVM
             // polymorphic field resolves to a null FieldInfo and the inspector skips it entirely.
             .Where(field => field.IsPublic || field.IsDefined(typeof(SerializeField)) || field.IsDefined(typeof(SerializeReference)))
             .ToDictionary(field => field.Name);
+
+        /// <summary>
+        /// Returns the members of the type and of its base classes, ordered from the topmost base class down to the type.
+        /// </summary>
+        /// <param name="type">The type whose members are collected.</param>
+        /// <param name="bindingFlags">The binding flags used to filter members. <see cref="BindingFlags.DeclaredOnly"/> is always added.</param>
+        /// <param name="stopAt">The base type at which the walk stops, excluded; <c>null</c> walks up to the root type.</param>
+        /// <returns>The members in declaration order, as the Unity Inspector shows them.</returns>
+        internal static IReadOnlyList<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? stopAt = null)
+        {
+            var currentType = type;
+            var typeChain = new List<Type>();
+
+            while (currentType is not null && currentType != stopAt)
+            {
+                typeChain.Add(currentType);
+                currentType = currentType.BaseType;
+            }
+
+            typeChain.Reverse();
+            bindingFlags |= BindingFlags.DeclaredOnly;
+
+            var members = new List<MemberInfo>();
+
+            foreach (var chainType in typeChain)
+                members.AddRange(chainType.GetMembers(bindingFlags));
+
+            return members;
+        }
 
         private static Type GetUnitySerializableType(Type? type, string name)
         {

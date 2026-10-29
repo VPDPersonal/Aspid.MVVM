@@ -1,0 +1,28 @@
+.trigger { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; padding: 0; color: var(--venom-fg); background: var(--venom-reading-surface); border: 1px solid var(--venom-line-strong); border-radius: 10px; font: 400 14px var(--ifm-font-family-base); cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease, transform 0.12s ease; }
+.trigger:hover { color: var(--venom-accent); border-color: var(--venom-accent-mark); }
+.trigger:active { transform: scale(0.92); }
+@media (prefers-reduced-motion: reduce) { .trigger, .close { transition: none; } }
+.trigger:focus-visible, .close:focus-visible { outline: 2px solid var(--venom-accent-mark); outline-offset: 3px; }
+.dialog { position: fixed; inset: 12vh 0 auto; width: min(680px, calc(100% - 32px)); max-width: none; padding: 0; border: 1px solid var(--venom-line-strong); border-radius: 10px; color: var(--venom-fg); background: var(--venom-reading-surface); box-shadow: 0 24px 100px #0006; }
+.dialog::backdrop { background: #030609bb; backdrop-filter: blur(5px); }
+.surface { display: flex; flex-direction: column; max-height: 76dvh; }
+.inputRow { display: flex; align-items: center; gap: 14px; padding: 20px; border-bottom: 1px solid var(--venom-line); }
+.inputRow > svg { flex-shrink: 0; color: var(--venom-accent); }
+.inputRow input { width: 100%; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--venom-fg-strong); font: 400 16px var(--ifm-font-family-base); }
+.inputRow input::placeholder { color: var(--venom-muted); }
+.close { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: 0; color: var(--venom-muted); background: transparent; border: 0; border-radius: 10px; cursor: pointer; transition: color 0.15s ease, background-color 0.15s ease, transform 0.12s ease; }
+.close:hover { color: var(--venom-fg-strong); background: var(--venom-glow-soft); }
+.close:active { transform: scale(0.9); }
+/* Labels (the list heading, each result's section) read like the floating TOC's title: muted monospace capitals. */
+.status { margin: 0; padding: 16px 22px 8px; color: var(--venom-muted); font: 600 0.75rem/1.5 var(--ifm-font-family-monospace); letter-spacing: 0.06em; text-transform: uppercase; }
+.results { overflow-y: auto; min-height: 0; list-style: none; margin: 0; padding: 4px 10px 12px; }
+/* The picked result is marked like the sidebar's active item: an accent tint, no outline. */
+.result { padding: 14px 12px; border-radius: 10px; cursor: pointer; transition: background-color 0.15s ease; }
+.result[aria-selected='true'] { background: var(--venom-glow-soft); }
+.result[aria-selected='true'] .resultHeading strong { color: var(--venom-accent); }
+.resultHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+/* Titles are serif like the introduction's resource cards. */
+.resultHeading strong { color: var(--venom-fg-strong); font: 500 1.05rem/1.3 var(--ifm-heading-font-family); letter-spacing: -0.01em; overflow-wrap: anywhere; transition: color 0.15s ease; }
+.section { flex-shrink: 0; color: var(--venom-muted); font: 500 0.6875rem/1.4 var(--ifm-font-family-monospace); letter-spacing: 0.06em; text-transform: uppercase; }
+.description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 6px; font-size: 13px; line-height: 1.6; color: var(--venom-muted); }
+@media (max-width: 600px) { .dialog { inset-block-start: 24px; } .surface { max-height: calc(100dvh - 48px); } .inputRow { gap: 10px; padding: 16px; } }

@@ -4,18 +4,34 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="Attribute"/> applied to methods of a type carrying <see cref="ViewModelAttribute"/>;
-    /// directs the Source Generator to emit a matching <see cref="IRelayCommand"/> (or one of its generic
-    /// overloads, picked by the method's parameter count) that wraps the decorated method.
+    /// Generates a <see cref="RelayCommand"/> property, named after the method with a <c>Command</c> suffix, for the method of
+    /// a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
+    /// <remarks>
+    /// The method returns <see langword="void"/> and takes up to four parameters.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [RelayCommand]
+    /// private void Save() { }
+    /// </code>
+    /// <code>
+    /// [RelayCommand(CanExecute = nameof(CanBuy))]
+    /// private void Buy(int count) { }
+    ///
+    /// private bool CanBuy(int count) => count &lt;= _stock;
+    /// </code>
+    /// </example>
     [AttributeUsage(validOn: AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
     public sealed class RelayCommandAttribute : Attribute
     {
         /// <summary>
-        /// The name of the method that determines whether the command can be executed (CanExecute).
-        /// This method must return a value of type <see langword="bool"/>.
-        /// If not specified, the command can always be executed.
+        /// The name of a <see cref="bool"/> method or property of the same class that allows execution; <see langword="null"/> to
+        /// always allow it.
         /// </summary>
+        /// <remarks>
+        /// A method takes either the command's parameters or none.
+        /// </remarks>
         public string? CanExecute;
     }
 }

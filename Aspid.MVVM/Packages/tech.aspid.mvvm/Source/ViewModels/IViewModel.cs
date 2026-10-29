@@ -2,16 +2,17 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Interface for a ViewModel that supports data binding functionality.
+    /// Defines a ViewModel whose bindable members a View looks up by identifier.
     /// </summary>
     public interface IViewModel
     {
         /// <summary>
-        /// Searches for a bindable member in the ViewModel based on the provided parameters.
+        /// Finds the bindable member with the identifier in <paramref name="parameters"/>.
         /// </summary>
-        /// <param name="parameters">The parameters specifying the bindable member to find.</param>
+        /// <param name="parameters">The lookup query.</param>
         /// <returns>
-        /// A <see cref="FindBindableMemberResult"/> that contains information about the bindable member search result.
+        /// A result holding the member; a result whose <see cref="FindBindableMemberResult.IsFound"/> is <see langword="false"/>
+        /// when no member has the identifier.
         /// </returns>
         public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters);
     }

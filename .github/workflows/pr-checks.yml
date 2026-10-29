@@ -1,0 +1,156 @@
+name: PR checks
+
+# pull_request_target: runs the base branch's copy with a write token, so labels work on fork PRs too.
+# It never checks out the PR's code — everything below reads the PR through the API only.
+on:
+  pull_request_target:
+    # No ready_for_review: neither job depends on the draft state.
+    types: [opened, edited, reopened, synchronize, labeled, unlabeled]
+
+# Each job asks for its own permissions.
+permissions: {}
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Conventional Commits title with a known scope; sets the type, breaking-change and area labels.
+  title:
+    name: PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # The labels need pull-requests and issues.
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            // The types, scopes and labels of .claude/asp-pr.md.
+            const TYPES = {
+              feat: 'type: feature', fix: 'type: fix', perf: 'type: performance', refactor: 'type: refactor',
+              style: 'type: style', docs: 'type: documentation', test: 'type: test', ci: 'type: ci',
+              build: 'type: chore', chore: 'type: chore', revert: 'type: chore',
+            };
+            const SCOPES = [
+              // package
+              'core', 'starterkit', 'binders', 'converters', 'collections', 'editor', 'samples', 'generators',
+              'analyzers', 'package',
+              // repository
+              'project', 'site', 'api', 'changelog', 'release', 'ci', 'github', 'skills', 'claude', 'deps',
+            ];
+            const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
+            // The sources of the Roslyn DLLs.
+            const ROSLYN_SOURCES = {
+              'Aspid.MVVM.Generators': 'area: generator',
+              'Aspid.MVVM.Unity.Generators': 'area: generator',
+              'Aspid.MVVM.Analyzers': 'area: analyzer',
+            };
+            const AREAS = [
+              'area: runtime', 'area: editor', 'area: samples', 'area: docs', 'area: ci', 'area: generator',
+              'area: analyzer', 'area: claude',
+            ];
+            const areasOf = (file) => {
+              const areas = [];
+              if (file.startsWith(PKG)) {
+                const path = file.slice(PKG.length);
+                if (path.startsWith('Samples~/')) areas.push('area: samples');
+                else if (/(^|\/)Editor\//.test(path)) areas.push('area: editor');
+                else if (!/^Tests(\/|\.meta$)/.test(path)) areas.push('area: runtime');
+                if (/Generators\.dll(\.meta)?$/.test(path)) areas.push('area: generator');
+                if (/Analyzers\.dll(\.meta)?$/.test(path)) areas.push('area: analyzer');
+              }
+              if (ROSLYN_SOURCES[file.split('/')[0]]) areas.push(ROSLYN_SOURCES[file.split('/')[0]]);
+              if (file.startsWith('Docs/') || /^[^/]+\.md$/.test(file)) areas.push('area: docs');
+              if (/^(\.github|scripts)\//.test(file) || ['global.json', 'Directory.Build.props'].includes(file))
+                areas.push('area: ci');
+              // Agent configuration, wherever a CLAUDE.md or AGENTS.md lives.
+              if (/^\.(claude|agents)\//.test(file) || /(^|\/)(CLAUDE|AGENTS)\.md$/.test(file)) areas.push('area: claude');
+              return areas;
+            };
+
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const title = pr.title;
+            const errors = [];
+
+            const m = /^([a-z]+)(?:\(([a-z0-9-]+)\))?(!)?: (.+)$/.exec(title);
+            if (!m) errors.push('Title must be `type(scope): summary` (Conventional Commits).');
+            else {
+              const [, type, scope, , summary] = m;
+              if (!TYPES[type]) errors.push(`Unknown type \`${type}\`; use one of: ${Object.keys(TYPES).join(', ')}.`);
+              if (scope && !SCOPES.includes(scope)) errors.push(`Unknown scope \`${scope}\`; use one of: ${SCOPES.join(', ')} (or none).`);
+              if (/\.$/.test(summary)) errors.push('Summary has no trailing period.');
+            }
+            if (title.length > 72) errors.push(`Title is ${title.length} characters; keep it within 72.`);
+
+            // Labels are updated even when the title fails, so a later fix only has to touch the title.
+            const current = pr.labels.map(l => l.name);
+            const add = new Set();
+            const remove = new Set();
+            if (m && TYPES[m[1]]) {
+              add.add(TYPES[m[1]]);
+              current.filter(l => l.startsWith('type: ') && l !== TYPES[m[1]]).forEach(l => remove.add(l));
+            }
+            // The title alone decides breaking-change; an unparsable title leaves the label as it is.
+            if (m?.[3]) add.add('breaking-change');
+            else if (m && current.includes('breaking-change')) remove.add('breaking-change');
+
+            const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number });
+            for (const { filename } of files) areasOf(filename).forEach(label => add.add(label));
+            // An area no changed file reaches any more (the PR moved on) loses its label.
+            for (const label of AREAS)
+              if (current.includes(label) && !add.has(label)) remove.add(label);
+
+            const toAdd = [...add].filter(l => !current.includes(l));
+            if (toAdd.length) await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: toAdd });
+            for (const name of remove)
+              await github.rest.issues.removeLabel({ owner, repo, issue_number: pr.number, name }).catch(() => {});
+
+            if (errors.length) core.setFailed(errors.join('\n'));
+
+  # Shipped package code changed → the same entry in CHANGELOG.md and Docs/i18n/ru/CHANGELOG.md, or the `needs-changelog` label
+  # until the entry is written (.claude/asp-pr.md). release.yml takes the release notes from the English file; the
+  # Russian one is its translation.
+  changelog:
+    name: CHANGELOG
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Reads the PR only.
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
+            const pr = context.payload.pull_request;
+            if (pr.labels.some(l => l.name === 'needs-changelog')) return core.info('`needs-changelog` label set.');
+
+            const { owner, repo } = context.repo;
+            const files = (await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number }))
+              .map(f => f.filename);
+            // The package except Tests/ and Markdown: the assemblies, the samples, the Roslyn DLLs and package.json, which
+            // users install. The tests and the license texts change nothing they get; the docs live in Docs/.
+            const shipped = files.filter(f =>
+              f.startsWith(PKG) && !/^Tests(?:\/|\.meta$)/.test(f.slice(PKG.length)) &&
+              !/\.md(?:\.meta)?$/.test(f));
+            if (!shipped.length) return core.info('No shipped package code changed.');
+            const english = files.includes('CHANGELOG.md'), russian = files.includes('Docs/i18n/ru/CHANGELOG.md');
+            if (english && russian) return core.info('CHANGELOG updated.');
+
+            const list = `${shipped.slice(0, 3).join(', ')}${shipped.length > 3 ? ', …' : ''}`;
+            if (english)
+              core.setFailed(
+                `Package code changed (${list}) and CHANGELOG.md did, but Docs/i18n/ru/CHANGELOG.md did not. ` +
+                'Add the same entry to Docs/i18n/ru/CHANGELOG.md: it is the translation of CHANGELOG.md.');
+            else if (russian)
+              core.setFailed(
+                `Package code changed (${list}) and Docs/i18n/ru/CHANGELOG.md did, but the English CHANGELOG.md did not. ` +
+                'Add the same entry to CHANGELOG.md: release.yml takes the release notes from it.');
+            else
+              core.setFailed(
+                `Package code changed (${list}) but neither CHANGELOG.md nor Docs/i18n/ru/CHANGELOG.md did. ` +
+                'Add the same entry to both, or the `needs-changelog` label until it is written.');

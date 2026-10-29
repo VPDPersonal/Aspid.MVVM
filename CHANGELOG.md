@@ -5,13 +5,13 @@ All notable changes to **Aspid.MVVM** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-> 🌐 Русская версия: [CHANGELOG.ru.md](CHANGELOG.ru.md)
+> 🌐 Русская версия: [Docs/i18n/ru/CHANGELOG.md](https://github.com/VPDPersonal/Aspid.MVVM/blob/main/Docs/i18n/ru/CHANGELOG.md)
 
 ---
 
 ## [1.1.0] — Unreleased
 
-Everything since `1.0.5`. Minimum Unity is now **`6000.0`**. Upgrade checklist: [MIGRATION.md](MIGRATION.md).
+Everything since `1.0.5`. Minimum Unity is now **`6000.0`**. Upgrade checklist: [migration guide](https://vpdpersonal.github.io/Aspid.MVVM/migration/1.1).
 A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` channel.
 
 ### Highlights
@@ -21,7 +21,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - Converters: catalogue grown from 17 to ~190, `ITwoWayConverter`, `ConverterAsset`, composition primitives, culture-aware formatting.
 - Editor: UI Toolkit inspectors, rebuilt `DebugViewModelPanel`, Welcome / Settings window, FastTools type picker for `[SerializeReference]`.
 - `MonoView` is concrete, `DynamicViewModel` is a typed property bag, `ViewInitializer` gained a DI construction stage.
-- Package is an embedded UPM package; `Aspid.Collections` and `Aspid.FastTools` are UPM git dependencies; generators live in submodules.
+- Package is an embedded UPM package; `Aspid.Collections` and `Aspid.FastTools` are UPM git dependencies; the generator and analyzer sources live in this repository.
 - Documentation site on Docusaurus (`en` / `ru`), samples rebuilt as a learning path, ~3000 EditMode tests.
 
 ### Added
@@ -128,20 +128,21 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 #### Samples & documentation
 
-- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has a `README`, its own `.asmdef` and a compact `Sample SDF` font.
-- Documentation site on Docusaurus (GitHub Pages), English original with a Russian translation, tutorials in the sample READMEs, DocFX API reference.
+- Samples rebuilt as a learning path: `01. Counter` → `06. CustomBinder`, plus `VirtualizedList`, `DynamicViewModel`, `DiIntegration`, `ExampleScripts`; each has its own `.asmdef`, a compact `Sample SDF` font (iA Writer Quattro S, as in the Aspid.FastTools samples) and a tutorial on the docs site.
+- Documentation site on Docusaurus (GitHub Pages), built like the Aspid.FastTools site: English original with a Russian translation, a tutorial per sample with a recording of its scene, the changelog and a DocFX API reference.
 - XML docs on every public binder, converter and Editor type; every serialized field has a `[Tooltip]`; all four assemblies build clean with `-doc`.
-- `Documentation/08-converters.md` rewritten around the shipped catalogue.
+- The Converters page rewritten around the shipped catalogue.
 - ~3000 EditMode tests, including contract tests for tooltips, picker groups, menu paths, context-menu property names, `<include>` resolution and `BindMode` guard docs.
 
 #### Project & infrastructure
 
 - Package promoted to an embedded UPM package under `Packages/tech.aspid.mvvm`; Unity project moved into `Aspid.MVVM/`.
-- `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` are git submodules.
-- `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.8`) are UPM git dependencies.
-- Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags, verifies generator DLL drift and takes release notes from this file.
-- Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI with an `.mcp.json` server; root `CLAUDE.md`.
-- Editor target `6000.4.0f1`.
+- `Aspid.MVVM.Generators`, `Aspid.MVVM.Analyzers`, `Aspid.MVVM.Unity.Generators` moved into this repository with their full history; they are no longer git submodules.
+- `Aspid.Collections` (`tech.aspid.collections`) and `Aspid.FastTools` (`tech.aspid.fasttools`, tag `upm-preview/1.0.0-rc.9`) are UPM git dependencies.
+- Release workflow publishes `upm` (stable) and `upm-preview` subtrees with immutable `upm/<version>` tags and takes release notes from this file; it runs the whole CI first.
+- CI on every pull request: package files, version files, reproducible Roslyn DLLs rebuilt from their sources, .NET tests, and EditMode + PlayMode tests on every Unity 6000.x line; PR title and CHANGELOG checks.
+- Claude PR Assistant and Code Review workflows; Unity Editor automation through Unity CLI; root `CLAUDE.md`.
+- Editor target `6000.6.5f1`.
 
 ### Changed
 
@@ -171,7 +172,9 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Slider and audio-source ranges: a crossed `min` / `max` pair is swapped and logged, a non-finite endpoint is refused.
 - Slider, scrollbar and dropdown binders report the value the control actually holds after Unity clamps it.
 - The Greeter sample uses the shipped `RichTextColorConverter`.
-- Inspector attributes in Unity-independent layers are no longer wrapped in `#if UNITY_2022_1_OR_NEWER`.
+- `Source` is compiled by Unity only: the `UnityEngine` stand-ins and the `#if UNITY_*` guards are gone, and inspector attributes are written unconditionally.
+- Profiler markers of the core, `MonoBinder`, `DynamicViewModel` and the generated Views and ViewModels compile only under `ENABLE_PROFILER` (Editor and development builds), so a release player carries no marker fields or classes; `ASPID_MVVM_UNITY_PROFILER_DISABLED` now also turns off the markers of `Binder.Bind()` / `Unbind()`, `AnyToStringCasterBinder` and the generated `[BinderLog]` `SetValue`.
+- `InitializeComponent<T>` checks the VContainer resolver for `null` explicitly, so Rider no longer reports a possibly unassigned local.
 
 #### Renamed
 
@@ -203,6 +206,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Removed
 
+- The `Documentation` folder and the sample `README` files — the guide and the tutorials are on the [docs site](https://vpdpersonal.github.io/Aspid.MVVM/); the package holds no docs or media.
 - `AddComponentContextMenuAttribute` — use `AddBinderContextMenuAttribute` / `AddBinderContextMenuByTypeAttribute` (`Path = "..."`).
 - `AddPropertyContextMenu` — property menus are handled by the Editor pipeline.
 - `Aspid.Collections` source under the package — now the `tech.aspid.collections` package; with it `IViewModelCollectionFilter`, the composite filters and the collection comparers.
@@ -212,11 +216,17 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `IBindableValue<T>`, `IReadOnlyBindableValue<T>` — use the value binders' `Value`.
 - `GenericToString<TFrom>.ToStringValue` — override `Format(T value, string format)` on `ValueToStringConverter<T>`.
 - The pre-Unity-6 compatibility gate: `using Converter = …` aliases, `ToConvertSpecific()` branches, `UNITY_6000_0_OR_NEWER` branches, `PhysicMaterial` fallbacks.
+- The vendored `com.unity.asset-store-tools` in the Editor project — it is not part of the package.
+- TMP Examples & Extras in the Editor project; TMP Essential Resources are back in the default `Assets/TextMesh Pro`.
+- `BindSafelyNullReferenceException`, `UnbindSafelyNullReferenceException` — never thrown in Unity: `BindSafely` / `UnbindSafely` skip a `null` binder and log it under `DEBUG`.
+- `Aspid.MVVM.Generators.Sample` — debug the generator through `Aspid.MVVM.Generators.Tests`.
+- `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` and the `protected` `GetMarker` — create the member with its constructor, as the other bindable members.
 
 ### Fixed
 
 #### Core
 
+- One-time bindable members were a single static instance per type shared by every ViewModel, so a binder bound later (a second binder of the same member after a nested View had bound, an Editor rebind, a member kept by user code) could get the value of another ViewModel. The generated code now keeps one member per ViewModel and refreshes it on access.
 - `TwoWayValue<T>` (now `ValueTwoWayBinder<T>`) fed every ViewModel → View update straight back to the ViewModel with the converted value.
 - `OneWayToSource` never reached the ViewModel for a numeric binder's own type; the other three widths worked.
 - Reverse binding re-applied the *forward* converter on the way back.
@@ -241,6 +251,13 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `UnityEventStringMonoBinder` threw on a `null` value.
 - Generator ignored `enum` / `struct` constraints on generic bindable members.
 - `MonoBinder.Unbind()` `ProfilerMarker` guard broke compilation before Unity 2022.1.
+- A `MonoView` added from code with `AddComponent` threw a `NullReferenceException` from `Initialize`: its binder list was never deserialized and stayed `null`.
+- A derived View re-emitted the auto binder field its base View already had, so Unity serialized the slot twice.
+- Generator skipped View members typed as the bare `IBinder` interface.
+- A custom ViewModel interface property typed `IBindableMember<T>` was ignored, and a read-only member could back a two-way slot.
+- `[IgnoreBind]` on a View member no longer excluded it: the generator bound ignored binder fields and properties anyway.
+- Only the first `[BindAlso]` of a member counted when it named a property without a bind attribute; the other properties were never notified.
+- `[BindAlso]` naming a `OneWayToSource` target generated a bare `();` call that did not compile; targets without change notification are skipped.
 
 #### Collections
 
@@ -265,6 +282,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Localization entry binders passed a silent `null` for an entry referenced by id; the binder now says why.
 - `RectTransformSetters.SetSizeDelta` reported `Vector3(w, h, 0)` in `OneWayToSource`; a `Vector2` channel is raised too.
 - `AudioSource` and `Slider` min / max could be left inverted.
+- `DebugLogBinder` logged a converter's `null` result as the value's `ToString()`; only an empty converter slot falls back to it now.
 
 #### Converters
 
@@ -278,7 +296,15 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `MonoBinderEditor.OnDisable` threw for a View that is not a `MonoView`.
 - `BindMode` dropdown kept the choice only for rebindable owners and shared one cache across a multi-selection.
 - Add Binder context menu passed the abstract target type to `AddComponent` for TextMeshPro fields.
+- Add Binder context menu ignored `SubPath` of `[AddBinderContextMenu]`: the shipped Unity generator DLL was built before it supported it.
 - Sample paths in `package.json` pointed at a non-existent folder, so imports came out empty.
+- Eleven editor `.uss.meta` files had no importer block, and the sample `README.ru.md` files had no `.meta`.
+
+#### Samples & documentation
+
+- `[AsBinder]` examples in the Views page and `ExampleScripts` left the component field unserialized, so the binder constructor threw on `null`; the page now covers constructor arguments and `nameof`.
+- XML docs in `Source` follow the `asp-xmldoc` rules and no longer contradict the generator: `[Bind(BindMode.OneWay)]` on a `readonly` field is skipped rather than resolved to `OneTime`, `[ViewModel]` and `[View]` ignore structs, and a `BaseBindAttribute` subclass generates nothing.
+- Labeled crefs (`<see cref="X">label</see>`) in the API reference linked the namespace page instead of the type.
 
 ---
 

@@ -147,34 +147,23 @@ The binding mode.
 
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_ToggleCommandBinder_OnBound}
 
-Called after binding is established. Override to add post-binding logic.
+Called after the binder attaches and receives the first value. Override to subscribe to the component.
 
 ```csharp
 protected override void OnBound()
 ```
 
-#### Remarks
-
-Runs after the ViewModel's first value has been applied and after [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>. This is where a binder subscribes to its component — see
-[`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) for why the earlier hook is the wrong place.
-
 ### OnUnbound\(\) {#Aspid_MVVM_StarterKit_ToggleCommandBinder_OnUnbound}
 
-Called after unbinding. Override to add post-unbinding logic.
+Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
 
 ```csharp
 protected override void OnUnbound()
 ```
 
-#### Remarks
-
-Runs once the binder is detached and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
-This is where a subscription taken in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) is released.
-
 ### SetValue\(IRelayCommand\) {#Aspid_MVVM_StarterKit_ToggleCommandBinder_SetValue_Aspid_MVVM_IRelayCommand_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(IRelayCommand value)
@@ -188,7 +177,7 @@ The value received from the ViewModel.
 
 ### SetValue\(IRelayCommand\<bool\>\) {#Aspid_MVVM_StarterKit_ToggleCommandBinder_SetValue_Aspid_MVVM_IRelayCommand_System_Boolean__}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(IRelayCommand<bool> value)

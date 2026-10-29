@@ -89,7 +89,7 @@ public AnimatorPlayStateBinder(Animator target, int layer = -1, float normalized
 
 ### SetValue\(string\) {#Aspid_MVVM_StarterKit_AnimatorPlayStateBinder_SetValue_System_String_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(string value)

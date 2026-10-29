@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Interface for initializing a View using a specified ViewModel.
+Defines a View that binds its binders to a ViewModel.
 
 ```csharp
 public interface IView
@@ -29,8 +29,7 @@ public interface IView
 
 ### ViewModel {#Aspid_MVVM_IView_ViewModel}
 
-Gets the associated ViewModel.
-If the view is not initialized, it may return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Gets the ViewModel the view is initialized with; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it is not initialized.
 
 ```csharp
 IViewModel? ViewModel { get; }
@@ -44,7 +43,7 @@ IViewModel? ViewModel { get; }
 
 ### Deinitialize\(\) {#Aspid_MVVM_IView_Deinitialize}
 
-Deinitializes the view, resetting the ViewModel property to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Unbinds the binders and clears [`IView.ViewModel`](Aspid.MVVM.IView.md#Aspid_MVVM_IView_ViewModel).
 
 ```csharp
 void Deinitialize()
@@ -52,7 +51,7 @@ void Deinitialize()
 
 ### Initialize\(IViewModel\) {#Aspid_MVVM_IView_Initialize_Aspid_MVVM_IViewModel_}
 
-Initializes the view with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md) for binding.
+Initializes the view with <code class="paramref">viewModel</code>, binding its binders to the ViewModel's members.
 
 ```csharp
 void Initialize(IViewModel viewModel)
@@ -62,5 +61,5 @@ void Initialize(IViewModel viewModel)
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The [`IViewModel`](Aspid.MVVM.IViewModel.md) object used to initialize the View.
+The ViewModel to bind.
 

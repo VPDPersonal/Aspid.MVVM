@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code class="typeparamref">TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum)
-for one-way-to-source enum bindings, forwarding View-side enum changes back to the ViewModel.
+Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 ```csharp
 public sealed class OneWayToSourceEnumBindableMember<T> : OneWayToSourceStructBindableMember<T, Enum>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover where T : struct, Enum
@@ -22,7 +21,7 @@ public sealed class OneWayToSourceEnumBindableMember<T> : OneWayToSourceStructBi
 
 `T` 
 
-The enum type of the bound value.
+The bound enum type.
 
 #### Inheritance
 
@@ -43,7 +42,7 @@ The enum type of the bound value.
 
 ### OneWayToSourceEnumBindableMember\(Action\<T\>\) {#Aspid_MVVM_OneWayToSourceEnumBindableMember_1__ctor_System_Action__0__}
 
-Initializes a new instance of the [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) class with the specified value setter action.
+Creates a member that passes reported values to <code class="paramref">setValue</code>.
 
 ```csharp
 public OneWayToSourceEnumBindableMember(Action<T> setValue)
@@ -53,11 +52,11 @@ public OneWayToSourceEnumBindableMember(Action<T> setValue)
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>
 
-The action used to set the value when the event is triggered.
+The callback that writes a value reported by a reverse binder to the ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-Thrown if <code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 

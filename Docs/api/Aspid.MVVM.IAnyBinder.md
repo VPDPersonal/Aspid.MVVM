@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Extends [`IBinder`](Aspid.MVVM.IBinder.md) with the ability to receive values of any type from the ViewModel.
+[`IBinder`](Aspid.MVVM.IBinder.md) that receives values of any type from the ViewModel.
 
 ```csharp
 public interface IAnyBinder : IBinder
@@ -42,11 +42,15 @@ public interface IAnyBinder : IBinder
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderExtensions.UnbindSafely\<IAnyBinder\>\(IAnyBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
 
+## Remarks
+
+A bindable member prefers [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) when a binder implements both.
+
 ## Methods
 
 ### SetValue\<T\>\(T\) {#Aspid_MVVM_IAnyBinder_SetValue__1___0_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 void SetValue<T>(T value)
@@ -62,5 +66,5 @@ The value received from the ViewModel.
 
 `T` 
 
-The type of value received from the ViewModel.
+The value type of the bindable member.
 

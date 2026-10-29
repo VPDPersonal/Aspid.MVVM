@@ -1,0 +1,21 @@
+{
+    "name": "Aspid.MVVM.Tests.Fixtures",
+    "rootNamespace": "",
+    "references": [
+        "Aspid.MVVM",
+        "Aspid.MVVM.Unity",
+        "Aspid.MVVM.StarterKit",
+        "Aspid.Collections.Observable"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

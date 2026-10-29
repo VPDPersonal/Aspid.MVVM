@@ -132,7 +132,7 @@ protected override sealed Vector3 Property { get; set; }
 
 ### SetValue\(float\) {#Aspid_MVVM_StarterKit_TransformScaleBinder_SetValue_System_Single_}
 
-Sets the bound property to <code class="paramref">value</code>.
+Applies <code class="paramref">value</code> to the View.
 
 ```csharp
 public void SetValue(float value)

@@ -1,0 +1,7 @@
+{
+  "sidebar.docs.doc.Introduction": {"message": "Введение"},
+  "sidebar.docs.category.Basics": {"message": "Основы"},
+  "sidebar.docs.category.Core": {"message": "Ядро"},
+  "sidebar.docs.category.Advanced": {"message": "Продвинутое"},
+  "sidebar.docs.category.StarterKit": {"message": "StarterKit"}
+}

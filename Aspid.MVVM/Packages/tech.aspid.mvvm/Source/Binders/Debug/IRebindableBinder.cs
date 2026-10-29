@@ -5,15 +5,16 @@ using System.ComponentModel;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Provides the ability to force a rebind, re-establishing the connection to the current ViewModel.
+    /// Defines a binder that can attach again to its current bindable member.
     /// </summary>
     /// <remarks>
-    /// Only available when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.
+    /// Exists only when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.
     /// </remarks>
     public interface IRebindableBinder
     {
         /// <summary>
-        /// Rebinds the binder, re-establishing its connection to the current ViewModel.
+        /// Detaches the binder and attaches it again to the same bindable member, so that a changed
+        /// <see cref="IBinder.Mode"/> takes effect.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Rebind();

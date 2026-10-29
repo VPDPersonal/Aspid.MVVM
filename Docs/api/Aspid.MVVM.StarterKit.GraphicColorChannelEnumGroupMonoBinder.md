@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`StarterKit.EnumGroupMonoBinder<T1, T2>?text=EnumGroupMonoBinder%3cGraphic%2c+float%3e`](Aspid.MVVM.StarterKit.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) per group element.
+[`EnumGroupMonoBinder<Graphic, float>`](Aspid.MVVM.StarterKit.EnumGroupMonoBinder-2.md) that sets the selected channels of [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) per group element.
 
 ```csharp
 [AddComponentMenu("Aspid/MVVM/Binders/UI/Graphic/Graphic Binder – Color Channel EnumGroup")]

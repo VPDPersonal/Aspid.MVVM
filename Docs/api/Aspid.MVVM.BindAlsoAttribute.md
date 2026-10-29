@@ -11,10 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) applied to fields of a type carrying [`ViewModelAttribute`](Aspid.MVVM.ViewModelAttribute.md);
-directs the Source Generator to also raise the change event of the property named [`BindAlsoAttribute.PropertyName`](Aspid.MVVM.BindAlsoAttribute.md#Aspid_MVVM_BindAlsoAttribute_PropertyName)
-when the decorated field changes. Requires a companion [`BindAttribute`](Aspid.MVVM.BindAttribute.md), [`OneWayBindAttribute`](Aspid.MVVM.OneWayBindAttribute.md),
-[`TwoWayBindAttribute`](Aspid.MVVM.TwoWayBindAttribute.md), or [`OneWayToSourceBindAttribute`](Aspid.MVVM.OneWayToSourceBindAttribute.md) on the same field.
+Notifies the binders of another bindable property whenever the marked member of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class changes.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field, AllowMultiple = true)]
@@ -29,11 +26,31 @@ public sealed class BindAlsoAttribute : Attribute
 
 
 
+## Examples
+
+
+```csharp
+[Bind]
+[BindAlso(nameof(FullName))]
+private string _firstName;
+
+private string FullName => $"{FirstName} {LastName}";
+```
+
+
+## Remarks
+
+<p>
+The marked member needs [`BindAttribute`](Aspid.MVVM.BindAttribute.md), [`OneWayBindAttribute`](Aspid.MVVM.OneWayBindAttribute.md) or
+[`TwoWayBindAttribute`](Aspid.MVVM.TwoWayBindAttribute.md) with a mode that pushes values to the View.
+</p>
+<p>A property of the class without a bind attribute becomes a [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) bindable member when named here.</p>
+
 ## Constructors
 
 ### BindAlsoAttribute\(string\) {#Aspid_MVVM_BindAlsoAttribute__ctor_System_String_}
 
-Initializes a new instance of the [`BindAlsoAttribute`](Aspid.MVVM.BindAlsoAttribute.md) with the specified property name.
+Creates an attribute that also notifies the property named <code class="paramref">propertyName</code>.
 
 ```csharp
 public BindAlsoAttribute(string propertyName)
@@ -43,13 +60,13 @@ public BindAlsoAttribute(string propertyName)
 
 `propertyName` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
-The name of the generated property whose change event should also be triggered.
+The name of the generated or declared property to notify.
 
 ## Properties
 
 ### PropertyName {#Aspid_MVVM_BindAlsoAttribute_PropertyName}
 
-Gets the name of the generated property whose change event should also be triggered.
+Gets the name of the property whose binders are also notified.
 
 ```csharp
 public string PropertyName { get; }
@@ -58,4 +75,8 @@ public string PropertyName { get; }
 #### Property Value
 
  [string](https://learn.microsoft.com/dotnet/api/system.string)
+
+#### Remarks
+
+Exists only when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
 

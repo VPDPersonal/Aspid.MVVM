@@ -93,22 +93,4 @@ namespace Aspid.MVVM.Tests
             return received;
         }
     }
-
-    internal sealed class TestComponentFloatBinder : ComponentFloatMonoBinder<FloatComponent>
-    {
-        protected override float Property
-        {
-            get => CachedComponent.Value;
-            set => CachedComponent.Value = value;
-        }
-    }
-
-    internal sealed class TestComponentIntBinder : ComponentIntMonoBinder<IntComponent>
-    {
-        protected override int Property
-        {
-            get => CachedComponent.Value;
-            set => CachedComponent.Value = value;
-        }
-    }
 }

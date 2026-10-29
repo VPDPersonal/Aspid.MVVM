@@ -13,7 +13,13 @@ These rules apply to all new and edited code without asking. Breaking public API
 - File name = type name. One public type per file.
 - `// ReSharper disable once CheckNamespace` above `namespace` when the folder differs from the namespace (the package default).
 - No `#region`/`#endregion`, even with dozens of explicit interface implementations.
-- The package targets Unity `6000.0`: no `#if UNITY_2023_1_OR_NEWER` or TMP guards. The only conditional defines are `ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION`, `ASPID_MVVM_ZENJECT_INTEGRATION`, `ASPID_MVVM_VCONTAINER_INTEGRATION`, `ASPID_MVVM_ADDRESSABLES_INTEGRATION`, `ASPID_MVVM_UNITASK_INTEGRATION`.
+- The package targets Unity `6000.0`, and every assembly, `Source` included, is compiled by Unity only: no `#if UNITY_2023_1_OR_NEWER`, `UNITY_2022_1_OR_NEWER` or TMP guards, no stand-ins for `UnityEngine` types. `UNITY_EDITOR` and `DEBUG` guards stay. The other conditional defines are the integrations `ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION`, `ASPID_MVVM_ZENJECT_INTEGRATION`, `ASPID_MVVM_VCONTAINER_INTEGRATION`, `ASPID_MVVM_ADDRESSABLES_INTEGRATION`, `ASPID_MVVM_UNITASK_INTEGRATION` and the opt-outs `ASPID_MVVM_UNITY_PROFILER_DISABLED`, `ASPID_MVVM_EDITOR_DISABLED`.
+- Profiler markers anywhere in the package: the file opens with the header below (after `#nullable enable`, if any), and every marker field, `Markers<T>` class and `using (….Auto())` / `using (this.Marker())` sits under `#if ASPID_MVVM_PROFILER`. Generated code spells the same condition out (`Defines.ASPID_MVVM_PROFILER` in the generator). `ENABLE_PROFILER` keeps the marker fields and classes out of a release player. The alias keeps its `ASPID_MVVM_` prefix: a file-local `#define` cannot undo a project-wide symbol, so a bare `PROFILER` in Scripting Define Symbols would override the opt-out.
+  ```csharp
+  #if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+  #define ASPID_MVVM_PROFILER
+  #endif
+  ```
 - No trailing whitespace, no whitespace-only lines. No em/en dashes (`—`, `–`) in code, comments or docs: use `:` or `,`.
 - American spelling, including API names (`Center`, not `Centre`).
 

@@ -245,33 +245,6 @@ namespace Aspid.MVVM.Tests
         #endregion
     }
 
-    internal sealed class TestComponentVector2Binder : ComponentMonoBinder<Vector2Component, Vector2>, IVector2Binder
-    {
-        protected override Vector2 Property
-        {
-            get => CachedComponent.Value;
-            set => CachedComponent.Value = value;
-        }
-    }
-
-    internal sealed class TestComponentQuaternionBinder : ComponentMonoBinder<QuaternionComponent, Quaternion>, IRotationBinder
-    {
-        protected override Quaternion Property
-        {
-            get => CachedComponent.Value;
-            set => CachedComponent.Value = value;
-        }
-    }
-
-    internal sealed class TestComponentObjectBinder : ComponentObjectMonoBinder<ObjectComponent, Texture2D>
-    {
-        protected override Texture2D Property
-        {
-            get => CachedComponent.Value;
-            set => CachedComponent.Value = value;
-        }
-    }
-
     internal sealed class TestTargetVector2Binder : TargetBinder<Vector2Component, Vector2>, IVector2Binder
     {
         public TestTargetVector2Binder(

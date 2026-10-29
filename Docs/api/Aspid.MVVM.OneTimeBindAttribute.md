@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`BaseBindAttribute`](Aspid.MVVM.BaseBindAttribute.md) applied to fields of a type carrying [`ViewModelAttribute`](Aspid.MVVM.ViewModelAttribute.md);
-directs the Source Generator to emit a bindable property locked to [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Generates a [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
 public sealed class OneTimeBindAttribute : BaseBindAttribute
@@ -25,4 +24,17 @@ public sealed class OneTimeBindAttribute : BaseBindAttribute
 [BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
 [OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md)
 
+
+
+## Examples
+
+
+```csharp
+[OneTimeBind] private readonly string _id;
+```
+
+
+## Remarks
+
+Ignored on a set-only property.
 

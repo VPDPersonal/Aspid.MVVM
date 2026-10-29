@@ -11,9 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`BaseBindAttribute`](Aspid.MVVM.BaseBindAttribute.md) applied to fields of a type carrying [`ViewModelAttribute`](Aspid.MVVM.ViewModelAttribute.md);
-directs the Source Generator to emit a bindable property locked to [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md).
-Cannot be applied to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> fields.
+Generates a [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
 public sealed class TwoWayBindAttribute : BaseBindAttribute
@@ -26,4 +24,17 @@ public sealed class TwoWayBindAttribute : BaseBindAttribute
 [BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
 [TwoWayBindAttribute](Aspid.MVVM.TwoWayBindAttribute.md)
 
+
+
+## Examples
+
+
+```csharp
+[TwoWayBind] private string _name;
+```
+
+
+## Remarks
+
+Ignored on a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field and a get-only or set-only property.
 

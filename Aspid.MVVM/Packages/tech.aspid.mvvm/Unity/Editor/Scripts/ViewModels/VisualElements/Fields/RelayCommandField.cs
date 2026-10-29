@@ -46,7 +46,7 @@ namespace Aspid.MVVM
                     
                     initializeButton
                         .SetName("initialize-button")
-                        .SetText("Initialize");
+                        .SetTextSelf("Initialize");
                     
                     container.SetFlexDirection(FlexDirection.Row)
                         .AddChild(initializeButton);
@@ -71,13 +71,13 @@ namespace Aspid.MVVM
                 
                 value.GetType().GetMethod(name: "Execute", BindingAttr)
                     ?.Invoke(value, arguments);
-            }).SetText("Execute");
+            }).SetTextSelf("Execute");
             
             var notifyButton = new Button(() =>
             {
                 value.GetType().GetMethod("NotifyCanExecuteChanged", BindingAttr)
                     ?.Invoke(value, Array.Empty<object>());
-            }).SetText("Notify Can Execute Changed");
+            }).SetTextSelf("Notify Can Execute Changed");
             
             var horizontalContainer = new VisualElement()
                 .SetName("aspid-relay-command-horizontal-container")

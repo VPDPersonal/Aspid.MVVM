@@ -60,7 +60,7 @@ namespace Aspid.MVVM.StarterKit
                     if (ZenjectContainer?.TryResolve(type) is T zenjectResult) return zenjectResult;
 #endif
 #if ASPID_MVVM_VCONTAINER_INTEGRATION
-                    if (VContainerContainer?.TryResolve(type, out var vcontainerResult) ?? false)
+                    if (VContainerContainer is not null && VContainerContainer.TryResolve(type, out var vcontainerResult))
                         return vcontainerResult as T;
 #endif
                     throw new InvalidOperationException($"{type} is not registered in the DI container");

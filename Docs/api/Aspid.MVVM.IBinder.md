@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Base interface for binder implementations.
-Defines the binding lifecycle — binding to and unbinding from an [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Defines a binder that attaches to a bindable member of a ViewModel.
 
 ```csharp
 public interface IBinder
@@ -43,8 +42,7 @@ public interface IBinder
 
 ### Mode {#Aspid_MVVM_IBinder_Mode}
 
-Gets the binding mode that determines the direction of data flow.
-Default is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
+Gets the binding mode; [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) unless the implementing type provides its own.
 
 ```csharp
 BindMode Mode { get; }
@@ -58,7 +56,7 @@ BindMode Mode { get; }
 
 ### Bind\(IBinderAdder\) {#Aspid_MVVM_IBinder_Bind_Aspid_MVVM_IBinderAdder_}
 
-Binds this binder using the specified [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md).
+Attaches the binder to the bindable member behind <code class="paramref">binderAdder</code>.
 
 ```csharp
 void Bind(IBinderAdder binderAdder)
@@ -68,11 +66,11 @@ void Bind(IBinderAdder binderAdder)
 
 `binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
-The binder adder that registers this binder with the ViewModel.
+The bindable member to attach to.
 
 ### Unbind\(\) {#Aspid_MVVM_IBinder_Unbind}
 
-Unbinds this binder from the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Detaches the binder from its bindable member.
 
 ```csharp
 void Unbind()

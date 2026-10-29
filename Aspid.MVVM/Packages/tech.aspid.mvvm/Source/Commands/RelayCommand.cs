@@ -1,5 +1,5 @@
-#if UNITY_2022_1_OR_NEWER && !ASPID_MVVM_UNITY_PROFILER_DISABLED                                                                                                                                                                                                                    
-#define PROFILER
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
 #endif
 
 using System;
@@ -8,14 +8,11 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sealed <see cref="IRelayCommand"/> implementation that wraps an <see cref="Action"/> as the execute callback
-    /// and an optional <see cref="Func{TResult}"/> predicate to gate execution.
+    /// <see cref="IRelayCommand"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
     public sealed class RelayCommand : IRelayCommand
     {
-        /// <summary>
-        /// Raised when the ability to execute the command changes.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<IRelayCommand>? CanExecuteChanged;
         
         private static RelayCommand? _empty;
@@ -24,33 +21,33 @@ namespace Aspid.MVVM
         private readonly Func<bool>? _canExecute;
 
         /// <summary>
-        /// Gets an empty command that cannot be executed.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute()"/> returns
+        /// <see langword="false"/>.
         /// </summary>
         public static RelayCommand Empty => _empty ??= new RelayCommand();
 
         /// <summary>
-        /// Gets an empty command that can be executed but performs no action.
-        /// Useful as a placeholder when a non-null executable command is required.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute()"/> returns
+        /// <see langword="true"/>.
         /// </summary>
         public static RelayCommand EmptyExecution => _emptyExecution ??= new RelayCommand(true);
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class, taking an action to execute the command.
+        /// Creates a command that can always execute.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class, taking an action to execute the command 
-        /// and a function to check whether it can be executed.
+        /// Creates a command gated by <paramref name="canExecute"/>.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <param name="canExecute">A function that returns <see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action execute, Func<bool>? canExecute)
         {
             _canExecute = canExecute;
@@ -66,12 +63,12 @@ namespace Aspid.MVVM
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
-        /// Determines whether the command can be executed.
+        /// Determines whether the command can execute by calling its predicate.
         /// </summary>
-        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        /// <returns>The result of the predicate; <see langword="true"/> when there is none.</returns>
         public bool CanExecute()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -80,11 +77,11 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Executes the command if it can be executed.
+        /// Runs the action when <see cref="CanExecute()"/> returns <see langword="true"/>.
         /// </summary>
         public void Execute()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -93,12 +90,10 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Notifies that the ability to execute the command has changed.
-        /// </summary>
+        /// <inheritdoc/>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -108,15 +103,12 @@ namespace Aspid.MVVM
     }
     
     /// <summary>
-    /// Sealed <see cref="IRelayCommand{T}"/> implementation that wraps an <see cref="Action{T}"/> as the execute callback
-    /// and an optional <see cref="Func{T, TResult}"/> predicate to gate execution against the supplied parameter.
+    /// <see cref="IRelayCommand{T}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <typeparam name="T">The type of the command parameter.</typeparam>
+    /// <typeparam name="T">The command parameter type.</typeparam>
     public sealed class RelayCommand<T> : IRelayCommand<T>
     {
-        /// <summary>
-        /// Raised when the ability to execute the command changes.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<IRelayCommand<T>>? CanExecuteChanged;
         
         private static RelayCommand<T>? _empty;
@@ -125,33 +117,33 @@ namespace Aspid.MVVM
         private readonly Func<T?, bool>? _canExecute;
 
         /// <summary>
-        /// Gets an empty command that cannot be executed.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T)"/> returns
+        /// <see langword="false"/>.
         /// </summary>
         public static RelayCommand<T> Empty => _empty ??= new RelayCommand<T>();
 
         /// <summary>
-        /// Gets an empty command that can be executed but performs no action.
-        /// Useful as a placeholder when a non-null executable command is required.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T)"/> returns
+        /// <see langword="true"/>.
         /// </summary>
         public static RelayCommand<T> EmptyExecution => _emptyExecution ??= new RelayCommand<T>(true);
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T}"/> class, taking an action to execute the command.
+        /// Creates a command that can always execute.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T?> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T}"/> class, taking an action to execute the command 
-        /// and a function to check whether it can be executed.
+        /// Creates a command gated by <paramref name="canExecute"/>.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <param name="canExecute">A function that returns <see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute)
         {
             _canExecute = canExecute;
@@ -167,13 +159,13 @@ namespace Aspid.MVVM
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
-        /// Determines whether the command can be executed with the specified parameter.
+        /// Determines whether the command can execute by calling its predicate.
         /// </summary>
-        /// <param name="param">The parameter passed for checking the ability to execute the command.</param>
-        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        /// <param name="param">The command parameter.</param>
+        /// <returns>The result of the predicate; <see langword="true"/> when there is none.</returns>
         public bool CanExecute(T? param)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -182,12 +174,12 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Executes the command with the specified parameter if it can be executed.
+        /// Runs the action when <see cref="CanExecute(T)"/> returns <see langword="true"/>.
         /// </summary>
-        /// <param name="param">The parameter passed to the command for execution.</param>
+        /// <param name="param">The command parameter.</param>
         public void Execute(T? param)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -196,12 +188,10 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Notifies that the ability to execute the command has changed.
-        /// </summary>
+        /// <inheritdoc/>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -211,16 +201,13 @@ namespace Aspid.MVVM
     }
     
     /// <summary>
-    /// Sealed <see cref="IRelayCommand{T1, T2}"/> implementation that wraps an <see cref="Action{T1, T2}"/> as the execute
-    /// callback and an optional <see cref="Func{T1, T2, TResult}"/> predicate to gate execution against the supplied parameters.
+    /// <see cref="IRelayCommand{T1, T2}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-    /// <typeparam name="T2">The type of the second command parameter.</typeparam>
+    /// <typeparam name="T1">The first command parameter type.</typeparam>
+    /// <typeparam name="T2">The second command parameter type.</typeparam>
     public sealed class RelayCommand<T1, T2> : IRelayCommand<T1, T2>
     {
-        /// <summary>
-        /// Raised when the ability to execute the command changes.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<IRelayCommand<T1, T2>>? CanExecuteChanged;
         
         private static RelayCommand<T1, T2>? _empty;
@@ -229,33 +216,33 @@ namespace Aspid.MVVM
         private readonly Func<T1?, T2?, bool>? _canExecute;
 
         /// <summary>
-        /// Gets an empty command that cannot be executed.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T1, T2)"/> returns
+        /// <see langword="false"/>.
         /// </summary>
         public static RelayCommand<T1, T2> Empty => _empty ??= new RelayCommand<T1, T2>();
 
         /// <summary>
-        /// Gets an empty command that can be executed but performs no action.
-        /// Useful as a placeholder when a non-null executable command is required.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T1, T2)"/> returns
+        /// <see langword="true"/>.
         /// </summary>
         public static RelayCommand<T1, T2> EmptyExecution => _emptyExecution ??= new RelayCommand<T1, T2>(true);
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T1, T2}"/> class, taking an action to execute the command.
+        /// Creates a command that can always execute.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T1?, T2?> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T1, T2}"/> class, taking an action to execute the command 
-        /// and a function to check whether it can be executed.
+        /// Creates a command gated by <paramref name="canExecute"/>.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <param name="canExecute">A function that returns <see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T1?, T2?> execute, Func<T1?, T2?, bool>? canExecute)
         {
             _canExecute = canExecute;
@@ -271,14 +258,14 @@ namespace Aspid.MVVM
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
-        /// Determines whether the command can be executed with the specified parameters.
+        /// Determines whether the command can execute by calling its predicate.
         /// </summary>
-        /// <param name="param1">The first parameter passed for checking the ability to execute the command.</param>
-        /// <param name="param2">The second parameter passed for checking the ability to execute the command.</param>
-        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        /// <param name="param1">The first command parameter.</param>
+        /// <param name="param2">The second command parameter.</param>
+        /// <returns>The result of the predicate; <see langword="true"/> when there is none.</returns>
         public bool CanExecute(T1? param1, T2? param2)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -287,13 +274,13 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Executes the command with the specified parameters if it can be executed.
+        /// Runs the action when <see cref="CanExecute(T1, T2)"/> returns <see langword="true"/>.
         /// </summary>
-        /// <param name="param1">The first parameter passed to the command for execution.</param>
-        /// <param name="param2">The second parameter passed to the command for execution.</param>
+        /// <param name="param1">The first command parameter.</param>
+        /// <param name="param2">The second command parameter.</param>
         public void Execute(T1? param1, T2? param2)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -302,12 +289,10 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Notifies that the ability to execute the command has changed.
-        /// </summary>
+        /// <inheritdoc/>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -317,17 +302,14 @@ namespace Aspid.MVVM
     }
     
     /// <summary>
-    /// Sealed <see cref="IRelayCommand{T1, T2, T3}"/> implementation that wraps an <see cref="Action{T1, T2, T3}"/> as the
-    /// execute callback and an optional <see cref="Func{T1, T2, T3, TResult}"/> predicate to gate execution against the supplied parameters.
+    /// <see cref="IRelayCommand{T1, T2, T3}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-    /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-    /// <typeparam name="T3">The type of the third command parameter.</typeparam>
+    /// <typeparam name="T1">The first command parameter type.</typeparam>
+    /// <typeparam name="T2">The second command parameter type.</typeparam>
+    /// <typeparam name="T3">The third command parameter type.</typeparam>
     public sealed class RelayCommand<T1, T2, T3> : IRelayCommand<T1, T2, T3>
     {
-        /// <summary>
-        /// Raised when the ability to execute the command changes.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<IRelayCommand<T1, T2, T3>>? CanExecuteChanged;
         
         private static RelayCommand<T1, T2, T3>? _empty;
@@ -336,32 +318,33 @@ namespace Aspid.MVVM
         private readonly Func<T1?, T2?, T3?, bool>? _canExecute;
 
         /// <summary>
-        /// Gets an empty command that cannot be executed.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T1, T2, T3)"/> returns
+        /// <see langword="false"/>.
         /// </summary>
         public static RelayCommand<T1, T2, T3> Empty => _empty ??= new RelayCommand<T1, T2, T3>();
 
         /// <summary>
-        /// Gets an empty command that can be executed but performs no action.
-        /// Useful as a placeholder when a non-null executable command is required.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T1, T2, T3)"/> returns
+        /// <see langword="true"/>.
         /// </summary>
         public static RelayCommand<T1, T2, T3> EmptyExecution => _emptyExecution ??= new RelayCommand<T1, T2, T3>(true);
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3}"/> class, taking an action to execute the command.
+        /// Creates a command that can always execute.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T1?, T2?, T3?> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3}"/> class, taking an action to execute the command and a function to check if it can execute.
+        /// Creates a command gated by <paramref name="canExecute"/>.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <param name="canExecute">A function that returns <see langword="true"/> if the command can execute; otherwise, <see langword="false"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T1?, T2?, T3?> execute, Func<T1?, T2?, T3?, bool>? canExecute)
         {
             _canExecute = canExecute;
@@ -377,15 +360,15 @@ namespace Aspid.MVVM
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
-        /// Determines whether the command can be executed with the specified parameters.
+        /// Determines whether the command can execute by calling its predicate.
         /// </summary>
-        /// <param name="param1">The first parameter passed to check if the command can execute.</param>
-        /// <param name="param2">The second parameter passed to check if the command can execute.</param>
-        /// <param name="param3">The third parameter passed to check if the command can execute.</param>
-        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        /// <param name="param1">The first command parameter.</param>
+        /// <param name="param2">The second command parameter.</param>
+        /// <param name="param3">The third command parameter.</param>
+        /// <returns>The result of the predicate; <see langword="true"/> when there is none.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -394,14 +377,14 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Executes the command with the specified parameters if it can be executed.
+        /// Runs the action when <see cref="CanExecute(T1, T2, T3)"/> returns <see langword="true"/>.
         /// </summary>
-        /// <param name="param1">The first parameter passed to the command for execution.</param>
-        /// <param name="param2">The second parameter passed to the command for execution.</param>
-        /// <param name="param3">The third parameter passed to the command for execution.</param>
+        /// <param name="param1">The first command parameter.</param>
+        /// <param name="param2">The second command parameter.</param>
+        /// <param name="param3">The third command parameter.</param>
         public void Execute(T1? param1, T2? param2, T3? param3)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -410,12 +393,10 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Notifies that the ability to execute the command has changed.
-        /// </summary>
+        /// <inheritdoc/>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -425,18 +406,15 @@ namespace Aspid.MVVM
     }
     
     /// <summary>
-    /// Sealed <see cref="IRelayCommand{T1, T2, T3, T4}"/> implementation that wraps an <see cref="Action{T1, T2, T3, T4}"/> as the
-    /// execute callback and an optional <see cref="Func{T1, T2, T3, T4, TResult}"/> predicate to gate execution against the supplied parameters.
+    /// <see cref="IRelayCommand{T1, T2, T3, T4}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <typeparam name="T1">The type of the first command parameter.</typeparam>
-    /// <typeparam name="T2">The type of the second command parameter.</typeparam>
-    /// <typeparam name="T3">The type of the third command parameter.</typeparam>
-    /// <typeparam name="T4">The type of the fourth command parameter.</typeparam>
+    /// <typeparam name="T1">The first command parameter type.</typeparam>
+    /// <typeparam name="T2">The second command parameter type.</typeparam>
+    /// <typeparam name="T3">The third command parameter type.</typeparam>
+    /// <typeparam name="T4">The fourth command parameter type.</typeparam>
     public sealed class RelayCommand<T1, T2, T3, T4> : IRelayCommand<T1, T2, T3, T4>
     {
-        /// <summary>
-        /// Raised when the ability to execute the command changes.
-        /// </summary>
+        /// <inheritdoc/>
         public event Action<IRelayCommand<T1, T2, T3, T4>>? CanExecuteChanged;
         
         private static RelayCommand<T1, T2, T3, T4>? _empty;
@@ -445,32 +423,33 @@ namespace Aspid.MVVM
         private readonly Func<T1?, T2?, T3?, T4?, bool>? _canExecute;
 
         /// <summary>
-        /// Gets an empty command that cannot be executed.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T1, T2, T3, T4)"/> returns
+        /// <see langword="false"/>.
         /// </summary>
         public static RelayCommand<T1, T2, T3, T4> Empty => _empty ??= new RelayCommand<T1, T2, T3, T4>();
 
         /// <summary>
-        /// Gets an empty command that can be executed but performs no action.
-        /// Useful as a placeholder when a non-null executable command is required.
+        /// Gets a shared command that does nothing and whose <see cref="CanExecute(T1, T2, T3, T4)"/> returns
+        /// <see langword="true"/>.
         /// </summary>
         public static RelayCommand<T1, T2, T3, T4> EmptyExecution => _emptyExecution ??= new RelayCommand<T1, T2, T3, T4>(true);
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3, T4}"/> class, taking an action to execute the command.
+        /// Creates a command that can always execute.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T1?, T2?, T3?, T4?> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand{T1, T2, T3, T4}"/> class, taking an action to execute the command and a function to check if it can execute.
+        /// Creates a command gated by <paramref name="canExecute"/>.
         /// </summary>
-        /// <param name="execute">The action that will be executed by the command.</param>
-        /// <param name="canExecute">A function that returns <see langword="true"/> if the command can execute; otherwise, <see langword="false"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
+        /// <param name="execute">The action to run.</param>
+        /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public RelayCommand(Action<T1?, T2?, T3?, T4?> execute, Func<T1?, T2?, T3?, T4?, bool>? canExecute)
         {
             _canExecute = canExecute;
@@ -486,16 +465,16 @@ namespace Aspid.MVVM
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         
         /// <summary>
-        /// Determines whether the command can be executed with the specified parameters.
+        /// Determines whether the command can execute by calling its predicate.
         /// </summary>
-        /// <param name="param1">The first parameter passed to check if the command can execute.</param>
-        /// <param name="param2">The second parameter passed to check if the command can execute.</param>
-        /// <param name="param3">The third parameter passed to check if the command can execute.</param>
-        /// <param name="param4">The fourth parameter passed to check if the command can execute.</param>
-        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        /// <param name="param1">The first command parameter.</param>
+        /// <param name="param2">The second command parameter.</param>
+        /// <param name="param3">The third command parameter.</param>
+        /// <param name="param4">The fourth command parameter.</param>
+        /// <returns>The result of the predicate; <see langword="true"/> when there is none.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -504,15 +483,15 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Executes the command with the specified parameters if it can be executed.
+        /// Runs the action when <see cref="CanExecute(T1, T2, T3, T4)"/> returns <see langword="true"/>.
         /// </summary>
-        /// <param name="param1">The first parameter passed to the command for execution.</param>
-        /// <param name="param2">The second parameter passed to the command for execution.</param>
-        /// <param name="param3">The third parameter passed to the command for execution.</param>
-        /// <param name="param4">The fourth parameter passed to the command for execution.</param>
+        /// <param name="param1">The first command parameter.</param>
+        /// <param name="param2">The second command parameter.</param>
+        /// <param name="param3">The third command parameter.</param>
+        /// <param name="param4">The fourth command parameter.</param>
         public void Execute(T1? param1, T2? param2, T3? param3, T4? param4)
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
@@ -521,12 +500,10 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Notifies that the ability to execute the command has changed.
-        /// </summary>
+        /// <inheritdoc/>
         public void NotifyCanExecuteChanged()
         {
-#if PROFILER
+#if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {

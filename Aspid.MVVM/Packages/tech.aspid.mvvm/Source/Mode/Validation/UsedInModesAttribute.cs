@@ -7,25 +7,32 @@ using Attribute = UnityEngine.PropertyAttribute;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Marks a serialized field as used only under the specified binding modes, so the Inspector
-    /// can disable it while the hosting binder is bound in any other.
-    /// This attribute is conditional and only active when the "UNITY_EDITOR" symbol is defined.
+    /// Disables the field in the Inspector while the binder that holds it has a mode outside <see cref="Modes"/>.
     /// </summary>
     /// <remarks>
-    /// The field can sit on the binder itself or anywhere inside a serialized object the binder
-    /// holds; the nearest binder above it decides. Outside any binder the field stays enabled.
+    /// The field can sit on the binder or anywhere inside an object the binder serializes; the nearest binder above it decides.
+    /// With no binder above it or no modes, the field stays enabled.
     /// </remarks>
+    /// <example>
+    /// <code>
+    /// [UsedInModes(BindMode.TwoWay, BindMode.OneWayToSource)]
+    /// [SerializeField] private string _format;
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Field)]
     public sealed class UsedInModesAttribute : Attribute
     {
         /// <summary>
-        /// Gets the binding modes the field is used under.
+        /// Gets the binding modes the field is used in.
         /// </summary>
         public IReadOnlyList<BindMode> Modes { get; }
 
-        /// <param name="modes">The binding modes the field is used under.</param>
+        /// <summary>
+        /// Creates an attribute for a field used in <paramref name="modes"/>.
+        /// </summary>
+        /// <param name="modes">The binding modes the field is used in.</param>
         public UsedInModesAttribute(params BindMode[] modes)
         {
             Modes = modes;

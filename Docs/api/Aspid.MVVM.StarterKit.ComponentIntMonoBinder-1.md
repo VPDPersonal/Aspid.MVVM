@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-Abstract base [`StarterKit.ComponentMonoBinder<T1, T2>?text=ComponentMonoBinder%3cTComponent%2c+int%3e`](Aspid.MVVM.StarterKit.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
+Abstract base [`ComponentMonoBinder<TComponent, int>`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md) that binds an <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types">int</a> property,
 accepting every numeric type via [`IIntBinder`](Aspid.MVVM.StarterKit.IIntBinder.md) and reporting to every numeric type via [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md).
 
 ```csharp

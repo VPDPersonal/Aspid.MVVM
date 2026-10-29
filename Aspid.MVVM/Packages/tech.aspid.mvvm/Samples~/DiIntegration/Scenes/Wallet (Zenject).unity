@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 776457276}
   - component: {fileID: 776457275}
   m_Layer: 0
-  m_Name: UnityEngine.EventSystems.EventSystem
+  m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1135,7 +1135,7 @@ GameObject:
   - component: {fileID: 1842096778}
   - component: {fileID: 1842096775}
   m_Layer: 5
-  m_Name: Earn UnityEngine.UI.Button
+  m_Name: Earn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

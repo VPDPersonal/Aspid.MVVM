@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
 Assembly: Aspid.MVVM.StarterKit.dll  
 
-[`StarterKit.TargetBinder<T1, T2>?text=TargetBinder%3cObject%2c+string%3e`](Aspid.MVVM.StarterKit.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target.
+[`TargetBinder<Object, string>`](Aspid.MVVM.StarterKit.TargetBinder-2.md) that binds [`name`](https://docs.unity3d.com/ScriptReference/Object-name.html) of the target.
 
 ```csharp
 [Serializable]

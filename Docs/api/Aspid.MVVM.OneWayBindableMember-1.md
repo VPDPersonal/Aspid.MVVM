@@ -11,10 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Sealed [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) that pushes value changes from the ViewModel to subscribed
-[`IBinder<T>`](Aspid.MVVM.IBinder-1.md) / [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) instances; additionally exposes a get/set
-[`OneWayBindableMember<T>.Value`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Value) and a [`OneWayBindableMember<T>.Changed`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Changed) event. Accepts only [`BindMode.OneWay`](Aspid.MVVM.BindMode.md)
-and [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) binders.
+[`IBindableMember<T>`](Aspid.MVVM.IBindableMember-1.md) that pushes every value change to its binders.
 
 ```csharp
 public sealed class OneWayBindableMember<T> : IBindableMember<T>, IReadOnlyBindableMember<T>, IReadOnlyValueBindableMember<T>, IBinderAdder, IBinderRemover
@@ -24,7 +21,7 @@ public sealed class OneWayBindableMember<T> : IBindableMember<T>, IReadOnlyBinda
 
 `T` 
 
-The reference type of the bound value.
+The bound value type.
 
 #### Inheritance
 
@@ -45,7 +42,7 @@ The reference type of the bound value.
 
 ### OneWayBindableMember\(T?\) {#Aspid_MVVM_OneWayBindableMember_1__ctor__0_}
 
-Initializes a new instance of the [`OneWayBindableMember<T>`](Aspid.MVVM.OneWayBindableMember-1.md) class with the specified initial value.
+Creates a member holding <code class="paramref">value</code>.
 
 ```csharp
 public OneWayBindableMember(T? value)
@@ -55,19 +52,13 @@ public OneWayBindableMember(T? value)
 
 `value` T?
 
-The initial value of the bindable member.
-
-#### Exceptions
-
- [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
-
-Thrown when <code class="paramref">mode</code> is neither [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) nor [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+The initial value.
 
 ## Properties
 
 ### Mode {#Aspid_MVVM_OneWayBindableMember_1_Mode}
 
-Gets the binding mode for this member.
+Gets the binding mode of the member; always [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -79,7 +70,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneWayBindableMember_1_Value}
 
-Gets or sets the current value. Setting the value will trigger the [`OneWayBindableMember<T>.Changed`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Changed) event.
+Gets or sets the current value; setting it raises [`OneWayBindableMember<T>.Changed`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Changed) even for an equal value.
 
 ```csharp
 public T? Value { get; set; }
@@ -93,7 +84,7 @@ public T? Value { get; set; }
 
 ### Invoke\(T?\) {#Aspid_MVVM_OneWayBindableMember_1_Invoke__0_}
 
-Sets the current value and raises the [`OneWayBindableMember<T>.Changed`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Changed) event.
+Sets [`OneWayBindableMember<T>.Value`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Value) to <code class="paramref">value</code>.
 
 ```csharp
 public void Invoke(T? value)
@@ -103,11 +94,11 @@ public void Invoke(T? value)
 
 `value` T?
 
-The new value to set and notify.
+The new value.
 
 ### Changed {#Aspid_MVVM_OneWayBindableMember_1_Changed}
 
-Raised when the value changes.
+Occurs when [`OneWayBindableMember<T>.Value`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Value) is set.
 
 ```csharp
 public event Action<T?>? Changed

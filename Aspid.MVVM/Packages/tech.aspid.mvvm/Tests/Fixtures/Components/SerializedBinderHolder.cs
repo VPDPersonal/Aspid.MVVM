@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Tests
     /// A component holding a non-Mono binder in a <c>[SerializeReference]</c> field, the way a View does, so a test
     /// can have Unity rebuild the binder through deserialization.
     /// </summary>
-    internal sealed class SerializedBinderHolder : MonoBehaviour
+    public sealed class SerializedBinderHolder : MonoBehaviour
     {
         [SerializeReference] public IBinder Binder;
     }

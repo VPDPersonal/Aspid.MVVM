@@ -97,7 +97,7 @@ public partial class PlayerViewModel
 }
 ```
 
-**Implementation:** `OneTimeBindableMember<T>` is a singleton per T. `Add()` calls `SetValue` once and returns `null` (no `IBinderRemover` is needed).
+**Implementation:** the generated code keeps one `OneTimeBindableMember<T>` per ViewModel member and refreshes its value on every access, so binding allocates nothing after the first access. `Add()` calls `SetValue` once and returns `null` (no `IBinderRemover` is needed).
 
 **When to use:** commands (`IRelayCommand`), configuration data, static labels.
 

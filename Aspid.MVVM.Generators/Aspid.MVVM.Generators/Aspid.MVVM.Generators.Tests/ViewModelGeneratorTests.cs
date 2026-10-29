@@ -199,6 +199,30 @@ public sealed class ViewModelGeneratorTests
         Assert.DoesNotContain("#if !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
     }
 
+    /// <summary>
+    /// A one-time member is kept per ViewModel and refreshed on access, not taken from a static instance shared by
+    /// every ViewModel, so a member returned earlier keeps the value of its own ViewModel.
+    /// </summary>
+    [Fact]
+    public void AOneTimeMemberIsKeptPerViewModel()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+
+            [ViewModel]
+            public partial class PlayerViewModel
+            {
+                [Bind] private readonly string _name;
+                [Bind(BindMode.OneTime)] private int _level;
+            }
+            """);
+
+        Assert.DoesNotContain(".Get(", generated);
+        Assert.Contains("private global::Aspid.MVVM.OneTimeBindableMember<string> __nameBindable;", generated);
+        Assert.Contains("if (__nameBindable is null) __nameBindable = new(_name);", generated);
+        Assert.Contains("else __levelBindable.Value = _level;", generated);
+    }
+
     private static int CountOf(string text, string value) =>
         Regex.Matches(text, Regex.Escape(value)).Count;
 

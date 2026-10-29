@@ -12,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     public sealed class DynamicProperty<T> : IDynamicProperty<T>
     {
         private T? _value;
-        private readonly IBinderAdder? _bindableMember;
+        private readonly IBinderAdder _bindableMember;
 
         /// <inheritdoc/>
         public string Id { get; }
@@ -46,7 +46,7 @@ namespace Aspid.MVVM.StarterKit
             _value = value;
             _bindableMember = mode switch
             {
-                BindMode.OneTime => null,
+                BindMode.OneTime => new OneTimeBindableMember<T>(value),
                 BindMode.OneWay => new OneWayBindableMember<T>(value),
                 BindMode.TwoWay or BindMode.OneWayToSource => new TwoWayBindableMember<T>(value, SetValue),
                 _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, "Unsupported binding mode.")
@@ -91,9 +91,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        public IBinderAdder GetAdder() => Mode is BindMode.OneTime
-            ? OneTimeBindableMember<T?>.Get(_value)
-            : _bindableMember!;
+        public IBinderAdder GetAdder() => _bindableMember;
 
         private void SetValue(T? value)
         {
@@ -102,6 +100,10 @@ namespace Aspid.MVVM.StarterKit
 
             switch (_bindableMember)
             {
+                case OneTimeBindableMember<T> oneTime:
+                    oneTime.Value = value;
+                    break;
+
                 case OneWayBindableMember<T> oneWay:
                     oneWay.Value = value;
                     break;

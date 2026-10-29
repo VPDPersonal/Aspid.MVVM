@@ -14,28 +14,11 @@ namespace Aspid.MVVM
     public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember<T, ValueType>
         where T : struct
     {
-        private static readonly OneTimeStructBindableMember<T> _instance = new();
-        
-        private OneTimeStructBindableMember() { }
-    
         /// <summary>
-        /// Returns the shared instance with <see cref="OneTimeStructBindableMember{T, TBoxed}.Value"/> set to <paramref name="value"/>.
+        /// Creates a member holding <paramref name="value"/>.
         /// </summary>
-        /// <remarks>
-        /// Every call returns the same instance and overwrites its value, so bind it before the next call.
-        /// </remarks>
         /// <param name="value">The value to push to the binder.</param>
-        /// <returns>The shared instance for <typeparamref name="T"/>.</returns>
-        public static OneTimeStructBindableMember<T> Get(T value)
-        {
-#if ASPID_MVVM_PROFILER
-            using (GetMarker.Auto())
-#endif
-            {
-                _instance.Value = value;
-                return _instance;
-            }
-        }
+        public OneTimeStructBindableMember(T value) : base(value) { }
     }
 
     /// <summary>
@@ -48,21 +31,20 @@ namespace Aspid.MVVM
         where T : struct, TBoxed
         where TBoxed : class
     {
-#if ASPID_MVVM_PROFILER
-        protected static readonly Unity.Profiling.ProfilerMarker GetMarker = new(name: $"OneTimeStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Get");
-#endif
-        
         /// <summary>
-        /// Gets the value pushed to the next binder.
+        /// Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
         /// </summary>
-        public T Value { get; private protected set; }
+        public T Value { get; set; }
         
         /// <summary>
         /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneTime;    
     
-        private protected OneTimeStructBindableMember() { }
+        private protected OneTimeStructBindableMember(T value)
+        {
+            Value = value;
+        }
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">

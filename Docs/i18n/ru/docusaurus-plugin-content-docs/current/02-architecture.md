@@ -205,7 +205,7 @@ UI изменяется (пользователь вводит текст)
 |-------|-------|----------|
 | `OneWayBindableMember<T>` | OneWay | Хранит значение, event `Changed`, push при подписке |
 | `TwoWayBindableMember<T>` | TwoWay | + подписка на `IReverseBinder.ValueChanged` |
-| `OneTimeBindableMember<T>` | OneTime | Singleton-per-T, одноразовый push, `Add` возвращает `null` |
+| `OneTimeBindableMember<T>` | OneTime | Один на член ViewModel, одноразовый push, `Add` возвращает `null` |
 | `OneWayToSourceBindableMember<T>` | OneWayToSource | Только обратная привязка, нет push в View |
 
 ---

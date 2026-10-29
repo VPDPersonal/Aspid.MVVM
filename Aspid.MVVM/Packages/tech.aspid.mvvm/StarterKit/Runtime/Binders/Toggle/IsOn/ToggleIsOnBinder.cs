@@ -19,7 +19,6 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional converter applied to the value; reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<bool, bool>? _converter;
 
-        // False at rest: Unity builds a deserialized binder without running field initializers.
         [NonSerialized] private bool _isSuppressingEcho;
 
         /// <param name="target">The toggle to bind.</param>

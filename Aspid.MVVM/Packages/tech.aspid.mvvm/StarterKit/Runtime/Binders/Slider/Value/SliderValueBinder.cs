@@ -21,8 +21,6 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private IConverter<float, float>? _converter;
 
         private NumberReverseChannel _channel;
-
-        // False at rest: Unity builds a deserialized binder without running field initializers.
         private bool _isSuppressingEcho;
 
         /// <param name="target">The slider to bind.</param>

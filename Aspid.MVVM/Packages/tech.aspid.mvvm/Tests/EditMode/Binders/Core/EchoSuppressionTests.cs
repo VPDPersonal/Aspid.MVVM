@@ -12,9 +12,9 @@ namespace Aspid.MVVM.Tests
     /// Tests that the View → ViewModel channel survives an exception thrown while the binder is writing a value.
     /// </summary>
     /// <remarks>
-    /// Toggle and Slider binders suppress their own echo by clearing a flag around the assignment: the component
+    /// Toggle and Slider binders suppress their own echo by raising a flag around the assignment: the component
     /// raises <c>onValueChanged</c> synchronously, and the binder must not mistake its own write for user input.
-    /// An exception from another listener on that event must not leave the flag cleared for good.
+    /// An exception from another listener on that event must not leave the flag raised for good.
     /// </remarks>
     [TestFixture]
     public sealed class EchoSuppressionTests : SceneFixture

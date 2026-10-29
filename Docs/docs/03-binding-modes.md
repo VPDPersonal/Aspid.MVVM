@@ -72,7 +72,7 @@ public partial class FormViewModel
 
 **Implementation:** `TwoWayBindableMember<T>` supports all four modes. For TwoWay/OneWayToSource binders `Add()` also subscribes to `IReverseBinder<T>.ValueChanged`.
 
-**Loop protection:** binders such as `InputFieldBinder` keep an `_isNotifyValueChanged` flag to prevent infinite recursion.
+**Loop protection:** binders such as `InputFieldBinder` keep an `_isSuppressingEcho` flag to prevent infinite recursion.
 
 **Typical binders:** `InputFieldBinder`, `SliderValueBinder`, `ToggleIsOnBinder`.
 

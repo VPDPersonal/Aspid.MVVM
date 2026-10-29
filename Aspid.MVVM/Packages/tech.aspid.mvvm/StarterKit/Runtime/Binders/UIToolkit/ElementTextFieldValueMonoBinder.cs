@@ -20,7 +20,7 @@ namespace Aspid.MVVM.StarterKit
         IBinder<string>,
         IReverseBinder<string>
     {
-        private bool _isNotifyValueChanged = true;
+        private bool _isSuppressingEcho;
 
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
@@ -35,7 +35,7 @@ namespace Aspid.MVVM.StarterKit
             var element = Element;
             if (element is null) return;
 
-            _isNotifyValueChanged = false;
+            _isSuppressingEcho = true;
 
             try
             {
@@ -44,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
             finally
             {
                 // Keeps the reverse channel alive when another listener throws.
-                _isNotifyValueChanged = true;
+                _isSuppressingEcho = false;
             }
         }
 
@@ -69,7 +69,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnFieldChanged(ChangeEvent<string> changed)
         {
-            if (_isNotifyValueChanged)
+            if (!_isSuppressingEcho)
                 ValueChanged?.Invoke(changed.newValue);
         }
     }

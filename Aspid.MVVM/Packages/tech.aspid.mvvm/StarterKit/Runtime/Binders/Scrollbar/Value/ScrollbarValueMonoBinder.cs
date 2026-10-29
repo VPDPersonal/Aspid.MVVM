@@ -23,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private IConverter<float, float> _converter;
 
         private NumberReverseChannel _channel;
-        private bool _isNotifyValueChanged = true;
+        private bool _isSuppressingEcho;
 
         /// <inheritdoc/>
         ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
@@ -38,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
             var converted = _converter?.Convert(value) ?? value;
             var clamped = this.SafeClamp01(converted);
 
-            _isNotifyValueChanged = false;
+            _isSuppressingEcho = true;
 
             try
             {
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
             finally
             {
                 // Keeps the reverse channel alive when another listener throws.
-                _isNotifyValueChanged = true;
+                _isSuppressingEcho = false;
             }
 
             if (!Mathf.Approximately(clamped, converted)) OnValueChanged(clamped);
@@ -71,7 +71,7 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnValueChanged(float value)
         {
-            if (!_isNotifyValueChanged) return;
+            if (_isSuppressingEcho) return;
             _channel.Raise(_converter is ITwoWayConverter<float, float> twoWay ? twoWay.ConvertBack(value) : value);
         }
     }

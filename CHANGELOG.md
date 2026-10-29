@@ -220,12 +220,13 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - TMP Examples & Extras in the Editor project; TMP Essential Resources are back in the default `Assets/TextMesh Pro`.
 - `BindSafelyNullReferenceException`, `UnbindSafelyNullReferenceException` — never thrown in Unity: `BindSafely` / `UnbindSafely` skip a `null` binder and log it under `DEBUG`.
 - `Aspid.MVVM.Generators.Sample` — debug the generator through `Aspid.MVVM.Generators.Tests`.
+- `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` and the `protected` `GetMarker` — create the member with its constructor, as the other bindable members.
 
 ### Fixed
 
 #### Core
 
-- One-time bindable members were a single static instance per type shared by every ViewModel, so a binder bound later (a second binder of the same member after a nested View had bound, an Editor rebind, a member kept by user code) could get the value of another ViewModel. The generated code now keeps one member per ViewModel and refreshes it on access; `OneTime*BindableMember<T>.Get` returns a new instance.
+- One-time bindable members were a single static instance per type shared by every ViewModel, so a binder bound later (a second binder of the same member after a nested View had bound, an Editor rebind, a member kept by user code) could get the value of another ViewModel. The generated code now keeps one member per ViewModel and refreshes it on access.
 - `TwoWayValue<T>` (now `ValueTwoWayBinder<T>`) fed every ViewModel → View update straight back to the ViewModel with the converted value.
 - `OneWayToSource` never reached the ViewModel for a numeric binder's own type; the other three widths worked.
 - Reverse binding re-applied the *forward* converter on the way back.

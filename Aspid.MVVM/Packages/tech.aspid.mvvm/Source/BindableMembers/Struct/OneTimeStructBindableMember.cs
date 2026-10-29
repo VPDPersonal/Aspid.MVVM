@@ -19,25 +19,6 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="value">The value to push to the binder.</param>
         public OneTimeStructBindableMember(T value) : base(value) { }
-    
-        /// <summary>
-        /// Creates a member holding <paramref name="value"/>.
-        /// </summary>
-        /// <remarks>
-        /// Every call allocates a new instance. To bind without allocations, keep one instance and update its
-        /// <see cref="OneTimeStructBindableMember{T, TBoxed}.Value"/>, as the generated ViewModel code does.
-        /// </remarks>
-        /// <param name="value">The value to push to the binder.</param>
-        /// <returns>A new instance holding <paramref name="value"/>.</returns>
-        public static OneTimeStructBindableMember<T> Get(T value)
-        {
-#if ASPID_MVVM_PROFILER
-            using (GetMarker.Auto())
-#endif
-            {
-                return new OneTimeStructBindableMember<T>(value);
-            }
-        }
     }
 
     /// <summary>
@@ -50,10 +31,6 @@ namespace Aspid.MVVM
         where T : struct, TBoxed
         where TBoxed : class
     {
-#if ASPID_MVVM_PROFILER
-        protected static readonly Unity.Profiling.ProfilerMarker GetMarker = new(name: $"OneTimeStructBindableMember<{typeof(T).Name}, {typeof(TBoxed).Name}>.Get");
-#endif
-        
         /// <summary>
         /// Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
         /// </summary>

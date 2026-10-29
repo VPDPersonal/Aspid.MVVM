@@ -13,10 +13,6 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>
     {
-#if ASPID_MVVM_PROFILER
-        private static readonly Unity.Profiling.ProfilerMarker _getMarker = new(name: $"OneTimeBindableMember<{typeof(T).Name}>.Get");
-#endif
-        
         /// <summary>
         /// Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
         /// </summary>
@@ -65,25 +61,6 @@ namespace Aspid.MVVM
                 }
             
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a member holding <paramref name="value"/>.
-        /// </summary>
-        /// <remarks>
-        /// Every call allocates a new instance. To bind without allocations, keep one instance and update its
-        /// <see cref="Value"/>, as the generated ViewModel code does.
-        /// </remarks>
-        /// <param name="value">The value to push to the binder.</param>
-        /// <returns>A new instance holding <paramref name="value"/>.</returns>
-        public static OneTimeBindableMember<T> Get(T? value)
-        {
-#if ASPID_MVVM_PROFILER
-            using (_getMarker.Auto())
-#endif
-            {
-                return new OneTimeBindableMember<T>(value);
             }
         }
     }

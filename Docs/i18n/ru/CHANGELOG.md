@@ -220,12 +220,13 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - TMP Examples & Extras в проекте редактора; TMP Essential Resources снова лежат в стандартной `Assets/TextMesh Pro`.
 - `BindSafelyNullReferenceException`, `UnbindSafelyNullReferenceException` — в Unity они никогда не выбрасывались: `BindSafely` / `UnbindSafely` пропускают `null`-биндер и под `DEBUG` пишут ошибку в лог.
 - `Aspid.MVVM.Generators.Sample` — генератор отлаживается через `Aspid.MVVM.Generators.Tests`.
+- `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` и `protected` `GetMarker` — создавайте член конструктором, как остальные bindable-члены.
 
 ### Исправлено
 
 #### Ядро
 
-- One-time члены были одним статическим экземпляром на тип, общим для всех ViewModel, поэтому биндер, привязанный позже (второй биндер того же члена после привязки вложенной View, повторная привязка в Editor, член, сохранённый пользовательским кодом), мог получить значение другой ViewModel. Сгенерированный код теперь держит один член на ViewModel и обновляет его при обращении; `OneTime*BindableMember<T>.Get` возвращает новый экземпляр.
+- One-time члены были одним статическим экземпляром на тип, общим для всех ViewModel, поэтому биндер, привязанный позже (второй биндер того же члена после привязки вложенной View, повторная привязка в Editor, член, сохранённый пользовательским кодом), мог получить значение другой ViewModel. Сгенерированный код теперь держит один член на ViewModel и обновляет его при обращении.
 - `TwoWayValue<T>` (теперь `ValueTwoWayBinder<T>`) возвращал каждое обновление ViewModel → View обратно во ViewModel уже сконвертированным.
 - `OneWayToSource` не доходил до ViewModel для собственного типа числового биндера; остальные три ширины работали.
 - Обратная привязка повторно применяла *прямой* конвертер.

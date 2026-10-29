@@ -13,34 +13,31 @@ namespace Aspid.MVVM.Tests
     public sealed class OneTimeBindableMemberTests
     {
         [Test]
-        public void Get_ReturnsAMemberThatKeepsItsOwnValue()
+        public void Members_KeepTheirOwnValues()
         {
-            var first = OneTimeBindableMember<string>.Get("first");
-            var second = OneTimeBindableMember<string>.Get("second");
+            var first = new OneTimeBindableMember<string>("first");
+            var second = new OneTimeBindableMember<string>("second");
 
-            Assert.AreNotSame(first, second);
             Assert.AreEqual("first", Push(first));
             Assert.AreEqual("second", Push(second));
         }
 
         [Test]
-        public void StructGet_ReturnsAMemberThatKeepsItsOwnValue()
+        public void StructMembers_KeepTheirOwnValues()
         {
-            var first = OneTimeStructBindableMember<int>.Get(1);
-            var second = OneTimeStructBindableMember<int>.Get(2);
+            var first = new OneTimeStructBindableMember<int>(1);
+            var second = new OneTimeStructBindableMember<int>(2);
 
-            Assert.AreNotSame(first, second);
             Assert.AreEqual(1, Push(first));
             Assert.AreEqual(2, Push(second));
         }
 
         [Test]
-        public void EnumGet_ReturnsAMemberThatKeepsItsOwnValue()
+        public void EnumMembers_KeepTheirOwnValues()
         {
-            var first = OneTimeEnumBindableMember<BindMode>.Get(BindMode.OneWay);
-            var second = OneTimeEnumBindableMember<BindMode>.Get(BindMode.TwoWay);
+            var first = new OneTimeEnumBindableMember<BindMode>(BindMode.OneWay);
+            var second = new OneTimeEnumBindableMember<BindMode>(BindMode.TwoWay);
 
-            Assert.AreNotSame(first, second);
             Assert.AreEqual(BindMode.OneWay, Push(first));
             Assert.AreEqual(BindMode.TwoWay, Push(second));
         }

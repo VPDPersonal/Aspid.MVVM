@@ -15,6 +15,8 @@ Binds the selected index, `TMP_Dropdown.value`.
 
 **Modes:** OneWay, OneTime, OneWayToSource (TwoWay is not allowed).
 
+[Notify mode](toggle-binders.md#notify-mode) defaults to `Never` here, as on the `Enum`, `EnumGroup` and `Switcher` variants: a write from the ViewModel does not raise `onValueChanged`.
+
 ```csharp
 [ViewModel]
 public partial class LanguageViewModel

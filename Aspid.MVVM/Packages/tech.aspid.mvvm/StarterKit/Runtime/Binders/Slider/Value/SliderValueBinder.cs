@@ -10,20 +10,24 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="TargetBinder{TTarget}"/> that binds <see cref="Slider.value"/>, also from other numbers, and
     /// reports user changes back as numbers.
     /// </summary>
-    /// <remarks>
-    /// Writes raise <see cref="Slider.onValueChanged"/> for other listeners; only the binder's own echo is suppressed.
-    /// </remarks>
     [Serializable]
     [BindModeOverride(IsAll = true)]
     public class SliderValueBinder : TargetBinder<Slider>, IFloatBinder, INumberReverseBinder
     {
+        // ReSharper disable once MemberInitializerValueIgnored
+        [Tooltip("When writes from the ViewModel raise onValueChanged; user input always does.")]
+        [SerializeField] private NotifyMode _notifyMode = NotifyMode.Never;
+        
         [Tooltip("Optional converter applied to the value; reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<float, float>? _converter;
 
-        private NumberReverseChannel _channel;
         private bool _isSuppressingEcho;
+        private NumberReverseChannel _channel;
 
         /// <param name="target">The slider to bind.</param>
+        /// <param name="notifyMode">
+        /// When writes from the ViewModel raise <see cref="Slider.onValueChanged"/>; user input always does.
+        /// </param>
         /// <param name="converter">
         /// The converter applied to the bound value, or <see langword="null"/> to use it as-is; reverse only via
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>.
@@ -32,12 +36,15 @@ namespace Aspid.MVVM.StarterKit
         /// <exception cref="ArgumentException"><paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
         public SliderValueBinder(
             Slider target,
+            NotifyMode notifyMode = NotifyMode.Never,
             IConverter<float, float>? converter = null,
             BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
             mode.ThrowExceptionIfNone();
+            
             _converter = converter;
+            _notifyMode = notifyMode;
         }
 
         /// <inheritdoc/>
@@ -57,25 +64,32 @@ namespace Aspid.MVVM.StarterKit
             var converted = _converter?.Convert(value) ?? value;
             var clamped = this.SafeClamp(converted, slider.minValue, slider.maxValue, slider);
 
-            _isSuppressingEcho = true;
-
-            try
+            if (_notifyMode.ShouldNotify(IsBound))
             {
-                slider.value = clamped;
+                _isSuppressingEcho = true;
+
+                try
+                {
+                    slider.value = clamped;
+                }
+                finally
+                {
+                    _isSuppressingEcho = false;
+                }
             }
-            finally
+            else
             {
-                // Keeps the reverse channel alive when another listener throws.
-                _isSuppressingEcho = false;
+                slider.SetValueWithoutNotify(clamped);
             }
 
-            if (!Mathf.Approximately(clamped, converted)) OnValueChanged(clamped);
+            if (!Mathf.Approximately(clamped, converted)) 
+                OnValueChanged(clamped);
         }
 
         /// <inheritdoc/>
         protected override void OnBound()
         {
-            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
+            if (!Mode.IsTwo()) return;
 
             Target.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.value);
@@ -84,14 +98,17 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnUnbound()
         {
-            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
+            if (Mode.IsTwo())
                 Target.onValueChanged.RemoveListener(OnValueChanged);
         }
 
         private void OnValueChanged(float value)
         {
             if (_isSuppressingEcho) return;
-            _channel.Raise(_converter is ITwoWayConverter<float, float> twoWay ? twoWay.ConvertBack(value) : value);
+            
+            _channel.Raise(_converter is ITwoWayConverter<float, float> twoWay 
+                ? twoWay.ConvertBack(value)
+                : value);
         }
     }
 }

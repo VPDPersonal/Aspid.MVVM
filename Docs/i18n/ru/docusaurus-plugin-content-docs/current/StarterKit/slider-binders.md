@@ -18,10 +18,11 @@
 | Свойство | Описание |
 |----------|----------|
 | Converter | `IConverter<float, float>` (опционально) |
+| Notify Mode | Какие записи из ViewModel вызывают `onValueChanged`, см. [Режим уведомлений](toggle-binders.md#notify-mode) |
 
 ### Защита от циклов
 
-Запись из ViewModel вызывает `onValueChanged` для остальных слушателей, но биндер не отправляет её обратно в ViewModel. Значение clamp-ится к диапазону слайдера; если clamp его изменил, изменённое значение отправляется в ViewModel.
+Биндер не отправляет свою запись обратно в ViewModel. Вызывает ли запись `onValueChanged` для остальных слушателей, задаёт [режим уведомлений](toggle-binders.md#notify-mode); он есть и у вариантов `Enum`, `EnumGroup` и `Switcher`. Значение clamp-ится к диапазону слайдера; если clamp его изменил, изменённое значение отправляется в ViewModel.
 
 **Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
 

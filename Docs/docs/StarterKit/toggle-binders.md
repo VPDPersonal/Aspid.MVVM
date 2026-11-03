@@ -18,10 +18,27 @@ Binds the `Toggle.isOn` state.
 | Property | Description |
 |----------|----------|
 | `_converter` | Optional value converter; the reverse direction works through `ITwoWayConverter` |
+| `_notifyMode` | Which writes from the ViewModel raise `onValueChanged`, see [Notify mode](#notify-mode) |
+
+### Notify mode {#notify-mode}
+
+`Notify Mode` decides which writes from the ViewModel raise `onValueChanged` for the other listeners. User input raises it in every mode.
+
+| Mode | Value written on bind | Later changes from the ViewModel |
+|---|---|---|
+| `Always` | raises `onValueChanged` | raises `onValueChanged` |
+| `AfterBind` | silent | raises `onValueChanged` |
+| `Never` | silent | silent |
+
+A binder added in the Editor starts with `Never`, so `onValueChanged` means user input only. A binder saved before the setting existed keeps `Always`.
+
+`AfterBind` fits a list item with a click sound: a reused `VirtualizedList` item is bound again, and that write stays silent. `Never` also silences changes the ViewModel makes itself, for example a "reset to defaults" button.
+
+The same setting is on the Slider, Scrollbar, InputField and Dropdown value binders and on their `Enum`, `EnumGroup` and `Switcher` variants.
 
 ### Loop protection
 
-A write from the ViewModel raises `onValueChanged` for the other listeners, but the binder does not send it back to the ViewModel.
+The binder does not send its own write back to the ViewModel, whatever the notify mode.
 
 **Modes:** OneWay, TwoWay, OneTime, OneWayToSource.
 
@@ -83,7 +100,7 @@ public partial class SettingsViewModel
 
 ## ToggleIsOnEnumBinder / ToggleIsOnEnumGroupBinder
 
-Set `isOn` from an enum value through `SetIsOnWithoutNotify`: the `Enum` variant for a single Toggle, `EnumGroup` for a set of Toggles where every enum member maps to its own element.
+Set `isOn` from an enum value: the `Enum` variant for a single Toggle, `EnumGroup` for a set of Toggles where every enum member maps to its own element. [Notify mode](#notify-mode) defaults to `Never`.
 
 **Modes:** OneWay, OneTime.
 

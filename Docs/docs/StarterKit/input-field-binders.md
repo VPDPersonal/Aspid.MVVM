@@ -21,6 +21,7 @@ The main text input binder.
 |----------|----------|
 | UpdateEvent | Update event: `OnValueChanged`, `OnEndEdit`, `OnSubmit`, `OnSelect`, `OnDeselect` |
 | Converter | `IConverter<string?, string?>` (optional) |
+| Notify Mode | Which writes from the ViewModel raise `onValueChanged`, see [Notify mode](toggle-binders.md#notify-mode) |
 
 ### Loop protection
 

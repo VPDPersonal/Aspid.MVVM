@@ -7,15 +7,21 @@ namespace Aspid.MVVM.StarterKit
     /// <summary>
     /// <see cref="EnumGroupMonoBinder{TElement, TValue}"/> that sets <see cref="TMP_Dropdown.value"/> on each element.
     /// </summary>
-    /// <remarks>
-    /// Writes use <see cref="TMP_Dropdown.SetValueWithoutNotify"/>.
-    /// </remarks>
-    [AddBinderContextMenu(typeof(TMP_Dropdown), serializePropertyNames: "m_Value", SubPath = "EnumGroup")]
+    [AddBinderContextMenu(
+        type: typeof(TMP_Dropdown),
+        serializePropertyNames: "m_Value",
+        SubPath = "EnumGroup")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value EnumGroup")]
     public sealed class DropdownValueEnumGroupMonoBinder : EnumGroupMonoBinder<TMP_Dropdown, int>
     {
+        [Tooltip("When writes from the ViewModel raise onValueChanged; user input always does.")]
+        [SerializeField] private NotifyMode _notifyMode = NotifyMode.Never;
+
         /// <inheritdoc/>
-        protected override void SetValue(TMP_Dropdown element, int value) =>
-            element.SetValueWithoutNotify(value);
+        protected override void SetValue(TMP_Dropdown element, int value)
+        {
+            if (_notifyMode.ShouldNotify(IsBound)) element.value = value;
+            else element.SetValueWithoutNotify(value);
+        }
     }
 }

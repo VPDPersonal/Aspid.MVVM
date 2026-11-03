@@ -21,6 +21,7 @@
 |----------|----------|
 | UpdateEvent | Событие обновления: `OnValueChanged`, `OnEndEdit`, `OnSubmit`, `OnSelect`, `OnDeselect` |
 | Converter | `IConverter<string?, string?>` (опционально) |
+| Notify Mode | Какие записи из ViewModel вызывают `onValueChanged`, см. [Режим уведомлений](toggle-binders.md#notify-mode) |
 
 ### Защита от циклов
 

@@ -93,7 +93,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - **Graphic** — `Graphic.raycastTarget`, `MaskableGraphic.maskable`, `Mask.showMaskGraphic`, `Shadow` / `Outline` color and distance, `GraphicMaterial` for any `Graphic`.
 - **Image / RawImage** — `type`, `preserveAspect`, `fillOrigin`, `fillClockwise`, `RawImage.uvRect`.
 - **Selectable** — `transition`, `targetGraphic`, `Dropdown` and `Selectable` binders, `ToggleGroup.allowSwitchOff`.
-- **Toggle** — `Enum` / `EnumGroup` for `isOn`, written through `SetIsOnWithoutNotify`.
+- **Toggle** — `Enum` / `EnumGroup` for `isOn`.
+- **Notify Mode** — the Toggle, Slider, Scrollbar, InputField and Dropdown value binders and their `Enum` / `EnumGroup` / `Switcher` variants choose which writes from the ViewModel raise `onValueChanged`: `Always`, `AfterBind` (silent on bind, so a reused list item does not fire) or `Never`. A binder added in the Editor starts with `Never`; saved binders keep their old behavior. The serializable twins take a `notifyMode` constructor parameter before `mode`.
 - **Slider / Scrollbar** — `Scrollbar.value` (`TwoWay`, `OneWayToSource`, all four numeric types), `Scrollbar.size`.
 - **ScrollRect** — vertical and horizontal normalized position, `normalizedPosition`, axis enabled flags.
 - **Dropdown** — `TMP_Dropdown.value` is two-way; options binders refresh the caption and keep the selection.

@@ -10,7 +10,9 @@ namespace Aspid.MVVM.StarterKit
     /// and reports edits back as text and, for numeric fields, as numbers.
     /// </summary>
     [BindModeOverride(IsAll = true)]
-    [AddBinderContextMenu(typeof(TMP_InputField), serializePropertyNames: "m_Text")]
+    [AddBinderContextMenu(
+        type: typeof(TMP_InputField),
+        serializePropertyNames: "m_Text")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField Binder – Text")]
     public sealed partial class InputFieldMonoBinder : ComponentMonoBinder<TMP_InputField>,
         IBinder<string>,
@@ -24,11 +26,14 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Field event that notifies the ViewModel.")]
         [SerializeField] private UpdateInputFieldEvent _updateEvent = UpdateInputFieldEvent.OnValueChanged;
 
+        [Tooltip("When writes from the ViewModel raise the field's events; user input always does.")]
+        [SerializeField] private NotifyMode _notifyMode = NotifyMode.Always;
+        
         [Tooltip("Optional converter applied to the text; empty leaves it as-is.")]
         [SerializeReference] private IConverter<string, string> _converter;
 
-        private NumberReverseChannel _channel;
         private bool _isSuppressingEcho;
+        private NumberReverseChannel _channel;
 
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
@@ -49,38 +54,71 @@ namespace Aspid.MVVM.StarterKit
 
             CachedComponent.RemoveListenerFromAll(OnValueChanged);
 
-            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
-                CachedComponent.GetEvent(_updateEvent).AddListener(OnValueChanged);
+            if (Mode.IsTwo())
+            {
+                CachedComponent.GetEvent(_updateEvent)
+                    .AddListener(OnValueChanged);
+            }
+        }
+
+        /// <summary>
+        /// Called by Unity when the component is added or reset in the Editor to set <see cref="NotifyMode.Never"/>.
+        /// </summary>
+        /// <remarks>
+        /// Existing components keep <see cref="NotifyMode.Always"/>, the value of the field before it was serialized.
+        /// </remarks>
+        protected override void Reset()
+        {
+            base.Reset();
+            _notifyMode = NotifyMode.Never;
         }
 
         /// <inheritdoc/>
         protected override void OnBound()
         {
-            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
+            if (!Mode.IsTwo()) return;
 
-            CachedComponent.GetEvent(_updateEvent).AddListener(OnValueChanged);
-            if (Mode is BindMode.OneWayToSource) OnValueChanged(CachedComponent.text);
+            CachedComponent.GetEvent(_updateEvent)
+                .AddListener(OnValueChanged);
+            
+            if (Mode is BindMode.OneWayToSource)
+                OnValueChanged(CachedComponent.text);
         }
 
         /// <inheritdoc/>
         protected override void OnUnbound()
         {
-            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
-                CachedComponent.GetEvent(_updateEvent).RemoveListener(OnValueChanged);
+            if (Mode.IsTwo())
+            {
+                CachedComponent.GetEvent(_updateEvent)
+                    .RemoveListener(OnValueChanged);
+            }
         }
 
         /// <summary>
         /// Sets <see cref="TMP_InputField.text"/> without notifying the ViewModel back.
         /// </summary>
+        /// <remarks>
+        /// <see cref="NotifyMode"/> sets whether the write raises <see cref="TMP_InputField.onValueChanged"/> for other
+        /// listeners.
+        /// </remarks>
         /// <param name="value">The text received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(string value)
         {
+            var converted = _converter?.Convert(value) ?? value;
+
+            if (!_notifyMode.ShouldNotify(IsBound))
+            {
+                CachedComponent.SetTextWithoutNotify(converted);
+                return;
+            }
+
             _isSuppressingEcho = true;
 
             try
             {
-                CachedComponent.text = _converter?.Convert(value) ?? value;
+                CachedComponent.text = converted;
             }
             finally
             {
@@ -117,7 +155,8 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.RaiseNumber(ref _channel, value, _cultureInfoMode);
         }
 
-        private string GetConvertedBackValue(string value) =>
-            _converter is ITwoWayConverter<string, string> twoWay ? twoWay.ConvertBack(value) : value;
+        private string GetConvertedBackValue(string value) => _converter is ITwoWayConverter<string, string> twoWay 
+            ? twoWay.ConvertBack(value)
+            : value;
     }
 }

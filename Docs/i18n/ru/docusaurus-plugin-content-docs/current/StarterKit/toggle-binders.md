@@ -18,10 +18,27 @@
 | Свойство | Описание |
 |----------|----------|
 | `_converter` | Опциональный конвертер значения; в обратную сторону работает через `ITwoWayConverter` |
+| `_notifyMode` | Какие записи из ViewModel вызывают `onValueChanged`, см. [Режим уведомлений](#notify-mode) |
+
+### Режим уведомлений {#notify-mode}
+
+`Notify Mode` определяет, какие записи из ViewModel вызывают `onValueChanged` для остальных слушателей. Ввод пользователя вызывает его в любом режиме.
+
+| Режим | Значение при bind | Последующие изменения из ViewModel |
+|---|---|---|
+| `Always` | вызывает `onValueChanged` | вызывает `onValueChanged` |
+| `AfterBind` | без события | вызывает `onValueChanged` |
+| `Never` | без события | без события |
+
+Биндер, добавленный в редакторе, начинает с `Never`: `onValueChanged` означает только ввод пользователя. Биндер, сохранённый до появления настройки, остаётся в `Always`.
+
+`AfterBind` подходит для элемента списка со звуком клика: переиспользованный элемент `VirtualizedList` привязывается заново, и эта запись проходит без события. `Never` заглушает и изменения, которые делает сама ViewModel, например кнопка «сбросить настройки».
+
+Та же настройка есть у биндеров значения Slider, Scrollbar, InputField и Dropdown и у их вариантов `Enum`, `EnumGroup` и `Switcher`.
 
 ### Защита от циклов
 
-Запись из ViewModel вызывает `onValueChanged` для остальных слушателей, но биндер не отправляет её обратно в ViewModel.
+Биндер не отправляет свою запись обратно в ViewModel, какой бы ни был режим уведомлений.
 
 **Режимы:** OneWay, TwoWay, OneTime, OneWayToSource.
 
@@ -83,7 +100,7 @@ public partial class SettingsViewModel
 
 ## ToggleIsOnEnumBinder / ToggleIsOnEnumGroupBinder
 
-Устанавливают `isOn` по значению enum через `SetIsOnWithoutNotify`: `Enum`-вариант для одного Toggle, `EnumGroup` для набора Toggle, где каждому члену enum сопоставлен свой элемент.
+Устанавливают `isOn` по значению enum: `Enum`-вариант для одного Toggle, `EnumGroup` для набора Toggle, где каждому члену enum сопоставлен свой элемент. [Режим уведомлений](#notify-mode) по умолчанию `Never`.
 
 **Режимы:** OneWay, OneTime.
 

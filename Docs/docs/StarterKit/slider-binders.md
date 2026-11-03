@@ -18,10 +18,11 @@ Binds the slider value (`Slider.value`).
 | Property | Description |
 |----------|----------|
 | Converter | `IConverter<float, float>` (optional) |
+| Notify Mode | Which writes from the ViewModel raise `onValueChanged`, see [Notify mode](toggle-binders.md#notify-mode) |
 
 ### Loop protection
 
-A write from the ViewModel raises `onValueChanged` for the other listeners, but the binder does not send it back to the ViewModel. The value is clamped to the slider range; if the clamp changed it, the changed value is sent to the ViewModel.
+The binder does not send its own write back to the ViewModel. Whether the write raises `onValueChanged` for the other listeners is set by [Notify mode](toggle-binders.md#notify-mode); the `Enum`, `EnumGroup` and `Switcher` variants have it too. The value is clamped to the slider range; if the clamp changed it, the changed value is sent to the ViewModel.
 
 **Modes:** OneWay, TwoWay, OneTime, OneWayToSource.
 

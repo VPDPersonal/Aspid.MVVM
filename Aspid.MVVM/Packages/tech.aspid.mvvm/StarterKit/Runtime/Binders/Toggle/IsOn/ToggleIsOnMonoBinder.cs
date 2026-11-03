@@ -9,18 +9,23 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="ComponentMonoBinder{TComponent}"/> that binds <see cref="Toggle.isOn"/> and reports user changes
     /// back.
     /// </summary>
-    /// <remarks>
-    /// Writes raise <see cref="Toggle.onValueChanged"/> for other listeners; only the binder's own echo is suppressed.
-    /// </remarks>
     [BindModeOverride(IsAll = true)]
-    [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn")]
+    [AddBinderContextMenu(
+        type: typeof(Toggle),
+        serializePropertyNames: "m_IsOn")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle Binder – IsOn")]
-    public sealed partial class ToggleIsOnMonoBinder : ComponentMonoBinder<Toggle>, IBinder<bool>, IReverseBinder<bool>
+    public sealed partial class ToggleIsOnMonoBinder :
+        ComponentMonoBinder<Toggle>,
+        IBinder<bool>,
+        IReverseBinder<bool>
     {
+        [Tooltip("When writes from the ViewModel raise onValueChanged; user input always does.")]
+        [SerializeField] private NotifyMode _notifyMode = NotifyMode.Always;
+        
         [Tooltip("Optional converter applied to the value; reverse only via ITwoWayConverter.")]
         [SerializeReference] private IConverter<bool, bool> _converter;
 
-        [NonSerialized] private bool _isSuppressingEcho;
+        private bool _isSuppressingEcho;
 
         /// <inheritdoc/>
         public event Action<bool> ValueChanged;
@@ -32,39 +37,61 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(bool value)
         {
+            var converted = _converter?.Convert(value) ?? value;
+
+            if (!_notifyMode.ShouldNotify(IsBound))
+            {
+                CachedComponent.SetIsOnWithoutNotify(converted);
+                return;
+            }
+
             _isSuppressingEcho = true;
 
             try
             {
-                CachedComponent.isOn = _converter?.Convert(value) ?? value;
+                CachedComponent.isOn = converted;
             }
             finally
             {
-                // Keeps the reverse channel alive when another listener throws.
                 _isSuppressingEcho = false;
             }
+        }
+
+        /// <summary>
+        /// Called by Unity when the component is added or reset in the Editor to set <see cref="NotifyMode.Never"/>.
+        /// </summary>
+        /// <remarks>
+        /// Existing components keep <see cref="NotifyMode.Always"/>, the value of the field before it was serialized.
+        /// </remarks>
+        protected override void Reset()
+        {
+            base.Reset();
+            _notifyMode = NotifyMode.Never;
         }
 
         /// <inheritdoc/>
         protected override void OnBound()
         {
-            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
+            if (!Mode.IsTwo()) return;
 
             CachedComponent.onValueChanged.AddListener(OnValueChanged);
-            if (Mode is BindMode.OneWayToSource) OnValueChanged(CachedComponent.isOn);
+            if (Mode is BindMode.OneWayToSource)
+                OnValueChanged(CachedComponent.isOn);
         }
 
         /// <inheritdoc/>
         protected override void OnUnbound()
         {
-            if (Mode is BindMode.TwoWay or BindMode.OneWayToSource)
+            if (Mode.IsTwo())
                 CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
         }
 
         private void OnValueChanged(bool isOn)
         {
             if (_isSuppressingEcho) return;
-            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(isOn) : isOn);
+            ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay 
+                ? twoWay.ConvertBack(isOn)
+                : isOn);
         }
     }
 }

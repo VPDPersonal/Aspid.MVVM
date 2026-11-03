@@ -15,6 +15,8 @@
 
 **Режимы:** OneWay, OneTime, OneWayToSource (TwoWay запрещён).
 
+[Режим уведомлений](toggle-binders.md#notify-mode) здесь по умолчанию `Never`, как и у вариантов `Enum`, `EnumGroup` и `Switcher`: запись из ViewModel не вызывает `onValueChanged`.
+
 ```csharp
 [ViewModel]
 public partial class LanguageViewModel

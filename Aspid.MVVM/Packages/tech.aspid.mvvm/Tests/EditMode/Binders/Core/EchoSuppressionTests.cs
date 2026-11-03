@@ -24,7 +24,7 @@ namespace Aspid.MVVM.Tests
         {
             var gameObject = Spawn("EchoSuppression");
             var toggle = gameObject.AddComponent<Toggle>();
-            var binder = SetMode(gameObject.AddComponent<ToggleIsOnMonoBinder>(), BindMode.TwoWay);
+            var binder = ConfigureForNotifyingWrites(gameObject.AddComponent<ToggleIsOnMonoBinder>());
 
             var received = new List<bool>();
             ((IReverseBinder<bool>)binder).ValueChanged += value => received.Add(value);
@@ -51,7 +51,7 @@ namespace Aspid.MVVM.Tests
             slider.minValue = 0f;
             slider.maxValue = 10f;
 
-            var binder = SetMode(gameObject.AddComponent<SliderValueMonoBinder>(), BindMode.TwoWay);
+            var binder = ConfigureForNotifyingWrites(gameObject.AddComponent<SliderValueMonoBinder>());
 
             var received = new List<float>();
             ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
@@ -70,12 +70,13 @@ namespace Aspid.MVVM.Tests
             Assert.IsNotEmpty(received, "The View to ViewModel channel stayed dead after the exception");
         }
 
-        private static TBinder SetMode<TBinder>(TBinder binder, BindMode mode)
+        private static TBinder ConfigureForNotifyingWrites<TBinder>(TBinder binder)
             where TBinder : MonoBinder
         {
             var serializedObject = new SerializedObject(binder);
 
-            serializedObject.FindProperty("_mode").enumValueIndex = (int)mode;
+            serializedObject.FindProperty("_mode").enumValueIndex = (int)BindMode.TwoWay;
+            serializedObject.FindProperty("_notifyMode").enumValueIndex = (int)NotifyMode.Always;
             serializedObject.ApplyModifiedPropertiesWithoutUndo();
 
             return binder;

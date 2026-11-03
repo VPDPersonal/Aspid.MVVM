@@ -8,17 +8,26 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="EnumMonoBinder{TComponent, TValue}"/> that sets <see cref="Slider.value"/>.
     /// </summary>
     /// <remarks>
-    /// {VR}
+    /// The value is clamped to the slider range.
     /// </remarks>
-    [AddBinderContextMenu(typeof(Slider), serializePropertyNames: "m_Value", SubPath = "Enum")]
+    [AddBinderContextMenu(
+        type: typeof(Slider),
+        serializePropertyNames: "m_Value",
+        SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Slider/Slider Binder – Value Enum")]
     public sealed class SliderValueEnumMonoBinder : EnumMonoBinder<Slider, float>
     {
+        [Tooltip("When writes from the ViewModel raise onValueChanged; user input always does.")]
+        [SerializeField] private NotifyMode _notifyMode = NotifyMode.Never;
+
         /// <inheritdoc/>
         protected override void SetValue(float value)
         {
             var slider = CachedComponent;
-            slider.SetValueWithoutNotify(this.SafeClamp(value, slider.minValue, slider.maxValue));
+            var clamped = this.SafeClamp(value, slider.minValue, slider.maxValue);
+
+            if (_notifyMode.ShouldNotify(IsBound)) slider.value = clamped;
+            else slider.SetValueWithoutNotify(clamped);
         }
     }
 }

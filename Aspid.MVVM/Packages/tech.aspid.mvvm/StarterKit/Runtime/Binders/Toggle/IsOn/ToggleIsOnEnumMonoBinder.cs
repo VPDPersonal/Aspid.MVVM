@@ -8,14 +8,23 @@ namespace Aspid.MVVM.StarterKit
     /// <see cref="EnumMonoBinder{TComponent, TValue}"/> that sets <see cref="Toggle.isOn"/>.
     /// </summary>
     /// <remarks>
-    /// Writes use <see cref="Toggle.SetIsOnWithoutNotify"/>.
+    /// <see cref="NotifyMode"/> sets whether writes raise <see cref="Toggle.onValueChanged"/>.
     /// </remarks>
-    [AddBinderContextMenu(typeof(Toggle), serializePropertyNames: "m_IsOn", SubPath = "Enum")]
+    [AddBinderContextMenu(
+        type: typeof(Toggle),
+        serializePropertyNames: "m_IsOn",
+        SubPath = "Enum")]
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Toggle/Toggle Binder – IsOn Enum")]
     public sealed class ToggleIsOnEnumMonoBinder : EnumMonoBinder<Toggle, bool>
     {
+        [Tooltip("When writes from the ViewModel raise onValueChanged; user input always does.")]
+        [SerializeField] private NotifyMode _notifyMode = NotifyMode.Never;
+
         /// <inheritdoc/>
-        protected override void SetValue(bool value) =>
-            CachedComponent.SetIsOnWithoutNotify(value);
+        protected override void SetValue(bool value)
+        {
+            if (_notifyMode.ShouldNotify(IsBound)) CachedComponent.isOn = value;
+            else CachedComponent.SetIsOnWithoutNotify(value);
+        }
     }
 }

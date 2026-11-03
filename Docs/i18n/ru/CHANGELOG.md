@@ -93,7 +93,8 @@
 - **Graphic** — `Graphic.raycastTarget`, `MaskableGraphic.maskable`, `Mask.showMaskGraphic`, цвет и смещение `Shadow` / `Outline`, `GraphicMaterial` для любого `Graphic`.
 - **Image / RawImage** — `type`, `preserveAspect`, `fillOrigin`, `fillClockwise`, `RawImage.uvRect`.
 - **Selectable** — `transition`, `targetGraphic`, биндеры `Dropdown` и `Selectable`, `ToggleGroup.allowSwitchOff`.
-- **Toggle** — `Enum` / `EnumGroup` для `isOn`, запись через `SetIsOnWithoutNotify`.
+- **Toggle** — `Enum` / `EnumGroup` для `isOn`.
+- **Notify Mode** — биндеры значения Toggle, Slider, Scrollbar, InputField и Dropdown и их варианты `Enum` / `EnumGroup` / `Switcher` выбирают, какие записи из ViewModel вызывают `onValueChanged`: `Always`, `AfterBind` (без события при bind, поэтому переиспользованный элемент списка не срабатывает) или `Never`. Биндер, добавленный в редакторе, начинает с `Never`; сохранённые биндеры ведут себя как раньше. Serializable-двойники принимают параметр конструктора `notifyMode` перед `mode`.
 - **Slider / Scrollbar** — `Scrollbar.value` (`TwoWay`, `OneWayToSource`, все четыре числовых типа), `Scrollbar.size`.
 - **ScrollRect** — вертикальная и горизонтальная нормализованная позиция, `normalizedPosition`, флаги включения осей.
 - **Dropdown** — `TMP_Dropdown.value` двусторонний; биндеры опций обновляют подпись и сохраняют выбор.

@@ -63,7 +63,14 @@ public static class GenericInitializeView
                       if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
                       
                       ViewModel = viewModel;
-                      InitializeInternal(viewModel);
+                      try { InitializeInternal(viewModel); }
+                      catch
+                      {
+                          try { DeinitializeInternal(); }
+                          catch { /* Preserve the initialization failure. */ }
+                          ViewModel = null;
+                          throw;
+                      }
                   }
                   """);
             
@@ -88,6 +95,8 @@ public static class GenericInitializeView
             .EndBlock()
             .AppendLine()
             .AppendLine("__isInitializing = true;")
+            .AppendLine("try")
+            .BeginBlock()
             .AppendLine();
         
         code.AppendLine("OnInitializingInternal(viewModel);");
@@ -127,7 +136,7 @@ public static class GenericInitializeView
             foreach (var info in virtualFields.Values)
             {
                 if (bindableMembers.TryGetValue(info.Id.SourceValue, out var bindableMember))
-                    code.AppendLine($"{info.FieldName}.BindSafely(viewModel.{bindableMember.Bindable.PropertyName}, this, {info.Id.Value});");
+                    code.AppendLine($"__viewBindings.BindSafely({info.FieldName}, viewModel.{bindableMember.Bindable.PropertyName}, this, {info.Id.Value});");
             }
         }
         else
@@ -149,7 +158,8 @@ public static class GenericInitializeView
         
         code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")
-            .AppendLine("__isInitializing = false;");
+            .EndBlock()
+            .AppendLine("finally { __isInitializing = false; }");
 
         code.EndBlock()  
             .EndBlock();

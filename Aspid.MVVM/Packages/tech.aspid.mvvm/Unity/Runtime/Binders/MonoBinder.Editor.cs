@@ -56,7 +56,7 @@ namespace Aspid.MVVM
 
         #region Bound Handlers
         partial void OnBoundDebug(IBinderAdder binderAdder) =>
-            __bindData = new LastData(_mode, binderAdder);
+            __bindData = new LastData(Mode, binderAdder);
 
         partial void OnUnboundDebug() =>
             __bindData = null;

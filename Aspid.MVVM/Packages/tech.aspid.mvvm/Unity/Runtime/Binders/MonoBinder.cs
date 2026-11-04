@@ -2,6 +2,8 @@
 #define ASPID_MVVM_PROFILER
 #endif
 
+using System;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -16,9 +18,10 @@ namespace Aspid.MVVM
     {
         [Tooltip("Direction of data flow between the View and the ViewModel.")]
         [BindMode(BindMode.OneWay, BindMode.OneTime)]
-        [SerializeField] private BindMode _mode = BindMode.TwoWay;
+        [SerializeField] private BindMode _mode = BindMode.None;
 
         private IBinderRemover _binderRemover;
+        private bool _isBinding;
 
         /// <summary>
         /// Indicates whether binding is allowed. The default is <see langword="true"/>.
@@ -31,9 +34,22 @@ namespace Aspid.MVVM
         public bool IsBound { get; private set; }
 
         /// <summary>
-        /// Gets the binding mode.
+        /// Gets or sets the binding mode; an unconfigured runtime component uses <see cref="DefaultMode"/>.
         /// </summary>
-        public BindMode Mode => _mode;
+        /// <exception cref="InvalidOperationException">The binder is bound or being bound.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The value is not a supported binding mode.</exception>
+        public BindMode Mode
+        {
+            get => _mode is BindMode.None ? DefaultMode : _mode;
+            set
+            {
+                if (IsBound || _isBinding) throw new InvalidOperationException("Cannot change the mode during binding.");
+                if (value is < BindMode.OneWay or > BindMode.OneWayToSource)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+
+                _mode = value;
+            }
+        }
 
         /// <summary>
         /// Gets the binding mode a freshly added binder starts in. The default is <see cref="BindMode.OneWay"/>.
@@ -75,14 +91,22 @@ namespace Aspid.MVVM
 
                 if (!CanBind) return;
 
-                OnBinding();
+                _isBinding = true;
+                try
                 {
+                    OnBinding();
                     _binderRemover = binderAdder.Add(binder: this);
-
                     IsBound = true;
                     OnBoundDebug(binderAdder);
+                    OnBound();
                 }
-                OnBound();
+                catch
+                {
+                    try { UnbindInternal(); }
+                    catch { /* Preserve the binding failure. */ }
+                    throw;
+                }
+                finally { _isBinding = false; }
             }
         }
 
@@ -112,22 +136,35 @@ namespace Aspid.MVVM
                 // TODO Aspid.MVVM 1.1.0 -> add log with prefix
                 if (!IsBound) return;
 
-                OnUnbinding();
-                {
-                    if (_binderRemover is not null)
-                    {
-                        _binderRemover.Remove(binder: this);
-                        _binderRemover = null;
-                    }
-
-                    IsBound = false;
-                    OnUnboundDebug();
-                }
-                OnUnbound();
+                UnbindInternal();
             }
         }
 
         partial void OnUnboundDebug();
+
+        private void UnbindInternal()
+        {
+            Exception failure = null;
+            try { OnUnbinding(); }
+            catch (Exception exception) { failure = exception; }
+
+            try { _binderRemover?.Remove(binder: this); }
+            catch (Exception exception) { failure ??= exception; }
+            finally
+            {
+                _binderRemover = null;
+                IsBound = false;
+            }
+
+            try { OnUnboundDebug(); }
+            catch (Exception exception) { failure ??= exception; }
+
+            try { OnUnbound(); }
+            catch (Exception exception) { failure ??= exception; }
+
+            if (failure is not null)
+                ExceptionDispatchInfo.Capture(failure).Throw();
+        }
 
         /// <summary>
         /// Called before unbinding, while the binder is still attached to the ViewModel. Override to add pre-unbinding logic.
@@ -136,6 +173,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Called after unbinding. Override to release a subscription taken in <see cref="OnBound"/>.
+        /// Also called after a failed binding attempt to release partially acquired resources.
         /// </summary>
         protected virtual void OnUnbound() { }
     }

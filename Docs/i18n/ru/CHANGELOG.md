@@ -42,7 +42,7 @@
 - `IIntBinder`, `ILongBinder`, `IFloatBinder`, `IDoubleBinder`, `IVector2Binder`, `IVector3Binder`, `IColorBinder`, `IRotationBinder` — дополнительные перегрузки `SetValue` как default-члены интерфейсов с насыщением на границах типа.
 - `INumberReverseBinder` / `NumberReverseChannel` — один обратный канал для `int` / `long` / `float` / `double` с насыщением на границах типа.
 - `BinderMath.SafeClamp` / `SafeClamp01` / `NonNegative` / `RequireFinite` и `BinderLogger` — неконечное значение ограничивается и репортится с именем биндера.
-- `MonoBinder.DefaultMode` — режим, с которого стартует биндер, добавленный через инспектор; применяется из `Reset`.
+- `MonoBinder.DefaultMode` — стартовый режим нового биндера, включая runtime `AddComponent`; `Mode` можно настроить из кода до привязки.
 - `ComponentMonoBinder.ResolveComponent` — сужает фолбэк `GetComponent`, чтобы биндер на базовом типе не находил самого себя.
 - `ComponentIntMonoBinder<T>.RaiseNumberValueChanged` — `int`-биндер может писать во `float`-поле ViewModel.
 - Расширение `Selectable.SetInteractable` — одна реализация `InteractableMode` для всех command-биндеров.
@@ -224,6 +224,10 @@ GUID в `.meta` сохранены, сцены и префабы продолж�
 - `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` и `protected` `GetMarker` — создавайте член конструктором, как остальные bindable-члены.
 
 ### Исправлено
+
+- При ошибке привязки оба направления проверяются до подписок, а частичная привязка откатывается; очистка завершается даже при исключении lifecycle-hook, сохраняя исходную ошибку.
+- Генерируемые View сбрасывают флаг инициализации, после ошибки освобождают только приобретённые биндеры и допускают повторную инициализацию; оба инициализатора View откатывают частичную инициализацию дочерних View и завершают очистку при ошибке одного из них.
+- MonoBinder, созданный через runtime `AddComponent`, использует режим по умолчанию без Editor `Reset`; сохранённые режимы не меняются, а `Mode` можно настроить из кода до привязки.
 
 #### Ядро
 

@@ -118,8 +118,8 @@ public sealed class ViewGeneratorTests
             }
             """);
 
-        Assert.Contains("_score.BindSafely(", generated);
-        Assert.Contains("_score.UnbindSafely(", generated);
+        Assert.Contains("__viewBindings.BindSafely(_score, ", generated);
+        Assert.Contains("__viewBindings.Unbind(", generated);
     }
 
     /// <summary>
@@ -141,8 +141,8 @@ public sealed class ViewGeneratorTests
             }
             """);
 
-        Assert.Contains("_score.BindSafely(", generated);
-        Assert.Contains("_score.UnbindSafely(", generated);
+        Assert.Contains("__viewBindings.BindSafely(_score, ", generated);
+        Assert.Contains("__viewBindings.Unbind(", generated);
     }
 
     /// <summary>A binder field or property marked <c>[IgnoreBind]</c> is left out of the generated binding.</summary>
@@ -162,7 +162,7 @@ public sealed class ViewGeneratorTests
             }
             """);
 
-        Assert.Contains("_score.BindSafely(", generated);
+        Assert.Contains("__viewBindings.BindSafely(_score, ", generated);
         Assert.DoesNotContain("_ignoredField", generated);
         Assert.DoesNotContain("IgnoredProperty", generated);
     }
@@ -202,7 +202,7 @@ public sealed class ViewGeneratorTests
 
         Assert.DoesNotContain("MonoBinder[] _health;", generated);
         Assert.Equal(2, CountOf(generated, "MonoBinder[] _mana;"));
-        Assert.DoesNotContain("_health.BindSafely(", generated);
+        Assert.DoesNotContain("__viewBindings.BindSafely(_health, ", generated);
     }
 
     /// <summary>

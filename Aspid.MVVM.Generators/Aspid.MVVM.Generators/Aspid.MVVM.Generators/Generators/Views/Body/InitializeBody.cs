@@ -62,6 +62,11 @@ public static class InitializeBody
                  {GeneratedCodeViewAttribute}
                  {EditorBrowsableAttributeNever}
                  private bool __isInitializing;
+
+                 [global::System.NonSerialized]
+                 {GeneratedCodeViewAttribute}
+                 {EditorBrowsableAttributeNever}
+                 private readonly global::Aspid.MVVM.ViewBindings __viewBindings = new();
                  
                  """)
             .AppendMultilineIf(data.IsInstantiateBinders, 
@@ -84,7 +89,14 @@ public static class InitializeBody
                     if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
                     
                     ViewModel = viewModel;
-                    InitializeInternal(viewModel);
+                    try { InitializeInternal(viewModel); }
+                    catch
+                    {
+                        try { DeinitializeInternal(); }
+                        catch { /* Preserve the initialization failure. */ }
+                        ViewModel = null;
+                        throw;
+                    }
                 }
                 
                 {{GeneratedCodeViewAttribute}}
@@ -100,8 +112,8 @@ public static class InitializeBody
                 {
                     if (ViewModel is null) return;
                 
-                    DeinitializeInternal();
-                    ViewModel = null;
+                    try { DeinitializeInternal(); }
+                    finally { ViewModel = null; }
                 }
 
                 {{GeneratedCodeViewAttribute}}
@@ -126,6 +138,11 @@ public static class InitializeBody
                  {GeneratedCodeViewAttribute}
                  {EditorBrowsableAttributeNever}
                  private bool __isInitializing;
+
+                 [global::System.NonSerialized]
+                 {GeneratedCodeViewAttribute}
+                 {EditorBrowsableAttributeNever}
+                 private readonly global::Aspid.MVVM.ViewBindings __viewBindings = new();
                  
                  """)
             .AppendMultilineIf(data.IsInstantiateBinders, 
@@ -227,6 +244,8 @@ public static class InitializeBody
         
         code.AppendLineIf(data.GenericViews.Length > 0)
             .AppendLine("__isInitializing = true;")
+            .AppendLine("try")
+            .BeginBlock()
             .AppendLine("OnInitializingInternal(viewModel);")
             .AppendLineIf(isOverride, "base.InitializeInternal(viewModel);")
             .AppendLineIf(data.IsInstantiateBinders, "InstantiateBinders();")
@@ -237,11 +256,12 @@ public static class InitializeBody
 
         var virtualFields = VirtualBinderFields.Collect(data);
         foreach (var info in virtualFields.Values)
-            code.AppendLine($"{info.FieldName}.BindSafely(viewModel.FindBindableMember(new({info.Id.Value})), this, {info.Id.Value});");
+            code.AppendLine($"__viewBindings.BindSafely({info.FieldName}, viewModel.FindBindableMember(new({info.Id.Value})), this, {info.Id.Value});");
 
         return code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")
-            .AppendLine("__isInitializing = false;")
+            .EndBlock()
+            .AppendLine("finally { __isInitializing = false; }")
             .EndBlock()
             .EndBlock();
     }
@@ -257,30 +277,21 @@ public static class InitializeBody
                  """)
             .BeginBlock();
         
-        code.AppendLine("OnDeinitializingInternal();");
-        code.AppendLineIf(isOverride, "base.DeinitializeInternal();");
-        code.AppendLine();
-        
-        foreach (var member in data.Members)
-        {
-            if (member is CachedBinderMember cachedBinderMember)
-            {
-                code.AppendLine($"{cachedBinderMember.CachedName}.UnbindSafely(this, {member.Id});");
-            }
-            else
-            {
-                code.AppendLine($"{member.Name}.UnbindSafely(this, {member.Id});");
-            }
-        }
-
-        var virtualFields = VirtualBinderFields.Collect(data);
-        foreach (var info in virtualFields.Values)
-            code.AppendLine($"{info.FieldName}.UnbindSafely(this, {info.Id.Value});");
-
-        code.AppendLine()
-            .AppendLine("OnDeinitializedInternal();")
+        code.AppendLine("global::System.Exception __failure = null;");
+        AppendCleanup("OnDeinitializingInternal();");
+        if (isOverride) AppendCleanup("base.DeinitializeInternal();");
+        AppendCleanup("__viewBindings.Unbind();");
+        AppendCleanup("OnDeinitializedInternal();");
+        code.AppendLine("if (__failure is not null)")
+            .AppendLine("    global::System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(__failure).Throw();")
             .EndBlock()
             .EndBlock();
+
+        void AppendCleanup(string statement)
+        {
+            code.AppendLine($"try {{ {statement} }}")
+                .AppendLine("catch (global::System.Exception __exception) { __failure ??= __exception; }");
+        }
 
         return code;
     }

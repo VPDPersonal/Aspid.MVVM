@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -71,13 +72,25 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnDestroy()
         {
-            if (!IsDisposeViewOnDestroy && _isDeinitialize)
-                DeinitializeInternal();
+            Exception failure = null;
+            try
+            {
+                if (!IsDisposeViewOnDestroy && _isDeinitialize)
+                    DeinitializeInternal();
+                else
+                    base.OnDestroy();
+            }
+            catch (Exception exception) { failure = exception; }
 
-            base.OnDestroy();
+            try
+            {
+                if (_isDisposeViewModelOnDestroy)
+                    _viewModel?.DisposeViewModel();
+            }
+            catch (Exception exception) { failure ??= exception; }
 
-            if (_isDisposeViewModelOnDestroy)
-                _viewModel?.DisposeViewModel();
+            if (failure is not null)
+                ExceptionDispatchInfo.Capture(failure).Throw();
         }
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION
@@ -126,20 +139,12 @@ namespace Aspid.MVVM.StarterKit
         {
             if (IsInitialized) return;
 
-            foreach (var view in Views)
-                view.Initialize(ViewModel);
-
-            IsInitialized = true;
+            InitializeViews(ViewModel);
         }
 
         private void DeinitializeInternal()
         {
-            if (!IsInitialized) return;
-
-            foreach (var view in Views)
-                view.Deinitialize();
-
-            IsInitialized = false;
+            DeinitializeViews();
         }
 
         private IViewModel ResolveViewModel()

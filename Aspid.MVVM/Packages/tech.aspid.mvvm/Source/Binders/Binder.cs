@@ -3,6 +3,7 @@
 #endif
 
 using System;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -74,17 +75,23 @@ namespace Aspid.MVVM
                     Debug.LogError($"Binder is already bound. Type: {GetType().Name}");
                     return;
                 }
-                
+
                 if (!CanBind) return;
 
-                OnBinding();
+                try
                 {
+                    OnBinding();
                     _binderRemover = binderAdder.Add(binder: this);
-                    
                     IsBound = true;
                     OnBoundDebug(binderAdder);
+                    OnBound();
                 }
-                OnBound();
+                catch
+                {
+                    try { UnbindInternal(); }
+                    catch { /* Preserve the binding failure. */ }
+                    throw;
+                }
             }
         }
 
@@ -116,22 +123,35 @@ namespace Aspid.MVVM
             {
                 if (!IsBound) return;
 
-                OnUnbinding();
-                {
-                    if (_binderRemover is not null)
-                    {
-                        _binderRemover.Remove(binder: this);
-                        _binderRemover = null;
-                    }
-                    
-                    IsBound = false;
-                    OnUnboundDebug();
-                }
-                OnUnbound();
+                UnbindInternal();
             }
         }
 
         partial void OnUnboundDebug();
+
+        private void UnbindInternal()
+        {
+            Exception? failure = null;
+            try { OnUnbinding(); }
+            catch (Exception exception) { failure = exception; }
+
+            try { _binderRemover?.Remove(binder: this); }
+            catch (Exception exception) { failure ??= exception; }
+            finally
+            {
+                _binderRemover = null;
+                IsBound = false;
+            }
+
+            try { OnUnboundDebug(); }
+            catch (Exception exception) { failure ??= exception; }
+
+            try { OnUnbound(); }
+            catch (Exception exception) { failure ??= exception; }
+
+            if (failure is not null)
+                ExceptionDispatchInfo.Capture(failure).Throw();
+        }
 
         /// <summary>
         /// Called before the binder detaches, while values it reports still reach the ViewModel. Override to report a last value.
@@ -140,6 +160,7 @@ namespace Aspid.MVVM
 
         /// <summary>
         /// Called after the binder detaches. Override to release what <see cref="OnBound"/> subscribed to.
+        /// Also called after a failed binding attempt to release partially acquired resources.
         /// </summary>
         protected virtual void OnUnbound() { }
     }

@@ -78,48 +78,66 @@ namespace Aspid.MVVM
             using (this.Marker())
 #endif
             {
-                switch (binder.Mode)
+                var mode = binder.Mode;
+                if (mode is BindMode.OneWay or BindMode.TwoWay or BindMode.OneTime &&
+                    binder is not IBinder<T> and not IAnyBinder)
+                    throw BinderInvalidCastException.Class<T>(binder);
+
+                if (mode is BindMode.TwoWay or BindMode.OneWayToSource &&
+                    binder is not IReverseBinder<T> and not IAnyReverseBinder)
+                    throw ReverseBinderInvalidCastException<T>.Class(binder);
+
+                try
                 {
-                    case BindMode.OneWay: OneWay(); break;
-                
-                    case BindMode.TwoWay:
-                        OneWay();
-                        OneWayToSource();
-                        break;
-                
-                    case BindMode.OneTime: switch (binder)
-                        {
-                            case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
-                            case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
-                            default: throw BinderInvalidCastException.Class<T>(binder);
-                        }
+                    switch (mode)
+                    {
+                        case BindMode.OneWay: OneWay(); break;
 
-                        return null;
-                
-                    case BindMode.OneWayToSource: OneWayToSource(); break;
+                        case BindMode.TwoWay:
+                            OneWay();
+                            OneWayToSource();
+                            break;
 
-                    case BindMode.None:
-                    default:
-                    throw new InvalidOperationException("Mode can't be None.");
+                        case BindMode.OneTime: switch (binder)
+                            {
+                                case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
+                                case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
+                                default: throw BinderInvalidCastException.Class<T>(binder);
+                            }
+
+                            return null;
+
+                        case BindMode.OneWayToSource: OneWayToSource(); break;
+
+                        case BindMode.None:
+                        default:
+                            throw new InvalidOperationException("Mode can't be None.");
+                    }
+                }
+                catch
+                {
+                    try { ((IBinderRemover)this).Remove(binder); }
+                    catch { /* Preserve the attachment failure. */ }
+                    throw;
                 }
             }
-            
+
             return this;
 
             void OneWay()
             {
                 switch (binder)
                 {
-                    case IBinder<T> specificBinder: 
-                        specificBinder.SetValue(_value); 
+                    case IBinder<T> specificBinder:
+                        specificBinder.SetValue(_value);
                         Changed += specificBinder.SetValue;
                         break;
-                        
+
                     case IAnyBinder anyBinder:
-                        anyBinder.SetValue(_value); 
+                        anyBinder.SetValue(_value);
                         Changed += anyBinder.SetValue;
                         break;
-                        
+
                     default: throw BinderInvalidCastException.Class<T>(binder);
                 }
             }

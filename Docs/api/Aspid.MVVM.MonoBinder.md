@@ -37,11 +37,11 @@ MonoBehaviour ←
 [CasterMonoBinder\<TFrom, TTo\>](Aspid.MVVM.StarterKit.CasterMonoBinder-2.md), 
 [CollectionCountMonoBinder\<T\>](Aspid.MVVM.StarterKit.CollectionCountMonoBinder-1.md), 
 [CollectionMonoBinder\<T\>](Aspid.MVVM.StarterKit.CollectionMonoBinder-1.md), 
-[CommandMonoBinder](Aspid.MVVM.StarterKit.CommandMonoBinder.md), 
+[CommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md), 
 [CommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.CommandMonoBinder-3.md), 
 [CommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.CommandMonoBinder-2.md), 
 [CommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.CommandMonoBinder-1.md), 
-[CommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md), 
+[CommandMonoBinder](Aspid.MVVM.StarterKit.CommandMonoBinder.md), 
 [ComponentMonoBinder\<TComponent\>](Aspid.MVVM.ComponentMonoBinder-1.md), 
 [ConditionalMonoBinder\<TValue\>](Aspid.MVVM.StarterKit.ConditionalMonoBinder-1.md), 
 [DebugLogMonoBinder](Aspid.MVVM.StarterKit.DebugLogMonoBinder.md), 
@@ -141,15 +141,25 @@ public bool IsBound { get; }
 
 ### Mode {#Aspid_MVVM_MonoBinder_Mode}
 
-Gets the binding mode.
+Gets or sets the binding mode; an unconfigured runtime component uses [`MonoBinder.DefaultMode`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_DefaultMode).
 
 ```csharp
-public BindMode Mode { get; }
+public BindMode Mode { get; set; }
 ```
 
 #### Property Value
 
  [BindMode](Aspid.MVVM.BindMode.md)
+
+#### Exceptions
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The binder is bound or being bound.
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+The value is not a supported binding mode.
 
 ## Methods
 
@@ -211,6 +221,7 @@ protected virtual void OnUnbinding()
 ### OnUnbound\(\) {#Aspid_MVVM_MonoBinder_OnUnbound}
 
 Called after unbinding. Override to release a subscription taken in [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound).
+Also called after a failed binding attempt to release partially acquired resources.
 
 ```csharp
 protected virtual void OnUnbound()

@@ -22,36 +22,30 @@ namespace Aspid.MVVM
         [TypeSelector(nameof(_designViewModelAssemblyQualifiedNames))]
         [SerializeField] private string _designViewModel;
 #endif
-        
+
         [RequireBinder(Id = "DesignViewModel")]
         [SerializeField] private Binders[] _bindersList = Array.Empty<Binders>();
 
         protected virtual void OnDestroy() =>
             Dispose();
-        
+
         partial void OnInitializingInternal(IViewModel viewModel)
         {
             foreach (var binders in _bindersList)
                 binders.Bind(viewModel, this);
         }
 
-        partial void OnDeinitializingInternal()
-        {
-            foreach (var binders in _bindersList)
-                binders.Unbind(this);
-        }
-        
         public virtual void Dispose() =>
             Deinitialize();
-        
+
         [Serializable]
         private sealed class Binders
         {
 #if UNITY_EDITOR
-            [SerializeField] private string _assemblyQualifiedName;      
+            [SerializeField] private string _assemblyQualifiedName;
 #endif
             [SerializeField] private string _name;
-            
+
 #if UNITY_EDITOR
             [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_name))]
 #endif
@@ -61,27 +55,17 @@ namespace Aspid.MVVM
 // #if UNITY_6000_0_OR_NEWER
 //             [SerializeReference] private IBinder[] _binders;
 // #endif
-            
+
             public void Bind(IViewModel viewModel, MonoView owner)
             {
                 var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_name));
                 if (!result.IsFound) return;
 
-                _monoBinders.BindSafely(result, owner, _name);
+                owner.__viewBindings.BindSafely(_monoBinders, result, owner, _name);
 
                 // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
 // #if UNITY_6000_0_OR_NEWER
 //                 _binders.BindSafely(result, owner, _name);
-// #endif
-            }
-
-            public void Unbind(MonoView owner)
-            {
-                _monoBinders.UnbindSafely(owner, _name);
-
-                // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
-// #if UNITY_6000_0_OR_NEWER
-//                 _binders.UnbindSafely(owner, _name);
 // #endif
             }
         }

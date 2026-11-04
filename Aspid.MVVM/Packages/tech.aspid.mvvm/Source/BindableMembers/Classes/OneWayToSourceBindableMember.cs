@@ -55,11 +55,20 @@ namespace Aspid.MVVM
             {
                 binder.Mode.ThrowExceptionIfNotTwo();
 
-                switch (binder)
+                try
                 {
-                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += OnValueChanged; break;
-                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged += OnObjectValueChanged; break;
-                    default: throw ReverseBinderInvalidCastException<T>.Class(binder);
+                    switch (binder)
+                    {
+                        case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += OnValueChanged; break;
+                        case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged += OnObjectValueChanged; break;
+                        default: throw ReverseBinderInvalidCastException<T>.Class(binder);
+                    }
+                }
+                catch
+                {
+                    try { ((IBinderRemover)this).Remove(binder); }
+                    catch { /* Preserve the attachment failure. */ }
+                    throw;
                 }
 
                 return this;

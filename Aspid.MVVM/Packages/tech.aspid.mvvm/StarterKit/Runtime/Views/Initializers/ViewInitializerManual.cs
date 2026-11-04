@@ -29,10 +29,12 @@ namespace Aspid.MVVM.StarterKit
 
             _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
-            foreach (var view in Views)
-                view.Initialize(viewModel);
-
-            IsInitialized = true;
+            try { InitializeViews(viewModel); }
+            catch
+            {
+                _viewModel = null;
+                throw;
+            }
         }
 
         /// <summary>
@@ -40,13 +42,8 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public void Deinitialize()
         {
-            if (!IsInitialized) return;
-
-            foreach (var view in Views)
-                view.Deinitialize();
-
-            _viewModel = null;
-            IsInitialized = false;
+            try { DeinitializeViews(); }
+            finally { _viewModel = null; }
         }
     }
 }

@@ -105,6 +105,10 @@ public abstract class MonoBinder : MonoBehaviour
 
 Every ready-made StarterKit binder inherits `MonoBinder`.
 
+Runtime `AddComponent` uses the binder's `DefaultMode` without requiring Editor `Reset`. Configure `binder.Mode` before binding; the setter rejects changes during binding and while bound. Authored serialized modes are preserved.
+
+If `Bind` fails, cleanup hooks run for the partially completed attempt. Make `OnUnbinding` and `OnUnbound` tolerate missing resources. `Unbind` finishes detaching and resets `IsBound` even when a hook throws, then rethrows the first failure.
+
 ---
 
 ## ComponentMonoBinder

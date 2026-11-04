@@ -42,7 +42,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - `IIntBinder`, `ILongBinder`, `IFloatBinder`, `IDoubleBinder`, `IVector2Binder`, `IVector3Binder`, `IColorBinder`, `IRotationBinder` — the extra `SetValue` overloads as default interface members, saturating at the target type's bounds.
 - `INumberReverseBinder` / `NumberReverseChannel` — one reverse channel for `int` / `long` / `float` / `double`, saturating at the target type's bounds.
 - `BinderMath.SafeClamp` / `SafeClamp01` / `NonNegative` / `RequireFinite` and `BinderLogger` — a non-finite value is clamped and reported, naming the binder.
-- `MonoBinder.DefaultMode` — the mode a binder starts in when added through the Inspector, applied from `Reset`.
+- `MonoBinder.DefaultMode` — the mode a new binder starts in, including runtime `AddComponent`; `Mode` can be configured from code while unbound.
 - `ComponentMonoBinder.ResolveComponent` — narrows the `GetComponent` fallback so a binder typed on a base class never resolves itself.
 - `ComponentIntMonoBinder<T>.RaiseNumberValueChanged` — an `int` binder can report to a `float` ViewModel field.
 - `Selectable.SetInteractable` extension — one implementation of `InteractableMode` for every command binder.
@@ -224,6 +224,10 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` and the `protected` `GetMarker` — create the member with its constructor, as the other bindable members.
 
 ### Fixed
+
+- Binding failures validate both directions before subscribing and roll back partial bindings; teardown finishes after lifecycle hook failures and preserves the original exception.
+- Generated Views reset initialization guards, release only acquired binders after failed initialization, and remain reusable; both View initializers roll back partial child initialization and finish cleanup after a child throws.
+- Runtime-created MonoBinders use their default binding mode without Editor `Reset`; authored serialized modes remain unchanged, and `Mode` can be configured from code while unbound.
 
 #### Core
 

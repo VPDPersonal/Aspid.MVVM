@@ -15,7 +15,7 @@ public static class BindSafelyExtensions
         var name = member is CachedBinderMember cachedMember ? cachedMember.CachedName : member.Name;
 
         return code.AppendLine(bindableMemberName is not null
-            ? $"{name}.BindSafely(viewModel.{bindableMemberName}, this, {member.Id});"
-            : $"{name}.BindSafely(viewModel.FindBindableMember({parameters}), this, {member.Id});");
+            ? $"__viewBindings.BindSafely({name}, viewModel.{bindableMemberName}, this, {member.Id});"
+            : $"__viewBindings.BindSafely({name}, viewModel.FindBindableMember({parameters}), this, {member.Id});");
     }
 }

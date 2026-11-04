@@ -194,6 +194,7 @@ protected virtual void OnUnbinding()
 ### OnUnbound\(\) {#Aspid_MVVM_Binder_OnUnbound}
 
 Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
+Also called after a failed binding attempt to release partially acquired resources.
 
 ```csharp
 protected virtual void OnUnbound()

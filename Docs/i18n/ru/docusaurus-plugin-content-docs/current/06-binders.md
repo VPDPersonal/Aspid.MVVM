@@ -105,6 +105,10 @@ public abstract class MonoBinder : MonoBehaviour
 
 Все готовые биндеры из StarterKit наследуют `MonoBinder`.
 
+Runtime `AddComponent` использует `DefaultMode` биндера без Editor `Reset`. Настройте `binder.Mode` до привязки; setter запрещает изменения во время привязки и в привязанном состоянии. Сохранённые режимы не меняются.
+
+При ошибке `Bind` cleanup-хуки вызываются для частично завершённой попытки. `OnUnbinding` и `OnUnbound` должны допускать отсутствие ресурсов. `Unbind` завершает снятие подписок и сбрасывает `IsBound` даже при исключении в hook, затем повторно выбрасывает первую ошибку.
+
 ---
 
 ## ComponentMonoBinder

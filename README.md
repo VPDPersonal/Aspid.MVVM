@@ -56,9 +56,15 @@ The MVVM preview package declares Unity **6000.0.0f1** as its minimum. With the 
 
 </details>
 
-## Quick example
+## Code examples
 
-This counter uses a plain C# ViewModel and a Unity View. The ViewModel holds the state and the command.
+Choose how to declare the ViewModel and how the View connects to it. These examples use the 1.1 API.
+
+<table>
+<tbody>
+<tr><th colspan="2" align="left"><h3>Plain C# ViewModel</h3></th></tr>
+<tr>
+<td width="660" valign="top">
 
 ```csharp
 [ViewModel]
@@ -73,23 +79,142 @@ public sealed partial class CounterViewModel
 }
 ```
 
-The generator implements `IViewModel`, adds a `Count` property that notifies bindings when its value changes, and makes `IncrementCommand` available for binding. `[Serializable]` lets Unity store the ViewModel in `ViewInitializer`.
+</td>
+<td width="450" valign="top">
+
+Use a plain class for screen state and actions. The generator implements `IViewModel` and creates the notifying `Count` property and the bindable `IncrementCommand`. Add `[Serializable]` to configure the instance in `ViewInitializer`.
+
+[Counter tutorial →](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter)
+
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>ViewModel on a GameObject</h3></th></tr>
+<tr>
+<td valign="top">
+
+```csharp
+[ViewModel]
+public sealed partial class Greeter : MonoViewModel
+{
+    [TwoWayBind]
+    [SerializeField] private string _name;
+}
+```
+
+</td>
+<td valign="top">
+
+Use `MonoViewModel` when the state belongs to a scene object or prefab. Set the initial name in the Inspector. A two-way input binder updates `Name` as the user types and follows changes from the ViewModel.
+
+[Greeter tutorial →](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/greeter)
+
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>ViewModel as an asset</h3></th></tr>
+<tr>
+<td valign="top">
+
+```csharp
+[ViewModel]
+[CreateAssetMenu(menuName = "Examples/HUD")]
+public sealed partial class HudModel : ScriptableViewModel
+{
+    [OneWayBind]
+    [SerializeField] private string _title = "Inventory";
+}
+```
+
+</td>
+<td valign="top">
+
+Use `ScriptableViewModel` when several Views should read from the same asset. Create the asset in Unity, set its title, and assign it to each View's initializer. A one-way text binder displays `Title`.
+
+[ScriptableViewModel guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/viewmodels#scriptableviewmodel)
+
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>View with named binder fields</h3></th></tr>
+<tr>
+<td valign="top">
 
 ```csharp
 [View]
 public sealed partial class CounterView : MonoView
 {
-    [RequireBinder(typeof(int))]
     [SerializeField] private MonoBinder _count;
-
-    [RequireBinder(typeof(IRelayCommand))]
     [SerializeField] private MonoBinder _incrementCommand;
 }
 ```
 
-`[View]` generates the connections by name. In the Inspector, assign a `TextMonoBinder` to `_count` and a `ButtonCommandMonoBinder` to `_incrementCommand`. Configure `ViewInitializer` to give the View a `CounterViewModel`. When the button runs `IncrementCommand`, the change to `Count` updates the text.
+</td>
+<td valign="top">
 
-[Follow the Counter tutorial for the complete scene setup.](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter)
+Use a generated View with binder slots you can configure in the Inspector. Assign a `TextMonoBinder` and a `ButtonCommandMonoBinder`. The generator matches the fields to `Count` and `IncrementCommand` by name.
+
+[View guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/views#creating-a-view)
+
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>View that binds a Unity component directly</h3></th></tr>
+<tr>
+<td valign="top">
+
+```csharp
+[View]
+public sealed partial class CounterButton : MonoView
+{
+    [AsBinder(typeof(ButtonCommandBinder))]
+    [SerializeField] private Button _incrementCommand;
+}
+```
+
+</td>
+<td valign="top">
+
+Use `[AsBinder]` when the binder type belongs in code. Drag the Unity `Button` into the field. The generator creates the binder and connects it to `IncrementCommand`.
+
+[AsBinder guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/views#the-asbinder-attribute)
+
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>View configured in the Inspector</h3></th></tr>
+<tr>
+<td valign="top">
+
+```csharp
+public sealed class CounterBootstrap : MonoBehaviour
+{
+    [SerializeField] private MonoView _view;
+
+    private void Awake() =>
+        _view.Initialize(new CounterViewModel());
+
+    private void OnDestroy() =>
+        _view.DeinitializeView()?.DisposeViewModel();
+}
+```
+
+</td>
+<td valign="top">
+
+Add a plain `MonoView` and enter `Count` and `IncrementCommand` as binding IDs in its **Binders** list. Initialize it from your own bootstrap, as shown here, or assign the ViewModel in `ViewInitializer` to wire it up entirely in the Inspector.
+
+[View initializer guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/view-initializers#viewinitializer)
+
+</td>
+</tr>
+</tbody>
+</table>
 
 ## Features
 

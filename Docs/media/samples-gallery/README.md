@@ -27,3 +27,21 @@ Notes: the Zenject DI scene is not recorded (the dev project has no Zenject), `d
 Wallet scene; ExampleScripts has no scene. In a batch Editor `WaitForEndOfFrame` coroutines never resume, so the
 recorder drives VirtualizedList's layout itself. A Screen Space Overlay canvas does not render through
 `Camera.Render`: the recorder sets `worldCamera` first, then `renderMode = ScreenSpaceCamera`.
+
+## Repository README previews
+
+The root README uses WebP copies in `Docs/static/img/readme/features/`. Start from the corresponding dark GIF in
+`Docs/static/img/samples/`. Apply the same crop to every decoded RGB frame and keep each frame's duration.
+Save with Pillow using `save_all=True`, `loop=0`, `quality=88` and `method=4`. The crop includes the dark margin around
+the UI. Coordinates are left, top, right and bottom, with the right and bottom edges excluded.
+
+| Source GIF | Crop |
+| --- | --- |
+| `counter.gif` | `(96, 44, 928, 532)` |
+| `bind-modes.gif` | `(148, 17, 876, 559)` |
+| `stats.gif` | `(148, 15, 876, 561)` |
+| `todo-list.gif` | `(110, 29, 914, 547)` |
+| `virtualized-list.gif` | `(0, 0, 1024, 576)` |
+| `custom-binder.gif` | `(75, 84, 949, 492)` |
+| `dynamic-view-model.gif` | `(139, 37, 885, 539)` |
+| `di-integration.gif` | `(96, 44, 928, 532)` |

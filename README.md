@@ -58,49 +58,100 @@ The MVVM preview package declares Unity **6000.0.0f1** as its minimum. With the 
 
 ## Features
 
-The previews below show the sample scenes from the 1.1 series.
+These previews use the sample scenes from the 1.1 series.
+
+### ViewModels, binding and commands
 
 <table>
-<tbody>
-<tr><th colspan="2" align="left"><h3>Connect a ViewModel to the UI</h3></th></tr>
 <tr>
-<td width="56%" valign="top"><img src="Docs/static/img/samples/counter.gif" alt="A button increments the counter shown in the UI" width="100%"></td>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/counter.webp" alt="The counter display follows the ViewModel as the buttons change its value" width="100%"></td>
 <td width="44%" valign="top">
-<p>Mark a partial class with <code>[ViewModel]</code>, expose data with <code>[Bind]</code>, and turn a method into a button action with <code>[RelayCommand]</code>.</p>
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/viewmodels">Generated ViewModels</a></h4>
+<p>Add <code>[ViewModel]</code> to a partial C# class and <code>[Bind]</code> to its data. The source generator creates the bindable members at compile time, so the counter text follows the ViewModel.</p>
 <p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter">Counter tutorial →</a></p>
 </td>
 </tr>
-</tbody>
-<tbody>
-<tr><th colspan="2" align="left"><h3>Bind input and convert values</h3></th></tr>
+</table>
+
+<table>
 <tr>
-<td valign="top"><img src="Docs/static/img/samples/bind-modes.gif" alt="Controls demonstrate the four binding modes" width="100%"></td>
-<td valign="top">
-<p>Choose <code>OneWay</code>, <code>TwoWay</code>, <code>OneTime</code>, or <code>OneWayToSource</code> in the Inspector. Use a converter to adapt the value for the UI.</p>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/bind-modes.webp" alt="An audio settings panel shows all four binding modes and a volume slider" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/binding-modes">Binding modes and converters</a></h4>
+<p>Choose when values flow between the View and ViewModel. The settings sample uses two-way binding on a volume slider and a converter to map slider position to volume.</p>
 <p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/bind-modes">Bind Modes tutorial →</a></p>
 </td>
 </tr>
-</tbody>
-<tbody>
-<tr><th colspan="2" align="left"><h3>Keep lists in sync</h3></th></tr>
+</table>
+
+<table>
 <tr>
-<td valign="top"><img src="Docs/static/img/samples/todo-list.gif" alt="A task list updates as the user edits and searches tasks" width="100%"></td>
-<td valign="top">
-<p>Use an observable collection to update rows when items change. For large collections, the StarterKit virtualized list creates views for the visible rows.</p>
-<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/todo-list">Todo List tutorial →</a> · <a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/virtualized-list">Virtualized List tutorial →</a></p>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/stats.webp" alt="Spend draft stat points, then confirm the changes" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/commands">Relay commands</a></h4>
+<p>Turn a method into a command with <code>[RelayCommand]</code>. Pass the stat to change as a parameter and use <code>CanExecute</code> to disable actions when no points remain.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/stats">Stats tutorial →</a></p>
 </td>
 </tr>
-</tbody>
-<tbody>
-<tr><th colspan="2" align="left"><h3>Bind a custom component</h3></th></tr>
+</table>
+
+### Collections
+
+<table>
 <tr>
-<td valign="top"><img src="Docs/static/img/samples/custom-binder.gif" alt="A custom binder updates a health bar when the hero takes damage or heals" width="100%"></td>
-<td valign="top">
-<p>Use the StarterKit binders for common UI components. For your own component, write a binder and generate its serializable counterpart with <code>[GenerateSerializableBinder]</code>.</p>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/todo-list.webp" alt="Add a task, filter the list by name, and clear the search" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/collections">Observable collections</a></h4>
+<p>Project an <code>ObservableList</code> into row ViewModels with <code>CreateSync</code>. The task list updates as items are added or removed, and search filters the visible rows.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/todo-list">Todo List tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/virtualized-list.webp" alt="Scroll three lists while their visible rows are reused" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/StarterKit/collection-binders#virtualizedlistitemsourcebinder">Virtualized lists</a></h4>
+<p>Display large collections by recycling row views as they leave the viewport. Configure filters and sorting for the visible list in the Inspector.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/virtualized-list">Virtualized List tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+### Custom components and integration
+
+<table>
+<tr>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/custom-binder.webp" alt="Hit and Heal update a health bar through a custom binder" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/binders">Custom binders</a></h4>
+<p>Connect a project-specific UI component by implementing a binder for its property. <code>[GenerateSerializableBinder]</code> makes the same binding available inline in the Inspector.</p>
 <p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/custom-binder">Custom Binder tutorial →</a></p>
 </td>
 </tr>
-</tbody>
+</table>
+
+<table>
+<tr>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/dynamic-view-model.webp" alt="A stopwatch updates elapsed time and counts laps" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/dynamic-viewmodel">Dynamic ViewModels</a></h4>
+<p>Use <code>DynamicViewModel</code> when the data shape is known only at runtime. Declare properties and commands by ID, then bind the View to those IDs.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/dynamic-view-model">Dynamic ViewModel tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="56%" valign="top"><img src="Docs/static/img/readme/features/di-integration.webp" alt="A VContainer-backed wallet updates its coin count" width="100%"></td>
+<td width="44%" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/di-integration">Dependency injection</a></h4>
+<p>Resolve a ViewModel from Zenject or VContainer through <code>ViewInitializer</code>. The wallet sample injects the model into the ViewModel constructor.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/di-integration">DI Integration tutorial →</a></p>
+</td>
+</tr>
 </table>
 
 ## Resources

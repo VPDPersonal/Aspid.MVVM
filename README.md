@@ -1,8 +1,12 @@
-![Aspid.MVVM](Docs/docs/Images/Aspid.MVVMHeaderImage.png)
+<picture>
+  <source srcset="Docs/static/img/readme/aspid_mvvm_readme_banner_dark.webp" />
+  <img src="Docs/static/img/readme/aspid_mvvm_readme_banner.png" alt="Aspid.MVVM" />
+</picture>
 
-[![Stable release](https://img.shields.io/github/v/release/VPDPersonal/Aspid.MVVM?label=Stable&labelColor=254d2c&color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases/latest)
-[![Preview package](https://img.shields.io/github/package-json/v/VPDPersonal/Aspid.MVVM/upm-preview?label=Preview&labelColor=4d4425&color=a3923d)](https://github.com/VPDPersonal/Aspid.MVVM/releases?q=prerelease%3Atrue)
-[![MIT License](https://img.shields.io/badge/License-MIT-4fa35d?labelColor=254d2c)](LICENSE)
+[![Unity 6000.0.53f1+ for preview](Docs/static/img/readme/status-badge-unity.svg)](#preview-via-git)
+[![Release 1.0.5](Docs/static/img/readme/status-badge-release.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.0.5)
+[![Preview 1.1.0-beta.1](Docs/static/img/readme/status-badge-preview.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.1.0-beta.1)
+[![MIT License](Docs/static/img/readme/status-badge-license.svg)](LICENSE)
 
 Aspid.MVVM is an MVVM framework for Unity. Bind UI to C# ViewModels, wire buttons to commands, and keep lists in sync as data changes. Source generators produce the binding code at compile time so bindings run without reflection.
 

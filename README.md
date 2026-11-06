@@ -1,192 +1,329 @@
-![Aspid.MVVMHeaderImage.png](Docs/docs/Images/Aspid.MVVMHeaderImage.png)
-[![Unity](https://img.shields.io/badge/Unity_6.0%2B-000000?style=flat&logo=unity&logoColor=white&color=4fa35d)](https://assetstore.unity.com/packages/slug/298463)
-[![Stable](https://img.shields.io/github/v/release/VPDPersonal/Aspid.MVVM?label=Stable&labelColor=254d2c&color=4fa35d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
-[![Preview](https://img.shields.io/github/package-json/v/VPDPersonal/Aspid.MVVM/upm-preview?label=Preview&labelColor=4d4425&color=a3923d)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
-[![License](https://img.shields.io/github/license/VPDPersonal/Aspid.MVVM?label=License&labelColor=254d2c&color=4fa35d)](LICENSE)
+<picture>
+  <source srcset="Docs/static/img/readme/aspid_mvvm_readme_banner_dark.webp" />
+  <img src="Docs/static/img/readme/aspid_mvvm_readme_banner.png" alt="Aspid.MVVM" />
+</picture>
 
-# Introduction
-$\color{#6aba7d}\large{\textbf{Aspid.MVVM is a high-performance MVVM framework}}$ for Unity, built on Source Generator, designed 
-with a focus on simplicity, scalability, and clear separation of business logic from presentation.
+[![Unity 6000.0.53f1+ for preview](Docs/static/img/readme/status-badge-unity.svg)](#preview-via-git)
+[![Stable 1.0.5](Docs/static/img/readme/status-badge-release.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.0.5)
+[![Preview 1.1.0-beta.1](Docs/static/img/readme/status-badge-preview.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.1.0-beta.1)
+[![MIT License](Docs/static/img/readme/status-badge-license.svg)](LICENSE)
 
-The framework enables a clean architecture where the View, logic, and data are distinctly separated.
-This allows programmers and designers to work in parallel without interfering with each other, enabling
-teams to scale projects without descending into chaos.
+Aspid.MVVM is an MVVM framework for Unity. Bind UI to C# ViewModels, wire buttons to commands, and keep lists in sync as data changes. Source generators produce the binding code at compile time so bindings run without reflection.
 
----
+[Documentation in English](https://vpdpersonal.github.io/Aspid.MVVM/docs) · [Документация на русском](https://vpdpersonal.github.io/Aspid.MVVM/ru/docs)
 
-### \[[Documentation](https://vpdpersonal.github.io/Aspid.MVVM/)\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)\] \[[Donate](#donate)\] \[[Get Started](#get-started)\]
+## Installation
 
----
+### Stable
 
-## Source Code
-### \[[Aspid.MVVM](https://github.com/VPDPersonal/Aspid.MVVM/tree/main)\] \[[Aspid.MVVM.Generators](https://github.com/VPDPersonal/Aspid.MVVM/tree/main/Aspid.MVVM.Generators)\]
-### \[[Aspid.MVVM.Unity.Generators](https://github.com/VPDPersonal/Aspid.MVVM/tree/main/Aspid.MVVM.Unity.Generators)\] \[[Aspid.MVVM.Analyzers](https://github.com/VPDPersonal/Aspid.MVVM/tree/main/Aspid.MVVM.Analyzers)\]
+Get Aspid.MVVM from the [Unity Asset Store](https://assetstore.unity.com/packages/slug/298463) and import it from **Window → Package Manager → My Assets**. You can also download the `.unitypackage` from the [latest stable GitHub release](https://github.com/VPDPersonal/Aspid.MVVM/releases/latest) and open it in Unity.
 
----
+### Preview via Git
 
-## Integration
+Open **Window → Package Manager** and choose **+ → Install package from git URL…**. Paste each URL below and click **Install** before moving to the next one. Install the two dependencies first because Unity Package Manager does not resolve Git dependencies automatically.
 
-### Stable (recommended)
+**1. Aspid.FastTools**
 
-The current stable release is the recommended choice for production. Install it either way:
-
-* **Unity Asset Store** — add it to your account from the
-  [Asset Store page](https://assetstore.unity.com/packages/slug/298463), then import it through the
-  Package Manager (*Window → Package Manager → My Assets*).
-* **Releases page** — download the package from the
-  [Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) page and import it into your project.
-
-<details>
-<summary><b>🧪 Preview (1.1.0) — install via UPM</b></summary>
-
-<br>
-
-The `1.1.0` line is published as a UPM package on the `upm-preview` branch and is installed through the
-Unity Package Manager via Git URLs (*Window → Package Manager → + → Install package from git URL…*).
-The release workflow publishes a branch containing only the package contents at its root, so no `?path=`
-query is needed.
-
-Its assemblies depend on two external git packages that are **not** resolved automatically. Add the
-packages **in this order** so each dependency is present before the package that needs it:
-
-**1. Aspid.FastTools** — preview channel:
-
-```
+```text
 https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview
 ```
 
-**2. Aspid.Collections** — stable channel:
+**2. Aspid.Collections**
 
-```
+```text
 https://github.com/VPDPersonal/Aspid.Collections.git#upm
 ```
 
-**3. Aspid.MVVM** — preview channel:
+**3. Aspid.MVVM**
 
-```
+```text
 https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview
 ```
 
-The `upm-preview` branch always points to the latest **preview** release (beta, rc, …). To pin a specific
-preview version, target its immutable per-release tag (see
-[Releases](https://github.com/VPDPersonal/Aspid.MVVM/releases) for the list of available versions):
+Use **Update** in Package Manager to pull the latest version from the branch. To pin MVVM, use the `upm/<version>` tag for a [published release](https://github.com/VPDPersonal/Aspid.MVVM/releases).
 
-```
+```text
 https://github.com/VPDPersonal/Aspid.MVVM.git#upm/1.1.0-beta.1
 ```
 
+The MVVM preview package declares Unity **6000.0.0f1** as its minimum. With the FastTools dependency above, use Unity **6000.0.53f1** or newer.
+
+<details>
+<summary>Troubleshooting</summary>
+
+- **Duplicate assembly names.** If you previously imported MVVM under `Assets`, remove that copy before installing the Git package.
+- **Unity cannot resolve `com.unity.test-framework@1.6.0`.** Aspid.Collections 1.1.0 declares that dependency. Check that your Unity version can resolve it. See the [Aspid.Collections installation notes](https://github.com/VPDPersonal/Aspid.Collections#installation).
+
 </details>
 
----
+## Code examples
 
-## ⚡️Key Features
-### Data Binding
-* $\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$ supports four primary data binding modes between View and ViewModel:
-* $\color{#6aba7d}\large{\textbf{OneWay}}$ – Automatically updates the View when the ViewModel changes.
-* $\color{#6aba7d}\large{\textbf{TwoWay}}$ – Bidirectional synchronization between View and ViewModel.
-* $\color{#6aba7d}\large{\textbf{OneTime}}$ – Sets the value once during initialization.
-* $\color{#6aba7d}\large{\textbf{OneWayToSource}}$ – Updates the ViewModel when the View changes.
+Choose how to declare the ViewModel and how the View connects to it. These examples use the 1.1 API.
 
-Binding modes can be easily specified:
-* In the **View**: Directly via the Unity Inspector.
-* In the **ViewModel**: Using attributes to restrict allowed binding modes.
+<table>
+<tbody>
+<tr><th colspan="2" align="left"><h3>Plain C# ViewModel</h3></th></tr>
+<tr>
+<td width="660" valign="top">
 
-$\color{#4fa35d}\large{\textbf{Bindings operate without reflection or boxing/unboxing, ensuring high performance.}}$
+```csharp
+[ViewModel]
+[Serializable]
+public sealed partial class CounterViewModel
+{
+    [Bind] private int _count;
 
-### ViewModel
-With the built-in Source Generator, you can bind any data type:
-* No need to inherit from specialized base classes.
-* No wrappers or wrapped properties required.
-* No boilerplate code, using attributes for configuration.
+    [RelayCommand]
+    private void Increment() =>
+        Count++;
+}
+```
 
-### Commands
-A power command mechanism:
-* Supports up to four parameters — simply select the desired signature.
-* The `[RelayCommand]` attribute transforms a regular method into a command with `CanExecute` support.
+</td>
+<td width="450" valign="top">
 
-### Observable Collections
-A set of flexible, covariant observable collections:
-* `ObservableList<T>`
-* `ObservableDictionary<TKey, TValue>`
-* `ObservableHasSet<T>`
-* `ObservableStack<T>`
-* `ObservableQueue<T>`
+Use a plain class for screen state and actions. The generator implements `IViewModel` and creates the notifying `Count` property and the bindable `IncrementCommand`. Add `[Serializable]` to configure the instance in `ViewInitializer`.
 
-Features:
-* Easy synchronization between two dependent collections.
-* Support for filtering and sorting without modifying the source collection.
+[Counter tutorial →](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter)
 
-### StarterKit
-A ready-to-use set of components for a quick start:
-* $\color{#6aba7d}\large{\textbf{Binders}}$: Quickly connect to the desired component property.
-* $\color{#6aba7d}\large{\textbf{Value Converters}}$: Transform values for display without altering the ViewModel.
-* $\color{#6aba7d}\large{\textbf{List Components}}$: Including:
-  * $\color{#6aba7d}\large{\textbf{Virtualized List}}$: Efficiently handles thousands of elements.
-* $\color{#6aba7d}\large{\textbf{Dynamic ViewModel}}$: For simple structured data without writing a specialized ViewModel.
-* $\color{#6aba7d}\large{\textbf{View Initialization Components}}$: Initialize Views by ViewModel via the Unity Inspector, with support for popular DI frameworks: Zenject, VContainer.
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>ViewModel on a GameObject</h3></th></tr>
+<tr>
+<td valign="top">
 
-### Convenient Debugging:
-* View and modify ViewModel state directly in the Unity Inspector, even for plain C# classes.
-* `[BinderLog]` attribute for automatic logging of value changes.
-* Clear visual errors in the editor for incorrect bindings.
+```csharp
+[ViewModel]
+public sealed partial class Greeter : MonoViewModel
+{
+    [TwoWayBind]
+    [SerializeField] private string _name;
+}
+```
 
-### High Performance
-$\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$ is designed with performance in mind:
-* No reflection in bindings.
-* No boxing/unboxing when passing values.
-* Minimized memory allocations.
+</td>
+<td valign="top">
 
-### Extensibility
-The framework is easily extensible:
-* Create custom binders, converters, components, and more.
-* Extend the framework to suit project needs without modifying its core.
+Use `MonoViewModel` when the state belongs to a scene object or prefab. Set the initial name in the Inspector. A two-way input binder updates `Name` as the user types and follows changes from the ViewModel.
 
-### Cross-Platform Support
-$\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$ works on all Unity-supported platforms:
-* PC, mobile devices, consoles.
-* Create different Views for different platforms without changing the ViewModel or business logic.
+[Greeter tutorial →](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/greeter)
 
----
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>ViewModel as an asset</h3></th></tr>
+<tr>
+<td valign="top">
 
-## Who is Aspid.MVVM For?
-### $\color{#6aba7d}\large{\textbf{Unity Developers}}$, who want to:
-* Simplify maintenance of complex UI and other presentations.
-* Improve code structure, avoiding "spaghetti code" in large projects.
-* Achieve an architecture suitable for testing and extension.
+```csharp
+[ViewModel]
+[CreateAssetMenu(menuName = "Examples/HUD")]
+public sealed partial class HudModel : ScriptableViewModel
+{
+    [OneWayBind]
+    [SerializeField] private string _title = "Inventory";
+}
+```
 
-### $\color{#6aba7d}\large{\textbf{Teams}}$, aiming to:
-* Enable parallel work for designers and developers.
-* Implement modular development and testing.
-* Build scalable applications.
+</td>
+<td valign="top">
 
-### $\color{#6aba7d}\large{\textbf{Projects}}$, where the following are critical:
-* Flexibility in adapting to changing requirements.
-* Robust architecture.
-* High performance.
+Use `ScriptableViewModel` when several Views should read from the same asset. Create the asset in Unity, set its title, and assign it to each View's initializer. A one-way text binder displays `Title`.
 
----
+[ScriptableViewModel guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/viewmodels#scriptableviewmodel)
 
-# Donate
-This project is developed on a voluntary basis. If you find it useful, you can support its development financially. This helps allocate more time to improving and maintaining $\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$.
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>View with named binder fields</h3></th></tr>
+<tr>
+<td valign="top">
 
-You can donate via the following platforms:
-* \[[Unity Asset Store](https://assetstore.unity.com/packages/slug/298463)\]
+```csharp
+[View]
+public sealed partial class CounterView : MonoView
+{
+    [SerializeField] private MonoBinder _count;
+    [SerializeField] private MonoBinder _incrementCommand;
+}
+```
 
----
+</td>
+<td valign="top">
 
-# Get Started
-Here are some helpful pages to quickly and easily get started with our product:
+Use a generated View with binder slots you can configure in the Inspector. Assign a `TextMonoBinder` and a `ButtonCommandMonoBinder`. The generator matches the fields to `Count` and `IncrementCommand` by name.
 
-* [Getting Started](https://vpdpersonal.github.io/Aspid.MVVM/docs/getting-started)
-* [Architecture](https://vpdpersonal.github.io/Aspid.MVVM/docs/architecture)
-* [ViewModels](https://vpdpersonal.github.io/Aspid.MVVM/docs/viewmodels)
-* [Views](https://vpdpersonal.github.io/Aspid.MVVM/docs/views)
-* [Binders](https://vpdpersonal.github.io/Aspid.MVVM/docs/binders)
-* [Commands](https://vpdpersonal.github.io/Aspid.MVVM/docs/commands)
-* [Tutorials](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter)
+[View guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/views#creating-a-view)
 
----
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>View that binds a Unity component directly</h3></th></tr>
+<tr>
+<td valign="top">
 
-$\color{#4fa35d}\Huge{\textbf{Aspid.MVVM makes MVVM in Unity not only possible but also convenient.}}$
+```csharp
+[View]
+public sealed partial class CounterButton : MonoView
+{
+    [AsBinder(typeof(ButtonCommandBinder))]
+    [SerializeField] private Button _incrementCommand;
+}
+```
 
----
+</td>
+<td valign="top">
+
+Use `[AsBinder]` when the binder type belongs in code. Drag the Unity `Button` into the field. The generator creates the binder and connects it to `IncrementCommand`.
+
+[AsBinder guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/views#the-asbinder-attribute)
+
+</td>
+</tr>
+</tbody>
+<tbody>
+<tr><th colspan="2" align="left"><h3>View configured in the Inspector</h3></th></tr>
+<tr>
+<td valign="top">
+
+```csharp
+public sealed class CounterBootstrap : MonoBehaviour
+{
+    [SerializeField] private MonoView _view;
+
+    private void Awake() =>
+        _view.Initialize(new CounterViewModel());
+
+    private void OnDestroy() =>
+        _view.DeinitializeView()?.DisposeViewModel();
+}
+```
+
+</td>
+<td valign="top">
+
+Add a plain `MonoView` and enter `Count` and `IncrementCommand` as binding IDs in its **Binders** list. Initialize it from your own bootstrap, as shown here, or assign the ViewModel in `ViewInitializer` to wire it up entirely in the Inspector.
+
+[View initializer guide →](https://vpdpersonal.github.io/Aspid.MVVM/docs/view-initializers#viewinitializer)
+
+</td>
+</tr>
+</tbody>
+</table>
+
+## Features
+
+These previews use the sample scenes from the 1.1 series.
+
+### ViewModels, binding and commands
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/counter.webp" alt="The counter display follows the ViewModel as the buttons change its value" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/viewmodels">Generated ViewModels</a></h4>
+<p>The source generator turns <code>[Bind]</code> fields into bindable properties. The counter display follows its ViewModel as the buttons change the count.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter">Counter tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/bind-modes.webp" alt="An audio settings panel shows all four binding modes and a volume slider" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/binding-modes">Binding modes and converters</a></h4>
+<p>Bind a slider both ways so either side can change the volume. A converter maps between the slider position and the stored value.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/bind-modes">Bind Modes tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/stats.webp" alt="Spend draft stat points, then confirm the changes" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/commands">Relay commands</a></h4>
+<p>Use <code>[RelayCommand]</code> to turn a method into a button action. Pass the stat as an argument and disable the button when points run out.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/stats">Stats tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+### Collections
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/todo-list.webp" alt="Add a task, filter the list by name, and clear the search" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/collections">Observable collections</a></h4>
+<p>Use <code>CreateSync</code> to turn tasks into row ViewModels. Adding or removing a task updates the list, and search filters the visible rows.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/todo-list">Todo List tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/virtualized-list.webp" alt="Scroll three lists while their visible rows are reused" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/StarterKit/collection-binders#virtualizedlistitemsourcebinder">Virtualized lists</a></h4>
+<p>Reuse row views while scrolling through large lists. Set filters and sort order in the Inspector.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/virtualized-list">Virtualized List tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+### Custom components and integration
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/custom-binder.webp" alt="Hit and Heal update a health bar through a custom binder" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/binders">Custom binders</a></h4>
+<p>Bind a custom component such as a health bar. Generate a serializable binder to configure the binding inline in the Inspector.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/custom-binder">Custom Binder tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/dynamic-view-model.webp" alt="A stopwatch updates elapsed time and counts laps" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/dynamic-viewmodel">Dynamic ViewModels</a></h4>
+<p>Add properties and commands by ID at runtime. The stopwatch binds to elapsed time and lap count through those IDs.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/dynamic-view-model">Dynamic ViewModel tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="620" valign="top"><img src="Docs/static/img/readme/features/di-integration.webp" alt="A VContainer-backed wallet updates its coin count" width="100%"></td>
+<td width="490" valign="top">
+<h4><a href="https://vpdpersonal.github.io/Aspid.MVVM/docs/di-integration">Dependency injection</a></h4>
+<p>Let <code>ViewInitializer</code> resolve a ViewModel from Zenject or VContainer. The wallet receives its model through constructor injection.</p>
+<p><a href="https://vpdpersonal.github.io/Aspid.MVVM/tutorials/di-integration">DI Integration tutorial →</a></p>
+</td>
+</tr>
+</table>
+
+## Resources
+
+| [Samples](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/) | [API reference](https://vpdpersonal.github.io/Aspid.MVVM/api/Aspid.MVVM) | [Changelog](CHANGELOG.md) |
+| --- | --- | --- |
+| Follow the learning path or open a sample from the **Samples** tab in Package Manager. | Look up framework types and members. | See changes by release. |
+
+## Help and support
+
+Found a bug or have a question? Include your Unity version, Aspid.MVVM version, and steps to reproduce.
+
+**[Open an issue](https://github.com/VPDPersonal/Aspid.MVVM/issues)** · [Star on GitHub](https://github.com/VPDPersonal/Aspid.MVVM)
+
+You can also support development through the [Unity Asset Store](https://assetstore.unity.com/packages/slug/298463).

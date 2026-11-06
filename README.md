@@ -4,7 +4,7 @@
 </picture>
 
 [![Unity 6000.0.53f1+ for preview](Docs/static/img/readme/status-badge-unity.svg)](#preview-via-git)
-[![Release 1.0.5](Docs/static/img/readme/status-badge-release.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.0.5)
+[![Stable 1.0.5](Docs/static/img/readme/status-badge-release.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.0.5)
 [![Preview 1.1.0-beta.1](Docs/static/img/readme/status-badge-preview.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.1.0-beta.1)
 [![MIT License](Docs/static/img/readme/status-badge-license.svg)](LICENSE)
 

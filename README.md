@@ -56,6 +56,41 @@ The MVVM preview package declares Unity **6000.0.0f1** as its minimum. With the 
 
 </details>
 
+## Quick example
+
+This counter uses a plain C# ViewModel and a Unity View. The ViewModel holds the state and the command.
+
+```csharp
+[ViewModel]
+[Serializable]
+public sealed partial class CounterViewModel
+{
+    [Bind] private int _count;
+
+    [RelayCommand]
+    private void Increment() =>
+        Count++;
+}
+```
+
+The generator implements `IViewModel`, adds a `Count` property that notifies bindings when its value changes, and makes `IncrementCommand` available for binding. `[Serializable]` lets Unity store the ViewModel in `ViewInitializer`.
+
+```csharp
+[View]
+public sealed partial class CounterView : MonoView
+{
+    [RequireBinder(typeof(int))]
+    [SerializeField] private MonoBinder _count;
+
+    [RequireBinder(typeof(IRelayCommand))]
+    [SerializeField] private MonoBinder _incrementCommand;
+}
+```
+
+`[View]` generates the connections by name. In the Inspector, assign a `TextMonoBinder` to `_count` and a `ButtonCommandMonoBinder` to `_incrementCommand`. Configure `ViewInitializer` to give the View a `CounterViewModel`. When the button runs `IncrementCommand`, the change to `Count` updates the text.
+
+[Follow the Counter tutorial for the complete scene setup.](https://vpdpersonal.github.io/Aspid.MVVM/tutorials/counter)
+
 ## Features
 
 These previews use the sample scenes from the 1.1 series.

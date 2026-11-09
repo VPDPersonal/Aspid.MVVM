@@ -1,12 +1,12 @@
 <picture>
-  <source srcset="Docs/static/img/readme/aspid_mvvm_readme_banner_dark.webp" />
-  <img src="Docs/static/img/readme/aspid_mvvm_readme_banner.png" alt="Aspid.MVVM" />
+  <source srcset="https://vpdpersonal.github.io/VPDPersonal/banners/aspid-mvvm/banner.webp" type="image/webp" />
+  <img src="https://vpdpersonal.github.io/VPDPersonal/banners/aspid-mvvm/banner.png" alt="Aspid.MVVM" />
 </picture>
 
-[![Unity 6000.0.53f1+ for preview](Docs/static/img/readme/status-badge-unity.svg)](#preview-via-git)
-[![Stable 1.0.5](Docs/static/img/readme/status-badge-release.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.0.5)
-[![Preview 1.1.0-beta.1](Docs/static/img/readme/status-badge-preview.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/tag/v1.1.0-beta.1)
-[![MIT License](Docs/static/img/readme/status-badge-license.svg)](LICENSE)
+[![Minimum Unity version for the preview setup](https://vpdpersonal.github.io/VPDPersonal/badges/aspid-fasttools/preview/status-badge-unity.svg)](#preview-via-git)
+[![Stable release](https://vpdpersonal.github.io/VPDPersonal/badges/aspid-mvvm/status-badge-release.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases/latest)
+[![Preview release](https://vpdpersonal.github.io/VPDPersonal/badges/aspid-mvvm/status-badge-preview.svg)](https://github.com/VPDPersonal/Aspid.MVVM/releases)
+[![MIT License](https://vpdpersonal.github.io/VPDPersonal/badges/status-badge-license.svg)](LICENSE)
 
 Aspid.MVVM is an MVVM framework for Unity. Bind UI to C# ViewModels, wire buttons to commands, and keep lists in sync as data changes. Source generators produce the binding code at compile time so bindings run without reflection.
 

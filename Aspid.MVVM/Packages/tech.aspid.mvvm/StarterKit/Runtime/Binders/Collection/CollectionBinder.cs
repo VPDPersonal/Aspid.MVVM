@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using System.Collections.Specialized;
@@ -29,27 +30,57 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="collection">The collection to bind, or <see langword="null"/> to clear the binding.</param>
         public void SetValue(IReadOnlyCollection<T>? collection)
         {
-            if (Collection is not null)
-                OnReset();
-
-            UnsubscribeFromCollection();
-
+            DeinitializeCollection();
             Collection = collection;
-            if (Collection is null) return;
-            if (Collection.Count > 0) OnAdded(Collection);
+            if (collection is null) return;
 
-            switch (Collection)
+            try
             {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+                if (collection.Count > 0) OnAdded(collection);
+
+                switch (Collection)
+                {
+                    case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
+                    case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+                }
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(exception, DeinitializeCollection, "CollectionBinder rollback");
+                throw;
             }
         }
 
         /// <summary>
-        /// Unsubscribes from the bound collection.
+        /// Unsubscribes from the collection and clears its views.
         /// </summary>
         protected override void OnDetach() =>
-            UnsubscribeFromCollection();
+            DeinitializeCollection();
+
+        private void DeinitializeCollection()
+        {
+            var failures = new CleanupExceptions();
+            try
+            {
+                UnsubscribeFromCollection();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            Collection = null;
+            try
+            {
+                OnReset();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            failures.ThrowIfAny();
+        }
 
         /// <summary>
         /// Called with the whole collection on binding and after a filter reset.

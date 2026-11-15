@@ -25,6 +25,9 @@ namespace Aspid.MVVM.StarterKit
 
         private Element[] _views;
         private Coroutine _initializing;
+        private int _operationVersion;
+        private bool _destroyed;
+        private IReadOnlyList<IViewModel> _subscribedSource;
         private int _previousTopIndex = -1;
 
         private Length? _viewLength;
@@ -34,16 +37,38 @@ namespace Aspid.MVVM.StarterKit
         private IReadOnlyList<IViewModel> _itemsSource;
 
         /// <summary>
-        /// Gets or sets the ViewModels shown by the list. Observable and filtered lists are tracked for changes.
+        /// Gets or sets the ViewModels shown by the list. A <see langword="null"/> source clears the displayed items.
         /// </summary>
+        /// <remarks>
+        /// Source changes are tracked while enabled. Re-enabling refreshes the retained source; clearing it does not dispose its ViewModels.
+        /// </remarks>
         public IReadOnlyList<IViewModel> ItemsSource
         {
             get => _itemsSource;
             set
             {
-                Deinitialize();
+                if (_destroyed)
+                {
+                    if (value is null) return;
+                    throw new InvalidOperationException("The virtualized list has been destroyed.");
+                }
+
+                var version = ++_operationVersion;
+                StopTracking();
+                _itemsSource = null;
+
+                try
+                {
+                    DeinitializeViews();
+                }
+                finally
+                {
+                    if (version == _operationVersion) ClearContent();
+                }
+
+                if (version != _operationVersion || _destroyed) return;
                 _itemsSource = value;
-                Initialize();
+                if (value is not null && isActiveAndEnabled) Initialize();
             }
         }
 
@@ -86,15 +111,64 @@ namespace Aspid.MVVM.StarterKit
             base.OnEnable();
             if (_itemsSource is null) return;
 
-            StopInitializing();
-            _initializing = StartCoroutine(InitializeAsync());
+            Initialize();
         }
 
         protected override void OnDisable()
         {
-            StopInitializing();
-            onValueChanged.RemoveListener(OnScrollValueChanged);
-            base.OnDisable();
+            _operationVersion++;
+            try
+            {
+                StopTracking();
+            }
+            finally
+            {
+                base.OnDisable();
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            _destroyed = true;
+            _operationVersion++;
+            _itemsSource = null;
+            var failures = new CleanupExceptions();
+
+            try
+            {
+                StopTracking();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            var views = _views;
+            _views = null;
+            if (views is not null)
+            {
+                foreach (var element in views)
+                {
+                    try
+                    {
+                        element.Destroy();
+                    }
+                    catch (Exception exception)
+                    {
+                        failures.Add(exception);
+                    }
+                }
+            }
+
+            try
+            {
+                base.OnDestroy();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+            failures.ThrowIfAny();
         }
 
         /// <summary>
@@ -150,7 +224,10 @@ namespace Aspid.MVVM.StarterKit
         protected virtual void OnMove(IViewModel item, int oldStartingIndex, int newStartingIndex)
         {
             if (_views is null) return;
-            if (IsVisible(oldStartingIndex) || IsVisible(newStartingIndex)) Refresh();
+            var first = Math.Min(oldStartingIndex, newStartingIndex);
+            var last = Math.Max(oldStartingIndex, newStartingIndex);
+            if (last >= _previousTopIndex && first < _previousTopIndex + _views.Length)
+                Refresh();
         }
 
         /// <summary>
@@ -161,89 +238,163 @@ namespace Aspid.MVVM.StarterKit
 
         private void Initialize()
         {
-            switch (_itemsSource)
+            if (_destroyed || _itemsSource is null || !isActiveAndEnabled) return;
+            StopTracking();
+            var version = ++_operationVersion;
+            _subscribedSource = _itemsSource;
+
+            switch (_subscribedSource)
             {
                 case IReadOnlyFilteredList<IViewModel> filteredList:
                     filteredList.CollectionChanged += OnCollectionChanged;
                     break;
-
                 case IReadOnlyObservableList<IViewModel> observableList:
                     observableList.CollectionChanged += OnCollectionChanged;
                     break;
             }
 
-            if (isActiveAndEnabled)
-                _initializing = StartCoroutine(InitializeAsync());
+            _initializing = StartCoroutine(InitializeAsync(version));
         }
 
-        private IEnumerator InitializeAsync()
+        private IEnumerator InitializeAsync(int version)
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
+            if (!IsCurrent(version)) yield break;
             _initializing = null;
 
-            if (ViewLength.Value <= 0f)
+            try
             {
-                Debug.LogError($"{name}: view prefab has zero size along the scroll direction", this);
-                yield break;
+                Canvas.ForceUpdateCanvases();
+                if (!IsCurrent(version)) yield break;
+                if (ViewLength.Value <= 0f)
+                    throw new InvalidOperationException("The view prefab must have a positive size along the scroll direction.");
+
+                _viewportLength = new Length(viewport, Direction);
+                var visibleCount = Mathf.CeilToInt(ViewportLength.Value / ViewLength.Value) + 2;
+                if (!EnsureViews(visibleCount, version)) yield break;
+
+                onValueChanged.AddListener(OnScrollValueChanged);
+                Refresh();
             }
-
-            var visibleCount = Mathf.CeilToInt(ViewportLength.Value / ViewLength.Value) + 2;
-            EnsureViews(visibleCount);
-
-            onValueChanged.RemoveListener(OnScrollValueChanged);
-            onValueChanged.AddListener(OnScrollValueChanged);
-            Refresh();
+            catch (Exception exception)
+            {
+                if (version == _operationVersion)
+                {
+                    Rollback.Run(
+                        exception,
+                        this,
+                        static list => list.ItemsSource = null,
+                        "VirtualizedList rollback");
+                }
+                throw;
+            }
         }
 
-        private void EnsureViews(int count)
+        private bool EnsureViews(int count, int version)
         {
-            if (_views is not null && _views.Length == count) return;
-
+            if (_views is not null && _views.Length == count) return IsCurrent(version);
+            var previous = _views ?? Array.Empty<Element>();
             var views = new Element[count];
-            var reused = 0;
+            var reused = Math.Min(previous.Length, count);
+            Array.Copy(previous, views, reused);
+            var created = reused;
+            var installed = false;
 
-            if (_views is not null)
+            try
             {
-                reused = Math.Min(_views.Length, count);
-                Array.Copy(_views, views, reused);
+                for (; created < count; created++)
+                {
+                    views[created] = new Element(Instantiate(_viewPrefab, ContentTransform), Direction);
+                    if (!IsCurrent(version))
+                    {
+                        created++;
+                        return false;
+                    }
+                }
 
-                for (var i = reused; i < _views.Length; i++)
-                    _views[i].View.DestroyViewAndGameObject();
+                _views = views;
+                installed = true;
+                var failures = new CleanupExceptions();
+                for (var i = reused; i < previous.Length; i++)
+                {
+                    try
+                    {
+                        previous[i].Destroy();
+                    }
+                    catch (Exception exception)
+                    {
+                        failures.Add(exception);
+                    }
+                }
+                failures.ThrowIfAny();
+                return IsCurrent(version);
             }
-
-            for (var i = reused; i < count; i++)
-                views[i] = new Element(Instantiate(_viewPrefab, ContentTransform), Direction);
-
-            _views = views;
+            finally
+            {
+                if (!installed)
+                {
+                    for (var i = reused; i < created; i++)
+                    {
+                        try
+                        {
+                            views[i].Destroy();
+                        }
+                        catch (Exception exception)
+                        {
+                            Debug.LogException(exception, this);
+                        }
+                    }
+                }
+            }
         }
 
-        private void Deinitialize()
+        private bool IsCurrent(int version) =>
+            version == _operationVersion && !_destroyed && isActiveAndEnabled && _itemsSource is not null;
+
+        private void StopTracking()
         {
-            if (_itemsSource is null) return;
-
             StopInitializing();
-
-            if (_views is not null)
-            {
-                foreach (var view in _views)
-                    view.Deinitialize();
-            }
-
             onValueChanged.RemoveListener(OnScrollValueChanged);
+            var source = _subscribedSource;
+            _subscribedSource = null;
 
-            switch (_itemsSource)
+            switch (source)
             {
                 case IReadOnlyFilteredList<IViewModel> filteredList:
                     filteredList.CollectionChanged -= OnCollectionChanged;
                     break;
-
                 case IReadOnlyObservableList<IViewModel> observableList:
                     observableList.CollectionChanged -= OnCollectionChanged;
                     break;
             }
+        }
 
-            _itemsSource = null;
-            OnReset();
+        private void DeinitializeViews()
+        {
+            _previousTopIndex = -1;
+            if (_views is null) return;
+            var failures = new CleanupExceptions();
+            foreach (var view in _views)
+            {
+                try
+                {
+                    view.Deinitialize();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+            }
+            failures.ThrowIfAny();
+        }
+
+        private void ClearContent()
+        {
+            if (!content) return;
+            var size = content.sizeDelta;
+            if (vertical) size.y = 0f;
+            else if (horizontal) size.x = 0f;
+            content.sizeDelta = size;
         }
 
         private void StopInitializing()
@@ -256,18 +407,22 @@ namespace Aspid.MVVM.StarterKit
 
         private void Refresh()
         {
-            if (_itemsSource is null || _views is null) return;
+            var version = _operationVersion;
+            if (!IsCurrent(version) || _views is null) return;
 
             ResizeContent();
             _previousTopIndex = GetTopIndex();
 
             for (var i = 0; i < _views.Length; i++)
-                RefreshElement(i, _previousTopIndex + i, true);
+            {
+                if (!IsCurrent(version)) return;
+                RefreshElement(i, _previousTopIndex + i, version, true);
+            }
         }
 
         private void RefreshIfVisibleOrResize(int index)
         {
-            if (_views is null) return;
+            if (!IsCurrent(_operationVersion) || _views is null) return;
 
             if (index - _previousTopIndex < _views.Length) Refresh();
             else ResizeContent();
@@ -281,6 +436,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnScrollValueChanged(Vector2 _)
         {
+            var version = _operationVersion;
+            if (!IsCurrent(version) || _views is null || _views.Length is 0) return;
             var topIndex = GetTopIndex();
             if (topIndex == _previousTopIndex) return;
 
@@ -289,45 +446,51 @@ namespace Aspid.MVVM.StarterKit
 
             switch (direction)
             {
-                case > 0: ShiftForward(topIndex); break;
-                case < 0: ShiftBackward(topIndex); break;
+                case > 0: ShiftForward(topIndex, version); break;
+                case < 0: ShiftBackward(topIndex, version); break;
             }
         }
 
-        private void ShiftForward(int topIndex)
+        private void ShiftForward(int topIndex, int version)
         {
             var firstView = _views[0];
 
             for (var i = 1; i < _views.Length; i++)
             {
                 _views[i - 1] = _views[i];
-                RefreshElement(i, topIndex + i - 1);
             }
 
             _views[^1] = firstView;
-            RefreshElement(_views.Length - 1, topIndex + _views.Length - 1);
+            for (var i = 0; i < _views.Length; i++)
+            {
+                if (!IsCurrent(version)) return;
+                RefreshElement(i, topIndex + i, version);
+            }
         }
 
-        private void ShiftBackward(int topIndex)
+        private void ShiftBackward(int topIndex, int version)
         {
             var lastView = _views[^1];
 
             for (var i = _views.Length - 1; i > 0; i--)
             {
                 _views[i] = _views[i - 1];
-                RefreshElement(i, topIndex + i);
             }
 
             _views[0] = lastView;
-            RefreshElement(0, topIndex);
+            for (var i = 0; i < _views.Length; i++)
+            {
+                if (!IsCurrent(version)) return;
+                RefreshElement(i, topIndex + i, version);
+            }
         }
 
-        private void RefreshElement(int elementIndex, int itemIndex, bool force = false)
+        private void RefreshElement(int elementIndex, int itemIndex, int version, bool force = false)
         {
             var hasItem = itemIndex >= 0 && itemIndex < _itemsSource.Count;
 
-            if (!hasItem) _views[elementIndex].Reinitialize(null, -1, true);
-            else _views[elementIndex].Reinitialize(_itemsSource[itemIndex], itemIndex, force);
+            if (!hasItem) _views[elementIndex].Reinitialize(null, -1, this, version, true);
+            else _views[elementIndex].Reinitialize(_itemsSource[itemIndex], itemIndex, this, version, force);
         }
 
         private void ResizeContent() =>
@@ -378,6 +541,9 @@ namespace Aspid.MVVM.StarterKit
             private readonly DirectionType _direction;
 
             private int _index;
+            private bool _isUpdating;
+            private bool _clearPending;
+            private bool _destroyPending;
 
             public Element(MonoView view, DirectionType direction)
             {
@@ -397,26 +563,80 @@ namespace Aspid.MVVM.StarterKit
                 };
             }
 
-            public void Reinitialize(IViewModel viewModel, int index, bool force = false)
+            public void Reinitialize(IViewModel viewModel, int index, VirtualizedList owner, int version, bool force)
             {
                 if (!force && _index == index) return;
-                _index = index;
-
-                if (index < 0)
+                Deinitialize();
+                if (!owner.IsCurrent(version)) return;
+                if (index < 0) return;
+                if (viewModel is null)
                 {
-                    Deinitialize();
+                    _index = index;
+                    View.transform.localPosition = GetPosition(index);
                     return;
                 }
 
-                View.Reinitialize(viewModel);
-                View.gameObject.SetActive(true);
+                _isUpdating = true;
+                try
+                {
+                    View.Initialize(viewModel);
+                }
+                catch (Exception exception)
+                {
+                    _isUpdating = false;
+                    Rollback.Run(exception, Deinitialize,
+                        $"{nameof(VirtualizedList)}: initialize View {View.GetType().FullName} at index {index}");
+                    throw;
+                }
+                finally
+                {
+                    _isUpdating = false;
+                }
+
+                if (_clearPending || !owner.IsCurrent(version))
+                    Deinitialize();
+
+                if (!owner.IsCurrent(version)) return;
+                _index = index;
                 View.transform.localPosition = GetPosition(index);
+                View.gameObject.SetActive(true);
             }
 
             public void Deinitialize()
             {
-                View.Deinitialize();
-                View.gameObject.SetActive(false);
+                _index = -1;
+                if (_isUpdating)
+                {
+                    _clearPending = true;
+                    return;
+                }
+                if (!View) return;
+
+                _isUpdating = true;
+                try
+                {
+                    View.Deinitialize();
+                }
+                finally
+                {
+                    _isUpdating = false;
+                    _clearPending = false;
+                    if (View) View.gameObject.SetActive(false);
+                    if (_destroyPending) Destroy();
+                }
+            }
+
+            public void Destroy()
+            {
+                if (_isUpdating)
+                {
+                    _clearPending = true;
+                    _destroyPending = true;
+                    return;
+                }
+
+                _destroyPending = false;
+                View.DestroyViewAndGameObject();
             }
 
             private Vector3 GetPosition(int index) =>

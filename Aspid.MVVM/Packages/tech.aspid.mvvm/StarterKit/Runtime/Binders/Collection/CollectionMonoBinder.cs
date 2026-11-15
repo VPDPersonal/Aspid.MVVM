@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
 using Aspid.Collections.Observable.Filtered;
@@ -24,27 +25,57 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(IReadOnlyCollection<T> collection)
         {
-            if (Collection is not null)
-                OnReset();
-
-            Unsubscribe();
-
+            DeinitializeCollection();
             Collection = collection;
-            if (Collection is null) return;
-            if (Collection.Count > 0) OnAdded(Collection);
+            if (collection is null) return;
 
-            switch (Collection)
+            try
             {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += Rebuild; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += Rebuild; break;
+                if (collection.Count > 0) OnAdded(collection);
+
+                switch (Collection)
+                {
+                    case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += Rebuild; break;
+                    case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += Rebuild; break;
+                }
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(exception, DeinitializeCollection, "CollectionMonoBinder rollback");
+                throw;
             }
         }
 
         /// <summary>
-        /// Unsubscribes from the bound collection.
+        /// Unsubscribes from the collection and clears its views.
         /// </summary>
         protected override void OnDetach() =>
-            Unsubscribe();
+            DeinitializeCollection();
+
+        private void DeinitializeCollection()
+        {
+            var failures = new CleanupExceptions();
+            try
+            {
+                Unsubscribe();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            Collection = null;
+            try
+            {
+                OnReset();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            failures.ThrowIfAny();
+        }
 
         /// <summary>
         /// Called with the whole collection on binding and after every change.

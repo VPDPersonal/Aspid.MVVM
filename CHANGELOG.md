@@ -243,6 +243,11 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Fixed
 
+- Collection rollback retains both the primary failure and any recovery failure, including their stacks. Failed factory release triggers emergency View destruction with factory/type/index diagnostics; failed views must not be retained for reuse.
+
+- Collection view binders release child bindings on detach, preserve inactive slots for null items, and finish cleanup after individual failures. Created views return to their original factory; failed prefab initialization is rolled back.
+- VirtualizedList clears null sources, pauses subscriptions while disabled, releases owned views on destruction, and stops stale refreshes after source changes from callbacks. Moves across the viewport update every affected slot on both axes.
+
 - View initializers reject cleanup and repeated initialization during initialization without losing the acquired views or the original ViewModel; rollback remains available. `MonoView` aggregates cleanup failures across all serialized binder groups.
 
 - `DestroyViewAndGameObject` also destroys ScriptableObject views, including when cleanup fails; single-instance rollback reuses this cleanup path.

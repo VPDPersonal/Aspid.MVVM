@@ -99,8 +99,23 @@ namespace Aspid.MVVM.StarterKit
         /// Deinitializes and deactivates the view, then returns it to the pool.
         /// </summary>
         /// <param name="view">The view to release.</param>
-        public override void Release(T view) =>
-            Pool.Release(view);
+        public override void Release(T view)
+        {
+            try
+            {
+                Pool.Release(view);
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(
+                    primary: exception,
+                    state: view,
+                    rollback: base.Release,
+                    context: "PrefabViewPool rollback");
+                
+                throw;
+            }
+        }
 
         /// <summary>
         /// Does nothing: the pool applies <see cref="PrefabViewFactory{T}.OnCreate"/> when a view is taken, not when it is instantiated.
@@ -135,15 +150,37 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnGet(T view)
         {
-            view.gameObject.SetActive(true);
-            base.OnCreate(_pendingViewModel, view);
+            var viewModel = _pendingViewModel;
             _pendingViewModel = null;
+            
+            try
+            {
+                base.OnCreate(viewModel, view);
+                view.gameObject.SetActive(true);
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(
+                    primary: exception,
+                    state: view, 
+                    rollback: Release,
+                    context: "PrefabViewPool rollback");
+                
+                throw;
+            }
         }
 
         private static void OnRelease(T view)
         {
-            view.Deinitialize();
-            view.gameObject.SetActive(false);
+            try
+            {
+                view.Deinitialize();
+            }
+            finally
+            {
+                if (view)
+                    view.gameObject.SetActive(false);
+            }
         }
 
         private void DestroyView(T view) =>

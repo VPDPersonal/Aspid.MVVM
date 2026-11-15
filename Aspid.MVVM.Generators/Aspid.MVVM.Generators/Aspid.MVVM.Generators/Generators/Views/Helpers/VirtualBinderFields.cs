@@ -50,7 +50,7 @@ public static class VirtualBinderFields
     /// Reads the open definition: a generic base View is generated from it, where a type parameter names no ViewModel,
     /// so the derived View still owns the fields for the type arguments it closes the base with.
     /// </remarks>
-    public static void CollectGeneratedIds(INamedTypeSymbol viewSymbol, TypeDeclarationSyntax declaration, ISet<string> ids)
+    public static void CollectGeneratedIds(INamedTypeSymbol viewSymbol, Compilation compilation, TypeDeclarationSyntax declaration, ISet<string> ids)
     {
         if (!IsAutoBinderFieldsEnabled(viewSymbol)) return;
         if (InheritsFromScriptableObject(viewSymbol)) return;
@@ -65,7 +65,7 @@ public static class VirtualBinderFields
 
             for (var type = viewModelType; type is not null; type = type.BaseType)
             {
-                foreach (var bindable in BindableMembersFactory.Create(type, declaration, out _))
+                foreach (var bindable in BindableMembersFactory.Create(type, compilation, declaration, out _))
                     ids.Add(bindable.Id.SourceValue);
             }
         }
@@ -77,7 +77,7 @@ public static class VirtualBinderFields
         HashSet<string> declared,
         Dictionary<string, Info> result)
     {
-        var bindableMembers = BindableMembersFactory.Create(viewModelType, data.Declaration, out _);
+        var bindableMembers = BindableMembersFactory.Create(viewModelType, data.Compilation, data.Declaration, out _);
         if (bindableMembers.Length == 0) return;
 
         var membersBySymbol = new Dictionary<ISymbol, List<IBindableMemberInfo>>(SymbolEqualityComparer.Default);
@@ -98,10 +98,16 @@ public static class VirtualBinderFields
         {
             var groupStart = GetAttributeStringArgument(symbol, Classes.HeaderGroupStartAttribute);
             var groupName = GetAttributeStringArgument(symbol, Classes.HeaderGroupAttribute);
-            var groupEnd = HasAttribute(symbol, Classes.HeaderGroupEndAttribute);
+            var groupEnd = HasAttribute(symbol, Classes.HeaderGroupEndAttribute.FullName);
 
-            if (groupStart is not null) activeGroup = groupStart;
-            else if (groupName is not null) activeGroup = groupName;
+            if (groupEnd) activeGroup = null;
+            else if (!string.IsNullOrWhiteSpace(groupStart)) activeGroup = groupStart;
+
+            var memberGroup = groupEnd
+                ? null
+                : !string.IsNullOrWhiteSpace(groupStart)
+                    ? groupStart
+                    : !string.IsNullOrWhiteSpace(groupName) ? groupName : activeGroup;
 
             if (membersBySymbol.TryGetValue(symbol, out var bindablesForSymbol))
             {
@@ -123,15 +129,12 @@ public static class VirtualBinderFields
                     if (bindableMember is not BindableCommandInfo)
                         info.Header ??= GetAttributeStringArgument(symbol, Classes.HeaderAttribute);
 
-                    if (activeGroup is not null)
-                        info.HeaderGroup ??= activeGroup;
+                    if (memberGroup is not null)
+                        info.HeaderGroup ??= memberGroup;
 
-                    if (groupEnd && !info.HeaderGroupEnd)
-                        info.HeaderGroupEnd = true;
                 }
             }
 
-            if (groupEnd) activeGroup = null;
         }
     }
 
@@ -204,6 +207,5 @@ public static class VirtualBinderFields
         
         public string? HeaderGroup { get; set; }
         
-        public bool HeaderGroupEnd { get; set; }
     }
 }

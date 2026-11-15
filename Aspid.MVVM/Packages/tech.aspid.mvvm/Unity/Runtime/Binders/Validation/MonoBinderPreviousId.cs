@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -11,17 +12,20 @@ namespace Aspid.MVVM.Validation
     public struct MonoBinderPreviousId
     {
         [Tooltip("The last non-empty ID.")]
-        [SerializeField] private string _id;
+        [SerializeField] private string? _id;
 
         /// <summary>
-        /// Gets the ID.
+        /// Creates a record of the supplied ID.
         /// </summary>
-        public string Id => _id;
-
-        /// <param name="id">The ID to keep.</param>
-        public MonoBinderPreviousId(string id)
+        /// <param name="id">The ID to keep; <see langword="null"/> for none.</param>
+        public MonoBinderPreviousId(string? id)
         {
             _id = id;
         }
+
+        /// <summary>
+        /// Gets the ID, or <see langword="null"/> when no ID has been recorded.
+        /// </summary>
+        public string? Id => _id;
     }
 }

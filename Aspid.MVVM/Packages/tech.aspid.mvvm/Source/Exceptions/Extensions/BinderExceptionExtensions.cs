@@ -1,3 +1,5 @@
+using UnityEngine;
+
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
@@ -5,13 +7,12 @@ namespace Aspid.MVVM
     {
         internal static string AddExceptionMessage(this IBinder binder, string message)
         {
-            if (binder is UnityEngine.Component component)
+            if (binder is Component component && component)
             {
-                var path = GetPath(component.transform) + $"/{component.GetType().Name}";
+                var path = GetPath(component.transform);
+                return $"{message}\nPath: {path.GetPathMessage()}";
 
-                return $"{message} GameObject Path: {path.GetPathMessage()}";
-
-                static string GetPath(UnityEngine.Transform current) => current.parent is null
+                static string GetPath(Transform current) => current.parent is null
                     ? current.name
                     : GetPath(current.parent) + "/" + current.name;
             }

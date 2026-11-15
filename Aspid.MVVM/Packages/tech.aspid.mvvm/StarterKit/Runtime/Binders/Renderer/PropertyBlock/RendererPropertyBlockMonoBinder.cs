@@ -46,7 +46,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
             _isUsable = !string.IsNullOrWhiteSpace(_propertyName);
 

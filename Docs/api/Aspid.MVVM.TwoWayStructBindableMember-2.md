@@ -117,7 +117,7 @@ The new value.
 
 ### Changed {#Aspid_MVVM_TwoWayStructBindableMember_2_Changed}
 
-Occurs when [`TwoWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Value) is set.
+Occurs when the member publishes a value.
 
 ```csharp
 public event Action<T>? Changed
@@ -126,4 +126,8 @@ public event Action<T>? Changed
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>?
+
+#### Remarks
+
+The reported value may equal the previous value.
 

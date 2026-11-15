@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
         private FilteredList<IViewModel> _filteredList;
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.ItemsSource = null;
             DisposeFilteredList();

@@ -63,18 +63,13 @@ namespace Aspid.MVVM
                 case FieldInfo fieldInfo:
                     Type =  fieldInfo.FieldType;
                     
-                    Mode = fieldInfo.GetCustomAttribute<BaseBindAttribute>() switch
-                    {
-                        OneWayBindAttribute => BindMode.OneWay,
-                        TwoWayBindAttribute => BindMode.TwoWay,
-                        OneTimeBindAttribute => BindMode.OneTime,
-                        OneWayToSourceBindAttribute => BindMode.OneWayToSource,
-                        _ => Mode
-                    };
+                    Mode = ResolveMode(fieldInfo);
                     break;
                 
                 case PropertyInfo propertyInfo:
-                    Mode = BindMode.OneWay;
+                    Mode = propertyInfo.IsDefined(typeof(BaseBindAttribute))
+                        ? ResolveMode(propertyInfo)
+                        : BindMode.OneWay;
                     Type =  propertyInfo.PropertyType;
                     break;
                 
@@ -115,10 +110,12 @@ namespace Aspid.MVVM
             
             switch (memberInfo)
             {
-                case FieldInfo fieldInfo when fieldInfo.IsDefined(typeof(BaseBindAttribute)): return true;
+                case FieldInfo fieldInfo when fieldInfo.IsDefined(typeof(BaseBindAttribute)):
+                    return ResolveMode(fieldInfo) is not BindMode.None;
                 case PropertyInfo propertyInfo:
                     {
-                        if (propertyInfo.IsDefined(typeof(BaseBindAttribute))) return true;
+                        if (propertyInfo.IsDefined(typeof(BaseBindAttribute)))
+                            return ResolveMode(propertyInfo) is not BindMode.None;
                         
                         return memberContainerType.GetMembers(bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                             .Where(member => member.IsDefined(typeof(BindAlsoAttribute)))
@@ -129,6 +126,43 @@ namespace Aspid.MVVM
                     }
                 case MethodInfo methodInfo: return methodInfo.IsDefined(typeof(RelayCommandAttribute));
                 default: return false;
+            }
+        }
+
+        private static BindMode ResolveMode(MemberInfo member)
+        {
+            var requested = member.GetCustomAttribute<BaseBindAttribute>() switch
+            {
+                BindAttribute bind => bind.Mode,
+                OneWayBindAttribute => BindMode.OneWay,
+                TwoWayBindAttribute => BindMode.TwoWay,
+                OneTimeBindAttribute => BindMode.OneTime,
+                OneWayToSourceBindAttribute => BindMode.OneWayToSource,
+                _ => BindMode.None
+            };
+
+            switch (member)
+            {
+                case FieldInfo field:
+                    {
+                        var mode = requested ?? (field.IsInitOnly || field.IsLiteral ? BindMode.OneTime : BindMode.TwoWay);
+                        
+                        return (field.IsInitOnly || field.IsLiteral) && mode is not BindMode.OneTime
+                            ? BindMode.None
+                            : mode;
+                    }
+                case PropertyInfo property:
+                    {
+                        var mode = requested ?? (property.GetMethod is null
+                            ? BindMode.OneWayToSource
+                            : property.SetMethod is null ? BindMode.OneWay : BindMode.TwoWay);
+
+                        if (property.GetMethod is null && mode is not BindMode.OneWayToSource) return BindMode.None;
+                        if (property.SetMethod is null && mode is not (BindMode.OneWay or BindMode.OneTime)) return BindMode.None;
+                        return mode;
+                    }
+                
+                default: return BindMode.None;
             }
         }
     }

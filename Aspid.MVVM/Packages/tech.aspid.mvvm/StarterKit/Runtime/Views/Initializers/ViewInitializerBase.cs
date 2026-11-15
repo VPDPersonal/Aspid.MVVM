@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
 using UnityEngine;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -32,6 +31,11 @@ namespace Aspid.MVVM.StarterKit
 #endif
 
         /// <summary>
+        /// Gets the ViewModel the views are initialized with.
+        /// </summary>
+        public abstract IViewModel ViewModel { get; }
+
+        /// <summary>
         /// Gets whether the views are currently initialized.
         /// </summary>
         public bool IsInitialized { get; protected set; }
@@ -51,14 +55,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Gets the ViewModel the views are initialized with.
-        /// </summary>
-        public abstract IViewModel ViewModel { get; }
-
-        /// <summary>
         /// Gets whether the views are disposed when this object is destroyed.
         /// </summary>
-        protected bool IsDisposeViewOnDestroy => _isDisposeViewOnDestroy;
+        protected bool IsDisposeViewOnDestroy =>
+            _isDisposeViewOnDestroy;
 
         /// <summary>
         /// Keeps the serialized view slots consistent with their resolve mode.
@@ -84,7 +84,9 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="viewModel">The ViewModel to bind.</param>
         protected void InitializeViews(IViewModel viewModel)
         {
-            if (_isInitializing) throw new InvalidOperationException($"{name}: views are being initialized");
+            if (_isInitializing)
+                throw new InvalidOperationException($"{name}: views are being initialized");
+
             _isInitializing = true;
             try
             {
@@ -107,31 +109,50 @@ namespace Aspid.MVVM.StarterKit
             }
             catch
             {
-                try { DeinitializeViews(); }
-                catch { /* Preserve the initialization failure. */ }
+                try
+                {
+                    DeinitializeViews();
+                }
+                catch
+                {
+                    /* Preserve the initialization failure. */
+                }
+
                 throw;
             }
-            finally { _isInitializing = false; }
+            finally
+            {
+                _isInitializing = false;
+            }
         }
 
         /// <summary>
         /// Deinitializes every acquired view, including a partially initialized view.
         /// </summary>
+        /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
         protected void DeinitializeViews() =>
             ReleaseViews(dispose: false);
 
         private void ReleaseViews(bool dispose)
         {
-            Exception failure = null;
-            var views = dispose ? _ownedViews : _initializedViews;
+            var failures = new CleanupExceptions();
+            var views = dispose
+                ? _ownedViews
+                : _initializedViews;
+
             foreach (var view in views)
             {
                 try
                 {
-                    if (dispose) view.DisposeView();
-                    else view.Deinitialize();
+                    if (dispose)
+                        view.DisposeView();
+                    else
+                        view.Deinitialize();
                 }
-                catch (Exception exception) { failure ??= exception; }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
             }
 
             _initializedViews.Clear();
@@ -139,8 +160,7 @@ namespace Aspid.MVVM.StarterKit
                 _ownedViews.Clear();
 
             IsInitialized = false;
-            if (failure is not null)
-                ExceptionDispatchInfo.Capture(failure).Throw();
+            failures.ThrowIfAny();
         }
 
         /// <summary>

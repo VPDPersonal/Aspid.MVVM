@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a base class for views in a Unity context derived from <see cref="ScriptableObject"/>.
+    /// <see cref="ScriptableObject"/> for views with generated binding lifecycle methods.
     /// </summary>
     [View]
     public abstract partial class ScriptableView : ScriptableObject { }

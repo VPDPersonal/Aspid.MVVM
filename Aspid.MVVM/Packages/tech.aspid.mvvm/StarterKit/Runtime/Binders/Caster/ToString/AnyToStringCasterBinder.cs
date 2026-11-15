@@ -21,9 +21,9 @@ namespace Aspid.MVVM.StarterKit
         private readonly IConverter<object?, string?> _converter;
 
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public AnyToStringCasterBinder(
             Action<string?> setValue,
             BindMode mode = BindMode.OneWay)
@@ -31,18 +31,18 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="setValue">The action invoked with the converted <see cref="string"/> value.</param>
         /// <param name="converter">The converter used to transform the incoming value to a <see cref="string"/>.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="setValue"/> or <paramref name="converter"/> is <see langword="null"/>.
         /// </exception>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public AnyToStringCasterBinder(
             Action<string?> setValue,
             IConverter<object?, string?> converter,
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         }

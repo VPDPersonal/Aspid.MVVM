@@ -23,21 +23,31 @@ namespace Aspid.MVVM
     /// <see cref="IBindableMember{T}"/> that pushes every value change to its binders, boxing it for an
     /// <see cref="IBinder{T}"/> of <typeparamref name="TBoxed"/>.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="BindMode.TwoWay"/> binder receives values without reporting changes back to the ViewModel.
+    /// </remarks>
     /// <typeparam name="T">The bound struct type.</typeparam>
     /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>, such as <see cref="ValueType"/> or <see cref="Enum"/>.</typeparam>
     public abstract class OneWayStructBindableMember<T, TBoxed> : IBindableMember<T>, IBinderRemover
         where T : struct, TBoxed
         where TBoxed : class
     {
-        /// <summary>
-        /// Occurs when <see cref="Value"/> is set.
-        /// </summary>
-        public event Action<T>? Changed;
-        
-        private event Action<TBoxed>? BoxedChanged;
-
         private T _value;
         
+        /// <inheritdoc/>
+        public event Action<T>? Changed;
+
+        private event Action<TBoxed>? BoxedChanged;
+
+        /// <summary>
+        /// Creates a member holding <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The initial value.</param>
+        protected OneWayStructBindableMember(T value)
+        {
+            _value = value;
+        }
+
         /// <summary>
         /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
         /// </summary>
@@ -56,24 +66,15 @@ namespace Aspid.MVVM
                 }
             }
         }
-        
+
         /// <summary>
         /// Gets the binding mode of the member; always <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
 
-        /// <summary>
-        /// Creates a member holding <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The initial value.</param>
-        protected OneWayStructBindableMember(T value)
-        {
-            _value = value;
-        }
-
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// The mode of <paramref name="binder"/> is not <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
@@ -86,34 +87,31 @@ namespace Aspid.MVVM
 #endif
             {
                 var mode = binder.Mode;
-                mode.ThrowExceptionIfNotOne();
+                mode.EnsureForward();
 
                 switch (binder)
                 {
                     case IBinder<T> specificBinder:
                         specificBinder.SetValue(_value);
+                        if (mode is BindMode.OneTime) return null;
 
-                        if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
-                        else return null;
-                        
+                        Changed += specificBinder.SetValue;
                         return this;
-                
+
                     case IBinder<TBoxed> structBinder:
                         structBinder.SetValue(_value);
-                    
-                        if (mode is BindMode.OneWay) BoxedChanged += structBinder.SetValue;
-                        else return null;
-                        
+                        if (mode is BindMode.OneTime) return null;
+
+                        BoxedChanged += structBinder.SetValue;
                         return this;
-                
+
                     case IAnyBinder anyBinder:
                         anyBinder.SetValue(_value);
+                        if (mode is BindMode.OneTime) return null;
 
-                        if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
-                        else return null;
-                        
+                        Changed += anyBinder.SetValue;
                         return this;
-                
+
                     default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
             }
@@ -132,19 +130,28 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IBinder<T> specificBinder: Changed -= specificBinder.SetValue; break;
-                    case IBinder<TBoxed> structBinder: BoxedChanged -= structBinder.SetValue; break;
-                    case IAnyBinder anyBinder: Changed -= anyBinder.SetValue; break;
+                    case IBinder<T> specificBinder: 
+                        Changed -= specificBinder.SetValue; 
+                        break;
+                    
+                    case IBinder<TBoxed> structBinder:
+                        BoxedChanged -= structBinder.SetValue; 
+                        break;
+                    
+                    case IAnyBinder anyBinder:
+                        Changed -= anyBinder.SetValue; 
+                        break;
+                    
                     default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
             }
         }
-        
+
         /// <summary>
         /// Sets <see cref="Value"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The new value.</param>
-        public void Invoke(T value) => 
+        public void Invoke(T value) =>
             Value = value;
     }
 }

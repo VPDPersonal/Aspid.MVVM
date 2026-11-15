@@ -52,7 +52,7 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateTwoWayBinder<int>(_ => { }, getValueOnBound: () => 3);
             var member = new TwoWayBindableMember<int>(0, received.Add);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(new[] { 3 }, received);
         }
@@ -64,8 +64,8 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateTwoWayBinder<int>(_ => { }, getValueOnUnbinding: () => 8);
             var member = new TwoWayBindableMember<int>(0, received.Add);
 
-            binder.Bind(member);
-            binder.Unbind();
+            binder.Bind(new BindContext(member, binder));
+            binder.Unbind(new UnbindContext(binder));
 
             Assert.AreEqual(new[] { 8 }, received);
         }
@@ -143,7 +143,7 @@ namespace Aspid.MVVM.Tests
             });
             var member = new TwoWayBindableMember<int>(0, received.Add);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreSame(target, receivedTarget);
             Assert.AreEqual(new[] { 6 }, received);

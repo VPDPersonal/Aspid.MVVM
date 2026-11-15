@@ -62,6 +62,16 @@ public BindAlsoAttribute(string propertyName)
 
 The name of the generated or declared property to notify.
 
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">propertyName</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">propertyName</code> is empty or whitespace.
+
 ## Properties
 
 ### PropertyName {#Aspid_MVVM_BindAlsoAttribute_PropertyName}

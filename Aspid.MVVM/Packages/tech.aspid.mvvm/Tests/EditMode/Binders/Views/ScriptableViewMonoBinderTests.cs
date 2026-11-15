@@ -59,10 +59,10 @@ namespace Aspid.MVVM.Tests
             var binder = AssignView(Spawn<StubScriptableViewMonoBinder>(), view);
             SetMode(binder, BindMode.OneWay);
 
-            binder.Bind(new OneWayBindableMember<IViewModel>(new StubViewModel()));
+            binder.Bind(new BindContext(new OneWayBindableMember<IViewModel>(new StubViewModel()), binder));
             Assert.IsNotNull(view.ViewModel, "The assigned view was not initialized on bind");
 
-            binder.Unbind();
+            binder.Unbind(new UnbindContext(binder));
 
             Assert.IsNull(view.ViewModel, "Unbind did not deinitialize the assigned view");
         }

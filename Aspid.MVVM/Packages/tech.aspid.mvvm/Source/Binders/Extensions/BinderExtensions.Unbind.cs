@@ -2,56 +2,159 @@
 #define ASPID_MVVM_PROFILER
 #endif
 
-using System.Diagnostics;
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    [SuppressMessage(category: "ReSharper", checkId: "NullableWarningSuppressionIsUsed")]
     public static partial class BinderExtensions
     {
-#if ASPID_MVVM_PROFILER
-        private static partial class Markers<T>
+        /// <summary>
+        /// Releases each binder whose owner matches the context.
+        /// </summary>
+        /// <remarks>
+        /// Skips <see langword="null"/> entries and finishes cleanup before reporting failures; a single failure retains its original stack trace.
+        /// </remarks>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to release; <see langword="null"/> to do nothing.</param>
+        /// <param name="context">The owner releasing the bindings.</param>
+        /// <exception cref="ArgumentException"><paramref name="context"/> is uninitialized.</exception>
+        /// <exception cref="AggregateException">Multiple cleanup or enumeration operations fail.</exception>
+        public static void Unbind<T>(
+            this T[]? binders,
+            in UnbindContext context)
             where T : IBinder
         {
-            public static readonly Unity.Profiling.ProfilerMarker UnbindSafelyMarker = new(name: $"UnbindSafely<{typeof(T)}>");
+            context.EnsureValid();
+            if (binders is null) return;
+            
+            var failures = new CleanupExceptions();
+            
+            foreach (var binder in binders)
+                UnbindInternal(binder, in context, ref failures);
+            
+            failures.ThrowIfAny();
         }
-#endif
-        
+
         /// <summary>
-        /// Unbinds <paramref name="binder"/>; does nothing when it is <see langword="null"/> or a destroyed Unity object.
+        /// Releases each binder whose owner matches the context.
         /// </summary>
+        /// <remarks>
+        /// Skips <see langword="null"/> entries and finishes cleanup before reporting failures; a single failure retains its original stack trace.
+        /// </remarks>
         /// <typeparam name="T">The binder type.</typeparam>
-        /// <param name="binder">The binder to unbind, or <see langword="null"/>.</param>
-        /// <param name="owner">Unused; matches the collection overloads.</param>
-        /// <param name="memberName">Unused; matches the collection overloads.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this T? binder, object? owner = null, string? memberName = null)
+        /// <param name="binders">The binders to release; <see langword="null"/> to do nothing.</param>
+        /// <param name="context">The owner releasing the bindings.</param>
+        /// <exception cref="ArgumentException"><paramref name="context"/> is uninitialized.</exception>
+        /// <exception cref="AggregateException">Multiple cleanup or enumeration operations fail.</exception>
+        public static void Unbind<T>(
+            this List<T>? binders,
+            in UnbindContext context)
+            where T : IBinder
+        {
+            context.EnsureValid();
+            if (binders is null) return;
+            
+            var failures = new CleanupExceptions();
+            
+            foreach (var binder in binders)
+                UnbindInternal(binder, in context, ref failures);
+            
+            failures.ThrowIfAny();
+        }
+
+        /// <summary>
+        /// Releases each binder whose owner matches the context.
+        /// </summary>
+        /// <remarks>Skips <see langword="null"/> entries and reports cleanup and enumeration failures after processing reachable entries.</remarks>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binders">The binders to release; <see langword="null"/> to do nothing.</param>
+        /// <param name="context">The owner releasing the bindings.</param>
+        /// <exception cref="ArgumentException"><paramref name="context"/> is uninitialized.</exception>
+        /// <exception cref="AggregateException">Multiple cleanup or enumeration operations fail.</exception>
+        public static void Unbind<T>(
+            this IEnumerable<T>? binders,
+            in UnbindContext context)
+            where T : IBinder
+        {
+            switch (binders)
+            {
+                case T[] array:
+                    array.Unbind(in context);
+                    return;
+                
+                case List<T> list:
+                    list.Unbind(in context);
+                    return;
+            }
+
+            context.EnsureValid();
+            if (binders is null) return;
+            
+            var failures = new CleanupExceptions();
+            
+            try
+            {
+                using var enumerator = binders.GetEnumerator();
+                
+                try
+                {
+                    while (enumerator.MoveNext())
+                        UnbindInternal(enumerator.Current, in context, ref failures);
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            failures.ThrowIfAny();
+        }
+
+        /// <summary>
+        /// Unbinds <paramref name="binder"/>.
+        /// </summary>
+        /// <remarks>Skips <see langword="null"/> or destroyed binders and logs binder exceptions.</remarks>
+        /// <typeparam name="T">The binder type.</typeparam>
+        /// <param name="binder">The binder to unbind; <see langword="null"/> to do nothing.</param>
+        /// <param name="context">The owner releasing the binding, also used for diagnostics.</param>
+        /// <param name="memberName">The binder field or property name; <see langword="null"/> for none.</param>
+        public static void UnbindSafely<T>(
+            this T? binder,
+            in UnbindContext context,
+            string? memberName = null)
             where T : IBinder
         {
 #if ASPID_MVVM_PROFILER
             using (Markers<T>.UnbindSafelyMarker.Auto())
 #endif
             {
-                if (IsMissing(binder)) return;
-                binder.Unbind();
+                UnbindSafelyInternal(binder, in context, memberName);
             }
         }
 
         /// <summary>
-        /// Unbinds each binder in <paramref name="binders"/>.
+        /// Unbinds each binder.
         /// </summary>
         /// <remarks>
-        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
-        /// <para>Logs an exception thrown by a binder and goes on to unbind the rest.</para>
+        /// <para>Skips <see langword="null"/> or destroyed entries, reporting them under <c>DEBUG</c>.</para>
+        /// <para>Logs binder exceptions and continues with the remaining entries.</para>
         /// </remarks>
         /// <typeparam name="T">The binder type.</typeparam>
-        /// <param name="binders">The binders to unbind, or <see langword="null"/>.</param>
-        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
-        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this T[]? binders, object? owner = null, string? memberName = null)
+        /// <param name="binders">The binders to unbind; <see langword="null"/> to do nothing.</param>
+        /// <param name="context">The owner releasing the bindings, also used for diagnostics.</param>
+        /// <param name="memberName">The binder field or property name; <see langword="null"/> for none.</param>
+        public static void UnbindSafely<T>(
+            this T[]? binders,
+            in UnbindContext context,
+            string? memberName = null)
             where T : IBinder
         {
 #if ASPID_MVVM_PROFILER
@@ -61,45 +164,15 @@ namespace Aspid.MVVM
                 if (binders is null) return;
 
                 for (var i = 0; i < binders.Length; i++)
-                {
-                    var binder = binders[i];
-                    
-                    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                    if (IsMissing(binder))
-                    {
-                        BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            binder.Unbind();
-                        }
-                        catch (System.Exception exception)
-                        {
-                            // One binder must not take the rest of the collection with it: on Bind that would leave
-                            // the View half-initialised, and on Unbind it would leave the remaining binders
-                            // subscribed to a ViewModel that is going away.
-                            ReportBinderFailure("UnbindSafely", i, owner, memberName, exception);
-                        }
-                    }
-                }
+                    UnbindSafelyInternal(binders[i], in context, memberName, i);
             }
         }
 
-        /// <summary>
-        /// Unbinds each binder in <paramref name="binders"/>.
-        /// </summary>
-        /// <remarks>
-        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
-        /// <para>Logs an exception thrown by a binder and goes on to unbind the rest.</para>
-        /// </remarks>
-        /// <typeparam name="T">The binder type.</typeparam>
-        /// <param name="binders">The binders to unbind, or <see langword="null"/>.</param>
-        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
-        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this List<T>? binders, object? owner = null, string? memberName = null)
+        /// <inheritdoc cref="UnbindSafely{T}(T[], in UnbindContext, string)"/>
+        public static void UnbindSafely<T>(
+            this List<T>? binders,
+            in UnbindContext context, 
+            string? memberName = null)
             where T : IBinder
         {
 #if ASPID_MVVM_PROFILER
@@ -109,44 +182,27 @@ namespace Aspid.MVVM
                 if (binders is null) return;
 
                 for (var i = 0; i < binders.Count; i++)
-                {
-                    var binder = binders[i];
-                    
-                    if (IsMissing(binder))
-                    {
-                        BuildUnbindSafelyBinderNullMessage(i, owner, memberName);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            binder.Unbind();
-                        }
-                        catch (System.Exception exception)
-                        {
-                            // One binder must not take the rest of the collection with it: on Bind that would leave
-                            // the View half-initialised, and on Unbind it would leave the remaining binders
-                            // subscribed to a ViewModel that is going away.
-                            ReportBinderFailure("UnbindSafely", i, owner, memberName, exception);
-                        }
-                    }
-                }
+                    UnbindSafelyInternal(binders[i], in context, memberName, i);
             }
         }
 
         /// <summary>
-        /// Unbinds each binder in <paramref name="binders"/>.
+        /// Unbinds each binder.
         /// </summary>
         /// <remarks>
-        /// <para>Skips a <see langword="null"/> or destroyed binder; under <c>DEBUG</c>, also logs an error.</para>
-        /// <para>Logs an exception thrown by a binder and goes on to unbind the rest.</para>
+        /// <para>Skips <see langword="null"/> or destroyed entries, reporting them under <c>DEBUG</c>.</para>
+        /// <para>Logs binder exceptions and continues with the remaining entries.</para>
+        /// <para>Enumeration and enumerator disposal failures propagate; a single failure retains its original stack trace.</para>
         /// </remarks>
         /// <typeparam name="T">The binder type.</typeparam>
-        /// <param name="binders">The binders to unbind, or <see langword="null"/>.</param>
-        /// <param name="owner">The View that holds <paramref name="binders"/>, named in log messages and used as their context when it is a Unity object; <see langword="null"/> for none.</param>
-        /// <param name="memberName">The name of the member that holds <paramref name="binders"/>, named in log messages; <see langword="null"/> for none.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void UnbindSafely<T>(this IEnumerable<T>? binders, object? owner = null, string? memberName = null)
+        /// <param name="binders">The binders to unbind; <see langword="null"/> to do nothing.</param>
+        /// <param name="context">The owner releasing the bindings, also used for diagnostics.</param>
+        /// <param name="memberName">The binder field or property name; <see langword="null"/> for none.</param>
+        /// <exception cref="AggregateException">Both enumeration and enumerator disposal fail.</exception>
+        public static void UnbindSafely<T>(
+            this IEnumerable<T>? binders,
+            in UnbindContext context,
+            string? memberName = null)
             where T : IBinder
         {
 #if ASPID_MVVM_PROFILER
@@ -155,38 +211,92 @@ namespace Aspid.MVVM
             {
                 if (binders is null) return;
 
-                var index = 0;
-                foreach (var binder in binders)
+                var failures = new CleanupExceptions();
+                try
                 {
-                    if (IsMissing(binder))
+                    using var enumerator = binders.GetEnumerator();
+
+                    try
                     {
-                        BuildUnbindSafelyBinderNullMessage(index, owner, memberName);
-                    }
-                    else
-                    {
-                        try
+                        var index = 0;
+                        while (enumerator.MoveNext())
                         {
-                            binder.Unbind();
-                        }
-                        catch (System.Exception exception)
-                        {
-                            // One binder must not take the rest of the collection with it: on Bind that would leave
-                            // the View half-initialised, and on Unbind it would leave the remaining binders
-                            // subscribed to a ViewModel that is going away.
-                            ReportBinderFailure("UnbindSafely", index, owner, memberName, exception);
+                            UnbindSafelyInternal(enumerator.Current, in context, memberName, index);
+                            index++;
                         }
                     }
-                    
-                    index++;
+                    catch (Exception exception)
+                    {
+                        failures.Add(exception);
+                    }
                 }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+
+                failures.ThrowIfAny();
             }
         }
-        
-        [Conditional(conditionString: "DEBUG")]
-        private static void BuildUnbindSafelyBinderNullMessage(int index, object? owner, string? memberName)
+
+        private static void UnbindInternal<T>(
+            T? binder,
+            in UnbindContext context,
+            ref CleanupExceptions failures)
+            where T : IBinder
         {
-            var message = BuildBinderNullMessage(operation: "UnbindSafely", index, owner, memberName);
-            UnityEngine.Debug.LogError(message, owner as UnityEngine.Object);
+            if (binder is null) return;
+
+            try
+            {
+                binder.Unbind(in context);
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
         }
+
+        private static void UnbindSafelyInternal<T>(
+            T? binder,
+            in UnbindContext context,
+            string? memberName,
+            int? index = null)
+            where T : IBinder
+        {
+            if (IsMissing(binder))
+            {
+                ReportMissingBinder(
+                    operation: "UnbindSafely",
+                    index: index,
+                    owner: context.Owner,
+                    memberName: memberName);
+                
+                return;
+            }
+
+            try
+            {
+                context.EnsureValid();
+                binder!.Unbind(in context);
+            }
+            catch (Exception exception)
+            {
+                ReportBinderFailure(
+                    operation: "UnbindSafely",
+                    index: index,
+                    owner: context.Owner,
+                    memberName: memberName,
+                    exception: exception);
+            }
+        }
+
+#if ASPID_MVVM_PROFILER
+        private static partial class Markers<T>
+            where T : IBinder
+        {
+            public static readonly Unity.Profiling.ProfilerMarker UnbindSafelyMarker = new(name: $"UnbindSafely<{typeof(T)}>");
+        }
+#endif
     }
 }

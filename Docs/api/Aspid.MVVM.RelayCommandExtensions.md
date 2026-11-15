@@ -24,6 +24,10 @@ public static class RelayCommandExtensions
 
 
 
+## Remarks
+
+Parameter-bound adapters forward notifications while listeners are attached and delegate execution to the source command.
+
 ## Methods
 
 ### CreateCommand\(Action, Func\<bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommand_System_Action_System_Func_System_Boolean__}
@@ -570,29 +574,29 @@ The third command parameter type.
 
 The fourth command parameter type.
 
-### CreateCommandWithoutParameters\<T\>\(IRelayCommand\<T\>, T\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__1_Aspid_MVVM_IRelayCommand___0____0_}
+### CreateCommandWithoutParameters\<T\>\(IRelayCommand\<T\>, T?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__1_Aspid_MVVM_IRelayCommand___0____0_}
 
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param</code>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParameters<T>(this IRelayCommand<T> command, T param)
+public static IRelayCommand CreateCommandWithoutParameters<T>(this IRelayCommand<T> command, T? param)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-1.md)\<T\>
 
-The command to wrap.
+The command to bind.
 
-`param` T
+`param` T?
 
-The parameter passed to <code class="paramref">command</code>.
+The bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command.
+The parameterless adapter.
 
 #### Type Parameters
 
@@ -600,37 +604,39 @@ The parameterless command.
 
 The command parameter type.
 
-#### Remarks
+#### Exceptions
 
-The new command does not forward [`IRelayCommand<T>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-1.md#Aspid_MVVM_IRelayCommand_1_CanExecuteChanged) of <code class="paramref">command</code>.
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-### CreateCommandWithoutParameters\<T1, T2\>\(IRelayCommand\<T1, T2\>, T1, T2\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__2_Aspid_MVVM_IRelayCommand___0___1____0___1_}
+<code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code> and <code class="paramref">param2</code>.
+### CreateCommandWithoutParameters\<T1, T2\>\(IRelayCommand\<T1, T2\>, T1?, T2?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__2_Aspid_MVVM_IRelayCommand___0___1____0___1_}
+
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParameters<T1, T2>(this IRelayCommand<T1, T2> command, T1 param1, T2 param2)
+public static IRelayCommand CreateCommandWithoutParameters<T1, T2>(this IRelayCommand<T1, T2> command, T1? param1, T2? param2)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-2.md)\<T1, T2\>
 
-The command to wrap.
+The command to bind.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command.
+The parameterless adapter.
 
 #### Type Parameters
 
@@ -642,41 +648,43 @@ The first command parameter type.
 
 The second command parameter type.
 
-#### Remarks
+#### Exceptions
 
-The new command does not forward [`IRelayCommand<T1, T2>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-2.md#Aspid_MVVM_IRelayCommand_2_CanExecuteChanged) of <code class="paramref">command</code>.
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-### CreateCommandWithoutParameters\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>, T1, T2, T3\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_}
+<code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code>, <code class="paramref">param2</code> and <code class="paramref">param3</code>.
+### CreateCommandWithoutParameters\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>, T1?, T2?, T3?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_}
+
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParameters<T1, T2, T3>(this IRelayCommand<T1, T2, T3> command, T1 param1, T2 param2, T3 param3)
+public static IRelayCommand CreateCommandWithoutParameters<T1, T2, T3>(this IRelayCommand<T1, T2, T3> command, T1? param1, T2? param2, T3? param3)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-3.md)\<T1, T2, T3\>
 
-The command to wrap.
+The command to bind.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
-`param3` T3
+`param3` T3?
 
-The third parameter passed to <code class="paramref">command</code>.
+The third bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command.
+The parameterless adapter.
 
 #### Type Parameters
 
@@ -692,45 +700,47 @@ The second command parameter type.
 
 The third command parameter type.
 
-#### Remarks
+#### Exceptions
 
-The new command does not forward [`IRelayCommand<T1, T2, T3>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-3.md#Aspid_MVVM_IRelayCommand_3_CanExecuteChanged) of <code class="paramref">command</code>.
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-### CreateCommandWithoutParameters\<T1, T2, T3, T4\>\(IRelayCommand\<T1, T2, T3, T4\>, T1, T2, T3, T4\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__4_Aspid_MVVM_IRelayCommand___0___1___2___3____0___1___2___3_}
+<code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code>, <code class="paramref">param2</code>, <code class="paramref">param3</code> and <code class="paramref">param4</code>.
+### CreateCommandWithoutParameters\<T1, T2, T3, T4\>\(IRelayCommand\<T1, T2, T3, T4\>, T1?, T2?, T3?, T4?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__4_Aspid_MVVM_IRelayCommand___0___1___2___3____0___1___2___3_}
+
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParameters<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4> command, T1 param1, T2 param2, T3 param3, T4 param4)
+public static IRelayCommand CreateCommandWithoutParameters<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4> command, T1? param1, T2? param2, T3? param3, T4? param4)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-4.md)\<T1, T2, T3, T4\>
 
-The command to wrap.
+The command to bind.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
-`param3` T3
+`param3` T3?
 
-The third parameter passed to <code class="paramref">command</code>.
+The third bound argument.
 
-`param4` T4
+`param4` T4?
 
-The fourth parameter passed to <code class="paramref">command</code>.
+The fourth bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command.
+The parameterless adapter.
 
 #### Type Parameters
 
@@ -750,34 +760,35 @@ The third command parameter type.
 
 The fourth command parameter type.
 
-#### Remarks
+#### Exceptions
 
-The new command does not forward [`IRelayCommand<T1, T2, T3, T4>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-4.md#Aspid_MVVM_IRelayCommand_4_CanExecuteChanged) of <code class="paramref">command</code>.
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-### CreateCommandWithoutParametersOrEmpty\<T\>\(IRelayCommand\<T\>?, T\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__1_Aspid_MVVM_IRelayCommand___0____0_}
+<code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param</code>, or returns
-[`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+### CreateCommandWithoutParametersOrEmpty\<T\>\(IRelayCommand\<T\>?, T?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__1_Aspid_MVVM_IRelayCommand___0____0_}
+
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T>(this IRelayCommand<T>? command, T param)
+public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T>(this IRelayCommand<T>? command, T? param)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-1.md)\<T\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param` T
+`param` T?
 
-The parameter passed to <code class="paramref">command</code>.
+The bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -785,38 +796,33 @@ The parameterless command; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Asp
 
 The command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmpty\<T1, T2\>\(IRelayCommand\<T1, T2\>?, T1?, T2?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__2_Aspid_MVVM_IRelayCommand___0___1____0___1_}
 
-The new command does not forward [`IRelayCommand<T>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-1.md#Aspid_MVVM_IRelayCommand_1_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmpty\<T1, T2\>\(IRelayCommand\<T1, T2\>?, T1, T2\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__2_Aspid_MVVM_IRelayCommand___0___1____0___1_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code> and <code class="paramref">param2</code>, or returns
-[`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2>(this IRelayCommand<T1, T2>? command, T1 param1, T2 param2)
+public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2>(this IRelayCommand<T1, T2>? command, T1? param1, T2? param2)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-2.md)\<T1, T2\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -828,42 +834,37 @@ The first command parameter type.
 
 The second command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmpty\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>?, T1?, T2?, T3?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_}
 
-The new command does not forward [`IRelayCommand<T1, T2>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-2.md#Aspid_MVVM_IRelayCommand_2_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmpty\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>?, T1, T2, T3\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code>, <code class="paramref">param2</code> and <code class="paramref">param3</code>, or returns
-[`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2, T3>(this IRelayCommand<T1, T2, T3>? command, T1 param1, T2 param2, T3 param3)
+public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2, T3>(this IRelayCommand<T1, T2, T3>? command, T1? param1, T2? param2, T3? param3)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-3.md)\<T1, T2, T3\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
-`param3` T3
+`param3` T3?
 
-The third parameter passed to <code class="paramref">command</code>.
+The third bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -879,46 +880,41 @@ The second command parameter type.
 
 The third command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmpty\<T1, T2, T3, T4\>\(IRelayCommand\<T1, T2, T3, T4\>?, T1?, T2?, T3?, T4?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__4_Aspid_MVVM_IRelayCommand___0___1___2___3____0___1___2___3_}
 
-The new command does not forward [`IRelayCommand<T1, T2, T3>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-3.md#Aspid_MVVM_IRelayCommand_3_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmpty\<T1, T2, T3, T4\>\(IRelayCommand\<T1, T2, T3, T4\>?, T1, T2, T3, T4\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__4_Aspid_MVVM_IRelayCommand___0___1___2___3____0___1___2___3_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code>, <code class="paramref">param2</code>, <code class="paramref">param3</code> and <code class="paramref">param4</code>, or returns
-[`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4>? command, T1 param1, T2 param2, T3 param3, T4 param4)
+public static IRelayCommand CreateCommandWithoutParametersOrEmpty<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4>? command, T1? param1, T2? param2, T3? param3, T4? param4)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-4.md)\<T1, T2, T3, T4\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
-`param3` T3
+`param3` T3?
 
-The third parameter passed to <code class="paramref">command</code>.
+The third bound argument.
 
-`param4` T4
+`param4` T4?
 
-The fourth parameter passed to <code class="paramref">command</code>.
+The fourth bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -938,34 +934,29 @@ The third command parameter type.
 
 The fourth command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmptyExecution\<T\>\(IRelayCommand\<T\>?, T?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0____0_}
 
-The new command does not forward [`IRelayCommand<T1, T2, T3, T4>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-4.md#Aspid_MVVM_IRelayCommand_4_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmptyExecution\<T\>\(IRelayCommand\<T\>?, T\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0____0_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param</code>, or returns
-[`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T>(this IRelayCommand<T>? command, T param)
+public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T>(this IRelayCommand<T>? command, T? param)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-1.md)\<T\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param` T
+`param` T?
 
-The parameter passed to <code class="paramref">command</code>.
+The bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -973,38 +964,33 @@ The parameterless command; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayComma
 
 The command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmptyExecution\<T1, T2\>\(IRelayCommand\<T1, T2\>?, T1?, T2?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__2_Aspid_MVVM_IRelayCommand___0___1____0___1_}
 
-The new command does not forward [`IRelayCommand<T>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-1.md#Aspid_MVVM_IRelayCommand_1_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmptyExecution\<T1, T2\>\(IRelayCommand\<T1, T2\>?, T1, T2\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__2_Aspid_MVVM_IRelayCommand___0___1____0___1_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code> and <code class="paramref">param2</code>, or returns
-[`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2>(this IRelayCommand<T1, T2>? command, T1 param1, T2 param2)
+public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2>(this IRelayCommand<T1, T2>? command, T1? param1, T2? param2)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-2.md)\<T1, T2\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1016,42 +1002,37 @@ The first command parameter type.
 
 The second command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmptyExecution\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>?, T1?, T2?, T3?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_}
 
-The new command does not forward [`IRelayCommand<T1, T2>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-2.md#Aspid_MVVM_IRelayCommand_2_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmptyExecution\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>?, T1, T2, T3\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code>, <code class="paramref">param2</code> and <code class="paramref">param3</code>, or returns
-[`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2, T3>(this IRelayCommand<T1, T2, T3>? command, T1 param1, T2 param2, T3 param3)
+public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2, T3>(this IRelayCommand<T1, T2, T3>? command, T1? param1, T2? param2, T3? param3)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-3.md)\<T1, T2, T3\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
-`param3` T3
+`param3` T3?
 
-The third parameter passed to <code class="paramref">command</code>.
+The third bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1067,46 +1048,41 @@ The second command parameter type.
 
 The third command parameter type.
 
-#### Remarks
+### CreateCommandWithoutParametersOrEmptyExecution\<T1, T2, T3, T4\>\(IRelayCommand\<T1, T2, T3, T4\>?, T1?, T2?, T3?, T4?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__4_Aspid_MVVM_IRelayCommand___0___1___2___3____0___1___2___3_}
 
-The new command does not forward [`IRelayCommand<T1, T2, T3>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-3.md#Aspid_MVVM_IRelayCommand_3_CanExecuteChanged) of <code class="paramref">command</code>.
-
-### CreateCommandWithoutParametersOrEmptyExecution\<T1, T2, T3, T4\>\(IRelayCommand\<T1, T2, T3, T4\>?, T1, T2, T3, T4\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__4_Aspid_MVVM_IRelayCommand___0___1___2___3____0___1___2___3_}
-
-Creates an [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs <code class="paramref">command</code> with <code class="paramref">param1</code>, <code class="paramref">param2</code>, <code class="paramref">param3</code> and <code class="paramref">param4</code>, or returns
-[`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a parameterless command bound to the supplied arguments.
 
 ```csharp
-public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4>? command, T1 param1, T2 param2, T3 param3, T4 param4)
+public static IRelayCommand CreateCommandWithoutParametersOrEmptyExecution<T1, T2, T3, T4>(this IRelayCommand<T1, T2, T3, T4>? command, T1? param1, T2? param2, T3? param3, T4? param4)
 ```
 
 #### Parameters
 
 `command` [IRelayCommand](Aspid.MVVM.IRelayCommand-4.md)\<T1, T2, T3, T4\>?
 
-The command to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The command to bind; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the fallback.
 
-`param1` T1
+`param1` T1?
 
-The first parameter passed to <code class="paramref">command</code>.
+The first bound argument.
 
-`param2` T2
+`param2` T2?
 
-The second parameter passed to <code class="paramref">command</code>.
+The second bound argument.
 
-`param3` T3
+`param3` T3?
 
-The third parameter passed to <code class="paramref">command</code>.
+The third bound argument.
 
-`param4` T4
+`param4` T4?
 
-The fourth parameter passed to <code class="paramref">command</code>.
+The fourth bound argument.
 
 #### Returns
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-The parameterless command; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when <code class="paramref">command</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1125,10 +1101,6 @@ The third command parameter type.
 `T4` 
 
 The fourth command parameter type.
-
-#### Remarks
-
-The new command does not forward [`IRelayCommand<T1, T2, T3, T4>.CanExecuteChanged`](Aspid.MVVM.IRelayCommand-4.md#Aspid_MVVM_IRelayCommand_4_CanExecuteChanged) of <code class="paramref">command</code>.
 
 ### GetSelfOrEmpty\(IRelayCommand?\) {#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty_Aspid_MVVM_IRelayCommand_}
 

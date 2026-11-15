@@ -18,6 +18,10 @@ public readonly ref struct FindBindableMemberParameters
 ```
 
 
+## Remarks
+
+The default instance is invalid. Built-in ViewModels validate the query before lookup.
+
 ## Constructors
 
 ### FindBindableMemberParameters\(string\) {#Aspid_MVVM_FindBindableMemberParameters__ctor_System_String_}
@@ -34,6 +38,16 @@ public FindBindableMemberParameters(string id)
 
 The identifier of the bindable member.
 
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">id</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">id</code> is empty or whitespace.
+
 ## Fields
 
 ### Id {#Aspid_MVVM_FindBindableMemberParameters_Id}
@@ -47,4 +61,24 @@ public readonly string Id
 #### Field Value
 
  [string](https://learn.microsoft.com/dotnet/api/system.string)
+
+## Methods
+
+### EnsureValid\(\) {#Aspid_MVVM_FindBindableMemberParameters_EnsureValid}
+
+Ensures the query has a non-empty identifier.
+
+```csharp
+public void EnsureValid()
+```
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+The identifier is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, including a default query.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+The identifier is empty or whitespace.
 

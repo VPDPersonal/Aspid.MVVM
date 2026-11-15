@@ -14,7 +14,8 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 public static class BindableMembersFactory
 {
     public static ImmutableArray<IBindableMemberInfo> Create(
-        ITypeSymbol symbol, 
+        ITypeSymbol symbol,
+        Compilation compilation,
         TypeDeclarationSyntax declaration,
         out PropertyNotificationData propertyNotificationData)
     {
@@ -25,16 +26,8 @@ public static class BindableMembersFactory
         var bindableBindAlso = BindableBindAlsoFactory.Create(members.All);
         var bindableProperties = BindablePropertyFactory.Create(declaration, members.Properties, propertyNotificationData);
         
-        var generatedProperties = bindableFields
-            .Where(field => field.Type.ToString() == "bool")
-            .Select(field => field.Name)
-            .Concat(bindableProperties
-                .Where(property => property.Type.ToString() == "bool")
-                .Select(property => property.Name))
-            .ToImmutableArray();
-        
-        var bindableCommands = BindableCommandFactory.Create(members.Methods, members.Properties, generatedProperties);
-        
+        var bindableCommands = BindableCommandFactory.Create(members.Methods, compilation);
+
         var filteredBindableBindAlso = bindableBindAlso.Where(b => !b.HasBindAttribute).ToList();
         var bindableMembers = new List<IBindableMemberInfo>(filteredBindableBindAlso.Count + bindableFields.Count + bindableProperties.Count + bindableCommands.Count);
         

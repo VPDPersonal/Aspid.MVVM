@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// When writes from the ViewModel raise <see cref="Toggle.onValueChanged"/>; user input always does.
         /// </param>
         /// <param name="mode">The binding mode.</param>
-        /// <exception cref="ArgumentException"><paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="mode"/> is <see cref="BindMode.None"/> or undefined.</exception>
         public ToggleIsOnBinder(
             Toggle target,
             NotifyMode notifyMode = NotifyMode.Never,
@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfNone();
+            mode.EnsureValid();
             _converter = converter;
             _notifyMode = notifyMode;
         }
@@ -76,18 +76,22 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        protected override void OnAttach()
+        {
+            if (!Mode.IncludesReverse()) return;
+            Target.onValueChanged.AddListener(OnValueChanged);
+        }
+
+        /// <inheritdoc/>
         protected override void OnBound()
         {
-            if (!Mode.IsTwo()) return;
-
-            Target.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.isOn);
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
                 Target.onValueChanged.RemoveListener(OnValueChanged);
         }
 

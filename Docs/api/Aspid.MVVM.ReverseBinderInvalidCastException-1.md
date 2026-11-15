@@ -39,13 +39,14 @@ The value type of the bindable member.
 
 ## Remarks
 
-The message names the binder type and, for a component, its GameObject path.
+The message names the binder type and, for a live component, its GameObject path.
 
 ## Methods
 
 ### Class\(IBinder\) {#Aspid_MVVM_ReverseBinderInvalidCastException_1_Class_Aspid_MVVM_IBinder_}
 
-Throws for a binder that implements neither [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) nor [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
+Creates an exception for a binder that implements neither [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md)
+nor [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 
 ```csharp
 public static ReverseBinderInvalidCastException<T> Class(IBinder binder)
@@ -61,17 +62,11 @@ The binder that failed the check.
 
  [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
 
-Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
-
-#### Exceptions
-
- [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
-
-Always.
+The exception to throw at the call site.
 
 ### Struct\<TBoxed\>\(IBinder\) {#Aspid_MVVM_ReverseBinderInvalidCastException_1_Struct__1_Aspid_MVVM_IBinder_}
 
-Throws for a binder that implements none of [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of
+Creates an exception for a binder that implements none of [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of
 <code class="typeparamref">TBoxed</code> and [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
 
 ```csharp
@@ -88,17 +83,11 @@ The binder that failed the check.
 
  [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
 
-Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
+The exception to throw at the call site.
 
 #### Type Parameters
 
 `TBoxed` 
 
 The boxed form of <code>T</code>.
-
-#### Exceptions
-
- [ReverseBinderInvalidCastException](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)\<T\>
-
-Always.
 

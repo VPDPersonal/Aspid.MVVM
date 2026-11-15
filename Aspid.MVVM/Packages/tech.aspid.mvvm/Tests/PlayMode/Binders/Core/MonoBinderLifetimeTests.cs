@@ -28,7 +28,7 @@ namespace Aspid.MVVM.Tests
             var (_, binder) = CreateTextBinder();
             var text = binder.GetComponent<TMP_Text>();
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             member.Value = "before";
             Assert.AreEqual("before", text.text, "The binder did not receive the value before being destroyed");
 
@@ -52,8 +52,8 @@ namespace Aspid.MVVM.Tests
             var (_, survivor) = CreateTextBinder();
             var survivorText = survivor.GetComponent<TMP_Text>();
 
-            doomed.Bind(member);
-            survivor.Bind(member);
+            doomed.Bind(new BindContext(member, doomed));
+            survivor.Bind(new BindContext(member, survivor));
 
             Destroy(doomedObject);
 
@@ -74,7 +74,7 @@ namespace Aspid.MVVM.Tests
             gameObject.AddComponent<Button>();
             var binder = SetMode(gameObject.AddComponent<ButtonCommandMonoBinder>(), BindMode.OneWay);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             member.Value = new RelayCommand(() => { });
 
             Assert.DoesNotThrow(() => Destroy(gameObject));

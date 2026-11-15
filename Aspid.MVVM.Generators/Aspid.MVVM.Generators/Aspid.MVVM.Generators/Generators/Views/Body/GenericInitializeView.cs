@@ -27,14 +27,18 @@ public static class GenericInitializeView
         {
             var code = new CodeWriter();
 
-            code.BeginClass([Namespaces.Aspid_MVVM], @namespace, declaration, null)
+            code.BeginClass(
+                    [Namespaces.Aspid_MVVM, new("AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions")],
+                    @namespace,
+                    declaration,
+                    null)
                 .AppendGenericViews(data, genericView)
                 .EndClass(@namespace);
-            
+
             context.AddSource(declaration.GetFileName(@namespace, genericView.Type.ToDisplayString()), code.GetSourceText());
         }
     }
-    
+
     private static CodeWriter AppendGenericViews(this CodeWriter code, in ViewDataSpan data, GenericViewData genericView)
     {
         code.AppendProfilerMarker(data, genericView.Type)
@@ -47,36 +51,62 @@ public static class GenericInitializeView
     private static CodeWriter AppendInitialize(this CodeWriter code, in ViewDataSpan data, GenericViewData genericView)
     {
         string modifier;
-        if (genericView.IsSelf) modifier = data.Symbol.IsSealed ? "private" : "protected virtual";
-        else modifier = "protected override";
-        
+        if (genericView.IsSelf)
+            modifier = data.Symbol.IsSealed ? "private" : "protected virtual";
+        else
+            modifier = "protected override";
+
         var typeName = genericView.Type.ToDisplayStringGlobal();
 
         if (genericView.IsSelf)
         {
             code.AppendMultiline(
                 $$"""
+                  /// <inheritdoc/>
+                  /// <exception cref="global::System.ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
+                  /// <exception cref="global::System.InvalidOperationException">The View is already initialized.</exception>
                   {{GeneratedCodeViewAttribute}}
                   public void Initialize({{typeName}} viewModel)
                   {
-                      if (viewModel is null) throw new {{ArgumentNullException}}(nameof(viewModel));
-                      if (ViewModel is not null) throw new {{InvalidOperationException}}("View is already initialized.");
-                      
+                      if (viewModel is null)
+                          throw new {{ArgumentNullException}}(nameof(viewModel));
+                      if (ViewModel is not null)
+                          throw new {{InvalidOperationException}}("View is already initialized.");
+
                       ViewModel = viewModel;
-                      try { InitializeInternal(viewModel); }
+                      __isInitializingView = true;
+                      try
+                      {
+                          InitializeInternal(viewModel);
+                      }
                       catch
                       {
-                          try { DeinitializeInternal(); }
-                          catch { /* Preserve the initialization failure. */ }
-                          ViewModel = null;
+                          __isDeinitializing = true;
+                          try
+                          {
+                              DeinitializeInternal();
+                          }
+                          catch
+                          {
+                              // Do not replace the initialization exception with a cleanup failure.
+                          }
+                          finally
+                          {
+                              ViewModel = null;
+                              __isDeinitializing = false;
+                          }
                           throw;
+                      }
+                      finally
+                      {
+                          __isInitializingView = false;
                       }
                   }
                   """);
-            
+
             code.AppendLine();
         }
-        
+
         code.AppendMultiline(
             $"""
             {GeneratedCodeViewAttribute}
@@ -98,10 +128,10 @@ public static class GenericInitializeView
             .AppendLine("try")
             .BeginBlock()
             .AppendLine();
-        
+
         code.AppendLine("OnInitializingInternal(viewModel);");
         code.AppendLineIf(data.Inheritor is not Inheritor.None, "base.InitializeInternal(viewModel);");
-        
+
         var isInstantiateBinders = data.MembersByType.PropertyBinders.Length + data.MembersByType.AsBinders.Length > 0;
         code.AppendLineIf(isInstantiateBinders, "InstantiateBinders();");
         code.AppendLine();
@@ -112,8 +142,8 @@ public static class GenericInitializeView
 
             for (var viewModelType = genericView.Type; viewModelType is not null; viewModelType = viewModelType.BaseType)
             {
-                foreach (var memberPair in  
-                         BindableMembersFactory.Create(viewModelType, data.Declaration, out _)
+                foreach (var memberPair in
+                         BindableMembersFactory.Create(viewModelType, data.Compilation, data.Declaration, out _)
                              .ToDictionary(bindable => bindable.Id.SourceValue, bindable => bindable))
                 {
                     bindableMembers.Add(memberPair.Key, memberPair.Value);
@@ -136,7 +166,9 @@ public static class GenericInitializeView
             foreach (var info in virtualFields.Values)
             {
                 if (bindableMembers.TryGetValue(info.Id.SourceValue, out var bindableMember))
-                    code.AppendLine($"__viewBindings.BindSafely({info.FieldName}, viewModel.{bindableMember.Bindable.PropertyName}, this, {info.Id.Value});");
+                    code.AppendLine(
+                        $"AspidBinderExtensions.BindSafely({info.FieldName}, " +
+                        $"new global::Aspid.MVVM.BindContext(viewModel.{bindableMember.Bindable.PropertyName}, this), {info.Id.Value});");
             }
         }
         else
@@ -155,13 +187,16 @@ public static class GenericInitializeView
                 }
             }
         }
-        
+
         code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")
             .EndBlock()
-            .AppendLine("finally { __isInitializing = false; }");
+            .AppendLine("finally")
+            .BeginBlock()
+            .AppendLine("__isInitializing = false;")
+            .EndBlock();
 
-        code.EndBlock()  
+        code.EndBlock()
             .EndBlock();
 
         return code;
@@ -170,7 +205,7 @@ public static class GenericInitializeView
     private static CodeWriter AppendProfilerMarker(this CodeWriter code, in ViewDataSpan data, ITypeSymbol viewModelType)
     {
         var viewModelTypeName = viewModelType.ToDisplayString();
-        
+
         return code.AppendMultiline(
             $"""
             #if {ASPID_MVVM_PROFILER}

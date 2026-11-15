@@ -1,3 +1,4 @@
+#nullable enable
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
@@ -12,10 +13,12 @@ public static class BindSafelyExtensions
     public static CodeWriter AppendBindSafely(this CodeWriter code, BinderMember member, string? bindableMemberName = null)
     {
         var parameters = $"new({member.Id})";
-        var name = member is CachedBinderMember cachedMember ? cachedMember.CachedName : member.Name;
+        var name = member is CachedBinderMember cachedMember
+            ? cachedMember.CachedName
+            : member.Name;
 
         return code.AppendLine(bindableMemberName is not null
-            ? $"__viewBindings.BindSafely({name}, viewModel.{bindableMemberName}, this, {member.Id});"
-            : $"__viewBindings.BindSafely({name}, viewModel.FindBindableMember({parameters}), this, {member.Id});");
+            ? $"AspidBinderExtensions.BindSafely({name}, new global::Aspid.MVVM.BindContext(viewModel.{bindableMemberName}, this), {member.Id});"
+            : $"AspidBinderExtensions.BindSafely({name}, viewModel.FindBindableMember({parameters}), this, {member.Id});");
     }
 }

@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfNotOne();
+            mode.EnsureForwardOnly();
 
             _snapshots = snapshots ?? throw new ArgumentNullException(nameof(snapshots));
             _transitionSeconds = transitionSeconds >= 0f

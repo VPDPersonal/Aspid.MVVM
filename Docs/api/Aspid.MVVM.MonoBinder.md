@@ -15,7 +15,7 @@ Abstract base [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBeh
 Derived classes implement [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) to define what is bound.
 
 ```csharp
-public abstract class MonoBinder : MonoBehaviour, IMonoBinderValidatable, IBinder, IRebindableBinder
+public abstract class MonoBinder : MonoBehaviour, IMonoBinderValidatable, IBinder
 ```
 
 #### Inheritance
@@ -37,11 +37,11 @@ MonoBehaviour ←
 [CasterMonoBinder\<TFrom, TTo\>](Aspid.MVVM.StarterKit.CasterMonoBinder-2.md), 
 [CollectionCountMonoBinder\<T\>](Aspid.MVVM.StarterKit.CollectionCountMonoBinder-1.md), 
 [CollectionMonoBinder\<T\>](Aspid.MVVM.StarterKit.CollectionMonoBinder-1.md), 
-[CommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md), 
+[CommandMonoBinder](Aspid.MVVM.StarterKit.CommandMonoBinder.md), 
 [CommandMonoBinder\<T1, T2, T3\>](Aspid.MVVM.StarterKit.CommandMonoBinder-3.md), 
 [CommandMonoBinder\<T1, T2\>](Aspid.MVVM.StarterKit.CommandMonoBinder-2.md), 
 [CommandMonoBinder\<T\>](Aspid.MVVM.StarterKit.CommandMonoBinder-1.md), 
-[CommandMonoBinder](Aspid.MVVM.StarterKit.CommandMonoBinder.md), 
+[CommandMonoBinder\<T1, T2, T3, T4\>](Aspid.MVVM.StarterKit.CommandMonoBinder-4.md), 
 [ComponentMonoBinder\<TComponent\>](Aspid.MVVM.ComponentMonoBinder-1.md), 
 [ConditionalMonoBinder\<TValue\>](Aspid.MVVM.StarterKit.ConditionalMonoBinder-1.md), 
 [DebugLogMonoBinder](Aspid.MVVM.StarterKit.DebugLogMonoBinder.md), 
@@ -75,14 +75,13 @@ MonoBehaviour ←
 #### Implements
 
 [IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md), 
-[IBinder](Aspid.MVVM.IBinder.md), 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md)
+[IBinder](Aspid.MVVM.IBinder.md)
 
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<MonoBinder\>\(MonoBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<MonoBinder\>\(MonoBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<MonoBinder\>\(MonoBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
+[BinderExtensions.BindSafely\<MonoBinder\>\(MonoBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_), 
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -90,7 +89,6 @@ MonoBehaviour ←
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -98,7 +96,7 @@ MonoBehaviour ←
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<MonoBinder\>\(MonoBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<MonoBinder\>\(MonoBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Properties
 
@@ -129,7 +127,7 @@ protected virtual BindMode DefaultMode { get; }
 
 ### IsBound {#Aspid_MVVM_MonoBinder_IsBound}
 
-Indicates whether the binder is currently bound to a ViewModel.
+Gets a value indicating whether binding is complete and cleanup has not started.
 
 ```csharp
 public bool IsBound { get; }
@@ -138,6 +136,10 @@ public bool IsBound { get; }
 #### Property Value
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+
+#### Remarks
+
+A [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) binding remains bound until [`IBinder.Unbind`](Aspid.MVVM.IBinder.md).
 
 ### Mode {#Aspid_MVVM_MonoBinder_Mode}
 
@@ -155,31 +157,71 @@ public BindMode Mode { get; set; }
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-The binder is bound or being bound.
+The binder is bound or a lifecycle operation is in progress.
 
  [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
 
 The value is not a supported binding mode.
 
-## Methods
+### Owner {#Aspid_MVVM_MonoBinder_Owner}
 
-### Bind\(IBinderAdder\) {#Aspid_MVVM_MonoBinder_Bind_Aspid_MVVM_IBinderAdder_}
-
-Attaches the binder to the bindable member behind <code class="paramref">binderAdder</code>.
+Gets the owner while this binder is being attached, bound or cleaned up; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> otherwise.
 
 ```csharp
-public void Bind(IBinderAdder binderAdder)
+protected object Owner { get; }
+```
+
+#### Property Value
+
+ [object](https://learn.microsoft.com/dotnet/api/system.object)
+
+## Methods
+
+### Bind\(in BindContext\) {#Aspid_MVVM_MonoBinder_Bind_Aspid_MVVM_BindContext__}
+
+Attaches the binder through <code class="paramref">context</code>, calling [`MonoBinder.OnBinding`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBinding) before and
+[`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound) after.
+
+```csharp
+public void Bind(in BindContext context)
 ```
 
 #### Parameters
 
-`binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
+`context` [BindContext](Aspid.MVVM.BindContext.md)
 
-The bindable member to attach to.
+The bindable member and the owner acquiring the binding.
+
+#### Remarks
+
+Does nothing when [`MonoBinder.CanBind`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_CanBind) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>. Installation failures roll back;
+exceptions from [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound) propagate without rolling back the completed binding.
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">context</code> is uninitialized.
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The binder is destroyed, already bound or a lifecycle operation is in progress.
+
+### OnAttach\(\) {#Aspid_MVVM_MonoBinder_OnAttach}
+
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+
+```csharp
+protected virtual void OnAttach()
+```
+
+#### Remarks
+
+An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
 
 ### OnBinding\(\) {#Aspid_MVVM_MonoBinder_OnBinding}
 
-Called before binding is established. Override to add pre-binding logic.
+Called before attachment and the first value. Override to prepare for that value.
 
 ```csharp
 protected virtual void OnBinding()
@@ -187,16 +229,19 @@ protected virtual void OnBinding()
 
 #### Remarks
 
-The ViewModel pushes its first value after this hook, so subscribe to the component in [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound),
-not here: a subscription taken here hears that first value as if the user had entered it.
+Subscribe to the component in [`MonoBinder.OnAttach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnAttach) so the first value is not reported back as user input.
 
 ### OnBound\(\) {#Aspid_MVVM_MonoBinder_OnBound}
 
-Called after binding is established and the first value is applied. Override to subscribe to the component.
+Called with the binding complete and [`MonoBinder.IsBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_IsBound) set. Override to notify or send an initial value.
 
 ```csharp
 protected virtual void OnBound()
 ```
+
+#### Remarks
+
+Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
 
 ### OnDestroy\(\) {#Aspid_MVVM_MonoBinder_OnDestroy}
 
@@ -210,22 +255,41 @@ protected virtual void OnDestroy()
 
 When overriding, always call <code>base.OnDestroy()</code>.
 
+### OnDetach\(\) {#Aspid_MVVM_MonoBinder_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
+
+```csharp
+protected virtual void OnDetach()
+```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
+
 ### OnUnbinding\(\) {#Aspid_MVVM_MonoBinder_OnUnbinding}
 
-Called before unbinding, while the binder is still attached to the ViewModel. Override to add pre-unbinding logic.
+Called when cleanup starts, while reported values still reach the ViewModel. Override to send a last value.
 
 ```csharp
 protected virtual void OnUnbinding()
 ```
 
+#### Remarks
+
+[`MonoBinder.IsBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_IsBound) is already <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>; the owner is retained until cleanup finishes.
+
 ### OnUnbound\(\) {#Aspid_MVVM_MonoBinder_OnUnbound}
 
-Called after unbinding. Override to release a subscription taken in [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound).
-Also called after a failed binding attempt to release partially acquired resources.
+Called after cleanup releases ownership. Override to notify that the binder is unbound.
 
 ```csharp
 protected virtual void OnUnbound()
 ```
+
+#### Remarks
+
+This hook may bind again; finish resource changes before invoking external code.
 
 ### Reset\(\) {#Aspid_MVVM_MonoBinder_Reset}
 
@@ -239,11 +303,36 @@ protected virtual void Reset()
 
 When overriding, always call <code>base.Reset()</code>.
 
-### Unbind\(\) {#Aspid_MVVM_MonoBinder_Unbind}
+### Unbind\(in UnbindContext\) {#Aspid_MVVM_MonoBinder_Unbind_Aspid_MVVM_UnbindContext__}
 
-Detaches the binder from its bindable member.
+Detaches the binder when <code class="paramref">context</code> identifies its owner, calling the cleanup hooks.
 
 ```csharp
-public void Unbind()
+public void Unbind(in UnbindContext context)
 ```
+
+#### Parameters
+
+`context` [UnbindContext](Aspid.MVVM.UnbindContext.md)
+
+The owner releasing the binding.
+
+#### Remarks
+
+Does nothing for a different owner or when cleanup is already in progress.
+A single cleanup failure is rethrown with its original stack trace after the remaining steps finish.
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">context</code> is uninitialized.
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The owner requests cleanup before attachment finishes.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Multiple cleanup operations fail.
 

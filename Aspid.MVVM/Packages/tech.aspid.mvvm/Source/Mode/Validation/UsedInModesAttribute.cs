@@ -33,8 +33,11 @@ namespace Aspid.MVVM
         /// Creates an attribute for a field used in <paramref name="modes"/>.
         /// </summary>
         /// <param name="modes">The binding modes the field is used in.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="modes"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">An element of <paramref name="modes"/> is <see cref="BindMode.None"/> or undefined.</exception>
         public UsedInModesAttribute(params BindMode[] modes)
         {
+            BindModeExtensions.ValidateModes(modes);
             Modes = modes;
         }
     }

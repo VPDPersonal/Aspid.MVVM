@@ -18,7 +18,7 @@ and reports user changes back as numbers.
 [BindModeOverride(new BindMode[] { }, IsAll = true)]
 [AddBinderContextMenu(typeof(Scrollbar), new string[] { "m_Value" })]
 [AddComponentMenu("Aspid/MVVM/Binders/UI/Scrollbar/Scrollbar Binder – Value")]
-public class ScrollbarValueMonoBinder : ComponentMonoBinder<Scrollbar>, IMonoBinderValidatable, IRebindableBinder, IFloatBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
+public class ScrollbarValueMonoBinder : ComponentMonoBinder<Scrollbar>, IMonoBinderValidatable, IFloatBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
 ```
 
 #### Inheritance
@@ -35,7 +35,6 @@ MonoBehaviour ←
 #### Implements
 
 [IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md), 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IFloatBinder](Aspid.MVVM.StarterKit.IFloatBinder.md), 
 [INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md), 
 [IBinder\<int\>](Aspid.MVVM.IBinder-1.md), 
@@ -58,8 +57,8 @@ MonoBehaviour ←
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<ScrollbarValueMonoBinder\>\(ScrollbarValueMonoBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<ScrollbarValueMonoBinder\>\(ScrollbarValueMonoBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<ScrollbarValueMonoBinder\>\(ScrollbarValueMonoBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
+[BinderExtensions.BindSafely\<ScrollbarValueMonoBinder\>\(ScrollbarValueMonoBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_), 
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -67,7 +66,6 @@ MonoBehaviour ←
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -75,13 +73,11 @@ MonoBehaviour ←
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<ScrollbarValueMonoBinder\>\(ScrollbarValueMonoBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<ScrollbarValueMonoBinder\>\(ScrollbarValueMonoBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Remarks
 
 The converted value is clamped to [0, 1]; the clamped value is reported back only when the clamp changed it.
-Writes raise [`onValueChanged`](https://docs.unity3d.com/ScriptReference/UI-Scrollbar-onValueChanged.html) for other listeners; only the binder's own echo is
-suppressed.
 
 ## Fields
 
@@ -119,21 +115,53 @@ protected void AddLog(string log)
 
 `log` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_ScrollbarValueMonoBinder_OnAttach}
+
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+
+```csharp
+protected override void OnAttach()
+```
+
+#### Remarks
+
+An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
+
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_ScrollbarValueMonoBinder_OnBound}
 
-Called after binding is established and the first value is applied. Override to subscribe to the component.
+Called with the binding complete and [`MonoBinder.IsBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_IsBound) set. Override to notify or send an initial value.
 
 ```csharp
 protected override void OnBound()
 ```
 
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_ScrollbarValueMonoBinder_OnUnbound}
+#### Remarks
 
-Called after unbinding. Override to release a subscription taken in [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound).
+Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
+
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_ScrollbarValueMonoBinder_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnDetach()
 ```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
+
+### Reset\(\) {#Aspid_MVVM_StarterKit_ScrollbarValueMonoBinder_Reset}
+
+Called by Unity when the component is added or reset in the Editor to set [`NotifyMode.Never`](Aspid.MVVM.StarterKit.NotifyMode.md).
+
+```csharp
+protected override void Reset()
+```
+
+#### Remarks
+
+Existing components keep [`NotifyMode.Always`](Aspid.MVVM.StarterKit.NotifyMode.md), the value of the field before it was serialized.
 
 ### SetValue\(float\) {#Aspid_MVVM_StarterKit_ScrollbarValueMonoBinder_SetValue_System_Single_}
 

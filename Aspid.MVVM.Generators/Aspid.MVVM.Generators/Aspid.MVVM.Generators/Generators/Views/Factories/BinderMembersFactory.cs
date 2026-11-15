@@ -33,7 +33,7 @@ public static class BinderMembersFactory
                 ids.Add(member.Id.SourceValue);
 
             CollectIgnoredIds(baseType, ids);
-            VirtualBinderFields.CollectGeneratedIds(baseType, declaration, ids);
+            VirtualBinderFields.CollectGeneratedIds(baseType, semanticModel.Compilation, declaration, ids);
         }
 
         return ids.ToImmutableArray();
@@ -52,8 +52,15 @@ public static class BinderMembersFactory
         }
     }
 
-    public static ImmutableArray<BinderMember> Create(INamedTypeSymbol symbolClass, SemanticModel semanticModel)
+    public static ImmutableArray<BinderMember> Create(INamedTypeSymbol symbolClass, SemanticModel semanticModel) =>
+        Create(symbolClass, semanticModel, out _);
+
+    public static ImmutableArray<BinderMember> Create(
+        INamedTypeSymbol symbolClass,
+        SemanticModel semanticModel,
+        out ImmutableArray<Diagnostic> diagnostics)
     {
+        var errors = ImmutableArray.CreateBuilder<Diagnostic>();
         var binderMembers = new List<BinderMember>();
         
         foreach (var member in symbolClass.GetMembers())
@@ -65,73 +72,11 @@ public static class BinderMembersFactory
 
             if (member.TryGetAnyAttributeInSelf(out var asBinderAttribute, Classes.AsBinderAttribute))
             {
-                if (asBinderAttribute!.ConstructorArguments[0].Value is not INamedTypeSymbol argumentType) continue;
-                
-                if (argumentType.IsAbstract) continue;
-                if (!argumentType.HasAnyInterfaceInSelfAndBases(Classes.IBinder)) continue;
-
-                var arguments = new List<string>();
-                
-                if (asBinderAttribute.ConstructorArguments.Length > 1)
-                {
-                    var nameOfIndexes = new HashSet<int>();
-                    var applicationSyntaxReference = asBinderAttribute.ApplicationSyntaxReference!;
-
-                    if (applicationSyntaxReference.SyntaxTree
-                            .GetRoot()
-                            .FindNode(applicationSyntaxReference.Span) is AttributeSyntax location)
-                    {
-                        var argumentSyntaxes = location.ArgumentList!.Arguments;
-                            
-                        for (var i = 1; i < argumentSyntaxes.Count; i++)
-                        {
-                            if (argumentSyntaxes[i].Expression is InvocationExpressionSyntax invocationExpression &&
-                                invocationExpression.Expression is IdentifierNameSyntax identifier &&
-                                identifier.Identifier.Text == "nameof")
-                            {
-                                nameOfIndexes.Add(i - 1);
-                            }
-                        }
-                    }
-
-                    var values = asBinderAttribute.ConstructorArguments[1].Values;
-                    
-                    for (var i = 0; i < values.Length; i++)
-                    {
-                        var value = values[i];
-
-                        if (nameOfIndexes.Contains(i))
-                        {
-                            arguments.Add(value.Value?.ToString() ?? "null");
-                            continue;
-                        }
-
-                        if (value.Kind == TypedConstantKind.Type)
-                        {
-                            arguments.Add($"typeof({value.Value})");
-                            continue;
-                        }
-
-                        if (value.Kind == TypedConstantKind.Enum)
-                        {
-                            arguments.Add($"({value.Type!.ToDisplayStringGlobal()}){value.Value}");
-                            continue;
-                        }
-                        
-                        switch (value.Value)
-                        {
-                            case null: arguments.Add("null"); break;
-                            case char: arguments.Add($"'{value.Value}'"); break;
-                            case float: arguments.Add(value.Value + "f"); break;
-                            case string: arguments.Add($"\"{value.Value}\""); break;
-                            case bool: arguments.Add(value.Value.ToString().ToLower()); break;
-                            
-                            default: arguments.Add(value.Value.ToString()); break;
-                        }
-                    }
-                }
-                
-                binderMembers.Add(new AsBinderMember(member, argumentType.ToDisplayStringGlobal(), arguments));
+                var binder = AsBinderFactory.Create(member, type, asBinderAttribute!, semanticModel, out var diagnostic);
+                if (binder is not null)
+                    binderMembers.Add(binder);
+                if (diagnostic is not null)
+                    errors.Add(diagnostic);
             }
             else if (type.HasAnyAttributeInSelf(Classes.ViewAttribute) || type.HasAnyInterfaceInSelfAndBases(Classes.IView))
             {
@@ -158,6 +103,7 @@ public static class BinderMembersFactory
             }
         }
 
+        diagnostics = errors.ToImmutable();
         return binderMembers.ToImmutableArray();
     }
     

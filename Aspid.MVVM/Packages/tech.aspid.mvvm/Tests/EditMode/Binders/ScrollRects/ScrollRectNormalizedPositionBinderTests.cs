@@ -50,7 +50,7 @@ namespace Aspid.MVVM.Tests
             var binder = new ScrollRectNormalizedPositionBinder(scrollRect, mode: BindMode.OneWayToSource);
 
             var received = default(Vector2);
-            binder.Bind(new OneWayToSourceStructBindableMember<Vector2>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<Vector2>(value => received = value), binder));
 
             Assert.AreEqual(scrollRect.normalizedPosition, received, "The ViewModel received the wrong position");
         }

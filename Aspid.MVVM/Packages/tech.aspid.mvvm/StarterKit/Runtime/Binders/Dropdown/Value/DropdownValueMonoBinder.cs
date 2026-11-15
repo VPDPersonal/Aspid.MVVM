@@ -51,20 +51,20 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
-            base.OnBound();
+            base.OnAttach();
 
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
                 CachedComponent.onValueChanged.AddListener(OnValueChanged);
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            base.OnUnbound();
+            base.OnDetach();
 
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
                 CachedComponent.onValueChanged.RemoveListener(OnValueChanged);
         }
 

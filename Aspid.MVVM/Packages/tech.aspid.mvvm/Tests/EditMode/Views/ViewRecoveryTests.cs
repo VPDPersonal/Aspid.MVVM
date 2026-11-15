@@ -1,14 +1,16 @@
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using Aspid.MVVM.StarterKit;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
 {
     internal sealed class ViewRecoveryTests : SceneFixture
     {
-        [TestCase("binder")]
         [TestCase("initializing")]
         [TestCase("initialized")]
         public void FailedGeneratedViewCanDeinitializeAndRetry(string stage)
@@ -16,7 +18,6 @@ namespace Aspid.MVVM.Tests
             var model = new RecoveryModel();
             var view = new RecoveryView();
             view.FailStage = stage;
-            view.Second.Fail = stage == "binder";
             Assert.Throws<InvalidOperationException>(() => view.Initialize(model));
             Assert.That(view.ViewModel, Is.Null);
             Assert.That(view.First.IsBound, Is.False);
@@ -54,8 +55,10 @@ namespace Aspid.MVVM.Tests
 
             void Initialize()
             {
-                if (typed) view.Initialize(model);
-                else ((IView)view).Initialize(model);
+                if (typed)
+                    view.Initialize(model);
+                else
+                    ((IView)view).Initialize(model);
             }
         }
 
@@ -76,8 +79,10 @@ namespace Aspid.MVVM.Tests
 
             void Initialize()
             {
-                if (typed) view.Initialize((IRecoveryModel)model);
-                else ((IView)view).Initialize(model);
+                if (typed)
+                    view.Initialize((IRecoveryModel)model);
+                else
+                    ((IView)view).Initialize(model);
             }
         }
 
@@ -97,8 +102,10 @@ namespace Aspid.MVVM.Tests
 
             void Initialize()
             {
-                if (typed) view.Initialize(model);
-                else ((IView)view).Initialize(model);
+                if (typed)
+                    view.Initialize(model);
+                else
+                    ((IView)view).Initialize(model);
             }
         }
 
@@ -117,21 +124,75 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void FailedAttemptAndSuccessfulDeinitializePreserveAnotherOwnersBinder()
+        public void BinderFailureDoesNotPreventTheGeneratedViewFromInitializing()
+        {
+            var model = new RecoveryModel();
+            var view = new RecoveryView();
+            view.Second.Fail = true;
+            ExpectBindingFailure();
+
+            Assert.DoesNotThrow(() => view.Initialize(model));
+            Assert.That(view.ViewModel, Is.SameAs(model));
+            Assert.That(view.First.IsBound, Is.True);
+            Assert.That(view.Second.IsBound, Is.False);
+            var calls = view.First.Calls;
+            model.Member.Value = 2;
+            Assert.That(view.First.Calls, Is.EqualTo(calls + 1));
+            view.Deinitialize();
+            calls = view.First.Calls;
+            model.Member.Value = 3;
+            Assert.That(view.First.Calls, Is.EqualTo(calls));
+            view.Second.Fail = false;
+            view.Initialize(model);
+            Assert.That(view.Second.IsBound, Is.True);
+            view.Deinitialize();
+        }
+
+        [Test]
+        public void IsolatedBindingFailuresPreserveAnotherOwnersBinder()
         {
             var model = new RecoveryModel();
             var external = new OneWayStructBindableMember<int>(9);
             var view = new RecoveryView();
-            view.First.Bind(external);
+            view.First.Bind(new BindContext(external, view.First));
             view.Second.Fail = true;
-            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, "Binder is already bound. Type: RecoveryBinder");
-            Assert.Throws<InvalidOperationException>(() => view.Initialize(model));
+            ExpectBindingFailure();
+            ExpectBindingFailure();
+            Assert.DoesNotThrow(() => view.Initialize(model));
             Assert.That(view.First.IsBound, Is.True);
             view.Deinitialize();
             var calls = view.First.Calls;
             external.Value = 10;
             Assert.That(view.First.Calls, Is.EqualTo(calls + 1));
-            view.First.Unbind();
+            view.First.Unbind(new UnbindContext(view.First));
+        }
+
+        [TestCase(false, BindMode.OneWay)]
+        [TestCase(true, BindMode.OneWay)]
+        [TestCase(false, BindMode.OneTime)]
+        [TestCase(true, BindMode.OneTime)]
+        public void FailedOnAttachDoesNotKeepOwnershipWhenTheBinderIsReused(bool collection, BindMode mode)
+        {
+            var failed = new RecoveryBinder(mode) { FailAttach = true };
+            var healthy = new RecoveryBinder();
+            var member = new OneWayStructBindableMember<int>(1);
+            IView view = collection
+                ? new FixedArrayBindingView { Value = new IBinder[] { failed, healthy } }
+                : new FixedScalarBindingView { Value = failed, Nested = healthy };
+            ExpectBindingFailure();
+            view.Initialize(new FixedBindingModel(member));
+            Assert.That(failed.IsBound, Is.False);
+            failed.FailAttach = false;
+            failed.Bind(new BindContext(new OneWayStructBindableMember<int>(2), failed));
+            view.Deinitialize();
+            Assert.That(healthy.IsBound, Is.False);
+            Assert.That(failed.IsBound, Is.True);
+            failed.Unbind(new UnbindContext(failed));
+        }
+
+        private static void ExpectBindingFailure()
+        {
+            LogAssert.Expect(LogType.Exception, new Regex(@"\[BindSafely\].*InvalidOperationException"));
         }
 
         [Test]
@@ -176,6 +237,27 @@ namespace Aspid.MVVM.Tests
 
         [TestCase(true)]
         [TestCase(false)]
+        public void InitializerReportsEveryViewCleanupFailureAndCanRetry(bool manual)
+        {
+            var first = new RecoveryChildView { FailDeinitialize = true };
+            var second = new RecoveryChildView { FailDeinitialize = true };
+            var healthy = new RecoveryChildView();
+            var initializer = CreateInitializer(manual, first, second, healthy);
+            var model = new RecoveryModel();
+            Initialize(initializer, model);
+
+            var aggregate = Assert.Throws<AggregateException>(() => Deinitialize(initializer));
+
+            Assert.That(aggregate.Flatten().InnerExceptions.Count, Is.EqualTo(2));
+            Assert.That(first.ViewModel ?? second.ViewModel ?? healthy.ViewModel, Is.Null);
+            Assert.That(initializer.IsInitialized, Is.False);
+            first.FailDeinitialize = second.FailDeinitialize = false;
+            Initialize(initializer, model);
+            Assert.DoesNotThrow(() => Deinitialize(initializer));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
         public void InitializerDoesNotReleaseAPreexistingView(bool manual)
         {
             var model = new RecoveryModel();
@@ -212,22 +294,29 @@ namespace Aspid.MVVM.Tests
             var initializer = manual
                 ? (ViewInitializerBase)Spawn().AddComponent<ViewInitializerManual>()
                 : Spawn().AddComponent<ViewInitializer>();
-            if (!manual) SetField(initializer, "_initializeStage", Enum.ToObject(
-                typeof(ViewInitializer).GetNestedType("InitializeStage", BindingFlags.NonPublic), 0));
+            if (!manual)
+            {
+                SetField(initializer, "_initializeStage", Enum.ToObject(
+                    typeof(ViewInitializer).GetNestedType("InitializeStage", BindingFlags.NonPublic), 0));
+            }
+
             var slots = new ViewInitializeComponent[views.Length];
+
             for (var i = 0; i < views.Length; i++)
             {
                 slots[i] = new ViewInitializeComponent();
                 SetField(slots[i], "_resolveType", ResolveType.Reference);
                 SetField(slots[i], "_reference", views[i]);
             }
+
             SetField(initializer, "_viewComponents", slots);
             return initializer;
         }
 
         private static void Initialize(ViewInitializerBase initializer, IViewModel model)
         {
-            if (initializer is ViewInitializerManual manual) manual.Initialize(model);
+            if (initializer is ViewInitializerManual manual)
+                manual.Initialize(model);
             else
             {
                 var slot = new ViewModelInitializeComponent();
@@ -240,8 +329,10 @@ namespace Aspid.MVVM.Tests
 
         private static void Deinitialize(ViewInitializerBase initializer)
         {
-            if (initializer is ViewInitializerManual manual) manual.Deinitialize();
-            else ((ViewInitializer)initializer).Deinitialize();
+            if (initializer is ViewInitializerManual manual)
+                manual.Deinitialize();
+            else
+                ((ViewInitializer)initializer).Deinitialize();
         }
 
         private static void SetField(object target, string name, object value)
@@ -249,10 +340,13 @@ namespace Aspid.MVVM.Tests
             for (var type = target.GetType(); type is not null; type = type.BaseType)
             {
                 var field = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-                if (field is null) continue;
+                if (field is null)
+                    continue;
+
                 field.SetValue(target, value);
                 return;
             }
+
             throw new MissingFieldException(name);
         }
     }
@@ -264,15 +358,18 @@ namespace Aspid.MVVM.Tests
     {
         public RecoveryBinder First = new();
         [IgnoreBind] public bool Fail;
+
         partial void OnInitializedInternal(IViewModel viewModel)
         {
-            if (Fail) throw new InvalidOperationException("interface");
+            if (Fail)
+                throw new InvalidOperationException("interface");
         }
     }
 
     internal sealed class RecoveryModel : IRecoveryModel
     {
         public readonly OneWayStructBindableMember<int> Member = new(1);
+
         public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters) =>
             new(Member);
     }
@@ -280,11 +377,23 @@ namespace Aspid.MVVM.Tests
     internal sealed class RecoveryBinder : Binder, IBinder<int>
     {
         public bool Fail;
+        public bool FailAttach;
         public int Calls;
+
+        public RecoveryBinder(BindMode mode = BindMode.OneWay)
+            : base(mode) { }
+
         public void SetValue(int value)
         {
             Calls++;
-            if (Fail) throw new InvalidOperationException("binder");
+            if (Fail)
+                throw new InvalidOperationException("binder");
+        }
+
+        protected override void OnAttach()
+        {
+            if (FailAttach)
+                throw new InvalidOperationException("bound");
         }
     }
 
@@ -295,17 +404,23 @@ namespace Aspid.MVVM.Tests
         public RecoveryBinder Second = new();
         [IgnoreBind] public string FailStage;
         [IgnoreBind] public bool FailDeinitialize;
+
         partial void OnInitializingInternal(IViewModel viewModel)
         {
-            if (FailStage == "initializing") throw new InvalidOperationException("initializing");
+            if (FailStage == "initializing")
+                throw new InvalidOperationException("initializing");
         }
+
         partial void OnInitializedInternal(IViewModel viewModel)
         {
-            if (FailStage == "initialized") throw new InvalidOperationException("initialized");
+            if (FailStage == "initialized")
+                throw new InvalidOperationException("initialized");
         }
+
         partial void OnDeinitializingInternal()
         {
-            if (FailDeinitialize) throw new InvalidOperationException("deinitialize");
+            if (FailDeinitialize)
+                throw new InvalidOperationException("deinitialize");
         }
     }
 
@@ -314,9 +429,11 @@ namespace Aspid.MVVM.Tests
     {
         public RecoveryBinder Third = new();
         [IgnoreBind] public bool FailTyped;
+
         partial void OnInitializedInternal(IViewModel viewModel)
         {
-            if (FailTyped) throw new InvalidOperationException("typed");
+            if (FailTyped)
+                throw new InvalidOperationException("typed");
         }
     }
 
@@ -332,18 +449,28 @@ namespace Aspid.MVVM.Tests
         public bool FailDeinitialize;
         public int InitializeCalls;
         public int DisposeCalls;
+
         public IViewModel ViewModel { get; private set; }
+
         public void Initialize(IViewModel model)
         {
             InitializeCalls++;
             ViewModel = model;
-            if (FailInitialize) throw new InvalidOperationException("initialize");
+            if (FailInitialize)
+                throw new InvalidOperationException("initialize");
         }
+
         public void Deinitialize()
         {
             ViewModel = null;
-            if (FailDeinitialize) throw new InvalidOperationException("deinitialize");
+            if (FailDeinitialize)
+                throw new InvalidOperationException("deinitialize");
         }
-        public void Dispose() { DisposeCalls++; Deinitialize(); }
+
+        public void Dispose()
+        {
+            DisposeCalls++;
+            Deinitialize();
+        }
     }
 }

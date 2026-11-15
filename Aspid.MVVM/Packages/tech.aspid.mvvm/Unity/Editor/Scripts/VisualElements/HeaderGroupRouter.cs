@@ -91,10 +91,10 @@ namespace Aspid.MVVM
             if (fieldInfo.IsDefined(typeof(HeaderGroupEndAttribute))) return (null, null);
 
             var startAttribute = fieldInfo.GetCustomAttribute<HeaderGroupStartAttribute>();
-            if (startAttribute is not null) return (startAttribute.Title, startAttribute.Title);
+            if (!string.IsNullOrWhiteSpace(startAttribute?.Title)) return (startAttribute.Title, startAttribute.Title);
 
             var attribute = fieldInfo.GetCustomAttribute<HeaderGroupAttribute>();
-            if (attribute is not null) return (currentRange, attribute.Title);
+            if (!string.IsNullOrWhiteSpace(attribute?.Title)) return (currentRange, attribute.Title);
 
             return (currentRange, currentRange);
         }

@@ -25,13 +25,13 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="value">The initial value.</param>
         /// <param name="mode">The binding mode.</param>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The mode is <see cref="BindMode.None"/> or undefined.</exception>
         public ValueTwoWayBinder(
             T? value = default,
             BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfNone();
+            mode.EnsureValid();
             _value = value;
         }
 
@@ -41,14 +41,14 @@ namespace Aspid.MVVM.StarterKit
         /// Runs in reverse only if it implements <see cref="ITwoWayConverter{TFrom, TTo}"/>.
         /// </param>
         /// <param name="mode">The binding mode.</param>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The mode is <see cref="BindMode.None"/> or undefined.</exception>
         public ValueTwoWayBinder(
             T? value, 
             IConverter<T?, T?>? converter, 
             BindMode mode = BindMode.TwoWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfNone();
+            mode.EnsureValid();
 
             _value = value;
             _converter = converter;

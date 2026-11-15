@@ -27,6 +27,8 @@ public sealed class SerializableBinderGeneratorTests
             public sealed class BindModeOverrideAttribute : Attribute
             {
                 public bool IsAll { get; set; }
+                public bool IsOne { get; set; }
+                public bool IsTwo { get; set; }
                 public BindMode[] Modes { get; }
                 public BindModeOverrideAttribute(params BindMode[] modes) { Modes = modes; }
             }
@@ -133,7 +135,7 @@ public sealed class SerializableBinderGeneratorTests
             }
             """);
 
-        Assert.Contains("mode.ThrowExceptionIfMatches(BindMode.TwoWay);", generated);
+        Assert.Contains("mode.EnsureNot(BindMode.TwoWay);", generated);
     }
 
     [Fact]
@@ -382,7 +384,62 @@ public sealed class SerializableBinderGeneratorTests
     private static readonly CSharpParseOptions Options =
         CSharpParseOptions.Default.WithPreprocessorSymbols("PROBE_INTEGRATION");
 
-    private static string Run(string declaration)
+    [Theory]
+    [InlineData("IsOne = true", "OneWay,OneTime")]
+    [InlineData("IsTwo = true", "TwoWay,OneWayToSource")]
+    [InlineData("IsOne = true, IsTwo = true", "OneWay,OneTime,TwoWay,OneWayToSource")]
+    [InlineData("BindMode.OneWay, IsTwo = true", "OneWay,TwoWay,OneWayToSource")]
+    [InlineData("BindMode.OneWayToSource, IsOne = true", "OneWay,OneTime,OneWayToSource")]
+    [InlineData("BindMode.OneWay, IsAll = true", "OneWay,OneTime,TwoWay,OneWayToSource")]
+    [InlineData("", "OneWay,OneTime,TwoWay,OneWayToSource")]
+    public void ModeGroupsMatchTheInspector(string arguments, string permitted)
+    {
+        var result = RunResult(ModeDeclaration(arguments));
+        Assert.DoesNotContain(result.Diagnostics, diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
+        var generated = string.Concat(result.Results.SelectMany(item => item.GeneratedSources)
+            .Select(source => source.SourceText.ToString()));
+        Assert.Contains("class CameraFieldOfViewBinder", generated);
+
+        foreach (var mode in new[] { "OneWay", "OneTime", "TwoWay", "OneWayToSource" })
+        {
+            var guard = $"mode.EnsureNot(BindMode.{mode});";
+            if (permitted.Split(',').Contains(mode))
+                Assert.DoesNotContain(guard, generated);
+            else
+                Assert.Contains(guard, generated);
+        }
+    }
+
+    [Theory]
+    [InlineData("null")]
+    [InlineData("BindMode.None")]
+    [InlineData("(BindMode)99")]
+    [InlineData("BindMode.None, IsAll = true")]
+    public void InvalidModesProduceADiagnosticInsteadOfAnUnusableTwin(string arguments)
+    {
+        var result = RunResult(ModeDeclaration(arguments));
+        Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Id == "ASPIDSB006"
+            && diagnostic.Severity == DiagnosticSeverity.Error);
+        Assert.Empty(result.Results.SelectMany(item => item.GeneratedSources));
+    }
+
+    private static string ModeDeclaration(string arguments) => $$"""
+        namespace Aspid.MVVM.StarterKit
+        {
+            [GenerateSerializableBinder]
+            [Aspid.MVVM.BindModeOverride({{arguments}})]
+            public class CameraFieldOfViewMonoBinder : ComponentFloatMonoBinder<UnityEngine.Camera>
+            {
+                protected sealed override float Property { get => CachedComponent.fieldOfView; set => CachedComponent.fieldOfView = value; }
+            }
+        }
+        """;
+
+    private static string Run(string declaration) =>
+        string.Concat(RunResult(declaration).Results.SelectMany(result => result.GeneratedSources)
+            .Select(source => source.SourceText.ToString()));
+
+    private static GeneratorDriverRunResult RunResult(string declaration)
     {
         var compilation = CSharpCompilation.Create(
             assemblyName: "Probe.Serializable",
@@ -394,11 +451,11 @@ public sealed class SerializableBinderGeneratorTests
             references: new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        return string.Concat(CSharpGeneratorDriver
+        var result = CSharpGeneratorDriver
             .Create(new SerializableBinderGenerator())
             .RunGenerators(compilation)
-            .GetRunResult()
-            .Results.SelectMany(result => result.GeneratedSources)
-            .Select(source => source.SourceText.ToString()));
+            .GetRunResult();
+        Assert.All(result.Results, generator => Assert.Null(generator.Exception));
+        return result;
     }
 }

@@ -17,14 +17,26 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class TwoWayBindableMember<T> : IBindableMember<T>, IBinderRemover
     {
-        /// <summary>
-        /// Occurs when <see cref="Value"/> is set.
-        /// </summary>
-        public event Action<T?>? Changed;
-
         private T? _value;
         private readonly Action<T?> _setValue;
-        
+
+        /// <inheritdoc/>
+        public event Action<T?>? Changed;
+
+        /// <summary>
+        /// Creates a member holding <paramref name="value"/> that passes reported values to <paramref name="setValue"/>.
+        /// </summary>
+        /// <param name="value">The initial value.</param>
+        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
+        public TwoWayBindableMember(
+            T? value,
+            Action<T?> setValue)
+        {
+            _value = value;
+            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
+        }
+
         /// <summary>
         /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
         /// </summary>
@@ -42,23 +54,11 @@ namespace Aspid.MVVM
                 }
             }
         }
-        
+
         /// <summary>
         /// Gets the binding mode of the member; always <see cref="BindMode.TwoWay"/>.
         /// </summary>
-        public BindMode Mode => BindMode.TwoWay;  
-
-        /// <summary>
-        /// Creates a member holding <paramref name="value"/> that passes reported values to <paramref name="setValue"/>.
-        /// </summary>
-        /// <param name="value">The initial value.</param>
-        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
-        public TwoWayBindableMember(T? value, Action<T?> setValue)
-        {
-            _value = value;
-            _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
-        }
+        public BindMode Mode => BindMode.TwoWay;
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
@@ -79,45 +79,61 @@ namespace Aspid.MVVM
 #endif
             {
                 var mode = binder.Mode;
-                if (mode is BindMode.OneWay or BindMode.TwoWay or BindMode.OneTime &&
-                    binder is not IBinder<T> and not IAnyBinder)
-                    throw BinderInvalidCastException.Class<T>(binder);
-
-                if (mode is BindMode.TwoWay or BindMode.OneWayToSource &&
-                    binder is not IReverseBinder<T> and not IAnyReverseBinder)
-                    throw ReverseBinderInvalidCastException<T>.Class(binder);
 
                 try
                 {
                     switch (mode)
                     {
-                        case BindMode.OneWay: OneWay(); break;
+                        case BindMode.OneWay:
+                            OneWay();
+                            break;
 
                         case BindMode.TwoWay:
+                            if (binder is not IBinder<T> and not IAnyBinder)
+                                throw BinderInvalidCastException.Class<T>(binder);
+
+                            if (binder is not IReverseBinder<T> and not IAnyReverseBinder)
+                                throw ReverseBinderInvalidCastException<T>.Class(binder);
+
                             OneWay();
                             OneWayToSource();
                             break;
 
-                        case BindMode.OneTime: switch (binder)
+                        case BindMode.OneTime:
+                            switch (binder)
                             {
-                                case IBinder<T> specificBinder: specificBinder.SetValue(_value); break;
-                                case IAnyBinder anyBinder: anyBinder.SetValue(_value); break;
+                                case IBinder<T> specificBinder: 
+                                    specificBinder.SetValue(_value);
+                                    break;
+                                
+                                case IAnyBinder anyBinder:
+                                    anyBinder.SetValue(_value);
+                                    break;
+                                
                                 default: throw BinderInvalidCastException.Class<T>(binder);
                             }
 
                             return null;
 
-                        case BindMode.OneWayToSource: OneWayToSource(); break;
+                        case BindMode.OneWayToSource: 
+                            OneWayToSource();
+                            break;
 
                         case BindMode.None:
-                        default:
-                            throw new InvalidOperationException("Mode can't be None.");
+                        default: throw new InvalidOperationException("Mode can't be None.");
                     }
                 }
                 catch
                 {
-                    try { ((IBinderRemover)this).Remove(binder); }
-                    catch { /* Preserve the attachment failure. */ }
+                    try
+                    {
+                        ((IBinderRemover)this).Remove(binder);
+                    }
+                    catch
+                    {
+                        // Do not replace the original exception with a cleanup failure.
+                    }
+
                     throw;
                 }
             }
@@ -146,14 +162,23 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += OnValueChanged; break;
-                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged += OnObjectValueChanged; break;
+                    case IReverseBinder<T> reverseBinder:
+                        reverseBinder.ValueChanged += OnValueChanged;
+                        break;
+
+                    case IAnyReverseBinder anyReverseBinder:
+                        anyReverseBinder.ValueChanged += OnObjectValueChanged;
+                        break;
+
                     default: throw ReverseBinderInvalidCastException<T>.Class(binder);
                 }
             }
         }
 
         /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException">
+        /// The mode of <paramref name="binder"/> is <see cref="BindMode.None"/> or undefined.
+        /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// The mode reaches the View and <paramref name="binder"/> implements neither <see cref="IBinder{T}"/>
         /// nor <see cref="IAnyBinder"/>.
@@ -171,44 +196,55 @@ namespace Aspid.MVVM
                 switch (binder.Mode)
                 {
                     case BindMode.OneTime: return;
-                    case BindMode.OneWay: OneWay(); return;
-                
+                    
+                    case BindMode.OneWay: 
+                        OneWay();
+                        return;
+
                     case BindMode.TwoWay:
                         OneWay();
                         OneWayToSource();
                         return;
-                
-                    case BindMode.OneWayToSource: OneWayToSource(); return;
+
+                    case BindMode.OneWayToSource:
+                        OneWayToSource();
+                        return;
+
+                    case BindMode.None:
+                    default: throw new InvalidOperationException("Unsupported binding mode.");
                 }
             }
-            
-            return;
-
-            void OneWay() => Changed -= binder switch
+            void OneWay() => Changed -= binder switch 
             {
-                IBinder<T> specificBinder => specificBinder.SetValue,
-                IAnyBinder anyBinder => anyBinder.SetValue,
+                IBinder<T> specificBinder => specificBinder.SetValue, 
+                IAnyBinder anyBinder => anyBinder.SetValue, 
                 _ => throw BinderInvalidCastException.Class<T>(binder)
             };
-            
+
             void OneWayToSource()
             {
                 switch (binder)
                 {
-                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= OnValueChanged; break;
-                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged -= OnObjectValueChanged; break;
+                    case IReverseBinder<T> reverseBinder: 
+                        reverseBinder.ValueChanged -= OnValueChanged;
+                        break;
+                    
+                    case IAnyReverseBinder anyReverseBinder:
+                        anyReverseBinder.ValueChanged -= OnObjectValueChanged;
+                        break;
+                    
                     default: throw ReverseBinderInvalidCastException<T>.Class(binder);
                 }
             }
         }
-        
+
         /// <summary>
         /// Sets <see cref="Value"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The new value.</param>
         public void Invoke(T? value) =>
             Value = value;
-        
+
         private void OnValueChanged(T? value)
         {
 #if ASPID_MVVM_PROFILER
@@ -218,19 +254,25 @@ namespace Aspid.MVVM
                 _setValue(value);
             }
         }
-        
-        private void OnObjectValueChanged(object value)
+
+        private void OnObjectValueChanged(object? value)
         {
 #if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
                 if (value is null)
+                {
                     OnValueChanged(default);
+                }
                 else if (value is not T specificValue)
+                {
                     throw new ArgumentException("Value must be of type " + typeof(T).FullName);
+                }
                 else
+                {
                     OnValueChanged(specificValue);
+                }
             }
         }
     }

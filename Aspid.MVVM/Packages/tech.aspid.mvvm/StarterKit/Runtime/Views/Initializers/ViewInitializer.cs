@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -13,7 +12,7 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(MonoView), Path = "Add View Initializers/View Initializer")]
     public sealed class ViewInitializer : ViewInitializerBase
     {
-        [Tooltip("Dispose the ViewModel when this object is destroyed.")]
+        [Tooltip("Release the ViewModel resources when this object is destroyed, without destroying its Unity object.")]
         [SerializeField] private bool _isDisposeViewModelOnDestroy;
 
         [Tooltip("ViewModel to initialize the views with.")]
@@ -55,7 +54,8 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Deinitializes the views. Allowed only in the <c>Manual</c> stage.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the stage is not <c>Manual</c>.</exception>
+        /// <exception cref="InvalidOperationException">The stage is not <c>Manual</c>.</exception>
+        /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
         public void Deinitialize()
         {
             ThrowIfNotManual();
@@ -72,7 +72,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnDestroy()
         {
-            Exception failure = null;
+            var failures = new CleanupExceptions();
             try
             {
                 if (!IsDisposeViewOnDestroy && _isDeinitialize)
@@ -80,17 +80,22 @@ namespace Aspid.MVVM.StarterKit
                 else
                     base.OnDestroy();
             }
-            catch (Exception exception) { failure = exception; }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
 
             try
             {
                 if (_isDisposeViewModelOnDestroy)
                     _viewModel?.DisposeViewModel();
             }
-            catch (Exception exception) { failure ??= exception; }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
 
-            if (failure is not null)
-                ExceptionDispatchInfo.Capture(failure).Throw();
+            failures.ThrowIfAny();
         }
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION

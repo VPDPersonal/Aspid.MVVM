@@ -12,9 +12,11 @@ namespace Aspid.MVVM
         public BindMode Mode { get; }
         
         /// <summary>
-        /// Subscribes <paramref name="binder"/> according to its <see cref="IBinder.Mode"/> and, for a mode that reaches the View,
-        /// pushes the current value to it.
+        /// Attaches <paramref name="binder"/> using the binding directions supported by both the binder and the member.
         /// </summary>
+        /// <remarks>
+        /// When the effective mode reaches the View, pushes the current value to the binder during attachment.
+        /// </remarks>
         /// <param name="binder">The binder to add.</param>
         /// <returns>
         /// The remover that detaches <paramref name="binder"/>; <see langword="null"/> when nothing stays subscribed,

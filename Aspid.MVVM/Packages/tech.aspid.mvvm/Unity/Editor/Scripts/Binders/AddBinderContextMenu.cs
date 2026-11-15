@@ -11,10 +11,6 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Registers a Unity Editor context menu entry that allows adding compatible <see cref="MonoBinder"/> components
-    /// directly from a serialized properties right-click menu.
-    /// </summary>
     internal static class AddBinderContextMenu
     {
         private const string AddBinderText = "Add Binder";
@@ -70,7 +66,7 @@ namespace Aspid.MVVM
             {
                 var binderType = item.Type;
 
-                menu.AddItem(new GUIContent(text: $"{AddBinderText}/{item.Name}"), false, () =>
+                menu.AddItem(new GUIContent(text: item.Name), false, () =>
                     component.gameObject.AddComponent(binderType));
             }
         }
@@ -88,19 +84,25 @@ namespace Aspid.MVVM
 
             foreach (var context in _contexts)
             {
-                // Match against the attribute's target/value type, but never add that type:
-                // the menu must add the binder itself (context.Type). The property-type scan is
-                // only reached when the target-property match fails, thanks to || short-circuiting.
-                var matches = context.ContextMenus.Any(contextMenu =>
-                        contextMenu.Type.IsAssignableFrom(targetType) &&
-                        contextMenu.SerializePropertyNames.Any(serializePropertyName =>
-                            !string.IsNullOrWhiteSpace(serializePropertyName) &&
-                            serializePropertyName == propertyName))
-                    || context.ContextMenuByTypes.Any(contextMenu =>
-                        contextMenu.Type.IsAssignableFrom(propertyType));
+                var matchingMenu = context.ContextMenus.FirstOrDefault(contextMenu =>
+                    contextMenu.Type.IsAssignableFrom(targetType)
+                    && contextMenu.SerializePropertyNames.Any(name =>
+                        !string.IsNullOrWhiteSpace(name) && name == propertyName));
 
-                if (matches)
-                    results.Add(new Result(context.Name, context.Type));
+                if (matchingMenu.Type is not null)
+                {
+                    var path = !string.IsNullOrWhiteSpace(matchingMenu.Path)
+                        ? matchingMenu.Path
+                        : string.IsNullOrWhiteSpace(matchingMenu.SubPath)
+                            ? $"{AddBinderText}/{context.Name}"
+                            : $"{AddBinderText}/{matchingMenu.SubPath}/{context.Name}";
+                    
+                    results.Add(new Result(path, context.Type));
+                }
+                else if (context.ContextMenuByTypes.Any(menu => menu.Type.IsAssignableFrom(propertyType)))
+                {
+                    results.Add(new Result($"{AddBinderText}/{context.Name}", context.Type));
+                }
             }
 
             return results;
@@ -108,8 +110,8 @@ namespace Aspid.MVVM
         
         private readonly struct Result
         {
-            public readonly string Name;
             public readonly Type Type;
+            public readonly string Name;
 
             public Result(string name, Type type)
             {
@@ -172,12 +174,16 @@ namespace Aspid.MVVM
         private readonly struct ContextMenu
         {
             public readonly Type Type;
+            public readonly string Path;
+            public readonly string SubPath;
             public readonly IReadOnlyList<string> SerializePropertyNames;
             
             public ContextMenu(AddBinderContextMenuAttribute attribute)
             {
                 Type = attribute.Type;
-                SerializePropertyNames = attribute.SerializePropertyNames;;
+                Path = attribute.Path;
+                SubPath = attribute.SubPath;
+                SerializePropertyNames = attribute.SerializePropertyNames;
             }
         }
 

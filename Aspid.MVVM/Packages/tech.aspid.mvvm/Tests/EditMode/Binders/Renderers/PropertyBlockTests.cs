@@ -19,7 +19,7 @@ namespace Aspid.MVVM.Tests
         {
             var (renderer, binder) = New<RendererPropertyBlockFloatMonoBinder>("_Cutoff");
 
-            binder.Bind(new OneWayStructBindableMember<float>(0f));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<float>(0f), binder));
             ((IBinder<float>)binder).SetValue(0.25f);
 
             var block = new MaterialPropertyBlock();
@@ -33,7 +33,7 @@ namespace Aspid.MVVM.Tests
         {
             var (renderer, binder) = New<RendererPropertyBlockColorMonoBinder>("_Tint");
 
-            binder.Bind(new OneWayStructBindableMember<Color>(Color.white));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Color>(Color.white), binder));
             ((IBinder<Color>)binder).SetValue(Color.red);
 
             var block = new MaterialPropertyBlock();
@@ -50,7 +50,7 @@ namespace Aspid.MVVM.Tests
         {
             var (renderer, binder) = New<RendererPropertyBlockVectorMonoBinder>("_Offset");
 
-            binder.Bind(new OneWayStructBindableMember<Vector4>(Vector4.zero));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Vector4>(Vector4.zero), binder));
             ((IBinder<Vector2>)binder).SetValue(new Vector2(1f, 2f));
 
             var block = new MaterialPropertyBlock();
@@ -69,7 +69,7 @@ namespace Aspid.MVVM.Tests
             var (_, binder) = New<RendererPropertyBlockFloatMonoBinder>(string.Empty);
 
             LogAssert.Expect(LogType.Error, new Regex("no shader property name is set"));
-            binder.Bind(new OneWayStructBindableMember<float>(0f));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<float>(0f), binder));
 
             Assert.DoesNotThrow(() => ((IBinder<float>)binder).SetValue(1f), "A value without a property name threw");
             Assert.DoesNotThrow(() => ((IBinder<float>)binder).SetValue(2f), "A second value logged a second error");

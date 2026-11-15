@@ -93,7 +93,7 @@ namespace Aspid.MVVM.Tests
             serializedObject.FindProperty("_mode").enumValueIndex = (int)BindMode.TwoWay;
             serializedObject.ApplyModifiedPropertiesWithoutUndo();
 
-            ((IBinder)binder).Bind(new TwoWayStructBindableMember<float>(0f, _ => { }));
+            ((IBinder)binder).Bind(new BindContext(new TwoWayStructBindableMember<float>(0f, _ => { }), ((IBinder)binder)));
 
             return (binder, scrollbar);
         }

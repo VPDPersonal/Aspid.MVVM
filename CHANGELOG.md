@@ -49,7 +49,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - `DebugLogBinder` / `DebugLogMonoBinder` — log a bound value; the message is compiled out of release builds.
 - `IAnyReverseBinder` — a reverse binder for any type; `null` reference values are forwarded, not thrown.
 - `CollectionBinder<T>` hooks `OnAdded`, `OnRemoved`, `OnReplaced`, `OnMoved` — granular change forwarding with clean unsubscribe on `Unbind` / `Dispose`.
-- `BindSafely` / `UnbindSafely` overloads with `owner` / `memberName`; failures are reported with View, member and index.
+- `BindSafely` / `UnbindSafely` overloads with binding contexts and `memberName`; failures are reported with View, member and index.
 - `[HeaderGroup]`, `[HeaderGroupStart]` / `[HeaderGroupEnd]` — collapsible foldouts in the binder and ViewModel inspectors; stripped from player builds.
 - `Source/Compatibility/UnityAttributesShim.cs` — `[SerializeField]`, `[SerializeReference]`, `[Tooltip]` compile outside Unity without `#if` guards.
 
@@ -147,11 +147,27 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Changed
 
+- `DestroyView()` now destroys ScriptableObject views as well as components. View and ViewModel helpers share Unity object destruction while retaining their existing return values and null handling.
+
+- Unity ViewModel disposal releases resources without destroying objects. Override `OnDispose()` instead of `Dispose()`; cleanup runs once and also runs on Unity destruction. `DestroyViewModel()` supports ScriptableObject ViewModels, and `DestroyViewModelAndGameObject()` additionally removes the owning GameObject.
+
+- Editor ViewModel validation reuses its deduplication buffer and static notification delegates, and defers nested dispatch to the next update.
+- **Breaking:** `IBinder.Bind` and `Unbind` take `in BindContext` and `in UnbindContext`. Owners are reference-identified objects, allowing Views and composite binders; foreign cleanup is ignored. Safe helpers require an owner, debug rebind preserves it, and lifecycle guards prevent reattachment during cleanup. Generated Views bind and release a fixed binder set directly, without tracking lists.
+- **Breaking:** Cleanup preserves a single original exception and reports multiple failures in `AggregateException` across binders, collections, Views and initializers. Error lists are allocated only after a second failure; failed binding and initialization keep their original exception.
+- **Breaking:** `BindSafely(IEnumerable<T>)` and `UnbindSafely(IEnumerable<T>)` preserve simultaneous enumeration and enumerator disposal failures in `AggregateException`. A single failure retains its instance and stack trace; binder failures remain separate log entries.
+- **Breaking:** Removed the scalar `BinderExtensions.Unbind` overload; generated Views call `IBinder.Unbind` directly. Collection `Unbind` overloads and `UnbindSafely` now share one source file.
+- **Breaking:** `BindSafely` overloads for resolved members take `in BindContext` instead of separate member and owner arguments; `UnbindSafely` takes `in UnbindContext` instead of an owner. Collections reuse the context for every binder; diagnostics use its owner. Generated typed Views use the same binding API.
+- **Breaking:** `Binder` and `MonoBinder` use exclusive lifecycle states. Acquire subscriptions in `OnAttach` and release resources in `OnDetach`; `OnBound` / `OnUnbound` notify after state transitions and allow rebinding after release. Completion notification failures do not roll back an established binding.
+- **Breaking:** `IBinder` requires `IsBound`; `Binder` and `MonoBinder` already implement it. Ownership is checked by the binder; generated Views allocate no binding trackers or attempt records. Arrays and lists use indexed binding loops.
+
+- **Breaking:** `BindMode.IsOne()` / `IsTwo()` are now `IsForwardOnly()` / `IncludesReverse()`. Mode guards use `EnsureValid`, `EnsureForwardOnly`, `EnsureForward`, `EnsureReverse` and `EnsureNot`; the old `ThrowExceptionIf*` names and unused `IsNone()` helper are removed.
+- **Breaking:** `Binder` constructors reject `None` and undefined modes with `ArgumentOutOfRangeException`; mode attributes reject null arrays and invalid entries. Forward-only guards reject invalid modes too.
 - **Breaking:** minimum Unity is `6000.0`.
 - **Breaking:** `MonoView` is concrete — binder list, child validation and `[RequireBinder]` live on it; subclasses keep working.
 - **Breaking:** `MonoView.Dispose()` only calls `Deinitialize()`; destroy the GameObject yourself.
 - **Breaking:** `DestroyView()` no longer destroys the GameObject.
-- **Breaking:** `MonoBinder.Bind()` on an already-bound binder logs an error instead of throwing.
+- **Breaking:** `Binder.Bind()` and `MonoBinder.Bind()` reject repeated or reentrant binding with `InvalidOperationException`, preserving an existing binding.
+- **Breaking:** `BinderInvalidCastException.Class/Struct` and `ReverseBinderInvalidCastException<T>.Class/Struct` return exceptions without throwing; use `throw` at the call site.
 - **Breaking:** numeric and vector `SetValue` overloads are default interface members on `IIntBinder`, `ILongBinder`, `IFloatBinder`, `IDoubleBinder`, `IVector2Binder`, `IVector3Binder`, `IColorBinder`, `IRotationBinder`; reach them through the interface: `((IBinder<float>)binder).SetValue(5f)`.
 - **Breaking:** `TargetBinder<TTarget, TProperty>` and `ComponentMonoBinder<TComponent, TProperty>` are the property bases; both carry a `[SerializeReference]` converter slot, passed between the target and the mode.
 - **Breaking:** numeric binders raise one `IReverseBinder<T>.ValueChanged` per width through `INumberReverseBinder`; subscribe as `((IReverseBinder<float>)binder).ValueChanged`.
@@ -225,19 +241,38 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Fixed
 
+- `DestroyViewAndGameObject` also destroys ScriptableObject views, including when cleanup fails; single-instance rollback reuses this cleanup path.
+
+- View factories roll back failed clones and async batches; view destruction continues after cleanup failures. Header groups now agree between generated fields and the Inspector. Property context menus honor custom paths, and strict design ViewModels require concrete types.
+
+- Editor ViewModel validation discards pending requests at mode exit and retains new requests until mode entry, including when Domain Reload is disabled.
+- View lifecycle extensions consistently throw `ArgumentNullException` for a null receiver, matching `DisposeViewModel`; use `?.` for optional Views. A null replacement ViewModel still deinitializes the View.
+
+- Generated Views handle repeated cleanup safely and reject conflicting lifecycle operations. Direct cleanup covers every declared binder, including declared nested bindings established by callbacks.
+- `[AsBinder]` reports invalid types and constructors instead of silently skipping them; generated arguments preserve escaping, numeric types and culture-independent literals. `[View]` rejects structs and reports invalid class declarations. Generic View lifecycle helpers require reference types.
+
+- ViewModel configuration now reports generator diagnostics for invalid modes, accessor visibility, `BindAlso` targets, command signatures and unresolved `CanExecute`; unsupported bindings emit a warning. Editor metadata respects explicit and inferred modes, and `AccessAttribute` retains its constructor values.
+- Built-in ViewModel lookups reject invalid/default queries; both `DisposeViewModel` overloads consistently reject null.
+
+- Parameter-bound command adapters forward `CanExecuteChanged` while observed, release their source subscription after the last listener, and delegate execution without a duplicate predicate check. Strict adapter factories reject a null source immediately; empty commands always carry a no-op action.
+
 - Binding failures validate both directions before subscribing and roll back partial bindings; teardown finishes after lifecycle hook failures and preserves the original exception.
 - Generated Views reset initialization guards, release only acquired binders after failed initialization, and remain reusable; both View initializers roll back partial child initialization and finish cleanup after a child throws.
 - Runtime-created MonoBinders use their default binding mode without Editor `Reset`; authored serialized modes remain unchanged, and `Mode` can be configured from code while unbound.
 
 #### Core
 
+- Mode errors show the actual mode and allowed modes. `OneWay` / `OneTime` members reject undefined modes before emitting a value; generated binders honour `BindModeOverride.IsOne` / `IsTwo` and report invalid declarations as `ASPIDSB006`.
+- Reverse binder compatibility messages list `IAnyReverseBinder`, and exception messages skip the GameObject path of a destroyed component instead of masking the compatibility error.
+- Binder compatibility messages separate the failed direction, required interfaces and object path, using readable C# type names without repeating the component type in the path.
+- `TwoWay` binders can attach to `OneWay` and `OneTime` members using only the supported forward updates, so a View can be reused across ViewModels with different binding capabilities.
 - One-time bindable members were a single static instance per type shared by every ViewModel, so a binder bound later (a second binder of the same member after a nested View had bound, an Editor rebind, a member kept by user code) could get the value of another ViewModel. The generated code now keeps one member per ViewModel and refreshes it on access.
 - `TwoWayValue<T>` (now `ValueTwoWayBinder<T>`) fed every ViewModel → View update straight back to the ViewModel with the converted value.
 - `OneWayToSource` never reached the ViewModel for a numeric binder's own type; the other three widths worked.
 - Reverse binding re-applied the *forward* converter on the way back.
 - Numeric reverse channels converted out-of-range values through an undefined cast; they saturate now.
 - `SetValue(Vector3)` on a Vector3 binder picked the `Vector2` overload and dropped Z.
-- `BindSafely` / `UnbindSafely` stopped at the first throwing or destroyed binder; each is now reported and skipped.
+- Every `BindSafely` / `UnbindSafely` overload logs each binder failure once with context and the original exception, safely handles destroyed diagnostic owners, and isolates the failure, including single binders; generated Views continue binding healthy members and discard ownership of failed attempts.
 - A destroyed `MonoBinder` stayed subscribed — `OnDestroy` now unbinds.
 - A `MonoBinder` with no component to drive bound anyway and threw from a property setter; `CanBind` answers from the resolved component.
 - A `TargetBinder` whose serialized target was destroyed threw from `OnBound`; the check now uses Unity's own conversion.
@@ -308,7 +343,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 #### Samples & documentation
 
 - `[AsBinder]` examples in the Views page and `ExampleScripts` left the component field unserialized, so the binder constructor threw on `null`; the page now covers constructor arguments and `nameof`.
-- XML docs in `Source` follow the `asp-xmldoc` rules and no longer contradict the generator: `[Bind(BindMode.OneWay)]` on a `readonly` field is skipped rather than resolved to `OneTime`, `[ViewModel]` and `[View]` ignore structs, and a `BaseBindAttribute` subclass generates nothing.
+- XML docs in `Source` follow the `asp-xmldoc` rules and no longer contradict the generator: `[Bind(BindMode.OneWay)]` on a `readonly` field is skipped rather than resolved to `OneTime`, `[ViewModel]` ignores structs and `[View]` targets classes only, and a `BaseBindAttribute` subclass generates nothing.
 - Labeled crefs (`<see cref="X">label</see>`) in the API reference linked the namespace page instead of the type.
 
 ---

@@ -16,6 +16,25 @@ namespace Aspid.MVVM.Tests
     public sealed class ButtonCommandInteractableTests : SceneFixture
     {
         [Test]
+        public void ParameterBoundCommandUpdatesTheButtonAndDetachesOnUnbind()
+        {
+            var (binder, target, _) = Create(InteractableMode.Interactable);
+            var enabled = false;
+            var source = new RelayCommand<int>(_ => { }, _ => enabled);
+            var adapter = source.CreateCommandWithoutParameters(1);
+            binder.Bind(new BindContext(new OneWayBindableMember<IRelayCommand>(adapter), binder));
+            Assert.That(target.interactable, Is.False);
+
+            enabled = true;
+            source.NotifyCanExecuteChanged();
+            Assert.That(target.interactable, Is.True);
+            binder.Unbind(new UnbindContext(binder));
+            enabled = false;
+            source.NotifyCanExecuteChanged();
+            Assert.That(target.interactable, Is.True);
+        }
+
+        [Test]
         public void VisibleMode_HidesTheAssignedTarget_NotTheBinderOwnObject()
         {
             var (binder, target, own) = Create(InteractableMode.Visible);

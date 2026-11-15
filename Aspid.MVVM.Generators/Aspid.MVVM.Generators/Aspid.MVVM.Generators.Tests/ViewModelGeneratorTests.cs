@@ -13,7 +13,7 @@ namespace MVVMGenerators.Tests;
 /// </summary>
 public sealed class ViewModelGeneratorTests
 {
-    private const string Framework = """
+    internal const string Framework = """
         using System;
 
         namespace Aspid.MVVM
@@ -27,7 +27,7 @@ public sealed class ViewModelGeneratorTests
             public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T> { event Action<T> Changed; }
             public interface IBindableMember<T> : IReadOnlyBindableMember<T> { new T Value { set; } }
 
-            public readonly struct FindBindableMemberParameters { }
+            public readonly struct FindBindableMemberParameters { public void EnsureValid() { } }
             public readonly struct FindBindableMemberResult { }
 
             public interface IViewModel { FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters); }
@@ -38,6 +38,20 @@ public sealed class ViewModelGeneratorTests
             [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
             public class BindAttribute : Attribute { public BindAttribute() { } public BindAttribute(BindMode mode) { } }
 
+            public enum Access { Public = 8343, Private = 8344, Protected = 8346 }
+            [AttributeUsage(AttributeTargets.Field)]
+            public sealed class AccessAttribute : Attribute
+            {
+                public AccessAttribute(Access access = Access.Private) { }
+                public Access Get { get; set; }
+                public Access Set { get; set; }
+            }
+            [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+            public sealed class RelayCommandAttribute : Attribute { public string CanExecute; }
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+            public sealed class OneWayBindAttribute : BindAttribute { }
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+            public sealed class OneTimeBindAttribute : BindAttribute { }
             [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
             public sealed class BindAlsoAttribute : Attribute { public BindAlsoAttribute(string propertyName) { } }
         }
@@ -238,11 +252,10 @@ public sealed class ViewModelGeneratorTests
             references: new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        return string.Concat(CSharpGeneratorDriver
-            .Create(new ViewModelGenerator())
-            .RunGenerators(compilation)
-            .GetRunResult()
-            .GeneratedTrees
-            .Select(tree => tree.ToString()));
+        var result = CSharpGeneratorDriver.Create(new ViewModelGenerator()).RunGenerators(compilation).GetRunResult();
+        Assert.All(result.Results, run => Assert.Null(run.Exception));
+        Assert.DoesNotContain(result.Diagnostics, diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
+        Assert.NotEmpty(result.GeneratedTrees);
+        return string.Concat(result.GeneratedTrees.Select(tree => tree.ToString()));
     }
 }

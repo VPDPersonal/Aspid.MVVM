@@ -38,7 +38,7 @@ namespace Aspid.MVVM.Tests
             var (binder, field) = Create();
             yield return null;
 
-            ((IBinder)binder).Bind(new TwoWayBindableMember<string>(string.Empty, _ => { }));
+            ((IBinder)binder).Bind(new BindContext(new TwoWayBindableMember<string>(string.Empty, _ => { }), ((IBinder)binder)));
             Assert.AreEqual(1, RuntimeListeners(field.onValueChanged), "The bind did not subscribe to the field");
 
             InvokeOnValidate(binder);

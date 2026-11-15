@@ -54,7 +54,7 @@ namespace Aspid.MVVM.Tests
             try
             {
                 var member = new TwoWayBindableMember<string>("first", received.Add);
-                binder.Bind(member);
+                binder.Bind(new BindContext(member, binder));
 
                 Assert.AreEqual("first", field.text);
                 Assert.AreEqual(onBind, events, "Wrong number of events on bind");
@@ -72,7 +72,7 @@ namespace Aspid.MVVM.Tests
             }
             finally
             {
-                binder.Unbind();
+                binder.Unbind(new UnbindContext(binder));
             }
         }
     }

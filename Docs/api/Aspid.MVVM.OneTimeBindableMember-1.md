@@ -35,6 +35,26 @@ The bound value type.
 
 
 
+## Remarks
+
+A [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) binder receives the initial value without reporting changes back to the ViewModel.
+
+## Constructors
+
+### OneTimeBindableMember\(T?\) {#Aspid_MVVM_OneTimeBindableMember_1__ctor__0_}
+
+Creates a member holding <code class="paramref">value</code>.
+
+```csharp
+public OneTimeBindableMember(T? value)
+```
+
+#### Parameters
+
+`value` T?
+
+The value to push to the binder.
+
 ## Properties
 
 ### Mode {#Aspid_MVVM_OneTimeBindableMember_1_Mode}
@@ -51,39 +71,13 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneTimeBindableMember_1_Value}
 
-Gets the value set by the last [`OneTimeBindableMember<T>.Get`](Aspid.MVVM.OneTimeBindableMember-1.md#Aspid_MVVM_OneTimeBindableMember_1_Get__0_) call.
+Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
 
 ```csharp
-public T? Value { get; }
+public T? Value { get; set; }
 ```
 
 #### Property Value
 
  T?
-
-## Methods
-
-### Get\(T?\) {#Aspid_MVVM_OneTimeBindableMember_1_Get__0_}
-
-Returns the shared instance with [`OneTimeBindableMember<T>.Value`](Aspid.MVVM.OneTimeBindableMember-1.md#Aspid_MVVM_OneTimeBindableMember_1_Value) set to <code class="paramref">value</code>.
-
-```csharp
-public static OneTimeBindableMember<T> Get(T? value)
-```
-
-#### Parameters
-
-`value` T?
-
-The value to push to the binder.
-
-#### Returns
-
- [OneTimeBindableMember](Aspid.MVVM.OneTimeBindableMember-1.md)\<T\>
-
-The shared instance for <code class="typeparamref">T</code>.
-
-#### Remarks
-
-Every call returns the same instance and overwrites its value, so bind it before the next call.
 

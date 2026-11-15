@@ -1,5 +1,6 @@
+using System;
+
 // ReSharper disable once CheckNamespace
-// ReSharper disable UnusedParameter.Local
 namespace Aspid.MVVM
 {
     /// <summary>
@@ -12,7 +13,7 @@ namespace Aspid.MVVM
     /// <see cref="BindMode.OneWayToSource"/> when it is set-only and <see cref="BindMode.TwoWay"/> otherwise.
     /// </para>
     /// <para>
-    /// A mode the member cannot support is ignored together with the member: a <see langword="readonly"/> field takes only
+    /// A mode the member cannot support skips the member with a generator warning: a <see langword="readonly"/> field takes only
     /// <see cref="BindMode.OneTime"/>, a get-only property <see cref="BindMode.OneTime"/> or <see cref="BindMode.OneWay"/>, and
     /// a set-only property <see cref="BindMode.OneWayToSource"/>.
     /// </para>
@@ -28,6 +29,11 @@ namespace Aspid.MVVM
     public sealed class BindAttribute : BaseBindAttribute
     {
         /// <summary>
+        /// Gets the explicit binding mode; <see langword="null"/> to infer it from the member.
+        /// </summary>
+        public BindMode? Mode { get; }
+
+        /// <summary>
         /// Creates an attribute whose binding mode follows from the member.
         /// </summary>
         public BindAttribute() { }
@@ -36,6 +42,11 @@ namespace Aspid.MVVM
         /// Creates an attribute with an explicit binding mode.
         /// </summary>
         /// <param name="mode">The binding mode. A mode the member cannot support skips the member.</param>
-        public BindAttribute(BindMode mode) { }
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="mode"/> is <see cref="BindMode.None"/> or undefined.</exception>
+        public BindAttribute(BindMode mode)
+        {
+            mode.EnsureValid();
+            Mode = mode;
+        }
     }
 }

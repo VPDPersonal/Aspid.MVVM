@@ -74,8 +74,8 @@ namespace Aspid.MVVM.Tests
 
             // Through Bind, not SetValue: the unsubscription lives in OnUnbound, which only a bound binder calls —
             // a direct SetValue would have left the subscription in place and the test would check the wrong thing.
-            binder.Bind(new OneWayBindableMember<IReadOnlyObservableList<object>>(list));
-            binder.Unbind();
+            binder.Bind(new BindContext(new OneWayBindableMember<IReadOnlyObservableList<object>>(list), binder));
+            binder.Unbind(new UnbindContext(binder));
             counts.Clear();
 
             list.Add("ignored");

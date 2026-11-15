@@ -150,8 +150,13 @@ namespace Aspid.MVVM.StarterKit
             GetEnumerator();
 
         /// <inheritdoc/>
+        /// <exception cref="ArgumentNullException">The query identifier is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">The query identifier is empty or whitespace.</exception>
+        /// <exception cref="KeyNotFoundException">The ID is missing and the instance is configured to throw for missing members.</exception>
         public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters)
         {
+            parameters.EnsureValid();
+
 #if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif

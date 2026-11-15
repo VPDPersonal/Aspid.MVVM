@@ -59,6 +59,16 @@ public UsedInModesAttribute(params BindMode[] modes)
 
 The binding modes the field is used in.
 
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">modes</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+An element of <code class="paramref">modes</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
+
 ## Properties
 
 ### Modes {#Aspid_MVVM_UsedInModesAttribute_Modes}

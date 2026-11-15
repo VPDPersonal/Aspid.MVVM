@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -12,7 +13,7 @@ namespace Aspid.MVVM.StarterKit
     public abstract partial class AggregatorInputMonoBinder<TInput, TResult> : MonoBinder, IBinder<TInput>
     {
         [Tooltip("Aggregator this input writes into.")]
-        [SerializeField] private AggregatorMonoBinder<TInput, TResult> _aggregator;
+        [SerializeField] private AggregatorMonoBinder<TInput, TResult>? _aggregator;
 
         [Tooltip("Index of this input inside the aggregator.")]
         [SerializeField] [Min(0)] private int _index;
@@ -36,9 +37,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            if (_aggregator) _aggregator.ClearInput(_index);
+            if (_aggregator) 
+                _aggregator.ClearInput(_index);
         }
     }
 }

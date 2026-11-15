@@ -13,15 +13,15 @@ namespace Aspid.MVVM.StarterKit
         private readonly Action<T?> _setValue;
 
         /// <param name="setValue">The action invoked with each value received from the ViewModel.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// w<exception cref="ArgumentNullException">Thrown when <paramref name="setValue"/> is <see langword="null"/>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public DelegateOneWayBinder(
             Action<T?> setValue, 
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
@@ -46,18 +46,18 @@ namespace Aspid.MVVM.StarterKit
 
         /// <param name="target">The target object passed as the first argument to <paramref name="setValue"/>.</param>
         /// <param name="setValue">The action invoked with the target and each value received from the ViewModel.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="target"/> or <paramref name="setValue"/> is <see langword="null"/>.
         /// </exception>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public DelegateOneWayBinder(
             TTarget target,
             Action<TTarget, T?> setValue,
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
             _target = target ?? throw new ArgumentNullException(nameof(target));
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }

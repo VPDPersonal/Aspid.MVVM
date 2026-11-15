@@ -131,7 +131,8 @@ public interface IBinderAdder
 
 ### 3. Биндер регистрируется
 
-`Binder.Bind(IBinderAdder)` вызывает `binderAdder.Add(this)`:
+`Binder.Bind(in BindContext)` сохраняет владельца `context.Owner` и вызывает `context.Adder.Add(this)`:
+
 - Биндер подписывается на событие `Changed` у `BindableMember`
 - Биндер сразу получает текущее значение через `SetValue`
 

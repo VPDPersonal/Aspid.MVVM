@@ -34,12 +34,12 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             if (Element is not null) Element.clicked -= Execute;
 
             SetValue(null);
-            base.OnUnbound();
+            base.OnDetach();
         }
 
         private void Execute() =>

@@ -43,7 +43,7 @@ namespace Aspid.MVVM.Tests
             var binder = new ValueOneTimeBinder<int>(0);
             var member = new OneWayBindableMember<int>(1);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             member.Value = 2;
 
             Assert.AreEqual(1, binder.Value, "A second push must not reach a OneTime binder.");

@@ -19,28 +19,28 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private IConverter<T?, T?>? _converter;
 
         /// <param name="value">The initial value.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public ValueOneWayBinder(
             T? value = default,
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
             _value = value;
         }
 
         /// <param name="value">The initial value.</param>
         /// <param name="converter">The converter applied to each incoming value, or <see langword="null"/> to store it unchanged.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public ValueOneWayBinder(
             T? value,
             IConverter<T?, T?>? converter, 
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _value = value;
             _converter = converter;

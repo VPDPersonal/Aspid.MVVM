@@ -47,7 +47,7 @@ namespace Aspid.MVVM.Tests
         {
             var member = new OneTimeBindableMember<string>("old");
             var firstValues = new List<string?>();
-            new DelegateOneTimeBinder<string>(firstValues.Add).Bind(member);
+            new DelegateOneTimeBinder<string>(firstValues.Add).Bind(new BindContext(member, firstValues));
 
             member.Value = "new";
 
@@ -58,7 +58,7 @@ namespace Aspid.MVVM.Tests
         private static T? Push<T>(IReadOnlyValueBindableMember<T> member)
         {
             var received = new List<T?>();
-            new DelegateOneTimeBinder<T>(received.Add).Bind(member);
+            new DelegateOneTimeBinder<T>(received.Add).Bind(new BindContext(member, received));
 
             Assert.AreEqual(1, received.Count);
             return received[0];

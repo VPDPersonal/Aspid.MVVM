@@ -12,7 +12,6 @@ namespace Aspid.MVVM
 {
     public abstract partial class MonoBinder : IMonoBinderValidatable, IRebindableBinder
     {
-        #region View Fields
         [Tooltip("The View this binder belongs to.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SerializeField] private Component __view;
@@ -20,9 +19,7 @@ namespace Aspid.MVVM
         [Tooltip("The last non-empty View, kept to detect a lost reference.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SerializeField] private MonoBinderPreviousView __previousView;
-        #endregion
 
-        #region Id Fields
         [Tooltip("The ID of the View field this binder is bound through.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SerializeField] private string __id;
@@ -30,39 +27,37 @@ namespace Aspid.MVVM
         [Tooltip("The last non-empty ID, kept to detect a renamed field.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SerializeField] private MonoBinderPreviousId __previousId;
-        #endregion
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NonSerialized] private LastData? __bindData;
 
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        bool IMonoBinderValidatable.IsMonoAlive => this;
+        bool IMonoBinderValidatable.IsAlive => IsAlive;
 
-        #region View Properties
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         IView IMonoBinderValidatable.View => __view as IView;
 
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         MonoBinderPreviousView IMonoBinderValidatable.PreviousView => __previousView;
-        #endregion
 
-        #region Id Properties
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        string IMonoBinderValidatable.Id => __id;
+        string IMonoBinderValidatable.Id => __id ?? string.Empty;
 
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         MonoBinderPreviousId IMonoBinderValidatable.PreviousId => __previousId;
-        #endregion
 
-        #region Bound Handlers
-        partial void OnBoundDebug(IBinderAdder binderAdder) =>
-            __bindData = new LastData(Mode, binderAdder);
+        partial void OnBoundDebug(in BindContext context) =>
+            __bindData = new LastData(Mode, in context);
 
         partial void OnUnboundDebug() =>
             __bindData = null;
-        #endregion
 
-        #region Set Methods
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IMonoBinderValidatable.SetView(IView view)
         {
@@ -79,7 +74,7 @@ namespace Aspid.MVVM
         [EditorBrowsable(EditorBrowsableState.Never)]
         private void SetViewInternal(IView view)
         {
-            if (!((IMonoBinderValidatable)this).IsMonoAlive) return;
+            if (!IsAlive) return;
 
             var componentView = view as Component;
             if (__view == componentView) return;
@@ -92,6 +87,7 @@ namespace Aspid.MVVM
             SaveBinderDataInEditor();
         }
 
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IMonoBinderValidatable.SetId(string id)
         {
@@ -108,7 +104,7 @@ namespace Aspid.MVVM
         [EditorBrowsable(EditorBrowsableState.Never)]
         private void SetIdInternal(string id)
         {
-            if (!((IMonoBinderValidatable)this).IsMonoAlive) return;
+            if (!IsAlive) return;
             if (__id == id) return;
 
             __previousId = string.IsNullOrWhiteSpace(id)
@@ -118,27 +114,32 @@ namespace Aspid.MVVM
             __id = id;
             SaveBinderDataInEditor();
         }
-        #endregion
 
-        #region Reset Methods
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IMonoBinderValidatable.ResetView(MonoBinderResetMode mode)
         {
             SetViewInternal(null);
 
             if (mode is MonoBinderResetMode.Hard)
+            {
                 __previousView = default;
+                SaveBinderDataInEditor();
+            }
         }
 
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IMonoBinderValidatable.ResetId(MonoBinderResetMode mode)
         {
             SetIdInternal(string.Empty);
 
             if (mode is MonoBinderResetMode.Hard)
+            {
                 __previousId = default;
+                SaveBinderDataInEditor();
+            }
         }
-        #endregion
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IRebindableBinder.Rebind()
@@ -149,10 +150,18 @@ namespace Aspid.MVVM
                 var currentMode = Mode;
 
                 _mode = cachedData.Mode;
-                Unbind();
+                try
+                {
+                    Unbind(new UnbindContext(cachedData.Context.Owner));
+                }
+                finally
+                {
+                    if (_state is BinderState.Unbound)
+                        _mode = currentMode;
+                }
 
-                _mode = currentMode;
-                Bind(cachedData.Adder);
+                if (_state is not BinderState.Unbound) return;
+                Bind(in cachedData.Context);
             }
         }
 
@@ -160,7 +169,7 @@ namespace Aspid.MVVM
         private void SaveBinderDataInEditor()
         {
             if (Application.isPlaying) return;
-            if (!((IMonoBinderValidatable)this).IsMonoAlive) return;
+            if (!IsAlive) return;
 
             UnityEditor.EditorUtility.SetDirty(target: this);
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
@@ -170,12 +179,14 @@ namespace Aspid.MVVM
         private readonly struct LastData
         {
             public readonly BindMode Mode;
-            public readonly IBinderAdder Adder;
+            public readonly BindContext Context;
 
-            public LastData(BindMode mode, IBinderAdder adder)
+            public LastData(
+                BindMode mode,
+                in BindContext context)
             {
                 Mode = mode;
-                Adder = adder;
+                Context = context;
             }
         }
     }

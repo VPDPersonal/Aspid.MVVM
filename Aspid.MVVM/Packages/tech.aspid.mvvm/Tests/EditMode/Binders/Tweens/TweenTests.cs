@@ -54,16 +54,16 @@ namespace Aspid.MVVM.Tests
             var (binder, received) = NewFloatTween(duration: 1f);
             var member = new OneWayStructBindableMember<float>(0f);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             ((IBinder<float>)binder).SetValue(0.5f);
-            binder.Unbind();
+            binder.Unbind(new UnbindContext(binder));
 
             received.Clear();
 
             // Re-binding publishes the member's value on its own. It must pass through instantly, like the
             // first value after binding — otherwise it would ease instead, and nothing would show up here
             // since Update does not run in an EditMode test.
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(new List<float> { 0f }, received, "The tween state was not reset after unbinding");
         }

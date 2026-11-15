@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Diagnostics;
 
@@ -6,19 +5,32 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor-only marker that opens a collapsible foldout starting at the decorated binder field.
-    /// The foldout continues until either <see cref="HeaderGroupEndAttribute"/>, another
-    /// <see cref="HeaderGroupAttribute"/> / <see cref="HeaderGroupStartAttribute"/>,
-    /// or the end of the inspector list is reached.
-    /// Stripped from builds outside of <c>DEBUG</c> and <c>UNITY_EDITOR</c> configurations.
+    /// Starts a foldout range at the decorated member.
     /// </summary>
+    /// <remarks>
+    /// The range ends before HeaderGroupEnd or is replaced by another HeaderGroupStart. HeaderGroup affects only its own member.
+    /// Attribute applications are omitted unless <c>DEBUG</c> or <c>UNITY_EDITOR</c> is defined.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [HeaderGroupStart("Stats")]
+    /// [Bind] private int _health;
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method)]
     public sealed class HeaderGroupStartAttribute : Attribute
     {
+        /// <summary>
+        /// Gets the foldout title.
+        /// </summary>
         public string Title { get; }
 
+        /// <summary>
+        /// Creates a grouping attribute with the supplied title.
+        /// </summary>
+        /// <param name="title">The foldout title; blank titles are ignored.</param>
         public HeaderGroupStartAttribute(string title)
         {
             Title = title;

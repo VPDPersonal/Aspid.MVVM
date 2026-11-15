@@ -131,7 +131,8 @@ public interface IBinderAdder
 
 ### 3. The binder subscribes
 
-`Binder.Bind(IBinderAdder)` calls `binderAdder.Add(this)`:
+`Binder.Bind(in BindContext)` reserves `context.Owner` and calls `context.Adder.Add(this)`:
+
 - The binder subscribes to the `Changed` event of the `BindableMember`
 - The binder immediately receives the current value through `SetValue`
 

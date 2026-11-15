@@ -98,6 +98,14 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         defaultSeverity: DiagnosticSeverity.Info,
         isEnabledByDefault: true);
 
+    private static readonly DiagnosticDescriptor InvalidModes = new(
+        id: "ASPIDSB006",
+        title: "Invalid binding modes",
+        messageFormat: "BindModeOverride on '{0}' must contain a non-null array of declared modes other than None",
+        category: "Aspid.MVVM",
+        defaultSeverity: DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
     /// <inheritdoc/>
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -200,8 +208,11 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
             ? "sealed "
             : string.Empty;
 
+        var guard = Guard(symbol, out diagnostic);
+        if (diagnostic is not null) return null;
+
         return Emit(ns, name, inherited, monoBase.Name, targetBaseName, targetBase, declaration,
-            Guard(symbol), usings, sealedModifier, conditions);
+            guard, usings, sealedModifier, conditions);
     }
 
     /// <summary>
@@ -242,46 +253,54 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
             .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.UseSpecialTypes));
 
-    /// <summary>
-    /// Walks the base chain for the nearest <c>[BindModeOverride]</c> and turns the modes it leaves out into the
-    /// guard the serializable half throws from its constructor.
-    /// </summary>
-    /// <remarks>
-    /// The attribute is <c>[Conditional]</c> and never reaches player metadata, but a generator reads syntax, so the
-    /// restriction is available here and stays a single declaration.
-    /// </remarks>
-    private static string? Guard(INamedTypeSymbol symbol)
+    private static string? Guard(INamedTypeSymbol symbol, out Diagnostic? diagnostic)
     {
+        diagnostic = null;
         for (var type = symbol; type is not null; type = type.BaseType)
         {
             var attribute = type.GetAttributes()
                 .FirstOrDefault(candidate => candidate.AttributeClass?.Name == "BindModeOverrideAttribute");
 
             if (attribute is null) continue;
-            if (attribute.NamedArguments.Any(argument => argument.Key is "IsAll" && argument.Value.Value is true)) return null;
+            if (attribute.AttributeConstructor?.Parameters.FirstOrDefault()?.Type is not IArrayTypeSymbol array
+                || array.ElementType is not INamedTypeSymbol mode) return null;
 
-            var allowed = attribute.ConstructorArguments.Length is 0
-                ? default
-                : attribute.ConstructorArguments[0].Values;
-
-            if (allowed.IsDefaultOrEmpty) return null;
-            if (allowed[0].Type is not INamedTypeSymbol mode) return null;
-
-            // Имена берутся из самого символа перечисления: порядок его членов — не наше дело.
             var declared = mode.GetMembers().OfType<IFieldSymbol>()
                 .Where(field => field.HasConstantValue && !Equals(field.ConstantValue, 0))
                 .ToDictionary(field => field.ConstantValue!, field => field.Name);
 
-            var names = allowed
-                .Where(argument => argument.Value is not null && declared.ContainsKey(argument.Value))
-                .Select(argument => declared[argument.Value!])
-                .ToArray();
+            var argument = attribute.ConstructorArguments.FirstOrDefault();
+            if (argument.Kind is not TypedConstantKind.Array || argument.IsNull
+                || argument.Values.Any(value => value.Value is null || !declared.ContainsKey(value.Value)))
+            {
+                var location = attribute.ApplicationSyntaxReference?.GetSyntax().GetLocation() ?? symbol.Locations.FirstOrDefault();
+                diagnostic = Diagnostic.Create(InvalidModes, location, type.Name);
+                return null;
+            }
+
+            var names = new HashSet<string>(argument.Values.Select(value => declared[value.Value!]));
+            var isAll = attribute.NamedArguments.Any(value => value.Key is "IsAll" && value.Value.Value is true);
+            var isOne = attribute.NamedArguments.Any(value => value.Key is "IsOne" && value.Value.Value is true);
+            var isTwo = attribute.NamedArguments.Any(value => value.Key is "IsTwo" && value.Value.Value is true);
+
+            if (isAll || (!isOne && !isTwo && names.Count is 0)) return null;
+            if (isOne)
+            {
+                names.Add("OneWay");
+                names.Add("OneTime");
+            }
+
+            if (isTwo)
+            {
+                names.Add("TwoWay");
+                names.Add("OneWayToSource");
+            }
 
             var missing = declared.Values.Where(candidate => !names.Contains(candidate)).ToArray();
             if (missing.Length is 0) return null;
 
             return string.Join("\n            ",
-                missing.Select(item => $"mode.ThrowExceptionIfMatches(BindMode.{item});"));
+                missing.Select(item => $"mode.EnsureNot(BindMode.{item});"));
         }
 
         return null;

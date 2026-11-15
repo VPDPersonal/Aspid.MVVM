@@ -305,6 +305,14 @@ viewModel.NotifyAll();
 
 ---
 
+## Generator validation
+
+Use one bind attribute per member. Invalid modes, invalid `[Access]` values and empty or missing `[BindAlso]` targets produce errors `ASPIDVM001` to `ASPIDVM003`. A valid mode that the member cannot support is still skipped, with warning `ASPIDVM006`.
+
+`FindBindableMemberParameters` requires a non-null ID that is not empty or whitespace; a `default` query is invalid. It remains a `readonly ref struct`, so it cannot be boxed. Both `DisposeViewModel()` overloads reject null.
+
+---
+
 ## See also
 
 - [Binding Modes](03-binding-modes.md), details of `BindMode`

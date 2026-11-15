@@ -49,7 +49,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
             if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
 
@@ -57,14 +57,22 @@ namespace Aspid.MVVM.StarterKit
             if (element is null) return;
 
             element.RegisterValueChangedCallback(OnFieldChanged);
-            if (Mode is BindMode.OneWayToSource) ValueChanged?.Invoke(element.value);
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnBound()
+        {
+            if (Mode is not BindMode.OneWayToSource) return;
+            var element = Element;
+            if (element is not null)
+                ValueChanged?.Invoke(element.value);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDetach()
         {
             if (Element is not null) Element.UnregisterValueChangedCallback(OnFieldChanged);
-            base.OnUnbound();
+            base.OnDetach();
         }
 
         private void OnFieldChanged(ChangeEvent<string> changed)

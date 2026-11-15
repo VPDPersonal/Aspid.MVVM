@@ -10,6 +10,7 @@
 - [CanExecute](#canexecute)
 - [Параметризованные команды](#параметризованные-команды)
 - [Ручное создание](#ручное-создание)
+- [Привязка параметров команды](#привязка-параметров-команды)
 - [RelayCommand.Empty](#relaycommandempty)
 
 ---
@@ -204,6 +205,27 @@ public partial class ManualCommandViewModel
 
 ---
 
+## Привязка параметров команды
+
+`CreateCommandWithoutParameters` сохраняет аргументы перед передачей команды биндеру кнопки без параметров:
+
+```csharp
+bool available = true;
+var select = new RelayCommand<int>(id => Debug.Log(id), _ => available);
+IRelayCommand selectFirst = select.CreateCommandWithoutParameters(1);
+
+available = false;
+select.NotifyCanExecuteChanged();
+```
+
+Адаптер передаёт `CanExecuteChanged`, указывая себя отправителем. Кнопка, привязанная к `selectFirst`, получает изменения исходной `select`. Подписка на источник создаётся с первым слушателем адаптера и снимается после удаления последнего. Собственные слушатели нужно отписывать, когда они больше не нужны.
+
+`Execute` напрямую вызывает источник с сохранёнными аргументами; сама исходная команда определяет, проверяет ли выполнение `CanExecute`. При оборачивании `RelayCommand` предикат вычисляется один раз на выполнение.
+
+Отсутствующий источник вызывает `ArgumentNullException` при создании адаптера. Для необязательной команды используйте `CreateCommandWithoutParametersOrEmpty` или `CreateCommandWithoutParametersOrEmptyExecution`.
+
+---
+
 ## RelayCommand.Empty
 
 Статические заглушки для случаев, когда команда не нужна:
@@ -237,6 +259,8 @@ private void Save() { /* ... */ }
 Подробнее: [ButtonCommandBinder](StarterKit/button-command-binders.md).
 
 ---
+
+Метод принимает один `[RelayCommand]` и должен быть необобщённым `void` с максимум четырьмя параметрами по значению (`ASPIDVM005`). Явно указанный `CanExecute` должен ссылаться на доступный bool-геттер или совместимый bool-метод; иначе генерация завершается ошибкой `ASPIDVM004`. Опечатка в предикате не разрешает выполнение команды молча.
 
 ## См. также
 

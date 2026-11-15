@@ -93,6 +93,12 @@ Deinitializes every acquired view, including a partially initialized view.
 protected void DeinitializeViews()
 ```
 
+#### Exceptions
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Multiple views fail to deinitialize.
+
 ### InitializeViews\(IViewModel\) {#Aspid_MVVM_StarterKit_ViewInitializerBase_InitializeViews_Aspid_MVVM_IViewModel_}
 
 Initializes the resolved views and rolls back only the views acquired by this attempt on failure.

@@ -14,7 +14,8 @@ namespace Aspid.MVVM.StarterKit
         private IViewModel _viewModel;
 
         /// <inheritdoc/>
-        public override IViewModel ViewModel => _viewModel;
+        public override IViewModel ViewModel =>
+            _viewModel;
 
         /// <summary>
         /// Initializes all views with <paramref name="viewModel"/>.
@@ -29,7 +30,10 @@ namespace Aspid.MVVM.StarterKit
 
             _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
-            try { InitializeViews(viewModel); }
+            try
+            {
+                InitializeViews(viewModel);
+            }
             catch
             {
                 _viewModel = null;
@@ -40,10 +44,17 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Deinitializes all views. Does nothing when they are not initialized.
         /// </summary>
+        /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
         public void Deinitialize()
         {
-            try { DeinitializeViews(); }
-            finally { _viewModel = null; }
+            try
+            {
+                DeinitializeViews();
+            }
+            finally
+            {
+                _viewModel = null;
+            }
         }
     }
 }

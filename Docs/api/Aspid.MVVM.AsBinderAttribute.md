@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
 Assembly: Aspid.MVVM.dll  
 
-Wraps the field or property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder of [`AsBinderAttribute.Type`](Aspid.MVVM.AsBinderAttribute.md#Aspid_MVVM_AsBinderAttribute_Type), created with the member as its first
-constructor argument.
+Wraps a field or readable property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder, passing the member as its first constructor argument.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
@@ -44,7 +43,7 @@ public sealed class AsBinderAttribute : Attribute
 
 ## Remarks
 
-For an array, creates one binder per element.
+For an array, creates one binder per element; invalid types or constructor arguments produce generator errors.
 
 ## Constructors
 
@@ -53,6 +52,7 @@ For an array, creates one binder per element.
 Creates an attribute that wraps the member in a binder of <code class="paramref">type</code>.
 
 ```csharp
+[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 public AsBinderAttribute(Type type, params object[] arguments)
 ```
 
@@ -60,12 +60,22 @@ public AsBinderAttribute(Type type, params object[] arguments)
 
 `type` [Type](https://learn.microsoft.com/dotnet/api/system.type)
 
-The binder type: a non-abstract [`IBinder`](Aspid.MVVM.IBinder.md); any other type skips the member.
+An accessible, non-abstract, closed type implementing [`IBinder`](Aspid.MVVM.IBinder.md).
 
 `arguments` [object](https://learn.microsoft.com/dotnet/api/system.object)\[\]
 
 The binder constructor arguments that follow the member; a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/operators/nameof">nameof</a> expression passes the named member
 of the View.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">type</code> or <code class="paramref">arguments</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">type</code> is abstract, open generic or does not implement [`IBinder`](Aspid.MVVM.IBinder.md).
 
 ## Fields
 

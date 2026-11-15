@@ -15,7 +15,7 @@ Assembly: Aspid.MVVM.StarterKit.dll
 
 ```csharp
 [Serializable]
-public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>, IRebindableBinder, IIntBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
+public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>, IIntBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
 ```
 
 #### Inheritance
@@ -29,7 +29,6 @@ public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>, IRebindableBin
 
 #### Implements
 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IIntBinder](Aspid.MVVM.StarterKit.IIntBinder.md), 
 [INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md), 
 [IBinder\<int\>](Aspid.MVVM.IBinder-1.md), 
@@ -52,8 +51,8 @@ public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>, IRebindableBin
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<DropdownValueBinder\>\(DropdownValueBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<DropdownValueBinder\>\(DropdownValueBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<DropdownValueBinder\>\(DropdownValueBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
+[BinderExtensions.BindSafely\<DropdownValueBinder\>\(DropdownValueBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_), 
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -61,7 +60,6 @@ public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>, IRebindableBin
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -69,19 +67,22 @@ public class DropdownValueBinder : TargetIntBinder<TMP_Dropdown>, IRebindableBin
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<DropdownValueBinder\>\(DropdownValueBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
-
-## Remarks
-
-Writes use `SetValueWithoutNotify` so the write is not echoed through
-`onValueChanged`.
+[BinderExtensions.UnbindSafely\<DropdownValueBinder\>\(DropdownValueBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Constructors
 
-### DropdownValueBinder\(TMP\_Dropdown, IConverter\<int, int\>?, BindMode\) {#Aspid_MVVM_StarterKit_DropdownValueBinder__ctor_TMPro_TMP_Dropdown_Aspid_MVVM_StarterKit_IConverter_System_Int32_System_Int32__Aspid_MVVM_BindMode_}
+### DropdownValueBinder\(\) {#Aspid_MVVM_StarterKit_DropdownValueBinder__ctor}
+
+Creates a binder without a target for Unity deserialization, preserving silent writes in existing assets.
 
 ```csharp
-public DropdownValueBinder(TMP_Dropdown target, IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
+protected DropdownValueBinder()
+```
+
+### DropdownValueBinder\(TMP\_Dropdown, NotifyMode, IConverter\<int, int\>?, BindMode\) {#Aspid_MVVM_StarterKit_DropdownValueBinder__ctor_TMPro_TMP_Dropdown_Aspid_MVVM_StarterKit_NotifyMode_Aspid_MVVM_StarterKit_IConverter_System_Int32_System_Int32__Aspid_MVVM_BindMode_}
+
+```csharp
+public DropdownValueBinder(TMP_Dropdown target, NotifyMode notifyMode = NotifyMode.Never, IConverter<int, int>? converter = null, BindMode mode = BindMode.OneWay)
 ```
 
 #### Parameters
@@ -89,6 +90,10 @@ public DropdownValueBinder(TMP_Dropdown target, IConverter<int, int>? converter 
 `target` TMP\_Dropdown
 
 The dropdown to bind.
+
+`notifyMode` [NotifyMode](Aspid.MVVM.StarterKit.NotifyMode.md)
+
+When writes from the ViewModel raise `onValueChanged`.
 
 `converter` [IConverter](Aspid.MVVM.StarterKit.IConverter-2.md)\<[int](https://learn.microsoft.com/dotnet/api/system.int32), [int](https://learn.microsoft.com/dotnet/api/system.int32)\>?
 

@@ -57,11 +57,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _stringCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.GetEvent(_updateEvent).AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.GetEvent(_updateEvent).RemoveListener(OnValueChanged);
 
@@ -146,11 +146,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.GetEvent(_updateEvent).AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.GetEvent(_updateEvent).RemoveListener(OnValueChanged);
 
@@ -238,11 +238,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.GetEvent(_updateEvent).AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.GetEvent(_updateEvent).RemoveListener(OnValueChanged);
 
@@ -344,11 +344,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.GetEvent(_updateEvent).AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.GetEvent(_updateEvent).RemoveListener(OnValueChanged);
 

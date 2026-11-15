@@ -51,11 +51,17 @@ namespace Aspid.MVVM.StarterKit
             _command?.NotifyCanExecuteChanged();
 
         /// <inheritdoc/>
+        protected sealed override void OnAttach()
+        {
+            if (_reverseCommand is not null)
+                _command = new RelayCommand(Execute, CanExecute);
+        }
+
+        /// <inheritdoc/>
         protected sealed override void OnBound()
         {
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand(Execute, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else

@@ -1,16 +1,15 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
-// ReSharper disable UnusedParameter.Local
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Wraps the field or property of a <see cref="ViewAttribute">[View]</see> class in a binder of <see cref="Type"/>, created with the member as its first
-    /// constructor argument.
+    /// Wraps a field or readable property of a <see cref="ViewAttribute">[View]</see> class in a binder, passing the member as its first constructor argument.
     /// </summary>
     /// <remarks>
-    /// For an array, creates one binder per element.
+    /// For an array, creates one binder per element; invalid types or constructor arguments produce generator errors.
     /// </remarks>
     /// <example>
     /// <code>
@@ -39,13 +38,25 @@ namespace Aspid.MVVM
         /// <summary>
         /// Creates an attribute that wraps the member in a binder of <paramref name="type"/>.
         /// </summary>
-        /// <param name="type">The binder type: a non-abstract <see cref="IBinder"/>; any other type skips the member.</param>
+        /// <param name="type">An accessible, non-abstract, closed type implementing <see cref="IBinder"/>.</param>
         /// <param name="arguments">
         /// The binder constructor arguments that follow the member; a <see langword="nameof"/> expression passes the named member
         /// of the View.
         /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> or <paramref name="arguments"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="type"/> is abstract, open generic or does not implement <see cref="IBinder"/>.</exception>
+        [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local")]
         public AsBinderAttribute(Type type, params object[] arguments)
         {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+            
+            if (arguments is null)
+                throw new ArgumentNullException(nameof(arguments));
+            
+            if (type.IsAbstract || type.ContainsGenericParameters || !typeof(IBinder).IsAssignableFrom(type))
+                throw new ArgumentException("The binder type must be non-abstract, closed and implement IBinder.", nameof(type));
+
 #if UNITY_EDITOR || DEBUG
             Type = type;
 #endif

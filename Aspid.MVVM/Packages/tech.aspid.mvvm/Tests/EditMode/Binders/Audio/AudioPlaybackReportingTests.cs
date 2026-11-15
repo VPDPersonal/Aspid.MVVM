@@ -58,7 +58,7 @@ namespace Aspid.MVVM.Tests
             var binder = source.gameObject.AddComponent<AudioSourceIsPlayingToSourceMonoBinder>();
 
             var received = new List<bool>();
-            binder.Bind(new OneWayToSourceStructBindableMember<bool>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<bool>(received.Add), binder));
 
             Assert.AreEqual(new List<bool> { false }, received, "The state was not reported on binding");
         }
@@ -79,7 +79,7 @@ namespace Aspid.MVVM.Tests
             var binder = NewIsPlaying(new NegateTwoWay());
 
             var received = new List<bool>();
-            binder.Bind(new OneWayToSourceStructBindableMember<bool>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<bool>(received.Add), binder));
 
             Assert.AreEqual(new List<bool> { true }, received, "The value was not converted back");
         }
@@ -92,7 +92,7 @@ namespace Aspid.MVVM.Tests
             LogAssert.Expect(LogType.Warning, new Regex("converts one way only"));
 
             var received = new List<bool>();
-            binder.Bind(new OneWayToSourceStructBindableMember<bool>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<bool>(received.Add), binder));
 
             Assert.AreEqual(new List<bool> { false }, received, "The forward converter ran towards the ViewModel");
         }

@@ -17,7 +17,7 @@ Assembly: Aspid.MVVM.StarterKit.dll
 [BindModeOverride(new BindMode[] { }, IsAll = true)]
 [AddBinderContextMenu(typeof(TMP_Dropdown), new string[] { "m_Value" })]
 [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown Binder – Value")]
-public class DropdownValueMonoBinder : ComponentIntMonoBinder<TMP_Dropdown>, IMonoBinderValidatable, IRebindableBinder, IIntBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
+public class DropdownValueMonoBinder : ComponentIntMonoBinder<TMP_Dropdown>, IMonoBinderValidatable, IIntBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
 ```
 
 #### Inheritance
@@ -36,7 +36,6 @@ MonoBehaviour ←
 #### Implements
 
 [IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md), 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IIntBinder](Aspid.MVVM.StarterKit.IIntBinder.md), 
 [INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md), 
 [IBinder\<int\>](Aspid.MVVM.IBinder-1.md), 
@@ -59,8 +58,8 @@ MonoBehaviour ←
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<DropdownValueMonoBinder\>\(DropdownValueMonoBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<DropdownValueMonoBinder\>\(DropdownValueMonoBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<DropdownValueMonoBinder\>\(DropdownValueMonoBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
+[BinderExtensions.BindSafely\<DropdownValueMonoBinder\>\(DropdownValueMonoBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_), 
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -68,7 +67,6 @@ MonoBehaviour ←
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -76,12 +74,7 @@ MonoBehaviour ←
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<DropdownValueMonoBinder\>\(DropdownValueMonoBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
-
-## Remarks
-
-Writes use `SetValueWithoutNotify` so the write is not echoed through
-`onValueChanged`. A selection clamped by the dropdown is reported back.
+[BinderExtensions.UnbindSafely\<DropdownValueMonoBinder\>\(DropdownValueMonoBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Properties
 
@@ -99,23 +92,27 @@ protected override sealed int Property { get; set; }
 
 ## Methods
 
-### OnBound\(\) {#Aspid_MVVM_StarterKit_DropdownValueMonoBinder_OnBound}
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_DropdownValueMonoBinder_OnAttach}
 
-Sends the initial property value to the ViewModel in [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
 
 ```csharp
-protected override void OnBound()
+protected override void OnAttach()
 ```
 
 #### Remarks
 
-When overriding, always call <code>base.OnBound()</code>. To change what is sent, override [`ComponentMonoBinder<T1, T2>.SendInitialValueToSource`](Aspid.MVVM.StarterKit.ComponentMonoBinder-2.md#Aspid_MVVM_StarterKit_ComponentMonoBinder_2_SendInitialValueToSource) instead.
+An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
 
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_DropdownValueMonoBinder_OnUnbound}
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_DropdownValueMonoBinder_OnDetach}
 
-Called after unbinding. Override to release a subscription taken in [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound).
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnDetach()
 ```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
 

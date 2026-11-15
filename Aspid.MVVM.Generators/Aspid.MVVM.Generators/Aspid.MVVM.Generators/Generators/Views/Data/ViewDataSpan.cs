@@ -8,6 +8,7 @@ namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly ref struct ViewDataSpan(ViewData viewData)
 {
+    public readonly Compilation Compilation = viewData.Compilation;
     public readonly INamedTypeSymbol Symbol = viewData.Symbol; 
     public readonly Inheritor Inheritor = viewData.Inheritor;
     public readonly TypeDeclarationSyntax Declaration = viewData.Declaration;

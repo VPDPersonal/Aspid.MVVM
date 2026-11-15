@@ -7,16 +7,15 @@ namespace Aspid.MVVM
 {
     public abstract partial class Binder : IRebindableBinder
     {
-        // ReSharper disable once InconsistentNaming
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NonSerialized] private LastData? __bindData;
 
-        partial void OnBoundDebug(IBinderAdder binderAdder) =>
-            __bindData = new LastData(_mode, binderAdder);
+        partial void OnBoundDebug(in BindContext context) =>
+            __bindData = new LastData(_mode, in context);
 
         partial void OnUnboundDebug() =>
             __bindData = null;
-        
+
         /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Never)]
         void IRebindableBinder.Rebind()
@@ -27,23 +26,33 @@ namespace Aspid.MVVM
                 var currentMode = Mode;
 
                 _mode = cachedData.Mode;
-                Unbind();
+                try
+                {
+                    Unbind(new UnbindContext(cachedData.Context.Owner));
+                }
+                finally
+                {
+                    if (_state is BinderState.Unbound)
+                        _mode = currentMode;
+                }
 
-                _mode = currentMode;
-                Bind(cachedData.Adder);
+                if (_state is not BinderState.Unbound) return;
+                Bind(in cachedData.Context);
             }
         }
-        
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         private readonly struct LastData
         {
             public readonly BindMode Mode;
-            public readonly IBinderAdder Adder;
+            public readonly BindContext Context;
 
-            public LastData(BindMode mode, IBinderAdder adder)
+            public LastData(
+                BindMode mode,
+                in BindContext context)
             {
                 Mode = mode;
-                Adder = adder;
+                Context = context;
             }
         }
     }

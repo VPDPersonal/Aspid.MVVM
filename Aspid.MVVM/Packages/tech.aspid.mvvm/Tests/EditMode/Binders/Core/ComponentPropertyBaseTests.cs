@@ -26,7 +26,7 @@ namespace Aspid.MVVM.Tests
             component.Value = new Vector2(3f, 4f);
 
             var received = default(Vector2);
-            binder.Bind(new OneWayToSourceStructBindableMember<Vector2>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<Vector2>(value => received = value), binder));
 
             Assert.AreEqual(new Vector2(3f, 4f), received, "The ViewModel received a value other than the one held by the property");
         }
@@ -35,7 +35,7 @@ namespace Aspid.MVVM.Tests
         public void Vector2MonoBinder_DropsTheZComponentOfAVector3()
         {
             var (component, binder) = NewVector2Binder(BindMode.OneWay);
-            binder.Bind(new OneWayStructBindableMember<Vector2>(Vector2.zero));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Vector2>(Vector2.zero), binder));
 
             ((IBinder<Vector3>)binder).SetValue(new Vector3(1f, 2f, 3f));
 
@@ -46,7 +46,7 @@ namespace Aspid.MVVM.Tests
         public void Vector2MonoBinder_BroadcastsAScalarToBothComponents()
         {
             var (component, binder) = NewVector2Binder(BindMode.OneWay);
-            binder.Bind(new OneWayStructBindableMember<Vector2>(Vector2.zero));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Vector2>(Vector2.zero), binder));
 
             ((IBinder<float>)binder).SetValue(5f);
 
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.Tests
         public void Vector2MonoBinder_ADirectVector2Call_AppliesTheVectorItself()
         {
             var (component, binder) = NewVector2Binder(BindMode.OneWay);
-            binder.Bind(new OneWayStructBindableMember<Vector2>(Vector2.zero));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Vector2>(Vector2.zero), binder));
 
             binder.SetValue(new Vector2(7f, 8f));
 
@@ -77,7 +77,7 @@ namespace Aspid.MVVM.Tests
             var binder = new TestTargetVector2Binder(component, mode: BindMode.OneWayToSource);
             var received = default(Vector2);
 
-            binder.Bind(new OneWayToSourceStructBindableMember<Vector2>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<Vector2>(value => received = value), binder));
 
             Assert.AreEqual(new Vector2(9f, 10f), received, "The ViewModel received a value other than the one held by the property");
         }
@@ -88,7 +88,7 @@ namespace Aspid.MVVM.Tests
         public void QuaternionMonoBinder_ReadsAVector3AsEulerAngles()
         {
             var (component, binder) = NewQuaternionBinder(BindMode.OneWay);
-            binder.Bind(new OneWayStructBindableMember<Quaternion>(Quaternion.identity));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Quaternion>(Quaternion.identity), binder));
 
             ((IBinder<Vector3>)binder).SetValue(new Vector3(0f, 90f, 0f));
 
@@ -100,7 +100,7 @@ namespace Aspid.MVVM.Tests
         public void QuaternionMonoBinder_AppliesAScalarToAllThreeAxes()
         {
             var (component, binder) = NewQuaternionBinder(BindMode.OneWay);
-            binder.Bind(new OneWayStructBindableMember<Quaternion>(Quaternion.identity));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Quaternion>(Quaternion.identity), binder));
 
             ((IBinder<float>)binder).SetValue(30f);
 
@@ -117,7 +117,7 @@ namespace Aspid.MVVM.Tests
             var (component, binder) = NewObjectBinder(BindMode.OneWay);
             var texture = NewTexture();
 
-            binder.Bind(new OneWayBindableMember<Texture2D>(null));
+            binder.Bind(new BindContext(new OneWayBindableMember<Texture2D>(null), binder));
             Destroy(texture);
 
             binder.SetValue(texture);
@@ -135,7 +135,7 @@ namespace Aspid.MVVM.Tests
             Destroy(texture);
 
             var received = new List<Texture2D>();
-            binder.Bind(new OneWayToSourceBindableMember<Texture2D>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceBindableMember<Texture2D>(received.Add), binder));
 
             Assert.AreEqual(1, received.Count, "The ViewModel did not receive a value when the binding was made");
             Assert.IsNull(received[0], "The destroyed object reached the ViewModel as if it were alive");
@@ -147,7 +147,7 @@ namespace Aspid.MVVM.Tests
             var (component, binder) = NewObjectBinder(BindMode.OneWay);
             var texture = NewTexture();
 
-            binder.Bind(new OneWayBindableMember<Texture2D>(null));
+            binder.Bind(new BindContext(new OneWayBindableMember<Texture2D>(null), binder));
             binder.SetValue(texture);
 
             Assert.AreSame(texture, component.Value, "The live object did not reach the property");
@@ -160,7 +160,7 @@ namespace Aspid.MVVM.Tests
             var texture = NewTexture();
             var binder = new TestTargetObjectBinder(component, mode: BindMode.OneWay);
 
-            binder.Bind(new OneWayBindableMember<Texture2D>(null));
+            binder.Bind(new BindContext(new OneWayBindableMember<Texture2D>(null), binder));
             Destroy(texture);
 
             binder.SetValue(texture);
@@ -179,7 +179,7 @@ namespace Aspid.MVVM.Tests
         {
             var binder = Spawn<TransformRotationMonoBinder>();
 
-            binder.Bind(new OneWayStructBindableMember<Quaternion>(Quaternion.identity));
+            binder.Bind(new BindContext(new OneWayStructBindableMember<Quaternion>(Quaternion.identity), binder));
 
             ((IBinder<Vector3>)binder).SetValue(new Vector3(0f, 45f, 0f));
             Assert.AreEqual(Quaternion.Euler(0f, 45f, 0f).eulerAngles, binder.transform.rotation.eulerAngles,

@@ -15,7 +15,7 @@ Assembly: Aspid.MVVM.StarterKit.dll
 
 ```csharp
 [Serializable]
-public class SpriteRendererSpriteBinder : TargetBinder<SpriteRenderer, Sprite>, IRebindableBinder, IBinder<Sprite>, IReverseBinder<Sprite>, IBinder<Texture2D>, IBinder
+public class SpriteRendererSpriteBinder : TargetBinder<SpriteRenderer, Sprite>, IBinder<Sprite>, IReverseBinder<Sprite>, IBinder<Texture2D>, IBinder
 ```
 
 #### Inheritance
@@ -28,7 +28,6 @@ public class SpriteRendererSpriteBinder : TargetBinder<SpriteRenderer, Sprite>, 
 
 #### Implements
 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IBinder\<Sprite\>](Aspid.MVVM.IBinder-1.md), 
 [IReverseBinder\<Sprite\>](Aspid.MVVM.IReverseBinder-1.md), 
 [IBinder\<Texture2D\>](Aspid.MVVM.IBinder-1.md), 
@@ -37,8 +36,8 @@ public class SpriteRendererSpriteBinder : TargetBinder<SpriteRenderer, Sprite>, 
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<SpriteRendererSpriteBinder\>\(SpriteRendererSpriteBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<SpriteRendererSpriteBinder\>\(SpriteRendererSpriteBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<SpriteRendererSpriteBinder\>\(SpriteRendererSpriteBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
+[BinderExtensions.BindSafely\<SpriteRendererSpriteBinder\>\(SpriteRendererSpriteBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_), 
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -46,7 +45,6 @@ public class SpriteRendererSpriteBinder : TargetBinder<SpriteRenderer, Sprite>, 
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -54,7 +52,7 @@ public class SpriteRendererSpriteBinder : TargetBinder<SpriteRenderer, Sprite>, 
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<SpriteRendererSpriteBinder\>\(SpriteRendererSpriteBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<SpriteRendererSpriteBinder\>\(SpriteRendererSpriteBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Remarks
 
@@ -115,13 +113,17 @@ protected override sealed Sprite Property { get; set; }
 
 ## Methods
 
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_SpriteRendererSpriteBinder_OnUnbound}
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_SpriteRendererSpriteBinder_OnDetach}
 
-Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnDetach()
 ```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
 
 ### SetValue\(Texture2D\) {#Aspid_MVVM_StarterKit_SpriteRendererSpriteBinder_SetValue_UnityEngine_Texture2D_}
 

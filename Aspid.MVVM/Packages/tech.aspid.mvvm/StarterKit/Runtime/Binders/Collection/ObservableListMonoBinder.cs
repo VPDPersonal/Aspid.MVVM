@@ -49,7 +49,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Unsubscribes from the bound list and resets the View.
         /// </summary>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             DeinitializeList();
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace Aspid.MVVM.Tests
 
             var initial = toggle.isOn;
             var received = new List<bool>();
-            binder.Bind(new OneWayToSourceStructBindableMember<bool>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<bool>(received.Add), binder));
 
             Assert.AreEqual(new[] { initial }, received, "The initial value did not reach the ViewModel");
 
@@ -44,7 +44,7 @@ namespace Aspid.MVVM.Tests
             var (binder, slider) = Rebuild(original, new SliderValueBinder(original, mode: BindMode.OneWayToSource));
 
             var received = new List<float>();
-            binder.Bind(new OneWayToSourceStructBindableMember<float>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<float>(received.Add), binder));
 
             Assert.AreEqual(new[] { 0f }, received, "The initial value did not reach the ViewModel");
 
@@ -61,7 +61,7 @@ namespace Aspid.MVVM.Tests
 
             var initial = field.text;
             var received = new List<string>();
-            binder.Bind(new OneWayToSourceBindableMember<string>(received.Add));
+            binder.Bind(new BindContext(new OneWayToSourceBindableMember<string>(received.Add), binder));
 
             Assert.AreEqual(new[] { initial }, received, "The initial value did not reach the ViewModel");
 

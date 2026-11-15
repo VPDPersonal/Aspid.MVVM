@@ -44,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            mode.EnsureNot(BindMode.TwoWay);
 
             _stringReference.TableEntryReference = entry;
             _formatArguments = formatArguments ?? _formatArguments;
@@ -70,9 +70,9 @@ namespace Aspid.MVVM.StarterKit
         /// Unsubscribes from <see cref="LocalizedString.StringChanged"/>.
         /// </summary>
         /// <remarks>
-        /// When overriding, always call <c>base.OnUnbound()</c>.
+        /// When overriding, always call <c>base.OnDetach()</c>.
         /// </remarks>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             _stringReference.Unsubscribe(UpdateString);
 
         /// <summary>

@@ -43,6 +43,8 @@ Binder (абстрактный, не MonoBehaviour)
 | `IVectorBinder` | `SetValue(Vector3)` |
 | `INumberReverseBinder` | Обратная привязка для числовых типов |
 
+Все интерфейсы биндеров наследуют `IBinder.IsBound`. Собственная реализация устанавливает его при успешной привязке, оставляет false при пропуске или откате попытки и сбрасывает при очистке. Привязка `OneTime` остаётся логически активной до `Unbind()`, даже без постоянной подписки. `Binder` и `MonoBinder` управляют этим состоянием автоматически.
+
 ### IBinder\<T\> — основной интерфейс
 
 ```csharp
@@ -78,13 +80,15 @@ public abstract class Binder
     public virtual bool CanBind => true;  // Можно отключить привязку
     public bool IsBound { get; }         // Привязан ли сейчас
 
-    public void Bind(IBinderAdder binderAdder);   // Привязка
-    public void Unbind();                          // Отвязка
+    public void Bind(in BindContext context);
+    public void Unbind(in UnbindContext context);
 
     // Виртуальные хуки:
     protected virtual void OnBinding() { }
+    protected virtual void OnAttach() { }
     protected virtual void OnBound() { }
     protected virtual void OnUnbinding() { }
+    protected virtual void OnDetach() { }
     protected virtual void OnUnbound() { }
 }
 ```
@@ -107,7 +111,38 @@ public abstract class MonoBinder : MonoBehaviour
 
 Runtime `AddComponent` использует `DefaultMode` биндера без Editor `Reset`. Настройте `binder.Mode` до привязки; setter запрещает изменения во время привязки и в привязанном состоянии. Сохранённые режимы не меняются.
 
-При ошибке `Bind` cleanup-хуки вызываются для частично завершённой попытки. `OnUnbinding` и `OnUnbound` должны допускать отсутствие ресурсов. `Unbind` завершает снятие подписок и сбрасывает `IsBound` даже при исключении в hook, затем повторно выбрасывает первую ошибку.
+`Binder.Bind` и `MonoBinder.Bind` выбрасывают `InvalidOperationException` при повторной или рекурсивной привязке, сохраняя существующее подключение. Все перегрузки `BindSafely` / `UnbindSafely`, включая одиночные биндеры, логируют исключения без повторного выбрасывания. Генерируемые View продолжают инициализацию после ошибки отдельного биндера; ошибка в lifecycle-hook самой View по-прежнему вызывает откат.
+
+Жизненный цикл использует четыре отдельных состояния: `Unbound`, `Binding`, `Bound` и `Unbinding`. Установка проходит через `OnBinding → Adder.Add → OnAttach → Bound → OnBound`. `OnAttach` устанавливает обратные подписки после первого значения из ViewModel, пока `IsBound == false`. `OnBound` уведомляет о готовности и отправляет начальное значение для `OneWayToSource`, когда `IsBound == true`.
+
+Ошибка установки до `Bound` запускает очистку частично приобретённых ресурсов. `OnUnbinding` и `OnDetach` должны допускать отсутствие ресурсов. Ошибка из `OnBound` распространяется выше без отката завершённой привязки.
+
+Освобождение проходит через `Unbinding → OnUnbinding → Remove → OnDetach → Unbound → OnUnbound`. С начала очистки `IsBound == false`, но из `OnUnbinding` ещё можно отправить последнее значение. `OnDetach` освобождает подписки и ресурсы до сброса `Owner`; `OnUnbound` вызывается уже без владельца. Все шаги очистки выполняются даже после ошибки, затем одна ошибка пробрасывается исходной, а несколько собираются в `AggregateException`.
+
+Каждый активный binder принадлежит одному владельцу. `BindContext` содержит `IBinderAdder Adder` и `object Owner`; `UnbindContext` содержит `object Owner`. Оба контекста являются `readonly struct`. Владельцем может быть View, составной binder или другой объект, отвечающий за очистку. `Unbind` сравнивает владельца через `ReferenceEquals` и ничего не делает для другого экземпляра: `Equals` и `GetHashCode` не используются.
+
+```csharp
+binder.Bind(new BindContext(member, owner));
+binder.Unbind(new UnbindContext(owner));
+```
+
+`BindSafely` принимает `in BindContext` для найденного члена. Перегрузки с `FindBindableMemberResult` принимают результат и `owner`, создавая контекст только при успешном поиске. `UnbindSafely` принимает `in UnbindContext`; для диагностики используется владелец из контекста. Наследники могут использовать защищённое свойство `Owner`. Новый `Bind` разрешён только из `Unbound`; менять `Mode` можно только в этом состоянии. `Unbind` владельцем из `OnBinding`, первоначального `SetValue` или `OnAttach` запрещён, пока установка не завершена. Из `OnBound` можно отвязать и снова привязать биндер, а из `OnUnbound` сразу выполнить новый `Bind`. После вызова внешнего кода уведомление не должно менять ресурсы предыдущей привязки. Debug Rebind сохраняет владельца; уничтожение `MonoBinder` автоматически освобождает его подписки.
+
+Один контекст можно передать всей коллекции:
+
+```csharp
+var context = new BindContext(member, owner);
+binders.BindSafely(in context, memberName: "_values");
+
+var unbindContext = new UnbindContext(this);
+binders.UnbindSafely(in unbindContext, memberName: "_values");
+```
+
+Сгенерированные View вызывают `IBinder.Unbind(in context)` напрямую для одиночного биндера и `BinderExtensions.Unbind(collection, in context)` для коллекций. Для одиночного биндера расширение `Unbind` не требуется. Очистка пропускает null-ссылки, обрабатывает остальные биндеры после ошибок и затем пробрасывает исходное исключение или `AggregateException` при нескольких ошибках. Список привязок не хранится.
+
+Ошибки очистки собираются на уровнях `Binder` / `MonoBinder`, коллекций, групп `MonoView`, сгенерированной View и инициализаторов. Одна ошибка сохраняет свой экземпляр и stack trace; несколько возвращаются в `AggregateException`. Для вложенных агрегатов используйте `exception.Flatten().InnerExceptions`. Список ошибок создаётся только при второй ошибке; успешный путь не получает дополнительных аллокаций от агрегации. При неудачной установке `Bind` и инициализации View первоначальная ошибка сохраняет приоритет над ошибками отката.
+
+В `BindSafely(IEnumerable<T>)` и `UnbindSafely(IEnumerable<T>)` ошибки обхода и освобождения перечислителя также передаются вызывающему коду: одна сохраняет экземпляр и stack trace, одновременные ошибки обхода и `Dispose` собираются в `AggregateException`. Ошибки самих биндеров остаются отдельными записями в логе и не входят в этот агрегат. Успешные операции над предыдущими элементами не откатываются. При неудачном поиске члена коллекция не перечисляется.
 
 ---
 
@@ -258,6 +293,8 @@ public class UniversalBinder : MonoBinder { }
 ```
 
 Если биндер не поддерживает обратную привязку (нет `IReverseBinder<T>`), ограничьте TwoWay и OneWayToSource.
+
+`IsOne = true` добавляет `OneWay` и `OneTime`, а `IsTwo = true` добавляет `TwoWay` и `OneWayToSource`. Обе группы объединяются с явным списком. `[GenerateSerializableBinder]` применяет то же ограничение к сгенерированному конструктору. Null-список, `None` и неопределённые режимы недопустимы; для некорректного объявления override генератор сообщает `ASPIDSB006`.
 
 ---
 

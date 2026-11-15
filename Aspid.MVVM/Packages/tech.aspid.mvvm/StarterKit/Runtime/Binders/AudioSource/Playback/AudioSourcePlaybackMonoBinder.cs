@@ -70,11 +70,17 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent && CachedComponent.gameObject.activeInHierarchy;
 
         /// <inheritdoc/>
+        protected sealed override void OnAttach()
+        {
+            if (_reverseCommand is not null)
+                _command = new RelayCommand(Execute, CanExecute);
+        }
+
+        /// <inheritdoc/>
         protected sealed override void OnBound()
         {
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand(Execute, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else

@@ -43,7 +43,7 @@ namespace Aspid.MVVM.StarterKit
         protected AnimatorSetParameterBinder(Animator target, string parameterName, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            mode.EnsureNot(BindMode.TwoWay);
             ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
         }
 
@@ -79,13 +79,20 @@ namespace Aspid.MVVM.StarterKit
             SetParameterChecked(value);
 
         /// <inheritdoc/>
+        protected sealed override void OnAttach()
+        {
+            if (Mode is not BindMode.OneWayToSource) return;
+            if (_reverseCommand is not null)
+                _command = new RelayCommand<T>(SetParameterChecked, CanExecute);
+        }
+
+        /// <inheritdoc/>
         protected sealed override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
 
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand<T>(SetParameterChecked, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else

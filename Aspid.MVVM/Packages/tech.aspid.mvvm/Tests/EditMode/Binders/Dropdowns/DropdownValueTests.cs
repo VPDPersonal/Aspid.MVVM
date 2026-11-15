@@ -21,7 +21,7 @@ namespace Aspid.MVVM.Tests
             var received = new List<int>();
 
             ((IReverseBinder<int>)binder).ValueChanged += received.Add;
-            binder.Bind(new TwoWayStructBindableMember<int>(0, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<int>(0, _ => { }), binder));
 
             dropdown.value = 2;
 
@@ -37,7 +37,7 @@ namespace Aspid.MVVM.Tests
         {
             var (dropdown, binder) = NewDropdown(BindMode.TwoWay);
 
-            binder.Bind(new TwoWayStructBindableMember<int>(0, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<int>(0, _ => { }), binder));
 
             var received = new List<int>();
             ((IReverseBinder<int>)binder).ValueChanged += received.Add;
@@ -57,7 +57,7 @@ namespace Aspid.MVVM.Tests
         {
             var (dropdown, binder) = NewDropdown(BindMode.TwoWay);
 
-            binder.Bind(new TwoWayStructBindableMember<int>(0, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<int>(0, _ => { }), binder));
 
             var received = new List<int>();
             ((IReverseBinder<int>)binder).ValueChanged += received.Add;
@@ -75,7 +75,7 @@ namespace Aspid.MVVM.Tests
             var received = new List<int>();
 
             ((IReverseBinder<int>)binder).ValueChanged += received.Add;
-            binder.Bind(new TwoWayStructBindableMember<int>(0, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<int>(0, _ => { }), binder));
 
             dropdown.value = 2;
 

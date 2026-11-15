@@ -27,6 +27,10 @@ namespace Aspid.MVVM.StarterKit
         protected override BindMode DefaultMode => BindMode.OneWayToSource;
 
         /// <inheritdoc/>
+        protected override void OnAttach() =>
+            _wasPlaying = CachedComponent.isPlaying;
+
+        /// <inheritdoc/>
         protected override void OnBound()
         {
             if (_converter is not (null or ITwoWayConverter<bool, bool>))
@@ -36,7 +40,6 @@ namespace Aspid.MVVM.StarterKit
                     consequence: "Values sent back to the ViewModel are not converted.");
             }
 
-            _wasPlaying = CachedComponent.isPlaying;
             Raise(_wasPlaying);
         }
 

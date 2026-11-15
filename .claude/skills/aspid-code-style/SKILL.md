@@ -46,6 +46,7 @@ The single deviation from StyleCop: auto-properties sit above the constructor. W
 ## Methods and expressions
 
 - Method parameters go one per line only when the signature exceeds 120 columns.
+- Wrapped conditions put `&&` and `||` at the beginning of the continuation line, before the next operand.
 - Short guard `if` with `return` on one line: `if (!IsMissing(value)) return value;`
 - Brace-less `if` whose body is an action (assignment, call): body on the next line, indented. One line only for `return`.
 - `if` whose body is a single multi-line `return …(` … `)` gets braces.

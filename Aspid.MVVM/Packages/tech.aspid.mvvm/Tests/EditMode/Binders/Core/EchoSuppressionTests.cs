@@ -28,7 +28,7 @@ namespace Aspid.MVVM.Tests
 
             var received = new List<bool>();
             ((IReverseBinder<bool>)binder).ValueChanged += value => received.Add(value);
-            binder.Bind(new TwoWayStructBindableMember<bool>(false, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<bool>(false, _ => { }), binder));
 
             // Removed by reference: RemoveAllListeners would also drop the binder's own listener.
             UnityEngine.Events.UnityAction<bool> thrower = _ => throw new InvalidOperationException("unrelated listener");
@@ -55,7 +55,7 @@ namespace Aspid.MVVM.Tests
 
             var received = new List<float>();
             ((IReverseBinder<float>)binder).ValueChanged += value => received.Add(value);
-            binder.Bind(new TwoWayStructBindableMember<float>(0f, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<float>(0f, _ => { }), binder));
 
             // Removed by reference: RemoveAllListeners would also drop the binder's own listener.
             UnityEngine.Events.UnityAction<float> thrower = _ => throw new InvalidOperationException("unrelated listener");

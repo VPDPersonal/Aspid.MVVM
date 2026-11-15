@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            mode.EnsureNot(BindMode.TwoWay);
             _colorPropertyName = colorPropertyName;
         }
 
@@ -58,10 +58,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             _materials = null;
-            base.OnUnbound();
+            base.OnDetach();
         }
     }
 }

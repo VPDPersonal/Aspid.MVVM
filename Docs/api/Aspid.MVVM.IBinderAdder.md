@@ -36,8 +36,7 @@ BindMode Mode { get; }
 
 ### Add\(IBinder\) {#Aspid_MVVM_IBinderAdder_Add_Aspid_MVVM_IBinder_}
 
-Subscribes <code class="paramref">binder</code> according to its [`IBinder.Mode`](Aspid.MVVM.IBinder.md#Aspid_MVVM_IBinder_Mode) and, for a mode that reaches the View,
-pushes the current value to it.
+Attaches <code class="paramref">binder</code> using the binding directions supported by both the binder and the member.
 
 ```csharp
 IBinderRemover? Add(IBinder binder)
@@ -55,4 +54,8 @@ The binder to add.
 
 The remover that detaches <code class="paramref">binder</code>; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when nothing stays subscribed,
 as for [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+
+#### Remarks
+
+When the effective mode reaches the View, pushes the current value to the binder during attachment.
 

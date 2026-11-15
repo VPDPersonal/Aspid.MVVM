@@ -39,7 +39,7 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateOneWayToSourceBinder<int>(getValueOnBound: () => 3);
             var member = new OneWayToSourceBindableMember<int>(_ => { });
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(3, member.Value);
         }
@@ -50,8 +50,8 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateOneWayToSourceBinder<int>(getValueOnUnbinding: () => 8);
             var member = new OneWayToSourceBindableMember<int>(_ => { });
 
-            binder.Bind(member);
-            binder.Unbind();
+            binder.Bind(new BindContext(member, binder));
+            binder.Unbind(new UnbindContext(binder));
 
             Assert.AreEqual(8, member.Value);
         }
@@ -107,7 +107,7 @@ namespace Aspid.MVVM.Tests
             });
             var member = new OneWayToSourceBindableMember<int>(_ => { });
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreSame(target, receivedTarget);
             Assert.AreEqual(6, member.Value);

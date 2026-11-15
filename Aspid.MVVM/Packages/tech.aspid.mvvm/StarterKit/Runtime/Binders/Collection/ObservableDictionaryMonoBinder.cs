@@ -44,7 +44,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Resets the View and unsubscribes from the bound dictionary.
         /// </summary>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             Deinitialize();
 
         /// <summary>

@@ -57,7 +57,7 @@ public static class SymbolExtensions
             {
                 case IFieldSymbol field:
                     {
-                        if (field.IsReadOnly && current is not BindMode.OneTime) return BindMode.None;
+                        if ((field.IsReadOnly || field.IsConst) && current is not BindMode.OneTime) return BindMode.None;
                         break;
                     }
                 

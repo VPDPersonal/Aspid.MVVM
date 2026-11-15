@@ -69,7 +69,7 @@ namespace Aspid.MVVM.Tests
             var binder = new RectTransformPivotBinder(rect, mode: BindMode.OneWayToSource);
             var received = default(Vector2);
 
-            binder.Bind(new OneWayToSourceStructBindableMember<Vector2>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<Vector2>(value => received = value), binder));
 
             Assert.AreEqual(new Vector2(0.3f, 0.7f), received, "The ViewModel received the wrong pivot");
         }

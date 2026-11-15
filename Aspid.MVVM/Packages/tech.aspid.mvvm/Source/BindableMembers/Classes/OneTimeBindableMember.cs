@@ -10,6 +10,9 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IReadOnlyValueBindableMember{T}"/> that pushes its value to a binder once and keeps no subscription.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="BindMode.TwoWay"/> binder receives the initial value without reporting changes back to the ViewModel.
+    /// </remarks>
     /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>
     {
@@ -17,11 +20,6 @@ namespace Aspid.MVVM
         /// Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
         /// </summary>
         public T? Value { get; set; }
-        
-        /// <summary>
-        /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
-        /// </summary>
-        public BindMode Mode => BindMode.OneTime;
 
         /// <summary>
         /// Creates a member holding <paramref name="value"/>.
@@ -32,9 +30,14 @@ namespace Aspid.MVVM
             Value = value;
         }
 
+        /// <summary>
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
+        /// </summary>
+        public BindMode Mode => BindMode.OneTime;
+
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// The mode of <paramref name="binder"/> is not <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
@@ -45,7 +48,7 @@ namespace Aspid.MVVM
             using (this.Marker())
 #endif
             {
-                binder.Mode.ThrowExceptionIfNotOne();
+                binder.Mode.EnsureForward();
 
                 switch (binder)
                 {
@@ -59,7 +62,7 @@ namespace Aspid.MVVM
 
                     default: throw BinderInvalidCastException.Class<T>(binder);
                 }
-            
+
                 return null;
             }
         }

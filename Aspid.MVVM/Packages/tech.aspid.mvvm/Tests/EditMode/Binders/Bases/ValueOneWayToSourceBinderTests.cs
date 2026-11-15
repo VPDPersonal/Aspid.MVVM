@@ -34,7 +34,7 @@ namespace Aspid.MVVM.Tests
             var binder = new ValueOneWayToSourceBinder<int>(7);
             var member = new OneWayToSourceBindableMember<int>(_ => { });
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(7, member.Value);
         }
@@ -45,7 +45,7 @@ namespace Aspid.MVVM.Tests
             var binder = new ValueOneWayToSourceBinder<int>(6, new DoublingConverter());
             var member = new OneWayToSourceBindableMember<int>(_ => { });
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(3, member.Value, "The initial push must go through ConvertBack, like every later one.");
         }

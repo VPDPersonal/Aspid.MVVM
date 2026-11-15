@@ -93,7 +93,7 @@ namespace Aspid.MVVM.Tests
             serializedObject.FindProperty("_cultureInfoMode").enumValueIndex = (int)CultureInfoMode.InvariantCulture;
             serializedObject.ApplyModifiedPropertiesWithoutUndo();
 
-            ((IBinder)binder).Bind(new TwoWayBindableMember<string>(string.Empty, _ => { }));
+            ((IBinder)binder).Bind(new BindContext(new TwoWayBindableMember<string>(string.Empty, _ => { }), ((IBinder)binder)));
 
             return (binder, field);
         }

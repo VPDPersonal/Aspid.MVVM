@@ -36,14 +36,14 @@ The bound enum type.
 
 
 
-## Methods
+## Constructors
 
-### Get\(T\) {#Aspid_MVVM_OneTimeEnumBindableMember_1_Get__0_}
+### OneTimeEnumBindableMember\(T\) {#Aspid_MVVM_OneTimeEnumBindableMember_1__ctor__0_}
 
-Returns the shared instance with [`OneTimeStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneTimeStructBindableMember-2.md#Aspid_MVVM_OneTimeStructBindableMember_2_Value) set to <code class="paramref">value</code>.
+Creates a member holding <code class="paramref">value</code>.
 
 ```csharp
-public static OneTimeEnumBindableMember<T> Get(T value)
+public OneTimeEnumBindableMember(T value)
 ```
 
 #### Parameters
@@ -51,14 +51,4 @@ public static OneTimeEnumBindableMember<T> Get(T value)
 `value` T
 
 The value to push to the binder.
-
-#### Returns
-
- [OneTimeEnumBindableMember](Aspid.MVVM.OneTimeEnumBindableMember-1.md)\<T\>
-
-The shared instance for <code class="typeparamref">T</code>.
-
-#### Remarks
-
-Every call returns the same instance and overwrites its value, so bind it before the next call.
 

@@ -113,8 +113,8 @@ namespace Aspid.MVVM.Tests
 
             Assert.IsFalse(button.enabledSelf, "The button stayed enabled although the command refuses");
 
-            binder.Bind(new OneWayBindableMember<IRelayCommand>(command));
-            binder.Unbind();
+            binder.Bind(new BindContext(new OneWayBindableMember<IRelayCommand>(command), binder));
+            binder.Unbind(new UnbindContext(binder));
 
             canExecute = true;
             Assert.DoesNotThrow(command.NotifyCanExecuteChanged, "The unbound binder still listens to the command");
@@ -163,8 +163,8 @@ namespace Aspid.MVVM.Tests
             var (document, listView) = NewDocument<ListView>("items");
             var binder = NewBinder<ElementListViewItemsSourceMonoBinder>(document, "items");
 
-            binder.Bind(new OneWayBindableMember<System.Collections.Generic.IReadOnlyList<object>>(new List<object> { "a" }));
-            binder.Unbind();
+            binder.Bind(new BindContext(new OneWayBindableMember<System.Collections.Generic.IReadOnlyList<object>>(new List<object> { "a" }), binder));
+            binder.Unbind(new UnbindContext(binder));
 
             Assert.IsNull(listView.itemsSource, "The source was not cleared on unbind");
         }

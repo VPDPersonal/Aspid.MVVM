@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
     /// <see cref="Binder"/> that initializes an <see cref="IView"/> with each ViewModel it receives.
     /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global")]
     public class ViewBinder : Binder, IBinder<IViewModel?>
     {
         /// <summary>
@@ -35,7 +38,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Called after the binder detaches to deinitialize <see cref="View"/>.
         /// </summary>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             DeinitializeView();
 
         /// <summary>

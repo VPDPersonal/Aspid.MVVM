@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="notifyMode"> When writes from the ViewModel raise the field's events; user input always does. </param>
         /// <param name="converter">  The converter applied to the text, or <see langword="null"/> to use it as-is. </param>
         /// <param name="mode">The binding mode.</param>
-        /// <exception cref="ArgumentException"><paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="mode"/> is <see cref="BindMode.None"/> or undefined.</exception>
         public InputFieldBinder(
             TMP_InputField target,
             NotifyMode notifyMode = NotifyMode.Always,
@@ -49,7 +49,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfNone();
+            mode.EnsureValid();
             
             _converter = converter;
             _notifyMode = notifyMode;
@@ -59,21 +59,25 @@ namespace Aspid.MVVM.StarterKit
         ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
-            if (!Mode.IsTwo()) return;
+            if (!Mode.IncludesReverse()) return;
             
             Target.GetEvent(_updateEvent)
                 .AddListener(OnValueChanged);
-            
+        }
+
+        /// <inheritdoc/>
+        protected override void OnBound()
+        {
             if (Mode is BindMode.OneWayToSource)
                 OnValueChanged(Target.text);
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
             {
                 Target.GetEvent(_updateEvent)
                     .RemoveListener(OnValueChanged);

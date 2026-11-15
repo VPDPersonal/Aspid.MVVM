@@ -14,14 +14,7 @@ namespace Aspid.MVVM
     public static class ViewModelExtensions
     {
 #if ASPID_MVVM_PROFILER
-        public static readonly Unity.Profiling.ProfilerMarker DisposeViewModelMarker = new(name: "DisposeViewModel");
-        
-        private static class Markers<T>
-            where T : class, IViewModel, IDisposable
-        {
-            // ReSharper disable once MemberHidesStaticFromOuterClass
-            public static readonly Unity.Profiling.ProfilerMarker DisposeViewModelMarker = new(name: $"DisposeViewModel<{typeof(T)}>");
-        }
+        private static readonly Unity.Profiling.ProfilerMarker _disposeViewModelMarker = new(name: "DisposeViewModel");
 #endif
         
         /// <summary>
@@ -29,10 +22,14 @@ namespace Aspid.MVVM
         /// </summary>
         /// <typeparam name="T">The ViewModel type.</typeparam>
         /// <param name="viewModel">The ViewModel to dispose.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisposeViewModel<T>(this T viewModel)
             where T : class, IViewModel, IDisposable
         {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+
 #if ASPID_MVVM_PROFILER
             using (Markers<T>.DisposeViewModelMarker.Auto())
 #endif
@@ -45,16 +42,28 @@ namespace Aspid.MVVM
         /// Disposes <paramref name="viewModel"/> if it implements <see cref="IDisposable"/>; otherwise, does nothing.
         /// </summary>
         /// <param name="viewModel">The ViewModel to dispose.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DisposeViewModel(this IViewModel viewModel)
         {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+
 #if ASPID_MVVM_PROFILER
-            using (DisposeViewModelMarker.Auto())
+            using (_disposeViewModelMarker.Auto())
 #endif
             {
                 if (viewModel is IDisposable disposable)
                     disposable.Dispose();
             }
         }
+       
+#if ASPID_MVVM_PROFILER
+        private static class Markers<T>
+            where T : class, IViewModel, IDisposable
+        {
+            public static readonly Unity.Profiling.ProfilerMarker DisposeViewModelMarker = new(name: $"DisposeViewModel<{typeof(T)}>");
+        }
+#endif
     }
 }

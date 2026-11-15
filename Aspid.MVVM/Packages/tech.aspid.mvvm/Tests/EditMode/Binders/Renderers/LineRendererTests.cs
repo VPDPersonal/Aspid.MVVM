@@ -63,7 +63,7 @@ namespace Aspid.MVVM.Tests
             var received = default(Color);
             var member = new OneWayToSourceStructBindableMember<Color>(value => received = value);
 
-            Assert.DoesNotThrow(() => binder.Bind(member));
+            Assert.DoesNotThrow(() => binder.Bind(new BindContext(member, binder)));
             Assert.AreEqual(Color.red, received);
         }
     }

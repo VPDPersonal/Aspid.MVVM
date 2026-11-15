@@ -31,7 +31,7 @@ namespace Aspid.MVVM.Tests
             var received = new List<int>();
             var member = new OneWayToSourceBindableMember<int>(value => received.Add(value));
 
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
             received.Clear();
 
             ((IBinder<int>)binder).SetValue(7);
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.Tests
             var received = new List<int>();
             var member = new OneWayToSourceBindableMember<int>(value => received.Add(value));
 
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
             received.Clear();
 
             ((IBinder<int>)binder).SetValue(3);
@@ -67,7 +67,7 @@ namespace Aspid.MVVM.Tests
             var received = new List<int>();
             var member = new OneWayToSourceBindableMember<int>(value => received.Add(value));
 
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
             received.Clear();
 
             binder.Value = 42;

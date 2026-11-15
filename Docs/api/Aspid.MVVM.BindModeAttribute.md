@@ -17,6 +17,7 @@ Limits the binding modes that the Inspector offers for a [`BindMode`](Aspid.MVVM
 [Conditional("DEBUG")]
 [Conditional("UNITY_EDITOR")]
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public sealed class BindModeAttribute : PropertyAttribute
 ```
 
@@ -67,6 +68,16 @@ public BindModeAttribute(params BindMode[] modes)
 `modes` [BindMode](Aspid.MVVM.BindMode.md)\[\]
 
 The allowed modes; none to allow every mode unless [`BindModeAttribute.IsOne`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsOne) or [`BindModeAttribute.IsTwo`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsTwo) is set.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">modes</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+An element of <code class="paramref">modes</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
 
 ## Properties
 

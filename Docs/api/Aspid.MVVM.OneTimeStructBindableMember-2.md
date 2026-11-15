@@ -40,17 +40,9 @@ The boxed form of <code class="typeparamref">T</code>, such as [`ValueType`](htt
 
 
 
-## Fields
+## Remarks
 
-### GetMarker {#Aspid_MVVM_OneTimeStructBindableMember_2_GetMarker}
-
-```csharp
-protected static readonly ProfilerMarker GetMarker
-```
-
-#### Field Value
-
- ProfilerMarker
+A [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) binder receives the initial value without reporting changes back to the ViewModel.
 
 ## Properties
 
@@ -68,10 +60,10 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneTimeStructBindableMember_2_Value}
 
-Gets the value pushed to the next binder.
+Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
 
 ```csharp
-public T Value { get; }
+public T Value { get; set; }
 ```
 
 #### Property Value

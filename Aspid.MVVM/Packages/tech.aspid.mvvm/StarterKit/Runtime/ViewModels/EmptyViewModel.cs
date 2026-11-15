@@ -7,7 +7,12 @@ namespace Aspid.MVVM.StarterKit
     public sealed class EmptyViewModel : IViewModel
     {
         /// <inheritdoc/>
-        public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters) =>
-            default;
+        /// <exception cref="System.ArgumentNullException">The query identifier is <see langword="null"/>.</exception>
+        /// <exception cref="System.ArgumentException">The query identifier is empty or whitespace.</exception>
+        public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters)
+        {
+            parameters.EnsureValid();
+            return default;
+        }
     }
 }

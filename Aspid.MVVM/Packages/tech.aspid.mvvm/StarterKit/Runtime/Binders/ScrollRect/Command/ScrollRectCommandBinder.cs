@@ -31,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
         public ScrollRectCommandBinder(ScrollRect target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
         }
 
         /// <param name="target">The scroll rect to bind.</param>
@@ -61,11 +61,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 
@@ -130,7 +130,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param = param;
         }
@@ -164,11 +164,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 
@@ -248,7 +248,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -285,11 +285,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 
@@ -386,7 +386,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -426,11 +426,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _vector3Command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 

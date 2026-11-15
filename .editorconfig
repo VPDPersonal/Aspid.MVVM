@@ -1,0 +1,2 @@
+[*.cs]
+dotnet_style_operator_placement_when_wrapping = beginning_of_line

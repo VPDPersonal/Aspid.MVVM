@@ -61,7 +61,7 @@ namespace Aspid.MVVM.Tests
             var binder = new TestTargetFloatBinder(new FloatHolder { Value = FloatProperty }, converter: null, BindMode.OneWay);
             var member = new OneWayToSourceStructBindableMember<float>(_ => { });
 
-            Assert.Throws<InvalidOperationException>(() => binder.Bind(member));
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(new BindContext(member, binder)));
         }
 
         // The way back runs the converter's ConvertBack, never its forward Convert.
@@ -111,7 +111,7 @@ namespace Aspid.MVVM.Tests
             var received = default(T);
             var member = new OneWayToSourceStructBindableMember<T>(value => received = value);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             return received;
         }
     }

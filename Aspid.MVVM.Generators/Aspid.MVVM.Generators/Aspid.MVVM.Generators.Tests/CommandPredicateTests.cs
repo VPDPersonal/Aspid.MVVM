@@ -124,18 +124,23 @@ public sealed class CommandPredicateTests
 
     private static CSharpCompilation CreateCompilation(string members, string inherited)
     {
-        var root = new DirectoryInfo(AppContext.BaseDirectory);
-        while (root is not null && !File.Exists(Path.Combine(root.FullName, "scripts", "build-roslyn-dlls.sh"))) root = root.Parent;
-        Assert.NotNull(root);
-        var commands = Path.Combine(root!.FullName, "Aspid.MVVM", "Packages", "tech.aspid.mvvm", "Source", "Commands");
         var references = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!).Split(Path.PathSeparator)
             .Select(path => MetadataReference.CreateFromFile(path));
         return CSharpCompilation.Create("Aspid.PredicateTest." + Guid.NewGuid().ToString("N"), new[]
         {
             CSharpSyntaxTree.ParseText(ViewModelGeneratorTests.Framework),
             CSharpSyntaxTree.ParseText($"using Aspid.MVVM; public class BaseModel {{ {inherited} }} [ViewModel] public partial class Model : BaseModel {{ {members} }}"),
-            CSharpSyntaxTree.ParseText(File.ReadAllText(Path.Combine(commands, "RelayCommand.cs"))),
-            CSharpSyntaxTree.ParseText(File.ReadAllText(Path.Combine(commands, "IRelayCommand.cs"))),
+            CSharpSyntaxTree.ParseText(ReadCommandSource("RelayCommand")),
+            CSharpSyntaxTree.ParseText(ReadCommandSource("IRelayCommand")),
         }, references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
     }
+
+    private static string ReadCommandSource(string name)
+    {
+        using var stream = typeof(CommandPredicateTests).Assembly.GetManifestResourceStream($"Aspid.Tests.{name}.cs");
+        Assert.NotNull(stream);
+        using var reader = new StreamReader(stream!);
+        return reader.ReadToEnd();
+    }
+
 }

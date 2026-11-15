@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -14,16 +15,23 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 public static class BindablePropertyFactory
 {
     public static IReadOnlyCollection<BindablePropertyInfo> Create(
-        TypeDeclarationSyntax declaration,
+        ITypeSymbol symbol,
         ImmutableArray<IPropertySymbol> properties,
-        PropertyNotificationData propertyNotificationData)
+        PropertyNotificationData propertyNotificationData,
+        CancellationToken cancellationToken)
     {
         var bindableProperties = new List<BindablePropertyInfo>();
 
         var setMethodNames = new HashSet<string>(properties
             .Select(p => $"Set{p.Name.CapitalizeFirstLetter()}Field"));
 
-        var usedSetMethods = MethodUsageAnalyzer.GetUsedMethods(declaration, setMethodNames);
+        var usedSetMethods = new HashSet<string>();
+        foreach (var reference in symbol.DeclaringSyntaxReferences)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (reference.GetSyntax(cancellationToken) is TypeDeclarationSyntax declaration)
+                usedSetMethods.UnionWith(MethodUsageAnalyzer.GetUsedMethods(declaration, setMethodNames, cancellationToken));
+        }
 
         foreach (var property in properties)
         {

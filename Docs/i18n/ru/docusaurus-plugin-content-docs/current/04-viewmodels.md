@@ -11,6 +11,7 @@ ViewModel — центральный элемент Aspid.MVVM. Source Generator
 - [Атрибут \[BindId\]](#атрибут-bindid)
 - [Атрибут \[Access\]](#атрибут-access)
 - [Обработчики изменений](#обработчики-изменений)
+- [Ручные свойства и уведомления](#ручные-свойства-и-уведомления)
 - [MonoViewModel](#monoviewmodel)
 - [ScriptableViewModel](#scriptableviewmodel)
 - [NotifyAll](#notifyall)
@@ -236,6 +237,41 @@ public partial class MomentSpeakerViewModel
     }
 }
 ```
+
+---
+
+## Ручные свойства и уведомления
+
+`[Bind]` поддерживает свойства с собственным кодом. `SetField` сравнивает значения, вызывает обработчики изменений, записывает поле и уведомляет привязку и зависимости `[BindAlso]`. Равные значения пропускаются. Свойство и вызовы его помощников могут находиться в любой partial-декларации того же ViewModel.
+
+```csharp
+[ViewModel]
+public partial class ScoreViewModel
+{
+    private int _score;
+
+    [Bind]
+    public int Score
+    {
+        get => _score;
+        set => SetField(ref _score, value);
+    }
+}
+```
+
+Обычная перегрузка сохраняет `CallerLineNumber` и маршрутизацию по числу. Дополнительное поле с именем свойства в объекте ViewModel не появляется. Если один номер строки соответствует вызовам для разных свойств, генератор выдаёт `ASPIDVM007` на обоих вызовах. Это касается также одинаковых строк в разных partial-файлах и директив `#line`. У `SetField` маршруты разделены по типу поля; у `OnPropertyChanged` они общие для ViewModel.
+
+Устраните неоднозначность явным именем или помощником конкретного свойства:
+
+```csharp
+set => SetField(ref _score, value, propertyName: nameof(Score));
+// Or call the property-specific helper:
+set => SetScoreField(ref _score, value);
+```
+
+После самостоятельной записи поля можно вызвать `OnPropertyChanged()` внутри bound-свойства или `OnPropertyChanged(nameof(Score))` из метода. Явное имя выбирает цель независимо от окружающего свойства и аргумента `line`. Поддерживаются строковые имена, вычисляемые во время выполнения; неизвестное или неподдерживаемое имя вызывает `ArgumentException` до изменения поля в `SetField`.
+
+`SetField` требует bound-свойство с getter и setter того же типа, что переданное поле, в режиме `OneWay`, `TwoWay` или `OneWayToSource`. Source-only setter записывает значение и вызывает обработчики без прямого уведомления. `OnPropertyChanged` требует член с прямыми уведомлениями (`OneWay` или `TwoWay`). Константное неверное имя, неподдерживаемая цель, явный generic-вызов вроде `SetField<int>` или неконстантный аргумент только с номером строки дают `ASPIDVM008`. Из методов передавайте имя свойства или вызывайте прямой помощник.
 
 ---
 

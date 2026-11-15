@@ -1,9 +1,14 @@
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 
 namespace Aspid.MVVM.Generators.Generators.ViewModels.Data;
 
 public sealed class PropertyNotificationData
 {
+    internal List<Diagnostic> Diagnostics { get; } = [];
+    internal HashSet<string> NamedOnPropertyChangedCalls { get; } = [];
+    internal Dictionary<string, HashSet<string>> NamedSetFieldCallsByType { get; } = [];
+
     // Key - propertyName, Value - List of line numbers
     public Dictionary<string, List<int>> OnPropertyChangedCalls { get; } = [];
     
@@ -24,7 +29,8 @@ public sealed class PropertyNotificationData
             OnPropertyChangedCalls[propertyName] = lines;
         }
         
-        lines.Add(line);
+        if (!lines.Contains(line))
+            lines.Add(line);
     }
 
     public void AddSetFieldCall(string propertyName, int line, string type)
@@ -41,7 +47,8 @@ public sealed class PropertyNotificationData
             propertyCalls[propertyName] = lines;
         }
         
-        lines.Add(line);
+        if (!lines.Contains(line))
+            lines.Add(line);
         PropertiesRequiringSetFieldBody.Add(propertyName);
     }
 }

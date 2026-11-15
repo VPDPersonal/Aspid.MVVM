@@ -65,7 +65,7 @@ public static class VirtualBinderFields
 
             for (var type = viewModelType; type is not null; type = type.BaseType)
             {
-                foreach (var bindable in BindableMembersFactory.Create(type, compilation, declaration, out _))
+                foreach (var bindable in BindableMembersFactory.Create(type, compilation, out _))
                     ids.Add(bindable.Id.SourceValue);
             }
         }
@@ -77,7 +77,7 @@ public static class VirtualBinderFields
         HashSet<string> declared,
         Dictionary<string, Info> result)
     {
-        var bindableMembers = BindableMembersFactory.Create(viewModelType, data.Compilation, data.Declaration, out _);
+        var bindableMembers = BindableMembersFactory.Create(viewModelType, data.Compilation, out _);
         if (bindableMembers.Length == 0) return;
 
         var membersBySymbol = new Dictionary<ISymbol, List<IBindableMemberInfo>>(SymbolEqualityComparer.Default);

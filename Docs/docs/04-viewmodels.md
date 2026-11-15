@@ -11,6 +11,7 @@ The ViewModel is the centre of Aspid.MVVM. The Source Generator emits the bindin
 - [The \[BindId\] attribute](#the-bindid-attribute)
 - [The \[Access\] attribute](#the-access-attribute)
 - [Change handlers](#change-handlers)
+- [Manual properties and notifications](#manual-properties-and-notifications)
 - [MonoViewModel](#monoviewmodel)
 - [ScriptableViewModel](#scriptableviewmodel)
 - [NotifyAll](#notifyall)
@@ -235,6 +236,41 @@ public partial class MomentSpeakerViewModel
     }
 }
 ```
+
+---
+
+## Manual properties and notifications
+
+`[Bind]` also supports handwritten properties. `SetField` compares values, calls the change hooks, assigns the field and notifies the binding and its `[BindAlso]` dependencies. Equal values are skipped. The property and its helper calls may live in any partial declaration of the same ViewModel.
+
+```csharp
+[ViewModel]
+public partial class ScoreViewModel
+{
+    private int _score;
+
+    [Bind]
+    public int Score
+    {
+        get => _score;
+        set => SetField(ref _score, value);
+    }
+}
+```
+
+The default overload uses `CallerLineNumber` and integer dispatch. It adds no property-name field to the ViewModel. If two calls resolve the same line number to different properties, the generator reports `ASPIDVM007` at both calls. This also applies to matching lines in separate partial files and to `#line` mappings. `SetField` routes are separate for each field type; `OnPropertyChanged` has one shared route table per ViewModel.
+
+Resolve the ambiguity with an explicit name or the property-specific helper:
+
+```csharp
+set => SetField(ref _score, value, propertyName: nameof(Score));
+// Or call the property-specific helper:
+set => SetScoreField(ref _score, value);
+```
+
+After assigning a field manually, use `OnPropertyChanged()` inside the bound property or `OnPropertyChanged(nameof(Score))` from a method. An explicit name determines the target regardless of the containing property or `line` argument. Runtime string names are supported; an unknown or unsupported name throws `ArgumentException` before `SetField` modifies the field.
+
+`SetField` requires a readable and writable bound property of the same type as the supplied field, in `OneWay`, `TwoWay` or `OneWayToSource` mode. Source-only setters assign and run hooks without forward notification. `OnPropertyChanged` requires a member with forward notifications (`OneWay` or `TwoWay`). A constant invalid name, unsupported target, explicit generic call such as `SetField<int>`, or nonconstant line-only argument produces `ASPIDVM008`. From methods, pass the property name or use the direct helper.
 
 ---
 

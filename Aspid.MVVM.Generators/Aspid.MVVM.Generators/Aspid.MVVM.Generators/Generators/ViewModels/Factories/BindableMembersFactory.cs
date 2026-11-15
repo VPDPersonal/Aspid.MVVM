@@ -1,10 +1,9 @@
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
-using Aspid.Generators.Helper;
+using Aspid.MVVM.Generators.Helpers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Aspid.MVVM.Generators.Helpers;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data.Infos;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
@@ -16,15 +15,18 @@ public static class BindableMembersFactory
     public static ImmutableArray<IBindableMemberInfo> Create(
         ITypeSymbol symbol,
         Compilation compilation,
-        TypeDeclarationSyntax declaration,
-        out PropertyNotificationData propertyNotificationData)
+        out PropertyNotificationData propertyNotificationData,
+        CancellationToken cancellationToken = default)
     {
         var members = new MembersByGroup(symbol);
-        propertyNotificationData = CreatePropertyNotificationData(symbol, declaration);
+        propertyNotificationData = PropertyNotificationAnalyzer.Analyze(symbol, compilation, cancellationToken);
+
+        if (propertyNotificationData.Diagnostics.Any(diagnostic => diagnostic.Severity is DiagnosticSeverity.Error))
+            return ImmutableArray<IBindableMemberInfo>.Empty;
 
         var bindableFields = BindableFieldFactory.Create(members.Fields);
         var bindableBindAlso = BindableBindAlsoFactory.Create(members.All);
-        var bindableProperties = BindablePropertyFactory.Create(declaration, members.Properties, propertyNotificationData);
+        var bindableProperties = BindablePropertyFactory.Create(symbol, members.Properties, propertyNotificationData, cancellationToken);
         
         var bindableCommands = BindableCommandFactory.Create(members.Methods, compilation);
 
@@ -39,23 +41,4 @@ public static class BindableMembersFactory
         return bindableMembers.ToImmutableArray();
     }
     
-    private static PropertyNotificationData CreatePropertyNotificationData(ITypeSymbol symbol, TypeDeclarationSyntax candidate)
-    {
-        var members = new MembersByGroup(symbol);
-        
-        var bindablePropertiesDict = members.Properties
-            .Where(property => property.GetBindMode() is not BindMode.None)
-            .ToDictionary(property => property.Name, property => property.Type.ToDisplayStringGlobal());
-        
-        var bindableFieldsDict = members.Fields
-            .Where(field => field.GetBindMode() is not BindMode.None)
-            .ToDictionary(field => field.GetPropertyName(), field => field.Type.ToDisplayStringGlobal());
-        
-        foreach (var pair in bindableFieldsDict)
-        {
-            bindablePropertiesDict[pair.Key] = pair.Value;
-        }
-
-        return PropertyNotificationAnalyzer.Analyze(candidate, bindablePropertiesDict);
-    }
 }

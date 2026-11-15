@@ -243,6 +243,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Fixed
 
+- `[RelayCommand]` supports ordinary bool-field predicates and validates overloads, generic constraints and inherited member hiding before generating commands (`ASPIDVM004`).
+
 - Collection rollback retains both the primary failure and any recovery failure, including their stacks. Failed factory release triggers emergency View destruction with factory/type/index diagnostics; failed views must not be retained for reuse.
 
 - Collection view binders release child bindings on detach, preserve inactive slots for null items, and finish cleanup after individual failures. Created views return to their original factory; failed prefab initialization is rolled back.

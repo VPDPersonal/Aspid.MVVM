@@ -99,7 +99,7 @@ internal static class ViewModelValidation
                 if (name is null) continue;
                 if (!CommandPredicateResolver.TryResolve(viewModel, command, name, compilation, out _, out _))
                     Report(InvalidPredicate, member, attribute,
-                        $"CanExecute '{name}' must name an accessible bool getter or a compatible bool method.");
+                        $"CanExecute '{name}' must name an accessible bool field, bool getter or an unambiguous compatible bool method.");
             }
         }
 

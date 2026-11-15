@@ -26,11 +26,11 @@ namespace Aspid.MVVM
     public sealed class RelayCommandAttribute : Attribute
     {
         /// <summary>
-        /// The name of a <see cref="bool"/> method or readable property accessible from the class that allows execution; <see langword="null"/> to
+        /// The name of a <see cref="bool"/> field, readable property or compatible method accessible from the class that allows execution; <see langword="null"/> to
         /// always allow it.
         /// </summary>
         /// <remarks>
-        /// A method accepts the command's parameters or takes none; an invalid predicate reports generator error <c>ASPIDVM004</c>.
+        /// Method overload resolution, generic type inference and constraints follow C# delegate conversion rules; an invalid predicate reports generator error <c>ASPIDVM004</c>.
         /// </remarks>
         public string? CanExecute;
     }

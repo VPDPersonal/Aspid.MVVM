@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -20,7 +22,7 @@ namespace Aspid.MVVM.StarterKit
         where TView : MonoBehaviour, IView
     {
         [Tooltip("Views the items are shown in, in order. Extra items are not shown.")]
-        [SerializeField] private TView[] _views;
+        [SerializeField] private TView[]? _views;
 
         /// <inheritdoc/>
         protected override void OnAdded(IReadOnlyCollection<IViewModel> values)
@@ -31,8 +33,8 @@ namespace Aspid.MVVM.StarterKit
             {
                 if (index >= _views.Length) break;
 
-                _views[index].gameObject.SetActive(true);
-                _views[index].Initialize(value);
+                value?.InitializeView(_views[index]);
+                _views[index].gameObject.SetActive(value is not null);
 
                 index++;
             }
@@ -44,11 +46,29 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnReset()
         {
+            if (_views is null) return;
+            var failures = new CleanupExceptions();
+
             foreach (var view in _views)
             {
-                view.Deinitialize();
-                view.gameObject.SetActive(false);
+                if (!view) continue;
+                
+                try
+                {
+                    view.Deinitialize();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+                finally
+                {
+                    if (view) 
+                        view.gameObject.SetActive(false);
+                }
             }
+
+            failures.ThrowIfAny();
         }
     }
 }

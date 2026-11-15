@@ -24,8 +24,9 @@ namespace Aspid.MVVM.StarterKit
     }
 
     /// <summary>
-    /// <see cref="ObservableListBinder{T}"/> that creates a view per ViewModel in list order, with an optional filter and sort order.
+    /// <see cref="ObservableListBinder{T}"/> that creates a view per list slot, with an optional filter and sort order.
     /// </summary>
+    /// <remarks>A <see langword="null"/> item retains a deinitialized, inactive view at its index.</remarks>
     /// <typeparam name="TView">The type of view created per item.</typeparam>
     [Serializable]
     public class ObservableListViewModelBinder<TView> : ObservableListBinder<IViewModel>
@@ -41,6 +42,7 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private ICollectionOrder<IViewModel>? _order;
 
         private List<TView>? _views;
+        private IViewFactory<TView>? _activeFactory;
         private FilteredList<IViewModel>? _filteredList;
 
         /// <remarks>
@@ -61,23 +63,16 @@ namespace Aspid.MVVM.StarterKit
 
         private List<TView> Views => _views ??= new List<TView>();
 
-        /// <summary>
-        /// Disposes the filtered view before the base class detaches from the list.
-        /// </summary>
-        /// <remarks>
-        /// When overriding, always call <c>base.OnDetach()</c>.
-        /// </remarks>
-        protected override void OnDetach()
-        {
+        private IViewFactory<TView> Factory =>
+            _activeFactory ??= _viewFactory ?? throw new InvalidOperationException("No view factory is assigned.");
+
+        /// <inheritdoc/>
+        protected override void OnListDetached() =>
             DisposeFilteredList();
-            base.OnDetach();
-        }
 
         /// <inheritdoc/>
         protected sealed override IReadOnlyFilteredList<IViewModel>? GetFilteredList(IReadOnlyList<IViewModel> list)
         {
-            DisposeFilteredList();
-
             var filter = _filter is null ? null : new Predicate<IViewModel>(_filter.Matches);
 
             if (_order is not null || filter is not null)
@@ -87,11 +82,8 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected sealed override void OnAdded(IViewModel? newItem, int index)
-        {
-            if (newItem is null) return;
-            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, index);
-        }
+        protected sealed override void OnAdded(IViewModel? newItem, int index) =>
+            ObservableListViewModelBinderHelper.OnAdded(Views, Factory, newItem, index);
 
         /// <inheritdoc/>
         protected sealed override void OnAdded(IReadOnlyList<IViewModel?>? newItems, int index)
@@ -106,7 +98,7 @@ namespace Aspid.MVVM.StarterKit
 
         /// <inheritdoc/>
         protected sealed override void OnRemoved(IViewModel? oldItem, int oldStartingIndex) =>
-            ObservableListViewModelBinderHelper.OnRemoved(Views, _viewFactory, oldStartingIndex);
+            ObservableListViewModelBinderHelper.OnRemoved(Views, Factory, oldStartingIndex);
 
         /// <inheritdoc/>
         protected sealed override void OnRemoved(IReadOnlyList<IViewModel?>? oldItems, int oldStartingIndex)
@@ -126,8 +118,18 @@ namespace Aspid.MVVM.StarterKit
             ObservableListViewModelBinderHelper.OnMoved(Views, oldStartingIndex, newStartingIndex);
 
         /// <inheritdoc/>
-        protected sealed override void OnReset() =>
-            ObservableListViewModelBinderHelper.OnReset(Views, _viewFactory);
+        protected sealed override void OnReset()
+        {
+            try
+            {
+                if (_views is not null && _views.Count > 0)
+                    ObservableListViewModelBinderHelper.OnReset(_views, Factory);
+            }
+            finally
+            {
+                _activeFactory = null;
+            }
+        }
 
         private void DisposeFilteredList()
         {

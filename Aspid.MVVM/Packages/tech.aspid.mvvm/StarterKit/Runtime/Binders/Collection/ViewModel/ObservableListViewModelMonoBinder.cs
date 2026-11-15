@@ -16,8 +16,9 @@ namespace Aspid.MVVM.StarterKit
     public class ObservableListViewModelMonoBinder : ObservableListViewModelMonoBinder<MonoView> { }
 
     /// <summary>
-    /// <see cref="ObservableListMonoBinder{T}"/> that creates a view per ViewModel in list order, with an optional filter and sort order.
+    /// <see cref="ObservableListMonoBinder{T}"/> that creates a view per list slot, with an optional filter and sort order.
     /// </summary>
+    /// <remarks>A <see langword="null"/> item retains a deinitialized, inactive view at its index.</remarks>
     /// <typeparam name="TView">The type of view created per item.</typeparam>
     public abstract class ObservableListViewModelMonoBinder<TView> : ObservableListMonoBinder<IViewModel>
         where TView : MonoBehaviour, IView
@@ -32,27 +33,21 @@ namespace Aspid.MVVM.StarterKit
         [SerializeReference] private Order _order;
 
         private List<TView> _views;
+        private IViewFactory<TView> _activeFactory;
         private FilteredList<IViewModel> _filteredList;
 
         private List<TView> Views => _views ??= new List<TView>();
 
-        /// <summary>
-        /// Disposes the filtered view before the base class detaches from the list.
-        /// </summary>
-        /// <remarks>
-        /// When overriding, always call <c>base.OnDetach()</c>.
-        /// </remarks>
-        protected override void OnDetach()
-        {
+        private IViewFactory<TView> Factory =>
+            _activeFactory ??= _viewFactory ?? throw new InvalidOperationException("No view factory is assigned.");
+
+        /// <inheritdoc/>
+        protected override void OnListDetached() =>
             DisposeFilteredList();
-            base.OnDetach();
-        }
 
         /// <inheritdoc/>
         protected sealed override IReadOnlyFilteredList<IViewModel> GetFilteredList(IReadOnlyList<IViewModel> list)
         {
-            DisposeFilteredList();
-
             var filter = _filter is null ? null : new Predicate<IViewModel>(_filter.Matches);
 
             if (_order is not null || filter is not null)
@@ -65,7 +60,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void OnAdded(IViewModel newItem, int index)
         {
             if (!HasFactory()) return;
-            ObservableListViewModelBinderHelper.OnAdded(Views, _viewFactory, newItem, index);
+            ObservableListViewModelBinderHelper.OnAdded(Views, Factory, newItem, index);
         }
 
         /// <inheritdoc/>
@@ -83,7 +78,7 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void OnRemoved(IViewModel oldItem, int oldStartingIndex)
         {
             if (!HasFactory()) return;
-            ObservableListViewModelBinderHelper.OnRemoved(Views, _viewFactory, oldStartingIndex);
+            ObservableListViewModelBinderHelper.OnRemoved(Views, Factory, oldStartingIndex);
         }
 
         /// <inheritdoc/>
@@ -106,10 +101,15 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected sealed override void OnReset()
         {
-            if (_views is null || _views.Count is 0) return;
-            if (!HasFactory()) return;
-
-            ObservableListViewModelBinderHelper.OnReset(Views, _viewFactory);
+            try
+            {
+                if (_views is not null && _views.Count > 0)
+                    ObservableListViewModelBinderHelper.OnReset(_views, Factory);
+            }
+            finally
+            {
+                _activeFactory = null;
+            }
         }
 
         private void DisposeFilteredList()
@@ -120,7 +120,7 @@ namespace Aspid.MVVM.StarterKit
 
         private bool HasFactory()
         {
-            if (_viewFactory is not null) return true;
+            if (_activeFactory is not null || _viewFactory is not null) return true;
 
             this.LogError(
                 problem: "no view factory is assigned",

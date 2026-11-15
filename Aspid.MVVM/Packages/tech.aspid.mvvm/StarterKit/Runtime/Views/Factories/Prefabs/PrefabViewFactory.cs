@@ -68,9 +68,22 @@ namespace Aspid.MVVM.StarterKit
         public virtual T Create(IViewModel? viewModel)
         {
             var view = Object.Instantiate(_prefab, _container);
-            OnCreate(viewModel, view);
 
-            return view;
+            try
+            {
+                OnCreate(viewModel, view);
+                return view;
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(
+                    primary: exception,
+                    state: view,
+                    rollback: static item => item.DestroyViewAndGameObject(),
+                    context: "PrefabViewFactory rollback");
+                
+                throw;
+            }
         }
 
         /// <summary>

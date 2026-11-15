@@ -26,8 +26,26 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnDetach()
         {
-            CachedComponent.ItemsSource = null;
-            DisposeFilteredList();
+            var failures = new CleanupExceptions();
+            
+            try
+            {
+                CachedComponent.ItemsSource = null;
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+            try
+            {
+                DisposeFilteredList();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+            
+            failures.ThrowIfAny();
         }
 
         /// <summary>
@@ -38,7 +56,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(IReadOnlyList<IViewModel> list)
         {
-            DisposeFilteredList();
+            OnDetach();
 
             if (list is not null)
             {
@@ -51,7 +69,15 @@ namespace Aspid.MVVM.StarterKit
                 }
             }
 
-            CachedComponent.ItemsSource = list;
+            try
+            {
+                CachedComponent.ItemsSource = list;
+            }
+            catch
+            {
+                DisposeFilteredList();
+                throw;
+            }
         }
 
         private void DisposeFilteredList()

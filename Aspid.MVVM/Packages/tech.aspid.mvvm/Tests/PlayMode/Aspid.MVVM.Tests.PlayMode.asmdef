@@ -6,7 +6,8 @@
         "Aspid.MVVM.Unity",
         "Aspid.MVVM.StarterKit",
         "Unity.TextMeshPro",
-        "UnityEngine.TestRunner"
+        "UnityEngine.TestRunner",
+        "Aspid.Collections.Observable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

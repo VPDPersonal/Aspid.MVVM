@@ -109,44 +109,105 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         protected abstract void OnReset();
 
+        /// <summary>
+        /// Called after the list is detached and its views are cleared, even if a view failed to release.
+        /// Override to dispose a locally owned filtered list.
+        /// </summary>
+        protected virtual void OnListDetached() { }
+
         private void InitializeList(IReadOnlyList<T> list)
         {
             DeinitializeList();
 
             List = list;
             if (list is null) return;
-            List = GetFilteredList(list) ?? list;
 
-            OnAdded(List, index: 0);
-
-            switch (List)
+            try
             {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+                List = GetFilteredList(list) ?? list;
+                OnAdded(List, index: 0);
+
+                switch (List)
+                {
+                    case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged += OnCollectionChanged; break;
+                    case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged += OnCollectionChanged; break;
+                }
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(exception, DeinitializeList, "ObservableListMonoBinder rollback");
+                throw;
             }
         }
 
         private void DeinitializeList()
         {
-            if (List is null) return;
+            var list = List;
+            List = null;
+            var failures = new CleanupExceptions();
 
-            switch (List)
+            try
             {
-                case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
-                case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+                switch (list)
+                {
+                    case IReadOnlyFilteredList<T> filteredList: filteredList.CollectionChanged -= OnCollectionChanged; break;
+                    case IReadOnlyObservableList<T> observableList: observableList.CollectionChanged -= OnCollectionChanged; break;
+                }
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
             }
 
-            List = null;
-            OnReset();
+            try
+            {
+                OnReset();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            try
+            {
+                OnListDetached();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            failures.ThrowIfAny();
         }
 
         private void OnCollectionChanged()
         {
-            OnReset();
-            OnAdded(List, index: 0);
+            try
+            {
+                OnReset();
+                OnAdded(List, index: 0);
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(exception, DeinitializeList, "ObservableListMonoBinder rollback");
+                throw;
+            }
         }
 
         private void OnCollectionChanged(INotifyCollectionChangedEventArgs<T> e)
+        {
+            try
+            {
+                ApplyCollectionChange(e);
+            }
+            catch (Exception exception)
+            {
+                Rollback.Run(exception, DeinitializeList, "ObservableListMonoBinder rollback");
+                throw;
+            }
+        }
+
+        private void ApplyCollectionChange(INotifyCollectionChangedEventArgs<T> e)
         {
             switch (e.Action)
             {

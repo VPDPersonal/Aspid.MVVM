@@ -38,7 +38,7 @@ public sealed class BindablePropertyInfo : IBindableMemberInfo
         
         if (Mode is not BindMode.OneTime && Mode is not BindMode.None)
         {
-            var onPropertyChangedMethod = $"On{Name}PropertyChanged";
+            var notify = Bindable.OnPropertyChangedName is { } method ? $"{method}();" : string.Empty;
             
             if (propertySymbol is { IsReadOnly: false, IsWriteOnly: false })
             {
@@ -62,7 +62,7 @@ public sealed class BindablePropertyInfo : IBindableMemberInfo
                             {{onChangingMethod}}(oldValue, value);
                             {
                                 field = value;
-                                {{onPropertyChangedMethod}}();
+                                {{notify}}
                             }
                             {{onChangedMethod}}(value);
                             {{onChangedMethod}}(oldValue, value);

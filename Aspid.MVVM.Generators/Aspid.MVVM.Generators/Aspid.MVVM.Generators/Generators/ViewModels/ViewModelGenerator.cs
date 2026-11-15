@@ -55,7 +55,9 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             ? Inheritor.Inheritor
             : Inheritor.None;
         
-        var bindableMembers = BindableMembersFactory.Create(symbol, context.SemanticModel.Compilation, candidate, out var propertyNotificationData);
+        var bindableMembers = BindableMembersFactory.Create(symbol, context.SemanticModel.Compilation, out var propertyNotificationData, cancellationToken);
+        diagnostics = diagnostics.AddRange(propertyNotificationData.Diagnostics);
+        if (diagnostics.Any(diagnostic => diagnostic.Severity is DiagnosticSeverity.Error)) return (null, diagnostics);
         var memberByGroups = IdLengthMemberGroup.Create(bindableMembers);
         var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(symbol);
         

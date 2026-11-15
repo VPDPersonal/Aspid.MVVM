@@ -243,6 +243,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Fixed
 
+- Property notification helpers inspect all ViewModel partial declarations while preserving `CallerLineNumber`. Ambiguous implicit calls report `ASPIDVM007`; explicit property names select the correct target, and unsupported calls report `ASPIDVM008`. Source-only property setters no longer call a missing forward-notification method.
+
 - `[RelayCommand]` supports ordinary bool-field predicates and validates overloads, generic constraints and inherited member hiding before generating commands (`ASPIDVM004`).
 
 - Collection rollback retains both the primary failure and any recovery failure, including their stacks. Failed factory release triggers emergency View destruction with factory/type/index diagnostics; failed views must not be retained for reuse.

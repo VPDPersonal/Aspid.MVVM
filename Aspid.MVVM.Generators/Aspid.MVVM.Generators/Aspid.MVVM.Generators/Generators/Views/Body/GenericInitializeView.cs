@@ -143,7 +143,7 @@ public static class GenericInitializeView
             for (var viewModelType = genericView.Type; viewModelType is not null; viewModelType = viewModelType.BaseType)
             {
                 foreach (var memberPair in
-                         BindableMembersFactory.Create(viewModelType, data.Compilation, data.Declaration, out _)
+                         BindableMembersFactory.Create(viewModelType, data.Compilation, out _)
                              .ToDictionary(bindable => bindable.Id.SourceValue, bindable => bindable))
                 {
                     bindableMembers.Add(memberPair.Key, memberPair.Value);

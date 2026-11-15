@@ -39,8 +39,6 @@ public static class PropertyNotificationBody
         {
             var notificationData = data.PropertyNotificationData;
 
-            code.AppendLine("#region OnPropertyChanged");
-            
             code.AppendLine(GeneratedCodeViewModelAttribute)
                 .AppendLine($"private void OnPropertyChanged([{CallerLineNumberAttribute}] int line = -1)")
                 .BeginBlock();
@@ -70,13 +68,19 @@ public static class PropertyNotificationBody
             code.EndBlock()
                 .AppendLine();
 
-            code.AppendMultiline(
-                $"""
-                {GeneratedCodeViewModelAttribute}
-                private void OnPropertyChanged(string propertyName, [{CallerLineNumberAttribute}] int line = -1) =>
-                    OnPropertyChanged(line);
-                """)
-                .AppendLine("#endregion");
+            code.AppendLine(GeneratedCodeViewModelAttribute)
+                .AppendLine($"private void OnPropertyChanged(string propertyName, [{CallerLineNumberAttribute}] int line = -1)")
+                .BeginBlock()
+                .AppendLine("switch (propertyName)")
+                .BeginBlock();
+            foreach (var name in notificationData.NamedOnPropertyChangedCalls.OrderBy(name => name))
+            {
+                var literal = Microsoft.CodeAnalysis.CSharp.SymbolDisplay.FormatLiteral(name, true);
+                code.AppendLine($"case {literal}: On{name.CapitalizeFirstLetter()}PropertyChanged(); return;");
+            }
+            code.AppendLine("default: throw new global::System.ArgumentException(\"Unknown or unsupported notification property.\", nameof(propertyName));")
+                .EndBlock()
+                .EndBlock();
 
             return code;
         }
@@ -85,8 +89,7 @@ public static class PropertyNotificationBody
         {
             var notificationData = data.PropertyNotificationData;
 
-            code.AppendLine("#region SetField")
-                .AppendMultiline(
+            code.AppendMultiline(
                 $$"""
                 {{GeneratedCodeViewModelAttribute}}
                 private bool SetField<T>(ref T field, T newValue, [{{CallerLineNumberAttribute}}] int line = -1) =>
@@ -97,12 +100,14 @@ public static class PropertyNotificationBody
                     throw new {{NotImplementedException}}($"SetField<T>: No property {propertyName} found for line {line}. Use typed overload.");
                 """);
             
-            if (notificationData.HasSetFieldCalls)
+            if (notificationData.HasSetFieldCalls || notificationData.NamedSetFieldCallsByType.Count > 0)
             {
-                foreach (var typeGroup in notificationData.SetFieldCallsByType)
+                foreach (var type in notificationData.SetFieldCallsByType.Keys
+                    .Union(notificationData.NamedSetFieldCallsByType.Keys).OrderBy(type => type))
                 {
-                    var type = typeGroup.Key;
-                    var propertyCalls = typeGroup.Value;
+                    var propertyCalls = notificationData.SetFieldCallsByType.TryGetValue(type, out var implicitCalls)
+                        ? implicitCalls
+                        : new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<int>>();
 
                     code.AppendLine(GeneratedCodeViewModelAttribute)
                         .AppendLine($"private bool SetField(ref {type} field, {type} newValue, [{CallerLineNumberAttribute}] int line = -1)")
@@ -120,19 +125,30 @@ public static class PropertyNotificationBody
                         code.AppendLine($"{keyword} (line is {linesPattern}) return Set{propertyName.CapitalizeFirstLetter()}Field(ref field, newValue);");
                     }
 
-                    code.AppendLine($"else throw new {NotImplementedException}($\"SetField: No property found for line {{line}}\");")
+                    var fallback = first ? "" : "else ";
+                    code.AppendLine($"{fallback}throw new {NotImplementedException}($\"SetField: No property found for line {{line}}\");")
                         .EndBlock()
                         .AppendLine()
-                        .AppendMultiline(
-                            $"""
-                            {GeneratedCodeViewModelAttribute}
-                            private bool SetField(ref {type} field, {type} newValue, string propertyName, [{CallerLineNumberAttribute}] int line = -1) =>
-                                SetField(ref field, newValue, line);
-                            """);
+                        .AppendLine(GeneratedCodeViewModelAttribute)
+                        .AppendLine($"private bool SetField(ref {type} field, {type} newValue, string propertyName, [{CallerLineNumberAttribute}] int line = -1)")
+                        .BeginBlock()
+                        .AppendLine("switch (propertyName)")
+                        .BeginBlock();
+                    if (notificationData.NamedSetFieldCallsByType.TryGetValue(type, out var names))
+                    {
+                        foreach (var name in names.OrderBy(name => name))
+                        {
+                            var literal = Microsoft.CodeAnalysis.CSharp.SymbolDisplay.FormatLiteral(name, true);
+                            code.AppendLine($"case {literal}: return Set{name.CapitalizeFirstLetter()}Field(ref field, newValue);");
+                        }
+                    }
+                    code.AppendLine("default: throw new global::System.ArgumentException(\"Unknown or unsupported notification property.\", nameof(propertyName));")
+                        .EndBlock()
+                        .EndBlock();
                 }
             }
             
-            return  code.AppendLine("#endregion");
+            return code;
         }
     }
 }

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RelayCommandAttribute {#Aspid_MVVM_RelayCommandAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Generates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) property, named after the method with a <code>Command</code> suffix, for the method of
 a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
@@ -21,8 +21,8 @@ public sealed class RelayCommandAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [RelayCommandAttribute](Aspid.MVVM.RelayCommandAttribute.md)
 
 
@@ -52,7 +52,7 @@ The method is non-generic, returns <a href="https://learn.microsoft.com/dotnet/c
 
 ### CanExecute {#Aspid_MVVM_RelayCommandAttribute_CanExecute}
 
-The name of a [`Boolean`](https://learn.microsoft.com/dotnet/api/system.boolean) method or readable property accessible from the class that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to
+The name of a [`Boolean`](https://learn.microsoft.com/dotnet/api/system.boolean) field, readable property or compatible method accessible from the class that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to
 always allow it.
 
 ```csharp
@@ -65,5 +65,4 @@ public string? CanExecute
 
 #### Remarks
 
-A method accepts the command's parameters or takes none; an invalid predicate reports generator error <code>ASPIDVM004</code>.
-
+Method overload resolution, generic type inference and constraints follow C# delegate conversion rules; an invalid predicate reports generator error <code>ASPIDVM004</code>.

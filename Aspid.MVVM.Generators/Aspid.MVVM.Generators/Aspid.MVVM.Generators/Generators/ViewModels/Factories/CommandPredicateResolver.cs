@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Extensions;
 using BindMode = Aspid.MVVM.Generators.Generators.ViewModels.Data.BindMode;
@@ -20,71 +21,72 @@ internal static class CommandPredicateResolver
         isLambda = false;
         isMethod = false;
         if (string.IsNullOrWhiteSpace(name)) return false;
+        if (!SyntaxFacts.IsValidIdentifier(name) && SyntaxFacts.GetKeywordKind(name) is SyntaxKind.None) return false;
+        if (command.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is not MethodDeclarationSyntax declaration
+            || declaration.Parent is not TypeDeclarationSyntax type) return false;
 
-        var members = AccessibleMembers(viewModel, compilation).Where(member => member.Name == name).ToArray();
-        var methods = members.OfType<IMethodSymbol>()
-            .Where(method => method.MethodKind is MethodKind.Ordinary
-                && method.ReturnType.SpecialType is SpecialType.System_Boolean
-                && method.Parameters.All(parameter => parameter.RefKind is RefKind.None))
-            .ToArray();
+        var identifier = EscapeIdentifier(name);
+        var parameters = string.Join(", ", command.Parameters.Select(parameter =>
+            parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)).Concat(new[] { "bool" }));
+        var arguments = GetIgnoredParameters(command.Parameters.Length, name);
+        var expressions = new[] { identifier, $"({arguments}) => {identifier}()", $"({arguments}) => {identifier}" };
+        var annotation = new SyntaxAnnotation();
+        var localPrefix = name + "_predicate";
+        var probeName = "__aspPredicateProbe";
+        while (viewModel.GetMembers(probeName).Length > 0) probeName += "_";
+        var probe = SyntaxFactory.ParseMemberDeclaration(
+            $"private void {probeName}() {{ " + string.Join(" ", expressions.Select((expression, index) =>
+                $"global::System.Func<{parameters}> {localPrefix}{index} = {expression};")) + " }")!
+            .WithAdditionalAnnotations(annotation);
 
-        if (methods.Any(method => ParametersMatch(command, method, compilation)))
-        {
-            isMethod = true;
-            return true;
-        }
-
-        if (methods.Any(method => !method.IsGenericMethod && method.Parameters.Length is 0))
-        {
-            isLambda = true;
-            isMethod = true;
-            return true;
-        }
-
-        if (members.OfType<IPropertySymbol>().Any(property => property.Type.SpecialType is SpecialType.System_Boolean
-            && !property.IsIndexer && property.GetMethod is { } getter
-            && compilation.IsSymbolAccessibleWithin(getter, viewModel)))
-        {
-            isLambda = true;
-            return true;
-        }
-
+        var probeType = type;
+        // Generated properties are absent from the input compilation; model their readable bool contract.
         foreach (var field in viewModel.GetMembers().OfType<IFieldSymbol>())
         {
-            if (field.Type.SpecialType is not SpecialType.System_Boolean || field.GetBindMode() is BindMode.None) continue;
-            var generatedName = field.IsConst ? field.Name : field.GetPropertyName();
-            if (generatedName != name) continue;
+            if (field.IsConst || field.Type.SpecialType is not SpecialType.System_Boolean
+                || field.GetBindMode() is BindMode.None || field.GetPropertyName() != name) continue;
+            if (viewModel.GetMembers(name).Length > 0) break;
+            probeType = probeType.AddMembers(SyntaxFactory.ParseMemberDeclaration($"private bool {identifier} => false;")!);
+            break;
+        }
 
-            isLambda = true;
+        var tree = declaration.SyntaxTree;
+        var root = tree.GetRoot().ReplaceNode(type, probeType.AddMembers(probe));
+        var probeTree = tree.WithRootAndOptions(root, tree.Options);
+        var model = compilation.ReplaceSyntaxTree(tree, probeTree).GetSemanticModel(probeTree);
+        var statements = probeTree.GetRoot().GetAnnotatedNodes(annotation).Single()
+            .DescendantNodes().OfType<LocalDeclarationStatementSyntax>().ToArray();
+        for (var index = 0; index < statements.Length; index++)
+        {
+            if (model.GetDiagnostics(statements[index].Span).Any(diagnostic => diagnostic.Severity is DiagnosticSeverity.Error))
+                continue;
+
+            var value = statements[index].Declaration.Variables.Single().Initializer!.Value;
+            var target = value is LambdaExpressionSyntax lambda ? (ExpressionSyntax)lambda.Body : value;
+            var symbol = model.GetSymbolInfo(target).Symbol;
+            if (index < 2 && symbol is not IMethodSymbol { MethodKind: MethodKind.Ordinary }) continue;
+            if (index == 1 && symbol is IMethodSymbol fallback && fallback.Parameters.Length != 0) continue;
+            if (index == 2 && symbol is not (IFieldSymbol or IPropertySymbol)) continue;
+            var resultType = symbol switch
+            {
+                IMethodSymbol method => method.ReturnType,
+                IFieldSymbol field => field.Type,
+                IPropertySymbol property => property.Type,
+                _ => null,
+            };
+            if (resultType?.SpecialType is not SpecialType.System_Boolean) continue;
+            isLambda = index > 0;
+            isMethod = index < 2;
             return true;
         }
 
         return false;
     }
 
-    private static bool ParametersMatch(IMethodSymbol command, IMethodSymbol predicate, Compilation compilation)
-    {
-        if (predicate.Parameters.Length != command.Parameters.Length) return false;
-        if (predicate.IsGenericMethod) return command.Parameters.Length > 0;
+    public static string GetIgnoredParameters(int count, string name) =>
+        string.Join(", ", Enumerable.Range(0, count).Select(index => name == "_" ? "__aspArgument" + index : "_"));
 
-        for (var i = 0; i < command.Parameters.Length; i++)
-        {
-            var conversion = compilation.ClassifyCommonConversion(command.Parameters[i].Type, predicate.Parameters[i].Type);
-            if (conversion.IsIdentity || conversion.IsImplicit && conversion.IsReference) continue;
-            return false;
-        }
-
-        return true;
-    }
-
-    private static IEnumerable<ISymbol> AccessibleMembers(INamedTypeSymbol viewModel, Compilation compilation)
-    {
-        for (var type = viewModel; type is not null; type = type.BaseType)
-        {
-            foreach (var member in type.GetMembers())
-            {
-                if (compilation.IsSymbolAccessibleWithin(member, viewModel)) yield return member;
-            }
-        }
-    }
+    public static string EscapeIdentifier(string name) => SyntaxFacts.GetKeywordKind(name) is not SyntaxKind.None
+        ? "@" + name
+        : name;
 }

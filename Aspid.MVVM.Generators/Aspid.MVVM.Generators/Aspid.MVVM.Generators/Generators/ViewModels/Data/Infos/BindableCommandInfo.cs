@@ -1,9 +1,9 @@
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.Ids.Data;
+using Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Constants;
 
@@ -72,7 +72,7 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
     {
         if (canExecute is null || string.IsNullOrWhiteSpace(canExecute)) return string.Empty;
 
-        var canExecuteName = new StringBuilder(canExecute);
+        var canExecuteName = new StringBuilder(CommandPredicateResolver.EscapeIdentifier(canExecute));
             
         if (!isLambda)
         {
@@ -81,7 +81,7 @@ public sealed class BindableCommandInfo : IBindableMemberInfo
         else
         {
             var parameters = command.Parameters;
-            var missingParameters = string.Join(", ", Enumerable.Repeat("_", parameters.Length));
+            var missingParameters = CommandPredicateResolver.GetIgnoredParameters(parameters.Length, canExecute);
                 
             canExecuteName.Insert(0, $", ({missingParameters}) => ");
             if (isLambda && isMethod) canExecuteName.Append("()");

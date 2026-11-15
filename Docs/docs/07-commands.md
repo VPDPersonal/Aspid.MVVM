@@ -115,6 +115,15 @@ public partial class MathViewModel
 
 ### 3. A bool property or field
 
+An ordinary `bool` field does not need `[Bind]`. Accessible fields (including `readonly`, `const`, `static` and inherited fields), readable properties and properties generated from `[Bind]` are supported. The command reads the current value on each check.
+
+```csharp
+private bool _canSubmit;
+
+[RelayCommand(CanExecute = nameof(_canSubmit))]
+private void Submit() { }
+```
+
 ```csharp
 [ViewModel]
 public partial class StatsViewModel
@@ -262,7 +271,9 @@ More: [ButtonCommandBinder](StarterKit/button-command-binders.md).
 
 ---
 
-A method accepts only one `[RelayCommand]` and must be a non-generic `void` method with up to four value parameters (`ASPIDVM005`). An explicitly named `CanExecute` must resolve to an accessible bool getter or compatible bool method; otherwise generation fails with `ASPIDVM004`. A misspelled predicate never silently enables the command.
+A method accepts only one `[RelayCommand]` and must be a non-generic `void` method with up to four value parameters (`ASPIDVM005`). An explicitly named `CanExecute` must resolve to an accessible bool field, bool getter or unambiguous compatible bool method; otherwise generation fails with `ASPIDVM004`. A misspelled predicate never silently enables the command.
+
+Method predicates follow C# conversion rules for `Func<…, bool>`, including overload resolution, generic type inference and constraints. If no method matches the command parameters, a parameterless method may be used.
 
 ## See also
 

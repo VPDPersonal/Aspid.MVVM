@@ -31,7 +31,7 @@ The bound value type.
 
 ### Changed {#Aspid_MVVM_IReadOnlyBindableMember_1_Changed}
 
-Occurs when the value changes.
+Occurs when the member publishes a value.
 
 ```csharp
 event Action<out T?>? Changed
@@ -40,4 +40,8 @@ event Action<out T?>? Changed
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>?
+
+#### Remarks
+
+The reported value may equal the previous value.
 

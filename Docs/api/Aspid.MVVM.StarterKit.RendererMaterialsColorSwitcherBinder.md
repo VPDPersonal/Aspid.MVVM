@@ -16,7 +16,7 @@ a [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html).
 
 ```csharp
 [Serializable]
-public sealed class RendererMaterialsColorSwitcherBinder : SwitcherBinder<Renderer, Color>, IRebindableBinder, IBinder<bool>, IBinder
+public sealed class RendererMaterialsColorSwitcherBinder : SwitcherBinder<Renderer, Color>, IBinder<bool>, IBinder
 ```
 
 #### Inheritance
@@ -29,15 +29,14 @@ public sealed class RendererMaterialsColorSwitcherBinder : SwitcherBinder<Render
 
 #### Implements
 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IBinder\<bool\>](Aspid.MVVM.IBinder-1.md), 
 [IBinder](Aspid.MVVM.IBinder.md)
 
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<RendererMaterialsColorSwitcherBinder\>\(RendererMaterialsColorSwitcherBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<RendererMaterialsColorSwitcherBinder\>\(RendererMaterialsColorSwitcherBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<RendererMaterialsColorSwitcherBinder\>\(RendererMaterialsColorSwitcherBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<RendererMaterialsColorSwitcherBinder\>\(RendererMaterialsColorSwitcherBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -45,7 +44,6 @@ public sealed class RendererMaterialsColorSwitcherBinder : SwitcherBinder<Render
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -53,7 +51,7 @@ public sealed class RendererMaterialsColorSwitcherBinder : SwitcherBinder<Render
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<RendererMaterialsColorSwitcherBinder\>\(RendererMaterialsColorSwitcherBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<RendererMaterialsColorSwitcherBinder\>\(RendererMaterialsColorSwitcherBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Remarks
 
@@ -95,13 +93,17 @@ The binding mode.
 
 ## Methods
 
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsColorSwitcherBinder_OnUnbound}
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsColorSwitcherBinder_OnDetach}
 
-Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnDetach()
 ```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
 
 ### SetValue\(Color\) {#Aspid_MVVM_StarterKit_RendererMaterialsColorSwitcherBinder_SetValue_UnityEngine_Color_}
 

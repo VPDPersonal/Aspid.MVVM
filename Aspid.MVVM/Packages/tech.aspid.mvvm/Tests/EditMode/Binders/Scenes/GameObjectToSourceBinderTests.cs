@@ -18,7 +18,7 @@ namespace Aspid.MVVM.Tests
             var binder = gameObject.AddComponent<GameObjectToSourceMonoBinder>();
 
             GameObject received = null;
-            binder.Bind(new OneWayToSourceBindableMember<GameObject>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceBindableMember<GameObject>(value => received = value), binder));
 
             Assert.AreSame(gameObject, received, "The ViewModel did not receive the GameObject");
         }

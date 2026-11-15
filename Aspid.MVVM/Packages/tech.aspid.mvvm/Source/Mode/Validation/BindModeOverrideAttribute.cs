@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Aspid.MVVM
 {
     /// <summary>
@@ -14,6 +14,7 @@ namespace Aspid.MVVM
     /// them, or with <see cref="IsAll"/>, every mode except <see cref="BindMode.None"/> is allowed.
     /// </para>
     /// <para>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</para>
+    /// <para>The serializable binder generator applies the same restrictions to the generated constructor.</para>
     /// <para>A subclass with its own <see cref="BindModeOverrideAttribute"/> uses that one instead.</para>
     /// </remarks>
     /// <example>
@@ -25,6 +26,7 @@ namespace Aspid.MVVM
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Class, Inherited = false)]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global")]
     public sealed class BindModeOverrideAttribute : Attribute
     {
         /// <summary>
@@ -53,8 +55,11 @@ namespace Aspid.MVVM
         /// Creates an attribute that allows <paramref name="modes"/>.
         /// </summary>
         /// <param name="modes">The allowed modes; none to allow every mode unless <see cref="IsOne"/> or <see cref="IsTwo"/> is set.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="modes"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">An element of <paramref name="modes"/> is <see cref="BindMode.None"/> or undefined.</exception>
         public BindModeOverrideAttribute(params BindMode[] modes)
         {
+            BindModeExtensions.ValidateModes(modes);
             Modes = modes;
         }
     }

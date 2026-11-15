@@ -6,29 +6,31 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Specifies which ViewModel types are available as design-time ViewModels for a View in the Unity Editor.
-    /// Apply this attribute to a <see cref="MonoView"/> or <see cref="ScriptableView"/> class to restrict
-    /// or extend the list of types shown in the design ViewModel selector.
+    /// Configures the design ViewModel selector of a <see cref="MonoView"/> in the Editor.
     /// </summary>
+    /// <example>
+    /// <code>
+    /// [ShowDesignViewModel(typeof(PlayerViewModel), strictType: true)]
+    /// public partial class PlayerView : MonoView { }
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Class)]
     public sealed class ShowDesignViewModelAttribute : Attribute
     {
         /// <summary>
         /// The ViewModel types available for selection in the design ViewModel dropdown.
-        /// Always includes <see cref="IViewModel"/> unless <see cref="StrictType"/> is <see langword="true"/>
-        /// and the provided type already implements it.
+        /// Includes <see cref="IViewModel"/> when none of the supplied types implements that interface.
         /// </summary>
         public readonly Type[] Types;
 
         /// <summary>
-        /// Indicates whether the type filter is strict.
-        /// When <see langword="true"/>, only the exact specified type is shown, and it must implement <see cref="IViewModel"/>.
+        /// Whether the selector is locked to the supplied concrete ViewModel type.
         /// </summary>
         public readonly bool StrictType;
 
         /// <summary>
-        /// Initializes the attribute allowing any <see cref="IViewModel"/> implementation
+        /// Creates the attribute allowing any <see cref="IViewModel"/> implementation
         /// to be used as a design ViewModel.
         /// </summary>
         public ShowDesignViewModelAttribute()
@@ -37,12 +39,19 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Initializes the attribute with multiple allowed ViewModel types.
+        /// Creates the attribute with multiple allowed ViewModel types.
         /// <see cref="IViewModel"/> is appended automatically if none of the provided types implement it.
         /// </summary>
         /// <param name="types">The ViewModel types to include in the design ViewModel selector.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="types"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">A filter type is <see langword="null"/>.</exception>
         public ShowDesignViewModelAttribute(params Type[] types)
         {
+            if (types is null)
+                throw new ArgumentNullException(nameof(types));
+            if (types.Any(type => type is null))
+                throw new ArgumentException("ViewModel filters cannot contain null types.", nameof(types));
+
             var hasViewModel = types.Any(type => typeof(IViewModel).IsAssignableFrom(type));
 
             Types = hasViewModel
@@ -51,24 +60,27 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Initializes the attribute with a single ViewModel type.
+        /// Creates the attribute with a single ViewModel type.
         /// </summary>
         /// <param name="type">The ViewModel type to show in the design ViewModel selector.</param>
-        /// <param name="strictType">
-        /// When <see langword="true"/>, only the exact <paramref name="type"/> is shown.
-        /// The type must implement <see cref="IViewModel"/>; otherwise an <see cref="ArgumentException"/> is thrown.
-        /// </param>
+        /// <param name="strictType">When <see langword="true"/>, selects the concrete type and locks the selector.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="strictType"/> is <see langword="true"/> and <paramref name="type"/>
-        /// does not implement <see cref="IViewModel"/>.
+        /// Strict mode is requested for a type that is abstract, open generic or does not implement <see cref="IViewModel"/>.
         /// </exception>
         public ShowDesignViewModelAttribute(Type type, bool strictType = false)
         {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+
             StrictType = strictType;
             var implementsViewModel = typeof(IViewModel).IsAssignableFrom(type);
 
-            if (strictType && !implementsViewModel)
-                throw new ArgumentException($"Type {type.Name} does not implement IViewModel, but strictType is set to true.", nameof(type));
+            if (strictType
+                && (!implementsViewModel || type.IsAbstract || type.IsInterface || type.ContainsGenericParameters))
+            {
+                throw new ArgumentException("Strict selection requires a concrete, closed IViewModel type.", nameof(type));
+            }
 
             Types = implementsViewModel
                 ? new[] { type }

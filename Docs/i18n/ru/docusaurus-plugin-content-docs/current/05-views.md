@@ -1,6 +1,6 @@
 # View
 
-View — MonoBehaviour-компонент, связывающий UI-элементы с данными ViewModel через биндеры. Source Generator автоматически генерирует код инициализации и привязки.
+View связывает UI-элементы с данными ViewModel через биндеры; в Unity она обычно наследуется от `MonoView`. Source Generator автоматически генерирует код инициализации и привязки.
 
 ## Содержание
 
@@ -32,9 +32,10 @@ public sealed partial class PlayerView : MonoView
 ```
 
 **Обязательные условия:**
-1. Класс должен быть `partial`
+1. Класс должен быть нестатическим и `partial`
 2. Атрибут `[View]`
-3. Наследование от `MonoView`
+
+Наследуйтесь от `MonoView` для интеграции с Unity-компонентами; обычный класс также поддерживается.
 
 ### Правило именования
 
@@ -128,6 +129,8 @@ public partial class ExampleView : MonoView
 [SerializeField] private Animator _jumpHeight;
 ```
 
+Тип должен быть доступным, неабстрактным, закрытым и реализовывать `IBinder` (`ASPIDVIEW001`). Несовместимый конструктор, нечитаемая цель или null-массив аргументов дают `ASPIDVIEW002`. Для одного null-аргумента конструктора используйте `(object)null`. Строки и числа сохраняют экранирование и C#-типы независимо от текущей культуры.
+
 ### nameof: передача члена View
 
 Аргумент, записанный как `nameof(X)`, попадает в сгенерированный код как сам член `X`, а не как строка `"X"`.
@@ -193,7 +196,7 @@ public partial class MixedView : MonoView
     [IgnoreBind]
     [SerializeField] private MonoBinder _customBinder;
 
-    protected override void OnInitializedInternal()
+    partial void OnInitializedInternal(IViewModel viewModel)
     {
         // Ручная привязка
     }
@@ -212,42 +215,51 @@ public partial class LifecycleView : MonoView
 {
     [SerializeField] private MonoBinder[] _data;
 
-    // ── Инициализация ──
+    [AsBinder(typeof(Aspid.MVVM.StarterKit.ImageSpriteBinder))]
+    [SerializeField] private UnityEngine.UI.Image[] _icons;
 
-    // Перед привязкой биндеров
-    partial void OnInitializingInternal() { }
+    // Initialization
 
-    // После привязки всех биндеров
-    partial void OnInitializedInternal() { }
+    // Before binders are bound
+    partial void OnInitializingInternal(IViewModel viewModel) { }
 
-    // ── Деинициализация ──
+    // After binders are bound
+    partial void OnInitializedInternal(IViewModel viewModel) { }
 
-    // Перед отвязкой биндеров
+    // Deinitialization
+
+    // Before binders are unbound
     partial void OnDeinitializingInternal() { }
 
-    // После отвязки всех биндеров
+    // After binders are unbound
     partial void OnDeinitializedInternal() { }
 
-    // ── Создание массива биндеров ──
+    // Binder creation
 
-    // Перед кэшированием биндеров
+    // Before binders are cached
     partial void OnInstantiatingBinders() { }
 
-    // После кэширования биндеров
+    // After binders are cached
     partial void OnInstantiatedBinders() { }
 }
 ```
 
 ### Порядок вызова
 
-1. `OnInstantiatingBinders()` / `OnInstantiatedBinders()` — однократно при первом Initialize
-2. `OnInitializingInternal()` — перед привязкой
+1. `OnInitializingInternal(viewModel)`: перед привязкой
+2. `OnInstantiatingBinders()` / `OnInstantiatedBinders()`: однократно, при первом кэшировании обёрток или свойств-биндеров
 3. Привязка каждого биндера через `FindBindableMember` + `Bind`
-4. `OnInitializedInternal()` — после привязки
+4. `OnInitializedInternal(viewModel)`: после привязки
 5. *(работа)*
 6. `OnDeinitializingInternal()` — перед отвязкой
 7. Отвязка каждого биндера через `Unbind`
 8. `OnDeinitializedInternal()` — после отвязки
+
+Сгенерированные View игнорируют повторный `Deinitialize()` во время очистки и отклоняют вызовы во время инициализации через `InvalidOperationException`. После ошибки биндера или хука выполняется остальная очистка. Одно исключение сохраняет свой экземпляр и stack trace; несколько ошибок возвращаются в `AggregateException`. Успешные вложенные привязки остаются под управлением View, даже если внешняя попытка завершилась ошибкой.
+
+Состав биндеров фиксирован между `Initialize` и `Deinitialize`: ссылки в полях, кешированные binder-свойства и содержимое коллекций должны сохранять те же экземпляры. Генератор освобождает их напрямую через `UnbindContext(this)`, без отдельного списка привязок. Кеши свойств и обёрток `[AsBinder]` сохраняются. При очистке чужой владелец игнорируется; повторная привязка той же View считается продолжением её владения. Динамическая замена состава не поддерживается.
+
+`Reinitialize`, `DeinitializeView` и обе перегрузки `DisposeView` требуют ненулевую View и иначе выбрасывают `ArgumentNullException`. Для необязательной View используйте `view?.DisposeView()`. Возвращаемый null означает отсутствие прежней ViewModel. Обобщённые методы требуют ссылочный тип. Null в качестве новой ViewModel для `Reinitialize` только деинициализирует View. Освобождение ViewModel остаётся ответственностью вызывающего кода. Если инициализация через `Reinitialize` завершается ошибкой, сгенерированная View остаётся отвязанной и не восстанавливает прежнюю ViewModel.
 
 ---
 
@@ -261,9 +273,9 @@ public partial class StrongView : MonoView, IView<PlayerViewModel>
 {
     [SerializeField] private MonoBinder[] _health;
 
-    public void Initialize(PlayerViewModel viewModel)
+    partial void OnInitializedInternal(IViewModel viewModel)
     {
-        // Source Generator генерирует реализацию
+        // Access the assigned ViewModel after binding.
     }
 }
 ```

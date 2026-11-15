@@ -55,7 +55,7 @@ namespace Aspid.MVVM.Tests
             var binder = new TimeScaleBinder(mode: BindMode.OneWayToSource);
             var received = float.NaN;
 
-            binder.Bind(new OneWayToSourceStructBindableMember<float>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<float>(value => received = value), binder));
 
             Assert.AreEqual(0.5f, received, 0.001f, "The ViewModel did not receive the current time scale");
         }

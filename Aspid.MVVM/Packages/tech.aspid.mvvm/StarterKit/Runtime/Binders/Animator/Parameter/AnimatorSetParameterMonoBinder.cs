@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -18,24 +19,24 @@ namespace Aspid.MVVM.StarterKit
         IReverseBinder<Action<T>>,
         IReverseBinder<IRelayCommand<T>>
     {
-        [NonSerialized] private T _value;
+        [NonSerialized] private T? _value;
         [NonSerialized] private bool _hasValue;
 
-        private IRelayCommand<T> _command;
+        private IRelayCommand<T>? _command;
         private AnimatorParameterProbe _probe;
-        private Action<Action<T>> _reverseAction;
-        private Action<IRelayCommand<T>> _reverseCommand;
+        private Action<Action<T>>? _reverseAction;
+        private Action<IRelayCommand<T>>? _reverseCommand;
 
         [field: Tooltip("Animator parameter to set.")]
         [field: SerializeField] protected string ParameterName { get; private set; }
 
-        event Action<Action<T>> IReverseBinder<Action<T>>.ValueChanged
+        event Action<Action<T>>? IReverseBinder<Action<T>>.ValueChanged
         {
             add => _reverseAction += value;
             remove => _reverseAction -= value;
         }
 
-        event Action<IRelayCommand<T>> IReverseBinder<IRelayCommand<T>>.ValueChanged
+        event Action<IRelayCommand<T>>? IReverseBinder<IRelayCommand<T>>.ValueChanged
         {
             add => _reverseCommand += value;
             remove => _reverseCommand -= value;
@@ -77,13 +78,20 @@ namespace Aspid.MVVM.StarterKit
             SetParameterChecked(value);
 
         /// <inheritdoc/>
+        protected sealed override void OnAttach()
+        {
+            if (Mode is not BindMode.OneWayToSource) return;
+            if (_reverseCommand is not null)
+                _command = new RelayCommand<T>(SetParameterChecked, CanExecute);
+        }
+
+        /// <inheritdoc/>
         protected sealed override void OnBound()
         {
             if (Mode is not BindMode.OneWayToSource) return;
 
             if (_reverseCommand is not null)
             {
-                _command = new RelayCommand<T>(SetParameterChecked, CanExecute);
                 _reverseCommand.Invoke(_command);
             }
             else
@@ -114,11 +122,11 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value that would be written.</param>
         /// <returns><see langword="true"/> when the parameter may be set.</returns>
-        protected virtual bool CanExecute(T value) =>
-            CachedComponent && CachedComponent.gameObject.activeInHierarchy &&
-            _probe.IsUsable(CachedComponent, ParameterName, ParameterType, this);
+        protected virtual bool CanExecute(T? value) => CachedComponent
+            && CachedComponent.gameObject.activeInHierarchy
+            && _probe.IsUsable(CachedComponent, ParameterName, ParameterType, this);
 
-        private void SetParameterChecked(T value)
+        private void SetParameterChecked(T? value)
         {
             _value = value;
             _hasValue = true;

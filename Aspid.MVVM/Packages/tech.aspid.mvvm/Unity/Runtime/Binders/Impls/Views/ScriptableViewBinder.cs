@@ -16,7 +16,7 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// <see cref="ScriptableViewBinder{TView}"/> for <see cref="ScriptableView"/>.
+    /// Concrete <see cref="ScriptableViewBinder{TView}"/> for <see cref="ScriptableView"/>.
     /// </summary>
     public class ScriptableViewBinder : ScriptableViewBinder<ScriptableView>
     {

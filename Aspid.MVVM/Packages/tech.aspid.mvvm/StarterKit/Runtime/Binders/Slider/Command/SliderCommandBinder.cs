@@ -55,7 +55,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _interactableMode = InteractableMode.Custom;
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
@@ -78,7 +78,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
@@ -104,11 +104,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 
@@ -224,7 +224,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param = param;
 
@@ -251,7 +251,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param = param;
 
@@ -279,11 +279,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 
@@ -416,7 +416,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -446,7 +446,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -475,11 +475,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 
@@ -630,7 +630,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -663,7 +663,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -693,11 +693,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _doubleCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onValueChanged.AddListener(OnValueChanged);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onValueChanged.RemoveListener(OnValueChanged);
 

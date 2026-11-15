@@ -33,13 +33,13 @@ public sealed class BinderInvalidCastException : InvalidCastException, ISerializ
 
 ## Remarks
 
-The message names the binder type and, for a component, its GameObject path.
+The message names the binder type and, for a live component, its GameObject path.
 
 ## Methods
 
 ### Class\<T\>\(IBinder\) {#Aspid_MVVM_BinderInvalidCastException_Class__1_Aspid_MVVM_IBinder_}
 
-Throws for a binder that implements neither [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) nor [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
+Creates an exception for a binder that implements neither [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) nor [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
 
 ```csharp
 public static BinderInvalidCastException Class<T>(IBinder binder)
@@ -55,7 +55,7 @@ The binder that failed the check.
 
  [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
 
-Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
+The exception to throw at the call site.
 
 #### Type Parameters
 
@@ -63,15 +63,9 @@ Never returns; the return type allows a <a href="https://learn.microsoft.com/dot
 
 The value type of the bindable member.
 
-#### Exceptions
-
- [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
-
-Always.
-
 ### Struct\<T, TBoxed\>\(IBinder\) {#Aspid_MVVM_BinderInvalidCastException_Struct__2_Aspid_MVVM_IBinder_}
 
-Throws for a binder that implements none of [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of
+Creates an exception for a binder that implements none of [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of
 <code class="typeparamref">TBoxed</code> and [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md).
 
 ```csharp
@@ -88,7 +82,7 @@ The binder that failed the check.
 
  [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
 
-Never returns; the return type allows a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/throw">throw</a> expression at the call site.
+The exception to throw at the call site.
 
 #### Type Parameters
 
@@ -99,10 +93,4 @@ The struct type of the bindable member.
 `TBoxed` 
 
 The boxed form of <code class="typeparamref">T</code>.
-
-#### Exceptions
-
- [BinderInvalidCastException](Aspid.MVVM.BinderInvalidCastException.md)
-
-Always.
 

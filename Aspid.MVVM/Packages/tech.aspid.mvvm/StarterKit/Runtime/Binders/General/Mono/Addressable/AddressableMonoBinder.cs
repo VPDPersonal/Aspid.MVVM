@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             SetDefault();
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             SetDefault();
 
         /// <summary>

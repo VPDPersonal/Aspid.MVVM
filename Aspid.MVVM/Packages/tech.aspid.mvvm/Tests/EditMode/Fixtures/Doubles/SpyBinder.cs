@@ -3,9 +3,6 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
 {
-    /// <summary>
-    /// A binder that records whether it was bound and can be told to throw from either half of the lifecycle.
-    /// </summary>
     internal sealed class SpyBinder : IBinder
     {
         public bool IsBound { get; set; }
@@ -16,13 +13,13 @@ namespace Aspid.MVVM.Tests
 
         public BindMode Mode => BindMode.OneWay;
 
-        public void Bind(IBinderAdder binderAdder)
+        public void Bind(in BindContext context)
         {
             if (ThrowOnBind) throw new InvalidOperationException("broken binder");
             IsBound = true;
         }
 
-        public void Unbind()
+        public void Unbind(in UnbindContext context)
         {
             if (ThrowOnUnbind) throw new InvalidOperationException("broken binder");
             IsBound = false;

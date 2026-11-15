@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -7,7 +8,7 @@ namespace Aspid.MVVM
     /// Generates the <see cref="IView"/> implementation of the class, which binds its binder fields and properties.
     /// </summary>
     /// <remarks>
-    /// The class must be <see langword="partial"/>; a struct is ignored.
+    /// The class must be non-static and <see langword="partial"/>.
     /// </remarks>
     /// <example>
     /// <code>
@@ -15,7 +16,8 @@ namespace Aspid.MVVM
     /// public partial class PlayerView : MonoView { }
     /// </code>
     /// </example>
-    [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
+    [AttributeUsage(validOn: AttributeTargets.Class, Inherited = false)]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global")]
     public sealed class ViewAttribute : Attribute
     {
         /// <summary>

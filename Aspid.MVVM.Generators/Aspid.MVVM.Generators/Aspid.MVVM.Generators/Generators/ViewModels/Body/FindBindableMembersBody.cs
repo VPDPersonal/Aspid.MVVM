@@ -61,6 +61,9 @@ public static class FindBindableMembersBody
         
         code.AppendMultiline(
                 $"""
+                 /// <inheritdoc/>
+                 /// <exception cref="global::System.ArgumentNullException">The query identifier is <see langword="null"/>.</exception>
+                 /// <exception cref="global::System.ArgumentException">The query identifier is empty or whitespace.</exception>
                  {GeneratedCodeViewModelAttribute}
                  {modifiers} {FindBindableMemberResult} FindBindableMember(in {FindBindableMemberParameters} parameters)
                  """)
@@ -71,7 +74,8 @@ public static class FindBindableMembersBody
                 using (__findBindableMemberMarker.Auto())
                 #endif
                 """)
-            .BeginBlock();
+            .BeginBlock()
+            .AppendLine("parameters.EnsureValid();");
         
         if (!data.IdGroups.IsEmpty)
         {

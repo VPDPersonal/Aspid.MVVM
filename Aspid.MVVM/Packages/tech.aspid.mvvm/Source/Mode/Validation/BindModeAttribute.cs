@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Attribute = UnityEngine.PropertyAttribute;
 
 // ReSharper disable once CheckNamespace
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Aspid.MVVM
 {
     /// <summary>
@@ -29,6 +29,7 @@ namespace Aspid.MVVM
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property)]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global")]
     public sealed class BindModeAttribute : Attribute
     {
         /// <summary>
@@ -57,8 +58,11 @@ namespace Aspid.MVVM
         /// Creates an attribute that allows <paramref name="modes"/>.
         /// </summary>
         /// <param name="modes">The allowed modes; none to allow every mode unless <see cref="IsOne"/> or <see cref="IsTwo"/> is set.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="modes"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">An element of <paramref name="modes"/> is <see cref="BindMode.None"/> or undefined.</exception>
         public BindModeAttribute(params BindMode[] modes)
         {
+            BindModeExtensions.ValidateModes(modes);
             Modes = modes;
         }
     }

@@ -13,25 +13,24 @@ namespace Aspid.MVVM
     public static class ViewExtensions
     {
 #if ASPID_MVVM_PROFILER
-        public static readonly Unity.Profiling.ProfilerMarker DisposeViewMarker = new(name: "DisposeView");
-        
-        private static class Markers<T>
-            where T : IView, IDisposable
-        {
-            // ReSharper disable once MemberHidesStaticFromOuterClass
-            public static readonly Unity.Profiling.ProfilerMarker DisposeViewMarker = new(name: $"DisposeView<{typeof(T)}>");
-        }
+        private static readonly Unity.Profiling.ProfilerMarker _disposeViewMarker = new(name: "DisposeView");
 #endif
         
         /// <summary>
         /// Deinitializes <paramref name="view"/> and initializes it with <paramref name="newViewModel"/>.
         /// </summary>
-        /// <param name="view">The view, or <see langword="null"/>.</param>
+        /// <remarks>
+        /// Does not dispose either ViewModel. If initialization fails, recovery follows the View implementation's contract.
+        /// </remarks>
+        /// <param name="view">The view to operate on.</param>
         /// <param name="newViewModel">The ViewModel to initialize the view with; <see langword="null"/> leaves it deinitialized.</param>
-        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
-        public static IViewModel? Reinitialize(this IView? view, IViewModel? newViewModel)
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel)
         {
-            if (view is null) return null;
+            if (view is null)
+                throw new ArgumentNullException(nameof(view));
+
             var oldViewModel = view.DeinitializeView();
 
             if (newViewModel is not null)
@@ -44,12 +43,14 @@ namespace Aspid.MVVM
         /// Deinitializes <paramref name="view"/>.
         /// </summary>
         /// <typeparam name="T">The view type.</typeparam>
-        /// <param name="view">The view, or <see langword="null"/>.</param>
-        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
-        public static IViewModel? DeinitializeView<T>(this T? view)
-            where T : IView
+        /// <param name="view">The view to operate on.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        public static IViewModel? DeinitializeView<T>(this T view)
+            where T : class, IView
         {
-            if (view is null) return null;
+            if (view is null)
+                throw new ArgumentNullException(nameof(view));
             
             var viewModel = view.ViewModel;
             view.Deinitialize();
@@ -60,18 +61,21 @@ namespace Aspid.MVVM
         /// <summary>
         /// Disposes <paramref name="view"/>.
         /// </summary>
+        /// <remarks>Does not dispose the returned ViewModel.</remarks>
         /// <typeparam name="T">The view type.</typeparam>
-        /// <param name="view">The view, or <see langword="null"/>.</param>
-        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
-        public static IViewModel? DisposeView<T>(this T? view)
-            where T : IView, IDisposable
+        /// <param name="view">The view to operate on.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        public static IViewModel? DisposeView<T>(this T view)
+            where T : class, IView, IDisposable
         {
+            if (view is null)
+                throw new ArgumentNullException(nameof(view));
+
 #if ASPID_MVVM_PROFILER
             using (Markers<T>.DisposeViewMarker.Auto())
 #endif
             {
-                if (view is null) return null;
-
                 var viewModel = view.ViewModel;
                 view.Dispose();
 
@@ -82,22 +86,40 @@ namespace Aspid.MVVM
         /// <summary>
         /// Disposes <paramref name="view"/> if it implements <see cref="IDisposable"/>; otherwise, deinitializes it.
         /// </summary>
-        /// <param name="view">The view, or <see langword="null"/>.</param>
-        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none or <paramref name="view"/> is <see langword="null"/>.</returns>
-        public static IViewModel? DisposeView(this IView? view)
+        /// <remarks>Does not dispose the returned ViewModel.</remarks>
+        /// <param name="view">The view to operate on.</param>
+        /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        public static IViewModel? DisposeView(this IView view)
         {
+            if (view is null)
+                throw new ArgumentNullException(nameof(view));
+
 #if ASPID_MVVM_PROFILER
-            using (DisposeViewMarker.Auto())
+            using (_disposeViewMarker.Auto())
 #endif
             {
-                if (view is null) return null;
                 var viewModel = view.ViewModel;
 
-                if (view is IDisposable disposable) disposable.Dispose();
-                else view.Deinitialize();
+                if (view is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+                else
+                {
+                    view.Deinitialize();
+                }
 
                 return viewModel;
             }
         }
+
+#if ASPID_MVVM_PROFILER
+        private static class Markers<T>
+            where T : class, IView, IDisposable
+        {
+            public static readonly Unity.Profiling.ProfilerMarker DisposeViewMarker = new(name: $"DisposeView<{typeof(T)}>");
+        }
+#endif
     }
 }

@@ -40,12 +40,12 @@ namespace Aspid.MVVM.StarterKit
         /// Disposes the filtered view before the base class detaches from the list.
         /// </summary>
         /// <remarks>
-        /// When overriding, always call <c>base.OnUnbound()</c>.
+        /// When overriding, always call <c>base.OnDetach()</c>.
         /// </remarks>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             DisposeFilteredList();
-            base.OnUnbound();
+            base.OnDetach();
         }
 
         /// <inheritdoc/>

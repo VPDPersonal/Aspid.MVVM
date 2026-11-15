@@ -11,7 +11,7 @@ namespace Aspid.MVVM.Tests
     /// Asserts that a constructor's documented <c>BindMode</c> constraint matches the guard it actually runs.
     /// </summary>
     /// <remarks>
-    /// <c>ThrowExceptionIfTwo</c> rejects both <see cref="BindMode.TwoWay"/> and
+    /// <c>EnsureForwardOnly</c> rejects both <see cref="BindMode.TwoWay"/> and
     /// <see cref="BindMode.OneWayToSource"/>, so documentation naming only <see cref="BindMode.TwoWay"/> is
     /// misleading. The check reads the package source rather than reflecting over the assemblies, because XML
     /// comments do not survive into IL, and it walks the inheritance graph so a type that inherits the guard from
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.Tests
     [TestFixture]
     public sealed class BindModeDocContractTests
     {
-        private const string Guard = "ThrowExceptionIfTwo()";
+        private const string Guard = "EnsureForwardOnly()";
 
         /// <summary>
         /// The wording that names only TwoWay: the constraint sentence ends right after the tag.
@@ -46,7 +46,7 @@ namespace Aspid.MVVM.Tests
                 .ToArray();
 
             Assert.IsEmpty(offenders,
-                "These files document only a TwoWay restriction, but ThrowExceptionIfTwo also rejects OneWayToSource:\n" +
+                "These files document only a TwoWay restriction, but EnsureForwardOnly also rejects OneWayToSource:\n" +
                 string.Join("\n", offenders));
         }
 

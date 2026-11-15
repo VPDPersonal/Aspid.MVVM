@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
@@ -16,6 +17,9 @@ namespace Aspid.MVVM.StarterKit
         [SerializeField] private ViewInitializeComponent[] _viewComponents = Array.Empty<ViewInitializeComponent>();
 
         private IView[] _views;
+        private readonly List<IView> _initializedViews = new();
+        private readonly List<IView> _ownedViews = new();
+        private bool _isInitializing;
 
 #if ASPID_MVVM_ZENJECT_INTEGRATION
         [Zenject.Inject]
@@ -25,6 +29,11 @@ namespace Aspid.MVVM.StarterKit
         [VContainer.Inject]
         private VContainer.IObjectResolver _vcontainerContainer;
 #endif
+
+        /// <summary>
+        /// Gets the ViewModel the views are initialized with.
+        /// </summary>
+        public abstract IViewModel ViewModel { get; }
 
         /// <summary>
         /// Gets whether the views are currently initialized.
@@ -46,14 +55,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Gets the ViewModel the views are initialized with.
-        /// </summary>
-        public abstract IViewModel ViewModel { get; }
-
-        /// <summary>
         /// Gets whether the views are disposed when this object is destroyed.
         /// </summary>
-        protected bool IsDisposeViewOnDestroy => _isDisposeViewOnDestroy;
+        protected bool IsDisposeViewOnDestroy =>
+            _isDisposeViewOnDestroy;
 
         /// <summary>
         /// Keeps the serialized view slots consistent with their resolve mode.
@@ -65,14 +70,105 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <summary>
-        /// Disposes the already resolved views if <see cref="IsDisposeViewOnDestroy"/> is set.
+        /// Disposes the acquired views if <see cref="IsDisposeViewOnDestroy"/> is set.
         /// </summary>
         protected virtual void OnDestroy()
         {
-            if (!_isDisposeViewOnDestroy || _views is null) return;
+            if (_isDisposeViewOnDestroy)
+                ReleaseViews(dispose: true);
+        }
 
-            foreach (var view in _views)
-                view.DisposeView();
+        /// <summary>
+        /// Initializes the resolved views and rolls back only the views acquired by this attempt on failure.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel to bind.</param>
+        protected void InitializeViews(IViewModel viewModel)
+        {
+            EnsureNotInitializing();
+            _isInitializing = true;
+            try
+            {
+                foreach (var view in Views)
+                {
+                    if (view.ViewModel is not null)
+                        throw new InvalidOperationException($"{name}: a view is already initialized");
+
+                    _initializedViews.Add(view);
+                    view.Initialize(viewModel);
+                }
+
+                foreach (var view in _initializedViews)
+                {
+                    if (!_ownedViews.Contains(view))
+                        _ownedViews.Add(view);
+                }
+
+                IsInitialized = true;
+            }
+            catch
+            {
+                try
+                {
+                    ReleaseViews(dispose: false, rollback: true);
+                }
+                catch
+                {
+                    /* Preserve the initialization failure. */
+                }
+
+                throw;
+            }
+            finally
+            {
+                _isInitializing = false;
+            }
+        }
+
+        /// <summary>
+        /// Deinitializes every acquired view, including a partially initialized view.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Initialization is in progress.</exception>
+        /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
+        protected void DeinitializeViews() =>
+            ReleaseViews(dispose: false);
+
+        internal void EnsureNotInitializing()
+        {
+            if (_isInitializing)
+                throw new InvalidOperationException($"{name}: views are being initialized");
+        }
+
+        private void ReleaseViews(bool dispose, bool rollback = false)
+        {
+            if (!rollback)
+                EnsureNotInitializing();
+
+            var failures = new CleanupExceptions();
+            var views = dispose
+                ? _ownedViews
+                : _initializedViews;
+
+            foreach (var view in views)
+            {
+                try
+                {
+                    if (dispose)
+                        view.DisposeView();
+                    else
+                        view.Deinitialize();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+            }
+
+            _initializedViews.Clear();
+            if (dispose)
+                _ownedViews.Clear();
+
+            IsInitialized = false;
+            failures.ThrowIfAny();
         }
 
         /// <summary>

@@ -73,10 +73,10 @@ namespace Aspid.MVVM.Tests
             var binder = new MonoViewBinder<StubView>(view, BindMode.OneWay);
             var viewModel = new StubViewModel();
 
-            binder.Bind(new OneWayBindableMember<IViewModel>(viewModel));
+            binder.Bind(new BindContext(new OneWayBindableMember<IViewModel>(viewModel), binder));
             Assert.IsNotNull(view.ViewModel, "The view was not initialized on bind");
 
-            binder.Unbind();
+            binder.Unbind(new UnbindContext(binder));
 
             Assert.IsNull(view.ViewModel, "Unbind did not deinitialize the view");
         }

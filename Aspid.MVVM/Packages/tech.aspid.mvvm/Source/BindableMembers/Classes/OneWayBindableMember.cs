@@ -10,16 +10,26 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IBindableMember{T}"/> that pushes every value change to its binders.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="BindMode.TwoWay"/> binder receives values without reporting changes back to the ViewModel.
+    /// </remarks>
     /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneWayBindableMember<T> : IBindableMember<T>, IBinderRemover
     {
-        /// <summary>
-        /// Occurs when <see cref="Value"/> is set.
-        /// </summary>
+        private T? _value;
+
+        /// <inheritdoc/>
         public event Action<T?>? Changed;
 
-        private T? _value;
-        
+        /// <summary>
+        /// Creates a member holding <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The initial value.</param>
+        public OneWayBindableMember(T? value)
+        {
+            _value = value;
+        }
+
         /// <summary>
         /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
         /// </summary>
@@ -37,24 +47,15 @@ namespace Aspid.MVVM
                 }
             }
         }
-        
+
         /// <summary>
         /// Gets the binding mode of the member; always <see cref="BindMode.OneWay"/>.
         /// </summary>
-        public BindMode Mode => BindMode.OneWay;    
-
-        /// <summary>
-        /// Creates a member holding <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The initial value.</param>
-        public OneWayBindableMember(T? value)
-        {
-            _value = value;
-        }
+        public BindMode Mode => BindMode.OneWay;
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.
+        /// The mode of <paramref name="binder"/> is not <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.
@@ -66,27 +67,25 @@ namespace Aspid.MVVM
 #endif
             {
                 var mode = binder.Mode;
-                mode.ThrowExceptionIfNotOne();
-                
+                mode.EnsureForward();
+
                 switch (binder)
                 {
                     case IBinder<T> specificBinder:
                         {
                             specificBinder.SetValue(_value);
-                            
-                            if (mode is BindMode.OneWay) Changed += specificBinder.SetValue;
-                            else return null;
-                            
+                            if (mode is BindMode.OneTime) return null;
+
+                            Changed += specificBinder.SetValue;
                             return this;
                         }
 
                     case IAnyBinder anyBinder:
                         {
                             anyBinder.SetValue(_value);
-                            
-                            if (mode is BindMode.OneWay) Changed += anyBinder.SetValue;
-                            else return null;
-                            
+                            if (mode is BindMode.OneTime) return null;
+
+                            Changed += anyBinder.SetValue;
                             return this;
                         }
 
@@ -113,7 +112,7 @@ namespace Aspid.MVVM
                 };
             }
         }
-        
+
         /// <summary>
         /// Sets <see cref="Value"/> to <paramref name="value"/>.
         /// </summary>

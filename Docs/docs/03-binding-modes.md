@@ -35,6 +35,10 @@ public enum BindMode
 | **OneTime** | ViewModel → View (once) | Static data, commands |
 | **OneWayToSource** | View → ViewModel | Component references, UI events |
 
+The ViewModel member limits the binder's requested mode. A `TwoWay` binder attached to a `OneWay` member receives the initial value and later updates without writing back; attached to a `OneTime` member, it receives only the initial value. Its configured mode stays `TwoWay`, so the same View can later bind to a `TwoWay` member with both directions enabled. This does not change the control's interactability.
+
+A binder requesting only `OneWayToSource` cannot attach to a `OneWay` or `OneTime` member: there is no shared direction, so binding throws. `None` and undefined modes are also rejected.
+
 ---
 
 ## OneWay

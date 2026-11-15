@@ -15,6 +15,7 @@ Sets the access modifiers of the property generated for a bind field of a [`[Vie
 
 ```csharp
 [AttributeUsage(AttributeTargets.Field)]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public sealed class AccessAttribute : Attribute
 ```
 
@@ -63,6 +64,12 @@ public AccessAttribute(Access access = Access.Private)
 
 The access modifier of the getter and the setter.
 
+#### Exceptions
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+<code class="paramref">access</code> is not a declared access modifier.
+
 ## Properties
 
 ### Get {#Aspid_MVVM_AccessAttribute_Get}
@@ -77,6 +84,12 @@ public Access Get { get; set; }
 
  [Access](Aspid.MVVM.Access.md)
 
+#### Exceptions
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+The value is not a declared access modifier.
+
 ### Set {#Aspid_MVVM_AccessAttribute_Set}
 
 Gets or sets the access modifier of the setter, overriding the constructor argument.
@@ -88,4 +101,10 @@ public Access Set { get; set; }
 #### Property Value
 
  [Access](Aspid.MVVM.Access.md)
+
+#### Exceptions
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+The value is not a declared access modifier.
 

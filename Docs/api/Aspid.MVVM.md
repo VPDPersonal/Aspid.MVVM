@@ -34,8 +34,7 @@ Can be applied multiple times to associate a binder with several component types
 
  [AsBinderAttribute](Aspid.MVVM.AsBinderAttribute.md)
 
-Wraps the field or property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder of [`AsBinderAttribute.Type`](Aspid.MVVM.AsBinderAttribute.md#Aspid_MVVM_AsBinderAttribute_Type), created with the member as its first
-constructor argument.
+Wraps a field or readable property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder, passing the member as its first constructor argument.
 
  [BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md)
 
@@ -145,13 +144,13 @@ Implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idispos
 
 Provides extension methods for the [`IViewModel`](Aspid.MVVM.IViewModel.md) interface.
 
- [MonoViewMonoBinder](Aspid.MVVM.MonoViewMonoBinder.md)
-
-[`MonoViewMonoBinder<T>`](Aspid.MVVM.MonoViewMonoBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
-
  [MonoViewMonoBinder\<TView\>](Aspid.MVVM.MonoViewMonoBinder-1.md)
 
 Abstract base [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+
+ [MonoViewMonoBinder](Aspid.MVVM.MonoViewMonoBinder.md)
+
+[`MonoViewMonoBinder<T>`](Aspid.MVVM.MonoViewMonoBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
 
  [OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md)
 
@@ -165,14 +164,14 @@ Generates a [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) bindable member for the
 
 Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
- [OneTimeStructBindableMember\<T\>](Aspid.MVVM.OneTimeStructBindableMember-1.md)
-
-Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
-
  [OneTimeStructBindableMember\<T, TBoxed\>](Aspid.MVVM.OneTimeStructBindableMember-2.md)
 
 [`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that pushes its value to a binder once and keeps no subscription,
 boxing it for an [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code>.
+
+ [OneTimeStructBindableMember\<T\>](Aspid.MVVM.OneTimeStructBindableMember-1.md)
+
+Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
  [OneWayBindAttribute](Aspid.MVVM.OneWayBindAttribute.md)
 
@@ -216,9 +215,9 @@ Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourc
 [`IReadOnlyBindableMember<T>`](Aspid.MVVM.IReadOnlyBindableMember-1.md) that passes values from its reverse binders to a setter, unboxing them from an
 [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code>.
 
- [RebindableBinderExtensions](Aspid.MVVM.RebindableBinderExtensions.md)
+ [RelayCommand](Aspid.MVVM.RelayCommand.md)
 
-Provides extension methods for rebinding an [`IBinder`](Aspid.MVVM.IBinder.md).
+[`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs a delegate, optionally gated by a predicate.
 
  [RelayCommand\<T\>](Aspid.MVVM.RelayCommand-1.md)
 
@@ -231,10 +230,6 @@ Provides extension methods for rebinding an [`IBinder`](Aspid.MVVM.IBinder.md).
  [RelayCommand\<T1, T2, T3\>](Aspid.MVVM.RelayCommand-3.md)
 
 [`IRelayCommand<T1, T2, T3>`](Aspid.MVVM.IRelayCommand-3.md) that runs a delegate, optionally gated by a predicate.
-
- [RelayCommand](Aspid.MVVM.RelayCommand.md)
-
-[`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs a delegate, optionally gated by a predicate.
 
  [RelayCommand\<T1, T2, T3, T4\>](Aspid.MVVM.RelayCommand-4.md)
 
@@ -307,14 +302,14 @@ to a setter.
 
 Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
- [TwoWayStructBindableMember\<T\>](Aspid.MVVM.TwoWayStructBindableMember-1.md)
-
-Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
-
  [TwoWayStructBindableMember\<T, TBoxed\>](Aspid.MVVM.TwoWayStructBindableMember-2.md)
 
 [`IBindableMember<T>`](Aspid.MVVM.IBindableMember-1.md) that pushes value changes to its binders and passes values from its reverse binders
 to a setter, also through binders of <code class="typeparamref">TBoxed</code>.
+
+ [TwoWayStructBindableMember\<T\>](Aspid.MVVM.TwoWayStructBindableMember-1.md)
+
+Concrete [`TwoWayStructBindableMember<T1, T2>`](Aspid.MVVM.TwoWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
  [UsedInModesAttribute](Aspid.MVVM.UsedInModesAttribute.md)
 
@@ -348,6 +343,10 @@ and deinitializes it on unbind.
 
 ### Structs
 
+ [BindContext](Aspid.MVVM.BindContext.md)
+
+Contains the bindable member and the owner acquiring a binder.
+
  [FindBindableMemberParameters](Aspid.MVVM.FindBindableMemberParameters.md)
 
 Represents the query passed to [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
@@ -355,6 +354,10 @@ Represents the query passed to [`IViewModel.FindBindableMember`](Aspid.MVVM.IVie
  [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
 Represents the result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
+
+ [UnbindContext](Aspid.MVVM.UnbindContext.md)
+
+Identifies the owner releasing a binder.
 
 ### Interfaces
 
@@ -394,29 +397,25 @@ Defines the side of a bindable member that detaches binders.
 
 [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) that exposes its current value.
 
- [IRebindableBinder](Aspid.MVVM.IRebindableBinder.md)
+ [IRelayCommand\<T1, T2, T3, T4\>](Aspid.MVVM.IRelayCommand-4.md)
 
-Defines a binder that can attach again to its current bindable member.
+Defines a command with four parameters.
+
+ [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
+
+Defines a command with one parameter.
 
  [IRelayCommand\<T1, T2, T3\>](Aspid.MVVM.IRelayCommand-3.md)
 
 Defines a command with three parameters.
 
- [IRelayCommand\<T1, T2\>](Aspid.MVVM.IRelayCommand-2.md)
-
-Defines a command with two parameters.
-
- [IRelayCommand\<T1, T2, T3, T4\>](Aspid.MVVM.IRelayCommand-4.md)
-
-Defines a command with four parameters.
-
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
 Defines a command without parameters.
 
- [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
+ [IRelayCommand\<T1, T2\>](Aspid.MVVM.IRelayCommand-2.md)
 
-Defines a command with one parameter.
+Defines a command with two parameters.
 
  [IReverseBinder\<T\>](Aspid.MVVM.IReverseBinder-1.md)
 

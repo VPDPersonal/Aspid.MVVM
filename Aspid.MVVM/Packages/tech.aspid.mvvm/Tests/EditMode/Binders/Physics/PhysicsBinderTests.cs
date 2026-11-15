@@ -96,7 +96,7 @@ namespace Aspid.MVVM.Tests
             var binder = new RigidbodyConstraintsBinder(body, mode: BindMode.OneWayToSource);
             var received = default(RigidbodyConstraints);
 
-            binder.Bind(new OneWayToSourceStructBindableMember<RigidbodyConstraints>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<RigidbodyConstraints>(value => received = value), binder));
 
             Assert.AreEqual(RigidbodyConstraints.FreezePositionZ, received, "The ViewModel did not receive the current mask");
         }

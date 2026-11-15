@@ -13,22 +13,15 @@ namespace Aspid.MVVM
     /// <typeparam name="T">The bound value type.</typeparam>
     public sealed class OneWayToSourceBindableMember<T> : IReadOnlyBindableMember<T>, IBinderRemover
     {
-        /// <summary>
-        /// Occurs after a reverse binder reports a value and the setter has run.
-        /// </summary>
-        public event Action<T?>? Changed;
-        
         private readonly Action<T?> _setValue;
+
+        /// <inheritdoc/>
+        public event Action<T?>? Changed;
         
         /// <summary>
         /// Gets the last value reported by a reverse binder.
         /// </summary>
         public T? Value { get; private set; }
-        
-        /// <summary>
-        /// Gets the binding mode of the member; always <see cref="BindMode.OneWayToSource"/>.
-        /// </summary>
-        public BindMode Mode => BindMode.OneWayToSource;    
 
         /// <summary>
         /// Creates a member that passes reported values to <paramref name="setValue"/>.
@@ -39,6 +32,11 @@ namespace Aspid.MVVM
         {
             _setValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
+
+        /// <summary>
+        /// Gets the binding mode of the member; always <see cref="BindMode.OneWayToSource"/>.
+        /// </summary>
+        public BindMode Mode => BindMode.OneWayToSource;
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
@@ -53,13 +51,35 @@ namespace Aspid.MVVM
             using (this.Marker())
 #endif
             {
-                binder.Mode.ThrowExceptionIfNotTwo();
+                binder.Mode.EnsureReverse();
 
-                switch (binder)
+                try
                 {
-                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged += OnValueChanged; break;
-                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged += OnObjectValueChanged; break;
-                    default: throw ReverseBinderInvalidCastException<T>.Class(binder);
+                    switch (binder)
+                    {
+                        case IReverseBinder<T> reverseBinder:
+                            reverseBinder.ValueChanged += OnValueChanged;
+                            break;
+
+                        case IAnyReverseBinder anyReverseBinder:
+                            anyReverseBinder.ValueChanged += OnObjectValueChanged;
+                            break;
+
+                        default: throw ReverseBinderInvalidCastException<T>.Class(binder);
+                    }
+                }
+                catch
+                {
+                    try
+                    {
+                        ((IBinderRemover)this).Remove(binder);
+                    }
+                    catch
+                    {
+                        // Do not replace the original exception with a cleanup failure.
+                    }
+
+                    throw;
                 }
 
                 return this;
@@ -78,8 +98,14 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IReverseBinder<T> reverseBinder: reverseBinder.ValueChanged -= OnValueChanged; break;
-                    case IAnyReverseBinder anyReverseBinder: anyReverseBinder.ValueChanged -= OnObjectValueChanged; break;
+                    case IReverseBinder<T> reverseBinder:
+                        reverseBinder.ValueChanged -= OnValueChanged;
+                        break;
+
+                    case IAnyReverseBinder anyReverseBinder:
+                        anyReverseBinder.ValueChanged -= OnObjectValueChanged;
+                        break;
+
                     default: throw ReverseBinderInvalidCastException<T>.Class(binder);
                 }
             }
@@ -96,19 +122,25 @@ namespace Aspid.MVVM
                 Changed?.Invoke(value);
             }
         }
-        
-        private void OnObjectValueChanged(object value)
+
+        private void OnObjectValueChanged(object? value)
         {
 #if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
                 if (value is null)
+                {
                     OnValueChanged(default);
+                }
                 else if (value is not T specificValue)
+                {
                     throw new ArgumentException("Value must be of type " + typeof(T).FullName);
+                }
                 else
+                {
                     OnValueChanged(specificValue);
+                }
             }
         }
     }

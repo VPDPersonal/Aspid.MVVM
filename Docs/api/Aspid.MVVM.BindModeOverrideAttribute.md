@@ -17,6 +17,7 @@ Replaces the [`BindModeAttribute`](Aspid.MVVM.BindModeAttribute.md) limits of ev
 [Conditional("DEBUG")]
 [Conditional("UNITY_EDITOR")]
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public sealed class BindModeOverrideAttribute : Attribute
 ```
 
@@ -44,6 +45,7 @@ The allowed modes are [`BindModeOverrideAttribute.Modes`](Aspid.MVVM.BindModeOve
 them, or with [`BindModeOverrideAttribute.IsAll`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsAll), every mode except [`BindMode.None`](Aspid.MVVM.BindMode.md) is allowed.
 </p>
 <p>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</p>
+<p>The serializable binder generator applies the same restrictions to the generated constructor.</p>
 <p>A subclass with its own [`BindModeOverrideAttribute`](Aspid.MVVM.BindModeOverrideAttribute.md) uses that one instead.</p>
 
 ## Constructors
@@ -61,6 +63,16 @@ public BindModeOverrideAttribute(params BindMode[] modes)
 `modes` [BindMode](Aspid.MVVM.BindMode.md)\[\]
 
 The allowed modes; none to allow every mode unless [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) or [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) is set.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">modes</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+An element of <code class="paramref">modes</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
 
 ## Properties
 

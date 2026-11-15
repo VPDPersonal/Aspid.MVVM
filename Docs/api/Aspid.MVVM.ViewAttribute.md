@@ -14,7 +14,8 @@ Assembly: Aspid.MVVM.dll
 Generates the [`IView`](Aspid.MVVM.IView.md) implementation of the class, which binds its binder fields and properties.
 
 ```csharp
-[AttributeUsage(AttributeTargets.Class|AttributeTargets.Struct, Inherited = false)]
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public sealed class ViewAttribute : Attribute
 ```
 
@@ -37,7 +38,7 @@ public partial class PlayerView : MonoView { }
 
 ## Remarks
 
-The class must be <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/partial-method">partial</a>; a struct is ignored.
+The class must be non-static and <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/partial-method">partial</a>.
 
 ## Properties
 

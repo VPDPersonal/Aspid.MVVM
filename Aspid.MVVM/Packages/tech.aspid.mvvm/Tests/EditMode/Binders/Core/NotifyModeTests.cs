@@ -36,7 +36,7 @@ namespace Aspid.MVVM.Tests
             toggle.onValueChanged.AddListener(_ => events++);
 
             var member = new TwoWayStructBindableMember<bool>(true, _ => { });
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.IsTrue(toggle.isOn, "The value from binding did not reach the toggle");
             Assert.AreEqual(onBind, events, "Wrong number of events on bind");
@@ -57,7 +57,7 @@ namespace Aspid.MVVM.Tests
             ((IReverseBinder<bool>)binder).ValueChanged += received.Add;
 
             var member = new TwoWayStructBindableMember<bool>(false, _ => { });
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             member.Invoke(true);
 
             Assert.IsEmpty(received, "The binder's own write came back as user input");
@@ -69,13 +69,13 @@ namespace Aspid.MVVM.Tests
             var toggle = Spawn<Toggle>("Toggle");
             var binder = SetNotifyMode(toggle.gameObject.AddComponent<ToggleIsOnMonoBinder>(), NotifyMode.AfterBind);
 
-            binder.Bind(new TwoWayStructBindableMember<bool>(true, _ => { }));
-            binder.Unbind();
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<bool>(true, _ => { }), binder));
+            binder.Unbind(new UnbindContext(binder));
 
             var events = 0;
             toggle.onValueChanged.AddListener(_ => events++);
 
-            binder.Bind(new TwoWayStructBindableMember<bool>(false, _ => { }));
+            binder.Bind(new BindContext(new TwoWayStructBindableMember<bool>(false, _ => { }), binder));
 
             Assert.IsFalse(toggle.isOn, "The value from the second binding did not reach the toggle");
             Assert.AreEqual(0, events, "A reused binder raised onValueChanged on bind");
@@ -94,7 +94,7 @@ namespace Aspid.MVVM.Tests
             slider.onValueChanged.AddListener(_ => events++);
 
             var member = new TwoWayStructBindableMember<float>(3f, _ => { });
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(0, events, "The value from binding raised onValueChanged");
 
@@ -117,7 +117,7 @@ namespace Aspid.MVVM.Tests
             dropdown.onValueChanged.AddListener(_ => events++);
 
             var member = new TwoWayStructBindableMember<int>(1, _ => { });
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             var received = new List<int>();
             ((IReverseBinder<int>)binder).ValueChanged += received.Add;
@@ -153,7 +153,7 @@ namespace Aspid.MVVM.Tests
             SetMode(binder, BindMode.OneWay);
 
             var member = new OneWayEnumBindableMember<TestGroupEnum>(TestGroupEnum.First);
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.IsTrue(toggle.isOn, "The value from binding did not reach the toggle");
             Assert.AreEqual(0, events, "The value from binding raised onValueChanged");

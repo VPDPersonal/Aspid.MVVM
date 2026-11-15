@@ -14,7 +14,7 @@ Assembly: Aspid.MVVM.dll
 [`IRelayCommand<T>`](Aspid.MVVM.IRelayCommand-1.md) that runs a delegate, optionally gated by a predicate.
 
 ```csharp
-public sealed class RelayCommand<T> : IRelayCommand<T>
+public class RelayCommand<T> : IRelayCommand<T>
 ```
 
 #### Type Parameters
@@ -35,40 +35,24 @@ The command parameter type.
 
 #### Extension Methods
 
-[RelayCommandExtensions.CreateCommandWithoutParameters\<T\>\(IRelayCommand\<T\>, T\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__1_Aspid_MVVM_IRelayCommand___0____0_), 
-[RelayCommandExtensions.CreateCommandWithoutParametersOrEmpty\<T\>\(IRelayCommand\<T\>?, T\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__1_Aspid_MVVM_IRelayCommand___0____0_), 
-[RelayCommandExtensions.CreateCommandWithoutParametersOrEmptyExecution\<T\>\(IRelayCommand\<T\>?, T\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0____0_), 
+[RelayCommandExtensions.CreateCommandWithoutParameters\<T\>\(IRelayCommand\<T\>, T?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__1_Aspid_MVVM_IRelayCommand___0____0_),
+[RelayCommandExtensions.CreateCommandWithoutParametersOrEmpty\<T\>\(IRelayCommand\<T\>?, T?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__1_Aspid_MVVM_IRelayCommand___0____0_),
+[RelayCommandExtensions.CreateCommandWithoutParametersOrEmptyExecution\<T\>\(IRelayCommand\<T\>?, T?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0____0_),
 [RelayCommandExtensions.GetSelfOrEmpty\<T\>\(IRelayCommand\<T?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__1_Aspid_MVVM_IRelayCommand___0__), 
 [RelayCommandExtensions.GetSelfOrEmptyExecution\<T\>\(IRelayCommand\<T?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0__)
 
+## Remarks
+
+Exceptions from delegates and event handlers propagate to the caller.
+
 ## Constructors
-
-### RelayCommand\(Action\<T?\>\) {#Aspid_MVVM_RelayCommand_1__ctor_System_Action__0__}
-
-Creates a command that can always execute.
-
-```csharp
-public RelayCommand(Action<T?> execute)
-```
-
-#### Parameters
-
-`execute` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>
-
-The action to run.
-
-#### Exceptions
-
- [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
-
-<code class="paramref">execute</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### RelayCommand\(Action\<T?\>, Func\<T?, bool\>?\) {#Aspid_MVVM_RelayCommand_1__ctor_System_Action__0__System_Func__0_System_Boolean__}
 
 Creates a command gated by <code class="paramref">canExecute</code>.
 
 ```csharp
-public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute)
+public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
 ```
 
 #### Parameters
@@ -79,7 +63,7 @@ The action to run.
 
 `canExecute` [Func](https://learn.microsoft.com/dotnet/api/system.func-2)\<T?, [bool](https://learn.microsoft.com/dotnet/api/system.boolean)\>?
 
-The predicate that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to always allow it.
+The execution predicate; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to always allow execution.
 
 #### Exceptions
 
@@ -91,8 +75,7 @@ The predicate that allows execution; <a href="https://learn.microsoft.com/dotnet
 
 ### Empty {#Aspid_MVVM_RelayCommand_1_Empty}
 
-Gets a shared command that does nothing and whose [`RelayCommand<T>.CanExecute`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_CanExecute__0_) returns
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+Gets a shared command that does nothing and always returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> from [`RelayCommand<T>.CanExecute`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_CanExecute__0_).
 
 ```csharp
 public static RelayCommand<T> Empty { get; }
@@ -104,8 +87,7 @@ public static RelayCommand<T> Empty { get; }
 
 ### EmptyExecution {#Aspid_MVVM_RelayCommand_1_EmptyExecution}
 
-Gets a shared command that does nothing and whose [`RelayCommand<T>.CanExecute`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_CanExecute__0_) returns
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
+Gets a shared command that does nothing and always returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> from [`RelayCommand<T>.CanExecute`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_CanExecute__0_).
 
 ```csharp
 public static RelayCommand<T> EmptyExecution { get; }
@@ -135,7 +117,7 @@ The command parameter.
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-The result of the predicate; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when there is none.
+The predicate result; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when no predicate was supplied.
 
 ### Execute\(T?\) {#Aspid_MVVM_RelayCommand_1_Execute__0_}
 

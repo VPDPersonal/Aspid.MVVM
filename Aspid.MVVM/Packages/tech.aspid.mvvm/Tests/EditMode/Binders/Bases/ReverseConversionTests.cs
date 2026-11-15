@@ -29,7 +29,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<string>(value => received = value);
             var binder = new GameObjectTagBinder(go, new SuffixConverter(), BindMode.OneWayToSource);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual("Player", received, "the tag should arrive as the ViewModel would hold it");
         }
@@ -46,7 +46,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<string>(value => received = value);
             var binder = new GameObjectTagBinder(go, new OneWaySuffixConverter(), BindMode.OneWayToSource);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(
                 "Player",
@@ -64,7 +64,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<string>(value => received = value);
             var binder = new ObjectNameBinder(go, new SuffixConverter(), BindMode.OneWayToSource);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual("Hero", received);
         }
@@ -76,7 +76,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<float>(value => received = value);
             var binder = new ProbeFloatBinder(new FloatProbe { Value = 250f }, new ScaleConverter(), BindMode.OneWayToSource);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.IsNotNull(received, "the typed channel a float member binds through must be raised");
             Assert.AreEqual(2.5f, received!.Value, 1e-4f, "the ViewModel expects its own scale, not the View's");
@@ -91,7 +91,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<int>(value => received = value);
             var binder = new ProbeFloatBinder(new FloatProbe { Value = 250f }, new ScaleConverter(), BindMode.OneWayToSource);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(2, received, "250 undone by a x100 converter is 2.5, truncated to 2");
         }
@@ -105,7 +105,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<float>(value => received = value);
             var binder = new ProbeFloatBinder(new FloatProbe { Value = 250f }, new OneWayScaleConverter(), BindMode.OneWayToSource);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.AreEqual(250f, received!.Value, 1e-4f, "a one-way converter cannot be undone, so the raw value is the only honest answer");
         }
@@ -117,7 +117,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayToSourceBindableMember<float>(value => received = value);
             var binder = new ValueOneWayToSourceBinder<float>(250f, new ScaleConverter());
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
 
             Assert.IsNotNull(received);
             Assert.AreEqual(2.5f, received!.Value, 1e-4f, "the initial push must land in the same space as every later one");

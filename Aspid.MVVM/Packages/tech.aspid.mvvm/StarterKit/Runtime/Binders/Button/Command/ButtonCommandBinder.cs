@@ -50,7 +50,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _interactableMode = InteractableMode.Custom;
             _customInteractable = customInteractable ?? throw new ArgumentNullException(nameof(customInteractable));
@@ -73,7 +73,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _interactableMode = interactableMode is not InteractableMode.Custom
                 ? interactableMode
@@ -91,11 +91,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _boolCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onClick.RemoveListener(OnClicked);
 
@@ -185,7 +185,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param = param;
 
@@ -212,7 +212,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param = param;
 
@@ -228,11 +228,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onClick.RemoveListener(OnClicked);
             SetValue(null);
@@ -328,7 +328,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -358,7 +358,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -375,11 +375,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onClick.RemoveListener(OnClicked);
             SetValue(null);
@@ -492,7 +492,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -525,7 +525,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -543,11 +543,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onClick.RemoveListener(OnClicked);
             SetValue(null);
@@ -678,7 +678,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -714,7 +714,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _param1 = param1;
             _param2 = param2;
@@ -733,11 +733,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             Target.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Target.onClick.RemoveListener(OnClicked);
             SetValue(null);

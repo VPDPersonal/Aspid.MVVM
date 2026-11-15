@@ -36,7 +36,7 @@ namespace Aspid.MVVM.Tests
             string received = null;
             var member = new OneWayBindableMember<TestPayload>(null);
 
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
             SerializedEvent(binder).AddListener(value => received = value);
 
             member.Value = null;
@@ -52,7 +52,7 @@ namespace Aspid.MVVM.Tests
             string received = null;
             var member = new OneWayBindableMember<TestPayload>(null);
 
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
             SerializedEvent(binder).AddListener(value => received = value);
 
             member.Value = new TestPayload();
@@ -67,7 +67,7 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayBindableMember<TestPayload>(null);
 
             LogAssert.Expect(LogType.Log, new Regex("SetValue: null"));
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
         }
 
         /// <summary>

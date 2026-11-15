@@ -33,7 +33,7 @@ namespace Aspid.MVVM.StarterKit
         /// <see cref="ITwoWayConverter{TFrom, TTo}"/>.
         /// </param>
         /// <param name="mode">The binding mode.</param>
-        /// <exception cref="ArgumentException"><paramref name="mode"/> is <see cref="BindMode.None"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="mode"/> is <see cref="BindMode.None"/> or undefined.</exception>
         public SliderValueBinder(
             Slider target,
             NotifyMode notifyMode = NotifyMode.Never,
@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.TwoWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfNone();
+            mode.EnsureValid();
             
             _converter = converter;
             _notifyMode = notifyMode;
@@ -87,18 +87,22 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
+        protected override void OnAttach()
+        {
+            if (!Mode.IncludesReverse()) return;
+            Target.onValueChanged.AddListener(OnValueChanged);
+        }
+
+        /// <inheritdoc/>
         protected override void OnBound()
         {
-            if (!Mode.IsTwo()) return;
-
-            Target.onValueChanged.AddListener(OnValueChanged);
             if (Mode is BindMode.OneWayToSource) OnValueChanged(Target.value);
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
                 Target.onValueChanged.RemoveListener(OnValueChanged);
         }
 

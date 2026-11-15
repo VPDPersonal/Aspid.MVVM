@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Abstract base <see cref="MonoBinder"/> that targets a <typeparamref name="TComponent"/>, taken from the
+    /// <see cref="MonoBinder"/> that targets a <typeparamref name="TComponent"/>, taken from the
     /// serialized field or found on the same GameObject.
     /// </summary>
     /// <typeparam name="TComponent">The type of <see cref="Component"/> this binder targets.</typeparam>
@@ -17,22 +17,35 @@ namespace Aspid.MVVM
         private bool _isCached;
 
         /// <summary>
-        /// Indicates whether binding is allowed: <see langword="false"/> when no target component can be found.
+        /// Gets a value indicating whether binding is allowed: <see langword="false"/> when no target component can be found.
         /// </summary>
-        public override bool CanBind => IsAssigned(CachedComponent);
+        public override bool CanBind
+        {
+            get
+            {
+                if (!IsAssigned(_component))
+                    _isCached = false;
+
+                return IsAssigned(CachedComponent);
+            }
+        }
 
         /// <summary>
         /// Gets the target component: the serialized one if assigned, otherwise the result of <see cref="ResolveComponent"/>, cached.
         /// </summary>
+        /// <remarks>A missing or destroyed cached component is resolved again when <see cref="CanBind"/> is checked.</remarks>
         protected TComponent CachedComponent
         {
             get
             {
-                if (_isCached) return _component;
-                _isCached = true;
+                if (_isCached)
+                    return _component;
 
-                if (IsAssigned(_component)) return _component;
-                return _component = ResolveComponent();
+                if (!IsAssigned(_component))
+                    _component = ResolveComponent();
+
+                _isCached = true;
+                return _component;
             }
         }
 
@@ -59,6 +72,7 @@ namespace Aspid.MVVM
             GetComponent<TComponent>();
 
         // Unity's bool conversion: a destroyed component is not null to C#.
-        private static bool IsAssigned(TComponent component) => component;
+        private static bool IsAssigned(TComponent component) =>
+            component;
     }
 }

@@ -19,16 +19,15 @@ public enum BindMode
 
 #### Extension Methods
 
-[BindModeExtensions.IsNone\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IsNone_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.IsOne\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IsOne_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.IsTwo\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IsTwo_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfMatches\(BindMode, BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfMatches_Aspid_MVVM_BindMode_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfNone\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNone_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfNotMatches\(BindMode, BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNotMatches_Aspid_MVVM_BindMode_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfNotOne\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNotOne_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfNotTwo\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfNotTwo_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfOne\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfOne_Aspid_MVVM_BindMode_), 
-[BindModeExtensions.ThrowExceptionIfTwo\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_ThrowExceptionIfTwo_Aspid_MVVM_BindMode_)
+[BindModeExtensions.EnsureForward\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_EnsureForward_Aspid_MVVM_BindMode_),
+[BindModeExtensions.EnsureForwardOnly\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_EnsureForwardOnly_Aspid_MVVM_BindMode_),
+[BindModeExtensions.EnsureNot\(BindMode, BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_EnsureNot_Aspid_MVVM_BindMode_Aspid_MVVM_BindMode_),
+[BindModeExtensions.EnsureReverse\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_EnsureReverse_Aspid_MVVM_BindMode_),
+[BindModeExtensions.EnsureValid\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_EnsureValid_Aspid_MVVM_BindMode_),
+[BindModeExtensions.IncludesForward\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IncludesForward_Aspid_MVVM_BindMode_),
+[BindModeExtensions.IncludesReverse\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IncludesReverse_Aspid_MVVM_BindMode_),
+[BindModeExtensions.IsForwardOnly\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IsForwardOnly_Aspid_MVVM_BindMode_),
+[BindModeExtensions.IsValid\(BindMode\)](Aspid.MVVM.BindModeExtensions.md#Aspid_MVVM_BindModeExtensions_IsValid_Aspid_MVVM_BindMode_)
 
 ## Fields
 

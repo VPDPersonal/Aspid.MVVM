@@ -14,6 +14,7 @@ Assembly: Aspid.MVVM.dll
 Sets the identifier that pairs a ViewModel member with the View binders of the same identifier.
 
 ```csharp
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 [AttributeUsage(AttributeTargets.Method|AttributeTargets.Property|AttributeTargets.Field)]
 public sealed class BindIdAttribute : Attribute
 ```

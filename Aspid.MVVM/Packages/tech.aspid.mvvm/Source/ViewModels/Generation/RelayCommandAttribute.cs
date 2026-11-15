@@ -8,7 +8,7 @@ namespace Aspid.MVVM
     /// a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
     /// <remarks>
-    /// The method returns <see langword="void"/> and takes up to four parameters.
+    /// The method is non-generic, returns <see langword="void"/> and takes up to four value parameters.
     /// </remarks>
     /// <example>
     /// <code>
@@ -22,15 +22,15 @@ namespace Aspid.MVVM
     /// private bool CanBuy(int count) => count &lt;= _stock;
     /// </code>
     /// </example>
-    [AttributeUsage(validOn: AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(validOn: AttributeTargets.Method, Inherited = false)]
     public sealed class RelayCommandAttribute : Attribute
     {
         /// <summary>
-        /// The name of a <see cref="bool"/> method or property of the same class that allows execution; <see langword="null"/> to
+        /// The name of a <see cref="bool"/> method or readable property accessible from the class that allows execution; <see langword="null"/> to
         /// always allow it.
         /// </summary>
         /// <remarks>
-        /// A method takes either the command's parameters or none.
+        /// A method accepts the command's parameters or takes none; an invalid predicate reports generator error <c>ASPIDVM004</c>.
         /// </remarks>
         public string? CanExecute;
     }

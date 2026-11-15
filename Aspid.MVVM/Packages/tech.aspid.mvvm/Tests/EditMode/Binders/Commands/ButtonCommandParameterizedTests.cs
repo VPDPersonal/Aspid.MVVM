@@ -102,7 +102,7 @@ namespace Aspid.MVVM.Tests
         /// <c>OnBound</c>, so a bare <c>SetValue</c> leaves the button unwired.
         /// </summary>
         private static void Bind<T>(IBinder binder, IRelayCommand<T> command) =>
-            binder.Bind(new OneWayBindableMember<IRelayCommand<T>>(command));
+            binder.Bind(new BindContext(new OneWayBindableMember<IRelayCommand<T>>(command), binder));
 
         private (Button Button, T Binder) NewButton<T>()
             where T : MonoBinder

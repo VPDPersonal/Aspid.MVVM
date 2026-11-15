@@ -53,7 +53,7 @@ namespace Aspid.MVVM.Tests
 
             PhysicsMaterial received = null;
             var member = new OneWayToSourceBindableMember<PhysicsMaterial>(value => received = value);
-            ((IBinder)binder).Bind(member);
+            ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder)));
 
             Assert.AreSame(ice, received, "The ViewModel received a clone instead of the asset");
             Assert.AreSame(ice, collider.sharedMaterial, "Binding replaced the collider's material with a clone");

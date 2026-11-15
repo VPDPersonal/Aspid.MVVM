@@ -36,7 +36,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             if (_createdSprite)
             {
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
             }
 
             _createdSprite = null;
-            base.OnUnbound();
+            base.OnDetach();
         }
     }
 }

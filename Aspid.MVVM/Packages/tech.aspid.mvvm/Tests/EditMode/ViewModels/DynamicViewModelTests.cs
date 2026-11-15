@@ -33,7 +33,7 @@ namespace Aspid.MVVM.Tests
             var property = viewModel.Add("Health", 100);
             var received = new List<int>();
             var binder = new DelegateOneWayBinder<int>(received.Add);
-            binder.Bind(property.GetAdder());
+            binder.Bind(new BindContext(property.GetAdder(), binder));
 
             property.Value = 75;
 
@@ -65,7 +65,7 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateTwoWayBinder<int>(
                 subscribe: callback => publishFromView = callback,
                 setValue: receivedByView.Add);
-            binder.Bind(property.GetAdder());
+            binder.Bind(new BindContext(property.GetAdder(), binder));
 
             publishFromView!.Invoke(4);
 
@@ -79,13 +79,13 @@ namespace Aspid.MVVM.Tests
             var property = new DynamicProperty<int>("Version", 1, BindMode.OneTime);
             var firstValues = new List<int>();
             var firstBinder = new DelegateOneWayBinder<int>(firstValues.Add, BindMode.OneTime);
-            firstBinder.Bind(property.GetAdder());
+            firstBinder.Bind(new BindContext(property.GetAdder(), firstBinder));
 
             property.Value = 2;
 
             var secondValues = new List<int>();
             var secondBinder = new DelegateOneWayBinder<int>(secondValues.Add, BindMode.OneTime);
-            secondBinder.Bind(property.GetAdder());
+            secondBinder.Bind(new BindContext(property.GetAdder(), secondBinder));
 
             Assert.AreEqual(new[] { 1 }, firstValues);
             Assert.AreEqual(new[] { 2 }, secondValues);

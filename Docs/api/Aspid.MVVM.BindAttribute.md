@@ -47,7 +47,7 @@ Without a mode, a mutable field binds [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md
 [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) when it is set-only and [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) otherwise.
 </p>
 <p>
-A mode the member cannot support is ignored together with the member: a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field takes only
+A mode the member cannot support skips the member with a generator warning: a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field takes only
 [`BindMode.OneTime`](Aspid.MVVM.BindMode.md), a get-only property [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWay`](Aspid.MVVM.BindMode.md), and
 a set-only property [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 </p>
@@ -75,4 +75,24 @@ public BindAttribute(BindMode mode)
 `mode` [BindMode](Aspid.MVVM.BindMode.md)
 
 The binding mode. A mode the member cannot support skips the member.
+
+#### Exceptions
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
+
+## Properties
+
+### Mode {#Aspid_MVVM_BindAttribute_Mode}
+
+Gets the explicit binding mode; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to infer it from the member.
+
+```csharp
+public BindMode? Mode { get; }
+```
+
+#### Property Value
+
+ [BindMode](Aspid.MVVM.BindMode.md)?
 

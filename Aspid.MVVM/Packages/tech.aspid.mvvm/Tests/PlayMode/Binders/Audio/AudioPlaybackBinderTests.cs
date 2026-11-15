@@ -77,7 +77,7 @@ namespace Aspid.MVVM.Tests
             play.gameObject.SetActive(false);
 
             IRelayCommand received = null;
-            ((IBinder)play).Bind(new OneWayToSourceBindableMember<IRelayCommand>(value => received = value));
+            ((IBinder)play).Bind(new BindContext(new OneWayToSourceBindableMember<IRelayCommand>(value => received = value), ((IBinder)play)));
 
             Assert.IsNotNull(received, "The command did not reach the ViewModel");
             Assert.IsFalse(received.CanExecute(), "The command agreed to run on a disabled object");
@@ -89,7 +89,7 @@ namespace Aspid.MVVM.Tests
         private static void Invoke(AudioSourcePlaybackMonoBinder binder)
         {
             Action received = null;
-            ((IBinder)binder).Bind(new OneWayToSourceBindableMember<Action>(value => received = value));
+            ((IBinder)binder).Bind(new BindContext(new OneWayToSourceBindableMember<Action>(value => received = value), ((IBinder)binder)));
 
             Assert.IsNotNull(received, "The binder did not hand an action to the ViewModel");
             received.Invoke();

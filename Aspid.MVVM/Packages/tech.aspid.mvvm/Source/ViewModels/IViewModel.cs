@@ -9,10 +9,9 @@ namespace Aspid.MVVM
         /// <summary>
         /// Finds the bindable member with the identifier in <paramref name="parameters"/>.
         /// </summary>
-        /// <param name="parameters">The lookup query.</param>
+        /// <param name="parameters">The lookup query with a non-null identifier that is not empty or whitespace.</param>
         /// <returns>
-        /// A result holding the member; a result whose <see cref="FindBindableMemberResult.IsFound"/> is <see langword="false"/>
-        /// when no member has the identifier.
+        /// The lookup result; <see cref="FindBindableMemberResult.IsFound"/> indicates whether it contains a member.
         /// </returns>
         public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters);
     }

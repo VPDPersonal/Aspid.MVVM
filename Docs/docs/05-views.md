@@ -1,6 +1,6 @@
 # Views
 
-A View is a MonoBehaviour that connects UI elements to ViewModel data through binders. The Source Generator emits the initialization and binding code.
+A View connects UI elements to ViewModel data through binders; in Unity it usually derives from `MonoView`. The Source Generator emits the initialization and binding code.
 
 ## Contents
 
@@ -32,9 +32,10 @@ public sealed partial class PlayerView : MonoView
 ```
 
 **Requirements:**
-1. The class is `partial`
+1. The class is non-static and `partial`
 2. The `[View]` attribute
-3. Inherits `MonoView`
+
+Derive from `MonoView` for Unity component integration; a plain class is also supported.
 
 ### Naming rule
 
@@ -128,6 +129,8 @@ supported: to reach a later parameter, pass the default of every parameter befor
 [SerializeField] private Animator _jumpHeight;
 ```
 
+The type must be accessible, non-abstract, closed and implement `IBinder` (`ASPIDVIEW001`). An incompatible constructor, unreadable target or null argument array reports `ASPIDVIEW002`. To pass one null constructor argument, write `(object)null`. Strings and numbers retain their escaping and C# types independently of the current culture.
+
 ### nameof: passing a View member
 
 An argument written as `nameof(X)` goes into the generated code as the member `X` itself, not as the string `"X"`.
@@ -193,7 +196,7 @@ public partial class MixedView : MonoView
     [IgnoreBind]
     [SerializeField] private MonoBinder _customBinder;
 
-    protected override void OnInitializedInternal()
+    partial void OnInitializedInternal(IViewModel viewModel)
     {
         // Manual binding
     }
@@ -212,13 +215,16 @@ public partial class LifecycleView : MonoView
 {
     [SerializeField] private MonoBinder[] _data;
 
+    [AsBinder(typeof(Aspid.MVVM.StarterKit.ImageSpriteBinder))]
+    [SerializeField] private UnityEngine.UI.Image[] _icons;
+
     // ── Initialization ──
 
     // Before binders are bound
-    partial void OnInitializingInternal() { }
+    partial void OnInitializingInternal(IViewModel viewModel) { }
 
     // After every binder is bound
-    partial void OnInitializedInternal() { }
+    partial void OnInitializedInternal(IViewModel viewModel) { }
 
     // ── Deinitialization ──
 
@@ -240,14 +246,20 @@ public partial class LifecycleView : MonoView
 
 ### Call order
 
-1. `OnInstantiatingBinders()` / `OnInstantiatedBinders()`: once, on the first Initialize
-2. `OnInitializingInternal()`: before binding
+1. `OnInitializingInternal(viewModel)`: before binding
+2. `OnInstantiatingBinders()` / `OnInstantiatedBinders()`: once, when wrappers or binder properties are first cached
 3. Every binder is bound through `FindBindableMember` + `Bind`
-4. `OnInitializedInternal()`: after binding
+4. `OnInitializedInternal(viewModel)`: after binding
 5. *(running)*
 6. `OnDeinitializingInternal()`: before unbinding
 7. Every binder is unbound through `Unbind`
 8. `OnDeinitializedInternal()`: after unbinding
+
+Generated Views ignore repeated `Deinitialize()` calls during cleanup and reject calls during initialization with `InvalidOperationException`. Remaining cleanup runs after a binder or hook fails. A single exception retains its instance and stack trace; multiple failures are reported in an `AggregateException`. Successful nested bindings remain owned even if the outer binding fails.
+
+The binder set is fixed between `Initialize` and `Deinitialize`: fields, cached binder properties and collection contents must retain the same instances. The generator releases them directly through `UnbindContext(this)`, without an additional binding list. Property and `[AsBinder]` wrapper caches remain. Cleanup ignores a different owner; rebinding for the same View continues that View's ownership. Dynamically replacing the binder set is unsupported.
+
+`Reinitialize`, `DeinitializeView` and both `DisposeView` overloads require a non-null View and throw `ArgumentNullException` otherwise. Use `view?.DisposeView()` when the View is optional. A null return means the View had no ViewModel. The generic helpers require reference types. Passing null as the replacement ViewModel to `Reinitialize` only deinitializes the View. ViewModel disposal remains the caller's responsibility. If initialization through `Reinitialize` fails, a generated View stays detached and does not restore the old ViewModel.
 
 ---
 
@@ -261,9 +273,9 @@ public partial class StrongView : MonoView, IView<PlayerViewModel>
 {
     [SerializeField] private MonoBinder[] _health;
 
-    public void Initialize(PlayerViewModel viewModel)
+    partial void OnInitializedInternal(IViewModel viewModel)
     {
-        // The Source Generator provides the implementation
+        // Access the assigned ViewModel after binding.
     }
 }
 ```

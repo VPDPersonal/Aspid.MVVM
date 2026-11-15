@@ -4,6 +4,7 @@ namespace Aspid.MVVM
     /// <summary>
     /// Defines a View that binds its binders to a ViewModel.
     /// </summary>
+    /// <remarks>Binder instances and collection contents stay unchanged between <see cref="Initialize"/> and <see cref="Deinitialize"/>.</remarks>
     public interface IView
     {
         /// <summary>
@@ -20,6 +21,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Unbinds the binders and clears <see cref="ViewModel"/>.
         /// </summary>
+        /// <remarks>Does not dispose the ViewModel.</remarks>
         public void Deinitialize();
     }
     
@@ -30,10 +32,7 @@ namespace Aspid.MVVM
     public interface IView<in T> : IView
         where T : IViewModel
     {
-        /// <summary>
-        /// Initializes the view with <paramref name="viewModel"/>, binding its binders to the ViewModel's members.
-        /// </summary>
-        /// <param name="viewModel">The ViewModel to bind.</param>
+        /// <inheritdoc cref="IView.Initialize"/>
         public void Initialize(T viewModel);
     }
 }

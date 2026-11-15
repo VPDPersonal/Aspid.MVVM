@@ -237,7 +237,7 @@ namespace Aspid.MVVM.Tests
             var received = default(T);
             var member = new OneWayToSourceStructBindableMember<T>(value => received = value);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             return received;
         }
     }

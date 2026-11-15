@@ -85,9 +85,41 @@ public IView[] Views { get; }
 
 ## Methods
 
+### DeinitializeViews\(\) {#Aspid_MVVM_StarterKit_ViewInitializerBase_DeinitializeViews}
+
+Deinitializes every acquired view, including a partially initialized view.
+
+```csharp
+protected void DeinitializeViews()
+```
+
+#### Exceptions
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+Initialization is in progress.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Multiple views fail to deinitialize.
+
+### InitializeViews\(IViewModel\) {#Aspid_MVVM_StarterKit_ViewInitializerBase_InitializeViews_Aspid_MVVM_IViewModel_}
+
+Initializes the resolved views and rolls back only the views acquired by this attempt on failure.
+
+```csharp
+protected void InitializeViews(IViewModel viewModel)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel to bind.
+
 ### OnDestroy\(\) {#Aspid_MVVM_StarterKit_ViewInitializerBase_OnDestroy}
 
-Disposes the already resolved views if [`ViewInitializerBase.IsDisposeViewOnDestroy`](Aspid.MVVM.StarterKit.ViewInitializerBase.md#Aspid_MVVM_StarterKit_ViewInitializerBase_IsDisposeViewOnDestroy) is set.
+Disposes the acquired views if [`ViewInitializerBase.IsDisposeViewOnDestroy`](Aspid.MVVM.StarterKit.ViewInitializerBase.md#Aspid_MVVM_StarterKit_ViewInitializerBase_IsDisposeViewOnDestroy) is set.
 
 ```csharp
 protected virtual void OnDestroy()
@@ -123,7 +155,7 @@ The resolved instance, or <a href="https://learn.microsoft.com/dotnet/csharp/lan
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The resolved type.
 

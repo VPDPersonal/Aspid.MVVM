@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using UnityEditor;
 using NUnit.Framework;
 
@@ -12,6 +14,35 @@ namespace Aspid.MVVM.Tests
     [TestFixture]
     public sealed class MonoViewMonoBinderTests : SceneFixture
     {
+        [Test]
+        public void RealMonoViewPreservesFailuresFromEveryBinderGroup()
+        {
+            var view = Spawn<MonoView>();
+            var first = Spawn<FailingCleanupMonoBinder>();
+            var second = Spawn<FailingCleanupMonoBinder>();
+            first.Failure = new Exception("first group");
+            second.Failure = new Exception("second group");
+            var groupType = typeof(MonoView).GetNestedType("Binders", BindingFlags.NonPublic);
+            var groups = Array.CreateInstance(groupType, 2);
+            var binders = new[] { first, second };
+            for (var i = 0; i < binders.Length; i++)
+            {
+                var group = Activator.CreateInstance(groupType, nonPublic: true);
+                groupType.GetField("_name", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(group, "Value");
+                groupType.GetField("_monoBinders", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(group, new MonoBinder[] { binders[i] });
+                groups.SetValue(group, i);
+            }
+            typeof(MonoView).GetField("_bindersList", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(view, groups);
+            view.Initialize(new FixedBindingModel(new OneTimeStructBindableMember<int>(1)));
+
+            var aggregate = Assert.Throws<AggregateException>(view.Deinitialize);
+
+            Assert.That(aggregate.Flatten().InnerExceptions, Is.EquivalentTo(new[] { first.Failure, second.Failure }));
+            Assert.That(first.IsBound || second.IsBound, Is.False);
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
         [Test]
         public void CanBind_WithoutTheViewOnTheGameObject_IsFalse()
         {
@@ -64,10 +95,10 @@ namespace Aspid.MVVM.Tests
             var binder = gameObject.AddComponent<StubViewMonoBinder>();
             SetMode(binder, BindMode.OneWay);
 
-            binder.Bind(new OneWayBindableMember<IViewModel>(new StubViewModel()));
+            binder.Bind(new BindContext(new OneWayBindableMember<IViewModel>(new StubViewModel()), binder));
             Assert.IsNotNull(view.ViewModel, "The view was not initialized on bind");
 
-            binder.Unbind();
+            binder.Unbind(new UnbindContext(binder));
 
             Assert.IsNull(view.ViewModel, "Unbind did not deinitialize the view");
         }
@@ -84,6 +115,16 @@ namespace Aspid.MVVM.Tests
             binder.SetValue(viewModel);
 
             Assert.AreSame(viewModel, view.ViewModel, "The MonoView on the same GameObject was not initialized");
+        }
+
+        private sealed class FailingCleanupMonoBinder : MonoBinder, IBinder<int>
+        {
+            public Exception Failure;
+
+            public void SetValue(int value) { }
+
+            protected override void OnUnbinding() =>
+                throw Failure;
         }
 
         private static void SetMode(MonoBinder binder, BindMode mode)

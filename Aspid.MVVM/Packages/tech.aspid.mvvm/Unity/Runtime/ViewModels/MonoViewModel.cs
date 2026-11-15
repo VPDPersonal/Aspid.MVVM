@@ -5,16 +5,57 @@ using UnityEngine;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a base class for ViewModels in a Unity context that are derived from <see cref="MonoBehaviour"/>.
-    /// Implements <see cref="IDisposable"/> to allow cleanup of resources, including the destruction of the component.
+    /// <see cref="MonoBehaviour"/> for ViewModels that refresh bindings after Inspector changes.
     /// </summary>
     [ViewModel]
     public abstract partial class MonoViewModel : MonoBehaviour, IDisposable
     {
-        protected virtual void OnValidate() =>
-            NotifyAll();
+        [NonSerialized] private bool _isDisposed;
 
-        public virtual void Dispose() =>
-            Destroy(this);
+        /// <summary>
+        /// Called when Unity validates serialized data. Override to validate additional fields.
+        /// </summary>
+        /// <remarks>
+        /// Call the base implementation to queue binding notifications for the next Editor update on the main thread.
+        /// </remarks>
+        protected virtual void OnValidate()
+        {
+#if UNITY_EDITOR
+            ViewModelValidationDispatcher.Enqueue(
+                target: this,
+                notify: static target => ((MonoViewModel)target).NotifyAll());
+#endif
+        }
+
+        /// <summary>
+        /// Called when Unity destroys the object to release its resources.
+        /// </summary>
+        /// <remarks>
+        /// Overrides must call the base implementation. Use the destruction helpers when Unity does not issue this callback,
+        /// including for components that have never been active in Play Mode.
+        /// </remarks>
+        protected virtual void OnDestroy() =>
+            Dispose();
+
+        /// <summary>
+        /// Releases owned resources once without destroying the Unity object.
+        /// </summary>
+        /// <remarks>
+        /// Repeated and reentrant calls do nothing, including after a cleanup failure.
+        /// Override <see cref="OnDispose"/> to release resources.
+        /// </remarks>
+        public void Dispose()
+        {
+            if (_isDisposed) return;
+            _isDisposed = true;
+
+            OnDispose();
+        }
+
+        /// <summary>
+        /// Called on the first disposal attempt. Override to release owned resources and subscriptions.
+        /// </summary>
+        /// <remarks>Cleanup exceptions propagate to the caller; subsequent disposal attempts do not retry cleanup.</remarks>
+        protected virtual void OnDispose() { }
     }
 }

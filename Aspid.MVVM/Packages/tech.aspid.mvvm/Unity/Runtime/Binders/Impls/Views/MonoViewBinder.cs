@@ -16,7 +16,7 @@ namespace Aspid.MVVM
     }
 
     /// <summary>
-    /// <see cref="MonoViewBinder{TView}"/> for <see cref="MonoView"/>.
+    /// Concrete <see cref="MonoViewBinder{TView}"/> for <see cref="MonoView"/>.
     /// </summary>
     public class MonoViewBinder : MonoViewBinder<MonoView>
     {

@@ -97,7 +97,7 @@ namespace Aspid.MVVM.Tests
         }
 
         // The serializable twin is generated, and the generated constructor guards each mode the Mono
-        // half's [BindModeOverride] leaves out with ThrowExceptionIfMatches, which throws ArgumentException.
+        // half's [BindModeOverride] leaves out with EnsureNot, which throws ArgumentException.
         [Test]
         public void TheStateBinders_RefuseTheReverseModes()
         {

@@ -30,8 +30,8 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="trueValue">The value applied when the bound <see langword="bool"/> is <see langword="true"/>.</param>
         /// <param name="falseValue">The value applied when the bound <see langword="bool"/> is <see langword="false"/>.</param>
         /// <param name="converter">The converter applied to the chosen value, or <see langword="null"/> to use it unchanged.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         protected SwitcherBinder(
             T trueValue, 
             T falseValue,
@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _converter = converter;
             _trueValue = trueValue;
@@ -96,9 +96,9 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="trueValue">The value applied when the bound <see langword="bool"/> is <see langword="true"/>.</param>
         /// <param name="falseValue">The value applied when the bound <see langword="bool"/> is <see langword="false"/>.</param>
         /// <param name="converter">The converter applied to the chosen value, or <see langword="null"/> to use it unchanged.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         protected SwitcherBinder(
             TTarget target,
             T trueValue,
@@ -107,7 +107,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
 
             _converter = converter;
             _trueValue = trueValue;

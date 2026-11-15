@@ -6,83 +6,91 @@ using Aspid.FastTools.Types;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a base class for views in a Unity context that are derived from <see cref="MonoBehaviour"/>.
-    /// Implements <see cref="IDisposable"/> to allow cleanup of resources, including the destruction of the associated GameObject.
+    /// <see cref="MonoBehaviour"/> for views with serialized binder groups.
     /// </summary>
     [View]
     [AddComponentMenu("Aspid/MVVM/Views/Mono View")]
     public partial class MonoView : MonoBehaviour, IDisposable
     {
 #if UNITY_EDITOR
+        [Tooltip("The type filters for the design ViewModel selector.")]
         [SerializeField] private string[] _designViewModelAssemblyQualifiedNames =
         {
             typeof(IViewModel).AssemblyQualifiedName,
         };
 
+        [Tooltip("The ViewModel type used to configure bindings in the Inspector.")]
         [TypeSelector(nameof(_designViewModelAssemblyQualifiedNames))]
         [SerializeField] private string _designViewModel;
 #endif
-        
+
         [RequireBinder(Id = "DesignViewModel")]
+        [Tooltip("The binder groups associated with ViewModel members.")]
         [SerializeField] private Binders[] _bindersList = Array.Empty<Binders>();
 
+        /// <summary>
+        /// Called when Unity destroys the component to dispose the view.
+        /// </summary>
+        /// <remarks>Overrides must call the base implementation.</remarks>
         protected virtual void OnDestroy() =>
             Dispose();
-        
+
         partial void OnInitializingInternal(IViewModel viewModel)
         {
             foreach (var binders in _bindersList)
-                binders.Bind(viewModel, this);
+                binders.Bind(viewModel, owner: this);
         }
 
         partial void OnDeinitializingInternal()
         {
+            var failures = new CleanupExceptions();
+            var context = new UnbindContext(owner: this);
+
             foreach (var binders in _bindersList)
-                binders.Unbind(this);
+            {
+                try
+                {
+                    binders.Unbind(in context);
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+            }
+
+            failures.ThrowIfAny();
         }
-        
+
+        /// <summary>
+        /// Deinitializes the view without destroying its component, GameObject or ViewModel.
+        /// </summary>
+        /// <remarks>Overrides must call the base implementation to release bindings.</remarks>
         public virtual void Dispose() =>
             Deinitialize();
-        
+
         [Serializable]
         private sealed class Binders
         {
 #if UNITY_EDITOR
-            [SerializeField] private string _assemblyQualifiedName;      
+            [Tooltip("The assembly-qualified type name of the bound value.")]
+            [SerializeField] private string _assemblyQualifiedName;
 #endif
+            [Tooltip("The identifier of the bound ViewModel member.")]
             [SerializeField] private string _name;
-            
+
 #if UNITY_EDITOR
             [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_name))]
 #endif
+            [Tooltip("The components bound to the ViewModel member.")]
             [SerializeField] private MonoBinder[] _monoBinders;
 
-            // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
-// #if UNITY_6000_0_OR_NEWER
-//             [SerializeReference] private IBinder[] _binders;
-// #endif
-            
+            public void Unbind(in UnbindContext context) =>
+                _monoBinders.Unbind(in context);
+
             public void Bind(IViewModel viewModel, MonoView owner)
             {
                 var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_name));
-                if (!result.IsFound) return;
-
                 _monoBinders.BindSafely(result, owner, _name);
-
-                // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
-// #if UNITY_6000_0_OR_NEWER
-//                 _binders.BindSafely(result, owner, _name);
-// #endif
-            }
-
-            public void Unbind(MonoView owner)
-            {
-                _monoBinders.UnbindSafely(owner, _name);
-
-                // TODO Aspid.MVVM – Add for Aspid.MVVM 1.3.0
-// #if UNITY_6000_0_OR_NEWER
-//                 _binders.UnbindSafely(owner, _name);
-// #endif
             }
         }
     }

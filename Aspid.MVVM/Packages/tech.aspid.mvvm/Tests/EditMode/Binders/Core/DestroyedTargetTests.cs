@@ -54,6 +54,19 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
+        public void SafeBinding_SkipsADestroyedSingleBinder()
+        {
+            IBinder binder = Spawn("Doomed").AddComponent<TextMonoBinder>();
+            Destroy((TextMonoBinder)binder);
+            var member = new OneWayBindableMember<string>("Bound");
+
+            Assert.DoesNotThrow(() => binder.BindSafely(new BindContext(member, this)));
+            Assert.DoesNotThrow(() => binder.BindSafely(new FindBindableMemberResult(member), this));
+            Assert.DoesNotThrow(() => binder.UnbindSafely(new UnbindContext(this)));
+            LogAssert.NoUnexpectedReceived();
+        }
+
+        [Test]
         public void BindSafely_WithADestroyedBinderInTheArray_SkipsItAndBindsTheRest()
         {
             var doomed = Spawn("Doomed").AddComponent<TextMonoBinder>();
@@ -67,8 +80,8 @@ namespace Aspid.MVVM.Tests
 
             var member = new OneWayBindableMember<string>("Bound");
 
-            LogAssert.Expect(LogType.Error, new Regex(@"Binder at index 0 '_binders' can't be null"));
-            binders.BindSafely(member, owner: null, memberName: "_binders");
+            LogAssert.Expect(LogType.Error, new Regex(@"Binder at index 0 '_binders' is null or destroyed"));
+            binders.BindSafely(new BindContext(member, this), memberName: "_binders");
 
             Assert.IsTrue(survivor.IsBound, "The live binder was not bound because of its destroyed neighbour");
         }

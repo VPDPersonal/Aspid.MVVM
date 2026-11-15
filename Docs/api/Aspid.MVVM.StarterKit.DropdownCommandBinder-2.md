@@ -16,7 +16,7 @@ the selected index and [`DropdownCommandBinder<T1, T2>.Param1`](Aspid.MVVM.Start
 
 ```csharp
 [Serializable]
-public class DropdownCommandBinder<T1, T2> : TargetBinder<TMP_Dropdown>, IRebindableBinder, IBinder<IRelayCommand<int, T1, T2>>, IBinder<IRelayCommand<long, T1, T2>>, IBinder
+public class DropdownCommandBinder<T1, T2> : TargetBinder<TMP_Dropdown>, IBinder<IRelayCommand<int, T1, T2>>, IBinder<IRelayCommand<long, T1, T2>>, IBinder
 ```
 
 #### Type Parameters
@@ -38,7 +38,6 @@ The type of the second extra parameter.
 
 #### Implements
 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IBinder\<IRelayCommand\<int, T1, T2\>\>](Aspid.MVVM.IBinder-1.md), 
 [IBinder\<IRelayCommand\<long, T1, T2\>\>](Aspid.MVVM.IBinder-1.md), 
 [IBinder](Aspid.MVVM.IBinder.md)
@@ -46,8 +45,8 @@ The type of the second extra parameter.
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<DropdownCommandBinder\<T1, T2\>\>\(DropdownCommandBinder\<T1, T2\>?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<DropdownCommandBinder\<T1, T2\>\>\(DropdownCommandBinder\<T1, T2\>?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<DropdownCommandBinder\<T1, T2\>\>\(DropdownCommandBinder\<T1, T2\>?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<DropdownCommandBinder\<T1, T2\>\>\(DropdownCommandBinder\<T1, T2\>?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -55,7 +54,6 @@ The type of the second extra parameter.
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -63,7 +61,7 @@ The type of the second extra parameter.
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<DropdownCommandBinder\<T1, T2\>\>\(DropdownCommandBinder\<T1, T2\>?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<DropdownCommandBinder\<T1, T2\>\>\(DropdownCommandBinder\<T1, T2\>?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Remarks
 
@@ -205,21 +203,29 @@ public virtual T2 Param2 { get; set; }
 
 ## Methods
 
-### OnBound\(\) {#Aspid_MVVM_StarterKit_DropdownCommandBinder_2_OnBound}
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_DropdownCommandBinder_2_OnAttach}
 
-Called after the binder attaches and receives the first value. Override to subscribe to the component.
-
-```csharp
-protected override void OnBound()
-```
-
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_DropdownCommandBinder_2_OnUnbound}
-
-Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnAttach()
 ```
+
+#### Remarks
+
+An exception rolls back the binding; [`Binder.OnDetach`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnDetach) releases partially acquired resources.
+
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_DropdownCommandBinder_2_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
+
+```csharp
+protected override void OnDetach()
+```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
 
 ### SetValue\(IRelayCommand\<int, T1, T2\>\) {#Aspid_MVVM_StarterKit_DropdownCommandBinder_2_SetValue_Aspid_MVVM_IRelayCommand_System_Int32__0__1__}
 

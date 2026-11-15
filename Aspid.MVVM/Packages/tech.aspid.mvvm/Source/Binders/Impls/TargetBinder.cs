@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -19,11 +22,6 @@ namespace Aspid.MVVM
         protected TTarget Target { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether <see cref="Target"/> is set and, for a Unity object, not destroyed.
-        /// </summary>
-        public override bool CanBind => IsTargetAlive(Target);
-
-        /// <summary>
         /// Creates a binder without a target for Unity deserialization, which then restores the serialized fields.
         /// </summary>
         protected TargetBinder() { }
@@ -40,10 +38,15 @@ namespace Aspid.MVVM
             Target = target ?? throw new ArgumentNullException(nameof(target));
         }
 
+        /// <summary>
+        /// Gets a value indicating whether <see cref="Target"/> is set and, for a Unity object, not destroyed.
+        /// </summary>
+        public override bool CanBind => IsTargetAlive(Target);
+
         // A destroyed Unity object is not null to C#; only Unity's own bool conversion sees it.
         private static bool IsTargetAlive(TTarget target)
         {
-            if (target is UnityEngine.Object unityObject) return unityObject;
+            if (target is Object unityObject) return unityObject;
             return target is not null;
         }
     }

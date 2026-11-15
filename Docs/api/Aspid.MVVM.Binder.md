@@ -15,7 +15,8 @@ Serializable [`IBinder`](Aspid.MVVM.IBinder.md) that tracks its binding state an
 
 ```csharp
 [Serializable]
-public abstract class Binder : IBinder, IRebindableBinder
+[SuppressMessage("ReSharper", "MemberInitializerValueIgnored")]
+public abstract class Binder : IBinder
 ```
 
 #### Inheritance
@@ -49,14 +50,13 @@ public abstract class Binder : IBinder, IRebindableBinder
 
 #### Implements
 
-[IBinder](Aspid.MVVM.IBinder.md), 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md)
+[IBinder](Aspid.MVVM.IBinder.md)
 
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<Binder\>\(Binder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<Binder\>\(Binder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<Binder\>\(Binder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<Binder\>\(Binder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -64,7 +64,6 @@ public abstract class Binder : IBinder, IRebindableBinder
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -72,7 +71,7 @@ public abstract class Binder : IBinder, IRebindableBinder
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<Binder\>\(Binder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<Binder\>\(Binder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Remarks
 
@@ -102,11 +101,17 @@ protected Binder(BindMode mode = BindMode.OneWay)
 
 The binding mode.
 
+#### Exceptions
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+The mode is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
+
 ## Properties
 
 ### CanBind {#Aspid_MVVM_Binder_CanBind}
 
-Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_Bind_Aspid_MVVM_IBinderAdder_) attaches the binder; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> unless
+Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md) attaches the binder; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> unless
 overridden.
 
 ```csharp
@@ -119,7 +124,7 @@ public virtual bool CanBind { get; }
 
 ### IsBound {#Aspid_MVVM_Binder_IsBound}
 
-Gets a value indicating whether the binder is attached to a bindable member.
+Gets a value indicating whether binding is complete and cleanup has not started.
 
 ```csharp
 public bool IsBound { get; }
@@ -128,6 +133,10 @@ public bool IsBound { get; }
 #### Property Value
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+
+#### Remarks
+
+A [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) binding remains bound until [`IBinder.Unbind`](Aspid.MVVM.IBinder.md).
 
 ### Mode {#Aspid_MVVM_Binder_Mode}
 
@@ -141,30 +150,65 @@ public BindMode Mode { get; }
 
  [BindMode](Aspid.MVVM.BindMode.md)
 
+### Owner {#Aspid_MVVM_Binder_Owner}
+
+Gets the owner while this binder is being attached, bound or cleaned up; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> otherwise.
+
+```csharp
+protected object? Owner { get; }
+```
+
+#### Property Value
+
+ [object](https://learn.microsoft.com/dotnet/api/system.object)?
+
 ## Methods
 
-### Bind\(IBinderAdder\) {#Aspid_MVVM_Binder_Bind_Aspid_MVVM_IBinderAdder_}
+### Bind\(in BindContext\) {#Aspid_MVVM_Binder_Bind_Aspid_MVVM_BindContext__}
 
-Attaches the binder through <code class="paramref">binderAdder</code>, calling [`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) before and
+Attaches the binder through <code class="paramref">context</code>, calling [`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding) before and
 [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) after.
 
 ```csharp
-public void Bind(IBinderAdder binderAdder)
+public void Bind(in BindContext context)
 ```
 
 #### Parameters
 
-`binderAdder` [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
+`context` [BindContext](Aspid.MVVM.BindContext.md)
 
-The bindable member to attach to.
+The bindable member and the owner acquiring the binding.
 
 #### Remarks
 
-Does nothing when [`Binder.CanBind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_CanBind) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>, and logs an error when the binder is already bound.
+Does nothing when [`Binder.CanBind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_CanBind) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>. Installation failures roll back;
+exceptions from [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) propagate without rolling back the completed binding.
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">context</code> is uninitialized.
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The binder is already bound or a lifecycle operation is in progress.
+
+### OnAttach\(\) {#Aspid_MVVM_Binder_OnAttach}
+
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+
+```csharp
+protected virtual void OnAttach()
+```
+
+#### Remarks
+
+An exception rolls back the binding; [`Binder.OnDetach`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnDetach) releases partially acquired resources.
 
 ### OnBinding\(\) {#Aspid_MVVM_Binder_OnBinding}
 
-Called before the binder attaches and receives the first value. Override to prepare for that value.
+Called before attachment and the first value. Override to prepare for that value.
 
 ```csharp
 protected virtual void OnBinding()
@@ -172,39 +216,86 @@ protected virtual void OnBinding()
 
 #### Remarks
 
-Subscribe to the component in [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) instead: a subscription made here reports the first value from the
-ViewModel back as if the user had entered it.
+Subscribe to the component in [`Binder.OnAttach`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnAttach) so the first value is not reported back as user input.
 
 ### OnBound\(\) {#Aspid_MVVM_Binder_OnBound}
 
-Called after the binder attaches and receives the first value. Override to subscribe to the component.
+Called with the binding complete and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) set. Override to notify or send an initial value.
 
 ```csharp
 protected virtual void OnBound()
 ```
 
+#### Remarks
+
+Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
+
+### OnDetach\(\) {#Aspid_MVVM_Binder_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
+
+```csharp
+protected virtual void OnDetach()
+```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
+
 ### OnUnbinding\(\) {#Aspid_MVVM_Binder_OnUnbinding}
 
-Called before the binder detaches, while values it reports still reach the ViewModel. Override to report a last value.
+Called when cleanup starts, while reported values still reach the ViewModel. Override to send a last value.
 
 ```csharp
 protected virtual void OnUnbinding()
 ```
 
+#### Remarks
+
+[`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) is already <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>; the owner is retained until cleanup finishes.
+
 ### OnUnbound\(\) {#Aspid_MVVM_Binder_OnUnbound}
 
-Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
+Called after cleanup releases ownership. Override to notify that the binder is unbound.
 
 ```csharp
 protected virtual void OnUnbound()
 ```
 
-### Unbind\(\) {#Aspid_MVVM_Binder_Unbind}
+#### Remarks
 
-Detaches the binder, calling [`Binder.OnUnbinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnUnbinding) before and [`Binder.OnUnbound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnUnbound) after; does nothing when it
-is not bound.
+This hook may bind again; finish resource changes before invoking external code.
+
+### Unbind\(in UnbindContext\) {#Aspid_MVVM_Binder_Unbind_Aspid_MVVM_UnbindContext__}
+
+Detaches the binder when <code class="paramref">context</code> identifies its owner, calling the cleanup hooks.
 
 ```csharp
-public void Unbind()
+public void Unbind(in UnbindContext context)
 ```
+
+#### Parameters
+
+`context` [UnbindContext](Aspid.MVVM.UnbindContext.md)
+
+The owner releasing the binding.
+
+#### Remarks
+
+Does nothing for a different owner or when cleanup is already in progress.
+A single cleanup failure is rethrown with its original stack trace after the remaining steps finish.
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">context</code> is uninitialized.
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The owner requests cleanup before attachment finishes.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Multiple cleanup operations fail.
 

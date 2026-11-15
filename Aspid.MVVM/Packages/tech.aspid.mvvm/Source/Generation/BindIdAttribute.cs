@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
-// ReSharper disable UnusedParameter.Local
 namespace Aspid.MVVM
 {
     /// <summary>
@@ -23,7 +23,8 @@ namespace Aspid.MVVM
     /// [SerializeField] private MonoBinder[] _hpBinders;
     /// </code>
     /// </example>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method)]
+    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global")]
+    [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method)]
     public sealed class BindIdAttribute : Attribute
     {
 #if UNITY_EDITOR || DEBUG

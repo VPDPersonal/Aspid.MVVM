@@ -17,7 +17,7 @@ edits back as text and, for numeric fields, as numbers.
 ```csharp
 [Serializable]
 [BindModeOverride(new BindMode[] { }, IsAll = true)]
-public class InputFieldBinder : TargetBinder<TMP_InputField>, IRebindableBinder, IBinder<string?>, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, IReverseBinder<string>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
+public class InputFieldBinder : TargetBinder<TMP_InputField>, IBinder<string?>, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, IReverseBinder<string>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
 ```
 
 #### Inheritance
@@ -29,7 +29,6 @@ public class InputFieldBinder : TargetBinder<TMP_InputField>, IRebindableBinder,
 
 #### Implements
 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IBinder\<string?\>](Aspid.MVVM.IBinder-1.md), 
 [INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md), 
 [IBinder\<int\>](Aspid.MVVM.IBinder-1.md), 
@@ -53,8 +52,8 @@ public class InputFieldBinder : TargetBinder<TMP_InputField>, IRebindableBinder,
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<InputFieldBinder\>\(InputFieldBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<InputFieldBinder\>\(InputFieldBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<InputFieldBinder\>\(InputFieldBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<InputFieldBinder\>\(InputFieldBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -62,7 +61,6 @@ public class InputFieldBinder : TargetBinder<TMP_InputField>, IRebindableBinder,
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -70,14 +68,14 @@ public class InputFieldBinder : TargetBinder<TMP_InputField>, IRebindableBinder,
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<InputFieldBinder\>\(InputFieldBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<InputFieldBinder\>\(InputFieldBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Constructors
 
-### InputFieldBinder\(TMP\_InputField, IConverter\<string?, string?\>?, BindMode\) {#Aspid_MVVM_StarterKit_InputFieldBinder__ctor_TMPro_TMP_InputField_Aspid_MVVM_StarterKit_IConverter_System_String_System_String__Aspid_MVVM_BindMode_}
+### InputFieldBinder\(TMP\_InputField, NotifyMode, IConverter\<string?, string?\>?, BindMode\) {#Aspid_MVVM_StarterKit_InputFieldBinder__ctor_TMPro_TMP_InputField_Aspid_MVVM_StarterKit_NotifyMode_Aspid_MVVM_StarterKit_IConverter_System_String_System_String__Aspid_MVVM_BindMode_}
 
 ```csharp
-public InputFieldBinder(TMP_InputField target, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.TwoWay)
+public InputFieldBinder(TMP_InputField target, NotifyMode notifyMode = NotifyMode.Always, IConverter<string?, string?>? converter = null, BindMode mode = BindMode.TwoWay)
 ```
 
 #### Parameters
@@ -85,6 +83,10 @@ public InputFieldBinder(TMP_InputField target, IConverter<string?, string?>? con
 `target` TMP\_InputField
 
 The field to bind.
+
+`notifyMode` [NotifyMode](Aspid.MVVM.StarterKit.NotifyMode.md)
+
+When writes from the ViewModel raise the field's events; user input always does.
 
 `converter` [IConverter](Aspid.MVVM.StarterKit.IConverter-2.md)\<[string](https://learn.microsoft.com/dotnet/api/system.string)?, [string](https://learn.microsoft.com/dotnet/api/system.string)?\>?
 
@@ -96,27 +98,47 @@ The binding mode.
 
 #### Exceptions
 
- [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
 
-<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
 
 ## Methods
 
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_InputFieldBinder_OnAttach}
+
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+
+```csharp
+protected override void OnAttach()
+```
+
+#### Remarks
+
+An exception rolls back the binding; [`Binder.OnDetach`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnDetach) releases partially acquired resources.
+
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_InputFieldBinder_OnBound}
 
-Called after the binder attaches and receives the first value. Override to subscribe to the component.
+Called with the binding complete and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) set. Override to notify or send an initial value.
 
 ```csharp
 protected override void OnBound()
 ```
 
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_InputFieldBinder_OnUnbound}
+#### Remarks
 
-Called after the binder detaches. Override to release what [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) subscribed to.
+Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
+
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_InputFieldBinder_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnDetach()
 ```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
 
 ### SetValue\(string?\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_String_}
 
@@ -131,6 +153,11 @@ public void SetValue(string? value)
 `value` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
 The text received from the ViewModel.
+
+#### Remarks
+
+[`NotifyMode`](Aspid.MVVM.StarterKit.NotifyMode.md) sets whether the write raises `onValueChanged`
+for other listeners.
 
 ### SetValue\(int\) {#Aspid_MVVM_StarterKit_InputFieldBinder_SetValue_System_Int32_}
 

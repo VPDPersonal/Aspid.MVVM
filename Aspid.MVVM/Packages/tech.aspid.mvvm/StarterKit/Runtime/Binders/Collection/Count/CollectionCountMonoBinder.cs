@@ -52,7 +52,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Unsubscribes from the bound list and reports zero.
         /// </summary>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             SetList(null);
 
         private void SetList(IReadOnlyList<T> list)

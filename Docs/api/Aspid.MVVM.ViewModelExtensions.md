@@ -24,18 +24,6 @@ public static class ViewModelExtensions
 
 
 
-## Fields
-
-### DisposeViewModelMarker {#Aspid_MVVM_ViewModelExtensions_DisposeViewModelMarker}
-
-```csharp
-public static readonly ProfilerMarker DisposeViewModelMarker
-```
-
-#### Field Value
-
- ProfilerMarker
-
 ## Methods
 
 ### DisposeViewModel\<T\>\(T\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModel__1___0_}
@@ -58,6 +46,12 @@ The ViewModel to dispose.
 
 The ViewModel type.
 
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
 ### DisposeViewModel\(IViewModel\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_}
 
 Disposes <code class="paramref">viewModel</code> if it implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable); otherwise, does nothing.
@@ -71,4 +65,10 @@ public static void DisposeViewModel(this IViewModel viewModel)
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
 The ViewModel to dispose.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 

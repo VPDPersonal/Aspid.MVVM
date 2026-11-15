@@ -25,7 +25,7 @@ namespace Aspid.MVVM.Tests
             var binder = Spawn().AddComponent<AudioSourceVolumeMonoBinder>();
             var member = new OneWayBindableMember<float>(0.5f);
 
-            Assert.DoesNotThrow(() => ((IBinder)binder).Bind(member),
+            Assert.DoesNotThrow(() => ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder))),
                 "Binding without a component still throws");
         }
 

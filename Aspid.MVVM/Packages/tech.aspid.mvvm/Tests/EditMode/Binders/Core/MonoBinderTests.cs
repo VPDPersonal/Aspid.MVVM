@@ -1,8 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using NUnit.Framework;
-using UnityEngine.TestTools;
-using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -19,22 +17,23 @@ namespace Aspid.MVVM.Tests
         {
             var binder = NewBinder();
 
-            binder.Bind(new OneWayBindableMember<bool>(false));
+            binder.Bind(new BindContext(new OneWayBindableMember<bool>(false), binder));
 
             Assert.IsTrue(binder.IsBound, "Bind did not mark the binder as bound");
         }
 
         [Test]
-        public void Bind_WhenAlreadyBound_LogsErrorAndSkipsTheSecondBind()
+        public void Bind_WhenAlreadyBound_ThrowsAndPreservesTheOriginalBinding()
         {
             var binder = NewBinder();
-            binder.Bind(new OneWayBindableMember<bool>(false));
+            var original = new OneWayBindableMember<bool>(false);
+            binder.Bind(new BindContext(original, binder));
             var callsAfterFirstBind = binder.Calls.Count;
 
-            LogAssert.Expect(LogType.Error, new Regex("already bound"));
-            binder.Bind(new OneWayBindableMember<bool>(true));
+            Assert.Throws<System.InvalidOperationException>(() => binder.Bind(new BindContext(new OneWayBindableMember<bool>(true), binder)));
 
             Assert.AreEqual(callsAfterFirstBind, binder.Calls.Count, "A second bind ran the binding hooks again");
+            Assert.That(binder.IsBound, Is.True);
         }
 
         [Test]
@@ -43,7 +42,7 @@ namespace Aspid.MVVM.Tests
             var binder = NewBinder();
             binder.ForcedCanBind = false;
 
-            binder.Bind(new OneWayBindableMember<bool>(false));
+            binder.Bind(new BindContext(new OneWayBindableMember<bool>(false), binder));
 
             Assert.IsFalse(binder.IsBound, "A binder that refused to bind still marked itself as bound");
             Assert.IsEmpty(binder.Calls, "A binder that refused to bind still ran its hooks");
@@ -54,23 +53,23 @@ namespace Aspid.MVVM.Tests
         {
             var binder = NewBinder();
 
-            binder.Bind(new OneWayBindableMember<bool>(false));
+            binder.Bind(new BindContext(new OneWayBindableMember<bool>(false), binder));
 
             CollectionAssert.AreEqual(
-                new[] { "OnBinding", "OnBound" }, binder.Calls, "Hooks did not run in the OnBinding -> OnBound order");
+                new[] { "OnBinding", "OnAttach", "OnBound" }, binder.Calls, "Hooks did not run in the OnBinding -> OnBound order");
         }
 
         [Test]
         public void Unbind_RunsOnUnbindingThenOnUnbound()
         {
             var binder = NewBinder();
-            binder.Bind(new OneWayBindableMember<bool>(false));
+            binder.Bind(new BindContext(new OneWayBindableMember<bool>(false), binder));
             binder.Calls.Clear();
 
-            binder.Unbind();
+            binder.Unbind(new UnbindContext(binder));
 
             CollectionAssert.AreEqual(
-                new[] { "OnUnbinding", "OnUnbound" }, binder.Calls, "Hooks did not run in the OnUnbinding -> OnUnbound order");
+                new[] { "OnUnbinding", "OnDetach", "OnUnbound" }, binder.Calls, "Hooks did not run in the OnUnbinding -> OnUnbound order");
         }
 
         [Test]

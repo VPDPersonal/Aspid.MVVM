@@ -69,8 +69,8 @@ namespace Aspid.MVVM.Tests
             var binder = NewBinder();
             var set = new ObservableHashSet<string>();
 
-            binder.Bind(new OneWayBindableMember<IObservableCollection<string>>(set));
-            binder.Unbind();
+            binder.Bind(new BindContext(new OneWayBindableMember<IObservableCollection<string>>(set), binder));
+            binder.Unbind(new UnbindContext(binder));
 
             binder.Added.Clear();
             set.Add("ignored");

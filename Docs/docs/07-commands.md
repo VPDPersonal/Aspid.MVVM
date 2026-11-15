@@ -10,6 +10,7 @@ Commands (`IRelayCommand`) encapsulate actions with `CanExecute` support. The `[
 - [CanExecute](#canexecute)
 - [Parameterized commands](#parameterized-commands)
 - [Manual creation](#manual-creation)
+- [Binding command parameters](#binding-command-parameters)
 - [RelayCommand.Empty](#relaycommandempty)
 
 ---
@@ -206,6 +207,27 @@ public partial class ManualCommandViewModel
 
 ---
 
+## Binding command parameters
+
+Use `CreateCommandWithoutParameters` to bind arguments before assigning a command to a parameterless button binder:
+
+```csharp
+bool available = true;
+var select = new RelayCommand<int>(id => Debug.Log(id), _ => available);
+IRelayCommand selectFirst = select.CreateCommandWithoutParameters(1);
+
+available = false;
+select.NotifyCanExecuteChanged();
+```
+
+The adapter forwards `CanExecuteChanged` with itself as the sender. A button bound to `selectFirst` receives changes from `select`. The adapter subscribes to its source when its first listener is added and detaches when the last listener is removed. Custom listeners must unsubscribe when they are no longer needed.
+
+`Execute` forwards directly to the source with the bound arguments; the source command controls whether execution checks `CanExecute`. Wrapping a `RelayCommand` evaluates its predicate once per execution.
+
+A missing source throws `ArgumentNullException` when the adapter is created. Use `CreateCommandWithoutParametersOrEmpty` or `CreateCommandWithoutParametersOrEmptyExecution` for an optional source.
+
+---
+
 ## RelayCommand.Empty
 
 Static stubs for when a command is not needed:
@@ -239,6 +261,8 @@ private void Save() { /* ... */ }
 More: [ButtonCommandBinder](StarterKit/button-command-binders.md).
 
 ---
+
+A method accepts only one `[RelayCommand]` and must be a non-generic `void` method with up to four value parameters (`ASPIDVM005`). An explicitly named `CanExecute` must resolve to an accessible bool getter or compatible bool method; otherwise generation fails with `ASPIDVM004`. A misspelled predicate never silently enables the command.
 
 ## See also
 

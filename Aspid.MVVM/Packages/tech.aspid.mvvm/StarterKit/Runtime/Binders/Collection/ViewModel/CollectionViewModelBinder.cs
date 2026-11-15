@@ -40,13 +40,13 @@ namespace Aspid.MVVM.StarterKit
         protected CollectionViewModelBinder() { }
 
         /// <param name="views">The views the items are shown in, in order. Extra items are not shown.</param>
-        /// <param name="mode">The binding mode. Must not be <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</param>
+        /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="views"/> is <see langword="null"/>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when <paramref name="mode"/> is <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>.</exception>
+        /// <exception cref="InvalidOperationException">The mode is neither <see cref="BindMode.OneWay"/> nor <see cref="BindMode.OneTime"/>.</exception>
         public CollectionViewModelBinder(TView[] views, BindMode mode = BindMode.OneWay)
             : base(mode)
         {
-            mode.ThrowExceptionIfTwo();
+            mode.EnsureForwardOnly();
             _views = views ?? throw new ArgumentNullException(nameof(views));
         }
 

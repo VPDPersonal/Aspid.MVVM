@@ -41,7 +41,7 @@ namespace Aspid.MVVM.StarterKit
             SetList(value);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             Unsubscribe();
             _list = null;
@@ -52,7 +52,7 @@ namespace Aspid.MVVM.StarterKit
                 Element.RefreshItems();
             }
 
-            base.OnUnbound();
+            base.OnDetach();
         }
 
         private void SetList(IReadOnlyList<object> list)

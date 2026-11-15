@@ -38,30 +38,21 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
             
             var arguments = attribute.NamedArguments;
             var path = arguments.FirstOrDefault(pair => pair.Key == "Path").Value.Value as string;
-            var suPath = arguments.FirstOrDefault(pair => pair.Key == "SubPath").Value.Value as string;
-            suPath = suPath is not null ? $"{suPath}/" : string.Empty;
-            
-            if (path is null)
+            var subPath = arguments.FirstOrDefault(pair => pair.Key == "SubPath").Value.Value as string;
+
+            if (string.IsNullOrWhiteSpace(path))
             {
+                var name = symbol.Name;
                 if (symbol.HasAnyAttribute(out var addComponentMenuAttribute, "UnityEngine.AddComponentMenu"))
                 {
-                    path = addComponentMenuAttribute!.ConstructorArguments[0].Value as string;
-
-                    if (path is not null)
-                        path = $"Add {type.Name} Binder" + path.Substring(path.LastIndexOf("/", StringComparison.Ordinal));
+                    var componentPath = addComponentMenuAttribute!.ConstructorArguments[0].Value as string;
+                    if (!string.IsNullOrWhiteSpace(componentPath))
+                        name = componentPath!.Substring(componentPath.LastIndexOf('/') + 1);
                 }
 
-                path ??= $"Add {type.Name} Binder/{symbol.Name}";
-            }
-
-            if (!string.IsNullOrWhiteSpace(path) && !string.IsNullOrWhiteSpace(suPath))
-            {
-                var index = path.IndexOf('/');
-                if (index is -1) index = path.Length - 2;
-                
-                index++;
-                if (index >= 0 && index < path.Length)
-                    path = path.Insert(path.IndexOf('/') + 1, suPath);
+                path = string.IsNullOrWhiteSpace(subPath)
+                    ? $"Add {type.Name} Binder/{name}"
+                    : $"Add {type.Name} Binder/{subPath}/{name}";
             }
 
             return new FoundForGenerator<ContextMenuData>(new ContextMenuData(declaration, symbol, symbol.Name, type.Name, path, 100001));
@@ -89,7 +80,8 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
                 .BeginBlock();
         }
 
-        var path = data.Path ?? data.Name;
+        var path = (data.Path ?? data.Name).Replace("\\", "\\\\").Replace("\"", "\\\"")
+            .Replace("\r", "\\r").Replace("\n", "\\n");
         var editorBrowsable= $"{EditorBrowsableAttribute}({EditorBrowsableState}.Never)";
 
         code.AppendMultiline(

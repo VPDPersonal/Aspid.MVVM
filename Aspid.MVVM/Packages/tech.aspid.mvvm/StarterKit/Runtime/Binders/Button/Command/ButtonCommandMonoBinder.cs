@@ -46,11 +46,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _boolCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.onClick.RemoveListener(OnClicked);
 
@@ -122,11 +122,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
@@ -200,11 +200,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
@@ -291,11 +291,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);
@@ -396,11 +396,11 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _command, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound() =>
+        protected override void OnAttach() =>
             CachedComponent.onClick.AddListener(OnClicked);
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             CachedComponent.onClick.RemoveListener(OnClicked);
             SetValue(null);

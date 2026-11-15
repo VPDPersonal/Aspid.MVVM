@@ -43,6 +43,10 @@ The boxed form of <code class="typeparamref">T</code>, such as [`ValueType`](htt
 
 
 
+## Remarks
+
+A [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) binder receives values without reporting changes back to the ViewModel.
+
 ## Constructors
 
 ### OneWayStructBindableMember\(T\) {#Aspid_MVVM_OneWayStructBindableMember_2__ctor__0_}
@@ -103,7 +107,7 @@ The new value.
 
 ### Changed {#Aspid_MVVM_OneWayStructBindableMember_2_Changed}
 
-Occurs when [`OneWayStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneWayStructBindableMember-2.md#Aspid_MVVM_OneWayStructBindableMember_2_Value) is set.
+Occurs when the member publishes a value.
 
 ```csharp
 public event Action<T>? Changed
@@ -112,4 +116,8 @@ public event Action<T>? Changed
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>?
+
+#### Remarks
+
+The reported value may equal the previous value.
 

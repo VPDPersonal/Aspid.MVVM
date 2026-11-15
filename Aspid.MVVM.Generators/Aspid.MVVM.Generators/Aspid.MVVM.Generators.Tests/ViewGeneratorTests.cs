@@ -13,7 +13,7 @@ namespace MVVMGenerators.Tests;
 /// </summary>
 public sealed class ViewGeneratorTests
 {
-    private const string Framework = """
+    internal const string Framework = """
         using System;
 
         namespace UnityEngine
@@ -41,9 +41,59 @@ public sealed class ViewGeneratorTests
             public class BindAttribute : Attribute { public BindAttribute() { } public BindAttribute(BindMode mode) { } }
 
             [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+            public sealed class AsBinderAttribute : Attribute
+            {
+                public AsBinderAttribute(Type type, params object[] arguments) { }
+            }
+
+            [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
             public sealed class IgnoreBindAttribute : Attribute { }
         }
         """;
+
+    [Fact]
+    public void TypedViewsUseBindContextsForDeclaredAndGeneratedBinderFields()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            public class PlayerViewModel : IViewModel
+            {
+                [Bind] private int _health;
+                [Bind] private int _mana;
+            }
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<PlayerViewModel>
+            {
+                [SerializeField] private IBinder _health;
+            }
+            """);
+
+        Assert.Contains("AspidBinderExtensions.BindSafely(_health, new global::Aspid.MVVM.BindContext(", generated);
+        Assert.Contains("AspidBinderExtensions.BindSafely(_mana, new global::Aspid.MVVM.BindContext(", generated);
+    }
+
+    [Theory]
+    [InlineData("private IBinder[] _scores;")]
+    [InlineData("private IBinder[] Scores => new IBinder[0];")]
+    public void BinderArraysUseCollectionUnbind(string member)
+    {
+        var generated = Run($$"""
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            [View]
+            public partial class PlayerView : MonoBehaviour, IView<IViewModel>
+            {
+                {{member}}
+            }
+            """);
+
+        Assert.Contains("AspidBinderExtensions.Unbind(", generated);
+        Assert.DoesNotContain("((global::Aspid.MVVM.IBinder)", generated);
+    }
 
     /// <summary>
     /// A derived View whose base View already gets a binder field generated from <c>IView&lt;TViewModel&gt;</c> does
@@ -118,8 +168,11 @@ public sealed class ViewGeneratorTests
             }
             """);
 
-        Assert.Contains("_score.BindSafely(", generated);
-        Assert.Contains("_score.UnbindSafely(", generated);
+        Assert.Contains("AspidBinderExtensions.BindSafely(_score, ", generated);
+        Assert.Contains("((global::Aspid.MVVM.IBinder)_score)?.Unbind(in __context);", generated);
+        Assert.DoesNotContain("AspidBinderExtensions.Unbind(_score,", generated);
+        Assert.Contains("using AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions;", generated);
+        Assert.DoesNotContain("ViewBindings", generated);
     }
 
     /// <summary>
@@ -141,8 +194,11 @@ public sealed class ViewGeneratorTests
             }
             """);
 
-        Assert.Contains("_score.BindSafely(", generated);
-        Assert.Contains("_score.UnbindSafely(", generated);
+        Assert.Contains("AspidBinderExtensions.BindSafely(_score, ", generated);
+        Assert.Contains("((global::Aspid.MVVM.IBinder)_score)?.Unbind(in __context);", generated);
+        Assert.DoesNotContain("AspidBinderExtensions.Unbind(_score,", generated);
+        Assert.Contains("using AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions;", generated);
+        Assert.DoesNotContain("ViewBindings", generated);
     }
 
     /// <summary>A binder field or property marked <c>[IgnoreBind]</c> is left out of the generated binding.</summary>
@@ -162,7 +218,7 @@ public sealed class ViewGeneratorTests
             }
             """);
 
-        Assert.Contains("_score.BindSafely(", generated);
+        Assert.Contains("AspidBinderExtensions.BindSafely(_score, ", generated);
         Assert.DoesNotContain("_ignoredField", generated);
         Assert.DoesNotContain("IgnoredProperty", generated);
     }
@@ -202,7 +258,7 @@ public sealed class ViewGeneratorTests
 
         Assert.DoesNotContain("MonoBinder[] _health;", generated);
         Assert.Equal(2, CountOf(generated, "MonoBinder[] _mana;"));
-        Assert.DoesNotContain("_health.BindSafely(", generated);
+        Assert.DoesNotContain("AspidBinderExtensions.BindSafely(_health, ", generated);
     }
 
     /// <summary>
@@ -231,6 +287,36 @@ public sealed class ViewGeneratorTests
         Assert.DoesNotContain("#if !ASPID_MVVM_UNITY_PROFILER_DISABLED", generated);
     }
 
+    [Fact]
+    public void SingleHeaderGroupsDoNotLeakIntoFollowingGeneratedFields()
+    {
+        var generated = Run("""
+            using Aspid.MVVM;
+            using UnityEngine;
+            namespace Aspid.MVVM
+            {
+                public sealed class HeaderGroupAttribute : System.Attribute { public HeaderGroupAttribute(string title) { } }
+                public sealed class HeaderGroupStartAttribute : System.Attribute { public HeaderGroupStartAttribute(string title) { } }
+                public sealed class HeaderGroupEndAttribute : System.Attribute { }
+            }
+            public class Model : IViewModel
+            {
+                [HeaderGroupStart("A"), Bind] private int _first;
+                [HeaderGroup("B"), Bind] private int _single;
+                [Bind] private int _after;
+                [HeaderGroupEnd, Bind] private int _end;
+                [Bind] private int _last;
+            }
+            [View] public partial class Probe : MonoBehaviour, IView<Model> { }
+            """);
+
+        Assert.Matches("HeaderGroupAttribute\\(\"A\"\\)[^;]*_first;", generated);
+        Assert.Matches("HeaderGroupAttribute\\(\"B\"\\)[^;]*_single;", generated);
+        Assert.Matches("HeaderGroupAttribute\\(\"A\"\\)[^;]*_after;", generated);
+        Assert.DoesNotMatch("HeaderGroupAttribute[^;]*_end;", generated);
+        Assert.DoesNotMatch("HeaderGroupAttribute[^;]*_last;", generated);
+    }
+
     private static int CountOf(string text, string value) =>
         Regex.Matches(text, Regex.Escape(value)).Count;
 
@@ -246,11 +332,10 @@ public sealed class ViewGeneratorTests
             references: new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        return string.Concat(CSharpGeneratorDriver
-            .Create(new ViewGenerator())
-            .RunGenerators(compilation)
-            .GetRunResult()
-            .GeneratedTrees
-            .Select(tree => tree.ToString()));
+        var result = CSharpGeneratorDriver.Create(new ViewGenerator()).RunGenerators(compilation).GetRunResult();
+        Assert.All(result.Results, run => Assert.Null(run.Exception));
+        Assert.DoesNotContain(result.Diagnostics, diagnostic => diagnostic.Severity is DiagnosticSeverity.Error);
+        Assert.NotEmpty(result.GeneratedTrees);
+        return string.Concat(result.GeneratedTrees.Select(tree => tree.ToString()));
     }
 }

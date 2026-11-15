@@ -54,7 +54,7 @@ namespace Aspid.MVVM.StarterKit
 
             CachedComponent.RemoveListenerFromAll(OnValueChanged);
 
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
             {
                 CachedComponent.GetEvent(_updateEvent)
                     .AddListener(OnValueChanged);
@@ -74,21 +74,25 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
-            if (!Mode.IsTwo()) return;
+            if (!Mode.IncludesReverse()) return;
 
             CachedComponent.GetEvent(_updateEvent)
                 .AddListener(OnValueChanged);
-            
+        }
+
+        /// <inheritdoc/>
+        protected override void OnBound()
+        {
             if (Mode is BindMode.OneWayToSource)
                 OnValueChanged(CachedComponent.text);
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            if (Mode.IsTwo())
+            if (Mode.IncludesReverse())
             {
                 CachedComponent.GetEvent(_updateEvent)
                     .RemoveListener(OnValueChanged);

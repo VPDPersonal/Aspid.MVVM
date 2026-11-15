@@ -36,12 +36,11 @@ FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters para
 
 `parameters` [FindBindableMemberParameters](Aspid.MVVM.FindBindableMemberParameters.md)
 
-The lookup query.
+The lookup query with a non-null identifier that is not empty or whitespace.
 
 #### Returns
 
  [FindBindableMemberResult](Aspid.MVVM.FindBindableMemberResult.md)
 
-A result holding the member; a result whose [`FindBindableMemberResult.IsFound`](Aspid.MVVM.FindBindableMemberResult.md#Aspid_MVVM_FindBindableMemberResult_IsFound) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>
-when no member has the identifier.
+The lookup result; [`FindBindableMemberResult.IsFound`](Aspid.MVVM.FindBindableMemberResult.md#Aspid_MVVM_FindBindableMemberResult_IsFound) indicates whether it contains a member.
 

@@ -66,7 +66,11 @@ public void Deinitialize()
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-Thrown when the stage is not <code>Manual</code>.
+The stage is not <code>Manual</code> or initialization is in progress.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Multiple views fail to deinitialize.
 
 ### Initialize\(\) {#Aspid_MVVM_StarterKit_ViewInitializer_Initialize}
 
@@ -84,7 +88,7 @@ Thrown when the stage is not <code>Manual</code>.
 
 ### OnDestroy\(\) {#Aspid_MVVM_StarterKit_ViewInitializer_OnDestroy}
 
-Disposes the already resolved views if [`ViewInitializerBase.IsDisposeViewOnDestroy`](Aspid.MVVM.StarterKit.ViewInitializerBase.md#Aspid_MVVM_StarterKit_ViewInitializerBase_IsDisposeViewOnDestroy) is set.
+Disposes the acquired views if [`ViewInitializerBase.IsDisposeViewOnDestroy`](Aspid.MVVM.StarterKit.ViewInitializerBase.md#Aspid_MVVM_StarterKit_ViewInitializerBase_IsDisposeViewOnDestroy) is set.
 
 ```csharp
 protected override void OnDestroy()

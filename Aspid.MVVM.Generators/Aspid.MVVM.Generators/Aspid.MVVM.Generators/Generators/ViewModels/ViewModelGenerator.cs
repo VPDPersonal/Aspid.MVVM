@@ -1,8 +1,9 @@
-using System;
+using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Aspid.Generators.Helper;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Aspid.MVVM.Generators.Generators.ViewModels.Body;
@@ -19,14 +20,17 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        Console.WriteLine(ViewModelAttribute.FullName);
-        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(ViewModelAttribute.FullName, SyntacticPredicate, FindViewModels)
-            .Where(static foundForSourceGenerator => foundForSourceGenerator.HasValue)
-            .Select(static (foundForSourceGenerator, _) => foundForSourceGenerator!.Value);
+        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(ViewModelAttribute.FullName, SyntacticPredicate, FindViewModels);
 
         context.RegisterSourceOutput(
             source: provider,
-            action: GenerateCode);
+            action: static (production, result) =>
+            {
+                foreach (var diagnostic in result.Diagnostics)
+                    production.ReportDiagnostic(diagnostic);
+
+                if (result.Data is { } data) GenerateCode(production, data);
+            });
     }
 
     private static bool SyntacticPredicate(SyntaxNode node, CancellationToken cancellationToken)
@@ -37,10 +41,12 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             && !candidate.Modifiers.Any(SyntaxKind.StaticKeyword);
     }
     
-    private static ViewModelData? FindViewModels(GeneratorAttributeSyntaxContext context,
-        CancellationToken cancellationToken)
+    private static (ViewModelData? Data, ImmutableArray<Diagnostic> Diagnostics) FindViewModels(
+        GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
     {
-        if (context.TargetSymbol is not INamedTypeSymbol symbol) return null;
+        if (context.TargetSymbol is not INamedTypeSymbol symbol) return (null, ImmutableArray<Diagnostic>.Empty);
+        var diagnostics = ViewModelValidation.Validate(symbol, context.SemanticModel.Compilation);
+        if (diagnostics.Any(diagnostic => diagnostic.Severity is DiagnosticSeverity.Error)) return (null, diagnostics);
         
         Debug.Assert(context.TargetNode is ClassDeclarationSyntax);
         var candidate = Unsafe.As<ClassDeclarationSyntax>(context.TargetNode);
@@ -49,11 +55,11 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
             ? Inheritor.Inheritor
             : Inheritor.None;
         
-        var bindableMembers = BindableMembersFactory.Create(symbol, candidate, out var propertyNotificationData);
+        var bindableMembers = BindableMembersFactory.Create(symbol, context.SemanticModel.Compilation, candidate, out var propertyNotificationData);
         var memberByGroups = IdLengthMemberGroup.Create(bindableMembers);
         var customViewModelInterfaces = CustomViewModelInterfacesFactory.Create(symbol);
         
-        return new ViewModelData(inheritor, symbol, candidate, bindableMembers, memberByGroups, customViewModelInterfaces, propertyNotificationData);
+        return (new ViewModelData(inheritor, symbol, candidate, bindableMembers, memberByGroups, customViewModelInterfaces, propertyNotificationData), diagnostics);
     }
     
     private static void GenerateCode(SourceProductionContext context, ViewModelData data)

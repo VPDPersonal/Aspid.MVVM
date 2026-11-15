@@ -87,7 +87,7 @@ public T? Value { get; }
 
 ### Changed {#Aspid_MVVM_OneWayToSourceBindableMember_1_Changed}
 
-Occurs after a reverse binder reports a value and the setter has run.
+Occurs when the member publishes a value.
 
 ```csharp
 public event Action<T?>? Changed
@@ -96,4 +96,8 @@ public event Action<T?>? Changed
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>?
+
+#### Remarks
+
+The reported value may equal the previous value.
 

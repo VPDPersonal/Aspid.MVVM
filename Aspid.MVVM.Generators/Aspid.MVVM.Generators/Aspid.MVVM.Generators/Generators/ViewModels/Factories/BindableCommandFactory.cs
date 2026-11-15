@@ -10,81 +10,28 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Factories;
 
 public static class BindableCommandFactory
 {
-    private const string CanExecuteReturnType = "bool";
-    
     public static IReadOnlyCollection<BindableCommandInfo> Create(
         ImmutableArray<IMethodSymbol> methods,
-        ImmutableArray<IPropertySymbol> properties,
-        ImmutableArray<string> generatedBoolProperties)
+        Compilation compilation)
     {
-        var bindableCommands = new List<BindableCommandInfo>();
-        
-        var boolMethods = methods.Where(boolMethods =>
-            boolMethods.ReturnType.ToString() is CanExecuteReturnType).ToImmutableArray();
-        
-        var boolProperties = properties.Where(property => 
-            property.Type.ToString() == CanExecuteReturnType).ToImmutableArray();
-        
+        var commands = new List<BindableCommandInfo>();
         foreach (var method in methods)
         {
             if (!method.TryGetAnyAttributeInSelf(out var attribute, Classes.RelayCommandAttribute)) continue;
-            
-            var canExecuteArgument = attribute!.NamedArguments
-                .Where(pair => pair.Key == "CanExecute")
-                .Select(pair => pair.Value.Value as string)
-                .FirstOrDefault();
 
-            var canExecute = GetCanExecute(canExecuteArgument, method, boolMethods, boolProperties, generatedBoolProperties);
+            if (!method.ReturnsVoid || method.IsGenericMethod || method.Parameters.Length > 4
+                || method.Parameters.Any(parameter => parameter.RefKind is not RefKind.None)) continue;
 
-            bindableCommands.Add(canExecute.isEixst ?
-                new BindableCommandInfo(method, canExecuteArgument, canExecute.isLamda, canExecute.isMethod) :
-                new BindableCommandInfo(method, null, false, false));
+            var name = attribute!.NamedArguments.FirstOrDefault(argument => argument.Key == "CanExecute").Value.Value as string;
+            var isLambda = false;
+            var isMethod = false;
+            if (name is not null && !CommandPredicateResolver.TryResolve(method.ContainingType, method, name,
+                compilation, out isLambda, out isMethod))
+                continue;
+
+            commands.Add(new BindableCommandInfo(method, name, isLambda, isMethod));
         }
 
-        return bindableCommands;
-    }
-
-    private static (bool isEixst, bool isLamda, bool isMethod) GetCanExecute(
-        string? canExecuteArgument,
-        IMethodSymbol method,
-        ImmutableArray<IMethodSymbol> boolMethods,
-        ImmutableArray<IPropertySymbol> boolProperties,
-        ImmutableArray<string> generatedBoolProperties)
-    {
-        if (string.IsNullOrWhiteSpace(canExecuteArgument)) return (false, false, false);
-        
-        var isLambda = false;
-        var isMethod = false;
-        var isCanExecuteExist = false;
-                
-        var canExecuteMethodCandidates = boolMethods.Where(boolMethod =>
-            boolMethod.Name == canExecuteArgument).ToArray();
-
-        if (canExecuteMethodCandidates.Length > 0)
-        {
-            isCanExecuteExist = canExecuteMethodCandidates.Any(candidate => candidate.Parameters.Length == method.Parameters.Length);
-            isLambda = !isCanExecuteExist && canExecuteMethodCandidates.Any(candidate => candidate.Parameters.Length == 0);
-
-            if (isLambda) isCanExecuteExist = true;
-            if (isCanExecuteExist) isMethod = true;
-        }
-
-        if (!isCanExecuteExist)
-        {
-            var canExecuteProperties = boolProperties.Where(property => 
-                property.Name == canExecuteArgument).ToArray();
-                    
-            isCanExecuteExist = canExecuteProperties.Any();
-            isLambda = isCanExecuteExist;
-        }
-                
-        if (!isCanExecuteExist)
-        {
-            var canExecuteProperties = generatedBoolProperties.Where(property => property == canExecuteArgument);
-            if (canExecuteProperties.Any()) isCanExecuteExist = true;
-            isLambda = isCanExecuteExist;
-        }
-            
-        return (isCanExecuteExist, isLambda, isMethod);
+        return commands;
     }
 }

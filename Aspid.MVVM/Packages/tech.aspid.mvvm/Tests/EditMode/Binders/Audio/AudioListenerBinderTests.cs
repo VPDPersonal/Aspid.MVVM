@@ -50,7 +50,7 @@ namespace Aspid.MVVM.Tests
             var binder = new AudioListenerVolumeBinder(mode: BindMode.OneWayToSource);
             var received = float.NaN;
 
-            binder.Bind(new OneWayToSourceStructBindableMember<float>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<float>(value => received = value), binder));
 
             Assert.AreEqual(0.4f, received, 0.001f, "The ViewModel did not receive the current volume");
         }
@@ -79,7 +79,7 @@ namespace Aspid.MVVM.Tests
             var binder = new AudioListenerPauseBinder(new BoolInvertConverter(), BindMode.OneWayToSource);
             var received = true;
 
-            binder.Bind(new OneWayToSourceStructBindableMember<bool>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<bool>(value => received = value), binder));
 
             Assert.IsFalse(received, "The inversion did not apply in the reverse direction");
         }

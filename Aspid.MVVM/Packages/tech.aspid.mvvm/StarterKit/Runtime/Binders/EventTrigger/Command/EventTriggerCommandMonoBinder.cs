@@ -58,7 +58,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _typeCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
             _entry = new EventTrigger.Entry { eventID = _event };
             _entry.callback.AddListener(OnTrigger);
@@ -66,10 +66,13 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            CachedComponent.triggers.Remove(_entry);
-            _entry.callback.RemoveListener(OnTrigger);
+            if (_entry is not null)
+            {
+                CachedComponent.triggers.Remove(_entry);
+                _entry.callback.RemoveListener(OnTrigger);
+            }
             _entry = null;
             _lastEvent = null;
 
@@ -162,7 +165,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _typeCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
             _entry = new EventTrigger.Entry { eventID = _event };
             _entry.callback.AddListener(OnTrigger);
@@ -170,10 +173,13 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            CachedComponent.triggers.Remove(_entry);
-            _entry.callback.RemoveListener(OnTrigger);
+            if (_entry is not null)
+            {
+                CachedComponent.triggers.Remove(_entry);
+                _entry.callback.RemoveListener(OnTrigger);
+            }
             _entry = null;
             _lastEvent = null;
 
@@ -279,7 +285,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _typeCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
             _entry = new EventTrigger.Entry { eventID = _event };
             _entry.callback.AddListener(OnTrigger);
@@ -287,10 +293,13 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            CachedComponent.triggers.Remove(_entry);
-            _entry.callback.RemoveListener(OnTrigger);
+            if (_entry is not null)
+            {
+                CachedComponent.triggers.Remove(_entry);
+                _entry.callback.RemoveListener(OnTrigger);
+            }
             _entry = null;
             _lastEvent = null;
 
@@ -409,7 +418,7 @@ namespace Aspid.MVVM.StarterKit
             CommandBinderExtensions.UpdateCommand(ref _typeCommand, value, OnCanExecuteChanged);
 
         /// <inheritdoc/>
-        protected override void OnBound()
+        protected override void OnAttach()
         {
             _entry = new EventTrigger.Entry { eventID = _event };
             _entry.callback.AddListener(OnTrigger);
@@ -417,10 +426,13 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
-            CachedComponent.triggers.Remove(_entry);
-            _entry.callback.RemoveListener(OnTrigger);
+            if (_entry is not null)
+            {
+                CachedComponent.triggers.Remove(_entry);
+                _entry.callback.RemoveListener(OnTrigger);
+            }
             _entry = null;
             _lastEvent = null;
 

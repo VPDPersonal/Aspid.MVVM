@@ -238,11 +238,6 @@ export default { api: [
           },
           {
             "type": "doc",
-            "id": "Aspid.MVVM.RebindableBinderExtensions",
-            "label": "RebindableBinderExtensions"
-          },
-          {
-            "type": "doc",
             "id": "Aspid.MVVM.RelayCommand",
             "label": "RelayCommand"
           },
@@ -396,6 +391,11 @@ export default { api: [
         "items": [
           {
             "type": "doc",
+            "id": "Aspid.MVVM.BindContext",
+            "label": "BindContext"
+          },
+          {
+            "type": "doc",
             "id": "Aspid.MVVM.FindBindableMemberParameters",
             "label": "FindBindableMemberParameters"
           },
@@ -403,6 +403,11 @@ export default { api: [
             "type": "doc",
             "id": "Aspid.MVVM.FindBindableMemberResult",
             "label": "FindBindableMemberResult"
+          },
+          {
+            "type": "doc",
+            "id": "Aspid.MVVM.UnbindContext",
+            "label": "UnbindContext"
           }
         ]
       },
@@ -456,11 +461,6 @@ export default { api: [
             "type": "doc",
             "id": "Aspid.MVVM.IReadOnlyValueBindableMember-1",
             "label": "IReadOnlyValueBindableMember<T>"
-          },
-          {
-            "type": "doc",
-            "id": "Aspid.MVVM.IRebindableBinder",
-            "label": "IRebindableBinder"
           },
           {
             "type": "doc",
@@ -2540,6 +2540,16 @@ export default { api: [
                 "type": "doc",
                 "id": "Aspid.MVVM.StarterKit.GenerateSerializableBinderAttribute",
                 "label": "GenerateSerializableBinderAttribute"
+              },
+              {
+                "type": "doc",
+                "id": "Aspid.MVVM.StarterKit.NotifyMode",
+                "label": "NotifyMode"
+              },
+              {
+                "type": "doc",
+                "id": "Aspid.MVVM.StarterKit.NotifyModeExtensions",
+                "label": "NotifyModeExtensions"
               }
             ]
           },

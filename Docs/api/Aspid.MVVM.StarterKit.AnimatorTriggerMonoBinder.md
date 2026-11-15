@@ -16,7 +16,7 @@ Abstract [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that ha
 
 ```csharp
 [BindModeOverride(new BindMode[] { BindMode.OneWayToSource })]
-public abstract class AnimatorTriggerMonoBinder : ComponentMonoBinder<Animator>, IMonoBinderValidatable, IRebindableBinder, IReverseBinder<Action>, IReverseBinder<IRelayCommand>, IBinder
+public abstract class AnimatorTriggerMonoBinder : ComponentMonoBinder<Animator>, IMonoBinderValidatable, IReverseBinder<Action>, IReverseBinder<IRelayCommand>, IBinder
 ```
 
 #### Inheritance
@@ -38,7 +38,6 @@ MonoBehaviour ←
 #### Implements
 
 [IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md), 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IReverseBinder\<Action\>](Aspid.MVVM.IReverseBinder-1.md), 
 [IReverseBinder\<IRelayCommand\>](Aspid.MVVM.IReverseBinder-1.md), 
 [IBinder](Aspid.MVVM.IBinder.md)
@@ -46,8 +45,8 @@ MonoBehaviour ←
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<AnimatorTriggerMonoBinder\>\(AnimatorTriggerMonoBinder?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<AnimatorTriggerMonoBinder\>\(AnimatorTriggerMonoBinder?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<AnimatorTriggerMonoBinder\>\(AnimatorTriggerMonoBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<AnimatorTriggerMonoBinder\>\(AnimatorTriggerMonoBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -55,7 +54,6 @@ MonoBehaviour ←
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -63,7 +61,7 @@ MonoBehaviour ←
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<AnimatorTriggerMonoBinder\>\(AnimatorTriggerMonoBinder?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<AnimatorTriggerMonoBinder\>\(AnimatorTriggerMonoBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Properties
 
@@ -130,13 +128,29 @@ Notifies the command handed to the ViewModel that [`IRelayCommand.CanExecute`](A
 public void NotifyCanExecuteChanged()
 ```
 
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_AnimatorTriggerMonoBinder_OnAttach}
+
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+
+```csharp
+protected override sealed void OnAttach()
+```
+
+#### Remarks
+
+An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
+
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_AnimatorTriggerMonoBinder_OnBound}
 
-Called after binding is established and the first value is applied. Override to subscribe to the component.
+Called with the binding complete and [`MonoBinder.IsBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_IsBound) set. Override to notify or send an initial value.
 
 ```csharp
 protected override sealed void OnBound()
 ```
+
+#### Remarks
+
+Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
 
 ### OnDisable\(\) {#Aspid_MVVM_StarterKit_AnimatorTriggerMonoBinder_OnDisable}
 
@@ -164,9 +178,13 @@ When overriding, always call <code>base.OnEnable()</code>.
 
 ### OnUnbinding\(\) {#Aspid_MVVM_StarterKit_AnimatorTriggerMonoBinder_OnUnbinding}
 
-Called before unbinding, while the binder is still attached to the ViewModel. Override to add pre-unbinding logic.
+Called when cleanup starts, while reported values still reach the ViewModel. Override to send a last value.
 
 ```csharp
 protected override sealed void OnUnbinding()
 ```
+
+#### Remarks
+
+[`MonoBinder.IsBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_IsBound) is already <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>; the owner is retained until cleanup finishes.
 

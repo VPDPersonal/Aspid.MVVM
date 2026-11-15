@@ -25,9 +25,13 @@ namespace Aspid.MVVM.Tests
 
         protected override void OnBinding() => Calls.Add(nameof(OnBinding));
 
+        protected override void OnAttach() => Calls.Add(nameof(OnAttach));
+
         protected override void OnBound() => Calls.Add(nameof(OnBound));
 
         protected override void OnUnbinding() => Calls.Add(nameof(OnUnbinding));
+
+        protected override void OnDetach() => Calls.Add(nameof(OnDetach));
 
         protected override void OnUnbound() => Calls.Add(nameof(OnUnbound));
     }

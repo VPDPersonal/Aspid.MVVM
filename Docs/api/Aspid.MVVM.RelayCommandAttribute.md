@@ -15,7 +15,7 @@ Generates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) property, named after t
 a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+[AttributeUsage(AttributeTargets.Method, Inherited = false)]
 public sealed class RelayCommandAttribute : Attribute
 ```
 
@@ -46,13 +46,13 @@ private bool CanBuy(int count) => count <= _stock;
 
 ## Remarks
 
-The method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/void">void</a> and takes up to four parameters.
+The method is non-generic, returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/void">void</a> and takes up to four value parameters.
 
 ## Fields
 
 ### CanExecute {#Aspid_MVVM_RelayCommandAttribute_CanExecute}
 
-The name of a [`Boolean`](https://learn.microsoft.com/dotnet/api/system.boolean) method or property of the same class that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to
+The name of a [`Boolean`](https://learn.microsoft.com/dotnet/api/system.boolean) method or readable property accessible from the class that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to
 always allow it.
 
 ```csharp
@@ -65,5 +65,5 @@ public string? CanExecute
 
 #### Remarks
 
-A method takes either the command's parameters or none.
+A method accepts the command's parameters or takes none; an invalid predicate reports generator error <code>ASPIDVM004</code>.
 

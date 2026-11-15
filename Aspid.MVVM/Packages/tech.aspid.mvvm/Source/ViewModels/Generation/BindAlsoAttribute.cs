@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 
 // ReSharper disable once CheckNamespace
-// ReSharper disable UnusedParameter.Local
 namespace Aspid.MVVM
 {
     /// <summary>
@@ -42,8 +41,16 @@ namespace Aspid.MVVM
         /// Creates an attribute that also notifies the property named <paramref name="propertyName"/>.
         /// </summary>
         /// <param name="propertyName">The name of the generated or declared property to notify.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="propertyName"/> is empty or whitespace.</exception>
         public BindAlsoAttribute(string propertyName)
         {
+            if (propertyName is null)
+                throw new ArgumentNullException(nameof(propertyName));
+
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentException("A dependent property name cannot be empty or whitespace.", nameof(propertyName));
+
 #if UNITY_EDITOR || DEBUG
             PropertyName = propertyName;
 #endif

@@ -24,7 +24,7 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
             : base(target, converter, mode)
         {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            mode.EnsureNot(BindMode.TwoWay);
         }
 
         /// <inheritdoc/>

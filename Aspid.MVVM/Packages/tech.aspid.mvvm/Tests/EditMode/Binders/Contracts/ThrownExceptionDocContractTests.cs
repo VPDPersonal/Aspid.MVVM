@@ -14,14 +14,33 @@ namespace Aspid.MVVM.Tests
     [TestFixture]
     public sealed class ThrownExceptionDocContractTests
     {
-        private static readonly Regex Guard = new(@"\.ThrowExceptionIf[A-Za-z]*\(", RegexOptions.Compiled);
+        private static readonly Regex Guard = new(@"\.Ensure(?:Valid|ForwardOnly|Forward|Reverse|Not)\(", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Matches a member declaration, including an explicit interface implementation.
-        /// </summary>
         private static readonly Regex Member = new(
             @"^\s*(?:(?:public|protected|internal|private)\s|[A-Za-z_][A-Za-z0-9_.<>?]*\s+[A-Za-z_][A-Za-z0-9_.<>]*\s*\()",
             RegexOptions.Compiled);
+
+        private static readonly Regex NonPublicMember = new(
+            @"^\s*(?:private\b|internal\b(?!\s+protected\b))",
+            RegexOptions.Compiled);
+
+        [TestCase("private", 0)]
+        [TestCase("internal", 0)]
+        [TestCase("private protected", 0)]
+        [TestCase("public", 1)]
+        [TestCase("protected", 1)]
+        [TestCase("protected internal", 1)]
+        [TestCase("internal protected", 1)]
+        public void ExceptionDocumentationIsRequiredOnlyForExternallyAccessibleGuards(string access, int expected)
+        {
+            var lines = new[] { $"    {access} void Validate()", "    {", "        mode.EnsureValid();", "    }" };
+            var complaints = new List<string>();
+            var guards = 0;
+
+            Inspect(lines, "Guard.cs", complaints, ref guards);
+
+            Assert.That(complaints.Count, Is.EqualTo(expected));
+        }
 
         [Test]
         public void EveryModeGuardIsDocumentedAsThrowing()
@@ -49,15 +68,20 @@ namespace Aspid.MVVM.Tests
         private static void Inspect(string source, string root, List<string> complaints, ref int guards)
         {
             var lines = File.ReadAllLines(source);
+            Inspect(lines, Path.GetRelativePath(root, source), complaints, ref guards);
+        }
 
+        private static void Inspect(string[] lines, string source, List<string> complaints, ref int guards)
+        {
             for (var index = 0; index < lines.Length; index++)
             {
                 if (!Guard.IsMatch(lines[index])) continue;
 
-                guards++;
-
                 var declaration = index;
                 while (declaration > 0 && !Member.IsMatch(lines[declaration])) declaration--;
+                if (NonPublicMember.IsMatch(lines[declaration])) continue;
+
+                guards++;
 
                 var above = declaration - 1;
                 while (above >= 0 && lines[above].TrimStart().StartsWith("[")) above--;
@@ -70,7 +94,7 @@ namespace Aspid.MVVM.Tests
                 }
 
                 if (!documented)
-                    complaints.Add($"{Path.GetRelativePath(root, source)}:{declaration + 1}");
+                    complaints.Add($"{source}:{declaration + 1}");
             }
         }
 

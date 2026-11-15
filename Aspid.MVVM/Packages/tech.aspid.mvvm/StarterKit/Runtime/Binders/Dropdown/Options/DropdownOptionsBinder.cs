@@ -29,7 +29,7 @@ namespace Aspid.MVVM.StarterKit
         public DropdownOptionsBinder(TMP_Dropdown target, BindMode mode = BindMode.OneWay)
             : base(target, mode)
         {
-            mode.ThrowExceptionIfMatches(BindMode.TwoWay);
+            mode.EnsureNot(BindMode.TwoWay);
         }
 
         /// <inheritdoc/>

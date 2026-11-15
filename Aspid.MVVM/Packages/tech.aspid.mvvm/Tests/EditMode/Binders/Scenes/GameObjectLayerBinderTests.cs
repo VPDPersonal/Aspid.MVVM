@@ -49,7 +49,7 @@ namespace Aspid.MVVM.Tests
             var binder = new GameObjectLayerBinder(gameObject, mode: BindMode.OneWayToSource);
             var received = -1;
 
-            binder.Bind(new OneWayToSourceStructBindableMember<int>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<int>(value => received = value), binder));
 
             Assert.AreEqual(9, received, "The ViewModel did not receive the current layer");
         }

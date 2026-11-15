@@ -36,14 +36,14 @@ The bound struct type.
 
 
 
-## Methods
+## Constructors
 
-### Get\(T\) {#Aspid_MVVM_OneTimeStructBindableMember_1_Get__0_}
+### OneTimeStructBindableMember\(T\) {#Aspid_MVVM_OneTimeStructBindableMember_1__ctor__0_}
 
-Returns the shared instance with [`OneTimeStructBindableMember<T1, T2>.Value`](Aspid.MVVM.OneTimeStructBindableMember-2.md#Aspid_MVVM_OneTimeStructBindableMember_2_Value) set to <code class="paramref">value</code>.
+Creates a member holding <code class="paramref">value</code>.
 
 ```csharp
-public static OneTimeStructBindableMember<T> Get(T value)
+public OneTimeStructBindableMember(T value)
 ```
 
 #### Parameters
@@ -51,14 +51,4 @@ public static OneTimeStructBindableMember<T> Get(T value)
 `value` T
 
 The value to push to the binder.
-
-#### Returns
-
- [OneTimeStructBindableMember](Aspid.MVVM.OneTimeStructBindableMember-1.md)\<T\>
-
-The shared instance for <code class="typeparamref">T</code>.
-
-#### Remarks
-
-Every call returns the same instance and overwrites its value, so bind it before the next call.
 

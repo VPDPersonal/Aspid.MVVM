@@ -99,9 +99,9 @@ namespace Aspid.MVVM.Tests
         {
             var (binder, received) = New<DebounceStringMonoBinder, string>(seconds: 0.3f);
 
-            binder.Bind(new OneWayBindableMember<string>(null));
+            binder.Bind(new BindContext(new OneWayBindableMember<string>(null), binder));
             ((IBinder<string>)binder).SetValue("held");
-            binder.Unbind();
+            binder.Unbind(new UnbindContext(binder));
 
             received.Clear();
             Tick(binder, 1f);

@@ -15,7 +15,7 @@ Abstract base [`Binder`](Aspid.MVVM.Binder.md) that receives a read-only collect
 Observable and filtered lists are followed through their change notifications.
 
 ```csharp
-public abstract class CollectionBinder<T> : Binder, IRebindableBinder, IBinder<IReadOnlyCollection<T>>, IBinder
+public abstract class CollectionBinder<T> : Binder, IBinder<IReadOnlyCollection<T>>, IBinder
 ```
 
 #### Type Parameters
@@ -32,15 +32,14 @@ The element type of the collection.
 
 #### Implements
 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IBinder\<IReadOnlyCollection\<T\>\>](Aspid.MVVM.IBinder-1.md), 
 [IBinder](Aspid.MVVM.IBinder.md)
 
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<CollectionBinder\<T\>\>\(CollectionBinder\<T\>?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<CollectionBinder\<T\>\>\(CollectionBinder\<T\>?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<CollectionBinder\<T\>\>\(CollectionBinder\<T\>?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<CollectionBinder\<T\>\>\(CollectionBinder\<T\>?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -48,7 +47,6 @@ The element type of the collection.
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -56,7 +54,7 @@ The element type of the collection.
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<CollectionBinder\<T\>\>\(CollectionBinder\<T\>?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<CollectionBinder\<T\>\>\(CollectionBinder\<T\>?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Constructors
 
@@ -129,6 +127,14 @@ protected abstract void OnAdded(IReadOnlyList<T?>? newItems)
 `newItems` [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<T?\>?
 
 The added items.
+
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_CollectionBinder_1_OnDetach}
+
+Unsubscribes from the bound collection.
+
+```csharp
+protected override void OnDetach()
+```
 
 ### OnMoved\(T?, T?, int, int\) {#Aspid_MVVM_StarterKit_CollectionBinder_1_OnMoved__0__0_System_Int32_System_Int32_}
 
@@ -212,14 +218,6 @@ Called when the collection was cleared or replaced; the View should drop every i
 
 ```csharp
 protected abstract void OnReset()
-```
-
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_CollectionBinder_1_OnUnbound}
-
-Unsubscribes from the bound collection.
-
-```csharp
-protected override void OnUnbound()
 ```
 
 ### SetValue\(IReadOnlyCollection\<T\>?\) {#Aspid_MVVM_StarterKit_CollectionBinder_1_SetValue_System_Collections_Generic_IReadOnlyCollection__0__}

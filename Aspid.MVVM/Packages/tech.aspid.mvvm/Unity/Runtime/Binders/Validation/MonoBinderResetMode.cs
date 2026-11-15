@@ -2,7 +2,7 @@
 namespace Aspid.MVVM.Validation
 {
     /// <summary>
-    /// How far a <see cref="IMonoBinderValidatable"/> reset goes.
+    /// Specifies whether a <see cref="IMonoBinderValidatable"/> reset also clears previous values.
     /// </summary>
     public enum MonoBinderResetMode
     {

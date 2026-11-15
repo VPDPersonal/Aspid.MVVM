@@ -74,7 +74,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             _reverseMaterial?.Invoke(null);
             _reverseMaterials?.Invoke(null);

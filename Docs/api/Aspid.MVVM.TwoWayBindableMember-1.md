@@ -113,7 +113,7 @@ The new value.
 
 ### Changed {#Aspid_MVVM_TwoWayBindableMember_1_Changed}
 
-Occurs when [`TwoWayBindableMember<T>.Value`](Aspid.MVVM.TwoWayBindableMember-1.md#Aspid_MVVM_TwoWayBindableMember_1_Value) is set.
+Occurs when the member publishes a value.
 
 ```csharp
 public event Action<T?>? Changed
@@ -122,4 +122,8 @@ public event Action<T?>? Changed
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>?
+
+#### Remarks
+
+The reported value may equal the previous value.
 

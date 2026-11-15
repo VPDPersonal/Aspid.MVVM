@@ -75,7 +75,7 @@ namespace Aspid.MVVM.Tests
             var binder = new TransformSiblingIndexBinder(second.transform, BindMode.OneWayToSource);
             var received = -1;
 
-            binder.Bind(new OneWayToSourceStructBindableMember<int>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceStructBindableMember<int>(value => received = value), binder));
 
             Assert.AreEqual(1, received, "The ViewModel did not receive the current index");
         }

@@ -52,8 +52,8 @@ namespace Aspid.MVVM.Tests
             var binder = NewBinder();
             var dictionary = new ObservableDictionary<string, string>();
 
-            binder.Bind(new OneWayBindableMember<IReadOnlyObservableDictionary<string, string>>(dictionary));
-            binder.Unbind();
+            binder.Bind(new BindContext(new OneWayBindableMember<IReadOnlyObservableDictionary<string, string>>(dictionary), binder));
+            binder.Unbind(new UnbindContext(binder));
 
             binder.Added.Clear();
             dictionary.Add("a", "one");

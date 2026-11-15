@@ -54,10 +54,10 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound()
+        protected override void OnDetach()
         {
             _materials = null;
-            base.OnUnbound();
+            base.OnDetach();
         }
     }
 }

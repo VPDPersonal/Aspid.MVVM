@@ -7,6 +7,7 @@ namespace Aspid.MVVM.Generators.Generators.Views.Data;
 
 public readonly struct ViewData(
     INamedTypeSymbol symbol,
+    Compilation compilation,
     Inheritor inheritor,
     TypeDeclarationSyntax declaration,
     ImmutableArray<BinderMember> members,
@@ -14,6 +15,7 @@ public readonly struct ViewData(
     ImmutableArray<string> inheritedDeclaredIds)
 {
     public readonly INamedTypeSymbol Symbol = symbol;
+    public readonly Compilation Compilation = compilation;
     public readonly Inheritor Inheritor = inheritor;
     public readonly ImmutableArray<BinderMember> Members = members;
     public readonly TypeDeclarationSyntax Declaration = declaration;

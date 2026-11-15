@@ -14,7 +14,7 @@ namespace Aspid.MVVM.Tests
     {
         [Test]
         public void Ctor_NoneMode_Throws() =>
-            Assert.Throws<ArgumentException>(() => new ValueTwoWayBinder<int>(0, BindMode.None));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ValueTwoWayBinder<int>(0, BindMode.None));
 
         [Test]
         public void DefaultCtor_StoresTheDefaultValueAndTwoWayMode()

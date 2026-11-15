@@ -2,70 +2,90 @@
 using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor-only attribute applied to serialized fields to declare the required binder association
-    /// in the Unity Inspector. Enables the editor to validate that a <see cref="MonoBinder"/>
-    /// of the expected type is assigned to the field.
-    /// Stripped from builds outside of <c>DEBUG</c> and <c>UNITY_EDITOR</c> configurations.
+    /// Associates a serialized binder field with a binding identifier and accepted value types for Inspector validation.
     /// </summary>
+    /// <remarks>Attribute applications are omitted unless <c>DEBUG</c> or <c>UNITY_EDITOR</c> is defined.</remarks>
+    /// <example>
+    /// <code>
+    /// [RequireBinder(typeof(int), Id = "Health")]
+    /// [UnityEngine.SerializeField] private MonoBinder[] _health;
+    /// </code>
+    /// <code>
+    /// [RequireBinder(nameof(_valueTypeName), Id = nameof(_memberId))]
+    /// [UnityEngine.SerializeField] private MonoBinder[] _binders;
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Field, AllowMultiple = true)]
+    [SuppressMessage(category: "ReSharper", checkId: "NullableWarningSuppressionIsUsed")]
     public sealed class RequireBinderAttribute : Attribute
     {
         /// <summary>
-        /// Optional identifier linking this field to a specific bindable member of the ViewModel.
-        /// When set, the editor uses this value to match against ViewModel property names.
+        /// Gets or sets the binding identifier or the name of a string field or property containing it.
+        /// When absent or blank, the identifier is derived from the decorated field name.
         /// </summary>
         public string? Id { get; set; }
 
         /// <summary>
-        /// Assembly-qualified type names of the binder types accepted by this field.
+        /// Gets the accepted value type names or names of string fields or properties containing those names.
         /// <see langword="null"/> when the attribute is used without specifying types.
         /// </summary>
         public string[]? AssemblyQualifiedNames { get; }
 
         /// <summary>
-        /// Initializes the attribute without specifying a binder type.
-        /// The editor will accept any binder assigned to the field.
+        /// Creates an attribute without value type restrictions.
         /// </summary>
         public RequireBinderAttribute() { }
 
         /// <summary>
-        /// Initializes the attribute for a single binder type.
+        /// Creates the attribute for a single value type.
         /// </summary>
-        /// <param name="type">The binder type that this field requires.</param>
+        /// <param name="type">The bound value type that assigned binders must support.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">A type is <see langword="null"/> or has no assembly-qualified name.</exception>
         public RequireBinderAttribute(Type type)
-            : this(new[] { type }) { }
+            : this(new[] { type ?? throw new ArgumentNullException(nameof(type)) }) { }
 
         /// <summary>
-        /// Initializes the attribute for multiple binder types.
+        /// Creates the attribute for multiple value types.
         /// </summary>
-        /// <param name="types">The binder types that this field accepts.</param>
+        /// <param name="types">The bound value types that assigned binders must support.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="types"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">A type is <see langword="null"/> or has no assembly-qualified name.</exception>
         public RequireBinderAttribute(params Type[] types)
         {
-            AssemblyQualifiedNames =
-                types.Select(type => type.AssemblyQualifiedName).ToArray();
+            if (types is null)
+                throw new ArgumentNullException(nameof(types));
+            if (types.Any(type => type?.AssemblyQualifiedName is null))
+                throw new ArgumentException("Each value type must have an assembly-qualified name.", nameof(types));
+
+            AssemblyQualifiedNames = types.Select(type => type.AssemblyQualifiedName!).ToArray();
         }
 
         /// <summary>
-        /// Initializes the attribute with a single assembly-qualified type name.
+        /// Creates the attribute with a single assembly-qualified type name.
         /// </summary>
-        /// <param name="assemblyQualifiedName">The assembly-qualified name of the required binder type.</param>
+        /// <param name="assemblyQualifiedName">The assembly-qualified value type name or the name of a string field or property containing it.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="assemblyQualifiedName"/> is <see langword="null"/>.</exception>
         public RequireBinderAttribute(string assemblyQualifiedName)
-            : this(new[] { assemblyQualifiedName }) { }
+            : this(assemblyQualifiedNames: new[] { assemblyQualifiedName ?? throw new ArgumentNullException(nameof(assemblyQualifiedName)) }) { }
 
         /// <summary>
-        /// Initializes the attribute with multiple assembly-qualified type names.
+        /// Creates the attribute with multiple assembly-qualified type names.
         /// </summary>
-        /// <param name="assemblyQualifiedNames">The assembly-qualified names of the accepted binder types.</param>
+        /// <param name="assemblyQualifiedNames">The value type names or names of string fields or properties containing them.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="assemblyQualifiedNames"/> is <see langword="null"/>.</exception>
         public RequireBinderAttribute(params string[] assemblyQualifiedNames)
         {
-            AssemblyQualifiedNames = assemblyQualifiedNames;
+            AssemblyQualifiedNames = assemblyQualifiedNames
+                ?? throw new ArgumentNullException(nameof(assemblyQualifiedNames));
         }
     }
 }

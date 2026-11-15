@@ -55,6 +55,16 @@ Deinitializes all views. Does nothing when they are not initialized.
 public void Deinitialize()
 ```
 
+#### Exceptions
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+Initialization is in progress.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Multiple views fail to deinitialize.
+
 ### Initialize\(IViewModel\) {#Aspid_MVVM_StarterKit_ViewInitializerManual_Initialize_Aspid_MVVM_IViewModel_}
 
 Initializes all views with <code class="paramref">viewModel</code>.
@@ -77,5 +87,5 @@ Thrown when <code class="paramref">viewModel</code> is <a href="https://learn.mi
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-Thrown when the views are already initialized.
+The views are already initialized or initialization is in progress.
 

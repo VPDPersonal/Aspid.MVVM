@@ -55,7 +55,7 @@ namespace Aspid.MVVM.Tests
             var binder = button.gameObject.AddComponent<SelectableToSourceMonoBinder>();
 
             Selectable received = null;
-            binder.Bind(new OneWayToSourceBindableMember<Selectable>(value => received = value));
+            binder.Bind(new BindContext(new OneWayToSourceBindableMember<Selectable>(value => received = value), binder));
 
             Assert.AreSame(button, received, "The ViewModel did not receive the Selectable");
         }

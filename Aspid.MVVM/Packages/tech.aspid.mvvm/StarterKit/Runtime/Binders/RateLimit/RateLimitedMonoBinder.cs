@@ -37,7 +37,7 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             Clear();
 
         /// <summary>

@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Diagnostics;
 
@@ -6,20 +5,32 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor-only marker that places the decorated binder field into a collapsible foldout with
-    /// the supplied title. Fields decorated with the same title merge into a single foldout
-    /// regardless of declaration order. Unlike <see cref="HeaderGroupStartAttribute"/>, this
-    /// attribute does not open a range — subsequent fields without their own grouping fall back to
-    /// the surrounding range (or the root, if no enclosing range is open).
-    /// Stripped from builds outside of <c>DEBUG</c> and <c>UNITY_EDITOR</c> configurations.
+    /// Groups the decorated member under the supplied foldout title.
     /// </summary>
+    /// <remarks>
+    /// Affects only this member; subsequent members keep the current range. Equal titles share a foldout.
+    /// Attribute applications are omitted unless <c>DEBUG</c> or <c>UNITY_EDITOR</c> is defined.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// [HeaderGroup("Stats")]
+    /// [Bind] private int _health;
+    /// </code>
+    /// </example>
     [Conditional(conditionString: "DEBUG")]
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method)]
     public sealed class HeaderGroupAttribute : Attribute
     {
+        /// <summary>
+        /// Gets the foldout title.
+        /// </summary>
         public string Title { get; }
 
+        /// <summary>
+        /// Creates a grouping attribute with the supplied title.
+        /// </summary>
+        /// <param name="title">The foldout title; blank titles are ignored.</param>
         public HeaderGroupAttribute(string title)
         {
             Title = title;

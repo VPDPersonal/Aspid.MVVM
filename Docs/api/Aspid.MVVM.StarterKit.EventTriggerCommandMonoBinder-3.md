@@ -15,7 +15,7 @@ Assembly: Aspid.MVVM.StarterKit.dll
 [`EventTrigger`](https://docs.unity3d.com/ScriptReference/EventSystems-EventTrigger.html) event fires with [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param1`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param1), [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param2`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param2), [`EventTriggerCommandMonoBinder<T1, T2, T3>.Param3`](Aspid.MVVM.StarterKit.EventTriggerCommandMonoBinder-3.md#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_Param3).
 
 ```csharp
-public abstract class EventTriggerCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<EventTrigger>, IMonoBinderValidatable, IRebindableBinder, IBinder<IRelayCommand<T1, T2, T3>>, IBinder<IRelayCommand<BaseEventData, T1, T2, T3>>, IBinder<IRelayCommand<EventTriggerType, T1, T2, T3>>, IBinder
+public abstract class EventTriggerCommandMonoBinder<T1, T2, T3> : ComponentMonoBinder<EventTrigger>, IMonoBinderValidatable, IBinder<IRelayCommand<T1, T2, T3>>, IBinder<IRelayCommand<BaseEventData, T1, T2, T3>>, IBinder<IRelayCommand<EventTriggerType, T1, T2, T3>>, IBinder
 ```
 
 #### Type Parameters
@@ -46,7 +46,6 @@ MonoBehaviour ←
 #### Implements
 
 [IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md), 
-[IRebindableBinder](Aspid.MVVM.IRebindableBinder.md), 
 [IBinder\<IRelayCommand\<T1, T2, T3\>\>](Aspid.MVVM.IBinder-1.md), 
 [IBinder\<IRelayCommand\<BaseEventData, T1, T2, T3\>\>](Aspid.MVVM.IBinder-1.md), 
 [IBinder\<IRelayCommand\<EventTriggerType, T1, T2, T3\>\>](Aspid.MVVM.IBinder-1.md), 
@@ -55,8 +54,8 @@ MonoBehaviour ←
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<EventTriggerCommandMonoBinder\<T1, T2, T3\>\>\(EventTriggerCommandMonoBinder\<T1, T2, T3\>?, in FindBindableMemberResult, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_), 
-[BinderExtensions.BindSafely\<EventTriggerCommandMonoBinder\<T1, T2, T3\>\>\(EventTriggerCommandMonoBinder\<T1, T2, T3\>?, IBinderAdder, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_IBinderAdder_System_Object_System_String_), 
+[BinderExtensions.BindSafely\<EventTriggerCommandMonoBinder\<T1, T2, T3\>\>\(EventTriggerCommandMonoBinder\<T1, T2, T3\>?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
+[BinderExtensions.BindSafely\<EventTriggerCommandMonoBinder\<T1, T2, T3\>\>\(EventTriggerCommandMonoBinder\<T1, T2, T3\>?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
@@ -64,7 +63,6 @@ MonoBehaviour ←
 [BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[RebindableBinderExtensions.Rebind\(IBinder\)](Aspid.MVVM.RebindableBinderExtensions.md#Aspid_MVVM_RebindableBinderExtensions_Rebind_Aspid_MVVM_IBinder_), 
 [BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
 [BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
@@ -72,7 +70,7 @@ MonoBehaviour ←
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderExtensions.UnbindSafely\<EventTriggerCommandMonoBinder\<T1, T2, T3\>\>\(EventTriggerCommandMonoBinder\<T1, T2, T3\>?, object?, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_System_Object_System_String_)
+[BinderExtensions.UnbindSafely\<EventTriggerCommandMonoBinder\<T1, T2, T3\>\>\(EventTriggerCommandMonoBinder\<T1, T2, T3\>?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Remarks
 
@@ -151,21 +149,29 @@ protected void AddLog(string log)
 
 `log` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
-### OnBound\(\) {#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_OnBound}
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_OnAttach}
 
-Called after binding is established and the first value is applied. Override to subscribe to the component.
-
-```csharp
-protected override void OnBound()
-```
-
-### OnUnbound\(\) {#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_OnUnbound}
-
-Called after unbinding. Override to release a subscription taken in [`MonoBinder.OnBound`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnBound).
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
 
 ```csharp
-protected override void OnUnbound()
+protected override void OnAttach()
 ```
+
+#### Remarks
+
+An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
+
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
+
+```csharp
+protected override void OnDetach()
+```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
 
 ### OnValidate\(\) {#Aspid_MVVM_StarterKit_EventTriggerCommandMonoBinder_3_OnValidate}
 

@@ -26,7 +26,7 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateOneTimeBinder<int>(received.Add);
             var member = new OneWayBindableMember<int>(1);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             member.Value = 2;
 
             Assert.AreEqual(new[] { 1 }, received, "A second push must not reach a OneTime binder.");
@@ -47,7 +47,7 @@ namespace Aspid.MVVM.Tests
             var binder = new DelegateOneTimeBinder<object, int>(new object(), (_, value) => received.Add(value));
             var member = new OneWayBindableMember<int>(1);
 
-            binder.Bind(member);
+            binder.Bind(new BindContext(member, binder));
             member.Value = 2;
 
             Assert.AreEqual(new[] { 1 }, received, "A second push must not reach a OneTime binder.");

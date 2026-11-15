@@ -48,7 +48,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Unsubscribes from the bound collection.
         /// </summary>
-        protected override void OnUnbound() =>
+        protected override void OnDetach() =>
             UnsubscribeFromCollection();
 
         /// <summary>

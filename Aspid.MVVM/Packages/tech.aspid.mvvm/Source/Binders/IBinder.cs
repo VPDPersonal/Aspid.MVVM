@@ -7,20 +7,35 @@ namespace Aspid.MVVM
     public interface IBinder
     {
         /// <summary>
+        /// Gets a value indicating whether binding is complete and cleanup has not started.
+        /// </summary>
+        /// <remarks>A <see cref="BindMode.OneTime"/> binding remains bound until <see cref="Unbind"/>.</remarks>
+        public bool IsBound { get; }
+
+        /// <summary>
         /// Gets the binding mode; <see cref="BindMode.OneWay"/> unless the implementing type provides its own.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
 
         /// <summary>
-        /// Attaches the binder to the bindable member behind <paramref name="binderAdder"/>.
+        /// Attaches the binder to the member and owner specified by <paramref name="context"/>.
         /// </summary>
-        /// <param name="binderAdder">The bindable member to attach to.</param>
-        public void Bind(IBinderAdder binderAdder);
+        /// <remarks>
+        /// Installation failures release partially acquired resources. Completion notifications run after the binding is
+        /// established; their exceptions do not roll it back, and their callbacks may release or replace it.
+        /// </remarks>
+        /// <param name="context">The bindable member and the owner acquiring the binding.</param>
+        public void Bind(in BindContext context);
 
         /// <summary>
-        /// Detaches the binder from its bindable member.
+        /// Detaches the binder when <paramref name="context"/> identifies its owner by reference equality.
         /// </summary>
-        public void Unbind();
+        /// <remarks>
+        /// Does nothing for an unbound binder or a different owner. Cleanup releases ownership even when it throws;
+        /// completion callbacks may establish a new binding.
+        /// </remarks>
+        /// <param name="context">The owner releasing the binding.</param>
+        public void Unbind(in UnbindContext context);
     }
 
     /// <summary>

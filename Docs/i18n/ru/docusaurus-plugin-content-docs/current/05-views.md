@@ -329,6 +329,20 @@ _view.Initialize(viewModel);
 _view.DeinitializeView()?.DisposeViewModel();
 ```
 
+### Со стороны ViewModel
+
+Расширения из `Aspid.MVVM` позволяют инициализировать один или несколько View:
+
+```csharp
+viewModel?.InitializeView(view);
+viewModel?.InitializeViews(viewA, viewB);
+viewModel?.InitializeViews(views);
+```
+
+`InitializeViews` принимает массивы, `List<T>` с ограничением `T : IView` и `IEnumerable<IView>` (включая коллекции только для чтения и ленивые последовательности). Поддерживаются массивы и списки конкретных типов View. Передача готового массива или списка не выделяет enumerator; вызов через `params` создаёт массив.
+
+При `?.` null-ViewModel пропускает вызов и вычисление аргументов. Прямой вызов отклоняет null-ViewModel, null-коллекцию или null-View. Коллекции обрабатываются по порядку до первого исключения; уже инициализированные View сохраняют своё состояние. Каждый вызов передаётся в `IView.Initialize`, сохраняя правила жизненного цикла View.
+
 ### Через ViewInitializer (Inspector)
 
 Без написания кода — через компонент [ViewInitializer](11-view-initializers.md).

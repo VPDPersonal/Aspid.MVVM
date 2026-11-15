@@ -329,6 +329,20 @@ _view.Initialize(viewModel);
 _view.DeinitializeView()?.DisposeViewModel();
 ```
 
+### From the ViewModel
+
+Use the extensions in `Aspid.MVVM` to initialize one or several Views:
+
+```csharp
+viewModel?.InitializeView(view);
+viewModel?.InitializeViews(viewA, viewB);
+viewModel?.InitializeViews(views);
+```
+
+`InitializeViews` accepts arrays, `List<T>` where `T : IView`, and `IEnumerable<IView>` (including read-only collections and lazy sequences). Arrays and lists of concrete View types are supported. Passing an existing array or list avoids enumerator allocations; the `params` call creates an array.
+
+With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects a null ViewModel, null collection, or null View. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
+
 ### Through ViewInitializer (Inspector)
 
 Without code, through the [ViewInitializer](11-view-initializers.md) component.

@@ -28,6 +28,8 @@
 
 #### Ядро и генератор
 
+- `IViewModel.InitializeView(view)` и `InitializeViews(views)` инициализируют View со стороны ViewModel: поддерживают вызов через `?.`, массивы, списки и перечисления.
+
 - **Bindable-свойства** — `[Bind]` на свойствах, а не только на полях.
 - **`NotifyCanExecuteChangedAll()`** — обновляет каждую команду с `CanExecute`, включая члены типа `IRelayCommand`.
 - **Автогенерируемые поля биндеров** — слот `MonoBinder[]` для каждого bindable-члена `IView<TViewModel>`, не объявленного во View; отключается `[View(AutoBinderFields = false)]`.

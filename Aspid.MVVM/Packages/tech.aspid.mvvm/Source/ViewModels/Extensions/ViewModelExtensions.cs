@@ -3,6 +3,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable once CheckNamespace
@@ -17,6 +18,86 @@ namespace Aspid.MVVM
         private static readonly Unity.Profiling.ProfilerMarker _disposeViewModelMarker = new(name: "DisposeViewModel");
 #endif
         
+        /// <summary>
+        /// Initializes <paramref name="view"/> with <paramref name="viewModel"/>.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel to bind.</param>
+        /// <param name="view">The View to initialize.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="viewModel"/> or <paramref name="view"/> is <see langword="null"/>.
+        /// </exception>
+        public static void InitializeView(this IViewModel viewModel, IView view)
+        {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+            if (view is null)
+                throw new ArgumentNullException(nameof(view));
+
+            view.Initialize(viewModel);
+        }
+
+        /// <summary>
+        /// Initializes each View with <paramref name="viewModel"/> in collection order.
+        /// </summary>
+        /// <remarks>Stops at the first exception; previously initialized Views remain initialized.</remarks>
+        /// <param name="viewModel">The ViewModel to bind.</param>
+        /// <param name="views">The Views to initialize.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="viewModel"/>, <paramref name="views"/>, or an element is <see langword="null"/>.
+        /// </exception>
+        public static void InitializeViews(this IViewModel viewModel, params IView[] views)
+        {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            for (var i = 0; i < views.Length; i++)
+                viewModel.InitializeView(views[i]);
+        }
+
+        /// <summary>
+        /// Initializes each View with <paramref name="viewModel"/> in collection order.
+        /// </summary>
+        /// <remarks>Stops at the first exception; previously initialized Views remain initialized.</remarks>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="viewModel">The ViewModel to bind.</param>
+        /// <param name="views">The Views to initialize.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="viewModel"/>, <paramref name="views"/>, or an element is <see langword="null"/>.
+        /// </exception>
+        public static void InitializeViews<T>(this IViewModel viewModel, List<T> views)
+            where T : IView
+        {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            for (var i = 0; i < views.Count; i++)
+                viewModel.InitializeView(views[i]);
+        }
+
+        /// <summary>
+        /// Initializes each View with <paramref name="viewModel"/> in collection order.
+        /// </summary>
+        /// <remarks>Stops at the first exception; previously initialized Views remain initialized.</remarks>
+        /// <param name="viewModel">The ViewModel to bind.</param>
+        /// <param name="views">The Views to initialize.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="viewModel"/>, <paramref name="views"/>, or an element is <see langword="null"/>.
+        /// </exception>
+        public static void InitializeViews(this IViewModel viewModel, IEnumerable<IView> views)
+        {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            foreach (var view in views)
+                viewModel.InitializeView(view);
+        }
+
         /// <summary>
         /// Disposes <paramref name="viewModel"/>.
         /// </summary>

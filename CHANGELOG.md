@@ -28,6 +28,8 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 
 #### Core & generator
 
+- `IViewModel.InitializeView(view)` and `InitializeViews(views)` initialize Views from the ViewModel, including null-conditional calls and array, list, or enumerable inputs.
+
 - **Bindable properties** — `[Bind]` on properties, not only fields.
 - **`NotifyCanExecuteChangedAll()`** — refreshes every command with a `CanExecute`, including `IRelayCommand`-typed members.
 - **Auto-emitted binder fields** — a `MonoBinder[]` slot for every bindable member of `IView<TViewModel>` not declared on the View; opt out with `[View(AutoBinderFields = false)]`.

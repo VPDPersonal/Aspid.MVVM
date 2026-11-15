@@ -52,8 +52,13 @@ namespace Aspid.MVVM
             if (views is null)
                 throw new ArgumentNullException(nameof(views));
 
-            for (var i = 0; i < views.Length; i++)
-                viewModel.InitializeView(views[i]);
+            foreach (var view in views)
+            {
+                if (view is null)
+                    throw new ArgumentNullException(nameof(view));
+
+                view.Initialize(viewModel);
+            }
         }
 
         /// <summary>
@@ -74,8 +79,13 @@ namespace Aspid.MVVM
             if (views is null)
                 throw new ArgumentNullException(nameof(views));
 
-            for (var i = 0; i < views.Count; i++)
-                viewModel.InitializeView(views[i]);
+            foreach (var view in views)
+            {
+                if (view is null)
+                    throw new ArgumentNullException(nameof(view));
+
+                view.Initialize(viewModel);
+            }
         }
 
         /// <summary>
@@ -95,7 +105,12 @@ namespace Aspid.MVVM
                 throw new ArgumentNullException(nameof(views));
 
             foreach (var view in views)
-                viewModel.InitializeView(view);
+            {
+                if (view is null)
+                    throw new ArgumentNullException(nameof(view));
+
+                view.Initialize(viewModel);
+            }
         }
 
         /// <summary>

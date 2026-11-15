@@ -21,7 +21,7 @@ namespace Aspid.MVVM
         {
             if (_multiple is not null)
                 throw new AggregateException("Multiple errors occurred during cleanup.", _multiple);
-            
+
             if (_first is not null)
                 ExceptionDispatchInfo.Capture(_first).Throw();
         }

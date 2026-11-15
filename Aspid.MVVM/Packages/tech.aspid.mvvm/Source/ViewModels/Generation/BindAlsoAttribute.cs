@@ -47,7 +47,7 @@ namespace Aspid.MVVM
         {
             if (propertyName is null)
                 throw new ArgumentNullException(nameof(propertyName));
-            
+
             if (string.IsNullOrWhiteSpace(propertyName))
                 throw new ArgumentException("A dependent property name cannot be empty or whitespace.", nameof(propertyName));
 

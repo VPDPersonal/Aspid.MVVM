@@ -29,7 +29,7 @@ namespace Aspid.MVVM
             string? memberName,
             Exception exception)
         {
-            var message = $"{BuildBinderContext(operation, index, owner, memberName)} " + 
+            var message = $"{BuildBinderContext(operation, index, owner, memberName)} " +
                 $"threw {exception.GetType().Name}: {exception.Message}";
 
             // Keep context in the Console title and use the exception's stack trace.
@@ -50,15 +50,15 @@ namespace Aspid.MVVM
             var binderPart = index.HasValue
                 ? $"Binder at index {index.Value}"
                 : "Binder";
-            
+
             var message = $"[{operation}] {binderPart} '{memberName ?? "<unknown>"}'";
             if (owner is null) return message;
 
             message = $"[{owner.GetType().Name}] {message}";
             if (owner is not Object unityOwner) return message;
 
-            return !unityOwner 
-                ? $"{message} (destroyed Unity object)" 
+            return !unityOwner
+                ? $"{message} (destroyed Unity object)"
                 : $"{message} (Object '{unityOwner.name}')";
         }
     }

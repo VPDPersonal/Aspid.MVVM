@@ -48,7 +48,7 @@ namespace Aspid.MVVM
             {
                 if (_state is not BinderState.Unbound)
                     throw new InvalidOperationException("Cannot change the mode while the binder is bound or a lifecycle operation is in progress.");
-                
+
                 if (!value.IsValid())
                     throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -82,7 +82,7 @@ namespace Aspid.MVVM
         protected virtual void OnDestroy()
         {
             _isDestroyed = true;
-            
+
             if (IsBound)
                 UnbindInternal();
         }
@@ -109,7 +109,7 @@ namespace Aspid.MVVM
                     throw new InvalidOperationException("The binder is already bound or unavailable for binding.");
 
                 _state = BinderState.Binding;
-                
+
                 Owner = context.Owner;
                 var bindingStarted = false;
 
@@ -123,13 +123,13 @@ namespace Aspid.MVVM
 
                     bindingStarted = true;
                     OnBinding();
-                    
+
                     if (IsAlive)
                         _binderRemover = context.Adder.Add(binder: this);
-                    
+
                     if (IsAlive)
                         OnAttach();
-                    
+
                     if (IsAlive)
                     {
                         OnBoundDebug(in context);
@@ -207,10 +207,10 @@ namespace Aspid.MVVM
 #endif
             {
                 context.EnsureValid();
-                
+
                 if (!ReferenceEquals(Owner, context.Owner)
                     || _state is BinderState.Unbound or BinderState.Unbinding) return;
-                
+
                 if (_state is BinderState.Binding)
                     throw new InvalidOperationException("The binder cannot be released before attachment finishes.");
 
@@ -221,7 +221,7 @@ namespace Aspid.MVVM
         private void UnbindInternal()
         {
             if (_state is BinderState.Unbound or BinderState.Unbinding) return;
-            
+
             _state = BinderState.Unbinding;
             var failures = new CleanupExceptions();
 

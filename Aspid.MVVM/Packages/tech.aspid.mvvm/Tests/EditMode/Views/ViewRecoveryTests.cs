@@ -289,6 +289,70 @@ namespace Aspid.MVVM.Tests
             Assert.That(first.DisposeCalls + second.DisposeCalls + third.DisposeCalls, Is.EqualTo(3));
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void CleanupDuringInitializationPreservesViewOwnership(bool manual)
+        {
+            var first = new RecoveryChildView();
+            var second = new RecoveryChildView();
+            var initializer = CreateInitializer(manual, first, second);
+            var model = new RecoveryModel();
+            first.OnInitialize = () =>
+            {
+                Assert.Throws<InvalidOperationException>(() => Deinitialize(initializer));
+                Assert.That(initializer.ViewModel, Is.SameAs(model));
+            };
+
+            Initialize(initializer, model);
+            Assert.That(initializer.IsInitialized, Is.True);
+            Assert.That(first.ViewModel, Is.SameAs(model));
+            Assert.That(second.ViewModel, Is.SameAs(model));
+            Deinitialize(initializer);
+            Assert.That(first.ViewModel, Is.Null);
+            Assert.That(second.ViewModel, Is.Null);
+            Assert.That(first.DeinitializeCalls, Is.EqualTo(1));
+            Assert.That(second.DeinitializeCalls, Is.EqualTo(1));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UnhandledCleanupDuringInitializationRollsBackAndAllowsRetry(bool manual)
+        {
+            var first = new RecoveryChildView();
+            var second = new RecoveryChildView();
+            var initializer = CreateInitializer(manual, first, second);
+            first.OnInitialize = () => Deinitialize(initializer);
+
+            Assert.Throws<InvalidOperationException>(() => Initialize(initializer, new RecoveryModel()));
+            Assert.That(first.ViewModel, Is.Null);
+            Assert.That(first.DeinitializeCalls, Is.EqualTo(1));
+            Assert.That(second.InitializeCalls, Is.Zero);
+            Assert.That(initializer.IsInitialized, Is.False);
+
+            first.OnInitialize = null;
+            Initialize(initializer, new RecoveryModel());
+            Deinitialize(initializer);
+            Assert.That(first.ViewModel, Is.Null);
+            Assert.That(second.ViewModel, Is.Null);
+        }
+
+        [Test]
+        public void ReentrantManualInitializePreservesTheOriginalViewModel()
+        {
+            var child = new RecoveryChildView();
+            var initializer = (ViewInitializerManual)CreateInitializer(true, child);
+            var original = new RecoveryModel();
+            child.OnInitialize = () =>
+            {
+                Assert.Throws<InvalidOperationException>(() => initializer.Initialize(new RecoveryModel()));
+                Assert.That(initializer.ViewModel, Is.SameAs(original));
+            };
+
+            initializer.Initialize(original);
+            Assert.That(initializer.ViewModel, Is.SameAs(original));
+            initializer.Deinitialize();
+        }
+
         private ViewInitializerBase CreateInitializer(bool manual, params IView[] views)
         {
             var initializer = manual
@@ -449,6 +513,8 @@ namespace Aspid.MVVM.Tests
         public bool FailDeinitialize;
         public int InitializeCalls;
         public int DisposeCalls;
+        public int DeinitializeCalls;
+        public Action OnInitialize;
 
         public IViewModel ViewModel { get; private set; }
 
@@ -456,12 +522,14 @@ namespace Aspid.MVVM.Tests
         {
             InitializeCalls++;
             ViewModel = model;
+            OnInitialize?.Invoke();
             if (FailInitialize)
                 throw new InvalidOperationException("initialize");
         }
 
         public void Deinitialize()
         {
+            DeinitializeCalls++;
             ViewModel = null;
             if (FailDeinitialize)
                 throw new InvalidOperationException("deinitialize");

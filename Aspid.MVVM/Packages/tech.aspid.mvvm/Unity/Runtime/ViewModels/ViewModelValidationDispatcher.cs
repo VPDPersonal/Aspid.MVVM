@@ -23,7 +23,7 @@ namespace Aspid.MVVM
         {
             EditorApplication.update -= NotifyPending;
             EditorApplication.update += NotifyPending;
-            
+
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
@@ -35,7 +35,7 @@ namespace Aspid.MVVM
         {
             if (_isNotifying || _isTransitioning) return;
             var pending = Volatile.Read(ref _pending);
-            
+
             var count = pending.Count;
             if (count is 0) return;
 
@@ -74,7 +74,7 @@ namespace Aspid.MVVM
                         location1: ref _pending,
                         value: new ConcurrentQueue<(Object Target, Action<Object> Notify)>());
                     break;
-                
+
                 case PlayModeStateChange.EnteredEditMode or PlayModeStateChange.EnteredPlayMode:
                     _isTransitioning = false;
                     break;

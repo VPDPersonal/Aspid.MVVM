@@ -74,18 +74,18 @@ namespace Aspid.MVVM
                 {
                     switch (binder)
                     {
-                        case IReverseBinder<T> reverseBinder: 
-                            reverseBinder.ValueChanged += OnValueChanged; 
+                        case IReverseBinder<T> reverseBinder:
+                            reverseBinder.ValueChanged += OnValueChanged;
                             break;
-                        
+
                         case IReverseBinder<TBoxed> structReverseBinder:
-                            structReverseBinder.ValueChanged += OnBoxedValueChanged; 
+                            structReverseBinder.ValueChanged += OnBoxedValueChanged;
                             break;
-                        
+
                         case IAnyReverseBinder anyReverseBinder:
-                            anyReverseBinder.ValueChanged += OnObjectValueChanged; 
+                            anyReverseBinder.ValueChanged += OnObjectValueChanged;
                             break;
-                        
+
                         default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
                     }
                 }
@@ -120,18 +120,18 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IReverseBinder<T> reverseBinder: 
+                    case IReverseBinder<T> reverseBinder:
                         reverseBinder.ValueChanged -= OnValueChanged;
                         break;
-                    
-                    case IReverseBinder<TBoxed> structReverseBinder: 
-                        structReverseBinder.ValueChanged -= OnBoxedValueChanged; 
+
+                    case IReverseBinder<TBoxed> structReverseBinder:
+                        structReverseBinder.ValueChanged -= OnBoxedValueChanged;
                         break;
-                    
+
                     case IAnyReverseBinder anyReverseBinder:
-                        anyReverseBinder.ValueChanged -= OnObjectValueChanged; 
+                        anyReverseBinder.ValueChanged -= OnObjectValueChanged;
                         break;
-                    
+
                     default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
                 }
             }

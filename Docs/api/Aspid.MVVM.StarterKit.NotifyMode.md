@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum NotifyMode {#Aspid_MVVM_StarterKit_NotifyMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Specifies when a value written by a binder raises the change event of the bound UI component.
 
@@ -23,19 +23,19 @@ public enum NotifyMode
 
 ## Fields
 
-`Always = 0` 
+`Always = 0`
 
 Every write raises the event.
 
 
 
-`AfterBind = 1` 
+`AfterBind = 1`
 
 The write made while binding is silent; later writes from the ViewModel raise the event.
 
 
 
-`Never = 2` 
+`Never = 2`
 
 No write raises the event.
 
@@ -44,4 +44,3 @@ No write raises the event.
 ## Remarks
 
 User input raises the event in every mode.
-

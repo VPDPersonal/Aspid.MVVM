@@ -44,7 +44,7 @@ namespace Aspid.MVVM
         {
             if (_isDisposed) return;
             _isDisposed = true;
-            
+
             OnDispose();
         }
 

@@ -84,9 +84,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="viewModel">The ViewModel to bind.</param>
         protected void InitializeViews(IViewModel viewModel)
         {
-            if (_isInitializing)
-                throw new InvalidOperationException($"{name}: views are being initialized");
-
+            EnsureNotInitializing();
             _isInitializing = true;
             try
             {
@@ -111,7 +109,7 @@ namespace Aspid.MVVM.StarterKit
             {
                 try
                 {
-                    DeinitializeViews();
+                    ReleaseViews(dispose: false, rollback: true);
                 }
                 catch
                 {
@@ -129,12 +127,22 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Deinitializes every acquired view, including a partially initialized view.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Initialization is in progress.</exception>
         /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
         protected void DeinitializeViews() =>
             ReleaseViews(dispose: false);
 
-        private void ReleaseViews(bool dispose)
+        internal void EnsureNotInitializing()
         {
+            if (_isInitializing)
+                throw new InvalidOperationException($"{name}: views are being initialized");
+        }
+
+        private void ReleaseViews(bool dispose, bool rollback = false)
+        {
+            if (!rollback)
+                EnsureNotInitializing();
+
             var failures = new CleanupExceptions();
             var views = dispose
                 ? _ownedViews

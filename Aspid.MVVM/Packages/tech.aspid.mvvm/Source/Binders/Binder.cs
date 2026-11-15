@@ -56,12 +56,12 @@ namespace Aspid.MVVM
         /// overridden.
         /// </summary>
         public virtual bool CanBind => true;
-        
+
         /// <summary>
         /// Gets the binding mode set by the constructor or in the Inspector.
         /// </summary>
         public BindMode Mode => _mode;
-        
+
         /// <summary>
         /// Attaches the binder through <paramref name="context"/>, calling <see cref="OnBinding"/> before and
         /// <see cref="OnBound"/> after.
@@ -98,7 +98,7 @@ namespace Aspid.MVVM
 
                     bindingStarted = true;
                     OnBinding();
-                    
+
                     _binderRemover = context.Adder.Add(binder: this);
                     OnAttach();
                     
@@ -171,9 +171,9 @@ namespace Aspid.MVVM
             {
                 context.EnsureValid();
 
-                if (!ReferenceEquals(Owner, context.Owner) 
+                if (!ReferenceEquals(Owner, context.Owner)
                     || _state is BinderState.Unbound or BinderState.Unbinding) return;
-                
+
                 if (_state is BinderState.Binding)
                     throw new InvalidOperationException("The binder cannot be released before attachment finishes.");
 
@@ -184,7 +184,7 @@ namespace Aspid.MVVM
         private void UnbindInternal()
         {
             if (_state is BinderState.Unbound or BinderState.Unbinding) return;
-            
+
             _state = BinderState.Unbinding;
             var failures = new CleanupExceptions();
 
@@ -261,7 +261,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <remarks>This hook may bind again; finish resource changes before invoking external code.</remarks>
         protected virtual void OnUnbound() { }
-        
+
         private void ResetBindingState()
         {
             Owner = null;

@@ -95,6 +95,10 @@ protected void DeinitializeViews()
 
 #### Exceptions
 
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+Initialization is in progress.
+
  [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
 
 Multiple views fail to deinitialize.
@@ -151,7 +155,7 @@ The resolved instance, or <a href="https://learn.microsoft.com/dotnet/csharp/lan
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The resolved type.
 

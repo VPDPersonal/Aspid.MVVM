@@ -22,9 +22,10 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="viewModel">The ViewModel to bind.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="viewModel"/> is <see langword="null"/>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when the views are already initialized.</exception>
+        /// <exception cref="InvalidOperationException">The views are already initialized or initialization is in progress.</exception>
         public void Initialize(IViewModel viewModel)
         {
+            EnsureNotInitializing();
             if (IsInitialized)
                 throw new InvalidOperationException($"{name}: views are already initialized");
 
@@ -44,9 +45,11 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Deinitializes all views. Does nothing when they are not initialized.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Initialization is in progress.</exception>
         /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
         public void Deinitialize()
         {
+            EnsureNotInitializing();
             try
             {
                 DeinitializeViews();

@@ -15,7 +15,7 @@ namespace Aspid.MVVM
     {
         private static RelayCommand? _empty;
         private static RelayCommand? _emptyExecution;
-        
+
         private readonly Action _execute;
         private readonly Func<bool>? _canExecute;
 
@@ -103,7 +103,7 @@ namespace Aspid.MVVM
     {
         private static RelayCommand<T>? _empty;
         private static RelayCommand<T>? _emptyExecution;
-        
+
         private readonly Action<T?> _execute;
         private readonly Func<T?, bool>? _canExecute;
 
@@ -194,7 +194,7 @@ namespace Aspid.MVVM
     {
         private static RelayCommand<T1, T2>? _empty;
         private static RelayCommand<T1, T2>? _emptyExecution;
-        
+
         private readonly Action<T1?, T2?> _execute;
         private readonly Func<T1?, T2?, bool>? _canExecute;
 
@@ -288,7 +288,7 @@ namespace Aspid.MVVM
     {
         private static RelayCommand<T1, T2, T3>? _empty;
         private static RelayCommand<T1, T2, T3>? _emptyExecution;
-        
+
         private readonly Action<T1?, T2?, T3?> _execute;
         private readonly Func<T1?, T2?, T3?, bool>? _canExecute;
 
@@ -385,7 +385,7 @@ namespace Aspid.MVVM
     {
         private static RelayCommand<T1, T2, T3, T4>? _empty;
         private static RelayCommand<T1, T2, T3, T4>? _emptyExecution;
-        
+
         private readonly Action<T1?, T2?, T3?, T4?> _execute;
         private readonly Func<T1?, T2?, T3?, T4?, bool>? _canExecute;
 

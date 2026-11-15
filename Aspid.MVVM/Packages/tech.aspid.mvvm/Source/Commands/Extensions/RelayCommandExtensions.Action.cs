@@ -13,7 +13,7 @@ namespace Aspid.MVVM
         /// <returns>The new command.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public static RelayCommand CreateCommand(
-            this Action execute, 
+            this Action execute,
             Func<bool>? canExecute = null) =>
             new(execute, canExecute);
 
@@ -26,7 +26,7 @@ namespace Aspid.MVVM
         /// <returns>The new command.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="execute"/> is <see langword="null"/>.</exception>
         public static RelayCommand<T?> CreateCommand<T>(
-            this Action<T?> execute, 
+            this Action<T?> execute,
             Func<T?, bool>? canExecute = null) =>
             new(execute, canExecute);
 
@@ -84,8 +84,8 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand.Empty"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand CreateCommandOrEmpty(
             this Action? execute, 
-            Func<bool>? canExecute = null) => execute is not null 
-            ? new RelayCommand(execute, canExecute) 
+            Func<bool>? canExecute = null) => execute is not null
+            ? new RelayCommand(execute, canExecute)
             : RelayCommand.Empty;
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand.EmptyExecution"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand CreateCommandOrEmptyExecution(
             this Action? execute,
-            Func<bool>? canExecute = null) => execute is not null 
-            ? new RelayCommand(execute, canExecute) 
+            Func<bool>? canExecute = null) => execute is not null
+            ? new RelayCommand(execute, canExecute)
             : RelayCommand.EmptyExecution;
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T}.Empty"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T?> CreateCommandOrEmpty<T>(
             this Action<T?>? execute,
-            Func<T?, bool>? canExecute = null) => execute is not null 
-            ? new RelayCommand<T?>(execute, canExecute) 
+            Func<T?, bool>? canExecute = null) => execute is not null
+            ? new RelayCommand<T?>(execute, canExecute)
             : RelayCommand<T?>.Empty;
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T}.EmptyExecution"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T?> CreateCommandOrEmptyExecution<T>(
             this Action<T?>? execute,
-            Func<T?, bool>? canExecute = null) => execute is not null 
-            ? new RelayCommand<T?>(execute, canExecute) 
+            Func<T?, bool>? canExecute = null) => execute is not null
+            ? new RelayCommand<T?>(execute, canExecute)
             : RelayCommand<T?>.EmptyExecution;
 
         /// <summary>
@@ -140,8 +140,8 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T1, T2}.Empty"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T1?, T2?> CreateCommandOrEmpty<T1, T2>(
             this Action<T1?, T2?>? execute,
-            Func<T1?, T2?, bool>? canExecute = null) => execute is not null 
-            ? new RelayCommand<T1?, T2?>(execute, canExecute) 
+            Func<T1?, T2?, bool>? canExecute = null) => execute is not null
+            ? new RelayCommand<T1?, T2?>(execute, canExecute)
             : RelayCommand<T1?, T2?>.Empty;
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T1, T2}.EmptyExecution"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T1?, T2?> CreateCommandOrEmptyExecution<T1, T2>(
             this Action<T1?, T2?>? execute,
-            Func<T1?, T2?, bool>? canExecute = null) => execute is not null 
+            Func<T1?, T2?, bool>? canExecute = null) => execute is not null
             ? new RelayCommand<T1?, T2?>(execute, canExecute)
             : RelayCommand<T1?, T2?>.EmptyExecution;
 
@@ -171,8 +171,8 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T1, T2, T3}.Empty"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T1?, T2?, T3?> CreateCommandOrEmpty<T1, T2, T3>(
             this Action<T1?, T2?, T3?>? execute,
-            Func<T1?, T2?, T3?, bool>? canExecute = null) => execute is not null 
-            ? new RelayCommand<T1?, T2?, T3?>(execute, canExecute) 
+            Func<T1?, T2?, T3?, bool>? canExecute = null) => execute is not null
+            ? new RelayCommand<T1?, T2?, T3?>(execute, canExecute)
             : RelayCommand<T1?, T2?, T3?>.Empty;
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T1, T2, T3}.EmptyExecution"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T1?, T2?, T3?> CreateCommandOrEmptyExecution<T1, T2, T3>(
             this Action<T1?, T2?, T3?>? execute,
-            Func<T1?, T2?, T3?, bool>? canExecute = null) => execute is not null 
+            Func<T1?, T2?, T3?, bool>? canExecute = null) => execute is not null
             ? new RelayCommand<T1?, T2?, T3?>(execute, canExecute)
             : RelayCommand<T1?, T2?, T3?>.EmptyExecution;
 
@@ -204,7 +204,7 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T1, T2, T3, T4}.Empty"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T1?, T2?, T3?, T4?> CreateCommandOrEmpty<T1, T2, T3, T4>(
             this Action<T1?, T2?, T3?, T4?>? execute,
-            Func<T1?, T2?, T3?, T4?, bool>? canExecute = null) => execute is not null 
+            Func<T1?, T2?, T3?, T4?, bool>? canExecute = null) => execute is not null
             ? new RelayCommand<T1?, T2?, T3?, T4?>(execute, canExecute)
             : RelayCommand<T1?, T2?, T3?, T4?>.Empty;
 
@@ -221,7 +221,7 @@ namespace Aspid.MVVM
         /// <returns>The new command; <see cref="RelayCommand{T1, T2, T3, T4}.EmptyExecution"/> when <paramref name="execute"/> is <see langword="null"/>.</returns>
         public static RelayCommand<T1?, T2?, T3?, T4?> CreateCommandOrEmptyExecution<T1, T2, T3, T4>(
             this Action<T1?, T2?, T3?, T4?>? execute,
-            Func<T1?, T2?, T3?, T4?, bool>? canExecute = null) => execute is not null 
+            Func<T1?, T2?, T3?, T4?, bool>? canExecute = null) => execute is not null
             ? new RelayCommand<T1?, T2?, T3?, T4?>(execute, canExecute)
             : RelayCommand<T1?, T2?, T3?, T4?>.EmptyExecution;
     }

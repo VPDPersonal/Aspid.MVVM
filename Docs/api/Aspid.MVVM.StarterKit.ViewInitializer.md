@@ -66,7 +66,7 @@ public void Deinitialize()
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-The stage is not <code>Manual</code>.
+The stage is not <code>Manual</code> or initialization is in progress.
 
  [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
 

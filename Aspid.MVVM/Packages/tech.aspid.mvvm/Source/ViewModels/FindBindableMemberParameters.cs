@@ -38,7 +38,7 @@ namespace Aspid.MVVM
         {
             if (id is null)
                 throw new ArgumentNullException(nameof(id));
-            
+
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("A bindable member ID cannot be empty or whitespace.", nameof(id));
         }

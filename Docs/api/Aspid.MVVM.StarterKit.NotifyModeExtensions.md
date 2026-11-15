@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class NotifyModeExtensions {#Aspid_MVVM_StarterKit_NotifyModeExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Provides extension methods for [`NotifyMode`](Aspid.MVVM.StarterKit.NotifyMode.md).
 
@@ -19,7 +19,7 @@ public static class NotifyModeExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [NotifyModeExtensions](Aspid.MVVM.StarterKit.NotifyModeExtensions.md)
 
 
@@ -54,4 +54,3 @@ The binder's <code>IsBound</code> at the time of the write.
 
 The ViewModel pushes its first value before the binder is marked bound, so a write made while
 <code class="paramref">isBound</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> counts as the write made while binding.
-

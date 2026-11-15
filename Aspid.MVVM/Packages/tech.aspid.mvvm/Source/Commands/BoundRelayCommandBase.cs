@@ -9,9 +9,9 @@ namespace Aspid.MVVM
         private Action<IRelayCommand>? _canExecuteChanged;
 
         protected TCommand Command { get; }
-        
+
         protected Action<TCommand> SourceChangedHandler { get; }
-        
+
         protected BoundRelayCommandBase(TCommand command)
         {
             SourceChangedHandler = OnSourceCanExecuteChanged;
@@ -26,7 +26,7 @@ namespace Aspid.MVVM
 
                 var previous = _canExecuteChanged;
                 _canExecuteChanged += value;
-                
+
                 if (previous is not null) return;
 
                 try
@@ -36,7 +36,7 @@ namespace Aspid.MVVM
                 catch
                 {
                     _canExecuteChanged = previous;
-                    
+
                     try
                     {
                         UnsubscribeFromSource();
@@ -55,7 +55,7 @@ namespace Aspid.MVVM
 
                 var previous = _canExecuteChanged;
                 _canExecuteChanged -= value;
-                
+
                 if (_canExecuteChanged is not null) return;
 
                 try
@@ -71,14 +71,14 @@ namespace Aspid.MVVM
         }
 
         public abstract void Execute();
-        
+
         public abstract bool CanExecute();
-        
+
         public void NotifyCanExecuteChanged() =>
             _canExecuteChanged?.Invoke(this);
 
         protected abstract void SubscribeToSource();
-        
+
         protected abstract void UnsubscribeFromSource();
 
         private void OnSourceCanExecuteChanged(TCommand _) =>

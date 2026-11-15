@@ -30,7 +30,7 @@ namespace Aspid.MVVM
             var message = binder.AddExceptionMessage(
                 $"{binderType} cannot receive {valueType}.\n" +
                 $"Required: {specificBinderType} or {anyBinderType}.");
-            
+
             return new BinderInvalidCastException(message);
         }
 
@@ -53,7 +53,7 @@ namespace Aspid.MVVM
             var message = binder.AddExceptionMessage(
                 $"{binderType} cannot receive {valueType}.\n" +
                 $"Required: {specificBinderType} or {specificBinderBoxedType} or {anyBinderType}.");
-            
+
             return new BinderInvalidCastException(message);
         }
     }

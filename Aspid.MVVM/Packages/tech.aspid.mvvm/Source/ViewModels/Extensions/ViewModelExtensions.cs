@@ -57,7 +57,7 @@ namespace Aspid.MVVM
                     disposable.Dispose();
             }
         }
-       
+
 #if ASPID_MVVM_PROFILER
         private static class Markers<T>
             where T : class, IViewModel, IDisposable

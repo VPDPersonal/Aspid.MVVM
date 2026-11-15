@@ -30,7 +30,7 @@ namespace Aspid.MVVM
 
             var operation = Object.InstantiateAsync(original);
             InitializeOnCompletion(operation, viewModel);
-            
+
             return operation;
         }
 
@@ -61,7 +61,7 @@ namespace Aspid.MVVM
 
             var operation = Object.InstantiateAsync(original, parent);
             InitializeOnCompletion(operation, viewModel);
-            
+
             return operation;
         }
 
@@ -94,7 +94,7 @@ namespace Aspid.MVVM
 
             var operation = Object.InstantiateAsync(original, position, rotation);
             InitializeOnCompletion(operation, viewModel);
-            
+
             return operation;
         }
 
@@ -129,7 +129,7 @@ namespace Aspid.MVVM
 
             var operation = Object.InstantiateAsync(original, parent, position, rotation);
             InitializeOnCompletion(operation, viewModel);
-            
+
             return operation;
         }
 

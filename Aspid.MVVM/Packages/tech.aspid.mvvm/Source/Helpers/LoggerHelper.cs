@@ -32,17 +32,17 @@ namespace Aspid.MVVM
         {
             if (type.IsGenericParameter)
                 return type.Name;
-            
+
             if (type.IsArray)
                 return $"{GetTypeName(type.GetElementType()!)}[{new string(',', type.GetArrayRank() - 1)}]";
-            
-            if (type.IsByRef) 
+
+            if (type.IsByRef)
                 return $"{GetTypeName(type.GetElementType()!)}&";
-            
-            if (type.IsPointer) 
+
+            if (type.IsPointer)
                 return $"{GetTypeName(type.GetElementType()!)}*";
-            
-            if (Nullable.GetUnderlyingType(type) is { } underlyingType) 
+
+            if (Nullable.GetUnderlyingType(type) is { } underlyingType)
                 return $"{GetTypeName(underlyingType)}?";
 
             var alias = type.FullName switch
@@ -70,12 +70,12 @@ namespace Aspid.MVVM
 
             if (alias is not null) return alias;
 
-            var arguments = type.IsGenericType 
+            var arguments = type.IsGenericType
                 ? type.GetGenericArguments()
                 : Type.EmptyTypes;
-            
+
             var argumentIndex = 0;
-            
+
             return GetTypeName(type, arguments, ref argumentIndex);
         }
 
@@ -88,7 +88,7 @@ namespace Aspid.MVVM
 
             var name = type.Name;
             var arityIndex = name.IndexOf('`');
-            
+
             if (arityIndex >= 0)
                 name = name[..arityIndex];
 

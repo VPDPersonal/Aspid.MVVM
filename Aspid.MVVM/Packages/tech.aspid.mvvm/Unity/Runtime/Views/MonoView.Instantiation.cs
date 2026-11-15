@@ -33,7 +33,7 @@ namespace Aspid.MVVM
             operation.completed += _ =>
             {
                 var views = operation.Result;
-                
+
                 if (views is null || views.Length is 0) return;
                 if (cancellationToken.IsCancellationRequested)
                 {

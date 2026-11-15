@@ -38,7 +38,7 @@ namespace Aspid.MVVM
         {
             get
             {
-                if (_isCached) 
+                if (_isCached)
                     return _component;
 
                 if (!IsAssigned(_component))

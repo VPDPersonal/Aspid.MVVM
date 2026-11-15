@@ -14,7 +14,7 @@ namespace Aspid.MVVM
         /// <returns>The parameterless adapter.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
         public static IRelayCommand CreateCommandWithoutParameters<T>(
-            this IRelayCommand<T> command, 
+            this IRelayCommand<T> command,
             T? param) =>
             new BoundRelayCommand<T>(command, param);
 

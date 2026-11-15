@@ -96,7 +96,7 @@ namespace Aspid.MVVM
                         : string.IsNullOrWhiteSpace(matchingMenu.SubPath)
                             ? $"{AddBinderText}/{context.Name}"
                             : $"{AddBinderText}/{matchingMenu.SubPath}/{context.Name}";
-                    
+
                     results.Add(new Result(path, context.Type));
                 }
                 else if (context.ContextMenuByTypes.Any(menu => menu.Type.IsAssignableFrom(propertyType)))

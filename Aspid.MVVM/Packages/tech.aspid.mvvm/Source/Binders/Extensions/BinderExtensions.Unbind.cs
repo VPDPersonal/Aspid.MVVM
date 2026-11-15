@@ -30,12 +30,12 @@ namespace Aspid.MVVM
         {
             context.EnsureValid();
             if (binders is null) return;
-            
+
             var failures = new CleanupExceptions();
-            
+
             foreach (var binder in binders)
                 UnbindInternal(binder, in context, ref failures);
-            
+
             failures.ThrowIfAny();
         }
 
@@ -57,12 +57,12 @@ namespace Aspid.MVVM
         {
             context.EnsureValid();
             if (binders is null) return;
-            
+
             var failures = new CleanupExceptions();
-            
+
             foreach (var binder in binders)
                 UnbindInternal(binder, in context, ref failures);
-            
+
             failures.ThrowIfAny();
         }
 
@@ -85,7 +85,7 @@ namespace Aspid.MVVM
                 case T[] array:
                     array.Unbind(in context);
                     return;
-                
+
                 case List<T> list:
                     list.Unbind(in context);
                     return;
@@ -93,13 +93,13 @@ namespace Aspid.MVVM
 
             context.EnsureValid();
             if (binders is null) return;
-            
+
             var failures = new CleanupExceptions();
-            
+
             try
             {
                 using var enumerator = binders.GetEnumerator();
-                
+
                 try
                 {
                     while (enumerator.MoveNext())
@@ -171,7 +171,7 @@ namespace Aspid.MVVM
         /// <inheritdoc cref="UnbindSafely{T}(T[], in UnbindContext, string)"/>
         public static void UnbindSafely<T>(
             this List<T>? binders,
-            in UnbindContext context, 
+            in UnbindContext context,
             string? memberName = null)
             where T : IBinder
         {
@@ -271,7 +271,7 @@ namespace Aspid.MVVM
                     index: index,
                     owner: context.Owner,
                     memberName: memberName);
-                
+
                 return;
             }
 

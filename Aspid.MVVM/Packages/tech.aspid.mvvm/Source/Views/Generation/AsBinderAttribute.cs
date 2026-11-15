@@ -50,10 +50,10 @@ namespace Aspid.MVVM
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
-            
+
             if (arguments is null)
                 throw new ArgumentNullException(nameof(arguments));
-            
+
             if (type.IsAbstract || type.ContainsGenericParameters || !typeof(IBinder).IsAssignableFrom(type))
                 throw new ArgumentException("The binder type must be non-abstract, closed and implement IBinder.", nameof(type));
 

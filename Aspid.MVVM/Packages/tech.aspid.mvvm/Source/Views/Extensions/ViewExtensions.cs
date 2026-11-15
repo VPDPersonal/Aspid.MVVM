@@ -30,7 +30,7 @@ namespace Aspid.MVVM
         {
             if (view is null)
                 throw new ArgumentNullException(nameof(view));
-            
+
             var oldViewModel = view.DeinitializeView();
 
             if (newViewModel is not null)

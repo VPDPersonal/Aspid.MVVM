@@ -22,7 +22,7 @@ namespace Aspid.MVVM
         public static T Instantiate<T>(T original, IViewModel viewModel)
             where T : Object, IView
         {
-            return viewModel is null 
+            return viewModel is null
                 ? throw new ArgumentNullException(nameof(viewModel))
                 : InitializeInstance(Object.Instantiate(original), viewModel);
         }
@@ -85,7 +85,7 @@ namespace Aspid.MVVM
         public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation, IViewModel viewModel)
             where T : Object, IView
         {
-            return viewModel is null 
+            return viewModel is null
                 ? throw new ArgumentNullException(nameof(viewModel))
                 : InitializeInstance(Object.Instantiate(original, position, rotation), viewModel);
         }
@@ -113,8 +113,8 @@ namespace Aspid.MVVM
             IViewModel viewModel)
             where T : Object, IView
         {
-            return viewModel is null 
-                ? throw new ArgumentNullException(nameof(viewModel)) 
+            return viewModel is null
+                ? throw new ArgumentNullException(nameof(viewModel))
                 : InitializeInstance(Object.Instantiate(original, position, rotation, parent), viewModel);
         }
     }

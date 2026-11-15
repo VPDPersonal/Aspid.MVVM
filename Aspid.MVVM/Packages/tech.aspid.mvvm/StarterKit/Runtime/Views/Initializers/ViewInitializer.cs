@@ -54,7 +54,7 @@ namespace Aspid.MVVM.StarterKit
         /// <summary>
         /// Deinitializes the views. Allowed only in the <c>Manual</c> stage.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The stage is not <c>Manual</c>.</exception>
+        /// <exception cref="InvalidOperationException">The stage is not <c>Manual</c> or initialization is in progress.</exception>
         /// <exception cref="AggregateException">Multiple views fail to deinitialize.</exception>
         public void Deinitialize()
         {

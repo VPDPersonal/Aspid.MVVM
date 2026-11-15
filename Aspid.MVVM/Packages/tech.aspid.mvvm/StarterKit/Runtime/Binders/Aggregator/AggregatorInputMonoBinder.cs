@@ -39,7 +39,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnDetach()
         {
-            if (_aggregator) 
+            if (_aggregator)
                 _aggregator.ClearInput(_index);
         }
     }

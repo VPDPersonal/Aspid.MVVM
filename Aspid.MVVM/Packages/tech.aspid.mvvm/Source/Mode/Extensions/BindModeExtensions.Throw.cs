@@ -84,7 +84,7 @@ namespace Aspid.MVVM
             foreach (var mode in modes)
             {
                 if (mode.IsValid()) continue;
-                
+
                 throw new ArgumentOutOfRangeException(nameof(modes), mode,
                     CreateModeMessage(mode, BindMode.OneWay, BindMode.TwoWay, BindMode.OneTime, BindMode.OneWayToSource));
             }
@@ -93,7 +93,7 @@ namespace Aspid.MVVM
         private static string CreateModeMessage(BindMode mode, params BindMode[] allowed)
         {
             var names = new string[allowed.Length];
-            
+
             for (var i = 0; i < names.Length; i++)
                 names[i] = allowed[i].ToString().GetStructMessage();
 

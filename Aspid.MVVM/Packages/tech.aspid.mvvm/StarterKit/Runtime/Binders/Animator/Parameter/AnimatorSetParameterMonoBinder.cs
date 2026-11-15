@@ -122,7 +122,7 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <param name="value">The value that would be written.</param>
         /// <returns><see langword="true"/> when the parameter may be set.</returns>
-        protected virtual bool CanExecute(T? value) => CachedComponent 
+        protected virtual bool CanExecute(T? value) => CachedComponent
             && CachedComponent.gameObject.activeInHierarchy
             && _probe.IsUsable(CachedComponent, ParameterName, ParameterType, this);
 

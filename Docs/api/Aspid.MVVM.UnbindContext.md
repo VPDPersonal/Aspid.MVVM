@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct UnbindContext {#Aspid_MVVM_UnbindContext}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Identifies the owner releasing a binder.
 
@@ -54,4 +54,3 @@ public object Owner { get; }
 #### Property Value
 
  [object](https://learn.microsoft.com/dotnet/api/system.object)
-

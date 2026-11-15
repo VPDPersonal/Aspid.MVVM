@@ -97,7 +97,7 @@ namespace Aspid.MVVM
         /// <param name="memberName">The binder field or property name; <see langword="null"/> for none.</param>
         public static void BindSafely<T>(
             this T[]? binders,
-            in BindContext context, 
+            in BindContext context,
             string? memberName = null)
             where T : IBinder
         {
@@ -126,7 +126,7 @@ namespace Aspid.MVVM
 
         /// <inheritdoc cref="BindSafely{T}(T[], in BindContext, string)"/>
         public static void BindSafely<T>(
-            this List<T>? binders, 
+            this List<T>? binders,
             in BindContext context,
             string? memberName = null)
             where T : IBinder
@@ -192,7 +192,7 @@ namespace Aspid.MVVM
             {
                 if (binders is null) return;
                 var failures = new CleanupExceptions();
-                
+
                 try
                 {
                     using var enumerator = binders.GetEnumerator();
@@ -234,7 +234,7 @@ namespace Aspid.MVVM
                     index: index,
                     owner: context.Owner,
                     memberName: memberName);
-                
+
                 return;
             }
 

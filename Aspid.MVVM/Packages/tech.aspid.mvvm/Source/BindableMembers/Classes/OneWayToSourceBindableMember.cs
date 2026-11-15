@@ -57,14 +57,14 @@ namespace Aspid.MVVM
                 {
                     switch (binder)
                     {
-                        case IReverseBinder<T> reverseBinder: 
-                            reverseBinder.ValueChanged += OnValueChanged; 
+                        case IReverseBinder<T> reverseBinder:
+                            reverseBinder.ValueChanged += OnValueChanged;
                             break;
-                        
-                        case IAnyReverseBinder anyReverseBinder: 
-                            anyReverseBinder.ValueChanged += OnObjectValueChanged; 
+
+                        case IAnyReverseBinder anyReverseBinder:
+                            anyReverseBinder.ValueChanged += OnObjectValueChanged;
                             break;
-                        
+
                         default: throw ReverseBinderInvalidCastException<T>.Class(binder);
                     }
                 }
@@ -98,14 +98,14 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IReverseBinder<T> reverseBinder: 
-                        reverseBinder.ValueChanged -= OnValueChanged; 
+                    case IReverseBinder<T> reverseBinder:
+                        reverseBinder.ValueChanged -= OnValueChanged;
                         break;
-                    
-                    case IAnyReverseBinder anyReverseBinder: 
-                        anyReverseBinder.ValueChanged -= OnObjectValueChanged; 
+
+                    case IAnyReverseBinder anyReverseBinder:
+                        anyReverseBinder.ValueChanged -= OnObjectValueChanged;
                         break;
-                    
+
                     default: throw ReverseBinderInvalidCastException<T>.Class(binder);
                 }
             }

@@ -130,18 +130,18 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IBinder<T> specificBinder: 
-                        Changed -= specificBinder.SetValue; 
+                    case IBinder<T> specificBinder:
+                        Changed -= specificBinder.SetValue;
                         break;
-                    
+
                     case IBinder<TBoxed> structBinder:
-                        BoxedChanged -= structBinder.SetValue; 
+                        BoxedChanged -= structBinder.SetValue;
                         break;
-                    
+
                     case IAnyBinder anyBinder:
-                        Changed -= anyBinder.SetValue; 
+                        Changed -= anyBinder.SetValue;
                         break;
-                    
+
                     default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
                 }
             }

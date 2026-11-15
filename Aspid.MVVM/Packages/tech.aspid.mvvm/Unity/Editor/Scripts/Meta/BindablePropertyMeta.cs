@@ -146,7 +146,7 @@ namespace Aspid.MVVM
                 case FieldInfo field:
                     {
                         var mode = requested ?? (field.IsInitOnly || field.IsLiteral ? BindMode.OneTime : BindMode.TwoWay);
-                        
+
                         return (field.IsInitOnly || field.IsLiteral) && mode is not BindMode.OneTime
                             ? BindMode.None
                             : mode;
@@ -161,7 +161,7 @@ namespace Aspid.MVVM
                         if (property.SetMethod is null && mode is not (BindMode.OneWay or BindMode.OneTime)) return BindMode.None;
                         return mode;
                     }
-                
+
                 default: return BindMode.None;
             }
         }

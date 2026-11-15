@@ -102,20 +102,20 @@ namespace Aspid.MVVM
                         case BindMode.OneTime:
                             switch (binder)
                             {
-                                case IBinder<T> specificBinder: 
+                                case IBinder<T> specificBinder:
                                     specificBinder.SetValue(_value);
                                     break;
-                                
+
                                 case IAnyBinder anyBinder:
                                     anyBinder.SetValue(_value);
                                     break;
-                                
+
                                 default: throw BinderInvalidCastException.Class<T>(binder);
                             }
 
                             return null;
 
-                        case BindMode.OneWayToSource: 
+                        case BindMode.OneWayToSource:
                             OneWayToSource();
                             break;
 
@@ -196,8 +196,8 @@ namespace Aspid.MVVM
                 switch (binder.Mode)
                 {
                     case BindMode.OneTime: return;
-                    
-                    case BindMode.OneWay: 
+
+                    case BindMode.OneWay:
                         OneWay();
                         return;
 
@@ -214,10 +214,10 @@ namespace Aspid.MVVM
                     default: throw new InvalidOperationException("Unsupported binding mode.");
                 }
             }
-            void OneWay() => Changed -= binder switch 
+            void OneWay() => Changed -= binder switch
             {
-                IBinder<T> specificBinder => specificBinder.SetValue, 
-                IAnyBinder anyBinder => anyBinder.SetValue, 
+                IBinder<T> specificBinder => specificBinder.SetValue,
+                IAnyBinder anyBinder => anyBinder.SetValue,
                 _ => throw BinderInvalidCastException.Class<T>(binder)
             };
 
@@ -225,14 +225,14 @@ namespace Aspid.MVVM
             {
                 switch (binder)
                 {
-                    case IReverseBinder<T> reverseBinder: 
+                    case IReverseBinder<T> reverseBinder:
                         reverseBinder.ValueChanged -= OnValueChanged;
                         break;
-                    
+
                     case IAnyReverseBinder anyReverseBinder:
                         anyReverseBinder.ValueChanged -= OnObjectValueChanged;
                         break;
-                    
+
                     default: throw ReverseBinderInvalidCastException<T>.Class(binder);
                 }
             }

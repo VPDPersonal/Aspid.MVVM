@@ -309,7 +309,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -345,7 +345,7 @@ The owner releasing the bindings.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -383,7 +383,7 @@ The owner releasing the bindings.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 

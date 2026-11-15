@@ -31,7 +31,7 @@ namespace Aspid.MVVM
             var message = binder.AddExceptionMessage(
                 $"{binderType} cannot report {valueType} to the ViewModel.\n" +
                 $"Required: {specificBinderType} or {anyBinderType}.");
-            
+
             return new ReverseBinderInvalidCastException<T>(message);
         }
 
@@ -53,7 +53,7 @@ namespace Aspid.MVVM
             var message = binder.AddExceptionMessage(
                 $"{binderType} cannot report {valueType} to the ViewModel.\n" +
                 $"Required: {specificBinderType} or {specificBinderBoxedType} or {anyBinderType}.");
-            
+
             return new ReverseBinderInvalidCastException<T>(message);
         }
     }

@@ -151,7 +151,12 @@ for (const file of files) {
     '---',
     '',
   ].join('\n');
-  fs.writeFileSync(filePath, frontMatter + markdown);
+  const output = (frontMatter + markdown)
+    .replace(/\r\n?/g, '\n')
+    .replace(/(\S) {2,}\n/g, '$1 <br/>\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .trimEnd();
+  fs.writeFileSync(filePath, output + '\n');
 }
 
 // ---- toc.yml → sidebar.js ------------------------------------------------------------------------

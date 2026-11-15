@@ -241,6 +241,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Fixed
 
+- View initializers reject cleanup and repeated initialization during initialization without losing the acquired views or the original ViewModel; rollback remains available. `MonoView` aggregates cleanup failures across all serialized binder groups.
+
 - `DestroyViewAndGameObject` also destroys ScriptableObject views, including when cleanup fails; single-instance rollback reuses this cleanup path.
 
 - View factories roll back failed clones and async batches; view destruction continues after cleanup failures. Header groups now agree between generated fields and the Inspector. Property context menus honor custom paths, and strict design ViewModels require concrete types.

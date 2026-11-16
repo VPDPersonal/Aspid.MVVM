@@ -13,6 +13,7 @@ public sealed class AspDependencySmoke : MonoBinder, IBinder<int>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Run()
     {
+        Debug.Log("ASPID_DEPENDENCY_SMOKE_STARTED");
         var target = new GameObject("Aspid dependency smoke").AddComponent<AspDependencySmoke>();
         target.StartCoroutine(target.Check());
     }
@@ -23,6 +24,7 @@ public sealed class AspDependencySmoke : MonoBinder, IBinder<int>
         yield return null;
         try
         {
+            Debug.Log("ASPID_DEPENDENCY_BINDINGS_STARTED");
             CheckBindings();
             CheckCounter();
             Debug.Log("ASPID_DEPENDENCY_SMOKE_PASS");

@@ -481,7 +481,7 @@ jobs:
               --customParameters="-nographics -disableaudio" --skipActivation=true \
               --versioningStrategy=Custom --version=0.0.0
             player="dependency-builds/$profile/StandaloneLinux64/Smoke.x86_64"
-            timeout 60 "$player" -batchmode -nographics -disableaudio -logFile "$PWD/dependency-builds/$profile/player.log"
+            xvfb-run -a timeout 60 "$player" -batchmode -force-glcore -disableaudio -logFile "$PWD/dependency-builds/$profile/player.log"
             grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/$profile/player.log"
           done
           for profile in without-fasttools minimal all; do
@@ -493,7 +493,7 @@ jobs:
               --customParameters="-nographics -disableaudio" --skipActivation=true \
               --versioningStrategy=Custom --version=0.0.0
             player="dependency-builds/transition-$profile/StandaloneLinux64/Smoke.x86_64"
-            timeout 60 "$player" -batchmode -nographics -disableaudio -logFile "$PWD/dependency-builds/transition-$profile/player.log"
+            xvfb-run -a timeout 60 "$player" -batchmode -force-glcore -disableaudio -logFile "$PWD/dependency-builds/transition-$profile/player.log"
             grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/transition-$profile/player.log"
           done
 

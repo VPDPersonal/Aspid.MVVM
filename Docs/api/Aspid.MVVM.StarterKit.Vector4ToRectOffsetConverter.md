@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class Vector4ToRectOffsetConverter {#Aspid_MVVM_StarterKit_Vector4ToRectOffsetConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Turns the four numbers of a [`Vector4`](https://docs.unity3d.com/ScriptReference/Vector4.html) into a padding.
 
@@ -21,21 +21,21 @@ public sealed class Vector4ToRectOffsetConverter : ITwoWayConverter<Vector4, Rec
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [Vector4ToRectOffsetConverter](Aspid.MVVM.StarterKit.Vector4ToRectOffsetConverter.md)
 
 #### Implements
 
-[ITwoWayConverter\<Vector4, RectOffset\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Vector4, RectOffset\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[ITwoWayConverter\<Vector4, RectOffset\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Vector4, RectOffset\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Constructors
@@ -107,4 +107,3 @@ The padding to read, or <a href="https://learn.microsoft.com/dotnet/csharp/langu
 
 The vector, reading left, right, top and bottom as x, y, z and w. The fraction dropped by
 [`Vector4ToRectOffsetConverter.Convert`](Aspid.MVVM.StarterKit.Vector4ToRectOffsetConverter.md#Aspid_MVVM_StarterKit_Vector4ToRectOffsetConverter_Convert_UnityEngine_Vector4_) is not restored, so a TwoWay binding quantizes the source.
-

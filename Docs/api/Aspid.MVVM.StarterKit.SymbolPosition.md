@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum SymbolPosition {#Aspid_MVVM_StarterKit_SymbolPosition}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Where [`CurrencyConverter`](Aspid.MVVM.StarterKit.CurrencyConverter.md) puts the symbol.
 
@@ -20,15 +20,12 @@ public enum SymbolPosition
 
 ## Fields
 
-`Before = 0` 
+`Before = 0`
 
 Before the number.
 
 
 
-`After = 1` 
+`After = 1`
 
 After the number.
-
-
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IReadOnlyBindableMember\<T\> {#Aspid_MVVM_IReadOnlyBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that reports value changes.
 
@@ -19,13 +19,13 @@ public interface IReadOnlyBindableMember<out T> : IReadOnlyValueBindableMember<T
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound value type.
 
 #### Implements
 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
 [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
 
@@ -44,4 +44,3 @@ event Action<out T?>? Changed
 #### Remarks
 
 The reported value may equal the previous value.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum EnumMaskOperation {#Aspid_MVVM_StarterKit_EnumMaskOperation}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What [`EnumMaskConverter<T>`](Aspid.MVVM.StarterKit.EnumMaskConverter-1.md) does with the flags it is given.
 
@@ -20,25 +20,25 @@ public enum EnumMaskOperation
 
 ## Fields
 
-`And = 0` 
+`And = 0`
 
 Keep only the flags the mask names.
 
 
 
-`Or = 1` 
+`Or = 1`
 
 Add the flags the mask names.
 
 
 
-`Xor = 2` 
+`Xor = 2`
 
 Flip the flags the mask names.
 
 
 
-`Clear = 3` 
+`Clear = 3`
 
 Remove the flags the mask names.
 
@@ -47,4 +47,3 @@ Remove the flags the mask names.
 ## Remarks
 
 Members are appended, never inserted: the order is the serialized value.
-

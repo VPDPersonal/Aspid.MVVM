@@ -124,7 +124,8 @@ namespace Aspid.MVVM
                     element.MonoBindersProperty,
                     label: ObjectNames.NicifyVariableName(element.Id),
                     binderId: element.Id,
-                    assemblyQualifiedName: capturedAssemblyQualifiedName);
+                    assemblyQualifiedName: capturedAssemblyQualifiedName,
+                    memberMode: meta?.Mode ?? BindMode.TwoWay);
 
                 router.Add(binderField, meta);
             }

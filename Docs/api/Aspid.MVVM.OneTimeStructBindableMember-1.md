@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneTimeStructBindableMember\<T\> {#Aspid_MVVM_OneTimeStructBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
@@ -19,19 +19,19 @@ public sealed class OneTimeStructBindableMember<T> : OneTimeStructBindableMember
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound struct type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[OneTimeStructBindableMember\<T, ValueType\>](Aspid.MVVM.OneTimeStructBindableMember-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[OneTimeStructBindableMember\<T, ValueType\>](Aspid.MVVM.OneTimeStructBindableMember-2.md) ←
 [OneTimeStructBindableMember\<T\>](Aspid.MVVM.OneTimeStructBindableMember-1.md)
 
 #### Implements
 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
 [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
 
@@ -51,4 +51,3 @@ public OneTimeStructBindableMember(T value)
 `value` T
 
 The value to push to the binder.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneTimeStructBindableMember\<T, TBoxed\> {#Aspid_MVVM_OneTimeStructBindableMember_2}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that pushes its value to a binder once and keeps no subscription,
 boxing it for an [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) of <code class="typeparamref">TBoxed</code>.
@@ -20,22 +20,22 @@ public abstract class OneTimeStructBindableMember<T, TBoxed> : IReadOnlyValueBin
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound struct type.
 
-`TBoxed` 
+`TBoxed`
 
 The boxed form of <code class="typeparamref">T</code>, such as [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype) or [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [OneTimeStructBindableMember\<T, TBoxed\>](Aspid.MVVM.OneTimeStructBindableMember-2.md)
 
 #### Implements
 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
 [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
 
@@ -69,4 +69,3 @@ public T Value { get; set; }
 #### Property Value
 
  T
-

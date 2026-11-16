@@ -31,7 +31,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         [BinderLog]
         public void SetValue(string value) =>
-            _set?.Invoke(_converter?.Convert(value) ?? value);
+            _set?.Invoke(_converter is null ? value : _converter.Convert(value));
 
         /// <inheritdoc/>
         [BinderLog]

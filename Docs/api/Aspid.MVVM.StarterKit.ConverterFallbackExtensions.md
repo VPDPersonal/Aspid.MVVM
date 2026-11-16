@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ConverterFallbackExtensions {#Aspid_MVVM_StarterKit_ConverterFallbackExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Reports a failure and hands back the fallback in one call.
 
@@ -19,7 +19,7 @@ public static class ConverterFallbackExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ConverterFallbackExtensions](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md)
 
 
@@ -56,7 +56,6 @@ What is wrong, as a sentence without the trailing period.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type the converter returns.
-

@@ -106,14 +106,18 @@ namespace Aspid.MVVM.StarterKit
         public virtual T Param
         {
             get => _param;
-            set => _param = value;
+            set
+            {
+                _param = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (_command is not null) OnCanExecuteChanged(_command);
+            RefreshCanExecute();
         }
 
         /// <inheritdoc/>
@@ -134,6 +138,11 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnClicked() =>
             _command?.Execute(Param);
+
+        private void RefreshCanExecute()
+        {
+            if (_command is not null) OnCanExecuteChanged(_command);
+        }
 
         private void OnCanExecuteChanged(IRelayCommand<T> command)
         {
@@ -175,7 +184,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T1 Param1
         {
             get => _param1;
-            set => _param1 = value;
+            set
+            {
+                _param1 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -184,14 +197,18 @@ namespace Aspid.MVVM.StarterKit
         public virtual T2 Param2
         {
             get => _param2;
-            set => _param2 = value;
+            set
+            {
+                _param2 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (_command is not null) OnCanExecuteChanged(_command);
+            RefreshCanExecute();
         }
 
         /// <inheritdoc/>
@@ -212,6 +229,11 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnClicked() =>
             _command?.Execute(Param1, Param2);
+
+        private void RefreshCanExecute()
+        {
+            if (_command is not null) OnCanExecuteChanged(_command);
+        }
 
         private void OnCanExecuteChanged(IRelayCommand<T1, T2> command)
         {
@@ -257,7 +279,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T1 Param1
         {
             get => _param1;
-            set => _param1 = value;
+            set
+            {
+                _param1 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -266,7 +292,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T2 Param2
         {
             get => _param2;
-            set => _param2 = value;
+            set
+            {
+                _param2 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -275,14 +305,18 @@ namespace Aspid.MVVM.StarterKit
         public virtual T3 Param3
         {
             get => _param3;
-            set => _param3 = value;
+            set
+            {
+                _param3 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (_command is not null) OnCanExecuteChanged(_command);
+            RefreshCanExecute();
         }
 
         /// <inheritdoc/>
@@ -303,6 +337,11 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnClicked() =>
             _command?.Execute(Param1, Param2, Param3);
+
+        private void RefreshCanExecute()
+        {
+            if (_command is not null) OnCanExecuteChanged(_command);
+        }
 
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command)
         {
@@ -353,7 +392,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T1 Param1
         {
             get => _param1;
-            set => _param1 = value;
+            set
+            {
+                _param1 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -362,7 +405,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T2 Param2
         {
             get => _param2;
-            set => _param2 = value;
+            set
+            {
+                _param2 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -371,7 +418,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T3 Param3
         {
             get => _param3;
-            set => _param3 = value;
+            set
+            {
+                _param3 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -380,14 +431,18 @@ namespace Aspid.MVVM.StarterKit
         public virtual T4 Param4
         {
             get => _param4;
-            set => _param4 = value;
+            set
+            {
+                _param4 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (_command is not null) OnCanExecuteChanged(_command);
+            RefreshCanExecute();
         }
 
         /// <inheritdoc/>
@@ -408,6 +463,11 @@ namespace Aspid.MVVM.StarterKit
 
         private void OnClicked() =>
             _command?.Execute(Param1, Param2, Param3, Param4);
+
+        private void RefreshCanExecute()
+        {
+            if (_command is not null) OnCanExecuteChanged(_command);
+        }
 
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3, T4> command)
         {

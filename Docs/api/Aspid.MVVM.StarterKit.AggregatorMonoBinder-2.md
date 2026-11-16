@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class AggregatorMonoBinder\<TInput, TResult\> {#Aspid_MVVM_StarterKit_AggregatorMonoBinder_2}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Abstract [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) that combines the values of several
 [`AggregatorInputMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.AggregatorInputMonoBinder-2.md) components into one [`UnityEvent<T>`](https://docs.unity3d.com/ScriptReference/Events-UnityEvent.html).
@@ -20,21 +20,21 @@ public abstract class AggregatorMonoBinder<TInput, TResult> : MonoBehaviour
 
 #### Type Parameters
 
-`TInput` 
+`TInput`
 
 The type each input contributes.
 
-`TResult` 
+`TResult`
 
 The type of the combined value.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
 [AggregatorMonoBinder\<TInput, TResult\>](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md)
 
 
@@ -110,4 +110,3 @@ The input index.
 `value` TInput
 
 The value that input received.
-

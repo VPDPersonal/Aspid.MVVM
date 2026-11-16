@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum StringMatchMode {#Aspid_MVVM_StarterKit_StringMatchMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 How [`StringMatchToBoolConverter`](Aspid.MVVM.StarterKit.StringMatchToBoolConverter.md) compares a bound string with the authored one.
 
@@ -20,27 +20,24 @@ public enum StringMatchMode
 
 ## Fields
 
-`Equals = 0` 
+`Equals = 0`
 
 The whole string must match.
 
 
 
-`Contains = 1` 
+`Contains = 1`
 
 The string must contain the authored text.
 
 
 
-`StartsWith = 2` 
+`StartsWith = 2`
 
 The string must begin with the authored text.
 
 
 
-`EndsWith = 3` 
+`EndsWith = 3`
 
 The string must end with the authored text.
-
-
-

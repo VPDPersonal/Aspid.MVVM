@@ -13,6 +13,7 @@ namespace Aspid.MVVM.StarterKit
     /// <typeparam name="TValue">The type of the forwarded value.</typeparam>
     public abstract class DelayMonoBinder<TValue> : RateLimitedMonoBinder<TValue>
     {
+        private uint _generation;
         private readonly Queue<Pending> _pending = new();
 
         /// <inheritdoc/>
@@ -22,10 +23,13 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void Tick(float deltaTime)
         {
+            var generation = _generation;
             var count = _pending.Count;
 
             for (var i = 0; i < count; i++)
             {
+                if (generation != _generation) return;
+
                 var pending = _pending.Dequeue();
                 var remaining = pending.Remaining - deltaTime;
 
@@ -35,8 +39,11 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void Clear() =>
+        protected override void Clear()
+        {
+            unchecked { _generation++; }
             _pending.Clear();
+        }
 
         private readonly struct Pending
         {

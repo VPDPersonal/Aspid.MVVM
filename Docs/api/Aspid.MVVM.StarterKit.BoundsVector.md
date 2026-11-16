@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum BoundsVector {#Aspid_MVVM_StarterKit_BoundsVector}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which vector of a bounding box [`BoundsToVectorConverter`](Aspid.MVVM.StarterKit.BoundsToVectorConverter.md) reads.
 
@@ -20,21 +20,18 @@ public enum BoundsVector
 
 ## Fields
 
-`Center = 0` 
+`Center = 0`
 
 The middle of the box.
 
 
 
-`Size = 1` 
+`Size = 1`
 
 The full size of the box.
 
 
 
-`Extents = 2` 
+`Extents = 2`
 
 The half-size, which is what a radius or an offset from the middle wants.
-
-
-

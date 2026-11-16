@@ -17,6 +17,7 @@ namespace Aspid.MVVM.Tests
     /// the protected <c>Tick</c>.
     /// </remarks>
     [TestFixture]
+    [Category("AuditP2")]
     public sealed class RateLimitTests : SceneFixture
     {
         [Test]
@@ -107,6 +108,27 @@ namespace Aspid.MVVM.Tests
             Tick(binder, 1f);
 
             Assert.IsEmpty(received, "A pending value was forwarded after unbinding");
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Delay_UnbindInsideEmit_InvalidatesTheOldBatch(bool rebind)
+        {
+            var (binder, received) = New<DelayFloatMonoBinder, float>(seconds: 0.2f);
+            var member = new OneWayBindableMember<float>(1f);
+            binder.Bind(new BindContext(member, binder));
+            member.Value = 2f;
+            Listen<float>(binder, value =>
+            {
+                if (!Mathf.Approximately(value, 1f)) return;
+                binder.Unbind(new UnbindContext(binder));
+                if (rebind)
+                    binder.Bind(new BindContext(new OneWayBindableMember<float>(3f), binder));
+            });
+            Assert.DoesNotThrow(() => Tick(binder, 0.2f));
+            CollectionAssert.AreEqual(new[] { 1f }, received);
+            Tick(binder, 0.2f);
+            CollectionAssert.AreEqual(rebind ? new[] { 1f, 3f } : new[] { 1f }, received);
         }
 
         private (T Binder, List<TValue> Received) New<T, TValue>(float seconds)

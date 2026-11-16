@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneWayToSourceEnumBindableMember\<T\> {#Aspid_MVVM_OneWayToSourceEnumBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
@@ -19,21 +19,21 @@ public sealed class OneWayToSourceEnumBindableMember<T> : OneWayToSourceStructBi
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound enum type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[OneWayToSourceStructBindableMember\<T, Enum\>](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[OneWayToSourceStructBindableMember\<T, Enum\>](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) ←
 [OneWayToSourceEnumBindableMember\<T\>](Aspid.MVVM.OneWayToSourceEnumBindableMember-1.md)
 
 #### Implements
 
-[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md), 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
-[IBinderAdder](Aspid.MVVM.IBinderAdder.md), 
+[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md),
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
+[IBinderAdder](Aspid.MVVM.IBinderAdder.md),
 [IBinderRemover](Aspid.MVVM.IBinderRemover.md)
 
 
@@ -59,4 +59,3 @@ The callback that writes a value reported by a reverse binder to the ViewModel.
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
 <code class="paramref">setValue</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-

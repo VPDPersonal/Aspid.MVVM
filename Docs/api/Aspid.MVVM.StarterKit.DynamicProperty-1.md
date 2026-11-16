@@ -8,29 +8,29 @@ pagination_next: null
 ---
 # Class DynamicProperty\<T\> {#Aspid_MVVM_StarterKit_DynamicProperty_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 A typed, observable property that can be added to a [`DynamicViewModel`](Aspid.MVVM.StarterKit.DynamicViewModel.md).
 
 ```csharp
-public sealed class DynamicProperty<T> : IDynamicProperty<T>, IDynamicProperty
+public class DynamicProperty<T> : IDynamicProperty<T>, IDynamicProperty
 ```
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The property's value type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [DynamicProperty\<T\>](Aspid.MVVM.StarterKit.DynamicProperty-1.md)
 
 #### Implements
 
-[IDynamicProperty\<T\>](Aspid.MVVM.StarterKit.IDynamicProperty-1.md), 
+[IDynamicProperty\<T\>](Aspid.MVVM.StarterKit.IDynamicProperty-1.md),
 [IDynamicProperty](Aspid.MVVM.StarterKit.IDynamicProperty.md)
 
 
@@ -161,4 +161,3 @@ public event Action<T?>? ValueChanged
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>?
-

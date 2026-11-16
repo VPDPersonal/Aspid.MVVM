@@ -8,12 +8,10 @@ pagination_next: null
 ---
 # Class HeaderGroupEndAttribute {#Aspid_MVVM_HeaderGroupEndAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Editor-only marker that closes the currently open foldout group before the decorated
-binder field is processed. The decorated field itself is rendered outside of the closed group.
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Ends the current foldout range before the decorated member.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -24,8 +22,22 @@ public sealed class HeaderGroupEndAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [HeaderGroupEndAttribute](Aspid.MVVM.HeaderGroupEndAttribute.md)
 
 
+
+## Examples
+
+
+```csharp
+[HeaderGroupEnd]
+[Bind] private int _health;
+```
+
+
+## Remarks
+
+The decorated member is displayed outside the closed range.
+Attribute applications are omitted unless <code>DEBUG</code> or <code>UNITY_EDITOR</code> is defined.

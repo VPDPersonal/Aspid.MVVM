@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IBindableMember\<T\> {#Aspid_MVVM_IBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IReadOnlyBindableMember<T>`](Aspid.MVVM.IReadOnlyBindableMember-1.md) whose value can also be set.
 
@@ -19,14 +19,14 @@ public interface IBindableMember<T> : IReadOnlyBindableMember<T>, IReadOnlyValue
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound value type.
 
 #### Implements
 
-[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md), 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
+[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md),
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
 [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
 
@@ -43,4 +43,3 @@ T? Value { set; }
 #### Property Value
 
  T?
-

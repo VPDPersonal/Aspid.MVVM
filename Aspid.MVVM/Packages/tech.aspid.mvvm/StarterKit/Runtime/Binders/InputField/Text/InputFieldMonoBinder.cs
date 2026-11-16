@@ -110,7 +110,7 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(string value)
         {
-            var converted = _converter?.Convert(value) ?? value;
+            var converted = _converter is null ? value : _converter.Convert(value);
 
             if (!_notifyMode.ShouldNotify(IsBound))
             {

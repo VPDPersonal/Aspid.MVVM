@@ -20,16 +20,33 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Keep the previous asset until the new one is loaded.")]
         [SerializeField] private bool _seamlessSwap;
 
+        private bool _isDestroying;
         private AddressableAssetLoader<TAsset> _loader;
 
         private AddressableAssetLoader<TAsset> Loader =>
-            _loader ??= new AddressableAssetLoader<TAsset>(this, SetAsset);
+            _loader ??= new AddressableAssetLoader<TAsset>(this, ApplyLoadedAsset);
 
         /// <inheritdoc/>
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-            _loader?.ReleaseAll();
+            _isDestroying = true;
+
+            try
+            {
+                _loader?.CancelPending();
+                base.OnDestroy();
+            }
+            finally
+            {
+                try
+                {
+                    ReleaseAsset();
+                }
+                finally
+                {
+                    _loader?.ReleaseAll();
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -54,6 +71,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void Apply(object key)
         {
+            if (_isDestroying) return;
+
             if (key is null)
             {
                 SetDefault();
@@ -66,6 +85,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void SetDefault()
         {
+            if (_isDestroying) return;
+
             Loader.CancelPending();
             ResetToDefault();
         }
@@ -75,6 +96,17 @@ namespace Aspid.MVVM.StarterKit
             Loader.ReleaseCurrent();
             SetAsset(GetDefaultAsset());
         }
+
+        private void ApplyLoadedAsset(TAsset asset)
+        {
+            if (!_isDestroying)
+                SetAsset(asset);
+        }
+
+        /// <summary>
+        /// Called during destruction before loaded handles are released. Override to release owned instances.
+        /// </summary>
+        protected virtual void ReleaseAsset() { }
 
         private static bool IsEmptyKey(object key) =>
             key is null || key is string text && string.IsNullOrWhiteSpace(text);
@@ -109,16 +141,33 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Keep the previous asset until the new one is loaded.")]
         [SerializeField] private bool _seamlessSwap;
 
+        private bool _isDestroying;
         private AddressableAssetLoader<TAsset> _loader;
 
         private AddressableAssetLoader<TAsset> Loader =>
-            _loader ??= new AddressableAssetLoader<TAsset>(this, SetAsset);
+            _loader ??= new AddressableAssetLoader<TAsset>(this, ApplyLoadedAsset);
 
         /// <inheritdoc/>
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-            _loader?.ReleaseAll();
+            _isDestroying = true;
+
+            try
+            {
+                _loader?.CancelPending();
+                base.OnDestroy();
+            }
+            finally
+            {
+                try
+                {
+                    ReleaseAsset();
+                }
+                finally
+                {
+                    _loader?.ReleaseAll();
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -143,6 +192,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void Apply(object key)
         {
+            if (_isDestroying) return;
+
             if (key is null)
             {
                 SetDefault();
@@ -155,6 +206,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void SetDefault()
         {
+            if (_isDestroying) return;
+
             Loader.CancelPending();
             ResetToDefault();
         }
@@ -164,6 +217,17 @@ namespace Aspid.MVVM.StarterKit
             Loader.ReleaseCurrent();
             SetAsset(GetDefaultAsset());
         }
+
+        private void ApplyLoadedAsset(TAsset asset)
+        {
+            if (!_isDestroying)
+                SetAsset(asset);
+        }
+
+        /// <summary>
+        /// Called during destruction before loaded handles are released. Override to release owned instances.
+        /// </summary>
+        protected virtual void ReleaseAsset() { }
 
         private static bool IsEmptyKey(object key) =>
             key is null || key is string text && string.IsNullOrWhiteSpace(text);

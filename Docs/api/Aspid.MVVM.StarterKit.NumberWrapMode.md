@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum NumberWrapMode {#Aspid_MVVM_StarterKit_NumberWrapMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 How [`WrapNumberConverter`](Aspid.MVVM.StarterKit.WrapNumberConverter.md) folds a value back into its range.
 
@@ -20,15 +20,12 @@ public enum NumberWrapMode
 
 ## Fields
 
-`Repeat = 0` 
+`Repeat = 0`
 
 Past the end, start again from the beginning.
 
 
 
-`PingPong = 1` 
+`PingPong = 1`
 
 Past the end, travel back toward the beginning.
-
-
-

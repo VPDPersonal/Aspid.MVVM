@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum TimeLayout {#Aspid_MVVM_StarterKit_TimeLayout}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 The shape [`SecondsToTimeStringConverter`](Aspid.MVVM.StarterKit.SecondsToTimeStringConverter.md) writes a duration in.
 
@@ -20,33 +20,30 @@ public enum TimeLayout
 
 ## Fields
 
-`Seconds = 0` 
+`Seconds = 0`
 
 Seconds only.
 
 
 
-`MinutesSeconds = 1` 
+`MinutesSeconds = 1`
 
 mm:ss.
 
 
 
-`HoursMinutesSeconds = 2` 
+`HoursMinutesSeconds = 2`
 
 h:mm:ss.
 
 
 
-`DaysHoursMinutesSeconds = 3` 
+`DaysHoursMinutesSeconds = 3`
 
 d:hh:mm:ss.
 
 
 
-`Auto = 4` 
+`Auto = 4`
 
 The shortest layout that fits the value, down to mm:ss.
-
-
-

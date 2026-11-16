@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct EnumToDropdownOptionDataConverter.OptionEntry {#Aspid_MVVM_StarterKit_EnumToDropdownOptionDataConverter_OptionEntry}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 The label and icon authored for one enum member.
 
@@ -80,4 +80,3 @@ public readonly string Name { get; }
 #### Property Value
 
  [string](https://learn.microsoft.com/dotnet/api/system.string)
-

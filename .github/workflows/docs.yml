@@ -8,11 +8,29 @@ on:
     branches: [main]
     paths:
       - 'Docs/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Source/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/StarterKit/Runtime/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/*.dll'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/*.dll'
+      - 'Aspid.MVVM/Packages/manifest.json'
+      - 'Aspid.MVVM/Packages/packages-lock.json'
+      - 'Directory.Build.props'
+      - 'global.json'
       - 'CHANGELOG.md'
       - '.github/workflows/docs.yml'
   pull_request:
     paths:
       - 'Docs/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Source/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/StarterKit/Runtime/**'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/*.dll'
+      - 'Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/*.dll'
+      - 'Aspid.MVVM/Packages/manifest.json'
+      - 'Aspid.MVVM/Packages/packages-lock.json'
+      - 'Directory.Build.props'
+      - 'global.json'
       - 'CHANGELOG.md'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
@@ -38,6 +56,8 @@ jobs:
           cache: npm
           cache-dependency-path: Docs/package-lock.json
       - run: npm ci
+        working-directory: Docs
+      - run: npm run check-api
         working-directory: Docs
       - run: npm test
         working-directory: Docs

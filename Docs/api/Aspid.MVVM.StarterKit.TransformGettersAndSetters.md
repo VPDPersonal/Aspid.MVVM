@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class TransformGettersAndSetters {#Aspid_MVVM_StarterKit_TransformGettersAndSetters}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Provides extension methods for getting and setting position, rotation, and euler angles on a [`Transform`](https://docs.unity3d.com/ScriptReference/Transform.html)
 in either world or local space.
@@ -20,7 +20,7 @@ public static class TransformGettersAndSetters
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [TransformGettersAndSetters](Aspid.MVVM.StarterKit.TransformGettersAndSetters.md)
 
 
@@ -164,4 +164,3 @@ The rotation to apply.
 `space` Space
 
 The coordinate space: [`World`](https://docs.unity3d.com/ScriptReference/Space-World.html) sets [`rotation`](https://docs.unity3d.com/ScriptReference/Transform-rotation.html), [`Self`](https://docs.unity3d.com/ScriptReference/Space-Self.html) sets [`localRotation`](https://docs.unity3d.com/ScriptReference/Transform-localRotation.html).
-

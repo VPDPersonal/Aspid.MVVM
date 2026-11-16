@@ -22,15 +22,11 @@ Sets the access modifiers of the property generated for a bind field of a [`[Vie
 
  [AddBinderContextMenuAttribute](Aspid.MVVM.AddBinderContextMenuAttribute.md)
 
-Editor-only attribute that offers a [`MonoBinder`](Aspid.MVVM.MonoBinder.md) in the "Add Binder" context menu of a
-component, and of the specific serialized properties it names.
+Offers the decorated component in a target component menu and in the menus of its named serialized properties.
 
  [AddBinderContextMenuByTypeAttribute](Aspid.MVVM.AddBinderContextMenuByTypeAttribute.md)
 
-Editor-only attribute that registers a [`MonoBinder`](Aspid.MVVM.MonoBinder.md) class in the "Add Binder" context menu
-based solely on the target component type. Unlike [`AddBinderContextMenuAttribute`](Aspid.MVVM.AddBinderContextMenuAttribute.md),
-this attribute does not support property auto-population or custom menu paths.
-Can be applied multiple times to associate a binder with several component types.
+Offers the decorated component in serialized property menus matching the property's value type.
 
  [AsBinderAttribute](Aspid.MVVM.AsBinderAttribute.md)
 
@@ -83,31 +79,20 @@ before calling the marked method.
 
  [ComponentMonoBinder\<TComponent\>](Aspid.MVVM.ComponentMonoBinder-1.md)
 
-Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that targets a <code class="typeparamref">TComponent</code>, taken from the
+[`MonoBinder`](Aspid.MVVM.MonoBinder.md) that targets a <code class="typeparamref">TComponent</code>, taken from the
 serialized field or found on the same GameObject.
 
  [HeaderGroupAttribute](Aspid.MVVM.HeaderGroupAttribute.md)
 
-Editor-only marker that places the decorated binder field into a collapsible foldout with
-the supplied title. Fields decorated with the same title merge into a single foldout
-regardless of declaration order. Unlike [`HeaderGroupStartAttribute`](Aspid.MVVM.HeaderGroupStartAttribute.md), this
-attribute does not open a range — subsequent fields without their own grouping fall back to
-the surrounding range (or the root, if no enclosing range is open).
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Groups the decorated member under the supplied foldout title.
 
  [HeaderGroupEndAttribute](Aspid.MVVM.HeaderGroupEndAttribute.md)
 
-Editor-only marker that closes the currently open foldout group before the decorated
-binder field is processed. The decorated field itself is rendered outside of the closed group.
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Ends the current foldout range before the decorated member.
 
  [HeaderGroupStartAttribute](Aspid.MVVM.HeaderGroupStartAttribute.md)
 
-Editor-only marker that opens a collapsible foldout starting at the decorated binder field.
-The foldout continues until either [`HeaderGroupEndAttribute`](Aspid.MVVM.HeaderGroupEndAttribute.md), another
-[`HeaderGroupAttribute`](Aspid.MVVM.HeaderGroupAttribute.md) / [`HeaderGroupStartAttribute`](Aspid.MVVM.HeaderGroupStartAttribute.md),
-or the end of the inspector list is reached.
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Starts a foldout range at the decorated member.
 
  [IgnoreBindAttribute](Aspid.MVVM.IgnoreBindAttribute.md)
 
@@ -115,42 +100,39 @@ Excludes the field or property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) clas
 
  [MonoBinder](Aspid.MVVM.MonoBinder.md)
 
-Abstract base [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) binder that manages binding to and unbinding from an [`IViewModel`](Aspid.MVVM.IViewModel.md).
-Derived classes implement [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) to define what is bound.
+[`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) binder that manages binding to and unbinding from an [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [MonoView](Aspid.MVVM.MonoView.md)
 
-Represents a base class for views in a Unity context that are derived from [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).
-Implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) to allow cleanup of resources, including the destruction of the associated GameObject.
+[`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) for views with serialized binder groups.
+
+ [MonoViewBinder](Aspid.MVVM.MonoViewBinder.md)
+
+Concrete [`MonoViewBinder<T>`](Aspid.MVVM.MonoViewBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
 
  [MonoViewBinder\<TView\>](Aspid.MVVM.MonoViewBinder-1.md)
 
 [`ViewTargetBinder<T>`](Aspid.MVVM.ViewTargetBinder-1.md) restricted to [`Component`](https://docs.unity3d.com/ScriptReference/Component.html)-based views.
 
- [MonoViewBinder](Aspid.MVVM.MonoViewBinder.md)
-
-[`MonoViewBinder<T>`](Aspid.MVVM.MonoViewBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
-
  [MonoViewExtensions](Aspid.MVVM.MonoViewExtensions.md)
 
-Provides extension methods for the [`IView`](Aspid.MVVM.IView.md) interface.
+Provides extension methods for [`IView`](Aspid.MVVM.IView.md).
 
  [MonoViewModel](Aspid.MVVM.MonoViewModel.md)
 
-Represents a base class for ViewModels in a Unity context that are derived from [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).
-Implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) to allow cleanup of resources, including the destruction of the component.
+[`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) for ViewModels that refresh bindings after Inspector changes.
 
  [MonoViewModelExtensions](Aspid.MVVM.MonoViewModelExtensions.md)
 
-Provides extension methods for the [`IViewModel`](Aspid.MVVM.IViewModel.md) interface.
-
- [MonoViewMonoBinder\<TView\>](Aspid.MVVM.MonoViewMonoBinder-1.md)
-
-Abstract base [`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Provides extension methods for [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [MonoViewMonoBinder](Aspid.MVVM.MonoViewMonoBinder.md)
 
-[`MonoViewMonoBinder<T>`](Aspid.MVVM.MonoViewMonoBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
+Concrete [`MonoViewMonoBinder<T>`](Aspid.MVVM.MonoViewMonoBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
+
+ [MonoViewMonoBinder\<TView\>](Aspid.MVVM.MonoViewMonoBinder-1.md)
+
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md)
 
@@ -246,10 +228,7 @@ Provides extension methods for creating relay commands and for replacing a <a hr
 
  [RequireBinderAttribute](Aspid.MVVM.RequireBinderAttribute.md)
 
-Editor-only attribute applied to serialized fields to declare the required binder association
-in the Unity Inspector. Enables the editor to validate that a [`MonoBinder`](Aspid.MVVM.MonoBinder.md)
-of the expected type is assigned to the field.
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Associates a serialized binder field with a binding identifier and accepted value types for Inspector validation.
 
  [ReverseBinderInvalidCastException\<T\>](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)
 
@@ -257,11 +236,11 @@ Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code>
 
  [ScriptableView](Aspid.MVVM.ScriptableView.md)
 
-Represents a base class for views in a Unity context derived from [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
+[`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) for views with generated binding lifecycle methods.
 
  [ScriptableViewBinder](Aspid.MVVM.ScriptableViewBinder.md)
 
-[`ScriptableViewBinder<T>`](Aspid.MVVM.ScriptableViewBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
+Concrete [`ScriptableViewBinder<T>`](Aspid.MVVM.ScriptableViewBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
 
  [ScriptableViewBinder\<TView\>](Aspid.MVVM.ScriptableViewBinder-1.md)
 
@@ -269,21 +248,19 @@ Represents a base class for views in a Unity context derived from [`ScriptableOb
 
  [ScriptableViewModel](Aspid.MVVM.ScriptableViewModel.md)
 
-Represents a base class for ViewModels in a Unity context derived from [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
+[`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) for ViewModels that refresh bindings after Inspector changes.
 
  [ScriptableViewMonoBinder](Aspid.MVVM.ScriptableViewMonoBinder.md)
 
-[`ScriptableViewMonoBinder<T>`](Aspid.MVVM.ScriptableViewMonoBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
+Concrete [`ScriptableViewMonoBinder<T>`](Aspid.MVVM.ScriptableViewMonoBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
 
  [ScriptableViewMonoBinder\<TView\>](Aspid.MVVM.ScriptableViewMonoBinder-1.md)
 
-Abstract base [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that initializes a serialized [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+[`MonoBinder`](Aspid.MVVM.MonoBinder.md) that initializes a serialized [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [ShowDesignViewModelAttribute](Aspid.MVVM.ShowDesignViewModelAttribute.md)
 
-Specifies which ViewModel types are available as design-time ViewModels for a View in the Unity Editor.
-Apply this attribute to a [`MonoView`](Aspid.MVVM.MonoView.md) or [`ScriptableView`](Aspid.MVVM.ScriptableView.md) class to restrict
-or extend the list of types shown in the design ViewModel selector.
+Configures the design ViewModel selector of a [`MonoView`](Aspid.MVVM.MonoView.md) in the Editor.
 
  [TargetBinder\<TTarget\>](Aspid.MVVM.TargetBinder-1.md)
 
@@ -338,7 +315,7 @@ Provides extension methods for [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [ViewTargetBinder\<TView\>](Aspid.MVVM.ViewTargetBinder-1.md)
 
-Abstract base [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md)
+[`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md)
 and deinitializes it on unbind.
 
 ### Structs
@@ -442,4 +419,3 @@ Specifies the access modifier of an accessor of a property generated for a bind 
  [BindMode](Aspid.MVVM.BindMode.md)
 
 Specifies the direction of data flow between the ViewModel and the View.
-

@@ -8192,8 +8192,18 @@ export default { api: [
             "items": [
               {
                 "type": "doc",
+                "id": "Aspid.MVVM.StarterKit.DynamicEnumProperty-1",
+                "label": "DynamicEnumProperty<T>"
+              },
+              {
+                "type": "doc",
                 "id": "Aspid.MVVM.StarterKit.DynamicProperty-1",
                 "label": "DynamicProperty<T>"
+              },
+              {
+                "type": "doc",
+                "id": "Aspid.MVVM.StarterKit.DynamicStructProperty-1",
+                "label": "DynamicStructProperty<T>"
               },
               {
                 "type": "doc",

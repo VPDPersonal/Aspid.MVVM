@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneWayBindAttribute {#Aspid_MVVM_OneWayBindAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Generates a [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
@@ -19,9 +19,9 @@ public sealed class OneWayBindAttribute : BaseBindAttribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
-[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
+[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ←
 [OneWayBindAttribute](Aspid.MVVM.OneWayBindAttribute.md)
 
 
@@ -37,4 +37,3 @@ public sealed class OneWayBindAttribute : BaseBindAttribute
 ## Remarks
 
 Ignored on a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field and a set-only property.
-

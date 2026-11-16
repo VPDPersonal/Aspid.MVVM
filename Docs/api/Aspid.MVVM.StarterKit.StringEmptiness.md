@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum StringEmptiness {#Aspid_MVVM_StarterKit_StringEmptiness}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What [`StringEmptyToBoolConverter`](Aspid.MVVM.StarterKit.StringEmptyToBoolConverter.md) counts as an absent string.
 
@@ -20,19 +20,19 @@ public enum StringEmptiness
 
 ## Fields
 
-`NullOrEmpty = 0` 
+`NullOrEmpty = 0`
 
 The string is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or has no characters.
 
 
 
-`Null = 1` 
+`Null = 1`
 
 The string is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; an empty string counts as present.
 
 
 
-`NullOrWhiteSpace = 2` 
+`NullOrWhiteSpace = 2`
 
 The string is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, empty, or made up of whitespace only.
 
@@ -41,4 +41,3 @@ The string is <a href="https://learn.microsoft.com/dotnet/csharp/language-refere
 ## Remarks
 
 Members are appended, never inserted: the order is the serialized value.
-

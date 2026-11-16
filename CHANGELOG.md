@@ -26,6 +26,9 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 
 ### Added
 
+- `DynamicViewModel.AddEnum<T>` / `AddStruct<T>` and specialized dynamic properties expose typed and boxed channels without runtime generic reflection.
+- API input/output fingerprints and signature checks detect stale generated documentation in CI.
+
 #### Core & generator
 
 - `IViewModel.InitializeView(view)` and `InitializeViews(views)` initialize Views from the ViewModel, including null-conditional calls and array, list, or enumerable inputs.
@@ -242,6 +245,14 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` and the `protected` `GetMarker` — create the member with its constructor, as the other bindable members.
 
 ### Fixed
+
+- Binding analyzers inspect all attributes, share field naming with the generator, classify qualified writes and increments, and avoid unsafe property fixes for ref/out or nested struct writes. CI rejects empty .NET test runs.
+- Slider value binders report actual rounded/clamped values and defer initial TwoWay normalization until reverse subscriptions exist.
+- Reference converters preserve deliberate null results in input fields, string events and material assignments.
+- Parameterized UI command binders refresh CanExecute when Param changes, including serializable variants.
+- Delay stops processing the old queue when a callback unbinds or rebinds it.
+- Addressable binders suppress default application during destruction and release instances and handles through guaranteed cleanup.
+- Inspector matching checks channel direction and generic variance consistently for drag/drop and automatic assignment.
 
 - Property notification helpers inspect all ViewModel partial declarations while preserving `CallerLineNumber`. Ambiguous implicit calls report `ASPIDVM007`; explicit property names select the correct target, and unsupported calls report `ASPIDVM008`. Source-only property setters no longer call a missing forward-notification method.
 - Source generators preserve complete namespaces and nested partial type chains, including generic parameters and constraints. Generated filenames distinguish containers and generic arity; BinderLog emits once across partial declarations. Serializable twins support the global namespace and namespace-scoped aliases. Unsupported containers report `ASPIDGEN001`, inaccessible or open generic context-menu targets report `ASPIDMENU001`, and generic typed Views compile with profiling enabled.

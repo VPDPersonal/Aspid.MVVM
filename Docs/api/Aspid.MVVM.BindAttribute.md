@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BindAttribute {#Aspid_MVVM_BindAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Generates a bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class, and a property for a field.
 
@@ -19,9 +19,9 @@ public sealed class BindAttribute : BaseBindAttribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
-[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
+[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ←
 [BindAttribute](Aspid.MVVM.BindAttribute.md)
 
 
@@ -95,4 +95,3 @@ public BindMode? Mode { get; }
 #### Property Value
 
  [BindMode](Aspid.MVVM.BindMode.md)?
-

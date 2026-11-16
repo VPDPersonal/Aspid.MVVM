@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct LookupEntry\<TKey, TValue\> {#Aspid_MVVM_StarterKit_LookupEntry_2}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 One row of a [`DictionaryLookupConverter<T1, T2>`](Aspid.MVVM.StarterKit.DictionaryLookupConverter-2.md) table.
 
@@ -20,11 +20,11 @@ public struct LookupEntry<TKey, TValue>
 
 #### Type Parameters
 
-`TKey` 
+`TKey`
 
 The type of the key being looked up.
 
-`TValue` 
+`TValue`
 
 The type of the value the key names.
 
@@ -73,4 +73,3 @@ public readonly TValue? Value { get; }
 #### Property Value
 
  TValue?
-

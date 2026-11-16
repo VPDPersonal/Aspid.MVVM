@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IDynamicProperty\<T\> {#Aspid_MVVM_StarterKit_IDynamicProperty_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Provides typed access to a property stored by a [`DynamicViewModel`](Aspid.MVVM.StarterKit.DynamicViewModel.md).
 
@@ -19,7 +19,7 @@ public interface IDynamicProperty<T> : IDynamicProperty
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The property's value type.
 
@@ -53,4 +53,3 @@ event Action<T?>? ValueChanged
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T?\>?
-

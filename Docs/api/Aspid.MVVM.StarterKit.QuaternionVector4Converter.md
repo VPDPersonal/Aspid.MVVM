@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class QuaternionVector4Converter {#Aspid_MVVM_StarterKit_QuaternionVector4Converter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Reads a rotation as its four raw numbers, and builds one back out of them.
 
@@ -21,23 +21,23 @@ public sealed class QuaternionVector4Converter : ITwoWayConverter<Quaternion, Ve
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [QuaternionVector4Converter](Aspid.MVVM.StarterKit.QuaternionVector4Converter.md)
 
 #### Implements
 
-[ITwoWayConverter\<Quaternion, Vector4\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Quaternion, Vector4\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<Vector4, Quaternion\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Vector4, Quaternion\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[ITwoWayConverter\<Quaternion, Vector4\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Quaternion, Vector4\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<Vector4, Quaternion\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Vector4, Quaternion\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Constructors
@@ -105,4 +105,3 @@ The four numbers, in x, y, z, w order.
  Quaternion
 
 The rotation, or the identity for four zeroes when normalizing.
-

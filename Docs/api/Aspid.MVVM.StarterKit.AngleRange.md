@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum AngleRange {#Aspid_MVVM_StarterKit_AngleRange}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 The range [`AngleWrapConverter`](Aspid.MVVM.StarterKit.AngleWrapConverter.md) reports angles in.
 
@@ -20,15 +20,12 @@ public enum AngleRange
 
 ## Fields
 
-`Zero360 = 0` 
+`Zero360 = 0`
 
 0 to 360.
 
 
 
-`Signed180 = 1` 
+`Signed180 = 1`
 
 -180 to 180.
-
-
-

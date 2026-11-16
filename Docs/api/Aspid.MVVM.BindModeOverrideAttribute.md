@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BindModeOverrideAttribute {#Aspid_MVVM_BindModeOverrideAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Replaces the [`BindModeAttribute`](Aspid.MVVM.BindModeAttribute.md) limits of every [`BindMode`](Aspid.MVVM.BindMode.md) field of the class and its subclasses in the Inspector.
 
@@ -23,8 +23,8 @@ public sealed class BindModeOverrideAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [BindModeOverrideAttribute](Aspid.MVVM.BindModeOverrideAttribute.md)
 
 
@@ -125,4 +125,3 @@ public BindMode[] Modes { get; }
 #### Property Value
 
  [BindMode](Aspid.MVVM.BindMode.md)\[\]
-

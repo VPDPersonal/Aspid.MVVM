@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct SpriteMapEntry {#Aspid_MVVM_StarterKit_SpriteMapEntry}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 One key of a [`StringToSpriteConverter`](Aspid.MVVM.StarterKit.StringToSpriteConverter.md) map, with the sprite it names.
 
@@ -63,4 +63,3 @@ public readonly Sprite? Sprite { get; }
 #### Property Value
 
  Sprite?
-

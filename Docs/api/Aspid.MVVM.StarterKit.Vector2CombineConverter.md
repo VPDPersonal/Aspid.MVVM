@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class Vector2CombineConverter {#Aspid_MVVM_StarterKit_Vector2CombineConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Base class for converters that combine a bound 2D vector with one read from a scene
 component, taking each axis from one side or the other.
@@ -21,29 +21,29 @@ public abstract class Vector2CombineConverter : IConverter<Vector2, Vector2>, IC
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [Vector2CombineConverter](Aspid.MVVM.StarterKit.Vector2CombineConverter.md)
 
 #### Derived
 
-[BoxCollider2DOffsetCombineConverter](Aspid.MVVM.StarterKit.BoxCollider2DOffsetCombineConverter.md), 
-[BoxCollider2DSizeCombineConverter](Aspid.MVVM.StarterKit.BoxCollider2DSizeCombineConverter.md), 
-[RectTransformAnchoredPosition2DCombineConverter](Aspid.MVVM.StarterKit.RectTransformAnchoredPosition2DCombineConverter.md), 
-[RectTransformSizeDeltaCombineConverter](Aspid.MVVM.StarterKit.RectTransformSizeDeltaCombineConverter.md), 
+[BoxCollider2DOffsetCombineConverter](Aspid.MVVM.StarterKit.BoxCollider2DOffsetCombineConverter.md),
+[BoxCollider2DSizeCombineConverter](Aspid.MVVM.StarterKit.BoxCollider2DSizeCombineConverter.md),
+[RectTransformAnchoredPosition2DCombineConverter](Aspid.MVVM.StarterKit.RectTransformAnchoredPosition2DCombineConverter.md),
+[RectTransformSizeDeltaCombineConverter](Aspid.MVVM.StarterKit.RectTransformSizeDeltaCombineConverter.md),
 [TransformPosition2DCombineConverter](Aspid.MVVM.StarterKit.TransformPosition2DCombineConverter.md)
 
 #### Implements
 
-[IConverter\<Vector2, Vector2\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<Vector3, Vector2\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<Vector2, Vector2\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<Vector3, Vector2\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -202,4 +202,3 @@ The 3D vector to convert.
 
 The combined vector, or the narrowed input when [`Vector2CombineConverter.Target`](Aspid.MVVM.StarterKit.Vector2CombineConverter.md#Aspid_MVVM_StarterKit_Vector2CombineConverter_Target) is missing or the
 mode is not a declared [`Mode`](Aspid.MVVM.StarterKit.Vector2CombineConverter.Mode.md) value, an error is reported either way.
-

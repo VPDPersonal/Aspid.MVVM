@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ConverterLogger {#Aspid_MVVM_StarterKit_ConverterLogger}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Writes converter messages in one shape shared by all converters.
 
@@ -19,7 +19,7 @@ public static class ConverterLogger
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ConverterLogger](Aspid.MVVM.StarterKit.ConverterLogger.md)
 
 
@@ -183,4 +183,3 @@ What the converter does instead, as a full sentence.
 `context` Object?
 
 The object to ping, when one is known.
-

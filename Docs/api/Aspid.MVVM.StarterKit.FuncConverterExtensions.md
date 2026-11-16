@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class FuncConverterExtensions {#Aspid_MVVM_StarterKit_FuncConverterExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Turns a function into a converter.
 
@@ -19,7 +19,7 @@ public static class FuncConverterExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [FuncConverterExtensions](Aspid.MVVM.StarterKit.FuncConverterExtensions.md)
 
 
@@ -48,11 +48,11 @@ A converter that calls the function.
 
 #### Type Parameters
 
-`TFrom` 
+`TFrom`
 
 The type the function accepts.
 
-`TTo` 
+`TTo`
 
 The type it returns.
 
@@ -61,4 +61,3 @@ The type it returns.
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
 Thrown when <code class="paramref">converter</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-

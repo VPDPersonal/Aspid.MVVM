@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum VectorComponent {#Aspid_MVVM_StarterKit_VectorComponent}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What [`VectorToFloatConverter`](Aspid.MVVM.StarterKit.VectorToFloatConverter.md) measures. A narrower vector carries fewer of them.
 
@@ -20,45 +20,42 @@ public enum VectorComponent
 
 ## Fields
 
-`X = 0` 
+`X = 0`
 
 The X axis.
 
 
 
-`Y = 1` 
+`Y = 1`
 
 The Y axis.
 
 
 
-`Z = 2` 
+`Z = 2`
 
 The Z axis.
 
 
 
-`Magnitude = 3` 
+`Magnitude = 3`
 
 The length of the vector.
 
 
 
-`SqrMagnitude = 4` 
+`SqrMagnitude = 4`
 
 The squared length, which needs no square root.
 
 
 
-`Dot = 5` 
+`Dot = 5`
 
 How far the vector reaches along an authored direction.
 
 
 
-`W = 6` 
+`W = 6`
 
 The W component, which only a [`Vector4`](https://docs.unity3d.com/ScriptReference/Vector4.html) carries.
-
-
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IDynamicProperty {#Aspid_MVVM_StarterKit_IDynamicProperty}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Provides non-generic access to a property stored by a [`DynamicViewModel`](Aspid.MVVM.StarterKit.DynamicViewModel.md).
 
@@ -87,4 +87,3 @@ IBinderAdder GetAdder()
 #### Returns
 
  [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
-

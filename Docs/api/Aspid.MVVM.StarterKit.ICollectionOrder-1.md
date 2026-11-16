@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface ICollectionOrder\<T\> {#Aspid_MVVM_StarterKit_ICollectionOrder_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Serializable sort order for collection binders.
 
@@ -19,11 +19,10 @@ public interface ICollectionOrder<in T> : IComparer<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being ordered.
 
 #### Implements
 
 [IComparer\<T\>](https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1)
-

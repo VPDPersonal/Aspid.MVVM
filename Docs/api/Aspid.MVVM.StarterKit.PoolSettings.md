@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct PoolSettings {#Aspid_MVVM_StarterKit_PoolSettings}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Size limits of a [`PrefabViewPool<T>`](Aspid.MVVM.StarterKit.PrefabViewPool-1.md).
 
@@ -68,4 +68,3 @@ public readonly int MaxCount
 #### Field Value
 
  [int](https://learn.microsoft.com/dotnet/api/system.int32)
-

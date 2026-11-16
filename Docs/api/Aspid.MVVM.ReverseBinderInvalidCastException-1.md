@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ReverseBinderInvalidCastException\<T\> {#Aspid_MVVM_ReverseBinderInvalidCastException_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`InvalidCastException`](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) thrown when a binder lacks the interface a bindable member receives values through.
 
@@ -19,16 +19,16 @@ public sealed class ReverseBinderInvalidCastException<T> : InvalidCastException,
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The value type of the bindable member.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Exception](https://learn.microsoft.com/dotnet/api/system.exception) ← 
-[SystemException](https://learn.microsoft.com/dotnet/api/system.systemexception) ← 
-[InvalidCastException](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Exception](https://learn.microsoft.com/dotnet/api/system.exception) ←
+[SystemException](https://learn.microsoft.com/dotnet/api/system.systemexception) ←
+[InvalidCastException](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) ←
 [ReverseBinderInvalidCastException\<T\>](Aspid.MVVM.ReverseBinderInvalidCastException-1.md)
 
 #### Implements
@@ -87,7 +87,6 @@ The exception to throw at the call site.
 
 #### Type Parameters
 
-`TBoxed` 
+`TBoxed`
 
 The boxed form of <code>T</code>.
-

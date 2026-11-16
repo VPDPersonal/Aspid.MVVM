@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum OffsetSource {#Aspid_MVVM_StarterKit_OffsetSource}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 The offset [`DateTimeOffsetFormatConverter`](Aspid.MVVM.StarterKit.DateTimeOffsetFormatConverter.md) shows a moment at.
 
@@ -20,21 +20,18 @@ public enum OffsetSource
 
 ## Fields
 
-`AsGiven = 0` 
+`AsGiven = 0`
 
 The offset the moment arrived with.
 
 
 
-`Local = 1` 
+`Local = 1`
 
 The player's own time zone.
 
 
 
-`Override = 2` 
+`Override = 2`
 
 A configured fixed offset.
-
-
-

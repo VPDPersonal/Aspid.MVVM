@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneWayStructBindableMember\<T\> {#Aspid_MVVM_OneWayStructBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
 
@@ -19,22 +19,22 @@ public sealed class OneWayStructBindableMember<T> : OneWayStructBindableMember<T
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound struct type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[OneWayStructBindableMember\<T, ValueType\>](Aspid.MVVM.OneWayStructBindableMember-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[OneWayStructBindableMember\<T, ValueType\>](Aspid.MVVM.OneWayStructBindableMember-2.md) ←
 [OneWayStructBindableMember\<T\>](Aspid.MVVM.OneWayStructBindableMember-1.md)
 
 #### Implements
 
-[IBindableMember\<T\>](Aspid.MVVM.IBindableMember-1.md), 
-[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md), 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
-[IBinderAdder](Aspid.MVVM.IBinderAdder.md), 
+[IBindableMember\<T\>](Aspid.MVVM.IBindableMember-1.md),
+[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md),
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
+[IBinderAdder](Aspid.MVVM.IBinderAdder.md),
 [IBinderRemover](Aspid.MVVM.IBinderRemover.md)
 
 
@@ -54,4 +54,3 @@ public OneWayStructBindableMember(T value)
 `value` T
 
 The initial value.
-

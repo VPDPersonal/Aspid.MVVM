@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OrBoolMonoBinder {#Aspid_MVVM_StarterKit_OrBoolMonoBinder}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`AggregatorMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md) that forwards <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when any input is
 <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
@@ -21,12 +21,12 @@ public sealed class OrBoolMonoBinder : AggregatorMonoBinder<bool, bool>
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
-[AggregatorMonoBinder\<bool, bool\>](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
+[AggregatorMonoBinder\<bool, bool\>](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md) ←
 [OrBoolMonoBinder](Aspid.MVVM.StarterKit.OrBoolMonoBinder.md)
 
 
@@ -52,4 +52,3 @@ One value per input, in input order.
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 The value to forward.
-

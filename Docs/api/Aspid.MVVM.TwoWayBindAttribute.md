@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class TwoWayBindAttribute {#Aspid_MVVM_TwoWayBindAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Generates a [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
@@ -19,9 +19,9 @@ public sealed class TwoWayBindAttribute : BaseBindAttribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
-[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
+[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ←
 [TwoWayBindAttribute](Aspid.MVVM.TwoWayBindAttribute.md)
 
 
@@ -37,4 +37,3 @@ public sealed class TwoWayBindAttribute : BaseBindAttribute
 ## Remarks
 
 Ignored on a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field and a get-only or set-only property.
-

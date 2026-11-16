@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewModelInitializeComponent {#Aspid_MVVM_StarterKit_ViewModelInitializeComponent}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`InitializeComponent<T>`](Aspid.MVVM.StarterKit.InitializeComponent-1.md) that resolves an [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
@@ -20,8 +20,8 @@ public sealed class ViewModelInitializeComponent : InitializeComponent<IViewMode
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[InitializeComponent\<IViewModel\>](Aspid.MVVM.StarterKit.InitializeComponent-1.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[InitializeComponent\<IViewModel\>](Aspid.MVVM.StarterKit.InitializeComponent-1.md) ←
 [ViewModelInitializeComponent](Aspid.MVVM.StarterKit.ViewModelInitializeComponent.md)
 
 
@@ -49,4 +49,3 @@ Clears the references that do not belong to the chosen [`InitializeComponent<T>.
 ```csharp
 public override void Validate()
 ```
-

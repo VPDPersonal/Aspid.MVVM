@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneTimeEnumBindableMember\<T\> {#Aspid_MVVM_OneTimeEnumBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Concrete [`OneTimeStructBindableMember<T1, T2>`](Aspid.MVVM.OneTimeStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
@@ -19,19 +19,19 @@ public sealed class OneTimeEnumBindableMember<T> : OneTimeStructBindableMember<T
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound enum type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[OneTimeStructBindableMember\<T, Enum\>](Aspid.MVVM.OneTimeStructBindableMember-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[OneTimeStructBindableMember\<T, Enum\>](Aspid.MVVM.OneTimeStructBindableMember-2.md) ←
 [OneTimeEnumBindableMember\<T\>](Aspid.MVVM.OneTimeEnumBindableMember-1.md)
 
 #### Implements
 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
 [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
 
@@ -51,4 +51,3 @@ public OneTimeEnumBindableMember(T value)
 `value` T
 
 The value to push to the binder.
-

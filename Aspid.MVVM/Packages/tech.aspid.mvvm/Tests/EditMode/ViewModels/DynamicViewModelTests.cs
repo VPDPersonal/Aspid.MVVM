@@ -10,8 +10,58 @@ namespace Aspid.MVVM.Tests
     /// Tests for runtime-composed <see cref="DynamicViewModel"/> instances.
     /// </summary>
     [TestFixture]
+    [Category("AuditP2")]
     public sealed class DynamicViewModelTests
     {
+        [TestCase(BindMode.OneTime)]
+        [TestCase(BindMode.OneWay)]
+        [TestCase(BindMode.TwoWay)]
+        [TestCase(BindMode.OneWayToSource)]
+        public void EnumProperty_UsesBoxedChannelAndRebinds(BindMode mode)
+        {
+            var vm = new DynamicViewModel();
+            var property = vm.AddEnum("Mode", BindMode.OneWay, mode);
+            var values = new List<Enum>();
+            var binderMode = mode is BindMode.OneTime ? BindMode.OneTime : BindMode.OneWay;
+            var binder = new DelegateOneWayBinder<Enum>(values.Add, binderMode);
+            binder.Bind(new BindContext(property.GetAdder(), binder));
+            property.Value = BindMode.TwoWay;
+            Assert.AreEqual(mode is BindMode.OneTime ? 1 : 2, values.Count);
+            binder.Unbind(new UnbindContext(binder));
+            property.Value = BindMode.OneTime;
+            binder.Bind(new BindContext(property.GetAdder(), binder));
+            Assert.AreEqual(BindMode.OneTime, values[values.Count - 1]);
+            binder.Unbind(new UnbindContext(binder));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void BoxedReverse_UpdatesTypedPropertyAndUnsubscribes(bool enumValue)
+        {
+            var vm = new DynamicViewModel();
+            if (enumValue)
+            {
+                var property = vm.AddEnum("Value", BindMode.OneWay, BindMode.TwoWay);
+                Action<Enum> publish = null;
+                var binder = new DelegateTwoWayBinder<Enum>(callback => publish = callback, _ => { });
+                binder.Bind(new BindContext(property.GetAdder(), binder));
+                publish(BindMode.OneTime);
+                Assert.AreEqual(BindMode.OneTime, property.Value);
+                Assert.Throws<ArgumentNullException>(() => publish(null));
+                binder.Unbind(new UnbindContext(binder));
+            }
+            else
+            {
+                var property = vm.AddStruct("Value", 1, BindMode.TwoWay);
+                Action<ValueType> publish = null;
+                var binder = new DelegateTwoWayBinder<ValueType>(callback => publish = callback, _ => { });
+                binder.Bind(new BindContext(property.GetAdder(), binder));
+                publish(7);
+                Assert.AreEqual(7, property.Value);
+                binder.Unbind(new UnbindContext(binder));
+            }
+        }
+
         [Test]
         public void CollectionInitializer_AddsTypedProperties()
         {

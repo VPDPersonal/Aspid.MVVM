@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IReadOnlyValueBindableMember\<T\> {#Aspid_MVVM_IReadOnlyValueBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) that exposes its current value.
 
@@ -19,7 +19,7 @@ public interface IReadOnlyValueBindableMember<out T> : IBinderAdder
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound value type.
 
@@ -41,4 +41,3 @@ T? Value { get; }
 #### Property Value
 
  T?
-

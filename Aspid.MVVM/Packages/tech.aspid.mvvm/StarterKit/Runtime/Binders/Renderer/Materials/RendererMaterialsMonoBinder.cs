@@ -47,7 +47,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The material received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Material value) =>
-            CachedComponent.material = _converter?.Convert(value) ?? value;
+            CachedComponent.material = _converter is null ? value : _converter.Convert(value);
 
         /// <summary>
         /// Sets <see cref="Renderer.materials"/>; <see langword="null"/> or empty clears the array.

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class Vector3CombineConverter {#Aspid_MVVM_StarterKit_Vector3CombineConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Base class for converters that combine a bound vector with one read from a scene component,
 taking each axis from whichever of the two the configured [`Mode`](Aspid.MVVM.StarterKit.Vector3CombineConverter.Mode.md) names.
@@ -21,32 +21,32 @@ public abstract class Vector3CombineConverter : IConverter<Vector3, Vector3>, IC
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [Vector3CombineConverter](Aspid.MVVM.StarterKit.Vector3CombineConverter.md)
 
 #### Derived
 
-[BoxColliderCenterCombineConverter](Aspid.MVVM.StarterKit.BoxColliderCenterCombineConverter.md), 
-[BoxColliderSizeCombineConverter](Aspid.MVVM.StarterKit.BoxColliderSizeCombineConverter.md), 
-[CapsuleColliderCenterCombineConverter](Aspid.MVVM.StarterKit.CapsuleColliderCenterCombineConverter.md), 
-[RectTransformAnchoredPositionCombineConverter](Aspid.MVVM.StarterKit.RectTransformAnchoredPositionCombineConverter.md), 
-[SphereColliderCenterCombineConverter](Aspid.MVVM.StarterKit.SphereColliderCenterCombineConverter.md), 
-[TransformEulerAnglesCombineConverter](Aspid.MVVM.StarterKit.TransformEulerAnglesCombineConverter.md), 
-[TransformPositionCombineConverter](Aspid.MVVM.StarterKit.TransformPositionCombineConverter.md), 
+[BoxColliderCenterCombineConverter](Aspid.MVVM.StarterKit.BoxColliderCenterCombineConverter.md),
+[BoxColliderSizeCombineConverter](Aspid.MVVM.StarterKit.BoxColliderSizeCombineConverter.md),
+[CapsuleColliderCenterCombineConverter](Aspid.MVVM.StarterKit.CapsuleColliderCenterCombineConverter.md),
+[RectTransformAnchoredPositionCombineConverter](Aspid.MVVM.StarterKit.RectTransformAnchoredPositionCombineConverter.md),
+[SphereColliderCenterCombineConverter](Aspid.MVVM.StarterKit.SphereColliderCenterCombineConverter.md),
+[TransformEulerAnglesCombineConverter](Aspid.MVVM.StarterKit.TransformEulerAnglesCombineConverter.md),
+[TransformPositionCombineConverter](Aspid.MVVM.StarterKit.TransformPositionCombineConverter.md),
 [TransformScaleCombineConverter](Aspid.MVVM.StarterKit.TransformScaleCombineConverter.md)
 
 #### Implements
 
-[IConverter\<Vector3, Vector3\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<Vector2, Vector3\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<Vector3, Vector3\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<Vector2, Vector3\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -210,4 +210,3 @@ mode is not a declared [`Mode`](Aspid.MVVM.StarterKit.Vector3CombineConverter.Mo
 
 The pre-converter never sees the reference vector, and the post-converter runs after the
 axis selection, so it can still move an axis the mode took from the reference.
-

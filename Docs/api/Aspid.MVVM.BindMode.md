@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum BindMode {#Aspid_MVVM_BindMode}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Specifies the direction of data flow between the ViewModel and the View.
 
@@ -31,33 +31,30 @@ public enum BindMode
 
 ## Fields
 
-`None = 0` 
+`None = 0`
 
 No binding; every bindable member rejects it.
 
 
 
-`OneWay = 1` 
+`OneWay = 1`
 
 Pushes every ViewModel change to the View.
 
 
 
-`TwoWay = 2` 
+`TwoWay = 2`
 
 Pushes ViewModel changes to the View and View changes to the ViewModel.
 
 
 
-`OneTime = 3` 
+`OneTime = 3`
 
 Pushes the ViewModel value to the View once, on bind.
 
 
 
-`OneWayToSource = 4` 
+`OneWayToSource = 4`
 
 Pushes View changes to the ViewModel.
-
-
-

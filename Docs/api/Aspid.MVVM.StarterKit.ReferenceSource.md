@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum ReferenceSource {#Aspid_MVVM_StarterKit_ReferenceSource}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 The moment [`DateTimeCompareConverter`](Aspid.MVVM.StarterKit.DateTimeCompareConverter.md) compares against.
 
@@ -20,21 +20,18 @@ public enum ReferenceSource
 
 ## Fields
 
-`FixedMoment = 0` 
+`FixedMoment = 0`
 
 A configured fixed moment.
 
 
 
-`Now = 1` 
+`Now = 1`
 
 The current local time.
 
 
 
-`UtcNow = 2` 
+`UtcNow = 2`
 
 The current UTC time.
-
-
-

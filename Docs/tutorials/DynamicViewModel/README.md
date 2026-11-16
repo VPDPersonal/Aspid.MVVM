@@ -63,3 +63,18 @@ The scene has a plain `MonoView`. Its **Binders** list maps each id (`Title`, `E
 More in [Dynamic ViewModel](../../docs/10-dynamic-viewmodel.md).
 
 Text uses TextMeshPro (part of `com.unity.ugui`). The sample ships its own font asset in `Fonts/` (iA Writer Quattro S, OFL, as in the Aspid.FastTools samples), so it does not depend on the fonts from TMP Essentials.
+
+## Enum and struct channels
+
+Use `AddEnum<T>` when a binder accepts `System.Enum`, or `AddStruct<T>` for a binder accepting `System.ValueType`.
+These factories also support the exact value type and any-value binders. They instantiate generic members directly, without runtime reflection.
+
+```csharp
+var state = viewModel.AddEnum("State", BindMode.OneWay, BindMode.TwoWay);
+var position = viewModel.AddStruct("Position", Vector3.zero);
+state.Value = BindMode.OneTime;
+```
+
+`Add<T>` retains its existing typed/any contract. All factories accept OneTime, OneWay, TwoWay and OneWayToSource;
+OneWayToSource exposes the same TwoWay-capable member as before. A binder's own mode selects the active direction.
+Use `DynamicEnumProperty<T>` or `DynamicStructProperty<T>` when constructing a property before adding it to a ViewModel.

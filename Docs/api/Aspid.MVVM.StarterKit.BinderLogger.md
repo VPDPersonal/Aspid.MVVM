@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BinderLogger {#Aspid_MVVM_StarterKit_BinderLogger}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Writes binder messages in one shape shared by all binders.
 
@@ -19,7 +19,7 @@ public static class BinderLogger
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [BinderLogger](Aspid.MVVM.StarterKit.BinderLogger.md)
 
 
@@ -237,4 +237,3 @@ What the binder does instead, as a full sentence.
 `context` Object?
 
 The object to ping, when one is known.
-

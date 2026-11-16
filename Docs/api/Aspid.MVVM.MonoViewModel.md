@@ -8,11 +8,10 @@ pagination_next: null
 ---
 # Class MonoViewModel {#Aspid_MVVM_MonoViewModel}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Represents a base class for ViewModels in a Unity context that are derived from [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).
-Implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) to allow cleanup of resources, including the destruction of the component.
+[`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) for ViewModels that refresh bindings after Inspector changes.
 
 ```csharp
 public abstract class MonoViewModel : MonoBehaviour, IDisposable, IViewModel
@@ -20,35 +19,46 @@ public abstract class MonoViewModel : MonoBehaviour, IDisposable, IViewModel
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
 [MonoViewModel](Aspid.MVVM.MonoViewModel.md)
 
 #### Implements
 
-[IDisposable](https://learn.microsoft.com/dotnet/api/system.idisposable), 
+[IDisposable](https://learn.microsoft.com/dotnet/api/system.idisposable),
 [IViewModel](Aspid.MVVM.IViewModel.md)
 
 
 #### Extension Methods
 
-[MonoViewModelExtensions.DestroyViewModel\<MonoViewModel\>\(MonoViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel__1___0_), 
-[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_), 
-[ViewModelExtensions.DisposeViewModel\<MonoViewModel\>\(MonoViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel__1___0_), 
-[ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_), 
+[MonoViewModelExtensions.DestroyViewModel\<MonoViewModel\>\(MonoViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel__1___0_),
+[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_),
+[MonoViewModelExtensions.DestroyViewModelAndGameObject\<MonoViewModel\>\(MonoViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject__1___0_),
+[MonoViewModelExtensions.DestroyViewModelAndGameObject\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DisposeViewModel\<MonoViewModel\>\(MonoViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel__1___0_),
+[ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.InitializeView\(IViewModel, IView\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeView_Aspid_MVVM_IViewModel_Aspid_MVVM_IView_),
+[ViewModelExtensions.InitializeViews\(IViewModel, params IView\[\]\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_Aspid_MVVM_IView___),
+[ViewModelExtensions.InitializeViews\<T\>\(IViewModel, List\<T\>\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews__1_Aspid_MVVM_IViewModel_System_Collections_Generic_List___0__),
+[ViewModelExtensions.InitializeViews\(IViewModel, IEnumerable\<IView\>\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_System_Collections_Generic_IEnumerable_Aspid_MVVM_IView__)
 
 ## Methods
 
 ### Dispose\(\) {#Aspid_MVVM_MonoViewModel_Dispose}
 
-Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+Releases owned resources once without destroying the Unity object.
 
 ```csharp
-public virtual void Dispose()
+public void Dispose()
 ```
+
+#### Remarks
+
+Repeated and reentrant calls do nothing, including after a cleanup failure.
+Override [`MonoViewModel.OnDispose`](Aspid.MVVM.MonoViewModel.md#Aspid_MVVM_MonoViewModel_OnDispose) to release resources.
 
 ### FindBindableMember\(in FindBindableMemberParameters\) {#Aspid_MVVM_MonoViewModel_FindBindableMember_Aspid_MVVM_FindBindableMemberParameters__}
 
@@ -92,9 +102,39 @@ public virtual void NotifyAll()
 public virtual void NotifyCanExecuteChangedAll()
 ```
 
+### OnDestroy\(\) {#Aspid_MVVM_MonoViewModel_OnDestroy}
+
+Called when Unity destroys the object to release its resources.
+
+```csharp
+protected virtual void OnDestroy()
+```
+
+#### Remarks
+
+Overrides must call the base implementation. Use the destruction helpers when Unity does not issue this callback,
+including for components that have never been active in Play Mode.
+
+### OnDispose\(\) {#Aspid_MVVM_MonoViewModel_OnDispose}
+
+Called on the first disposal attempt. Override to release owned resources and subscriptions.
+
+```csharp
+protected virtual void OnDispose()
+```
+
+#### Remarks
+
+Cleanup exceptions propagate to the caller; subsequent disposal attempts do not retry cleanup.
+
 ### OnValidate\(\) {#Aspid_MVVM_MonoViewModel_OnValidate}
+
+Called when Unity validates serialized data. Override to validate additional fields.
 
 ```csharp
 protected virtual void OnValidate()
 ```
 
+#### Remarks
+
+Call the base implementation to queue binding notifications for the next Editor update on the main thread.

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RectVector4Converter {#Aspid_MVVM_StarterKit_RectVector4Converter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Converts between a rectangle and a four-component vector, in either direction.
 
@@ -21,23 +21,23 @@ public sealed class RectVector4Converter : ITwoWayConverter<Rect, Vector4>, ICon
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [RectVector4Converter](Aspid.MVVM.StarterKit.RectVector4Converter.md)
 
 #### Implements
 
-[ITwoWayConverter\<Rect, Vector4\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Rect, Vector4\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<Vector4, Rect\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Vector4, Rect\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[ITwoWayConverter\<Rect, Vector4\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Rect, Vector4\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<Vector4, Rect\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Vector4, Rect\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -126,4 +126,3 @@ The rectangle to read.
  Vector4
 
 The vector, as x, y, width, height.
-

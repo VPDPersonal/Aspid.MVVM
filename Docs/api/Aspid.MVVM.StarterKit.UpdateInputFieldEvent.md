@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum UpdateInputFieldEvent {#Aspid_MVVM_StarterKit_UpdateInputFieldEvent}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Specifies which `TMP_InputField` event a binder listens to.
 
@@ -20,33 +20,30 @@ public enum UpdateInputFieldEvent
 
 ## Fields
 
-`OnValueChanged = 0` 
+`OnValueChanged = 0`
 
 `onValueChanged`: every text change.
 
 
 
-`OnEndEdit = 1` 
+`OnEndEdit = 1`
 
 `onEndEdit`: editing finished.
 
 
 
-`OnSubmit = 2` 
+`OnSubmit = 2`
 
 `onSubmit`: Submit pressed.
 
 
 
-`OnSelect = 3` 
+`OnSelect = 3`
 
 `onSelect`: the field gained focus.
 
 
 
-`OnDeselect = 4` 
+`OnDeselect = 4`
 
 `onDeselect`: the field lost focus.
-
-
-

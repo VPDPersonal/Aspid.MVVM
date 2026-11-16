@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ArithmeticNumberConverter {#Aspid_MVVM_StarterKit_ArithmeticNumberConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Applies an arithmetic operation with an authored coefficient.
 
@@ -21,41 +21,41 @@ public sealed class ArithmeticNumberConverter : TwoWayNumberConverter, IConverte
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[NumberConverter](Aspid.MVVM.StarterKit.NumberConverter.md) ← 
-[TwoWayNumberConverter](Aspid.MVVM.StarterKit.TwoWayNumberConverter.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[NumberConverter](Aspid.MVVM.StarterKit.NumberConverter.md) ←
+[TwoWayNumberConverter](Aspid.MVVM.StarterKit.TwoWayNumberConverter.md) ←
 [ArithmeticNumberConverter](Aspid.MVVM.StarterKit.ArithmeticNumberConverter.md)
 
 #### Implements
 
-[IConverter\<int, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<int, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<int, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<float, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<float, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<float, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<int, int\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<int, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<long, long\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<long, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<float, float\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<float, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<double, double\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<double, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<int, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<int, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<int, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<float, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<float, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<float, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<int, int\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<int, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<long, long\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<long, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<float, float\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<float, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<double, double\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<double, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Constructors
@@ -133,4 +133,3 @@ The number to transform back.
 
 The number the forward pass was given, or the fallback where the operation cannot be undone.
 [`NumberOperation.Modulo`](Aspid.MVVM.StarterKit.NumberOperation.md) returns the value unchanged without reporting.
-

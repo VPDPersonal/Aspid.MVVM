@@ -214,7 +214,16 @@ jobs:
 
       - name: Run ${{ matrix.name }} tests
         if: steps.changes.outputs.run == 'true'
-        run: dotnet test "${{ matrix.path }}" --nologo
+        run: |
+          dotnet test "${{ matrix.path }}" --nologo --logger trx --results-directory "$RUNNER_TEMP/test-results"
+          python3 - <<'PYTHON'
+          import glob, os, xml.etree.ElementTree as ET
+          reports = glob.glob(os.path.join(os.environ['RUNNER_TEMP'], 'test-results', '*.trx'))
+          assert reports, 'No TRX results were produced'
+          for report in reports:
+              counters = ET.parse(report).find('.//{*}Counters')
+              assert counters is not None and int(counters.get('total', '0')) > 0, f'No tests discovered: {report}'
+          PYTHON
 
   # Runs the Unity tests only for a change that can affect them and only with a license to run them.
   # What the Unity tests read is digested by scripts/unity-inputs.mjs: the package without its Markdown and license texts,

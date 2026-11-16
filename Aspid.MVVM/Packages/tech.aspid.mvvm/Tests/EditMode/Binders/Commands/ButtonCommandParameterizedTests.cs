@@ -13,8 +13,60 @@ namespace Aspid.MVVM.Tests
     /// a project can add without writing a class first.
     /// </summary>
     [TestFixture]
+    [Category("AuditP2")]
     public sealed class ButtonCommandParameterizedTests : SceneFixture
     {
+        [Test]
+        public void MultipleParameters_RefreshTheCustomHandler()
+        {
+            var button = Spawn<Button>("Button");
+            var handler = new Handler();
+            var binder = new ButtonCommandBinder<int, int>(button, 0, 0, handler);
+            var command = new RelayCommand<int, int>((_, _) => { }, (a, b) => a > b);
+            binder.Bind(new BindContext(new OneWayBindableMember<IRelayCommand<int, int>>(command), binder));
+            Assert.IsFalse(handler.Value);
+            binder.Param1 = 2;
+            Assert.IsTrue(handler.Value);
+            binder.Param2 = 3;
+            Assert.IsFalse(handler.Value);
+            binder.Unbind(new UnbindContext(binder));
+        }
+
+        private sealed class Handler : ICanExecuteHandler
+        {
+            internal bool Value;
+            public void SetCanExecute(bool canExecute) => Value = canExecute;
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ParamChange_RefreshesCanExecuteWithoutCommandNotification(bool serializable)
+        {
+            var button = Spawn<Button>("Button");
+            var command = new RelayCommand<int>(_ => { }, value => value > 0);
+            if (serializable)
+            {
+                var binder = new ButtonCommandBinder<int>(button, 0);
+                Bind(binder, command);
+                Assert.IsFalse(button.interactable);
+                binder.Param = 1;
+                Assert.IsTrue(button.interactable);
+                binder.Param = 0;
+                Assert.IsFalse(button.interactable);
+                binder.Unbind(new UnbindContext(binder));
+            }
+            else
+            {
+                var binder = button.gameObject.AddComponent<ButtonCommandIntMonoBinder>();
+                Bind(binder, command);
+                Assert.IsFalse(button.interactable);
+                binder.Param = 1;
+                Assert.IsTrue(button.interactable);
+                binder.Param = 0;
+                Assert.IsFalse(button.interactable);
+            }
+        }
+
         [Test]
         public void TheIntClosure_ForwardsTheInspectorParameter()
         {

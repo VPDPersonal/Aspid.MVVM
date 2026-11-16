@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class FormatStringMonoBinder {#Aspid_MVVM_StarterKit_FormatStringMonoBinder}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`AggregatorMonoBinder<T1, T2>`](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md) that formats the input strings into one line.
 
@@ -20,12 +20,12 @@ public sealed class FormatStringMonoBinder : AggregatorMonoBinder<string, string
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
-[AggregatorMonoBinder\<string, string\>](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
+[AggregatorMonoBinder\<string, string\>](Aspid.MVVM.StarterKit.AggregatorMonoBinder-2.md) ←
 [FormatStringMonoBinder](Aspid.MVVM.StarterKit.FormatStringMonoBinder.md)
 
 
@@ -55,4 +55,3 @@ One value per input, in input order.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The value to forward.
-

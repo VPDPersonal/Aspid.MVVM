@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ColorColor32Converter {#Aspid_MVVM_StarterKit_ColorColor32Converter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Converts between a [`Color`](https://docs.unity3d.com/ScriptReference/Color.html) and a [`Color32`](https://docs.unity3d.com/ScriptReference/Color32.html), in either direction.
 
@@ -21,23 +21,23 @@ public sealed class ColorColor32Converter : ITwoWayConverter<Color, Color32>, IC
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ColorColor32Converter](Aspid.MVVM.StarterKit.ColorColor32Converter.md)
 
 #### Implements
 
-[ITwoWayConverter\<Color, Color32\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Color, Color32\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<Color32, Color\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Color32, Color\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[ITwoWayConverter\<Color, Color32\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Color, Color32\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<Color32, Color\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Color32, Color\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -126,4 +126,3 @@ The color to narrow.
  Color32
 
 The same color with each channel as a byte.
-

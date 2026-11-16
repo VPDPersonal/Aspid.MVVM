@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ConverterCollectionFilter\<T\> {#Aspid_MVVM_StarterKit_ConverterCollectionFilter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICollectionFilter<T>`](Aspid.MVVM.StarterKit.ICollectionFilter-1.md) that passes an element when an [`IConverter<T1, T2>`](Aspid.MVVM.StarterKit.IConverter-2.md)
 to [`Boolean`](https://learn.microsoft.com/dotnet/api/system.boolean) answers <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> for it. An empty slot passes everything.
@@ -22,13 +22,13 @@ public class ConverterCollectionFilter<T> : ICollectionFilter<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being filtered.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ConverterCollectionFilter\<T\>](Aspid.MVVM.StarterKit.ConverterCollectionFilter-1.md)
 
 #### Implements
@@ -82,4 +82,3 @@ The element to test.
 #### Returns
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-

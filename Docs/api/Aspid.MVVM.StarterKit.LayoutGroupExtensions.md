@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class LayoutGroupExtensions {#Aspid_MVVM_StarterKit_LayoutGroupExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods for [`LayoutGroup`](https://docs.unity3d.com/ScriptReference/UI-LayoutGroup.html) used by the layout group binders.
 
@@ -19,7 +19,7 @@ public static class LayoutGroupExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [LayoutGroupExtensions](Aspid.MVVM.StarterKit.LayoutGroupExtensions.md)
 
 
@@ -48,4 +48,3 @@ The padding to copy from.
 `sides` [RectSides](Aspid.MVVM.StarterKit.RectSides.md)
 
 The sides to copy.
-

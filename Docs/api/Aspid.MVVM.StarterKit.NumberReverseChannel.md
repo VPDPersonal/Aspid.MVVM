@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct NumberReverseChannel {#Aspid_MVVM_StarterKit_NumberReverseChannel}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Holds the subscriptions behind the four numeric events of an [`INumberReverseBinder`](Aspid.MVVM.StarterKit.INumberReverseBinder.md)
 and raises them together.
@@ -200,4 +200,3 @@ public event Action<long>? LongValueChanged
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<[long](https://learn.microsoft.com/dotnet/api/system.int64)\>?
-

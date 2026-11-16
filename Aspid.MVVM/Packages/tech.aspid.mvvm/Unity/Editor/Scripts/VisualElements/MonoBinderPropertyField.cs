@@ -19,6 +19,7 @@ namespace Aspid.MVVM
         private static readonly StyleSheet _styleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinderPropertyField");
 
         private readonly string _binderId;
+        private readonly BindMode _memberMode;
         private readonly string? _assemblyQualifiedName;
         private readonly MonoBinderHighlightGradient _highlightGradient;
 
@@ -34,12 +35,16 @@ namespace Aspid.MVVM
             : this(property, label: string.Empty, binderId, assemblyQualifiedName) { }
 
         public MonoBinderPropertyField(SerializedProperty property, string label, string binderId, string? assemblyQualifiedName)
+            : this(property, label, binderId, assemblyQualifiedName, BindMode.TwoWay) { }
+
+        public MonoBinderPropertyField(SerializedProperty property, string label, string binderId, string? assemblyQualifiedName, BindMode memberMode)
         {
             styleSheets.Add(_styleSheet);
 
             Property = property;
 
             _binderId = binderId;
+            _memberMode = memberMode;
             _assemblyQualifiedName = assemblyQualifiedName;
 
             var slotWrapper = string.IsNullOrWhiteSpace(label)
@@ -86,33 +91,14 @@ namespace Aspid.MVVM
         /// <returns>The quality of the match; see <see cref="CompatibleBinderWithField"/>.</returns>
         public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidatable binder)
         {
-            var binderType = ((Component)binder).GetType();
-            
             var previousId = binder.PreviousId.Id ?? string.Empty;
             if (previousId.Contains("DesignViewModel."))
                 previousId = previousId[16..];
 
-            if (typeof(IAnyBinder).IsAssignableFrom(binderType))
-            {
-                return previousId == _binderId 
-                    ? CompatibleBinderWithField.TypeAndId
-                    : CompatibleBinderWithField.Type;
-            }
-            
-            if (string.IsNullOrEmpty(_assemblyQualifiedName)) return CompatibleBinderWithField.None;
+            var propertyType = string.IsNullOrEmpty(_assemblyQualifiedName) ? null : Type.GetType(_assemblyQualifiedName);
+            if (!BinderCompatibility.Matches((IBinder)binder, propertyType, _memberMode))
+                return CompatibleBinderWithField.None;
 
-            var propertyType = Type.GetType(_assemblyQualifiedName);
-            if (propertyType is null) return CompatibleBinderWithField.None;
-
-            var hasType = binderType.GetInterfaces()
-                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IBinder<>))
-                .Select(i => i.GetGenericArguments()[0])
-                .Any(binderTypeArg =>
-                    binderTypeArg.IsAssignableFrom(propertyType) ||
-                    propertyType.IsAssignableFrom(binderTypeArg));
-
-            if (!hasType) return CompatibleBinderWithField.None;
-            
             return previousId == _binderId
                 ? CompatibleBinderWithField.TypeAndId
                 : CompatibleBinderWithField.Type;

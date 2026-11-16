@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class PluralRule {#Aspid_MVVM_StarterKit_PluralRule}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Words a count in one language: the grammar and the words it picks between.
 
@@ -20,30 +20,30 @@ public abstract class PluralRule : IConverter<long, string>, IConverter
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [PluralRule](Aspid.MVVM.StarterKit.PluralRule.md)
 
 #### Derived
 
-[ArabicPluralRule](Aspid.MVVM.StarterKit.ArabicPluralRule.md), 
-[CzechPluralRule](Aspid.MVVM.StarterKit.CzechPluralRule.md), 
-[EastSlavicPluralRule](Aspid.MVVM.StarterKit.EastSlavicPluralRule.md), 
-[EnglishPluralRule](Aspid.MVVM.StarterKit.EnglishPluralRule.md), 
-[FrenchPluralRule](Aspid.MVVM.StarterKit.FrenchPluralRule.md), 
-[PolishPluralRule](Aspid.MVVM.StarterKit.PolishPluralRule.md), 
+[ArabicPluralRule](Aspid.MVVM.StarterKit.ArabicPluralRule.md),
+[CzechPluralRule](Aspid.MVVM.StarterKit.CzechPluralRule.md),
+[EastSlavicPluralRule](Aspid.MVVM.StarterKit.EastSlavicPluralRule.md),
+[EnglishPluralRule](Aspid.MVVM.StarterKit.EnglishPluralRule.md),
+[FrenchPluralRule](Aspid.MVVM.StarterKit.FrenchPluralRule.md),
+[PolishPluralRule](Aspid.MVVM.StarterKit.PolishPluralRule.md),
 [SingleFormPluralRule](Aspid.MVVM.StarterKit.SingleFormPluralRule.md)
 
 #### Implements
 
-[IConverter\<long, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<long, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -105,4 +105,3 @@ The count, as a magnitude.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The word for the count, or an empty string when it is not authored.
-

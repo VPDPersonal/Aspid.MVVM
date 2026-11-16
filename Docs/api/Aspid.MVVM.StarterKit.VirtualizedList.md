@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class VirtualizedList {#Aspid_MVVM_StarterKit_VirtualizedList}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ScrollRect`](https://docs.unity3d.com/ScriptReference/UI-ScrollRect.html) that shows a list of ViewModels through a fixed set of recycled views,
 instantiating only as many as fit the viewport.
@@ -21,26 +21,26 @@ public class VirtualizedList : ScrollRect, IInitializePotentialDragHandler, IBeg
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
-UIBehaviour ← 
-ScrollRect ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
+UIBehaviour ←
+ScrollRect ←
 [VirtualizedList](Aspid.MVVM.StarterKit.VirtualizedList.md)
 
 #### Implements
 
-IInitializePotentialDragHandler, 
-IBeginDragHandler, 
-IEndDragHandler, 
-IDragHandler, 
-IScrollHandler, 
-IEventSystemHandler, 
-ICanvasElement, 
-ILayoutElement, 
-ILayoutGroup, 
+IInitializePotentialDragHandler,
+IBeginDragHandler,
+IEndDragHandler,
+IDragHandler,
+IScrollHandler,
+IEventSystemHandler,
+ICanvasElement,
+ILayoutElement,
+ILayoutGroup,
 ILayoutController
 
 
@@ -53,7 +53,7 @@ Beta. Items share the prefab size, scroll in one direction only, without spacing
 
 ### ItemsSource {#Aspid_MVVM_StarterKit_VirtualizedList_ItemsSource}
 
-Gets or sets the ViewModels shown by the list. Observable and filtered lists are tracked for changes.
+Gets or sets the ViewModels shown by the list. A <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> source clears the displayed items.
 
 ```csharp
 public IReadOnlyList<IViewModel> ItemsSource { get; set; }
@@ -62,6 +62,10 @@ public IReadOnlyList<IViewModel> ItemsSource { get; set; }
 #### Property Value
 
  [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<[IViewModel](Aspid.MVVM.IViewModel.md)\>
+
+#### Remarks
+
+Source changes are tracked while enabled. Re-enabling refreshes the retained source; clearing it does not dispose its ViewModels.
 
 ## Methods
 
@@ -100,6 +104,12 @@ The inserted ViewModels.
 `newStartingIndex` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
 The index of the first inserted item.
+
+### OnDestroy\(\) {#Aspid_MVVM_StarterKit_VirtualizedList_OnDestroy}
+
+```csharp
+protected override void OnDestroy()
+```
 
 ### OnDisable\(\) {#Aspid_MVVM_StarterKit_VirtualizedList_OnDisable}
 
@@ -206,4 +216,3 @@ protected virtual void OnReset()
 ```csharp
 protected override void OnValidate()
 ```
-

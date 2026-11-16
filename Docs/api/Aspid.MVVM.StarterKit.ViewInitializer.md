@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewInitializer {#Aspid_MVVM_StarterKit_ViewInitializer}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ViewInitializerBase`](Aspid.MVVM.StarterKit.ViewInitializerBase.md) that resolves its ViewModel from a serialized slot and
 initializes the views at the chosen lifecycle stage.
@@ -22,12 +22,12 @@ public sealed class ViewInitializer : ViewInitializerBase
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
-[ViewInitializerBase](Aspid.MVVM.StarterKit.ViewInitializerBase.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
+[ViewInitializerBase](Aspid.MVVM.StarterKit.ViewInitializerBase.md) ←
 [ViewInitializer](Aspid.MVVM.StarterKit.ViewInitializer.md)
 
 
@@ -101,4 +101,3 @@ Keeps the serialized view slots consistent with their resolve mode.
 ```csharp
 protected override void OnValidate()
 ```
-

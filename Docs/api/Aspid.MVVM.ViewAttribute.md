@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewAttribute {#Aspid_MVVM_ViewAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Generates the [`IView`](Aspid.MVVM.IView.md) implementation of the class, which binds its binder fields and properties.
 
@@ -21,8 +21,8 @@ public sealed class ViewAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [ViewAttribute](Aspid.MVVM.ViewAttribute.md)
 
 
@@ -58,4 +58,3 @@ public bool AutoBinderFields { get; set; }
 #### Remarks
 
 Has no effect when <code>T</code> is an interface or the View derives from <code>ScriptableObject</code>.
-

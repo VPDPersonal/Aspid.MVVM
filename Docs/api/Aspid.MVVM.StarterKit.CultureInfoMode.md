@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum CultureInfoMode {#Aspid_MVVM_StarterKit_CultureInfoMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which culture a value is formatted and parsed with.
 
@@ -23,37 +23,37 @@ public enum CultureInfoMode
 
 ## Fields
 
-`CurrentCulture = 0` 
+`CurrentCulture = 0`
 
 The thread's culture — what the player's machine is set to.
 
 
 
-`CurrentUICulture = 1` 
+`CurrentUICulture = 1`
 
 The thread's UI culture, used for resource lookup rather than formatting.
 
 
 
-`InvariantCulture = 2` 
+`InvariantCulture = 2`
 
 Culture-independent — for anything stored, sent, or parsed back.
 
 
 
-`InstalledUICulture = 3` 
+`InstalledUICulture = 3`
 
 The culture the operating system was installed with.
 
 
 
-`DefaultThreadCurrentCulture = 4` 
+`DefaultThreadCurrentCulture = 4`
 
 The process-wide default culture, falling back to [`CultureInfoMode.CurrentCulture`](Aspid.MVVM.StarterKit.CultureInfoMode.md) while unset.
 
 
 
-`DefaultThreadCurrentUICulture = 5` 
+`DefaultThreadCurrentUICulture = 5`
 
 The process-wide default UI culture, falling back to [`CultureInfoMode.CurrentUICulture`](Aspid.MVVM.StarterKit.CultureInfoMode.md) while unset.
 
@@ -66,4 +66,3 @@ serialize; [`ToCultureStringExtensions.ToCultureInfo`](Aspid.MVVM.StarterKit.ToC
 A decimal separator is a comma in half of Europe, so a number written by one culture and parsed
 by another loses its fractional part rather than failing. Append new members rather than
 inserting one — the order is the serialized value.
-

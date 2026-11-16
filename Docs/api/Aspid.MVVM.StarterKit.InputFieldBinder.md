@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class InputFieldBinder {#Aspid_MVVM_StarterKit_InputFieldBinder}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that binds `text`, also from numbers, and reports
 edits back as text and, for numeric fields, as numbers.
@@ -22,31 +22,31 @@ public class InputFieldBinder : TargetBinder<TMP_InputField>, IBinder<string?>, 
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Binder](Aspid.MVVM.Binder.md) ← 
-[TargetBinder\<TMP\_InputField\>](Aspid.MVVM.TargetBinder-1.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Binder](Aspid.MVVM.Binder.md) ←
+[TargetBinder\<TMP\_InputField\>](Aspid.MVVM.TargetBinder-1.md) ←
 [InputFieldBinder](Aspid.MVVM.StarterKit.InputFieldBinder.md)
 
 #### Implements
 
-[IBinder\<string?\>](Aspid.MVVM.IBinder-1.md), 
-[INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md), 
-[IBinder\<int\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<uint\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<long\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<ulong\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<byte\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<sbyte\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<short\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<ushort\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<float\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<double\>](Aspid.MVVM.IBinder-1.md), 
-[IReverseBinder\<string\>](Aspid.MVVM.IReverseBinder-1.md), 
-[INumberReverseBinder](Aspid.MVVM.StarterKit.INumberReverseBinder.md), 
-[IReverseBinder\<int\>](Aspid.MVVM.IReverseBinder-1.md), 
-[IReverseBinder\<long\>](Aspid.MVVM.IReverseBinder-1.md), 
-[IReverseBinder\<float\>](Aspid.MVVM.IReverseBinder-1.md), 
-[IReverseBinder\<double\>](Aspid.MVVM.IReverseBinder-1.md), 
+[IBinder\<string?\>](Aspid.MVVM.IBinder-1.md),
+[INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md),
+[IBinder\<int\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<uint\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<long\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<ulong\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<byte\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<sbyte\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<short\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<ushort\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<float\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<double\>](Aspid.MVVM.IBinder-1.md),
+[IReverseBinder\<string\>](Aspid.MVVM.IReverseBinder-1.md),
+[INumberReverseBinder](Aspid.MVVM.StarterKit.INumberReverseBinder.md),
+[IReverseBinder\<int\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<long\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<float\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<double\>](Aspid.MVVM.IReverseBinder-1.md),
 [IBinder](Aspid.MVVM.IBinder.md)
 
 
@@ -54,20 +54,20 @@ public class InputFieldBinder : TargetBinder<TMP_InputField>, IBinder<string?>, 
 
 [BinderExtensions.BindSafely\<InputFieldBinder\>\(InputFieldBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
 [BinderExtensions.BindSafely\<InputFieldBinder\>\(InputFieldBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
-[BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
-[BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
-[BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
-[BinderLogger.LogWarning\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogWarning_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
-[BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
-[BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Vector4, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector4_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
-[BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
-[BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
+[BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
+[BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
+[BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
+[BinderLogger.LogWarning\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogWarning_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
+[BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
+[BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_),
+[BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Vector4, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector4_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
+[BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
+[BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
 [BinderExtensions.UnbindSafely\<InputFieldBinder\>\(InputFieldBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Constructors
@@ -226,4 +226,3 @@ public event Action<string?>? ValueChanged
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<[string](https://learn.microsoft.com/dotnet/api/system.string)?\>?
-

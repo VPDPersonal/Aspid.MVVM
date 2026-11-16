@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum AlphaMode {#Aspid_MVVM_StarterKit_AlphaMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 How [`ColorAlphaConverter`](Aspid.MVVM.StarterKit.ColorAlphaConverter.md) applies its alpha.
 
@@ -20,21 +20,18 @@ public enum AlphaMode
 
 ## Fields
 
-`Set = 0` 
+`Set = 0`
 
 Replace the alpha outright.
 
 
 
-`Multiply = 1` 
+`Multiply = 1`
 
 Scale the existing alpha.
 
 
 
-`Add = 2` 
+`Add = 2`
 
 Add to the existing alpha.
-
-
-

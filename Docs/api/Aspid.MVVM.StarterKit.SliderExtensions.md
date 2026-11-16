@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class SliderExtensions {#Aspid_MVVM_StarterKit_SliderExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods for [`Slider`](https://docs.unity3d.com/ScriptReference/UI-Slider.html) used by the slider binders.
 
@@ -19,7 +19,7 @@ public static class SliderExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [SliderExtensions](Aspid.MVVM.StarterKit.SliderExtensions.md)
 
 
@@ -52,4 +52,3 @@ Which endpoints <code class="paramref">value</code> writes.
 
 Unity does not keep <code>minValue &lt;= maxValue</code>: an inverted pair is reported and swapped, a non-finite
 pair is reported and not applied.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum RectSides {#Aspid_MVVM_StarterKit_RectSides}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which sides of a [`RectOffset`](https://docs.unity3d.com/ScriptReference/RectOffset.html) a converter writes.
 
@@ -21,51 +21,48 @@ public enum RectSides
 
 ## Fields
 
-`None = 0` 
+`None = 0`
 
 No side.
 
 
 
-`Left = 1` 
+`Left = 1`
 
 The left side.
 
 
 
-`Right = 2` 
+`Right = 2`
 
 The right side.
 
 
 
-`Top = 4` 
+`Top = 4`
 
 The top side.
 
 
 
-`Bottom = 8` 
+`Bottom = 8`
 
 The bottom side.
 
 
 
-`Horizontal = 3` 
+`Horizontal = 3`
 
 Left and right.
 
 
 
-`Vertical = 12` 
+`Vertical = 12`
 
 Top and bottom.
 
 
 
-`All = 15` 
+`All = 15`
 
 Every side.
-
-
-

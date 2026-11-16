@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class PrefabViewPool\<T\> {#Aspid_MVVM_StarterKit_PrefabViewPool_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`PrefabViewFactory<T>`](Aspid.MVVM.StarterKit.PrefabViewFactory-1.md) that keeps released views in an [`ObjectPool<T>`](https://docs.unity3d.com/ScriptReference/Pool-ObjectPool.html) and reuses them.
 
@@ -20,20 +20,20 @@ public class PrefabViewPool<T> : PrefabViewFactory<T>, IViewFactory<T>, IViewFac
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the view component on the prefab.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[PrefabViewFactory\<T\>](Aspid.MVVM.StarterKit.PrefabViewFactory-1.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[PrefabViewFactory\<T\>](Aspid.MVVM.StarterKit.PrefabViewFactory-1.md) ←
 [PrefabViewPool\<T\>](Aspid.MVVM.StarterKit.PrefabViewPool-1.md)
 
 #### Implements
 
-[IViewFactory\<T\>](Aspid.MVVM.StarterKit.IViewFactory-1.md), 
-[IViewFactoryWithKey\<T\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-1.md), 
+[IViewFactory\<T\>](Aspid.MVVM.StarterKit.IViewFactory-1.md),
+[IViewFactoryWithKey\<T\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-1.md),
 [IViewFactoryRelease\<T\>](Aspid.MVVM.StarterKit.IViewFactoryRelease-1.md)
 
 
@@ -203,4 +203,3 @@ public override void Release(T view)
 `view` T
 
 The view to release.
-

@@ -38,7 +38,7 @@ namespace Aspid.MVVM.StarterKit
             var converted = new Material[values.Count];
 
             foreach (var value in values)
-                converted[i++] = converter?.Convert(value) ?? value;
+                converted[i++] = converter is null ? value : converter.Convert(value);
 
             renderer.materials = converted;
         }

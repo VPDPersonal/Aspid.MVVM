@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IBinderRemover {#Aspid_MVVM_IBinderRemover}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Defines the side of a bindable member that detaches binders.
 
@@ -33,4 +33,3 @@ void Remove(IBinder binder)
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
 The binder previously passed to [`IBinderAdder.Add`](Aspid.MVVM.IBinderAdder.md#Aspid_MVVM_IBinderAdder_Add_Aspid_MVVM_IBinder_).
-

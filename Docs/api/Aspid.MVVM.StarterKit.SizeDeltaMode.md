@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum SizeDeltaMode {#Aspid_MVVM_StarterKit_SizeDeltaMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Determines which axes of [`sizeDelta`](https://docs.unity3d.com/ScriptReference/RectTransform-sizeDelta.html) are modified when setting the size.
 
@@ -20,21 +20,18 @@ public enum SizeDeltaMode
 
 ## Fields
 
-`Width = 0` 
+`Width = 0`
 
 Sets only the width (x-axis) of [`sizeDelta`](https://docs.unity3d.com/ScriptReference/RectTransform-sizeDelta.html).
 
 
 
-`Height = 1` 
+`Height = 1`
 
 Sets only the height (y-axis) of [`sizeDelta`](https://docs.unity3d.com/ScriptReference/RectTransform-sizeDelta.html).
 
 
 
-`SizeDelta = 2` 
+`SizeDelta = 2`
 
 Sets both the width and height of [`sizeDelta`](https://docs.unity3d.com/ScriptReference/RectTransform-sizeDelta.html).
-
-
-

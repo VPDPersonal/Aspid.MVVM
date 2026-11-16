@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct ColorStop {#Aspid_MVVM_StarterKit_ColorStop}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 One color of a threshold color scale.
 
@@ -63,4 +63,3 @@ public readonly float Threshold { get; }
 #### Property Value
 
  [float](https://learn.microsoft.com/dotnet/api/system.single)
-

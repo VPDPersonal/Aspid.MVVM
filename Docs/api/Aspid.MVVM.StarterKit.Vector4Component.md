@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum Vector4Component {#Aspid_MVVM_StarterKit_Vector4Component}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which component of a four-component vector a converter reads.
 
@@ -20,27 +20,24 @@ public enum Vector4Component
 
 ## Fields
 
-`X = 0` 
+`X = 0`
 
 The X component.
 
 
 
-`Y = 1` 
+`Y = 1`
 
 The Y component.
 
 
 
-`Z = 2` 
+`Z = 2`
 
 The Z component.
 
 
 
-`W = 3` 
+`W = 3`
 
 The W component.
-
-
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IViewFactoryRelease\<T\> {#Aspid_MVVM_StarterKit_IViewFactoryRelease_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Returns views produced by a factory back to it.
 
@@ -19,7 +19,7 @@ public interface IViewFactoryRelease<in T> where T : IView
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the view.
 
@@ -40,3 +40,7 @@ void Release(T view)
 
 The view to release.
 
+#### Remarks
+
+If release throws, the view must not remain available for reuse. Collection binders may
+deinitialize and destroy it as emergency cleanup; they do not retry the failed release.

@@ -477,7 +477,8 @@ jobs:
             "$GAMECI" build --engine=unity "$project" --engineVersion="$UNITY_VERSION" \
               --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
               --buildName=Smoke --buildsPath="dependency-builds/$profile" \
-              --customParameters="-nographics -disableaudio" --skipActivation=true
+              --customParameters="-nographics -disableaudio" --skipActivation=true \
+              --versioningStrategy=Custom --version=0.0.0
             player="dependency-builds/$profile/StandaloneLinux64/Smoke.x86_64"
             timeout 60 "$player" -batchmode -nographics -disableaudio -logFile "$PWD/dependency-builds/$profile/player.log"
             grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/$profile/player.log"
@@ -487,7 +488,8 @@ jobs:
             "$GAMECI" build --engine=unity ci-dependency-all --engineVersion="$UNITY_VERSION" \
               --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
               --buildName=Smoke --buildsPath="dependency-builds/transition-$profile" \
-              --customParameters="-nographics -disableaudio" --skipActivation=true
+              --customParameters="-nographics -disableaudio" --skipActivation=true \
+              --versioningStrategy=Custom --version=0.0.0
             player="dependency-builds/transition-$profile/StandaloneLinux64/Smoke.x86_64"
             timeout 60 "$player" -batchmode -nographics -disableaudio -logFile "$PWD/dependency-builds/transition-$profile/player.log"
             grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/transition-$profile/player.log"

@@ -85,9 +85,11 @@ namespace Aspid.MVVM.Tests
             var binder = Add<ElementButtonCommandMonoBinder, Button>(document, "button", BindMode.OneTime);
             var clicks = 0;
             binder.Bind(new BindContext(new OneTimeBindableMember<IRelayCommand>(new RelayCommand(() => clicks++)), binder));
-            document.visualTreeAsset = Track(ScriptableObject.CreateInstance<VisualTreeAsset>());
-            var replacement = new Button { name = "button" };
-            document.rootVisualElement.Add(replacement);
+            var replacementAsset = Resources.Load<VisualTreeAsset>("AspidVisualTreeLifetimeReplacement");
+            Assert.IsNotNull(replacementAsset);
+            document.visualTreeAsset = replacementAsset;
+            var replacement = document.rootVisualElement.Q<Button>("button");
+            Assert.IsNotNull(replacement);
             yield return null;
             yield return null;
             using (var submit = NavigationSubmitEvent.GetPooled())

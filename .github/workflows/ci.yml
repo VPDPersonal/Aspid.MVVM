@@ -485,6 +485,7 @@ jobs:
             grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/$profile/player.log"
           done
           for profile in without-fasttools minimal all; do
+            sudo chown -R "$(id -u):$(id -g)" ci-dependency-all
             node scripts/asp-make-dependency-profile.mjs ci-dependency-all "$profile" --reuse
             mkdir -p "dependency-builds/transition-$profile"
             "$GAMECI" build --engine=unity ci-dependency-all --engineVersion="$UNITY_VERSION" \

@@ -471,7 +471,7 @@ jobs:
       - name: Build optional dependency profiles
         if: matrix.unity == fromJSON(needs.unity-plan.outputs.versions)[0]
         run: |
-          for profile in minimal ai animation audio particlesystem video physics physics2d ui uielements imgui ugui counter without-fasttools collections all; do
+          for profile in without-fasttools minimal ai animation audio particlesystem video physics physics2d ui uielements imgui ugui counter collections all; do
             project="ci-dependency-$profile"
             node scripts/asp-make-dependency-profile.mjs "$project" "$profile"
             mkdir -p "dependency-builds/$profile"

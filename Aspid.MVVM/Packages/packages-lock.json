@@ -254,13 +254,11 @@
       "hash": "5401e5a7ebc4980a2b82141ffc26391a6547edd7"
     },
     "tech.aspid.collections": {
-      "version": "https://github.com/VPDPersonal/Aspid.Collections.git#upm",
+      "version": "https://github.com/VPDPersonal/Aspid.Collections.git#upm/1.1.1",
       "depth": 0,
       "source": "git",
-      "dependencies": {
-        "com.unity.test-framework": "1.6.0"
-      },
-      "hash": "c050c3cee1c9a322d378d705d2af709ee85bc429"
+      "dependencies": {},
+      "hash": "6f9d8dd53be2e67290e34a79574fdf1f297cf221"
     },
     "tech.aspid.fasttools": {
       "version": "https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview/1.0.0-rc.9",

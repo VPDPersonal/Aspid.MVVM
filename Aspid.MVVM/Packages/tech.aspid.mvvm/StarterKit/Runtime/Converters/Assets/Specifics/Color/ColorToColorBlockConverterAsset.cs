@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,3 +11,4 @@ namespace Aspid.MVVM.StarterKit
     [CreateAssetMenu(menuName = "Aspid/MVVM/Converters/Color/Color To Color Block Converter", fileName = "ColorToColorBlockConverter")]
     public sealed class ColorToColorBlockConverterAsset : ConverterAsset<Color, ColorBlock> { }
 }
+#endif

@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AUDIO
 using System;
 using UnityEngine;
 
@@ -58,3 +59,4 @@ namespace Aspid.MVVM.StarterKit
             ValueChanged?.Invoke(_converter is ITwoWayConverter<bool, bool> twoWay ? twoWay.ConvertBack(isPlaying) : isPlaying);
     }
 }
+#endif

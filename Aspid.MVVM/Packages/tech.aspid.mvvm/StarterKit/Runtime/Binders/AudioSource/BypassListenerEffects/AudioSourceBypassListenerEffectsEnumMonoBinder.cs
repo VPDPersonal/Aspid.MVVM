@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AUDIO
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -15,3 +16,4 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.bypassListenerEffects = value;
     }
 }
+#endif

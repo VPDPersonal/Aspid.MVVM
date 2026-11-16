@@ -13,7 +13,7 @@ const script = fileURLToPath(new URL('check-unity-minimum.mjs', import.meta.url)
 const PACKAGE_JSON = 'Aspid.MVVM/Packages/tech.aspid.mvvm/package.json';
 const MATRIX = '.github/workflows/ci.yml';
 const GUIDE = 'Docs/migration/1.1.md';
-const PROSE = [GUIDE, 'Docs/i18n/ru/docusaurus-plugin-content-docs-migration/current/1.1.md', '.claude/skills/aspid-code-style/SKILL.md'];
+const PROSE = ['README.md', 'Docs/docs/README.md', 'Docs/i18n/ru/docusaurus-plugin-content-docs/current/README.md', 'Docs/docs/01-getting-started.md', 'Docs/i18n/ru/docusaurus-plugin-content-docs/current/01-getting-started.md', GUIDE, 'Docs/i18n/ru/docusaurus-plugin-content-docs-migration/current/1.1.md', '.claude/skills/aspid-code-style/SKILL.md'];
 
 const matrix = (versions) => `jobs:\n  unity-plan:\n    steps:\n      - env:\n          UNITY_VERSIONS: ${versions}\n`;
 const valid = () => ({

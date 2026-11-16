@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_PARTICLESYSTEM
 using System;
 using UnityEngine;
 
@@ -98,3 +99,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

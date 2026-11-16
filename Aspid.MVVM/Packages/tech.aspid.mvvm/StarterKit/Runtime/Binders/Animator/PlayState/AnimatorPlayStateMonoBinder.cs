@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ANIMATION
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -33,3 +34,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

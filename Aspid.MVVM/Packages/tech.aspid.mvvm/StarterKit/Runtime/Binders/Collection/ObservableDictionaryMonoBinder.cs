@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ASPID_COLLECTIONS
 using System;
 using System.Collections.Generic;
 using Aspid.Collections.Observable;
@@ -137,3 +138,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

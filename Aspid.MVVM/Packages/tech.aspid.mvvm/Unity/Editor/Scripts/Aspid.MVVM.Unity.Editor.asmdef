@@ -4,12 +4,8 @@
     "references": [
         "Aspid.MVVM",
         "Aspid.FastTools",
-        "Unity.Collections",
-        "Unity.Mathematics",
         "Aspid.MVVM.Unity",
-        "Aspid.Internal.Unity.Editor",
-        "Aspid.FastTools.Editor",
-        "Aspid.Collections.Observable"
+        "Aspid.FastTools.Editor"
     ],
     "includePlatforms": [
         "Editor"
@@ -19,7 +15,15 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
+    "defineConstraints": [
+        "ASPID_MVVM_HAS_ASPID_FASTTOOLS"
+    ],
+    "versionDefines": [
+        {
+            "name": "tech.aspid.fasttools",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_ASPID_FASTTOOLS"
+        }
+    ],
     "noEngineReferences": false
 }

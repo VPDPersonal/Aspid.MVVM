@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UIELEMENTS
 using UnityEngine;
 using Button = UnityEngine.UIElements.Button;
 
@@ -42,6 +43,14 @@ namespace Aspid.MVVM.StarterKit
             base.OnDetach();
         }
 
+        /// <inheritdoc/>
+        protected override void RestoreElement() =>
+            SetValue(_command);
+
+        /// <inheritdoc/>
+        protected override void OnElementDetached(Button element) =>
+            element.clicked -= Execute;
+
         private void Execute() =>
             _command?.Execute();
 
@@ -58,3 +67,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

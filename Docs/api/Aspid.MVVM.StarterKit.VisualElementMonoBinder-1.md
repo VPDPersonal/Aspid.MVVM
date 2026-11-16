@@ -81,6 +81,38 @@ protected TElement Element { get; }
 
 ## Methods
 
+### ClearValue\(\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_ClearValue}
+
+Called when a binding ends or starts to release its retained value.
+
+```csharp
+protected virtual void ClearValue()
+```
+
+### OnAttach\(\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_OnAttach}
+
+Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+
+```csharp
+protected override void OnAttach()
+```
+
+#### Remarks
+
+An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
+
+### OnBinding\(\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_OnBinding}
+
+Called before attachment and the first value. Override to prepare for that value.
+
+```csharp
+protected override void OnBinding()
+```
+
+#### Remarks
+
+Subscribe to the component in [`MonoBinder.OnAttach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnAttach) so the first value is not reported back as user input.
+
 ### OnDetach\(\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_OnDetach}
 
 Called after removal, before ownership is released. Override to release subscriptions and other resources.
@@ -92,3 +124,53 @@ protected override void OnDetach()
 #### Remarks
 
 Also called after a failed installation; tolerate partially initialized resources.
+
+### OnElementAttached\(TElement\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_OnElementAttached__0_}
+
+Called when an element joins the active binding. Override to subscribe to input.
+
+```csharp
+protected virtual void OnElementAttached(TElement element)
+```
+
+#### Parameters
+
+`element` TElement
+
+The resolved element.
+
+### OnElementDetached\(TElement\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_OnElementDetached__0_}
+
+Called before an element leaves the binding. Override to release its callbacks.
+
+```csharp
+protected virtual void OnElementDetached(TElement element)
+```
+
+#### Parameters
+
+`element` TElement
+
+The previous element.
+
+### ResolveForWrite\(\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_ResolveForWrite}
+
+Resolves the current element before a new value is applied, without replaying the previous value.
+
+```csharp
+protected TElement ResolveForWrite()
+```
+
+#### Returns
+
+ TElement
+
+The current element, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> before its tree exists.
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_VisualElementMonoBinder_1_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected virtual void RestoreElement()
+```

@@ -67,17 +67,13 @@ Writes raise the change event for other listeners; only the binder's own echo is
 
 ## Methods
 
-### OnAttach\(\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_OnAttach}
+### ClearValue\(\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_ClearValue}
 
-Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+Called when a binding ends or starts to release its retained value.
 
 ```csharp
-protected override void OnAttach()
+protected override void ClearValue()
 ```
-
-#### Remarks
-
-An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
 
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_OnBound}
 
@@ -91,17 +87,41 @@ protected override void OnBound()
 
 Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
 
-### OnDetach\(\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_OnDetach}
+### OnElementAttached\(TextField\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_OnElementAttached_UnityEngine_UIElements_TextField_}
 
-Called after removal, before ownership is released. Override to release subscriptions and other resources.
+Called when an element joins the active binding. Override to subscribe to input.
 
 ```csharp
-protected override void OnDetach()
+protected override void OnElementAttached(TextField element)
 ```
 
-#### Remarks
+#### Parameters
 
-Also called after a failed installation; tolerate partially initialized resources.
+`element` TextField
+
+The resolved element.
+
+### OnElementDetached\(TextField\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_OnElementDetached_UnityEngine_UIElements_TextField_}
+
+Called before an element leaves the binding. Override to release its callbacks.
+
+```csharp
+protected override void OnElementDetached(TextField element)
+```
+
+#### Parameters
+
+`element` TextField
+
+The previous element.
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
 
 ### SetValue\(string\) {#Aspid_MVVM_StarterKit_ElementTextFieldValueMonoBinder_SetValue_System_String_}
 

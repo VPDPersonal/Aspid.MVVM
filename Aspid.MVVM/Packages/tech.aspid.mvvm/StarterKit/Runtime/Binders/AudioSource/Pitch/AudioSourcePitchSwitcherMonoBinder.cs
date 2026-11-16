@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AUDIO
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -19,3 +20,4 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.pitch = this.SafeClamp(value, -3f, 3f);
     }
 }
+#endif

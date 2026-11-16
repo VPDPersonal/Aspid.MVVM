@@ -357,7 +357,7 @@ jobs:
     if: needs.unity-plan.outputs.run == 'true'
     runs-on: ubuntu-latest
     # Both passes take a few minutes; the rest is room for a slow image pull and an activation retry.
-    timeout-minutes: 30
+    timeout-minutes: 60
     permissions:
       contents: read
     strategy:
@@ -465,6 +465,31 @@ jobs:
         env:
           PASS: playmode
         run: *unity-pass
+
+      - name: Build optional dependency profiles
+        if: matrix.unity == fromJSON(needs.unity-plan.outputs.versions)[0]
+        run: |
+          for profile in minimal ai animation audio particlesystem video physics physics2d ui uielements imgui ugui counter without-fasttools collections all; do
+            project="ci-dependency-$profile"
+            node scripts/asp-make-dependency-profile.mjs "$project" "$profile"
+            "$GAMECI" build --docker --engine=unity "$project" --engineVersion="$UNITY_VERSION" \
+              --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
+              --buildName=Smoke --buildsPath="dependency-builds/$profile" \
+              --customParameters="-nographics -disableaudio" --skipActivation=true
+            player="dependency-builds/$profile/StandaloneLinux64/Smoke.x86_64"
+            timeout 60 "$player" -batchmode -nographics -disableaudio -logFile "$PWD/dependency-builds/$profile/player.log"
+            grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/$profile/player.log"
+          done
+          for profile in without-fasttools minimal all; do
+            node scripts/asp-make-dependency-profile.mjs ci-dependency-all "$profile" --reuse
+            "$GAMECI" build --docker --engine=unity ci-dependency-all --engineVersion="$UNITY_VERSION" \
+              --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
+              --buildName=Smoke --buildsPath="dependency-builds/transition-$profile" \
+              --customParameters="-nographics -disableaudio" --skipActivation=true
+            player="dependency-builds/transition-$profile/StandaloneLinux64/Smoke.x86_64"
+            timeout 60 "$player" -batchmode -nographics -disableaudio -logFile "$PWD/dependency-builds/transition-$profile/player.log"
+            grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/transition-$profile/player.log"
+          done
 
       # Also after a failed or cancelled pass, and after a failed activation that may still hold a seat: a seat that
       # is never returned stays taken and breaks the next runs on the account. The log line decides, not the exit

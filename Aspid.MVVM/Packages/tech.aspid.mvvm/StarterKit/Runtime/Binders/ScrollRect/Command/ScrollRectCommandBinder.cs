@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -499,3 +500,4 @@ namespace Aspid.MVVM.StarterKit
             _interactable?.SetCanExecute(command.CanExecute(Target.normalizedPosition, Param1, Param2, Param3));
     }
 }
+#endif

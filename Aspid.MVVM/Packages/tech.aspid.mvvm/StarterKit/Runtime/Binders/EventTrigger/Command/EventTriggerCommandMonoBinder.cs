@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -505,3 +506,4 @@ namespace Aspid.MVVM.StarterKit
             _customInteractable?.SetCanExecute(command.CanExecute(_event, Param1, Param2, Param3));
     }
 }
+#endif

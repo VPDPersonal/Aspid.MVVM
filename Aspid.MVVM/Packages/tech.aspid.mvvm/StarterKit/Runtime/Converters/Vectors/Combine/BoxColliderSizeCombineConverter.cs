@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_PHYSICS
 #nullable enable
 using System;
 using UnityEngine;
@@ -32,3 +33,4 @@ namespace Aspid.MVVM.StarterKit
         protected override Vector3 VectorTo => _collider!.size;
     }
 }
+#endif

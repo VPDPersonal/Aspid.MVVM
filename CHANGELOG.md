@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Everything since `1.0.5`. Minimum Unity is now **`6000.0`**. Upgrade checklist: [migration guide](https://vpdpersonal.github.io/Aspid.MVVM/migration/1.1).
 A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` channel.
 
+### Audit completion
+
+- UI Toolkit sliders support all four numeric reverse channels. Rebuilt and late visual trees restore values and callbacks without rebinding the ViewModel.
+- Renderer material binders own instance copies per consumer and slot and release them on unbind.
+- FastTools is required; assembly constraints disable MVVM when it is absent, without per-file FastTools guards. Unity modules, UI packages and Collections remain optional. Serialized types retain their assemblies and GUIDs.
+- Clean dependency profiles cover minimal installation, individual integrations, combined installation and package removal/reinstallation in Editor and Player.
+- Installation instructions distinguish unreleased source from published previews. The minimum supported Unity patch is 6000.0.53f1; the development project pins Collections 1.1.1 without its former Test Framework dependency.
+
 ### Highlights
 
 - Source generator: bindable properties, `NotifyCanExecuteChangedAll()`, auto-emitted binder fields, `[GenerateSerializableBinder]`.

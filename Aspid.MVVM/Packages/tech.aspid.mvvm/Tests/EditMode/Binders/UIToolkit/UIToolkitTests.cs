@@ -178,6 +178,60 @@ namespace Aspid.MVVM.Tests
             binder.SetValue("value");
         }
 
+        [TestCase(BindMode.TwoWay)]
+        [TestCase(BindMode.OneWayToSource)]
+        public void Slider_AllNumericReverseChannels(BindMode mode)
+        {
+            CheckNumericReverse<int>(mode, 3, 7);
+            CheckNumericReverse<long>(mode, 3L, 7L);
+            CheckNumericReverse<float>(mode, 3f, 7f);
+            CheckNumericReverse<double>(mode, 3d, 7d);
+        }
+
+        [Test]
+        public void RebindToSource_DoesNotReplayThePreviousViewModelValue()
+        {
+            var (document, slider) = NewDocument<Slider>("value");
+            slider.highValue = 100;
+            var binder = NewBinder<ElementSliderValueMonoBinder>(document, "value");
+            binder.Bind(new BindContext(new OneWayBindableMember<float>(3f), binder));
+            binder.Unbind(new UnbindContext(binder));
+            slider.value = 8f;
+            binder.Mode = BindMode.OneWayToSource;
+            var received = new List<float>();
+            binder.Bind(new BindContext(new TwoWayBindableMember<float>(0f, received.Add), binder));
+            CollectionAssert.AreEqual(new[] { 8f }, received);
+        }
+
+        private void CheckNumericReverse<T>(BindMode mode, T initial, T expected)
+        {
+            var (document, slider) = NewDocument<Slider>("value");
+            slider.highValue = 100;
+            slider.value = 7;
+            var binder = NewBinder<ElementSliderValueMonoBinder>(document, "value");
+            binder.Mode = mode;
+            var received = new List<T>();
+            var member = new TwoWayBindableMember<T>(initial, received.Add);
+            binder.Bind(new BindContext(member, binder));
+            if (mode is BindMode.OneWayToSource)
+                CollectionAssert.AreEqual(new[] { expected }, received);
+            received.Clear();
+            using (var change = ChangeEvent<float>.GetPooled(3, 7))
+            {
+                change.target = slider;
+                slider.SendEvent(change);
+            }
+            CollectionAssert.AreEqual(new[] { expected }, received);
+            binder.Unbind(new UnbindContext(binder));
+            received.Clear();
+            using (var change = ChangeEvent<float>.GetPooled(7, 8))
+            {
+                change.target = slider;
+                slider.SendEvent(change);
+            }
+            Assert.IsEmpty(received);
+        }
+
         private (UIDocument Document, TElement Element) NewDocument<TElement>(string name)
             where TElement : VisualElement, new()
         {

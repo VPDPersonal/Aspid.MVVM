@@ -1,4 +1,5 @@
 #nullable enable
+#if ASPID_MVVM_HAS_ANIMATION
 using System;
 using UnityEngine;
 
@@ -52,3 +53,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

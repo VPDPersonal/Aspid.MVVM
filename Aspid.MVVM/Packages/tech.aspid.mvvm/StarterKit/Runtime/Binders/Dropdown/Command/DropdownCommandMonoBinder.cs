@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using TMPro;
 using UnityEngine;
 
@@ -428,3 +429,4 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }
+#endif

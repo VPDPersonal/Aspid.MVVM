@@ -81,6 +81,18 @@ protected override void OnBound()
 
 Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
 
+### OnDestroy\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsMonoBinder_OnDestroy}
+
+Called by Unity when the component is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+
+```csharp
+protected override void OnDestroy()
+```
+
+#### Remarks
+
+When overriding, always call <code>base.OnDestroy()</code>.
+
 ### OnDetach\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsMonoBinder_OnDetach}
 
 Called after removal, before ownership is released. Override to release subscriptions and other resources.

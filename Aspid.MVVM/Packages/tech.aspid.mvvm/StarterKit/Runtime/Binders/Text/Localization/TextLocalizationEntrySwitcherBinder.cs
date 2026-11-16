@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 #nullable enable
 using TMPro;
@@ -78,4 +79,6 @@ namespace Aspid.MVVM.StarterKit
             Target.text = value;
     }
 }
+#endif
+
 #endif

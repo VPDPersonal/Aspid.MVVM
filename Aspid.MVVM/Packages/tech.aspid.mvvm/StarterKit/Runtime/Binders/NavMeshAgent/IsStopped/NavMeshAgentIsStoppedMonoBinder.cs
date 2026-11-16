@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AI
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -35,3 +36,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

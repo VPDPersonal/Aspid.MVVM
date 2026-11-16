@@ -65,6 +65,22 @@ A hidden element takes no layout space, unlike one with [`visible`](https://docs
 
 ## Methods
 
+### ClearValue\(\) {#Aspid_MVVM_StarterKit_ElementDisplayMonoBinder_ClearValue}
+
+Called when a binding ends or starts to release its retained value.
+
+```csharp
+protected override void ClearValue()
+```
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementDisplayMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
+
 ### SetValue\(bool\) {#Aspid_MVVM_StarterKit_ElementDisplayMonoBinder_SetValue_System_Boolean_}
 
 ```csharp

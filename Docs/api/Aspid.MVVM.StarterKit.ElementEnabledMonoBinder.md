@@ -64,6 +64,22 @@ Applies to the whole subtree.
 
 ## Methods
 
+### ClearValue\(\) {#Aspid_MVVM_StarterKit_ElementEnabledMonoBinder_ClearValue}
+
+Called when a binding ends or starts to release its retained value.
+
+```csharp
+protected override void ClearValue()
+```
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementEnabledMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
+
 ### SetValue\(bool\) {#Aspid_MVVM_StarterKit_ElementEnabledMonoBinder_SetValue_System_Boolean_}
 
 ```csharp

@@ -1,4 +1,4 @@
-using System;
+#if ASPID_MVVM_HAS_UIELEMENTS
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,12 +18,16 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenuByType(typeof(float))]
     public sealed partial class ElementSliderValueMonoBinder : VisualElementMonoBinder<Slider>,
         IFloatBinder,
-        IReverseBinder<float>
+        INumberReverseBinder
     {
+        private float _lastValue;
+        private bool _hasValue;
+
         private bool _isSuppressingEcho;
+        private NumberReverseChannel _channel;
 
         /// <inheritdoc/>
-        public event Action<float> ValueChanged;
+        ref NumberReverseChannel INumberReverseBinder.Channel => ref _channel;
 
         /// <summary>
         /// Sets the value without reporting the write back to the ViewModel.
@@ -32,9 +36,11 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(float value)
         {
-            var element = Element;
-            if (element is null) return;
             if (!this.RequireFinite(value)) return;
+            _lastValue = value;
+            _hasValue = true;
+            var element = ResolveForWrite();
+            if (element is null) return;
 
             _isSuppressingEcho = true;
 
@@ -50,14 +56,12 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnAttach()
+        protected override void OnElementAttached(Slider element)
         {
-            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
-
-            var element = Element;
-            if (element is null) return;
-
+            if (!Mode.IncludesReverse()) return;
+            element.UnregisterValueChangedCallback(OnSliderChanged);
             element.RegisterValueChangedCallback(OnSliderChanged);
+            if (IsBound && Mode is BindMode.OneWayToSource) OnBound();
         }
 
         /// <inheritdoc/>
@@ -66,20 +70,31 @@ namespace Aspid.MVVM.StarterKit
             if (Mode is not BindMode.OneWayToSource) return;
             var element = Element;
             if (element is not null)
-                ValueChanged?.Invoke(element.value);
+                _channel.Raise(element.value);
         }
 
         /// <inheritdoc/>
-        protected override void OnDetach()
+        protected override void OnElementDetached(Slider element) =>
+            element.UnregisterValueChangedCallback(OnSliderChanged);
+
+        /// <inheritdoc/>
+        protected override void ClearValue()
         {
-            if (Element is not null) Element.UnregisterValueChangedCallback(OnSliderChanged);
-            base.OnDetach();
+            _hasValue = false;
+            _lastValue = default;
+        }
+
+        /// <inheritdoc/>
+        protected override void RestoreElement()
+        {
+            if (_hasValue) SetValue(_lastValue);
         }
 
         private void OnSliderChanged(ChangeEvent<float> changed)
         {
             if (!_isSuppressingEcho)
-                ValueChanged?.Invoke(changed.newValue);
+                _channel.Raise(changed.newValue);
         }
     }
 }
+#endif

@@ -73,6 +73,28 @@ protected override void OnDetach()
 
 Also called after a failed installation; tolerate partially initialized resources.
 
+### OnElementDetached\(Button\) {#Aspid_MVVM_StarterKit_ElementButtonCommandMonoBinder_OnElementDetached_UnityEngine_UIElements_Button_}
+
+Called before an element leaves the binding. Override to release its callbacks.
+
+```csharp
+protected override void OnElementDetached(Button element)
+```
+
+#### Parameters
+
+`element` Button
+
+The previous element.
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementButtonCommandMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
+
 ### SetValue\(IRelayCommand\) {#Aspid_MVVM_StarterKit_ElementButtonCommandMonoBinder_SetValue_Aspid_MVVM_IRelayCommand_}
 
 ```csharp

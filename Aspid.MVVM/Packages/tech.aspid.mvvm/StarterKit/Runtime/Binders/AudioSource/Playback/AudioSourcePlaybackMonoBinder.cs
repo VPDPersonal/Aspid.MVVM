@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AUDIO
 using System;
 using UnityEngine;
 
@@ -104,3 +105,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

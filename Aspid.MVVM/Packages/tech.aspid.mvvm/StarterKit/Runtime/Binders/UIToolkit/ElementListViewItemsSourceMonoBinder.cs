@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ASPID_COLLECTIONS && ASPID_MVVM_HAS_UIELEMENTS
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -55,6 +56,17 @@ namespace Aspid.MVVM.StarterKit
             base.OnDetach();
         }
 
+        /// <inheritdoc/>
+        protected override void RestoreElement() =>
+            Apply();
+
+        /// <inheritdoc/>
+        protected override void OnElementDetached(ListView element)
+        {
+            element.itemsSource = null;
+            element.RefreshItems();
+        }
+
         private void SetList(IReadOnlyList<object> list)
         {
             Unsubscribe();
@@ -102,3 +114,4 @@ namespace Aspid.MVVM.StarterKit
             Apply();
     }
 }
+#endif

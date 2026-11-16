@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_PHYSICS2D
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -22,3 +23,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

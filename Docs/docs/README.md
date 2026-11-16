@@ -20,6 +20,8 @@ The URL installs the latest preview; **Update** in the Package Manager installs 
 
 Requires Unity 6000.0 or newer. If you got the package from the Asset Store, skip the git URL and install it from **My Assets** in the Package Manager. The full walk-through is in [Getting Started](01-getting-started.md).
 
+Unreleased source: Unity 6000.0.53f1, installation from disk with required FastTools, and optional UI/Collections profiles are described in [Getting Started](01-getting-started.md). Published preview tags keep their own dependency requirements.
+
 ## Features
 
 ### Core

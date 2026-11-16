@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ASPID_COLLECTIONS
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -258,3 +259,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

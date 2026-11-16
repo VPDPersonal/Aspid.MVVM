@@ -83,5 +83,8 @@ public static class AspDependencyProfile
         });
         if (report.summary.result != BuildResult.Succeeded)
             throw new InvalidOperationException("Dependency profile Player build failed.");
+
+        // GameCI validates custom build output using this success marker.
+        Console.WriteLine("Build succeeded!");
     }
 }

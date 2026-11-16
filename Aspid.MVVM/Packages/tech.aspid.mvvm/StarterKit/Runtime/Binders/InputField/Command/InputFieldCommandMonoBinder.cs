@@ -161,7 +161,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_command is not null) OnCanExecuteChanged(_command);
+            if (_command is not null)
+                OnCanExecuteChanged(_command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<string, T> command)
@@ -261,7 +262,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_command is not null) OnCanExecuteChanged(_command);
+            if (_command is not null)
+                OnCanExecuteChanged(_command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<string, T1, T2> command)
@@ -379,7 +381,8 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_command is not null) OnCanExecuteChanged(_command);
+            if (_command is not null)
+                OnCanExecuteChanged(_command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<string, T1, T2, T3> command)

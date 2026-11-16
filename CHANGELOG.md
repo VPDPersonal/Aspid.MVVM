@@ -251,7 +251,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Reference converters preserve deliberate null results in input fields, string events and material assignments.
 - Parameterized UI command binders refresh CanExecute when Param changes, including serializable variants.
 - Delay stops processing the old queue when a callback unbinds or rebinds it.
-- Addressable binders suppress default application during destruction and release instances and handles through guaranteed cleanup.
+- Addressable binders suppress default application during destruction; cancellation failures do not skip base teardown, owned instance cleanup, or current asset release. Failed handle releases are not retried.
 - Inspector matching checks channel direction and generic variance consistently for drag/drop and automatic assignment.
 
 - Property notification helpers inspect all ViewModel partial declarations while preserving `CallerLineNumber`. Ambiguous implicit calls report `ASPIDVM007`; explicit property names select the correct target, and unsupported calls report `ASPIDVM008`. Source-only property setters no longer call a missing forward-notification method.

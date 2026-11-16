@@ -208,10 +208,14 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
+            if (_floatCommand is not null)
+                OnCanExecuteChanged(_floatCommand);
+            else if (_intCommand is not null)
+                OnCanExecuteChanged(_intCommand);
+            else if (_doubleCommand is not null)
+                OnCanExecuteChanged(_doubleCommand);
+            else if (_longCommand is not null)
+                OnCanExecuteChanged(_longCommand);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<int, T> command)
@@ -354,10 +358,14 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
+            if (_floatCommand is not null)
+                OnCanExecuteChanged(_floatCommand);
+            else if (_intCommand is not null)
+                OnCanExecuteChanged(_intCommand);
+            else if (_doubleCommand is not null)
+                OnCanExecuteChanged(_doubleCommand);
+            else if (_longCommand is not null)
+                OnCanExecuteChanged(_longCommand);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2> command)
@@ -518,10 +526,14 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_floatCommand is not null) OnCanExecuteChanged(_floatCommand);
-            else if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
-            else if (_doubleCommand is not null) OnCanExecuteChanged(_doubleCommand);
-            else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
+            if (_floatCommand is not null)
+                OnCanExecuteChanged(_floatCommand);
+            else if (_intCommand is not null)
+                OnCanExecuteChanged(_intCommand);
+            else if (_doubleCommand is not null)
+                OnCanExecuteChanged(_doubleCommand);
+            else if (_longCommand is not null)
+                OnCanExecuteChanged(_longCommand);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<int, T1, T2, T3> command)

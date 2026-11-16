@@ -141,8 +141,10 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_vector2Command is not null) OnCanExecuteChanged(_vector2Command);
-            else if (_vector3Command is not null) OnCanExecuteChanged(_vector3Command);
+            if (_vector2Command is not null)
+                OnCanExecuteChanged(_vector2Command);
+            else if (_vector3Command is not null)
+                OnCanExecuteChanged(_vector3Command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<Vector2, T> command) =>
@@ -243,8 +245,10 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_vector2Command is not null) OnCanExecuteChanged(_vector2Command);
-            else if (_vector3Command is not null) OnCanExecuteChanged(_vector3Command);
+            if (_vector2Command is not null)
+                OnCanExecuteChanged(_vector2Command);
+            else if (_vector3Command is not null)
+                OnCanExecuteChanged(_vector3Command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<Vector2, T1, T2> command) =>
@@ -363,8 +367,10 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_vector2Command is not null) OnCanExecuteChanged(_vector2Command);
-            else if (_vector3Command is not null) OnCanExecuteChanged(_vector3Command);
+            if (_vector2Command is not null)
+                OnCanExecuteChanged(_vector2Command);
+            else if (_vector3Command is not null)
+                OnCanExecuteChanged(_vector3Command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<Vector2, T1, T2, T3> command) =>

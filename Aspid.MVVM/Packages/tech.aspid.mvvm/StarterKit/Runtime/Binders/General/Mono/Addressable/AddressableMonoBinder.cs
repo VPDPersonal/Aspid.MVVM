@@ -34,17 +34,23 @@ namespace Aspid.MVVM.StarterKit
             try
             {
                 _loader?.CancelPending();
-                base.OnDestroy();
             }
             finally
             {
                 try
                 {
-                    ReleaseAsset();
+                    base.OnDestroy();
                 }
                 finally
                 {
-                    _loader?.ReleaseAll();
+                    try
+                    {
+                        ReleaseAsset();
+                    }
+                    finally
+                    {
+                        _loader?.ReleaseAll();
+                    }
                 }
             }
         }
@@ -97,19 +103,10 @@ namespace Aspid.MVVM.StarterKit
             SetAsset(GetDefaultAsset());
         }
 
-        private void ApplyLoadedAsset(TAsset asset)
-        {
-            if (!_isDestroying)
-                SetAsset(asset);
-        }
-
         /// <summary>
         /// Called during destruction before loaded handles are released. Override to release owned instances.
         /// </summary>
         protected virtual void ReleaseAsset() { }
-
-        private static bool IsEmptyKey(object key) =>
-            key is null || key is string text && string.IsNullOrWhiteSpace(text);
 
         /// <summary>
         /// Applies <paramref name="asset"/> to the target.
@@ -122,6 +119,15 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <returns>The default asset.</returns>
         protected virtual TAsset GetDefaultAsset() => default;
+
+        private void ApplyLoadedAsset(TAsset asset)
+        {
+            if (!_isDestroying)
+                SetAsset(asset);
+        }
+
+        private static bool IsEmptyKey(object key) =>
+            key is null || key is string text && string.IsNullOrWhiteSpace(text);
     }
 
     /// <summary>
@@ -155,17 +161,23 @@ namespace Aspid.MVVM.StarterKit
             try
             {
                 _loader?.CancelPending();
-                base.OnDestroy();
             }
             finally
             {
                 try
                 {
-                    ReleaseAsset();
+                    base.OnDestroy();
                 }
                 finally
                 {
-                    _loader?.ReleaseAll();
+                    try
+                    {
+                        ReleaseAsset();
+                    }
+                    finally
+                    {
+                        _loader?.ReleaseAll();
+                    }
                 }
             }
         }
@@ -218,19 +230,10 @@ namespace Aspid.MVVM.StarterKit
             SetAsset(GetDefaultAsset());
         }
 
-        private void ApplyLoadedAsset(TAsset asset)
-        {
-            if (!_isDestroying)
-                SetAsset(asset);
-        }
-
         /// <summary>
         /// Called during destruction before loaded handles are released. Override to release owned instances.
         /// </summary>
         protected virtual void ReleaseAsset() { }
-
-        private static bool IsEmptyKey(object key) =>
-            key is null || key is string text && string.IsNullOrWhiteSpace(text);
 
         /// <summary>
         /// Applies <paramref name="asset"/> to the component.
@@ -243,6 +246,15 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         /// <returns>The default asset.</returns>
         protected virtual TAsset GetDefaultAsset() => default;
+
+        private void ApplyLoadedAsset(TAsset asset)
+        {
+            if (!_isDestroying)
+                SetAsset(asset);
+        }
+
+        private static bool IsEmptyKey(object key) =>
+            key is null || key is string text && string.IsNullOrWhiteSpace(text);
     }
 }
 #endif

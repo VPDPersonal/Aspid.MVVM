@@ -63,6 +63,74 @@ namespace Aspid.MVVM.Tests
             }
         }
 
+        [TestCase(false, false)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(true, true)]
+        public void ReleaseFailure_DoesNotSkipCleanup(bool componentBinder, bool releaseAllDirectly)
+        {
+            var host = new GameObject("Release failure");
+            var binder = componentBinder
+                ? (MonoBinder)host.AddComponent<ComponentDestroyProbe>()
+                : host.AddComponent<DestroyProbe>();
+            var probe = (IDestroyProbe)binder;
+            var member = new OneWayBindableMember<string>(null);
+            binder.Bind(new BindContext(member, binder));
+            var baseType = componentBinder
+                ? typeof(AddressableMonoBinder<GameObject, Transform>)
+                : typeof(AddressableMonoBinder<GameObject>);
+            var loader = baseType.GetProperty("Loader", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(binder);
+            var loaderType = loader.GetType();
+            var pendingField = loaderType.GetField("_pending", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            var currentField = loaderType.GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            var failure = new InvalidOperationException("Pending release failed.");
+            var pending = new ReleaseProbeOperation { Failure = failure };
+            var current = new ReleaseProbeOperation();
+            pendingField.SetValue(loader, Addressables.ResourceManager.StartOperation(pending, default));
+            currentField.SetValue(loader, Addressables.ResourceManager.StartOperation(current, default));
+            try
+            {
+                if (releaseAllDirectly)
+                {
+                    var exception = Assert.Throws<TargetInvocationException>(() => loaderType.GetMethod("ReleaseAll")!.Invoke(loader, null));
+                    Assert.AreSame(failure, exception!.InnerException);
+                }
+                else
+                {
+                    Assert.AreSame(failure, Assert.Throws<InvalidOperationException>(() => probe.DestroyForTest()));
+                    Assert.IsFalse(binder.IsBound, "Base destruction must unbind after cancellation fails.");
+                    Assert.AreEqual(1, probe.Released, "Owned instances must be released after cancellation fails.");
+                }
+
+                Assert.AreEqual(1, pending.Released, "A failed release must not be retried by ReleaseAll.");
+                Assert.AreEqual(1, current.Released, "The current asset must be released after cancellation fails.");
+                Assert.IsFalse(((AsyncOperationHandle<GameObject>)pendingField.GetValue(loader)).IsValid());
+                Assert.IsFalse(((AsyncOperationHandle<GameObject>)currentField.GetValue(loader)).IsValid());
+            }
+            finally
+            {
+                pendingField.SetValue(loader, default(AsyncOperationHandle<GameObject>));
+                currentField.SetValue(loader, default(AsyncOperationHandle<GameObject>));
+                Object.DestroyImmediate(host);
+            }
+        }
+
+        private sealed class ReleaseProbeOperation : AsyncOperationBase<GameObject>
+        {
+            internal Exception Failure;
+            internal int Released;
+
+            protected override void Execute() =>
+                Complete(null, true, (Exception)null);
+
+            protected override void Destroy()
+            {
+                Released++;
+                if (Failure is not null)
+                    throw Failure;
+            }
+        }
+
         private sealed class PendingProvider : ResourceProviderBase
         {
             private ProvideHandle _handle;
@@ -99,6 +167,38 @@ namespace Aspid.MVVM.Tests
                 Object.DestroyImmediate(template);
             }
         }
+    }
+
+    public interface IDestroyProbe
+    {
+        int Released { get; }
+        void DestroyForTest();
+    }
+
+    public sealed class DestroyProbe : AddressableMonoBinder<GameObject>, IDestroyProbe
+    {
+        public int Released { get; private set; }
+
+        public void DestroyForTest() =>
+            OnDestroy();
+
+        protected override void ReleaseAsset() =>
+            Released++;
+
+        protected override void SetAsset(GameObject asset) { }
+    }
+
+    public sealed class ComponentDestroyProbe : AddressableMonoBinder<GameObject, Transform>, IDestroyProbe
+    {
+        public int Released { get; private set; }
+
+        public void DestroyForTest() =>
+            OnDestroy();
+
+        protected override void ReleaseAsset() =>
+            Released++;
+
+        protected override void SetAsset(GameObject asset) { }
     }
 
     public sealed class AwakeCounter : MonoBehaviour

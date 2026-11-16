@@ -225,9 +225,12 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_command is not null) OnCanExecuteChanged(_command);
-            else if (_dataCommand is not null) OnCanExecuteChanged(_dataCommand);
-            else if (_typeCommand is not null) OnCanExecuteChanged(_typeCommand);
+            if (_command is not null)
+                OnCanExecuteChanged(_command);
+            else if (_dataCommand is not null)
+                OnCanExecuteChanged(_dataCommand);
+            else if (_typeCommand is not null)
+                OnCanExecuteChanged(_typeCommand);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<T> command) =>
@@ -376,9 +379,12 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_command is not null) OnCanExecuteChanged(_command);
-            else if (_dataCommand is not null) OnCanExecuteChanged(_dataCommand);
-            else if (_typeCommand is not null) OnCanExecuteChanged(_typeCommand);
+            if (_command is not null)
+                OnCanExecuteChanged(_command);
+            else if (_dataCommand is not null)
+                OnCanExecuteChanged(_dataCommand);
+            else if (_typeCommand is not null)
+                OnCanExecuteChanged(_typeCommand);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<T1, T2> command) =>
@@ -547,9 +553,12 @@ namespace Aspid.MVVM.StarterKit
 
         private void RefreshCanExecute()
         {
-            if (_command is not null) OnCanExecuteChanged(_command);
-            else if (_dataCommand is not null) OnCanExecuteChanged(_dataCommand);
-            else if (_typeCommand is not null) OnCanExecuteChanged(_typeCommand);
+            if (_command is not null)
+                OnCanExecuteChanged(_command);
+            else if (_dataCommand is not null)
+                OnCanExecuteChanged(_dataCommand);
+            else if (_typeCommand is not null)
+                OnCanExecuteChanged(_typeCommand);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<T1, T2, T3> command) =>

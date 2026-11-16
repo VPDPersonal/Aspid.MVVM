@@ -16,7 +16,7 @@ namespace MVVMGenerators.Tests;
 /// </remarks>
 public sealed class SerializableBinderGeneratorTests
 {
-    private const string Framework = """
+    internal const string Framework = """
         using System;
 
         namespace Aspid.MVVM

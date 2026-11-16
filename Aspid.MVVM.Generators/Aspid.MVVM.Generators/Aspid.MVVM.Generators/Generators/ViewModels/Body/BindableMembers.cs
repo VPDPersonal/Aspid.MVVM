@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using Aspid.MVVM.Generators.Helpers;
@@ -13,19 +14,18 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class BindableMembers
 {
-    public static void Generate(
-        string @namespace,
+    internal static void Generate(
         in ViewModelData data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
 
-        code.BeginClass(@namespace, declaration)
+        code.BeginScopedClass(declaration)
             .AppendBody(data)
-            .EndClass(@namespace);
+            .EndScopedClass(declaration);
 
-        context.AddSource(declaration.GetFileName(@namespace, "BindableMembers"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName("BindableMembers"), code.GetSourceText());
     }
     
     private static IEnumerable<IBindableMemberInfo> GetBindableBindAlso(ISymbol member, in ViewModelData data)

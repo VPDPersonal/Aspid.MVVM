@@ -115,6 +115,7 @@ jobs:
           sparse-checkout: |
             scripts
             Aspid.MVVM.Generators
+            Generators.Shared
             Aspid.MVVM.Analyzers
             Aspid.MVVM.Unity.Generators
             Aspid.MVVM/Packages/tech.aspid.mvvm
@@ -194,6 +195,7 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             Aspid.MVVM.Generators
+            Generators.Shared
             Aspid.MVVM.Analyzers
             Aspid.MVVM.Unity.Generators
             Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands

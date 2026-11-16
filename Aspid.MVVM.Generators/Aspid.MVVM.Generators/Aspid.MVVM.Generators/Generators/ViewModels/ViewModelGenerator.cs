@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
@@ -46,6 +48,8 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
     {
         if (context.TargetSymbol is not INamedTypeSymbol symbol) return (null, ImmutableArray<Diagnostic>.Empty);
         var diagnostics = ViewModelValidation.Validate(symbol, context.SemanticModel.Compilation);
+        if (AspidTypeDeclaration.ValidateContainers(symbol) is { } containerDiagnostic)
+            diagnostics = diagnostics.Add(containerDiagnostic);
         if (diagnostics.Any(diagnostic => diagnostic.Severity is DiagnosticSeverity.Error)) return (null, diagnostics);
         
         Debug.Assert(context.TargetNode is ClassDeclarationSyntax);
@@ -66,16 +70,14 @@ public sealed class ViewModelGenerator : IIncrementalGenerator
     
     private static void GenerateCode(SourceProductionContext context, ViewModelData data)
     {
-        var declaration = data.Declaration;
-        var @namespace = declaration.GetNamespaceName();
-        var declarationText = new DeclarationText(declaration);
+        var declarationText = new AspidTypeDeclaration(data.Symbol);
 
-        BindableMembers.Generate(@namespace, data, declarationText, context);
-        RelayCommandBody.Generate(@namespace, data, declarationText, context);
-        FindBindableMembersBody.Generate(@namespace, data, declarationText, context);
-        GeneratedPropertiesBody.Generate(@namespace, data, declarationText, context);
-        PropertyNotificationBody.Generate(@namespace, data, declarationText, context);
-        GeneratedPropertyMethodsBody.Generate(@namespace, data, declarationText, context);
-        BindableInterfaceMembersBody.Generate(@namespace, data, declarationText, context);
+        BindableMembers.Generate(data, declarationText, context);
+        RelayCommandBody.Generate(data, declarationText, context);
+        FindBindableMembersBody.Generate(data, declarationText, context);
+        GeneratedPropertiesBody.Generate(data, declarationText, context);
+        PropertyNotificationBody.Generate(data, declarationText, context);
+        GeneratedPropertyMethodsBody.Generate(data, declarationText, context);
+        BindableInterfaceMembersBody.Generate(data, declarationText, context);
     }
 }

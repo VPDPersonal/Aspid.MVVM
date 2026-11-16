@@ -1,5 +1,7 @@
 #nullable enable
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.Descriptions;
@@ -17,24 +19,22 @@ namespace Aspid.MVVM.Generators.Generators.Views.Body;
 // ReSharper disable once InconsistentNaming
 public static class InitializeBody
 {
-    public static void Generate(
-        string @namespace,
+    internal static void Generate(
         in ViewDataSpan data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
         var baseTypes = GetBaseTypes(data);
 
-        code.BeginClass(
-                [Namespaces.Aspid_MVVM, new("AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions")],
-                @namespace,
+        code.BeginScopedClass(
+                ["Aspid.MVVM", "AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions"],
                 declaration,
                 baseTypes)
             .AppendIView(data)
-            .EndClass(@namespace);
+            .EndScopedClass(declaration);
 
-        context.AddSource(declaration.GetFileName(@namespace, "Initialize"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName("Initialize"), code.GetSourceText());
     }
 
     private static CodeWriter AppendIView(this CodeWriter code, in ViewDataSpan data)

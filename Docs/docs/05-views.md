@@ -37,6 +37,8 @@ public sealed partial class PlayerView : MonoView
 
 Derive from `MonoView` for Unity component integration; a plain class is also supported.
 
+A nested View retains its original container and generic parameters. Every containing type must be `partial`; otherwise generation reports `ASPIDGEN001`. See [nested type rules and an example](04-viewmodels.md#nested-types).
+
 ### Naming rule
 
 The field name without the `_`, `m_` or `s_` prefix must match the ViewModel property:

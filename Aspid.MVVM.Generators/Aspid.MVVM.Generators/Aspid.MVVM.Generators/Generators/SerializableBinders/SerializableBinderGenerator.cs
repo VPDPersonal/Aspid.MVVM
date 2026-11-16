@@ -1,4 +1,5 @@
 using System.Linq;
+using Aspid.MVVM.Generators.Shared;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
@@ -122,9 +123,9 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
 
             foreach (var declaration in classes)
             {
-                var emitted = Build(compilation, declaration, out var diagnostic, out var name);
+                var emitted = Build(compilation, declaration, out var diagnostic, out var identity);
                 if (diagnostic is not null) production.ReportDiagnostic(diagnostic);
-                if (emitted is not null) production.AddSource($"{name}.g.cs", emitted);
+                if (emitted is not null) production.AddSource($"{identity}.SerializableBinder.g.cs", emitted);
             }
         });
     }
@@ -142,11 +143,11 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
     }
 
     private static string? Build(Compilation compilation, ClassDeclarationSyntax declaration,
-        out Diagnostic? diagnostic, out string name)
+        out Diagnostic? diagnostic, out string identity)
     {
         diagnostic = null;
-        var monoName = declaration.Identifier.Text;
-        name = monoName;
+        var monoName = declaration.Identifier.ValueText;
+        identity = monoName;
 
         if (!monoName.EndsWith("MonoBinder"))
         {
@@ -154,10 +155,14 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
             return null;
         }
 
-        name = monoName.Substring(0, monoName.Length - "MonoBinder".Length) + "Binder";
+        var name = monoName.Substring(0, monoName.Length - "MonoBinder".Length) + "Binder";
 
         var model = compilation.GetSemanticModel(declaration.SyntaxTree);
         if (model.GetDeclaredSymbol(declaration) is not { } symbol) return null;
+
+        identity = AspidTypeDeclaration.Identity(symbol);
+        diagnostic = AspidTypeDeclaration.ValidateContainers(symbol);
+        if (diagnostic is not null) return null;
 
         if (symbol.BaseType is not { } monoBase || TargetBaseName(monoBase) is not { } targetBaseName)
         {
@@ -167,8 +172,11 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
             return null;
         }
 
-        var ns = symbol.ContainingNamespace.ToDisplayString();
-        if (compilation.GetTypeByMetadataName($"{ns}.{name}") is not null)
+        var scope = new AspidTypeDeclaration(symbol);
+        var ns = symbol.ContainingNamespace.IsGlobalNamespace ? "" : symbol.ContainingNamespace.ToDisplayString();
+        if (symbol.ContainingType is { } parent
+                ? parent.GetTypeMembers(name, symbol.Arity).Length > 0
+                : symbol.ContainingNamespace.GetTypeMembers(name, symbol.Arity).Length > 0)
         {
             diagnostic = Diagnostic.Create(TwinExists, declaration.Identifier.GetLocation(), name, monoName);
             return null;
@@ -211,7 +219,7 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         var guard = Guard(symbol, out diagnostic);
         if (diagnostic is not null) return null;
 
-        return Emit(ns, name, inherited, monoBase.Name, targetBaseName, targetBase, declaration,
+        return Emit(scope, name, inherited, monoBase.Name, targetBaseName, targetBase, declaration,
             guard, usings, sealedModifier, conditions);
     }
 
@@ -307,7 +315,7 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
     }
 
     private static string Emit(
-        string ns,
+        AspidTypeDeclaration scope,
         string name,
         string inherited,
         string monoBaseName,
@@ -334,13 +342,35 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         // Тело переносится дословно, поэтому ему нужны те же using, что и половине, из которой оно взято.
         foreach (var directive in usings) builder.AppendLine(directive);
         if (usings.Length > 0) builder.AppendLine();
-        builder.AppendLine($"namespace {ns}");
-        builder.AppendLine("{");
+        var namespaceDeclarations = declaration.Ancestors().OfType<BaseNamespaceDeclarationSyntax>().Reverse().ToArray();
+        foreach (var namespaceDeclaration in namespaceDeclarations)
+        {
+            builder.AppendLine($"namespace {namespaceDeclaration.Name}");
+            builder.AppendLine("{");
+            foreach (var directive in namespaceDeclaration.Usings) builder.AppendLine(directive.ToString());
+        }
+        foreach (var container in scope.Containers)
+        {
+            builder.AppendLine(AspidTypeDeclaration.Header(container));
+            builder.AppendLine("{");
+        }
 
         foreach (var line in Documentation(declaration, monoBaseName, targetBaseName)) builder.AppendLine($"    {line}");
 
         builder.AppendLine("    [global::System.Serializable]");
-        builder.AppendLine($"    public {sealedModifier}class {name} : {inherited}");
+        var accessibility = scope.Symbol.ContainingType is null
+            ? "public"
+            : scope.Symbol.DeclaredAccessibility switch
+            {
+                Accessibility.Private => "private",
+                Accessibility.Protected => "protected",
+                Accessibility.Internal => "internal",
+                Accessibility.ProtectedAndInternal => "private protected",
+                Accessibility.ProtectedOrInternal => "protected internal",
+                _ => "public"
+            };
+        builder.AppendLine($"    {accessibility} {sealedModifier}" +
+            AspidTypeDeclaration.Header(scope.Symbol, new[] { inherited }, name, isPartial: false));
         builder.AppendLine("    {");
 
         var members = Members(declaration).ToList();
@@ -367,7 +397,8 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         }
 
         builder.AppendLine("    }");
-        builder.AppendLine("}");
+        foreach (var _ in scope.Containers) builder.AppendLine("}");
+        foreach (var _ in namespaceDeclarations) builder.AppendLine("}");
 
         foreach (var _ in conditions) builder.AppendLine("#endif");
 

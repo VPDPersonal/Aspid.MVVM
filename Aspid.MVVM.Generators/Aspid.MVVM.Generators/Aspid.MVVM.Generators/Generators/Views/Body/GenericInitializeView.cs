@@ -1,5 +1,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using Aspid.MVVM.Generators.Generators.Views.Data;
@@ -17,25 +19,23 @@ namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
 public static class GenericInitializeView
 {
-    public static void Generate(
-        string @namespace,
+    internal static void Generate(
         in ViewDataSpan data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         foreach (var genericView in data.GenericViews)
         {
             var code = new CodeWriter();
 
-            code.BeginClass(
-                    [Namespaces.Aspid_MVVM, new("AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions")],
-                    @namespace,
+            code.BeginScopedClass(
+                    ["Aspid.MVVM", "AspidBinderExtensions = global::Aspid.MVVM.BinderExtensions"],
                     declaration,
                     null)
                 .AppendGenericViews(data, genericView)
-                .EndClass(@namespace);
+                .EndScopedClass(declaration);
 
-            context.AddSource(declaration.GetFileName(@namespace, genericView.Type.ToDisplayString()), code.GetSourceText());
+            context.AddSource(declaration.GetFileName("TypedInitialize." + genericView.Type.ToDisplayString()), code.GetSourceText());
         }
     }
 
@@ -114,7 +114,7 @@ public static class GenericInitializeView
             """)
             .BeginBlock()
             .AppendLine($"#if {ASPID_MVVM_PROFILER}")
-            .AppendLine($"using (__initialize{genericView.Type.ToDisplayString().Replace(".", "_")}Marker.Auto())")
+            .AppendLine($"using (__initialize{AspidTypeDeclaration.Identifier(genericView.Type.ToDisplayString())}Marker.Auto())")
             .AppendLine("#endif")
             .BeginBlock();
 
@@ -211,7 +211,7 @@ public static class GenericInitializeView
             #if {ASPID_MVVM_PROFILER}
             {GeneratedCodeViewAttribute}
             {EditorBrowsableAttributeNever}
-            private readonly static {ProfilerMarker} __initialize{viewModelTypeName.Replace(".", "_")}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
+            private readonly static {ProfilerMarker} __initialize{AspidTypeDeclaration.Identifier(viewModelTypeName)}Marker = new("{data.Declaration.Identifier.Text}.{viewModelTypeName}.Initialize");
             #endif
             """);
     }

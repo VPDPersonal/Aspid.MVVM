@@ -343,3 +343,10 @@ Implements `IAnyBinder` and `IAnyReverseBinder`, accepts any data type.
 - [ViewModels](04-viewmodels.md), bindable properties
 - [StarterKit](StarterKit/README.md), every ready-made binder
 - [Converters](08-converters.md), value conversion
+
+
+## Nested binders
+
+`[BinderLog]` and `[GenerateSerializableBinder]` support nested types when every container is `partial`. The serializable twin is emitted next to its source MonoBinder with the same type parameters and constraints; an existing twin is checked in the same container and at the same generic arity. The global namespace is supported too.
+
+`[AddBinderContextMenu]` accepts a nested type accessible from the current assembly, with no open type parameters on the type or its containers. Private/protected targets and open generic targets report `ASPIDMENU001`: move the attribute to an accessible non-generic component or remove it. Unity's component and serialization restrictions still apply.

@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Views.Data;
 using Aspid.MVVM.Generators.Generators.Views.Data.Members;
@@ -8,20 +10,19 @@ namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
 public static class BinderCachedBody
 {
-    public static void Generate(
-        string @namespace,
+    internal static void Generate(
         in ViewDataSpan data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         if (data.MembersByType.PropertyBinders.Length + data.MembersByType.AsBinders.Length == 0) return;
         var code = new CodeWriter();
 
-        code.BeginClass(@namespace, declaration)
+        code.BeginScopedClass(declaration)
             .AppendCachedBinders(data)
-            .EndClass(@namespace);
+            .EndScopedClass(declaration);
             
-        context.AddSource(declaration.GetFileName(@namespace, "CachedBinders"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName("CachedBinders"), code.GetSourceText());
     }
     
     private static CodeWriter AppendCachedBinders(this CodeWriter code, in ViewDataSpan data)

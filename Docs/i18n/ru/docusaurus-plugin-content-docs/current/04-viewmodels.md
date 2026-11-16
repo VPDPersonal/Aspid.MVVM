@@ -45,6 +45,28 @@ Source Generator реализует интерфейс `IViewModel` и гене�
 - Метод `FindBindableMember()` для диспетчеризации
 - Метод `NotifyAll()` для массового уведомления
 
+### Вложенные типы
+
+ViewModel может быть вложенной, в том числе `private` и внутри generic-контейнера. Все содержащие типы должны быть `partial`: генератор восстанавливает всю цепочку типов, параметры и ограничения `where`. Это правило также действует для `[View]`, `[BinderLog]` и `[GenerateSerializableBinder]`. Для контейнера без `partial` выдаётся `ASPIDGEN001`; добавьте `partial` во все его объявления или перенесите целевой тип наружу.
+
+```csharp
+using Aspid.MVVM;
+
+namespace Game.UI
+{
+    public partial class Screen<T> where T : class
+    {
+        [ViewModel]
+        private partial class Model
+        {
+            [Bind] private T _selection;
+        }
+    }
+}
+```
+
+Поддерживаются глобальное пространство имён, вложенные блоки `namespace` и file-scoped namespace, если его поддерживает ваш компилятор. Одинаковые короткие имена в разных контейнерах или пространствах имён не конфликтуют. Это поддержка генерации C#: ограничения Unity на компоненты и сериализацию generic-типов сохраняются.
+
 ### Три варианта ViewModel
 
 | Тип | Базовый класс | Когда использовать |

@@ -1,5 +1,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using Aspid.Generators.Helper.Unity;
 using Aspid.MVVM.Generators.Generators.Views.Data;
@@ -11,17 +13,16 @@ namespace Aspid.MVVM.Generators.Generators.Views.Body;
 
 public static class BinderFieldsBody
 {
-    public static void Generate(
-        string @namespace,
+    internal static void Generate(
         in ViewDataSpan data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         var virtualFields = VirtualBinderFields.Collect(data);
         if (virtualFields.Count is 0) return;
 
         var code = new CodeWriter();
-        code.BeginClass(@namespace, declaration);
+        code.BeginScopedClass(declaration);
 
         foreach (var info in virtualFields.Values)
         {
@@ -40,8 +41,8 @@ public static class BinderFieldsBody
                 .AppendLine();
         }
 
-        code.EndClass(@namespace);
-        context.AddSource(declaration.GetFileName(@namespace, "BinderFields"), code.GetSourceText());
+        code.EndScopedClass(declaration);
+        context.AddSource(declaration.GetFileName("BinderFields"), code.GetSourceText());
     }
 
     private static string EscapeStringLiteral(string value) =>

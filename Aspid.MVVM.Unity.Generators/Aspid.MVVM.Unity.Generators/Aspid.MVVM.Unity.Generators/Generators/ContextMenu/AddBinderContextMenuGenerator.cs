@@ -1,4 +1,5 @@
 using System;
+using Aspid.MVVM.Generators.Shared;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -13,24 +14,38 @@ namespace Aspid.MVVM.Unity.Generators.ContextMenu;
 [Generator(LanguageNames.CSharp)]
 public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
 {
+    private static readonly DiagnosticDescriptor InvalidMenuTarget = new(
+        "ASPIDMENU001", "Unsupported context menu target", "Context menu target '{0}' must be accessible from its assembly and have no open type parameters",
+        "Aspid.MVVM", DiagnosticSeverity.Error, true);
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(AddBinderContextMenuAttribute.FullName, SyntacticPredicate, Find)
-            .Where(foundForSourceGenerator => foundForSourceGenerator.IsNeed)
-            .Select((foundForSourceGenerator, _) => foundForSourceGenerator.Container);
+        var provider = context.SyntaxProvider.ForAttributeWithMetadataName(AddBinderContextMenuAttribute.FullName, SyntacticPredicate, Find);
         
         context.RegisterSourceOutput(
             source: provider,
-            action: GenerateCode);
+            action: static (production, result) =>
+            {
+                if (result.Diagnostic is { } diagnostic)
+                    production.ReportDiagnostic(diagnostic);
+                if (result.Data is { } data)
+                    GenerateCode(production, data);
+            });
     }
     
     private static bool SyntacticPredicate(SyntaxNode node, CancellationToken cancellationToken) => 
         node is ClassDeclarationSyntax;
 
-    private static FoundForGenerator<ContextMenuData> Find(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    private static (ContextMenuData? Data, Diagnostic? Diagnostic) Find(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
     {
         var declaration = (ClassDeclarationSyntax)context.TargetNode;
         if (context.TargetSymbol is not INamedTypeSymbol symbol) return default;
+
+        var open = false;
+        for (var type = symbol; type is not null; type = type.ContainingType)
+            open |= type.TypeParameters.Length > 0;
+        if (open || !context.SemanticModel.Compilation.IsSymbolAccessibleWithin(symbol, context.SemanticModel.Compilation.Assembly))
+            return (null, Diagnostic.Create(InvalidMenuTarget, declaration.Identifier.GetLocation(), symbol.ToDisplayString()));
 
         if (symbol.HasAnyAttribute(out var attribute, AddBinderContextMenuAttribute))
         {
@@ -55,7 +70,7 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
                     : $"Add {type.Name} Binder/{subPath}/{name}";
             }
 
-            return new FoundForGenerator<ContextMenuData>(new ContextMenuData(declaration, symbol, symbol.Name, type.Name, path, 100001));
+            return (new ContextMenuData(declaration, symbol, symbol.Name, type.Name, path, 100001), null);
         }
 
         return default;
@@ -65,9 +80,9 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
     {
         var code = new CodeWriter();
         
-        var declaration = data.Declaration;
-        var @namespace = declaration.GetNamespaceName();
-        var declarationText = declaration.GetDeclarationText();
+        var declarationText = new AspidTypeDeclaration((INamedTypeSymbol)data.Symbol);
+        var @namespace = declarationText.Namespace;
+        var editorName = "__AspidMenu_" + AspidTypeDeclaration.Identifier(AspidTypeDeclaration.Identity(declarationText.Symbol));
         var hasNamespace = !string.IsNullOrWhiteSpace(@namespace);
 
         code.AppendLine($"#if {UNITY_EDITOR}")
@@ -88,7 +103,7 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
             $$"""
               [{{editorBrowsable}}]
               {{GeneratedAddComponentContextMenuGeneratorAttribute}}
-              internal static class __{{declarationText.Name}}Editor
+              internal static class {{editorName}}
               {
                   [{{editorBrowsable}}]
                   {{GeneratedAddComponentContextMenuGeneratorAttribute}}
@@ -105,6 +120,6 @@ public sealed class AddBinderContextMenuGenerator : IIncrementalGenerator
             code.EndBlock();
 
         code.AppendLine("#endif");
-        context.AddSource("__" + declarationText.GetFileName(@namespace, "Editor"), code.GetSourceText());
+        context.AddSource("__" + declarationText.GetFileName("Editor"), code.GetSourceText());
     }
 }

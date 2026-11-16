@@ -22,6 +22,12 @@ public partial class BinderGenerator
         var symbol = context.SemanticModel.GetDeclaredSymbol(candidate, cancellationToken);
         
         if (symbol is null) return null;
+        var firstCandidate = symbol.DeclaringSyntaxReferences
+            .Select(reference => reference.GetSyntax(cancellationToken))
+            .FirstOrDefault(node => SyntacticPredicate(node, cancellationToken));
+        if (firstCandidate is null
+            || firstCandidate.SyntaxTree != candidate.SyntaxTree
+            || firstCandidate.Span != candidate.Span) return null;
         if (!symbol.TryGetAnyInterfaceInSelfAndBases(out var binderInterface, Classes.IBinder)) return null;
         
         var hasBinderLogInBaseType = false;

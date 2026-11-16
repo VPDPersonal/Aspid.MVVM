@@ -75,6 +75,8 @@ jobs:
             .github/workflows
             scripts
             Aspid.MVVM/Packages/tech.aspid.mvvm
+            Docs/docs
+            Docs/i18n/ru/docusaurus-plugin-content-docs/current
             Docs/migration
             Docs/i18n/ru/docusaurus-plugin-content-docs-migration
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -357,7 +359,7 @@ jobs:
     if: needs.unity-plan.outputs.run == 'true'
     runs-on: ubuntu-latest
     # Both passes take a few minutes; the rest is room for a slow image pull and an activation retry.
-    timeout-minutes: 30
+    timeout-minutes: 60
     permissions:
       contents: read
     strategy:
@@ -466,6 +468,36 @@ jobs:
           PASS: playmode
         run: *unity-pass
 
+      - name: Build optional dependency profiles
+        if: matrix.unity == fromJSON(needs.unity-plan.outputs.versions)[0]
+        run: |
+          for profile in without-fasttools minimal ai animation audio particlesystem video physics physics2d ui uielements imgui ugui counter collections all; do
+            project="ci-dependency-$profile"
+            node scripts/asp-make-dependency-profile.mjs "$project" "$profile"
+            mkdir -p "dependency-builds/$profile"
+            "$GAMECI" build --engine=unity "$project" --engineVersion="$UNITY_VERSION" \
+              --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
+              --buildName=Smoke --buildsPath="dependency-builds/$profile" \
+              --customParameters="-nographics -disableaudio" --skipActivation=true \
+              --versioningStrategy=Custom --version=0.0.0
+            player="dependency-builds/$profile/StandaloneLinux64/Smoke.x86_64"
+            xvfb-run -a timeout 60 "$player" -batchmode -force-glcore -disableaudio -logFile "$PWD/dependency-builds/$profile/player.log"
+            grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/$profile/player.log"
+          done
+          for profile in without-fasttools minimal all; do
+            sudo chown -R "$(id -u):$(id -g)" ci-dependency-all
+            node scripts/asp-make-dependency-profile.mjs ci-dependency-all "$profile" --reuse
+            mkdir -p "dependency-builds/transition-$profile"
+            "$GAMECI" build --engine=unity ci-dependency-all --engineVersion="$UNITY_VERSION" \
+              --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
+              --buildName=Smoke --buildsPath="dependency-builds/transition-$profile" \
+              --customParameters="-nographics -disableaudio" --skipActivation=true \
+              --versioningStrategy=Custom --version=0.0.0
+            player="dependency-builds/transition-$profile/StandaloneLinux64/Smoke.x86_64"
+            xvfb-run -a timeout 60 "$player" -batchmode -force-glcore -disableaudio -logFile "$PWD/dependency-builds/transition-$profile/player.log"
+            grep -q ASPID_DEPENDENCY_SMOKE_PASS "dependency-builds/transition-$profile/player.log"
+          done
+
       # Also after a failed or cancelled pass, and after a failed activation that may still hold a seat: a seat that
       # is never returned stays taken and breaks the next runs on the account. The log line decides, not the exit
       # code: game-ci v0.1.72 returns the seat and then exits 1, since its build check finds no build output.
@@ -559,7 +591,9 @@ jobs:
         if: always()
         with:
           name: unity-test-results-${{ matrix.unity }}
-          path: unity-test-results
+          path: |
+            unity-test-results
+            dependency-builds/**/player.log
 
   # The one Unity check to require. A skipped matrix job reports no per-version names, so a required
   # "Unity tests (…)" check would wait forever; this job always reports.

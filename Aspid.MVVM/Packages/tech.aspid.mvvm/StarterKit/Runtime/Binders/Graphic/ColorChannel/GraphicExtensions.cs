@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
@@ -46,3 +47,4 @@ namespace Aspid.MVVM.StarterKit
             context: graphic);
     }
 }
+#endif

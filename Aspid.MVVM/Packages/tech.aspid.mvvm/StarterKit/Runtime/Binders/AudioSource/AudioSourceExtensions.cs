@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AUDIO
 using System;
 using UnityEngine;
 using System.Runtime.CompilerServices;
@@ -92,3 +93,4 @@ namespace Aspid.MVVM.StarterKit
             Mathf.Max(0, clip.samples - 1);
     }
 }
+#endif

@@ -74,6 +74,18 @@ public RendererMaterialsSwitcherBinder(Renderer target, IConverter<Material, Mat
 
 ## Methods
 
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsSwitcherBinder_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
+
+```csharp
+protected override void OnDetach()
+```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
+
 ### SetValue\(Material\[\]\) {#Aspid_MVVM_StarterKit_RendererMaterialsSwitcherBinder_SetValue_UnityEngine_Material___}
 
 Applies the chosen, converted <code class="paramref">value</code> to the target.

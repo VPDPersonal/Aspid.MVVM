@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ASPID_COLLECTIONS
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -13,3 +14,4 @@ namespace Aspid.MVVM.StarterKit
     [AddBinderContextMenu(typeof(Component), Path = "Add General Binder/Collection/Collection Binder – Count")]
     public sealed class ObjectCollectionCountMonoBinder : CollectionCountMonoBinder<object> { }
 }
+#endif

@@ -1475,8 +1475,7 @@ Converts between a color and a [`Vector4`](https://docs.unity3d.com/ScriptRefere
 
  [CommandBinderExtensions](Aspid.MVVM.StarterKit.CommandBinderExtensions.md)
 
-Helpers for command binders: swapping the bound command while keeping the
-[`IRelayCommand.CanExecuteChanged`](Aspid.MVVM.IRelayCommand.md#Aspid_MVVM_IRelayCommand_CanExecuteChanged) subscription, and reflecting <code>CanExecute</code> on a [`Selectable`](https://docs.unity3d.com/ScriptReference/UI-Selectable.html).
+Provides utility methods for command subscriptions and UI interactability.
 
  [CommandMonoBinder](Aspid.MVVM.StarterKit.CommandMonoBinder.md)
 

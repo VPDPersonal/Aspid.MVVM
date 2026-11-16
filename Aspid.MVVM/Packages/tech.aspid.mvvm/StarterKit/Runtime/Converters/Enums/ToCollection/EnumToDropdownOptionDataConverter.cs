@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 #nullable enable
 using TMPro;
 using System;
@@ -187,3 +188,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
 Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
-Helpers for command binders: swapping the bound command while keeping the
-[`IRelayCommand.CanExecuteChanged`](Aspid.MVVM.IRelayCommand.md#Aspid_MVVM_IRelayCommand_CanExecuteChanged) subscription, and reflecting <code>CanExecute</code> on a [`Selectable`](https://docs.unity3d.com/ScriptReference/UI-Selectable.html).
+Provides utility methods for command subscriptions and UI interactability.
 
 ```csharp
 public static class CommandBinderExtensions
@@ -39,7 +38,7 @@ public static void SetInteractable(this Selectable target, InteractableMode mode
 
 `target` Selectable
 
-The [`Selectable`](https://docs.unity3d.com/ScriptReference/UI-Selectable.html) the command binder operates on.
+The Selectable the command binder operates on.
 
 `mode` [InteractableMode](Aspid.MVVM.StarterKit.InteractableMode.md)
 

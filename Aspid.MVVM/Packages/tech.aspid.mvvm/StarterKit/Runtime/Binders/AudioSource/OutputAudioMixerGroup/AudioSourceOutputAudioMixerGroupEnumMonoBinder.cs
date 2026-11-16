@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_AUDIO
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -16,3 +17,4 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.outputAudioMixerGroup = value;
     }
 }
+#endif

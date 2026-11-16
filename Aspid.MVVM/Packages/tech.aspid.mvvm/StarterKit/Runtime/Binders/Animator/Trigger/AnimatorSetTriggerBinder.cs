@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ANIMATION
 #nullable enable
 using System;
 using UnityEngine;
@@ -29,3 +30,4 @@ namespace Aspid.MVVM.StarterKit
             Target.SetTrigger(triggerName);
     }
 }
+#endif

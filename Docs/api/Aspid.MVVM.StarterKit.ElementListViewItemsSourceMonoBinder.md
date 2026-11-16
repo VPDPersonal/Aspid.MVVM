@@ -80,6 +80,28 @@ protected override void OnDetach()
 
 Also called after a failed installation; tolerate partially initialized resources.
 
+### OnElementDetached\(ListView\) {#Aspid_MVVM_StarterKit_ElementListViewItemsSourceMonoBinder_OnElementDetached_UnityEngine_UIElements_ListView_}
+
+Called before an element leaves the binding. Override to release its callbacks.
+
+```csharp
+protected override void OnElementDetached(ListView element)
+```
+
+#### Parameters
+
+`element` ListView
+
+The previous element.
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementListViewItemsSourceMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
+
 ### SetValue\(IReadOnlyObservableList\<object\>\) {#Aspid_MVVM_StarterKit_ElementListViewItemsSourceMonoBinder_SetValue_Aspid_Collections_Observable_IReadOnlyObservableList_System_Object__}
 
 ```csharp

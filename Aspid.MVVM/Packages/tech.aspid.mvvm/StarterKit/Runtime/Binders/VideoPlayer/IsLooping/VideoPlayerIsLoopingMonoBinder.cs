@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_VIDEO
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -20,3 +21,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 #nullable enable
 using System;
 using UnityEngine;
@@ -140,3 +141,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

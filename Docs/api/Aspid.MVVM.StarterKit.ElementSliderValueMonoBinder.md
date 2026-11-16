@@ -18,7 +18,7 @@ Assembly: Aspid.MVVM.StarterKit.dll <br/>
 [BindModeOverride(new BindMode[] { }, IsAll = true)]
 [AddComponentMenu("Aspid/MVVM/Binders/UIToolkit/Element Binder – Slider Value")]
 [AddBinderContextMenuByType(typeof(float))]
-public sealed class ElementSliderValueMonoBinder : VisualElementMonoBinder<Slider>, IMonoBinderValidatable, IFloatBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, IReverseBinder<float>, IBinder
+public sealed class ElementSliderValueMonoBinder : VisualElementMonoBinder<Slider>, IMonoBinderValidatable, IFloatBinder, INumberBinder, IBinder<int>, IBinder<uint>, IBinder<long>, IBinder<ulong>, IBinder<byte>, IBinder<sbyte>, IBinder<short>, IBinder<ushort>, IBinder<float>, IBinder<double>, INumberReverseBinder, IReverseBinder<int>, IReverseBinder<long>, IReverseBinder<float>, IReverseBinder<double>, IBinder
 ```
 
 #### Inheritance
@@ -47,7 +47,11 @@ MonoBehaviour ←
 [IBinder\<ushort\>](Aspid.MVVM.IBinder-1.md),
 [IBinder\<float\>](Aspid.MVVM.IBinder-1.md),
 [IBinder\<double\>](Aspid.MVVM.IBinder-1.md),
+[INumberReverseBinder](Aspid.MVVM.StarterKit.INumberReverseBinder.md),
+[IReverseBinder\<int\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<long\>](Aspid.MVVM.IReverseBinder-1.md),
 [IReverseBinder\<float\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<double\>](Aspid.MVVM.IReverseBinder-1.md),
 [IBinder](Aspid.MVVM.IBinder.md)
 
 
@@ -78,17 +82,13 @@ value is refused.
 
 ## Methods
 
-### OnAttach\(\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_OnAttach}
+### ClearValue\(\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_ClearValue}
 
-Called after attachment and the first value, before the binding is complete. Override to acquire subscriptions.
+Called when a binding ends or starts to release its retained value.
 
 ```csharp
-protected override void OnAttach()
+protected override void ClearValue()
 ```
-
-#### Remarks
-
-An exception rolls back the binding; [`MonoBinder.OnDetach`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_OnDetach) releases partially acquired resources.
 
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_OnBound}
 
@@ -102,17 +102,41 @@ protected override void OnBound()
 
 Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
 
-### OnDetach\(\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_OnDetach}
+### OnElementAttached\(Slider\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_OnElementAttached_UnityEngine_UIElements_Slider_}
 
-Called after removal, before ownership is released. Override to release subscriptions and other resources.
+Called when an element joins the active binding. Override to subscribe to input.
 
 ```csharp
-protected override void OnDetach()
+protected override void OnElementAttached(Slider element)
 ```
 
-#### Remarks
+#### Parameters
 
-Also called after a failed installation; tolerate partially initialized resources.
+`element` Slider
+
+The resolved element.
+
+### OnElementDetached\(Slider\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_OnElementDetached_UnityEngine_UIElements_Slider_}
+
+Called before an element leaves the binding. Override to release its callbacks.
+
+```csharp
+protected override void OnElementDetached(Slider element)
+```
+
+#### Parameters
+
+`element` Slider
+
+The previous element.
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
 
 ### SetValue\(float\) {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_SetValue_System_Single_}
 
@@ -127,15 +151,3 @@ public void SetValue(float value)
 `value` [float](https://learn.microsoft.com/dotnet/api/system.single)
 
 The value received from the ViewModel.
-
-### ValueChanged {#Aspid_MVVM_StarterKit_ElementSliderValueMonoBinder_ValueChanged}
-
-Occurs when the View produces a value for the ViewModel.
-
-```csharp
-public event Action<float> ValueChanged
-```
-
-#### Event Type
-
- [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<[float](https://learn.microsoft.com/dotnet/api/system.single)\>

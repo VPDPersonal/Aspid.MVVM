@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using TMPro;
 using UnityEngine;
 
@@ -11,3 +12,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/InputField/InputField To Source Binder")]
     public sealed class InputFieldToSourceMonoBinder : ComponentToSourceMonoBinder<TMP_InputField> { }
 }
+#endif

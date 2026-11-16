@@ -99,6 +99,40 @@ namespace Aspid.MVVM.Tests
             Assert.AreEqual(1, renderer.sharedMaterials.Length);
         }
 
+        [Test]
+        public void InstanceConverter_IsScopedByConsumerAndSlot()
+        {
+            var recipe = new MaterialInstanceConverter();
+            var first = NewRenderer();
+            var second = NewRenderer();
+            var a = NewMaterial();
+            var b = NewMaterial();
+            var firstBinder = first.gameObject.AddComponent<RendererMaterialsMonoBinder>();
+            var secondBinder = second.gameObject.AddComponent<RendererMaterialsMonoBinder>();
+            foreach (var binder in new[] { firstBinder, secondBinder })
+            {
+                var serialized = new SerializedObject(binder);
+                serialized.FindProperty("_converter").managedReferenceValue = recipe;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+                binder.Bind(new BindContext(new OneWayBindableMember<IReadOnlyCollection<Material>>(new[] { a, b }), binder));
+            }
+            var firstCopies = first.sharedMaterials;
+            var secondCopies = second.sharedMaterials;
+            Assert.IsTrue(firstCopies[0] && firstCopies[1] && secondCopies[0] && secondCopies[1]);
+            Assert.AreNotSame(a, firstCopies[0]);
+            Assert.AreNotSame(firstCopies[0], secondCopies[0]);
+            firstBinder.SetValue((IReadOnlyCollection<Material>)new[] { a, b });
+            CollectionAssert.AreEqual(firstCopies, first.sharedMaterials);
+            firstBinder.Unbind(new UnbindContext(firstBinder));
+            Assert.IsFalse(firstCopies[0]);
+            Assert.IsFalse(firstCopies[1]);
+            Assert.IsTrue(secondCopies[0] && secondCopies[1]);
+            secondBinder.Unbind(new UnbindContext(secondBinder));
+            Assert.IsFalse(secondCopies[0]);
+            Assert.IsFalse(secondCopies[1]);
+            Assert.IsTrue(a && b);
+        }
+
         /// <summary>
         /// The binder defaults to <c>_BaseColor</c>, which the built-in sprite shader does not have; the property
         /// name is retargeted so the test measures the binder rather than a missing shader property.

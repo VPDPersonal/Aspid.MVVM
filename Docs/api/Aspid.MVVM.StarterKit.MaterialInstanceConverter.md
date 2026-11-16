@@ -16,7 +16,7 @@ Hands a renderer its own copy of a material instead of the shared asset.
 ```csharp
 [Serializable]
 [TypeSelectorDisplay(Group = "Aspid/Material", Name = "Material Instance", Tooltip = "Hands a renderer its own copy of a material instead of the shared asset")]
-public sealed class MaterialInstanceConverter : IConverter<Material?, Material?>, IConverter
+public sealed class MaterialInstanceConverter : IConverter<Material?, Material?>, IConverter, IDisposable
 ```
 
 #### Inheritance
@@ -27,7 +27,8 @@ public sealed class MaterialInstanceConverter : IConverter<Material?, Material?>
 #### Implements
 
 [IConverter\<Material?, Material?\>](Aspid.MVVM.StarterKit.IConverter-2.md),
-[IConverter](Aspid.MVVM.StarterKit.IConverter.md)
+[IConverter](Aspid.MVVM.StarterKit.IConverter.md),
+[IDisposable](https://learn.microsoft.com/dotnet/api/system.idisposable)
 
 
 #### Extension Methods
@@ -39,8 +40,8 @@ public sealed class MaterialInstanceConverter : IConverter<Material?, Material?>
 
 ## Remarks
 
-The copy is owned by the converter: it is cached while the source is unchanged and destroyed
-when the source changes, creating one per push would leak.
+Renderer material binders create a separate conversion scope for each renderer slot and release it on
+unbind or destruction. Direct callers own this converter and must call [`MaterialInstanceConverter.Dispose`](Aspid.MVVM.StarterKit.MaterialInstanceConverter.md#Aspid_MVVM_StarterKit_MaterialInstanceConverter_Dispose).
 
 ## Constructors
 
@@ -90,3 +91,11 @@ A copy owned by this converter, reused while the source is unchanged; the materi
 when copying is off; or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the material is missing or destroyed.
 The previously returned copy is destroyed on the way, so a caller holding on to it is left
 with nothing.
+
+### Dispose\(\) {#Aspid_MVVM_StarterKit_MaterialInstanceConverter_Dispose}
+
+Releases the copy owned by this conversion scope.
+
+```csharp
+public void Dispose()
+```

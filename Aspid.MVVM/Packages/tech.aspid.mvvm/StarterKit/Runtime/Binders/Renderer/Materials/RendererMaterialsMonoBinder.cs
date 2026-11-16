@@ -28,6 +28,7 @@ namespace Aspid.MVVM.StarterKit
 
         private Action<Material> _reverseMaterial;
         private Action<Material[]> _reverseMaterials;
+        private readonly MaterialBindingScope _materialScope = new();
 
         event Action<Material> IReverseBinder<Material>.ValueChanged
         {
@@ -41,13 +42,26 @@ namespace Aspid.MVVM.StarterKit
             remove => _reverseMaterials -= value;
         }
 
+        /// <inheritdoc/>
+        protected override void OnDestroy()
+        {
+            try
+            {
+                base.OnDestroy();
+            }
+            finally
+            {
+                _materialScope.Dispose();
+            }
+        }
+
         /// <summary>
         /// Sets <see cref="Renderer.material"/>.
         /// </summary>
         /// <param name="value">The material received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(Material value) =>
-            CachedComponent.material = _converter is null ? value : _converter.Convert(value);
+            _materialScope.Set(CachedComponent, _converter, new[] { value });
 
         /// <summary>
         /// Sets <see cref="Renderer.materials"/>; <see langword="null"/> or empty clears the array.
@@ -55,7 +69,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="values">The materials received from the ViewModel.</param>
         [BinderLog]
         public void SetValue(IReadOnlyCollection<Material> values) =>
-            CachedComponent.SetMaterials(_converter, values);
+            _materialScope.Set(CachedComponent, _converter, values);
 
         /// <inheritdoc/>
         protected override void OnBound()
@@ -76,6 +90,7 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnDetach()
         {
+            _materialScope.Dispose();
             _reverseMaterial?.Invoke(null);
             _reverseMaterials?.Invoke(null);
         }

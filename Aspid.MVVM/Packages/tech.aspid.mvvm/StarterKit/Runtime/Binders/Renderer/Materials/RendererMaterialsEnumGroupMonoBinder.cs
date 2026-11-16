@@ -22,12 +22,34 @@ namespace Aspid.MVVM.StarterKit
         [Tooltip("Optional converter applied to each selected material; empty leaves it as-is.")]
         [SerializeReference] private IConverter<Material, Material> _selectedValueConverter;
 
+        private readonly MaterialBindingScope _materialScope = new();
+
+        /// <inheritdoc/>
+        protected override void OnDestroy()
+        {
+            try
+            {
+                base.OnDestroy();
+            }
+            finally
+            {
+                _materialScope.Dispose();
+            }
+        }
+
         /// <inheritdoc/>
         protected override void SetDefaultValue(Renderer element) =>
-            element.SetMaterials(_defaultValueConverter, _defaultValue);
+            _materialScope.Set(element, _defaultValueConverter, _defaultValue);
 
         /// <inheritdoc/>
         protected override void SetSelectedValue(Renderer element) =>
-            element.SetMaterials(_selectedValueConverter, _selectedValue);
+            _materialScope.Set(element, _selectedValueConverter, _selectedValue);
+
+        /// <inheritdoc/>
+        protected override void OnDetach()
+        {
+            _materialScope.Dispose();
+            base.OnDetach();
+        }
     }
 }

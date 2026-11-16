@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 #nullable enable
 using TMPro;
 using System;
@@ -23,3 +24,4 @@ namespace Aspid.MVVM.StarterKit
     [CreateAssetMenu(menuName = "Aspid/MVVM/Converters/Enum/Enum To Dropdown Options Converter", fileName = "EnumToDropdownOptionDataConverter")]
     public sealed class EnumToDropdownOptionDataConverterAsset : ConverterAsset<Enum?, IEnumerable<TMP_Dropdown.OptionData>?> { }
 }
+#endif

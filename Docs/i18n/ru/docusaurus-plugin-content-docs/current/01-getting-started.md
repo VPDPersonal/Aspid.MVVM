@@ -20,27 +20,43 @@
 
 ## Требования
 
-* **Unity 2022.3** или новее
-
-* **.NET Standard 2.0** (целевая платформа фреймворка)
-
-* Поддержка **Source Generators** в Unity (встроена с 2022.3+)
+* **Unity 6000.0.53f1** или новее.
+* Git для установки UPM-пакетов по Git URL.
 
 ## Установка
 
-### Из Unity Asset Store
+### Минимальная установка из исходников
 
-1. Откройте [страницу Aspid.MVVM](https://assetstore.unity.com/packages/slug/298463) в Unity Asset Store
+Описанная ниже схема необязательных зависимостей относится к ещё не выпущенным исходникам 1.1. Старые preview-теги сохраняют свои требования к зависимостям.
 
-2. Импортируйте пакет в ваш проект
+1. Создайте чистый проект Unity 6000.0.53f1 или новее.
+2. Откройте **Window → Package Manager → + → Install package from disk**.
+3. Выберите `Aspid.MVVM/Packages/tech.aspid.mvvm/package.json` в рабочей копии исходников.
 
-3. Убедитесь, что папка `Assets/Aspid/MVVM/` создана
+Пакет появится в `Packages/tech.aspid.mvvm/`. Aspid.FastTools обязателен. До его установки runtime, Editor, samples и tests MVVM исключены из компиляции. После установки FastTools базовые сборки работают без Collections и UI-пакетов. Сохраняйте нужные вашему проекту модули Unity: биндер удалённого модуля недоступен до его повторной установки.
 
-### Из исходного кода
+Сначала установите FastTools: `https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview/1.0.0-rc.9`. Текущая Git-поставка не устанавливает его автоматически.
 
-```bash
-git clone https://github.com/VPDPersonal/Aspid.MVVM.git
-```
+### Необязательные интеграции
+
+| Возможность | Что установить в Package Manager |
+| --- | --- |
+| Counter и остальные примеры uGUI/TMP | `com.unity.ugui` 2.0.0 или совместимую с редактором более новую версию |
+| Биндеры UI Toolkit | `com.unity.modules.uielements` |
+| Инструменты Inspector | FastTools обязателен; инструменты Editor также используют UI Toolkit и IMGUI |
+| Observable-коллекции | `https://github.com/VPDPersonal/Aspid.Collections.git#upm/1.1.1` |
+| VirtualizedList | Collections и uGUI |
+| AI, animation, audio, particles, physics, physics2d, video | Соответствующий модуль `com.unity.modules.*` |
+
+Localization, Addressables, VContainer и Zenject остаются необязательными. Collections 1.1.1 не устанавливает Test Framework и NUnit в runtime-проект. В старых версиях Collections такая зависимость есть: сначала обновите пакет, затем удаляйте ненужные тестовые зависимости.
+
+### Counter
+
+Для Counter дополнительно установите `com.unity.inputsystem` 1.20.0 и включите **Active Input Handling → Input System Package (New)** или **Both**. Импортируйте **Path 1. Counter** из вкладки **Samples** пакета и **TMP Essential Resources**, если появится запрос. Откройте импортированную сцену Counter и включите Play mode. Два способа инициализации разобраны в [туториале Counter](../../docusaurus-plugin-content-docs-tutorials/current/01.%20Counter/README.md).
+
+### Опубликованные версии
+
+Preview-канал: `https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview`. Используйте инструкцию именно установленного релиза: опубликованный тег не содержит ещё не выпущенные изменения исходников. Версии Asset Store импортируются через **Package Manager → My Assets**; старый путь `Assets/Aspid/MVVM/` не является обязательным.
 
 ***
 

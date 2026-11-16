@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,3 +12,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/EventTrigger/EventTrigger To Source Binder")]
     public sealed class EventTriggerToSourceMonoBinder : ComponentToSourceMonoBinder<EventTrigger> { }
 }
+#endif

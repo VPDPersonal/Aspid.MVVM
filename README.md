@@ -46,22 +46,22 @@ Unity Package Manager via Git URLs (*Window → Package Manager → + → Instal
 The release workflow publishes a branch containing only the package contents at its root, so no `?path=`
 query is needed.
 
-Its assemblies depend on two external git packages that are **not** resolved automatically. Add the
-packages **in this order** so each dependency is present before the package that needs it:
+The unreleased 1.1 source requires Aspid.FastTools. Without it, MVVM assemblies are excluded from compilation. Use
+**Install package from disk** with `Aspid.MVVM/Packages/tech.aspid.mvvm/package.json` to test it
+on Unity **6000.0.53f1** or newer. Published preview tags retain their original dependency requirements.
 
-**1. Aspid.FastTools** — preview channel:
+Install the required FastTools package first: `https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview/1.0.0-rc.9`.
 
-```
-https://github.com/VPDPersonal/Aspid.FastTools.git#upm-preview
-```
+Optional source profiles:
 
-**2. Aspid.Collections** — stable channel:
+- uGUI/TMP samples: `com.unity.ugui` 2.0.0 or the compatible version supplied by your Editor.
+- Observable collections: `https://github.com/VPDPersonal/Aspid.Collections.git#upm/1.1.1`.
+- Counter scenes also need `com.unity.inputsystem` 1.20.0 with Input System enabled.
+- UI Toolkit: `com.unity.modules.uielements`; other binders follow their corresponding Unity modules.
 
-```
-https://github.com/VPDPersonal/Aspid.Collections.git#upm
-```
+See [Getting Started](Docs/docs/01-getting-started.md) for the minimal and Counter profiles.
 
-**3. Aspid.MVVM** — preview channel:
+**Aspid.MVVM** — preview channel:
 
 ```
 https://github.com/VPDPersonal/Aspid.MVVM.git#upm-preview

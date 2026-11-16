@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -803,3 +804,4 @@ namespace Aspid.MVVM.StarterKit
             Target.SetInteractable(_interactableMode, isInteractable, _customInteractable, this);
     }
 }
+#endif

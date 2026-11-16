@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI && ASPID_MVVM_HAS_ASPID_COLLECTIONS
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,3 +55,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

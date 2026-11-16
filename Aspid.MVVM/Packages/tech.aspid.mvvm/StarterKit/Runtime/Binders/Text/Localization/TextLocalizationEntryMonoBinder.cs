@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 #if ASPID_MVVM_UNITY_LOCALIZATION_INTEGRATION
 using TMPro;
 using UnityEngine;
@@ -64,4 +65,6 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.text = value;
     }
 }
+#endif
+
 #endif

@@ -1,16 +1,15 @@
 using System;
-using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.StarterKit
 {
     /// <summary>
-    /// Helpers for command binders: swapping the bound command while keeping the
-    /// <see cref="IRelayCommand.CanExecuteChanged"/> subscription, and reflecting <c>CanExecute</c> on a <see cref="Selectable"/>.
+    /// Provides utility methods for command subscriptions and UI interactability.
     /// </summary>
     public static class CommandBinderExtensions
     {
+#if ASPID_MVVM_HAS_UGUI
         /// <summary>
         /// Reflects <paramref name="isInteractable"/> on <paramref name="target"/> according to <paramref name="mode"/>.
         /// </summary>
@@ -24,7 +23,7 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="customView">The handler used by <see cref="InteractableMode.Custom"/>. Ignored by other modes.</param>
         /// <param name="owner">The binder applying the value; names the source in diagnostics.</param>
         public static void SetInteractable(
-            this Selectable target,
+            this UnityEngine.UI.Selectable target,
             InteractableMode mode,
             bool isInteractable,
             ICanExecuteHandler customView,
@@ -60,18 +59,19 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        private static bool HasTarget(Selectable target, InteractableMode mode, object owner)
+        private static bool HasTarget(UnityEngine.UI.Selectable target, InteractableMode mode, object owner)
         {
             if (target) return true;
 
             BinderLogger.LogError(
                 binderType: owner.GetType(),
-                problem: $"the mode is {nameof(InteractableMode)}.{mode} but its target {nameof(Selectable)} is missing or destroyed",
+                problem: $"the mode is {nameof(InteractableMode)}.{mode} but its target {nameof(UnityEngine.UI.Selectable)} is missing or destroyed",
                 consequence: "The command's CanExecute state is not reflected anywhere.",
                 context: owner as Object);
 
             return false;
         }
+#endif
 
         /// <summary>
         /// Replaces <paramref name="command"/> with <paramref name="value"/>, moving the <see cref="IRelayCommand.CanExecuteChanged"/>

@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,3 +12,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Button/Button Binder – Command Object")]
     public sealed class ButtonCommandObjectMonoBinder : ButtonCommandMonoBinder<Object> { }
 }
+#endif

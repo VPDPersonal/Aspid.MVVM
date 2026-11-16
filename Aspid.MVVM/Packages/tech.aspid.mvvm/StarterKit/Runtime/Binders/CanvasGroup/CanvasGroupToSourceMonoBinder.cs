@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UI
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -10,3 +11,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/CanvasGroup/CanvasGroup To Source Binder")]
     public sealed class CanvasGroupToSourceMonoBinder : ComponentToSourceMonoBinder<CanvasGroup> { }
 }
+#endif

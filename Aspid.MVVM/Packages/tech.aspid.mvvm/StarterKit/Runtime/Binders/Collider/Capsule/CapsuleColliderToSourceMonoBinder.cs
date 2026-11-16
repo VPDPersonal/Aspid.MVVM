@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_PHYSICS
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -10,3 +11,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/Collider/Capsule/CapsuleCollider To Source Binder")]
     public sealed class CapsuleColliderToSourceMonoBinder : ComponentToSourceMonoBinder<CapsuleCollider> { }
 }
+#endif

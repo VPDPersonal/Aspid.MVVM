@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UIELEMENTS
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,6 +23,9 @@ namespace Aspid.MVVM.StarterKit
     {
         private bool _isSuppressingEcho;
 
+        private string _lastValue;
+        private bool _hasValue;
+
         /// <inheritdoc/>
         public event Action<string> ValueChanged;
 
@@ -32,7 +36,9 @@ namespace Aspid.MVVM.StarterKit
         [BinderLog]
         public void SetValue(string value)
         {
-            var element = Element;
+            _lastValue = value;
+            _hasValue = true;
+            var element = ResolveForWrite();
             if (element is null) return;
 
             _isSuppressingEcho = true;
@@ -49,14 +55,12 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnAttach()
+        protected override void OnElementAttached(TextField element)
         {
-            if (Mode is not (BindMode.TwoWay or BindMode.OneWayToSource)) return;
-
-            var element = Element;
-            if (element is null) return;
-
+            if (!Mode.IncludesReverse()) return;
+            element.UnregisterValueChangedCallback(OnFieldChanged);
             element.RegisterValueChangedCallback(OnFieldChanged);
+            if (IsBound && Mode is BindMode.OneWayToSource) OnBound();
         }
 
         /// <inheritdoc/>
@@ -69,10 +73,20 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnDetach()
+        protected override void OnElementDetached(TextField element) =>
+            element.UnregisterValueChangedCallback(OnFieldChanged);
+
+        /// <inheritdoc/>
+        protected override void ClearValue()
         {
-            if (Element is not null) Element.UnregisterValueChangedCallback(OnFieldChanged);
-            base.OnDetach();
+            _hasValue = false;
+            _lastValue = default;
+        }
+
+        /// <inheritdoc/>
+        protected override void RestoreElement()
+        {
+            if (_hasValue) SetValue(_lastValue);
         }
 
         private void OnFieldChanged(ChangeEvent<string> changed)
@@ -82,3 +96,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

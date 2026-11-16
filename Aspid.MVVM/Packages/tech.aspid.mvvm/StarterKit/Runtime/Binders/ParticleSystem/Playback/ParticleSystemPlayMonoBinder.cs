@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_PARTICLESYSTEM
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -18,3 +19,4 @@ namespace Aspid.MVVM.StarterKit
             particleSystem.Play();
     }
 }
+#endif

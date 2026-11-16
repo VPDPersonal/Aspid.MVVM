@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using TMPro;
 using System;
 using UnityEngine;
@@ -61,3 +62,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

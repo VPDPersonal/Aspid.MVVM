@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 #if ASPID_MVVM_ADDRESSABLES_INTEGRATION
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,4 +34,5 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif
 #endif

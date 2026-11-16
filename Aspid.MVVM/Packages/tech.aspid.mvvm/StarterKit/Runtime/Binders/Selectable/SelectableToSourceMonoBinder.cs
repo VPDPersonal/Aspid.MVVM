@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,3 +12,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Selectable/Selectable To Source Binder")]
     public sealed class SelectableToSourceMonoBinder : ComponentToSourceMonoBinder<Selectable> { }
 }
+#endif

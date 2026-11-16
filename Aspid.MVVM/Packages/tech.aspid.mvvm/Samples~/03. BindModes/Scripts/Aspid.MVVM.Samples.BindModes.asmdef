@@ -13,7 +13,21 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
+    "defineConstraints": [
+        "ASPID_MVVM_HAS_UGUI",
+        "ASPID_MVVM_HAS_ASPID_FASTTOOLS"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.ugui",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_UGUI"
+        },
+        {
+            "name": "tech.aspid.fasttools",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_ASPID_FASTTOOLS"
+        }
+    ],
     "noEngineReferences": false
 }

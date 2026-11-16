@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_ASPID_COLLECTIONS
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -74,3 +75,4 @@ namespace Aspid.MVVM.StarterKit
         }
     }
 }
+#endif

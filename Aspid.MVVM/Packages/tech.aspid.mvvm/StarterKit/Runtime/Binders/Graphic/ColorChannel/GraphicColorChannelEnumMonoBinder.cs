@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,3 +20,4 @@ namespace Aspid.MVVM.StarterKit
             CachedComponent.SetColorChannels(_channels, value);
     }
 }
+#endif

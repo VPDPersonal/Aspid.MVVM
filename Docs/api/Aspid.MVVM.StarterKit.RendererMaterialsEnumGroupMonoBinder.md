@@ -59,6 +59,30 @@ MonoBehaviour ←
 
 ## Methods
 
+### OnDestroy\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsEnumGroupMonoBinder_OnDestroy}
+
+Called by Unity when the component is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+
+```csharp
+protected override void OnDestroy()
+```
+
+#### Remarks
+
+When overriding, always call <code>base.OnDestroy()</code>.
+
+### OnDetach\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsEnumGroupMonoBinder_OnDetach}
+
+Called after removal, before ownership is released. Override to release subscriptions and other resources.
+
+```csharp
+protected override void OnDetach()
+```
+
+#### Remarks
+
+Also called after a failed installation; tolerate partially initialized resources.
+
 ### SetDefaultValue\(Renderer\) {#Aspid_MVVM_StarterKit_RendererMaterialsEnumGroupMonoBinder_SetDefaultValue_UnityEngine_Renderer_}
 
 Applies the default state to <code class="paramref">element</code>.

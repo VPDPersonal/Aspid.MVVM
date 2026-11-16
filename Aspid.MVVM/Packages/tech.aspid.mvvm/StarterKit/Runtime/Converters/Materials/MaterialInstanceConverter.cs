@@ -11,15 +11,15 @@ namespace Aspid.MVVM.StarterKit
     /// Hands a renderer its own copy of a material instead of the shared asset.
     /// </summary>
     /// <remarks>
-    /// The copy is owned by the converter: it is cached while the source is unchanged and destroyed
-    /// when the source changes, creating one per push would leak.
+    /// Renderer material binders create a separate conversion scope for each renderer slot and release it on
+    /// unbind or destruction. Direct callers own this converter and must call <see cref="Dispose"/>.
     /// </remarks>
     [Serializable]
     [TypeSelectorDisplay(
         Group = "Aspid/Material",
         Name = "Material Instance",
         Tooltip = "Hands a renderer its own copy of a material instead of the shared asset")]
-    public sealed class MaterialInstanceConverter : IConverter<Material?, Material?>
+    public sealed class MaterialInstanceConverter : IConverter<Material?, Material?>, IDisposable
     {
         [Tooltip("Return a copy rather than the shared asset.")]
         [SerializeField] private bool _instantiate = true;
@@ -68,10 +68,24 @@ namespace Aspid.MVVM.StarterKit
             return _copy;
         }
 
+        /// <summary>
+        /// Releases the copy owned by this conversion scope.
+        /// </summary>
+        public void Dispose() =>
+            Release();
+
+        internal MaterialInstanceConverter CreateScope() =>
+            new(_instantiate);
+
         private void Release()
         {
             if (_copy != null)
-                Object.Destroy(_copy);
+            {
+                if (Application.isPlaying)
+                    Object.Destroy(_copy);
+                else
+                    Object.DestroyImmediate(_copy);
+            }
 
             _copy = null;
             _source = null;

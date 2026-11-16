@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using TMPro;
 using UnityEngine;
 
@@ -11,3 +12,4 @@ namespace Aspid.MVVM.StarterKit
     [AddComponentMenu("Aspid/MVVM/Binders/UI/Dropdown/Dropdown To Source Binder")]
     public sealed class DropdownToSourceMonoBinder : ComponentToSourceMonoBinder<TMP_Dropdown> { }
 }
+#endif

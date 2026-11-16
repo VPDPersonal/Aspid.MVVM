@@ -14,8 +14,92 @@
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
+        "UNITY_INCLUDE_TESTS",
+        "ASPID_MVVM_HAS_TEST_FRAMEWORK",
+        "ASPID_MVVM_HAS_ASPID_FASTTOOLS",
+        "ASPID_MVVM_HAS_ASPID_COLLECTIONS",
+        "ASPID_MVVM_HAS_UGUI",
+        "ASPID_MVVM_HAS_UI",
+        "ASPID_MVVM_HAS_UIELEMENTS",
+        "ASPID_MVVM_HAS_ANIMATION",
+        "ASPID_MVVM_HAS_AUDIO",
+        "ASPID_MVVM_HAS_PHYSICS",
+        "ASPID_MVVM_HAS_PHYSICS2D",
+        "ASPID_MVVM_HAS_AI",
+        "ASPID_MVVM_HAS_PARTICLESYSTEM",
+        "ASPID_MVVM_HAS_VIDEO"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.ai",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_AI"
+        },
+        {
+            "name": "com.unity.modules.animation",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_ANIMATION"
+        },
+        {
+            "name": "com.unity.modules.audio",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_AUDIO"
+        },
+        {
+            "name": "com.unity.modules.particlesystem",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_PARTICLESYSTEM"
+        },
+        {
+            "name": "com.unity.modules.video",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_VIDEO"
+        },
+        {
+            "name": "com.unity.modules.physics",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_PHYSICS"
+        },
+        {
+            "name": "com.unity.modules.physics2d",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_PHYSICS2D"
+        },
+        {
+            "name": "com.unity.modules.ui",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_UI"
+        },
+        {
+            "name": "com.unity.modules.uielements",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_UIELEMENTS"
+        },
+        {
+            "name": "com.unity.modules.imgui",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_IMGUI"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_UGUI"
+        },
+        {
+            "name": "tech.aspid.fasttools",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_ASPID_FASTTOOLS"
+        },
+        {
+            "name": "tech.aspid.collections",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_ASPID_COLLECTIONS"
+        },
+        {
+            "name": "com.unity.test-framework",
+            "expression": "",
+            "define": "ASPID_MVVM_HAS_TEST_FRAMEWORK"
+        }
+    ],
     "noEngineReferences": false
 }

@@ -17,10 +17,12 @@ namespace Aspid.MVVM.StarterKit
     [CustomPropertyDrawer(typeof(PluralRule), useForChildren: true)]
     [CustomPropertyDrawer(typeof(IConverter<,>), useForChildren: true)]
     [CustomPropertyDrawer(typeof(IViewFactory<>), useForChildren: true)]
-    [CustomPropertyDrawer(typeof(ICollectionOrder<>), useForChildren: true)]
     [CustomPropertyDrawer(typeof(ICanExecuteHandler), useForChildren: true)]
-    [CustomPropertyDrawer(typeof(ICollectionFilter<>), useForChildren: true)]
     [CustomPropertyDrawer(typeof(IViewFactoryWithKey<>), useForChildren: true)]
+#if ASPID_MVVM_HAS_ASPID_COLLECTIONS
+    [CustomPropertyDrawer(typeof(ICollectionOrder<>), useForChildren: true)]
+    [CustomPropertyDrawer(typeof(ICollectionFilter<>), useForChildren: true)]
+#endif
     public sealed class StarterKitTypePickerDrawer : PropertyDrawer
     {
         // null makes PropertyField fall back to the IMGUI path below.

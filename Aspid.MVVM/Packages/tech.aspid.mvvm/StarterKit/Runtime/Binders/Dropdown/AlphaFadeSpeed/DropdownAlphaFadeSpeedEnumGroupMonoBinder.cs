@@ -1,3 +1,4 @@
+#if ASPID_MVVM_HAS_UGUI
 using TMPro;
 using UnityEngine;
 
@@ -20,3 +21,4 @@ namespace Aspid.MVVM.StarterKit
             element.alphaFadeSpeed = this.NonNegative(value);
     }
 }
+#endif

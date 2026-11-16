@@ -25,7 +25,7 @@ export const TMP_ESSENTIALS = [`${TMP}.meta`, ...['Fonts', 'Resources', 'Shaders
   `${TMP}/${folder}.meta`,
 ])];
 const SCRIPT = 'scripts/make-unity-test-project.sh';
-const PATHS = [PACKAGE, ...DEV_PACKAGES, ...TMP_ESSENTIALS, SCRIPT];
+const PATHS = [PACKAGE, ...DEV_PACKAGES, ...TMP_ESSENTIALS, SCRIPT, 'scripts/asp-make-dependency-profile.mjs', 'scripts/dependency-profile'];
 const WORKFLOW = '.github/workflows/ci.yml';
 const JOB = 'unity-tests';
 // A new format of the digest text must not match a digest of the old one.

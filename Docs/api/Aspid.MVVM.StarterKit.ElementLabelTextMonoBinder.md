@@ -65,6 +65,22 @@ MonoBehaviour ←
 
 ## Methods
 
+### ClearValue\(\) {#Aspid_MVVM_StarterKit_ElementLabelTextMonoBinder_ClearValue}
+
+Called when a binding ends or starts to release its retained value.
+
+```csharp
+protected override void ClearValue()
+```
+
+### RestoreElement\(\) {#Aspid_MVVM_StarterKit_ElementLabelTextMonoBinder_RestoreElement}
+
+Called when a replacement element needs the last bound value.
+
+```csharp
+protected override void RestoreElement()
+```
+
 ### SetValue\<T\>\(T\) {#Aspid_MVVM_StarterKit_ElementLabelTextMonoBinder_SetValue__1___0_}
 
 ```csharp

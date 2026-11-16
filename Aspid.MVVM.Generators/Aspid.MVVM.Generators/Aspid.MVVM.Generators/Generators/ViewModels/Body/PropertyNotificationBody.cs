@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Helpers;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
@@ -10,19 +11,18 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class PropertyNotificationBody
 {
-    public static void Generate(
-        string namespaceName,
+    internal static void Generate(
         in ViewModelData data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
         
-        code.BeginClass(namespaceName, declaration)
+        code.BeginScopedClass(declaration)
             .AppendBody(data)
-            .EndClass(namespaceName);
+            .EndScopedClass(declaration);
 
-        context.AddSource(declaration.GetFileName(namespaceName, postfix: "PropertyNotification"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName(postfix: "PropertyNotification"), code.GetSourceText());
     }
 
     extension(CodeWriter code)

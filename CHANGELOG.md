@@ -244,6 +244,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 ### Fixed
 
 - Property notification helpers inspect all ViewModel partial declarations while preserving `CallerLineNumber`. Ambiguous implicit calls report `ASPIDVM007`; explicit property names select the correct target, and unsupported calls report `ASPIDVM008`. Source-only property setters no longer call a missing forward-notification method.
+- Source generators preserve complete namespaces and nested partial type chains, including generic parameters and constraints. Generated filenames distinguish containers and generic arity; BinderLog emits once across partial declarations. Serializable twins support the global namespace and namespace-scoped aliases. Unsupported containers report `ASPIDGEN001`, inaccessible or open generic context-menu targets report `ASPIDMENU001`, and generic typed Views compile with profiling enabled.
 
 - `[RelayCommand]` supports ordinary bool-field predicates and validates overloads, generic constraints and inherited member hiding before generating commands (`ASPIDVM004`).
 

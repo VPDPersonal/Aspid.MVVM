@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.ViewModels.Data;
 using static Aspid.MVVM.Generators.Generators.Descriptions.Classes;
@@ -9,18 +11,17 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class BindableInterfaceMembersBody
 {
-    public static void Generate(       
-        string @namespace,
+    internal static void Generate(
         in ViewModelData data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         var code = new CodeWriter();
-        code.BeginClass(@namespace, declaration)
+        code.BeginScopedClass(declaration)
             .AppendProperties(data)
-            .EndClass(@namespace);
+            .EndScopedClass(declaration);
         
-        context.AddSource(declaration.GetFileName(@namespace, "BindableInterfaceMembers"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName("BindableInterfaceMembers"), code.GetSourceText());
     }
 
     private static CodeWriter AppendProperties(this CodeWriter code, in ViewModelData data)

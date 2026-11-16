@@ -31,4 +31,7 @@
         <EmbeddedResource Include="$(PkgAspid_Generators_Helper_Unity)/lib/netstandard2.0/Aspid.Generators.Helper.Unity.dll" LogicalName="Aspid.Generators.Helper.Unity.dll" Visible="false" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Include="../../../Generators.Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
+    </ItemGroup>
 </Project>

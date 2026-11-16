@@ -23,4 +23,7 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+        <Compile Include="../../../Generators.Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
+    </ItemGroup>
 </Project>

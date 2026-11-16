@@ -44,6 +44,28 @@ The Source Generator implements `IViewModel` and emits:
 - `FindBindableMember()` for dispatch
 - `NotifyAll()` for bulk notification
 
+### Nested types
+
+A ViewModel can be nested, including `private` types inside generic containers. Every containing type must be `partial`: the generator recreates the complete type chain, type parameters and `where` constraints. This also applies to `[View]`, `[BinderLog]` and `[GenerateSerializableBinder]`. A non-partial container reports `ASPIDGEN001`; add `partial` to all its declarations or move the target type outside it.
+
+```csharp
+using Aspid.MVVM;
+
+namespace Game.UI
+{
+    public partial class Screen<T> where T : class
+    {
+        [ViewModel]
+        private partial class Model
+        {
+            [Bind] private T _selection;
+        }
+    }
+}
+```
+
+The global namespace, nested namespace blocks and file-scoped namespaces are supported when available in your compiler. Equal leaf names in different containers or namespaces do not collide. This is C# generation support; Unity's component and generic serialization restrictions still apply.
+
 ### Three flavours of ViewModel
 
 | Type | Base class | When to use |

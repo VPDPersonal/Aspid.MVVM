@@ -1,4 +1,5 @@
 using System.Threading;
+using Aspid.MVVM.Generators.Shared;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Diagnostics;
@@ -25,6 +26,8 @@ public partial class ViewGenerator
         CancellationToken cancellationToken)
     {
         if (context.TargetSymbol is not INamedTypeSymbol symbol) return (null, ImmutableArray<Diagnostic>.Empty);
+        if (AspidTypeDeclaration.ValidateContainers(symbol) is { } containerDiagnostic)
+            return (null, ImmutableArray.Create(containerDiagnostic));
         var declaration = (TypeDeclarationSyntax)context.TargetNode;
         if (symbol.IsStatic || !declaration.Modifiers.Any(SyntaxKind.PartialKeyword))
             return (null, ImmutableArray.Create(Diagnostic.Create(InvalidView, declaration.Identifier.GetLocation(), symbol.Name)));

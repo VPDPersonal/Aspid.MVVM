@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,20 +15,19 @@ namespace Aspid.MVVM.Generators.Generators.ViewModels.Body;
 
 public static class FindBindableMembersBody
 {
-    public static void Generate(
-        string @namespace,
+    internal static void Generate(
         in ViewModelData data,
-        DeclarationText declaration,
+        AspidTypeDeclaration declaration,
         in SourceProductionContext context)
     {
         string[] baseTypes = [IViewModel];
 
         var code = new CodeWriter();
-        code.BeginClass(@namespace, declaration, baseTypes)
+        code.BeginScopedClass(declaration, baseTypes)
             .AppendBody(data)
-            .EndClass(@namespace);
+            .EndScopedClass(declaration);
 
-        context.AddSource(declaration.GetFileName(@namespace, "FindBindableMembers"), code.GetSourceText());
+        context.AddSource(declaration.GetFileName("FindBindableMembers"), code.GetSourceText());
     }
     
     private static CodeWriter AppendBody(this CodeWriter code, in ViewModelData data)

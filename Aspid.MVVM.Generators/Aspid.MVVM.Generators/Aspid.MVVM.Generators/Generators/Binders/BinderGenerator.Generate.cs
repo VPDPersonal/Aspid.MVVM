@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+using Aspid.MVVM.Generators.Helpers;
+using Aspid.MVVM.Generators.Shared;
 using Aspid.Generators.Helper;
 using Aspid.MVVM.Generators.Generators.Binders.Body;
 using Aspid.MVVM.Generators.Generators.Binders.Data;
@@ -12,18 +14,20 @@ public partial class BinderGenerator
     
     private static void GenerateCode(SourceProductionContext context, BinderData binderData)
     {
-        var declaration = binderData.Declaration;
-        var @namespace = declaration.GetNamespaceName();
-        var declarationText = new DeclarationText(declaration);
+        if (AspidTypeDeclaration.ValidateContainers(binderData.Symbol) is { } diagnostic)
+        {
+            context.ReportDiagnostic(diagnostic);
+            return;
+        }
+        var declarationText = new AspidTypeDeclaration(binderData.Symbol);
 
-        GenerateBinderLog(@namespace, new BinderDataSpan(binderData), context, declarationText);
+        GenerateBinderLog(new BinderDataSpan(binderData), context, declarationText);
     }
 
     private static void GenerateBinderLog(
-        string @namespace,
         in BinderDataSpan data,
         SourceProductionContext context,
-        DeclarationText declarationText)
+        AspidTypeDeclaration declarationText)
     {
         if (data.Methods.Length == 0) return;
         
@@ -31,19 +35,19 @@ public partial class BinderGenerator
 
 #if DEBUG
         code.AppendLine($"#if !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
-            .BeginClass(@namespace, declarationText)
+            .BeginScopedClass(declarationText)
             .AppendBinderLogBody(data)
-            .EndClass(@namespace)
+            .EndScopedClass(declarationText)
             .AppendLine("#endif");
 #else
         code.AppendLine($"#if {Aspid.Generators.Helper.Unity.Defines.UNITY_EDITOR} && !{Defines.ASPID_MVVM_BINDER_LOG_DISABLED}")
-            .BeginClass(@namespace, declarationText)
+            .BeginScopedClass(declarationText)
             .AppendBinderLogBody(data)
-            .EndClass(@namespace)
+            .EndScopedClass(declarationText)
             .Append("#endif");
 #endif
         
-        context.AddSource(declarationText.GetFileName(@namespace, PartialBinderLogName), code.GetSourceText());
+        context.AddSource(declarationText.GetFileName(PartialBinderLogName), code.GetSourceText());
         
         #region Generation Example
         /*  #if UNITY_EDITOR

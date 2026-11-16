@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RectTransformGettersAndSetters {#Aspid_MVVM_StarterKit_RectTransformGettersAndSetters}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods that read and write the anchored position of a [`RectTransform`](https://docs.unity3d.com/ScriptReference/RectTransform.html) by [`Space`](https://docs.unity3d.com/ScriptReference/Space.html)
 and its size delta by [`SizeDeltaMode`](Aspid.MVVM.StarterKit.SizeDeltaMode.md).
@@ -20,7 +20,7 @@ public static class RectTransformGettersAndSetters
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [RectTransformGettersAndSetters](Aspid.MVVM.StarterKit.RectTransformGettersAndSetters.md)
 
 
@@ -97,4 +97,3 @@ The size to apply.
 `mode` [SizeDeltaMode](Aspid.MVVM.StarterKit.SizeDeltaMode.md)
 
 Which axes are written.
-

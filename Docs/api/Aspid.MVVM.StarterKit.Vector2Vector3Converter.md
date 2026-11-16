@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class Vector2Vector3Converter {#Aspid_MVVM_StarterKit_Vector2Vector3Converter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Maps a [`Vector2`](https://docs.unity3d.com/ScriptReference/Vector2.html)'s components onto two axes of a [`Vector3`](https://docs.unity3d.com/ScriptReference/Vector3.html), filling
 the third with a constant, and reads the same two back.
@@ -22,23 +22,23 @@ public sealed class Vector2Vector3Converter : ITwoWayConverter<Vector2, Vector3>
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [Vector2Vector3Converter](Aspid.MVVM.StarterKit.Vector2Vector3Converter.md)
 
 #### Implements
 
-[ITwoWayConverter\<Vector2, Vector3\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Vector2, Vector3\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<Vector3, Vector2\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Vector3, Vector2\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[ITwoWayConverter\<Vector2, Vector3\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Vector2, Vector3\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<Vector3, Vector2\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Vector3, Vector2\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Constructors
@@ -112,4 +112,3 @@ The 3D vector to convert.
 
 The two axes the mode names, in the order it names them; the constant axis is dropped.
 Reports an error and returns a zero vector when the mode is not a declared value.
-

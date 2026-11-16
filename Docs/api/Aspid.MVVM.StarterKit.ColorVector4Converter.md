@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ColorVector4Converter {#Aspid_MVVM_StarterKit_ColorVector4Converter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Converts between a color and a [`Vector4`](https://docs.unity3d.com/ScriptReference/Vector4.html), in either direction.
 
@@ -21,23 +21,23 @@ public sealed class ColorVector4Converter : ITwoWayConverter<Color, Vector4>, IC
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ColorVector4Converter](Aspid.MVVM.StarterKit.ColorVector4Converter.md)
 
 #### Implements
 
-[ITwoWayConverter\<Color, Vector4\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Color, Vector4\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<Vector4, Color\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<Vector4, Color\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[ITwoWayConverter\<Color, Vector4\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Color, Vector4\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<Vector4, Color\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<Vector4, Color\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -126,4 +126,3 @@ The color to read.
  Vector4
 
 Its red, green, blue and alpha as x, y, z and w.
-

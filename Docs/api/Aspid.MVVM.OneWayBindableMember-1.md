@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneWayBindableMember\<T\> {#Aspid_MVVM_OneWayBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IBindableMember<T>`](Aspid.MVVM.IBindableMember-1.md) that pushes every value change to its binders.
 
@@ -19,21 +19,21 @@ public sealed class OneWayBindableMember<T> : IBindableMember<T>, IReadOnlyBinda
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound value type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [OneWayBindableMember\<T\>](Aspid.MVVM.OneWayBindableMember-1.md)
 
 #### Implements
 
-[IBindableMember\<T\>](Aspid.MVVM.IBindableMember-1.md), 
-[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md), 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
-[IBinderAdder](Aspid.MVVM.IBinderAdder.md), 
+[IBindableMember\<T\>](Aspid.MVVM.IBindableMember-1.md),
+[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md),
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
+[IBinderAdder](Aspid.MVVM.IBinderAdder.md),
 [IBinderRemover](Aspid.MVVM.IBinderRemover.md)
 
 
@@ -115,4 +115,3 @@ public event Action<T?>? Changed
 #### Remarks
 
 The reported value may equal the previous value.
-

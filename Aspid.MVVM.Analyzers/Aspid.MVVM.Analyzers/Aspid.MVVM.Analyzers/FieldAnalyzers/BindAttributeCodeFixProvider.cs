@@ -27,12 +27,9 @@ public sealed class BindAttributeCodeFixProvider : CodeFixProvider
         var diagnosticSpan = diagnostic.Location.SourceSpan;
         if (root.FindNode(diagnosticSpan) is not IdentifierNameSyntax assignment) return;
         
-        var fieldName = assignment.Identifier.Text;
-        
-        var propertyName = diagnostic.Properties.TryGetValue("PropertyName", out var property)
-            ? property!
-            : ConvertToPascalCase(fieldName);
-        
+        if (!diagnostic.Properties.TryGetValue("CanFix", out var canFix) || canFix != "true") return;
+        if (!diagnostic.Properties.TryGetValue("PropertyName", out var propertyName) || string.IsNullOrEmpty(propertyName)) return;
+
         context.RegisterCodeFix(
             CodeAction.Create(
                 title: $"Use property '{propertyName}'", 
@@ -43,24 +40,12 @@ public sealed class BindAttributeCodeFixProvider : CodeFixProvider
     
     private static async Task<Document> UsePropertyInsteadOfFieldAsync(Document document, IdentifierNameSyntax identifier, string propertyName, CancellationToken cancellationToken)
     {
-        var propertyAccess = SyntaxFactory.IdentifierName(propertyName);
+        var escapedName = SyntaxFacts.GetKeywordKind(propertyName) == SyntaxKind.None ? propertyName : "@" + propertyName;
+        var propertyAccess = SyntaxFactory.IdentifierName(escapedName).WithTriviaFrom(identifier);
         var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
         var newRoot = root.ReplaceNode(identifier, propertyAccess);
     
         return document.WithSyntaxRoot(newRoot);
     }
     
-    private static string ConvertToPascalCase(string fieldName)
-    {
-        var name = RemovePrefix(fieldName);
-        return char.ToUpper(name[0]) + name.Substring(1);
-    }
-    
-    private static string RemovePrefix(string fieldName)
-    {
-        var prefixCount = fieldName.StartsWith("_") ? 1 : fieldName.StartsWith("m_") ? 2 : 0;
-        if (prefixCount > 0) fieldName = fieldName.Remove(0, prefixCount);
-
-        return fieldName;
-    }
 }

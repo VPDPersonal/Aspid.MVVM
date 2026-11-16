@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum IndexOutOfRangeMode {#Aspid_MVVM_StarterKit_IndexOutOfRangeMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What [`IndexToValueConverter<T>`](Aspid.MVVM.StarterKit.IndexToValueConverter-1.md) does with an index outside the array.
 
@@ -20,21 +20,18 @@ public enum IndexOutOfRangeMode
 
 ## Fields
 
-`Clamp = 0` 
+`Clamp = 0`
 
 Use the nearest end of the array.
 
 
 
-`Wrap = 1` 
+`Wrap = 1`
 
 Wrap around, so one past the end is the first entry.
 
 
 
-`Fallback = 2` 
+`Fallback = 2`
 
 Return the fallback.
-
-
-

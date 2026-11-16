@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface ICollectionFilter\<T\> {#Aspid_MVVM_StarterKit_ICollectionFilter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Serializable filter for collection binders.
 
@@ -19,7 +19,7 @@ public interface ICollectionFilter<in T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being filtered.
 
@@ -43,4 +43,3 @@ The element to test.
 #### Returns
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-

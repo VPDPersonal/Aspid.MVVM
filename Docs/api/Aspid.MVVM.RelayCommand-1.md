@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RelayCommand\<T\> {#Aspid_MVVM_RelayCommand_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IRelayCommand<T>`](Aspid.MVVM.IRelayCommand-1.md) that runs a delegate, optionally gated by a predicate.
 
@@ -19,13 +19,13 @@ public class RelayCommand<T> : IRelayCommand<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [RelayCommand\<T\>](Aspid.MVVM.RelayCommand-1.md)
 
 #### Implements
@@ -38,7 +38,7 @@ The command parameter type.
 [RelayCommandExtensions.CreateCommandWithoutParameters\<T\>\(IRelayCommand\<T\>, T?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__1_Aspid_MVVM_IRelayCommand___0____0_),
 [RelayCommandExtensions.CreateCommandWithoutParametersOrEmpty\<T\>\(IRelayCommand\<T\>?, T?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__1_Aspid_MVVM_IRelayCommand___0____0_),
 [RelayCommandExtensions.CreateCommandWithoutParametersOrEmptyExecution\<T\>\(IRelayCommand\<T\>?, T?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0____0_),
-[RelayCommandExtensions.GetSelfOrEmpty\<T\>\(IRelayCommand\<T?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__1_Aspid_MVVM_IRelayCommand___0__), 
+[RelayCommandExtensions.GetSelfOrEmpty\<T\>\(IRelayCommand\<T?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__1_Aspid_MVVM_IRelayCommand___0__),
 [RelayCommandExtensions.GetSelfOrEmptyExecution\<T\>\(IRelayCommand\<T?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0__)
 
 ## Remarks
@@ -152,4 +152,3 @@ public event Action<IRelayCommand<T>>? CanExecuteChanged
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<[IRelayCommand](Aspid.MVVM.IRelayCommand-1.md)\<T\>\>?
-

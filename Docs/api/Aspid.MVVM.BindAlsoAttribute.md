@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BindAlsoAttribute {#Aspid_MVVM_BindAlsoAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Notifies the binders of another bindable property whenever the marked member of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class changes.
 
@@ -20,8 +20,8 @@ public sealed class BindAlsoAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [BindAlsoAttribute](Aspid.MVVM.BindAlsoAttribute.md)
 
 
@@ -89,4 +89,3 @@ public string PropertyName { get; }
 #### Remarks
 
 Exists only when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
-

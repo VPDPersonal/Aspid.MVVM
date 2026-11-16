@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class GraphicExtensions {#Aspid_MVVM_StarterKit_GraphicExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Per-channel access to [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html). An empty channel mask is reported as a configuration error.
 
@@ -19,7 +19,7 @@ public static class GraphicExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [GraphicExtensions](Aspid.MVVM.StarterKit.GraphicExtensions.md)
 
 
@@ -71,4 +71,3 @@ The channels to write.
 `value` [float](https://learn.microsoft.com/dotnet/api/system.single)
 
 The channel value.
-

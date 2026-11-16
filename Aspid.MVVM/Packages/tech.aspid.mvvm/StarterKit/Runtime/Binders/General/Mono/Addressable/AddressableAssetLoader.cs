@@ -45,13 +45,19 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public void CancelPending()
         {
-            if (_pending.IsValid())
-            {
-                _pending.Completed -= OnCompleted;
-                _pending.Release();
-            }
-
+            var pending = _pending;
             _pending = default;
+
+            if (!pending.IsValid()) return;
+
+            try
+            {
+                pending.Completed -= OnCompleted;
+            }
+            finally
+            {
+                pending.Release();
+            }
         }
 
         /// <summary>
@@ -59,8 +65,11 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public void ReleaseCurrent()
         {
-            if (_current.IsValid()) _current.Release();
+            var current = _current;
             _current = default;
+
+            if (current.IsValid())
+                current.Release();
         }
 
         /// <summary>
@@ -68,8 +77,14 @@ namespace Aspid.MVVM.StarterKit
         /// </summary>
         public void ReleaseAll()
         {
-            CancelPending();
-            ReleaseCurrent();
+            try
+            {
+                CancelPending();
+            }
+            finally
+            {
+                ReleaseCurrent();
+            }
         }
 
         private void OnCompleted(AsyncOperationHandle<TAsset> handle)

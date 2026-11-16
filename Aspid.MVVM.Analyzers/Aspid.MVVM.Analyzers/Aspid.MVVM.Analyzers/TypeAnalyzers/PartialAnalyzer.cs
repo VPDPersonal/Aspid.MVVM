@@ -56,7 +56,7 @@ public sealed class PartialAnalyzer : DiagnosticAnalyzer
     {
         var declaration = (TypeDeclarationSyntax)context.Node;
         
-        foreach (var attribute in declaration.AttributeLists.SelectMany(a => a.Attributes).Take(1))
+        foreach (var attribute in declaration.AttributeLists.SelectMany(a => a.Attributes))
         {
             if (declaration.Modifiers.Any(SyntaxKind.PartialKeyword)) continue;
             if (context.SemanticModel.GetSymbolInfo(attribute).Symbol is not IMethodSymbol attributeSymbol) continue;

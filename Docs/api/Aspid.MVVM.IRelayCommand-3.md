@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IRelayCommand\<T1, T2, T3\> {#Aspid_MVVM_IRelayCommand_3}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Defines a command with three parameters.
 
@@ -19,15 +19,15 @@ public interface IRelayCommand<in T1, in T2, in T3>
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -36,7 +36,7 @@ The third command parameter type.
 [RelayCommandExtensions.CreateCommandWithoutParameters\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>, T1?, T2?, T3?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParameters__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_),
 [RelayCommandExtensions.CreateCommandWithoutParametersOrEmpty\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>?, T1?, T2?, T3?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmpty__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_),
 [RelayCommandExtensions.CreateCommandWithoutParametersOrEmptyExecution\<T1, T2, T3\>\(IRelayCommand\<T1, T2, T3\>?, T1?, T2?, T3?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_CreateCommandWithoutParametersOrEmptyExecution__3_Aspid_MVVM_IRelayCommand___0___1___2____0___1___2_),
-[RelayCommandExtensions.GetSelfOrEmpty\<T1, T2, T3\>\(IRelayCommand\<T1?, T2?, T3?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__3_Aspid_MVVM_IRelayCommand___0___1___2__), 
+[RelayCommandExtensions.GetSelfOrEmpty\<T1, T2, T3\>\(IRelayCommand\<T1?, T2?, T3?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__3_Aspid_MVVM_IRelayCommand___0___1___2__),
 [RelayCommandExtensions.GetSelfOrEmptyExecution\<T1, T2, T3\>\(IRelayCommand\<T1?, T2?, T3?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmptyExecution__3_Aspid_MVVM_IRelayCommand___0___1___2__)
 
 ## Methods
@@ -110,4 +110,3 @@ event Action<IRelayCommand<in T1, in T2, in T3>>? CanExecuteChanged
 #### Event Type
 
  [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<[IRelayCommand](Aspid.MVVM.IRelayCommand-3.md)\<T1, T2, T3\>\>?
-

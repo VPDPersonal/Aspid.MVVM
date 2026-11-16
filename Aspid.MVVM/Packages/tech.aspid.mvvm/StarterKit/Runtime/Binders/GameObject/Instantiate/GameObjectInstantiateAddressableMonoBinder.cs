@@ -40,11 +40,8 @@ namespace Aspid.MVVM.StarterKit
         }
 
         /// <inheritdoc/>
-        protected override void OnDestroy()
-        {
+        protected override void ReleaseAsset() =>
             DestroyCurrentInstance();
-            base.OnDestroy();
-        }
 
         /// <inheritdoc/>
         protected override GameObject GetDefaultAsset() =>

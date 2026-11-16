@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class InputFieldExtensions {#Aspid_MVVM_StarterKit_InputFieldExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Event and number helpers shared by the `TMP_InputField` binders.
 
@@ -19,7 +19,7 @@ public static class InputFieldExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [InputFieldExtensions](Aspid.MVVM.StarterKit.InputFieldExtensions.md)
 
 
@@ -110,4 +110,3 @@ The listener to remove.
 #### Remarks
 
 Used when the selected event may have changed since the listener was added.
-

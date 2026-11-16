@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class SequenceCanExecuteHandler {#Aspid_MVVM_StarterKit_SequenceCanExecuteHandler}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICanExecuteHandler`](Aspid.MVVM.StarterKit.ICanExecuteHandler.md) that forwards the state to every nested handler in order.
 
@@ -20,7 +20,7 @@ public sealed class SequenceCanExecuteHandler : ICanExecuteHandler
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [SequenceCanExecuteHandler](Aspid.MVVM.StarterKit.SequenceCanExecuteHandler.md)
 
 #### Implements
@@ -58,4 +58,3 @@ public void SetCanExecute(bool canExecute)
 `canExecute` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 The command's current <code>CanExecute</code> result.
-

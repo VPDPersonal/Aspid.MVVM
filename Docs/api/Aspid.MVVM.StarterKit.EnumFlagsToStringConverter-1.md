@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class EnumFlagsToStringConverter\<TEnum\> {#Aspid_MVVM_StarterKit_EnumFlagsToStringConverter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Names the flags a value carries.
 
@@ -21,27 +21,27 @@ public class EnumFlagsToStringConverter<TEnum> : IConverter<TEnum, string>, ICon
 
 #### Type Parameters
 
-`TEnum` 
+`TEnum`
 
 The enum type being named.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [EnumFlagsToStringConverter\<TEnum\>](Aspid.MVVM.StarterKit.EnumFlagsToStringConverter-1.md)
 
 #### Implements
 
-[IConverter\<TEnum, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter](Aspid.MVVM.StarterKit.IConverter.md), 
+[IConverter\<TEnum, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter](Aspid.MVVM.StarterKit.IConverter.md),
 ISerializationCallbackReceiver
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -101,4 +101,3 @@ The value to take apart.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The flag names joined by the separator, or the none text. Undeclared bits are dropped.
-

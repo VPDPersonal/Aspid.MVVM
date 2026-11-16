@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ColorCanExecuteHandler {#Aspid_MVVM_StarterKit_ColorCanExecuteHandler}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICanExecuteHandler`](Aspid.MVVM.StarterKit.ICanExecuteHandler.md) that switches a [`color`](https://docs.unity3d.com/ScriptReference/UI-Graphic-color.html) between two colors by the command state.
 
@@ -20,7 +20,7 @@ public sealed class ColorCanExecuteHandler : ICanExecuteHandler
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ColorCanExecuteHandler](Aspid.MVVM.StarterKit.ColorCanExecuteHandler.md)
 
 #### Implements
@@ -72,4 +72,3 @@ public void SetCanExecute(bool canExecute)
 `canExecute` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 The command's current <code>CanExecute</code> result.
-

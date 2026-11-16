@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum AxisMask {#Aspid_MVVM_StarterKit_AxisMask}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which axes a converter writes a number into.
 
@@ -21,39 +21,36 @@ public enum AxisMask
 
 ## Fields
 
-`None = 0` 
+`None = 0`
 
 No axis.
 
 
 
-`X = 1` 
+`X = 1`
 
 The X axis.
 
 
 
-`Y = 2` 
+`Y = 2`
 
 The Y axis.
 
 
 
-`Z = 4` 
+`Z = 4`
 
 The Z axis.
 
 
 
-`W = 8` 
+`W = 8`
 
 The W axis, which only a [`Vector4`](https://docs.unity3d.com/ScriptReference/Vector4.html) carries.
 
 
 
-`All = 15` 
+`All = 15`
 
 Every axis, so the value is uniform.
-
-
-

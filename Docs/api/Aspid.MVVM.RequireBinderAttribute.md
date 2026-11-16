@@ -8,35 +8,51 @@ pagination_next: null
 ---
 # Class RequireBinderAttribute {#Aspid_MVVM_RequireBinderAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Editor-only attribute applied to serialized fields to declare the required binder association
-in the Unity Inspector. Enables the editor to validate that a [`MonoBinder`](Aspid.MVVM.MonoBinder.md)
-of the expected type is assigned to the field.
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Associates a serialized binder field with a binding identifier and accepted value types for Inspector validation.
 
 ```csharp
 [Conditional("DEBUG")]
 [Conditional("UNITY_EDITOR")]
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public sealed class RequireBinderAttribute : Attribute
 ```
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [RequireBinderAttribute](Aspid.MVVM.RequireBinderAttribute.md)
 
 
+
+## Examples
+
+
+```csharp
+[RequireBinder(typeof(int), Id = "Health")]
+[UnityEngine.SerializeField] private MonoBinder[] _health;
+```
+
+
+```csharp
+[RequireBinder(nameof(_valueTypeName), Id = nameof(_memberId))]
+[UnityEngine.SerializeField] private MonoBinder[] _binders;
+```
+
+
+## Remarks
+
+Attribute applications are omitted unless <code>DEBUG</code> or <code>UNITY_EDITOR</code> is defined.
 
 ## Constructors
 
 ### RequireBinderAttribute\(\) {#Aspid_MVVM_RequireBinderAttribute__ctor}
 
-Initializes the attribute without specifying a binder type.
-The editor will accept any binder assigned to the field.
+Creates an attribute without value type restrictions.
 
 ```csharp
 public RequireBinderAttribute()
@@ -44,7 +60,7 @@ public RequireBinderAttribute()
 
 ### RequireBinderAttribute\(Type\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_Type_}
 
-Initializes the attribute for a single binder type.
+Creates the attribute for a single value type.
 
 ```csharp
 public RequireBinderAttribute(Type type)
@@ -54,11 +70,21 @@ public RequireBinderAttribute(Type type)
 
 `type` [Type](https://learn.microsoft.com/dotnet/api/system.type)
 
-The binder type that this field requires.
+The bound value type that assigned binders must support.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">type</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+A type is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or has no assembly-qualified name.
 
 ### RequireBinderAttribute\(params Type\[\]\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_Type___}
 
-Initializes the attribute for multiple binder types.
+Creates the attribute for multiple value types.
 
 ```csharp
 public RequireBinderAttribute(params Type[] types)
@@ -68,11 +94,21 @@ public RequireBinderAttribute(params Type[] types)
 
 `types` [Type](https://learn.microsoft.com/dotnet/api/system.type)\[\]
 
-The binder types that this field accepts.
+The bound value types that assigned binders must support.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">types</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+A type is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or has no assembly-qualified name.
 
 ### RequireBinderAttribute\(string\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_String_}
 
-Initializes the attribute with a single assembly-qualified type name.
+Creates the attribute with a single assembly-qualified type name.
 
 ```csharp
 public RequireBinderAttribute(string assemblyQualifiedName)
@@ -82,11 +118,17 @@ public RequireBinderAttribute(string assemblyQualifiedName)
 
 `assemblyQualifiedName` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
-The assembly-qualified name of the required binder type.
+The assembly-qualified value type name or the name of a string field or property containing it.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">assemblyQualifiedName</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### RequireBinderAttribute\(params string\[\]\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_String___}
 
-Initializes the attribute with multiple assembly-qualified type names.
+Creates the attribute with multiple assembly-qualified type names.
 
 ```csharp
 public RequireBinderAttribute(params string[] assemblyQualifiedNames)
@@ -96,13 +138,19 @@ public RequireBinderAttribute(params string[] assemblyQualifiedNames)
 
 `assemblyQualifiedNames` [string](https://learn.microsoft.com/dotnet/api/system.string)\[\]
 
-The assembly-qualified names of the accepted binder types.
+The value type names or names of string fields or properties containing them.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">assemblyQualifiedNames</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
 ### AssemblyQualifiedNames {#Aspid_MVVM_RequireBinderAttribute_AssemblyQualifiedNames}
 
-Assembly-qualified type names of the binder types accepted by this field.
+Gets the accepted value type names or names of string fields or properties containing those names.
 <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the attribute is used without specifying types.
 
 ```csharp
@@ -115,8 +163,8 @@ public string[]? AssemblyQualifiedNames { get; }
 
 ### Id {#Aspid_MVVM_RequireBinderAttribute_Id}
 
-Optional identifier linking this field to a specific bindable member of the ViewModel.
-When set, the editor uses this value to match against ViewModel property names.
+Gets or sets the binding identifier or the name of a string field or property containing it.
+When absent or blank, the identifier is derived from the decorated field name.
 
 ```csharp
 public string? Id { get; set; }
@@ -125,4 +173,3 @@ public string? Id { get; set; }
 #### Property Value
 
  [string](https://learn.microsoft.com/dotnet/api/system.string)?
-

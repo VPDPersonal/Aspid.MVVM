@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RawImageExtensions {#Aspid_MVVM_StarterKit_RawImageExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods for [`RawImage`](https://docs.unity3d.com/ScriptReference/UI-RawImage.html) used by the raw image binders.
 
@@ -19,7 +19,7 @@ public static class RawImageExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [RawImageExtensions](Aspid.MVVM.StarterKit.RawImageExtensions.md)
 
 
@@ -48,4 +48,3 @@ The texture to show, or <a href="https://learn.microsoft.com/dotnet/csharp/langu
 `disableWhenNull` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 Whether [`enabled`](https://docs.unity3d.com/ScriptReference/Behaviour-enabled.html) follows the presence of a texture.
-

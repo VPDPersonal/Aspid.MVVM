@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class DynamicViewModel {#Aspid_MVVM_StarterKit_DynamicViewModel}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 An [`IViewModel`](Aspid.MVVM.IViewModel.md) whose typed properties are composed at runtime.
 
@@ -19,20 +19,25 @@ public sealed class DynamicViewModel : IViewModel, IEnumerable<IDynamicProperty>
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [DynamicViewModel](Aspid.MVVM.StarterKit.DynamicViewModel.md)
 
 #### Implements
 
-[IViewModel](Aspid.MVVM.IViewModel.md), 
-[IEnumerable\<IDynamicProperty\>](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1), 
+[IViewModel](Aspid.MVVM.IViewModel.md),
+[IEnumerable\<IDynamicProperty\>](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1),
 [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.ienumerable)
 
 
 #### Extension Methods
 
-[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_), 
-[ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_), 
+[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_),
+[MonoViewModelExtensions.DestroyViewModelAndGameObject\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.InitializeView\(IViewModel, IView\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeView_Aspid_MVVM_IViewModel_Aspid_MVVM_IView_),
+[ViewModelExtensions.InitializeViews\(IViewModel, params IView\[\]\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_Aspid_MVVM_IView___),
+[ViewModelExtensions.InitializeViews\<T\>\(IViewModel, List\<T\>\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews__1_Aspid_MVVM_IViewModel_System_Collections_Generic_List___0__),
+[ViewModelExtensions.InitializeViews\(IViewModel, IEnumerable\<IView\>\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_System_Collections_Generic_IEnumerable_Aspid_MVVM_IView__)
 
 ## Constructors
 
@@ -134,7 +139,7 @@ The property handle used to read, update, or observe the value.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The property's value type.
 
@@ -168,6 +173,94 @@ Thrown when <code class="paramref">property</code> is null.
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
 Thrown when the property identifier is empty or already exists.
+
+### AddEnum\<T\>\(string, T, BindMode\) {#Aspid_MVVM_StarterKit_DynamicViewModel_AddEnum__1_System_String___0_Aspid_MVVM_BindMode_}
+
+Adds a property with typed and boxed enum binding channels.
+
+```csharp
+public IDynamicProperty<T> AddEnum<T>(string id, T value = default, BindMode mode = BindMode.OneWay) where T : struct, Enum
+```
+
+#### Parameters
+
+`id` [string](https://learn.microsoft.com/dotnet/api/system.string)
+
+The identifier used by binders.
+
+`value` T
+
+The initial value.
+
+`mode` [BindMode](Aspid.MVVM.BindMode.md)
+
+The binding mode. OneWayToSource exposes a TwoWay member.
+
+#### Returns
+
+ [IDynamicProperty](Aspid.MVVM.StarterKit.IDynamicProperty-1.md)\<T\>
+
+The property handle used to read, update, or observe the value.
+
+#### Type Parameters
+
+`T`
+
+The property's enum type.
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+The ID is blank or duplicated, or the mode is None.
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+The mode is undefined.
+
+### AddStruct\<T\>\(string, T, BindMode\) {#Aspid_MVVM_StarterKit_DynamicViewModel_AddStruct__1_System_String___0_Aspid_MVVM_BindMode_}
+
+Adds a property with typed and boxed struct binding channels.
+
+```csharp
+public IDynamicProperty<T> AddStruct<T>(string id, T value = default, BindMode mode = BindMode.OneWay) where T : struct
+```
+
+#### Parameters
+
+`id` [string](https://learn.microsoft.com/dotnet/api/system.string)
+
+The identifier used by binders.
+
+`value` T
+
+The initial value.
+
+`mode` [BindMode](Aspid.MVVM.BindMode.md)
+
+The binding mode. OneWayToSource exposes a TwoWay member.
+
+#### Returns
+
+ [IDynamicProperty](Aspid.MVVM.StarterKit.IDynamicProperty-1.md)\<T\>
+
+The property handle used to read, update, or observe the value.
+
+#### Type Parameters
+
+`T`
+
+The property's struct type.
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+The ID is blank or duplicated, or the mode is None.
+
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+The mode is undefined.
 
 ### Contains\(string\) {#Aspid_MVVM_StarterKit_DynamicViewModel_Contains_System_String_}
 
@@ -245,7 +338,7 @@ The typed property.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The expected property value type.
 
@@ -298,7 +391,6 @@ otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The expected property value type.
-

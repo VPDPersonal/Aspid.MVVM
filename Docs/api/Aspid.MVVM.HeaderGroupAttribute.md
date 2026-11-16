@@ -8,15 +8,10 @@ pagination_next: null
 ---
 # Class HeaderGroupAttribute {#Aspid_MVVM_HeaderGroupAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Editor-only marker that places the decorated binder field into a collapsible foldout with
-the supplied title. Fields decorated with the same title merge into a single foldout
-regardless of declaration order. Unlike [`HeaderGroupStartAttribute`](Aspid.MVVM.HeaderGroupStartAttribute.md), this
-attribute does not open a range — subsequent fields without their own grouping fall back to
-the surrounding range (or the root, if no enclosing range is open).
-Stripped from builds outside of <code>DEBUG</code> and <code>UNITY_EDITOR</code> configurations.
+Groups the decorated member under the supplied foldout title.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -27,15 +22,31 @@ public sealed class HeaderGroupAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [HeaderGroupAttribute](Aspid.MVVM.HeaderGroupAttribute.md)
 
 
 
+## Examples
+
+
+```csharp
+[HeaderGroup("Stats")]
+[Bind] private int _health;
+```
+
+
+## Remarks
+
+Affects only this member; subsequent members keep the current range. Equal titles share a foldout.
+Attribute applications are omitted unless <code>DEBUG</code> or <code>UNITY_EDITOR</code> is defined.
+
 ## Constructors
 
 ### HeaderGroupAttribute\(string\) {#Aspid_MVVM_HeaderGroupAttribute__ctor_System_String_}
+
+Creates a grouping attribute with the supplied title.
 
 ```csharp
 public HeaderGroupAttribute(string title)
@@ -45,9 +56,13 @@ public HeaderGroupAttribute(string title)
 
 `title` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
+The foldout title; blank titles are ignored.
+
 ## Properties
 
 ### Title {#Aspid_MVVM_HeaderGroupAttribute_Title}
+
+Gets the foldout title.
 
 ```csharp
 public string Title { get; }
@@ -56,4 +71,3 @@ public string Title { get; }
 #### Property Value
 
  [string](https://learn.microsoft.com/dotnet/api/system.string)
-

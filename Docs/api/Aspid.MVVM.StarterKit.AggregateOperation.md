@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum AggregateOperation {#Aspid_MVVM_StarterKit_AggregateOperation}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What [`CollectionAggregateConverter`](Aspid.MVVM.StarterKit.CollectionAggregateConverter.md) computes.
 
@@ -20,27 +20,24 @@ public enum AggregateOperation
 
 ## Fields
 
-`Sum = 0` 
+`Sum = 0`
 
 The total.
 
 
 
-`Average = 1` 
+`Average = 1`
 
 The mean.
 
 
 
-`Min = 2` 
+`Min = 2`
 
 The smallest value.
 
 
 
-`Max = 3` 
+`Max = 3`
 
 The largest value.
-
-
-

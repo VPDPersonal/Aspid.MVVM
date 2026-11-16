@@ -8,33 +8,55 @@ pagination_next: null
 ---
 # Class ScriptableViewModel {#Aspid_MVVM_ScriptableViewModel}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Represents a base class for ViewModels in a Unity context derived from [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
+[`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) for ViewModels that refresh bindings after Inspector changes.
 
 ```csharp
-public abstract class ScriptableViewModel : ScriptableObject, IViewModel
+public abstract class ScriptableViewModel : ScriptableObject, IDisposable, IViewModel
 ```
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-ScriptableObject ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+ScriptableObject ←
 [ScriptableViewModel](Aspid.MVVM.ScriptableViewModel.md)
 
 #### Implements
 
+[IDisposable](https://learn.microsoft.com/dotnet/api/system.idisposable),
 [IViewModel](Aspid.MVVM.IViewModel.md)
 
 
 #### Extension Methods
 
-[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_), 
-[ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_), 
+[MonoViewModelExtensions.DestroyViewModel\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel__1___0_),
+[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_),
+[MonoViewModelExtensions.DestroyViewModelAndGameObject\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject__1___0_),
+[MonoViewModelExtensions.DestroyViewModelAndGameObject\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DisposeViewModel\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel__1___0_),
+[ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.InitializeView\(IViewModel, IView\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeView_Aspid_MVVM_IViewModel_Aspid_MVVM_IView_),
+[ViewModelExtensions.InitializeViews\(IViewModel, params IView\[\]\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_Aspid_MVVM_IView___),
+[ViewModelExtensions.InitializeViews\<T\>\(IViewModel, List\<T\>\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews__1_Aspid_MVVM_IViewModel_System_Collections_Generic_List___0__),
+[ViewModelExtensions.InitializeViews\(IViewModel, IEnumerable\<IView\>\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_System_Collections_Generic_IEnumerable_Aspid_MVVM_IView__)
 
 ## Methods
+
+### Dispose\(\) {#Aspid_MVVM_ScriptableViewModel_Dispose}
+
+Releases owned resources once without destroying the Unity object.
+
+```csharp
+public void Dispose()
+```
+
+#### Remarks
+
+Repeated and reentrant calls do nothing, including after a cleanup failure.
+Override [`ScriptableViewModel.OnDispose`](Aspid.MVVM.ScriptableViewModel.md#Aspid_MVVM_ScriptableViewModel_OnDispose) to release resources.
 
 ### FindBindableMember\(in FindBindableMemberParameters\) {#Aspid_MVVM_ScriptableViewModel_FindBindableMember_Aspid_MVVM_FindBindableMemberParameters__}
 
@@ -78,9 +100,38 @@ public virtual void NotifyAll()
 public virtual void NotifyCanExecuteChangedAll()
 ```
 
+### OnDestroy\(\) {#Aspid_MVVM_ScriptableViewModel_OnDestroy}
+
+Called when Unity destroys the object to release its resources.
+
+```csharp
+protected virtual void OnDestroy()
+```
+
+#### Remarks
+
+Overrides must call the base implementation.
+
+### OnDispose\(\) {#Aspid_MVVM_ScriptableViewModel_OnDispose}
+
+Called on the first disposal attempt. Override to release owned resources and subscriptions.
+
+```csharp
+protected virtual void OnDispose()
+```
+
+#### Remarks
+
+Cleanup exceptions propagate to the caller; subsequent disposal attempts do not retry cleanup.
+
 ### OnValidate\(\) {#Aspid_MVVM_ScriptableViewModel_OnValidate}
+
+Called when Unity validates serialized data. Override to validate additional fields.
 
 ```csharp
 protected virtual void OnValidate()
 ```
 
+#### Remarks
+
+Call the base implementation to queue binding notifications for the next Editor update on the main thread.

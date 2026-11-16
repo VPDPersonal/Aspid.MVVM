@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneWayEnumBindableMember\<T\> {#Aspid_MVVM_OneWayEnumBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Concrete [`OneWayStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
@@ -19,22 +19,22 @@ public sealed class OneWayEnumBindableMember<T> : OneWayStructBindableMember<T, 
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound enum type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[OneWayStructBindableMember\<T, Enum\>](Aspid.MVVM.OneWayStructBindableMember-2.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[OneWayStructBindableMember\<T, Enum\>](Aspid.MVVM.OneWayStructBindableMember-2.md) ←
 [OneWayEnumBindableMember\<T\>](Aspid.MVVM.OneWayEnumBindableMember-1.md)
 
 #### Implements
 
-[IBindableMember\<T\>](Aspid.MVVM.IBindableMember-1.md), 
-[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md), 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
-[IBinderAdder](Aspid.MVVM.IBinderAdder.md), 
+[IBindableMember\<T\>](Aspid.MVVM.IBindableMember-1.md),
+[IReadOnlyBindableMember\<T\>](Aspid.MVVM.IReadOnlyBindableMember-1.md),
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
+[IBinderAdder](Aspid.MVVM.IBinderAdder.md),
 [IBinderRemover](Aspid.MVVM.IBinderRemover.md)
 
 
@@ -54,4 +54,3 @@ public OneWayEnumBindableMember(T value)
 `value` T
 
 The initial value.
-

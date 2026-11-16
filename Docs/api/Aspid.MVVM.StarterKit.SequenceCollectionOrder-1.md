@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class SequenceCollectionOrder\<T\> {#Aspid_MVVM_StarterKit_SequenceCollectionOrder_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICollectionOrder<T>`](Aspid.MVVM.StarterKit.ICollectionOrder-1.md) that applies multiple orders in sequence: the first one that tells
 two elements apart decides. Empty slots are skipped.
@@ -22,18 +22,18 @@ public class SequenceCollectionOrder<T> : ICollectionOrder<T>, IComparer<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being ordered.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [SequenceCollectionOrder\<T\>](Aspid.MVVM.StarterKit.SequenceCollectionOrder-1.md)
 
 #### Implements
 
-[ICollectionOrder\<T\>](Aspid.MVVM.StarterKit.ICollectionOrder-1.md), 
+[ICollectionOrder\<T\>](Aspid.MVVM.StarterKit.ICollectionOrder-1.md),
 [IComparer\<T\>](https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1)
 
 
@@ -82,20 +82,19 @@ The second object to compare.
 
  [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
-A signed integer that indicates the relative values of <code class="paramref">x</code> and <code class="paramref">y</code>, as shown in the following table.  
-  Value  
+A signed integer that indicates the relative values of <code class="paramref">x</code> and <code class="paramref">y</code>, as shown in the following table. <br/>
+  Value <br/>
 
-  Meaning  
+  Meaning <br/>
 
-  Less than zero  
+  Less than zero <br/>
 
- <code class="paramref">x</code> is less than <code class="paramref">y</code>.  
+ <code class="paramref">x</code> is less than <code class="paramref">y</code>. <br/>
 
-  Zero  
+  Zero <br/>
 
- <code class="paramref">x</code> equals <code class="paramref">y</code>.  
+ <code class="paramref">x</code> equals <code class="paramref">y</code>. <br/>
 
-  Greater than zero  
+  Greater than zero <br/>
 
  <code class="paramref">x</code> is greater than <code class="paramref">y</code>.
-

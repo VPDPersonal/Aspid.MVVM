@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface ICanExecuteHandler {#Aspid_MVVM_StarterKit_ICanExecuteHandler}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Reacts to a command's <code>CanExecute</code> state on behalf of a command binder whose interactable mode is <code>Custom</code>.
 
@@ -33,4 +33,3 @@ void SetCanExecute(bool canExecute)
 `canExecute` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 The command's current <code>CanExecute</code> result.
-

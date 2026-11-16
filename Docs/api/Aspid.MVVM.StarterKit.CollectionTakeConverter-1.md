@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class CollectionTakeConverter\<T\> {#Aspid_MVVM_StarterKit_CollectionTakeConverter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Keeps a few items off one end of a sequence.
 
@@ -21,26 +21,26 @@ public class CollectionTakeConverter<T> : IConverter<IEnumerable<T?>?, IEnumerab
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the items.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [CollectionTakeConverter\<T\>](Aspid.MVVM.StarterKit.CollectionTakeConverter-1.md)
 
 #### Implements
 
-[IConverter\<IEnumerable\<T?\>?, IEnumerable\<T?\>\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<IEnumerable\<T?\>?, IEnumerable\<T?\>\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -102,4 +102,3 @@ The sequence to shorten.
  [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1)\<T?\>
 
 The kept items in their original order, in a list reused on the next call.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class DropdownExtensions {#Aspid_MVVM_StarterKit_DropdownExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods that write validated values to a `TMP_Dropdown`.
 
@@ -19,7 +19,7 @@ public static class DropdownExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [DropdownExtensions](Aspid.MVVM.StarterKit.DropdownExtensions.md)
 
 
@@ -48,4 +48,3 @@ The options to copy, or <a href="https://learn.microsoft.com/dotnet/csharp/langu
 #### Remarks
 
 <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> clears the options. The list is copied, so the source is never mutated by the dropdown.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IViewFactory\<T, TView\> {#Aspid_MVVM_StarterKit_IViewFactory_2}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Creates views for a ViewModel with one extra argument. Keyed creation ignores the key.
 
@@ -19,17 +19,17 @@ public interface IViewFactory<in T, TView> : IViewFactoryWithKey<T, TView>, IVie
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the extra argument.
 
-`TView` 
+`TView`
 
 The type of the created view.
 
 #### Implements
 
-[IViewFactoryWithKey\<T, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-2.md), 
+[IViewFactoryWithKey\<T, TView\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-2.md),
 [IViewFactoryRelease\<TView\>](Aspid.MVVM.StarterKit.IViewFactoryRelease-1.md)
 
 
@@ -58,4 +58,3 @@ The extra argument.
  TView
 
 The created view.
-

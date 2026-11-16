@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class CollectionCountToStringConverter\<T\> {#Aspid_MVVM_StarterKit_CollectionCountToStringConverter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Writes how many items a collection holds, in words.
 
@@ -21,27 +21,27 @@ public class CollectionCountToStringConverter<T> : IConverter<IEnumerable<T?>?, 
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the items.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [CollectionCountToStringConverter\<T\>](Aspid.MVVM.StarterKit.CollectionCountToStringConverter-1.md)
 
 #### Implements
 
-[IConverter\<IEnumerable\<T?\>?, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IReadOnlyCollection\<T?\>?, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<IEnumerable\<T?\>?, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IReadOnlyCollection\<T?\>?, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -103,4 +103,3 @@ The collection to describe.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The worded phrase, or the empty text for a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or empty collection.
-

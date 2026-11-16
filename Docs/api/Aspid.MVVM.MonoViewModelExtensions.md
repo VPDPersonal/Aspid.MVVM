@@ -8,10 +8,10 @@ pagination_next: null
 ---
 # Class MonoViewModelExtensions {#Aspid_MVVM_MonoViewModelExtensions}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Provides extension methods for the [`IViewModel`](Aspid.MVVM.IViewModel.md) interface.
+Provides extension methods for [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
 ```csharp
 public static class MonoViewModelExtensions
@@ -19,7 +19,7 @@ public static class MonoViewModelExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [MonoViewModelExtensions](Aspid.MVVM.MonoViewModelExtensions.md)
 
 
@@ -28,37 +28,44 @@ public static class MonoViewModelExtensions
 
 ### DestroyViewModel\<T\>\(T\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel__1___0_}
 
-Destroys the ViewModel component if it does not implement the [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) interface.
-If the ViewModel implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable), it calls the [`Dispose`](https://learn.microsoft.com/dotnet/api/system.idisposable.dispose) method.
-Returns the [`IViewModel`](Aspid.MVVM.IViewModel.md) instance that was bound to the View before its destruction.
+Disposes the ViewModel if supported and destroys its Unity object while preserving any GameObject.
 
 ```csharp
-public static GameObject? DestroyViewModel<T>(this T viewModel) where T : Component, IViewModel
+public static GameObject? DestroyViewModel<T>(this T viewModel) where T : Object, IViewModel
 ```
 
 #### Parameters
 
 `viewModel` T
 
-The instance of the ViewModel to be destroyed.
+The ViewModel to dispose and destroy.
 
 #### Returns
 
  GameObject?
 
-The ViewModel [`GameObject`](https://docs.unity3d.com/ScriptReference/GameObject.html), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if it is destroyed or ViewModel is not a [`Component`](https://docs.unity3d.com/ScriptReference/Component.html).
+The associated GameObject if still alive after the call; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
-`T` 
+`T`
 
-The type of ViewModel that inherits from [`Component`](https://docs.unity3d.com/ScriptReference/Component.html) and implements the [`IViewModel`](Aspid.MVVM.IViewModel.md) interface.
+The Unity ViewModel object.
+
+#### Remarks
+
+<p>Call on the main thread for Unity objects; destruction is deferred in Play Mode and immediate in Edit Mode.</p>
+<p>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller.</p>
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### DestroyViewModel\(IViewModel\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_}
 
-Destroys the ViewModel component if it does not implement the [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) interface.
-If the ViewModel implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable), it calls the [`Dispose`](https://learn.microsoft.com/dotnet/api/system.idisposable.dispose) method.
-Returns the [`IViewModel`](Aspid.MVVM.IViewModel.md) instance that was bound to the View before its destruction.
+Disposes the ViewModel if supported and destroys its Unity object while preserving any GameObject.
 
 ```csharp
 public static GameObject? DestroyViewModel(this IViewModel viewModel)
@@ -68,11 +75,89 @@ public static GameObject? DestroyViewModel(this IViewModel viewModel)
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The instance of the ViewModel to be destroyed.
+The ViewModel to dispose and destroy.
 
 #### Returns
 
  GameObject?
 
-The ViewModel [`GameObject`](https://docs.unity3d.com/ScriptReference/GameObject.html), or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if it is destroyed or ViewModel is not a [`Component`](https://docs.unity3d.com/ScriptReference/Component.html).
+The associated GameObject if still alive after the call; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
+#### Remarks
+
+<p>Call on the main thread for Unity objects; destruction is deferred in Play Mode and immediate in Edit Mode.</p>
+<p>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller. Managed ViewModels are only disposed.</p>
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+### DestroyViewModelAndGameObject\<T\>\(T\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject__1___0_}
+
+Disposes the ViewModel if supported and destroys its GameObject or the Unity object itself.
+
+```csharp
+public static GameObject? DestroyViewModelAndGameObject<T>(this T viewModel) where T : Object, IViewModel
+```
+
+#### Parameters
+
+`viewModel` T
+
+The ViewModel to dispose and destroy.
+
+#### Returns
+
+ GameObject?
+
+The associated GameObject if still alive after the call; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+#### Type Parameters
+
+`T`
+
+The Unity ViewModel object.
+
+#### Remarks
+
+<p>Call on the main thread for Unity objects; destruction is deferred in Play Mode and immediate in Edit Mode.</p>
+<p>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller.</p>
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+### DestroyViewModelAndGameObject\(IViewModel\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject_Aspid_MVVM_IViewModel_}
+
+Disposes the ViewModel if supported and destroys its GameObject or the Unity object itself.
+
+```csharp
+public static GameObject? DestroyViewModelAndGameObject(this IViewModel viewModel)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel to dispose and destroy.
+
+#### Returns
+
+ GameObject?
+
+The associated GameObject if still alive after the call; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+#### Remarks
+
+<p>Call on the main thread for Unity objects; destruction is deferred in Play Mode and immediate in Edit Mode.</p>
+<p>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller. Managed ViewModels are only disposed.</p>
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.

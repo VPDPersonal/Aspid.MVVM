@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewExtensions {#Aspid_MVVM_ViewExtensions}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Provides extension methods for [`IView`](Aspid.MVVM.IView.md).
 
@@ -19,7 +19,7 @@ public static class ViewExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ViewExtensions](Aspid.MVVM.ViewExtensions.md)
 
 
@@ -48,7 +48,7 @@ The ViewModel the view had; <a href="https://learn.microsoft.com/dotnet/csharp/l
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The view type.
 
@@ -80,7 +80,7 @@ The ViewModel the view had; <a href="https://learn.microsoft.com/dotnet/csharp/l
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The view type.
 
@@ -157,4 +157,3 @@ Does not dispose either ViewModel. If initialization fails, recovery follows the
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
 <code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-

@@ -94,7 +94,9 @@ namespace Aspid.MVVM.StarterKit
         /// <param name="value">The text received from the ViewModel.</param>
         public void SetValue(string? value)
         {
-            var converted = _converter?.Convert(value) ?? value;
+            var converted = _converter is null
+                ? value
+                : _converter.Convert(value);
 
             if (!_notifyMode.ShouldNotify(IsBound))
             {

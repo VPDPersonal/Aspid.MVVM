@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BindModeExtensions {#Aspid_MVVM_BindModeExtensions}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Provides extension methods for [`BindMode`](Aspid.MVVM.BindMode.md).
 
@@ -19,7 +19,7 @@ public static class BindModeExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [BindModeExtensions](Aspid.MVVM.BindModeExtensions.md)
 
 
@@ -213,4 +213,3 @@ The binding mode to check.
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> for a declared mode other than [`BindMode.None`](Aspid.MVVM.BindMode.md); otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
-

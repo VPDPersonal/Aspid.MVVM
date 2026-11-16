@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class AndCollectionFilter\<T\> {#Aspid_MVVM_StarterKit_AndCollectionFilter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICollectionFilter<T>`](Aspid.MVVM.StarterKit.ICollectionFilter-1.md) that passes an element only when every nested filter passes it.
 Empty slots are skipped.
@@ -22,13 +22,13 @@ public class AndCollectionFilter<T> : ICollectionFilter<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being filtered.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [AndCollectionFilter\<T\>](Aspid.MVVM.StarterKit.AndCollectionFilter-1.md)
 
 #### Implements
@@ -76,4 +76,3 @@ The element to test.
 #### Returns
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-

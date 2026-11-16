@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class LineRendererExtensions {#Aspid_MVVM_StarterKit_LineRendererExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods for [`LineRenderer`](https://docs.unity3d.com/ScriptReference/LineRenderer.html) used by the line renderer binders.
 
@@ -19,7 +19,7 @@ public static class LineRendererExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [LineRendererExtensions](Aspid.MVVM.StarterKit.LineRendererExtensions.md)
 
 
@@ -84,4 +84,3 @@ Which end colors <code class="paramref">value</code> writes.
  [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
 
 <code class="paramref">mode</code> is not a known value.
-

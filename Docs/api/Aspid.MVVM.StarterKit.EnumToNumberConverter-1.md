@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class EnumToNumberConverter\<TEnum\> {#Aspid_MVVM_StarterKit_EnumToNumberConverter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Converts an enum value to a number and back.
 
@@ -21,31 +21,31 @@ public class EnumToNumberConverter<TEnum> : IConverter<TEnum, float>, IConverter
 
 #### Type Parameters
 
-`TEnum` 
+`TEnum`
 
 The enum type being converted.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [EnumToNumberConverter\<TEnum\>](Aspid.MVVM.StarterKit.EnumToNumberConverter-1.md)
 
 #### Implements
 
-[IConverter\<TEnum, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<TEnum, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<TEnum, int\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<TEnum, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[ITwoWayConverter\<TEnum, long\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md), 
-[IConverter\<TEnum, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<TEnum, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<TEnum, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<TEnum, int\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<TEnum, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[ITwoWayConverter\<TEnum, long\>](Aspid.MVVM.StarterKit.ITwoWayConverter-2.md),
+[IConverter\<TEnum, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -128,4 +128,3 @@ The integer to convert.
  TEnum
 
 The enum value, not necessarily a declared member, or the fallback for a position outside the enum.
-

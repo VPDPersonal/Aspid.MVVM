@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneTimeBindAttribute {#Aspid_MVVM_OneTimeBindAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Generates a [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
@@ -19,9 +19,9 @@ public sealed class OneTimeBindAttribute : BaseBindAttribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
-[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
+[BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md) ←
 [OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md)
 
 
@@ -37,4 +37,3 @@ public sealed class OneTimeBindAttribute : BaseBindAttribute
 ## Remarks
 
 Ignored on a set-only property.
-

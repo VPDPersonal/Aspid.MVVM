@@ -8,10 +8,10 @@ pagination_next: null
 ---
 # Class MonoViewExtensions {#Aspid_MVVM_MonoViewExtensions}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Provides extension methods for the [`IView`](Aspid.MVVM.IView.md) interface.
+Provides extension methods for [`IView`](Aspid.MVVM.IView.md).
 
 ```csharp
 public static class MonoViewExtensions
@@ -19,7 +19,7 @@ public static class MonoViewExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [MonoViewExtensions](Aspid.MVVM.MonoViewExtensions.md)
 
 
@@ -28,37 +28,39 @@ public static class MonoViewExtensions
 
 ### DestroyView\<T\>\(T?\) {#Aspid_MVVM_MonoViewExtensions_DestroyView__1___0_}
 
-Destroys the View component and deinitializes it if it does not implement the [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) interface.
-If the View implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable), it calls the [`Dispose`](https://learn.microsoft.com/dotnet/api/system.idisposable.dispose) method.
-Returns the [`IViewModel`](Aspid.MVVM.IViewModel.md) instance that was bound to the View before its destruction.
+Disposes or deinitializes the view and destroys its Unity object while preserving any GameObject.
 
 ```csharp
-public static IViewModel? DestroyView<T>(this T? view) where T : Component, IView
+public static IViewModel? DestroyView<T>(this T? view) where T : Object, IView
 ```
 
 #### Parameters
 
 `view` T?
 
-The instance of the View component to be destroyed.
+The view to destroy; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to do nothing.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The ViewModel that was bound to the View, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if there was no ViewModel.
+The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent or the Unity object was already destroyed.
 
 #### Type Parameters
 
-`T` 
+`T`
 
-The type of View that inherits from [`Component`](https://docs.unity3d.com/ScriptReference/Component.html) and implements the [`IView`](Aspid.MVVM.IView.md) interface.
+The Unity view object.
+
+#### Remarks
+
+Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
+Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
+Does not dispose the returned ViewModel.
 
 ### DestroyView\(IView?\) {#Aspid_MVVM_MonoViewExtensions_DestroyView_Aspid_MVVM_IView_}
 
-Destroys the View component and deinitializes it if it does not implement the [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) interface.
-If the View implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable), it calls the [`Dispose`](https://learn.microsoft.com/dotnet/api/system.idisposable.dispose) method.
-Returns the [`IViewModel`](Aspid.MVVM.IViewModel.md) instance that was bound to the View before its destruction.
+Disposes or deinitializes the view and destroys its Unity object while preserving any GameObject.
 
 ```csharp
 public static IViewModel? DestroyView(this IView? view)
@@ -68,47 +70,55 @@ public static IViewModel? DestroyView(this IView? view)
 
 `view` [IView](Aspid.MVVM.IView.md)?
 
-The instance of the View component to be destroyed.
+The view to destroy; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to do nothing.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The ViewModel that was bound to the View, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if there was no ViewModel.
+The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent or the Unity object was already destroyed.
+
+#### Remarks
+
+Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
+Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
+Does not dispose the returned ViewModel. Managed views are only disposed or deinitialized.
 
 ### DestroyViewAndGameObject\<T\>\(T?\) {#Aspid_MVVM_MonoViewExtensions_DestroyViewAndGameObject__1___0_}
 
-Destroys the View component's GameObject and deinitializes it if it does not implement the [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) interface.
-If the View implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable), it calls the [`Dispose`](https://learn.microsoft.com/dotnet/api/system.idisposable.dispose) method.
-Returns the [`IViewModel`](Aspid.MVVM.IViewModel.md) instance that was bound to the View before its destruction.
+Disposes or deinitializes the view and destroys its GameObject or the Unity object itself.
 
 ```csharp
-public static IViewModel? DestroyViewAndGameObject<T>(this T? view) where T : Component, IView
+public static IViewModel? DestroyViewAndGameObject<T>(this T? view) where T : Object, IView
 ```
 
 #### Parameters
 
 `view` T?
 
-The instance of the View component to be destroyed.
+The view to destroy; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to do nothing.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The ViewModel that was bound to the View, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if there was no ViewModel.
+The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent or the Unity object was already destroyed.
 
 #### Type Parameters
 
-`T` 
+`T`
 
-The type of View that inherits from [`Component`](https://docs.unity3d.com/ScriptReference/Component.html) and implements the [`IView`](Aspid.MVVM.IView.md) interface.
+The Unity view object.
+
+#### Remarks
+
+Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
+Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
+Does not dispose the returned ViewModel.
 
 ### DestroyViewAndGameObject\(IView?\) {#Aspid_MVVM_MonoViewExtensions_DestroyViewAndGameObject_Aspid_MVVM_IView_}
 
-Destroys the View component's GameObject and deinitializes it if it does not implement the [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable) interface.
-If the View implements [`IDisposable`](https://learn.microsoft.com/dotnet/api/system.idisposable), it calls the [`Dispose`](https://learn.microsoft.com/dotnet/api/system.idisposable.dispose) method.
-Returns the [`IViewModel`](Aspid.MVVM.IViewModel.md) instance that was bound to the View before its destruction.
+Disposes or deinitializes the view and destroys its GameObject or the Unity object itself.
 
 ```csharp
 public static IViewModel? DestroyViewAndGameObject(this IView? view)
@@ -118,11 +128,16 @@ public static IViewModel? DestroyViewAndGameObject(this IView? view)
 
 `view` [IView](Aspid.MVVM.IView.md)?
 
-The instance of the View component to be destroyed.
+The view to destroy; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to do nothing.
 
 #### Returns
 
  [IViewModel](Aspid.MVVM.IViewModel.md)?
 
-The ViewModel that was bound to the View, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if there was no ViewModel.
+The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent or the Unity object was already destroyed.
 
+#### Remarks
+
+Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
+Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
+Does not dispose the returned ViewModel. Managed views are only disposed or deinitialized.

@@ -115,7 +115,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T Param
         {
             get => _param;
-            set => _param = value;
+            set
+            {
+                _param = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <param name="target">The scroll rect to bind.</param>
@@ -182,6 +186,14 @@ namespace Aspid.MVVM.StarterKit
             else _vector3Command?.Execute(value, Param);
         }
 
+        private void RefreshCanExecute()
+        {
+            if (_vector2Command is not null)
+                OnCanExecuteChanged(_vector2Command);
+            else if (_vector3Command is not null)
+                OnCanExecuteChanged(_vector3Command);
+        }
+
         private void OnCanExecuteChanged(IRelayCommand<Vector2, T> command) =>
             _interactable?.SetCanExecute(command.CanExecute(Target.normalizedPosition, Param));
 
@@ -222,7 +234,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T1 Param1
         {
             get => _param1;
-            set => _param1 = value;
+            set
+            {
+                _param1 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -231,7 +247,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T2 Param2
         {
             get => _param2;
-            set => _param2 = value;
+            set
+            {
+                _param2 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <param name="target">The scroll rect to bind.</param>
@@ -303,6 +323,14 @@ namespace Aspid.MVVM.StarterKit
             else _vector3Command?.Execute(value, Param1, Param2);
         }
 
+        private void RefreshCanExecute()
+        {
+            if (_vector2Command is not null)
+                OnCanExecuteChanged(_vector2Command);
+            else if (_vector3Command is not null)
+                OnCanExecuteChanged(_vector3Command);
+        }
+
         private void OnCanExecuteChanged(IRelayCommand<Vector2, T1, T2> command) =>
             _interactable?.SetCanExecute(command.CanExecute(Target.normalizedPosition, Param1, Param2));
 
@@ -349,7 +377,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T1 Param1
         {
             get => _param1;
-            set => _param1 = value;
+            set
+            {
+                _param1 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -358,7 +390,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T2 Param2
         {
             get => _param2;
-            set => _param2 = value;
+            set
+            {
+                _param2 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <summary>
@@ -367,7 +403,11 @@ namespace Aspid.MVVM.StarterKit
         public virtual T3 Param3
         {
             get => _param3;
-            set => _param3 = value;
+            set
+            {
+                _param3 = value;
+                RefreshCanExecute();
+            }
         }
 
         /// <param name="target">The scroll rect to bind.</param>
@@ -442,6 +482,14 @@ namespace Aspid.MVVM.StarterKit
         {
             if (_vector2Command is not null) _vector2Command.Execute(value, Param1, Param2, Param3);
             else _vector3Command?.Execute(value, Param1, Param2, Param3);
+        }
+
+        private void RefreshCanExecute()
+        {
+            if (_vector2Command is not null)
+                OnCanExecuteChanged(_vector2Command);
+            else if (_vector3Command is not null)
+                OnCanExecuteChanged(_vector3Command);
         }
 
         private void OnCanExecuteChanged(IRelayCommand<Vector2, T1, T2, T3> command) =>

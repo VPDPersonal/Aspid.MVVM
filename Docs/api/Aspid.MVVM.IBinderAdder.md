@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IBinderAdder {#Aspid_MVVM_IBinderAdder}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Defines the side of a bindable member that accepts binders.
 
@@ -58,4 +58,3 @@ as for [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 #### Remarks
 
 When the effective mode reaches the View, pushes the current value to the binder during attachment.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ListSourceExtensions {#Aspid_MVVM_StarterKit_ListSourceExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Wraps a read-only collection as the [`IList`](https://learn.microsoft.com/dotnet/api/system.collections.ilist) a [`ListView`](https://docs.unity3d.com/ScriptReference/UIElements-ListView.html) takes.
 
@@ -19,7 +19,7 @@ public static class ListSourceExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ListSourceExtensions](Aspid.MVVM.StarterKit.ListSourceExtensions.md)
 
 
@@ -45,4 +45,3 @@ The collection to wrap, or <a href="https://learn.microsoft.com/dotnet/csharp/la
  [IList](https://learn.microsoft.com/dotnet/api/system.collections.ilist)
 
 The [`IList`](https://learn.microsoft.com/dotnet/api/system.collections.ilist) view, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-

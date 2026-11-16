@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ThresholdRichTextColorConverter {#Aspid_MVVM_StarterKit_ThresholdRichTextColorConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Writes a number as colored text, the color chosen by how large it is.
 
@@ -21,23 +21,23 @@ public sealed class ThresholdRichTextColorConverter : IConverter<float, string>,
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ThresholdRichTextColorConverter](Aspid.MVVM.StarterKit.ThresholdRichTextColorConverter.md)
 
 #### Implements
 
-[IConverter\<float, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<int, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, string\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<float, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<int, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, string\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Constructors
@@ -84,4 +84,3 @@ The number to write.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The tagged number.
-

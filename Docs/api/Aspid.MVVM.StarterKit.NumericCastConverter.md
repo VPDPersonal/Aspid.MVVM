@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class NumericCastConverter {#Aspid_MVVM_StarterKit_NumericCastConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Converts a number to another numeric type under a chosen overflow policy.
 
@@ -21,31 +21,31 @@ public sealed class NumericCastConverter : IConverter<int, long>, IConverter<int
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [NumericCastConverter](Aspid.MVVM.StarterKit.NumericCastConverter.md)
 
 #### Implements
 
-[IConverter\<int, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<int, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<int, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<long, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<float, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<float, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<float, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<double, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<int, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<int, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<int, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<long, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<float, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<float, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<float, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<double, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -75,4 +75,3 @@ public NumericCastConverter(OverflowMode mode)
 `mode` [OverflowMode](Aspid.MVVM.StarterKit.OverflowMode.md)
 
 What to do with a value the target type cannot hold. [`OverflowMode.Checked`](Aspid.MVVM.StarterKit.OverflowMode.md) throws.
-

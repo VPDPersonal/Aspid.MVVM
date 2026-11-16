@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ColorChannelsExtensions {#Aspid_MVVM_StarterKit_ColorChannelsExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Per-channel access to a [`Color`](https://docs.unity3d.com/ScriptReference/Color.html) by [`ColorChannels`](Aspid.MVVM.StarterKit.ColorChannels.md).
 
@@ -19,7 +19,7 @@ public static class ColorChannelsExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ColorChannelsExtensions](Aspid.MVVM.StarterKit.ColorChannelsExtensions.md)
 
 
@@ -97,4 +97,3 @@ The channel value.
  Color
 
 The color with the selected channels replaced.
-

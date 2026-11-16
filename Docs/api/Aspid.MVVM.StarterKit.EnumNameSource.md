@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum EnumNameSource {#Aspid_MVVM_StarterKit_EnumNameSource}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Where the text naming an enum member comes from.
 
@@ -20,26 +20,26 @@ public enum EnumNameSource
 
 ## Fields
 
-`Name = 0` 
+`Name = 0`
 
 The member name as written in code.
 
 
 
-`InspectorName = 1` 
+`InspectorName = 1`
 
 The [`InspectorNameAttribute`](https://docs.unity3d.com/ScriptReference/InspectorNameAttribute.html) on the member, falling back to its name.
 
 
 
-`Description = 2` 
+`Description = 2`
 
 The [`DescriptionAttribute`](https://learn.microsoft.com/dotnet/api/system.componentmodel.descriptionattribute) on the member, falling back
 to its name.
 
 
 
-`Raw = 3` 
+`Raw = 3`
 
 The value's own <code>ToString</code>: a flag combination reads as a comma-separated list, an
 undeclared value as its number.
@@ -49,4 +49,3 @@ undeclared value as its number.
 ## Remarks
 
 Members are appended, never inserted: the order is the serialized value.
-

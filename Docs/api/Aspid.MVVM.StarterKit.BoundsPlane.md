@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum BoundsPlane {#Aspid_MVVM_StarterKit_BoundsPlane}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which pair of axes a bounding box is flattened onto.
 
@@ -20,21 +20,18 @@ public enum BoundsPlane
 
 ## Fields
 
-`XY = 0` 
+`XY = 0`
 
 The X and Y axes, the plane a 2D game and a canvas live on.
 
 
 
-`XZ = 1` 
+`XZ = 1`
 
 The X and Z axes, the ground plane of a 3D game.
 
 
 
-`YZ = 2` 
+`YZ = 2`
 
 The Y and Z axes.
-
-
-

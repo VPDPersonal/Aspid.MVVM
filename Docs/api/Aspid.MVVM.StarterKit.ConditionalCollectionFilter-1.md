@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ConditionalCollectionFilter\<T\> {#Aspid_MVVM_StarterKit_ConditionalCollectionFilter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICollectionFilter<T>`](Aspid.MVVM.StarterKit.ICollectionFilter-1.md) that applies the nested filter only while enabled.
 When disabled, or with an empty slot, everything passes.
@@ -22,13 +22,13 @@ public class ConditionalCollectionFilter<T> : ICollectionFilter<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being filtered.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ConditionalCollectionFilter\<T\>](Aspid.MVVM.StarterKit.ConditionalCollectionFilter-1.md)
 
 #### Implements
@@ -100,4 +100,3 @@ The element to test.
 #### Returns
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-

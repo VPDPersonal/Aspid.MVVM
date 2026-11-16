@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct FindBindableMemberParameters {#Aspid_MVVM_FindBindableMemberParameters}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Represents the query passed to [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
@@ -81,4 +81,3 @@ The identifier is <a href="https://learn.microsoft.com/dotnet/csharp/language-re
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
 The identifier is empty or whitespace.
-

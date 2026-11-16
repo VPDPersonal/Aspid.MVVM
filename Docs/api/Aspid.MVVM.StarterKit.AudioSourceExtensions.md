@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class AudioSourceExtensions {#Aspid_MVVM_StarterKit_AudioSourceExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods that write validated values to an [`AudioSource`](https://docs.unity3d.com/ScriptReference/AudioSource.html).
 
@@ -19,7 +19,7 @@ public static class AudioSourceExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [AudioSourceExtensions](Aspid.MVVM.StarterKit.AudioSourceExtensions.md)
 
 
@@ -97,4 +97,3 @@ The sample index to seek to.
 #### Remarks
 
 Without a clip to write is skipped.
-

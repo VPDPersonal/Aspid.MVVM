@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct ShaderPropertyId {#Aspid_MVVM_StarterKit_ShaderPropertyId}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Caches the id a shader property name resolves to.
 
@@ -44,4 +44,3 @@ The id the name resolves to.
 #### Remarks
 
 Re-resolves when the name changes, which the Inspector allows at any time.
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RelayCommandExtensions {#Aspid_MVVM_RelayCommandExtensions}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Provides extension methods for creating relay commands and for replacing a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> command with an empty one.
 
@@ -19,7 +19,7 @@ public static class RelayCommandExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [RelayCommandExtensions](Aspid.MVVM.RelayCommandExtensions.md)
 
 
@@ -86,7 +86,7 @@ The new command.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -122,11 +122,11 @@ The new command.
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -162,15 +162,15 @@ The new command.
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -206,19 +206,19 @@ The new command.
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -280,7 +280,7 @@ The new command; [`RelayCommand<T>.Empty`](Aspid.MVVM.RelayCommand-1.md#Aspid_MV
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -311,11 +311,11 @@ The new command; [`RelayCommand<T1, T2>.Empty`](Aspid.MVVM.RelayCommand-2.md#Asp
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -346,15 +346,15 @@ The new command; [`RelayCommand<T1, T2, T3>.Empty`](Aspid.MVVM.RelayCommand-3.md
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -385,19 +385,19 @@ The new command; [`RelayCommand<T1, T2, T3, T4>.Empty`](Aspid.MVVM.RelayCommand-
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -453,7 +453,7 @@ The new command; [`RelayCommand<T>.EmptyExecution`](Aspid.MVVM.RelayCommand-1.md
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -484,11 +484,11 @@ The new command; [`RelayCommand<T1, T2>.EmptyExecution`](Aspid.MVVM.RelayCommand
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -519,15 +519,15 @@ The new command; [`RelayCommand<T1, T2, T3>.EmptyExecution`](Aspid.MVVM.RelayCom
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -558,19 +558,19 @@ The new command; [`RelayCommand<T1, T2, T3, T4>.EmptyExecution`](Aspid.MVVM.Rela
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -600,7 +600,7 @@ The parameterless adapter.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -640,11 +640,11 @@ The parameterless adapter.
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -688,15 +688,15 @@ The parameterless adapter.
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -744,19 +744,19 @@ The parameterless adapter.
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -792,7 +792,7 @@ The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayC
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -826,11 +826,11 @@ The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayC
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -868,15 +868,15 @@ The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayC
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -918,19 +918,19 @@ The adapter; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayC
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -960,7 +960,7 @@ The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MV
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -994,11 +994,11 @@ The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MV
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -1036,15 +1036,15 @@ The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MV
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -1086,19 +1086,19 @@ The adapter; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MV
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -1144,7 +1144,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -1170,11 +1170,11 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -1200,15 +1200,15 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -1234,19 +1234,19 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
 
@@ -1292,7 +1292,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The command parameter type.
 
@@ -1318,11 +1318,11 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
@@ -1348,15 +1348,15 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
@@ -1382,19 +1382,18 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The first command parameter type.
 
-`T2` 
+`T2`
 
 The second command parameter type.
 
-`T3` 
+`T3`
 
 The third command parameter type.
 
-`T4` 
+`T4`
 
 The fourth command parameter type.
-

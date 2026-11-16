@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class GameObjectVisibleCanExecuteHandler {#Aspid_MVVM_StarterKit_GameObjectVisibleCanExecuteHandler}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICanExecuteHandler`](Aspid.MVVM.StarterKit.ICanExecuteHandler.md) that toggles a [`GameObject`](https://docs.unity3d.com/ScriptReference/GameObject.html) active by the command state.
 
@@ -20,7 +20,7 @@ public sealed class GameObjectVisibleCanExecuteHandler : ICanExecuteHandler
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [GameObjectVisibleCanExecuteHandler](Aspid.MVVM.StarterKit.GameObjectVisibleCanExecuteHandler.md)
 
 #### Implements
@@ -68,4 +68,3 @@ public void SetCanExecute(bool canExecute)
 `canExecute` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 The command's current <code>CanExecute</code> result.
-

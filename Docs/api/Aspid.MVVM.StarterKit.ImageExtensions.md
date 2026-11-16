@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ImageExtensions {#Aspid_MVVM_StarterKit_ImageExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods for [`Image`](https://docs.unity3d.com/ScriptReference/UI-Image.html) used by the image binders.
 
@@ -19,7 +19,7 @@ public static class ImageExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ImageExtensions](Aspid.MVVM.StarterKit.ImageExtensions.md)
 
 
@@ -48,4 +48,3 @@ The sprite to show, or <a href="https://learn.microsoft.com/dotnet/csharp/langua
 `disableWhenNull` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
 Whether [`enabled`](https://docs.unity3d.com/ScriptReference/Behaviour-enabled.html) follows the presence of a sprite.
-

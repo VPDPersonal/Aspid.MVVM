@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class SliderValueBinder {#Aspid_MVVM_StarterKit_SliderValueBinder}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`TargetBinder<T>`](Aspid.MVVM.TargetBinder-1.md) that binds [`value`](https://docs.unity3d.com/ScriptReference/UI-Slider-value.html), also from other numbers, and
 reports user changes back as numbers.
@@ -22,30 +22,30 @@ public class SliderValueBinder : TargetBinder<Slider>, IFloatBinder, INumberBind
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Binder](Aspid.MVVM.Binder.md) ← 
-[TargetBinder\<Slider\>](Aspid.MVVM.TargetBinder-1.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Binder](Aspid.MVVM.Binder.md) ←
+[TargetBinder\<Slider\>](Aspid.MVVM.TargetBinder-1.md) ←
 [SliderValueBinder](Aspid.MVVM.StarterKit.SliderValueBinder.md)
 
 #### Implements
 
-[IFloatBinder](Aspid.MVVM.StarterKit.IFloatBinder.md), 
-[INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md), 
-[IBinder\<int\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<uint\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<long\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<ulong\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<byte\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<sbyte\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<short\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<ushort\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<float\>](Aspid.MVVM.IBinder-1.md), 
-[IBinder\<double\>](Aspid.MVVM.IBinder-1.md), 
-[INumberReverseBinder](Aspid.MVVM.StarterKit.INumberReverseBinder.md), 
-[IReverseBinder\<int\>](Aspid.MVVM.IReverseBinder-1.md), 
-[IReverseBinder\<long\>](Aspid.MVVM.IReverseBinder-1.md), 
-[IReverseBinder\<float\>](Aspid.MVVM.IReverseBinder-1.md), 
-[IReverseBinder\<double\>](Aspid.MVVM.IReverseBinder-1.md), 
+[IFloatBinder](Aspid.MVVM.StarterKit.IFloatBinder.md),
+[INumberBinder](Aspid.MVVM.StarterKit.INumberBinder.md),
+[IBinder\<int\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<uint\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<long\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<ulong\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<byte\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<sbyte\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<short\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<ushort\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<float\>](Aspid.MVVM.IBinder-1.md),
+[IBinder\<double\>](Aspid.MVVM.IBinder-1.md),
+[INumberReverseBinder](Aspid.MVVM.StarterKit.INumberReverseBinder.md),
+[IReverseBinder\<int\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<long\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<float\>](Aspid.MVVM.IReverseBinder-1.md),
+[IReverseBinder\<double\>](Aspid.MVVM.IReverseBinder-1.md),
 [IBinder](Aspid.MVVM.IBinder.md)
 
 
@@ -53,20 +53,20 @@ public class SliderValueBinder : TargetBinder<Slider>, IFloatBinder, INumberBind
 
 [BinderExtensions.BindSafely\<SliderValueBinder\>\(SliderValueBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
 [BinderExtensions.BindSafely\<SliderValueBinder\>\(SliderValueBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
-[BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_), 
-[BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
-[BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_), 
-[BinderLogger.LogWarning\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogWarning_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_), 
-[BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
-[BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Vector4, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector4_UnityEngine_Object_), 
-[BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_), 
-[BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_), 
-[BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_), 
+[BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
+[BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
+[BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
+[BinderLogger.LogWarning\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogWarning_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
+[BinderMath.NonNegative\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
+[BinderMath.NonNegative\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_),
+[BinderMath.NonNegative\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_NonNegative_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Vector2, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector2_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Vector3, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector3_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Vector4, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Vector4_UnityEngine_Object_),
+[BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
+[BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
+[BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
 [BinderExtensions.UnbindSafely\<SliderValueBinder\>\(SliderValueBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
 
 ## Constructors
@@ -116,6 +116,18 @@ protected override void OnAttach()
 
 An exception rolls back the binding; [`Binder.OnDetach`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnDetach) releases partially acquired resources.
 
+### OnBinding\(\) {#Aspid_MVVM_StarterKit_SliderValueBinder_OnBinding}
+
+Called before attachment and the first value. Override to prepare for that value.
+
+```csharp
+protected override void OnBinding()
+```
+
+#### Remarks
+
+Subscribe to the component in [`Binder.OnAttach`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnAttach) so the first value is not reported back as user input.
+
 ### OnBound\(\) {#Aspid_MVVM_StarterKit_SliderValueBinder_OnBound}
 
 Called with the binding complete and [`Binder.IsBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_IsBound) set. Override to notify or send an initial value.
@@ -156,6 +168,5 @@ The value received from the ViewModel.
 
 #### Remarks
 
-The converted value is clamped to the slider range; the clamped value is reported back only when the
-clamp changed it.
-
+TwoWay reports the applied value back when clamping or whole-number rounding changes it;
+the initial correction waits until binding completes.

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct FindBindableMemberResult {#Aspid_MVVM_FindBindableMemberResult}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Represents the result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel.md).
 
@@ -60,4 +60,3 @@ public readonly bool IsFound
 #### Field Value
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-

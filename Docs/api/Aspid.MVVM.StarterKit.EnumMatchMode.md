@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum EnumMatchMode {#Aspid_MVVM_StarterKit_EnumMatchMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 How [`EnumMatchConverter<T>`](Aspid.MVVM.StarterKit.EnumMatchConverter-1.md) tests a bound enum value.
 
@@ -20,25 +20,25 @@ public enum EnumMatchMode
 
 ## Fields
 
-`Equal = 0` 
+`Equal = 0`
 
 The value must equal the target.
 
 
 
-`NotEqual = 1` 
+`NotEqual = 1`
 
 The value must differ from the target.
 
 
 
-`HasAllFlags = 2` 
+`HasAllFlags = 2`
 
 The value must have every flag the target has.
 
 
 
-`HasAnyFlag = 3` 
+`HasAnyFlag = 3`
 
 The value must have at least one flag the target has.
 
@@ -47,4 +47,3 @@ The value must have at least one flag the target has.
 ## Remarks
 
 Members are appended, never inserted: the order is the serialized value.
-

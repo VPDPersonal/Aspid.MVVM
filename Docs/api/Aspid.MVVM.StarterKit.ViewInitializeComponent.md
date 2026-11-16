@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewInitializeComponent {#Aspid_MVVM_StarterKit_ViewInitializeComponent}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`InitializeComponent<T>`](Aspid.MVVM.StarterKit.InitializeComponent-1.md) that resolves an [`IView`](Aspid.MVVM.IView.md).
 
@@ -20,8 +20,8 @@ public sealed class ViewInitializeComponent : InitializeComponent<IView>
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[InitializeComponent\<IView\>](Aspid.MVVM.StarterKit.InitializeComponent-1.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[InitializeComponent\<IView\>](Aspid.MVVM.StarterKit.InitializeComponent-1.md) ←
 [ViewInitializeComponent](Aspid.MVVM.StarterKit.ViewInitializeComponent.md)
 
 
@@ -49,4 +49,3 @@ Clears the references that do not belong to the chosen [`InitializeComponent<T>.
 ```csharp
 public override void Validate()
 ```
-

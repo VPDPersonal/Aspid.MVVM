@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BinderMath {#Aspid_MVVM_StarterKit_BinderMath}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Sanitizing helpers that report the value they had to replace.
 
@@ -19,7 +19,7 @@ public static class BinderMath
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [BinderMath](Aspid.MVVM.StarterKit.BinderMath.md)
 
 
@@ -652,4 +652,3 @@ The object to ping, when one is known.
  [float](https://learn.microsoft.com/dotnet/api/system.single)
 
 The clamped value, or <code>0</code> when <code class="paramref">value</code> is not finite.
-

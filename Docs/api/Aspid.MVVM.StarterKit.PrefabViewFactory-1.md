@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class PrefabViewFactory\<T\> {#Aspid_MVVM_StarterKit_PrefabViewFactory_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`IViewFactory<T>`](Aspid.MVVM.StarterKit.IViewFactory-1.md) that instantiates a prefab per view and destroys it on release.
 
@@ -20,19 +20,19 @@ public class PrefabViewFactory<T> : IViewFactory<T>, IViewFactoryWithKey<T>, IVi
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the view component on the prefab.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [PrefabViewFactory\<T\>](Aspid.MVVM.StarterKit.PrefabViewFactory-1.md)
 
 #### Implements
 
-[IViewFactory\<T\>](Aspid.MVVM.StarterKit.IViewFactory-1.md), 
-[IViewFactoryWithKey\<T\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-1.md), 
+[IViewFactory\<T\>](Aspid.MVVM.StarterKit.IViewFactory-1.md),
+[IViewFactoryWithKey\<T\>](Aspid.MVVM.StarterKit.IViewFactoryWithKey-1.md),
 [IViewFactoryRelease\<T\>](Aspid.MVVM.StarterKit.IViewFactoryRelease-1.md)
 
 
@@ -170,4 +170,3 @@ protected void SetSibling(T view)
 `view` T
 
 The view to move.
-

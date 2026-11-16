@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum ConverterFailureMode {#Aspid_MVVM_StarterKit_ConverterFailureMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What a converter does with a value it cannot convert.
 
@@ -20,13 +20,13 @@ public enum ConverterFailureMode
 
 ## Fields
 
-`ReturnFallback = 0` 
+`ReturnFallback = 0`
 
 Return the configured fallback value.
 
 
 
-`ReturnInput = 1` 
+`ReturnInput = 1`
 
 Return the incoming value unchanged, or the fallback when it does not fit the output type.
 
@@ -35,4 +35,3 @@ Return the incoming value unchanged, or the fallback when it does not fit the ou
 ## Remarks
 
 The failure is always reported; the mode only decides what comes back.
-

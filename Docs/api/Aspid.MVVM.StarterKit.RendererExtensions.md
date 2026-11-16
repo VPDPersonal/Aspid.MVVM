@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class RendererExtensions {#Aspid_MVVM_StarterKit_RendererExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods that write validated values to a [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html).
 
@@ -19,7 +19,7 @@ public static class RendererExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [RendererExtensions](Aspid.MVVM.StarterKit.RendererExtensions.md)
 
 
@@ -52,4 +52,3 @@ The materials to assign, or <a href="https://learn.microsoft.com/dotnet/csharp/l
 
 [`materials`](https://docs.unity3d.com/ScriptReference/Renderer-materials.html) rejects <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, so a missing or empty collection clears
 the array.
-

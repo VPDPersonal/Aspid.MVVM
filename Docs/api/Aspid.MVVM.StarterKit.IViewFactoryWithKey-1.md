@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IViewFactoryWithKey\<TView\> {#Aspid_MVVM_StarterKit_IViewFactoryWithKey_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Creates views for a ViewModel identified by a key.
 
@@ -19,7 +19,7 @@ public interface IViewFactoryWithKey<TView> : IViewFactoryRelease<TView> where T
 
 #### Type Parameters
 
-`TView` 
+`TView`
 
 The type of the created view.
 
@@ -56,7 +56,6 @@ The created view.
 
 #### Type Parameters
 
-`TKey` 
+`TKey`
 
 The type of the key.
-

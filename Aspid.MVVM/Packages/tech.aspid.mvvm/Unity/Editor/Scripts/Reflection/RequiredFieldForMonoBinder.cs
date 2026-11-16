@@ -151,21 +151,7 @@ namespace Aspid.MVVM
         {
             if (_requiredTypes.Count is 0) return true;
 
-            var interfaces = binder.GetType().GetInterfaces();
-
-            return interfaces.Any(i =>
-            {
-                if (i == typeof(IAnyBinder)) return true;
-                if (i == typeof(IAnyReverseBinder)) return true;
-
-                if (!i.IsGenericType) return false;
-
-                var definition = i.GetGenericTypeDefinition();
-                if (definition != typeof(IBinder<>) && definition != typeof(IReverseBinder<>)) return false;
-
-                var genericArguments = i.GetGenericArguments()[0];
-                return _requiredTypes.Any(requiredType => genericArguments.IsAssignableFrom(requiredType));
-            });
+            return _requiredTypes.Any(type => BinderCompatibility.Matches(binder, type));
         }
 
         public bool IsValidation() =>

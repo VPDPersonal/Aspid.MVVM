@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class CommandBinderExtensions {#Aspid_MVVM_StarterKit_CommandBinderExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Helpers for command binders: swapping the bound command while keeping the
 [`IRelayCommand.CanExecuteChanged`](Aspid.MVVM.IRelayCommand.md#Aspid_MVVM_IRelayCommand_CanExecuteChanged) subscription, and reflecting <code>CanExecute</code> on a [`Selectable`](https://docs.unity3d.com/ScriptReference/UI-Selectable.html).
@@ -20,7 +20,7 @@ public static class CommandBinderExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [CommandBinderExtensions](Aspid.MVVM.StarterKit.CommandBinderExtensions.md)
 
 
@@ -110,7 +110,7 @@ The handler to subscribe, or <a href="https://learn.microsoft.com/dotnet/csharp/
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type of the command parameter.
 
@@ -139,11 +139,11 @@ The handler to subscribe, or <a href="https://learn.microsoft.com/dotnet/csharp/
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The type of the first command parameter.
 
-`T2` 
+`T2`
 
 The type of the second command parameter.
 
@@ -172,15 +172,15 @@ The handler to subscribe, or <a href="https://learn.microsoft.com/dotnet/csharp/
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The type of the first command parameter.
 
-`T2` 
+`T2`
 
 The type of the second command parameter.
 
-`T3` 
+`T3`
 
 The type of the third command parameter.
 
@@ -209,19 +209,18 @@ The handler to subscribe, or <a href="https://learn.microsoft.com/dotnet/csharp/
 
 #### Type Parameters
 
-`T1` 
+`T1`
 
 The type of the first command parameter.
 
-`T2` 
+`T2`
 
 The type of the second command parameter.
 
-`T3` 
+`T3`
 
 The type of the third command parameter.
 
-`T4` 
+`T4`
 
 The type of the fourth command parameter.
-

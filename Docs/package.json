@@ -5,7 +5,7 @@
   "scripts": {
     "sync-changelog": "node scripts/sync-changelog.mjs",
     "sync": "npm run sync-changelog",
-    "api": "node scripts/docfx-projects.mjs && rm -rf api && docfx metadata docfx/docfx.json && node scripts/docfx-postprocess.mjs",
+    "api": "node scripts/generate-api.mjs",
     "prestart": "npm run sync",
     "prestart:ru": "npm run sync",
     "prebuild": "npm run sync",
@@ -17,7 +17,8 @@
     "write-translations": "docusaurus write-translations",
     "version": "docusaurus docs:version",
     "check-selectors": "node scripts/check-selectors.mjs",
-    "test": "node --test scripts/*.test.mjs"
+    "test": "node --test scripts/*.test.mjs",
+    "check-api": "node scripts/api-freshness.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.1",

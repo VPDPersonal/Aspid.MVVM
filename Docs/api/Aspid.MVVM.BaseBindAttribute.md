@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BaseBindAttribute {#Aspid_MVVM_BaseBindAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`Attribute`](https://learn.microsoft.com/dotnet/api/system.attribute) shared by [`BindAttribute`](Aspid.MVVM.BindAttribute.md) and the bind attributes with a fixed mode.
 
@@ -20,16 +20,16 @@ public abstract class BaseBindAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [BaseBindAttribute](Aspid.MVVM.BaseBindAttribute.md)
 
 #### Derived
 
-[BindAttribute](Aspid.MVVM.BindAttribute.md), 
-[OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md), 
-[OneWayBindAttribute](Aspid.MVVM.OneWayBindAttribute.md), 
-[OneWayToSourceBindAttribute](Aspid.MVVM.OneWayToSourceBindAttribute.md), 
+[BindAttribute](Aspid.MVVM.BindAttribute.md),
+[OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md),
+[OneWayBindAttribute](Aspid.MVVM.OneWayBindAttribute.md),
+[OneWayToSourceBindAttribute](Aspid.MVVM.OneWayToSourceBindAttribute.md),
 [TwoWayBindAttribute](Aspid.MVVM.TwoWayBindAttribute.md)
 
 
@@ -37,4 +37,3 @@ public abstract class BaseBindAttribute : Attribute
 ## Remarks
 
 The Source Generator recognizes the bind attributes by name, so a custom subclass generates nothing.
-

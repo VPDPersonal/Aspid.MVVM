@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class LogMessageText {#Aspid_MVVM_StarterKit_LogMessageText}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Writes types and values the way they read inside a logged message; shared by binders and converters.
 
@@ -19,7 +19,7 @@ public static class LogMessageText
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [LogMessageText](Aspid.MVVM.StarterKit.LogMessageText.md)
 
 
@@ -91,4 +91,3 @@ The type to name.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The readable name.
-

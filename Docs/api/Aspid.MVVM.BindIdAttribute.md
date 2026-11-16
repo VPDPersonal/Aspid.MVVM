@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BindIdAttribute {#Aspid_MVVM_BindIdAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Sets the identifier that pairs a ViewModel member with the View binders of the same identifier.
 
@@ -21,8 +21,8 @@ public sealed class BindIdAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [BindIdAttribute](Aspid.MVVM.BindIdAttribute.md)
 
 
@@ -81,4 +81,3 @@ public readonly string Id
 #### Remarks
 
 Exists only when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
-

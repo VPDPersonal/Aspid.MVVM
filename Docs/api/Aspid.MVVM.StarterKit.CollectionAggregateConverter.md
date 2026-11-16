@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class CollectionAggregateConverter {#Aspid_MVVM_StarterKit_CollectionAggregateConverter}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Reduces a collection of numbers to one.
 
@@ -21,35 +21,35 @@ public sealed class CollectionAggregateConverter : IConverter<IEnumerable<int>?,
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [CollectionAggregateConverter](Aspid.MVVM.StarterKit.CollectionAggregateConverter.md)
 
 #### Implements
 
-[IConverter\<IEnumerable\<int\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<int\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<int\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<int\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<long\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<long\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<long\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<long\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<float\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<float\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<float\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<float\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<double\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<double\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<double\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
-[IConverter\<IEnumerable\<double\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md), 
+[IConverter\<IEnumerable\<int\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<int\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<int\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<int\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<long\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<long\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<long\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<long\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<float\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<float\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<float\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<float\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<double\>?, int\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<double\>?, long\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<double\>?, float\>](Aspid.MVVM.StarterKit.IConverter-2.md),
+[IConverter\<IEnumerable\<double\>?, double\>](Aspid.MVVM.StarterKit.IConverter-2.md),
 [IConverter](Aspid.MVVM.StarterKit.IConverter.md)
 
 
 #### Extension Methods
 
-[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_), 
-[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_), 
+[ConverterLogger.Log\(IConverter, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_Log_Aspid_MVVM_StarterKit_IConverter_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, string, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_String_System_String_UnityEngine_Object_),
+[ConverterLogger.LogError\(IConverter, Exception, string, Object?\)](Aspid.MVVM.StarterKit.ConverterLogger.md#Aspid_MVVM_StarterKit_ConverterLogger_LogError_Aspid_MVVM_StarterKit_IConverter_System_Exception_System_String_UnityEngine_Object_),
 [ConverterFallbackExtensions.UseFallback\<T\>\(IConverter, T, string\)](Aspid.MVVM.StarterKit.ConverterFallbackExtensions.md#Aspid_MVVM_StarterKit_ConverterFallbackExtensions_UseFallback__1_Aspid_MVVM_StarterKit_IConverter___0_System_String_)
 
 ## Remarks
@@ -169,4 +169,3 @@ The numbers to reduce.
 
 The result, always in [`Double`](https://learn.microsoft.com/dotnet/api/system.double), or the empty result when there is nothing to
 reduce or the operation is not a declared [`AggregateOperation`](Aspid.MVVM.StarterKit.AggregateOperation.md).
-

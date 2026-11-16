@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Interface IComponentInitializable {#Aspid_MVVM_StarterKit_IComponentInitializable}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 A View or ViewModel that needs a setup call after a [`ViewInitializerBase`](Aspid.MVVM.StarterKit.ViewInitializerBase.md) resolves it.
 
@@ -27,4 +27,3 @@ Runs the setup once the component is resolved.
 ```csharp
 void Initialize()
 ```
-

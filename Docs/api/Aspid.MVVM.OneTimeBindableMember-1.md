@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class OneTimeBindableMember\<T\> {#Aspid_MVVM_OneTimeBindableMember_1}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 [`IReadOnlyValueBindableMember<T>`](Aspid.MVVM.IReadOnlyValueBindableMember-1.md) that pushes its value to a binder once and keeps no subscription.
 
@@ -19,18 +19,18 @@ public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>, 
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The bound value type.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [OneTimeBindableMember\<T\>](Aspid.MVVM.OneTimeBindableMember-1.md)
 
 #### Implements
 
-[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md), 
+[IReadOnlyValueBindableMember\<T\>](Aspid.MVVM.IReadOnlyValueBindableMember-1.md),
 [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
 
@@ -80,4 +80,3 @@ public T? Value { get; set; }
 #### Property Value
 
  T?
-

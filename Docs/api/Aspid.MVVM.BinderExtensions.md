@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BinderExtensions {#Aspid_MVVM_BinderExtensions}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Provides extension methods for binding and unbinding [`IBinder`](Aspid.MVVM.IBinder.md) instances and their collections.
 
@@ -21,7 +21,7 @@ public static class BinderExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [BinderExtensions](Aspid.MVVM.BinderExtensions.md)
 
 
@@ -61,7 +61,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -93,7 +93,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -129,7 +129,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -162,7 +162,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -199,7 +199,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -232,7 +232,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -269,7 +269,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -421,7 +421,7 @@ The owner releasing the bindings.
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -463,7 +463,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -495,7 +495,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -528,7 +528,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -561,7 +561,7 @@ The binder field or property name; <a href="https://learn.microsoft.com/dotnet/c
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The binder type.
 
@@ -576,4 +576,3 @@ The binder type.
  [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
 
 Both enumeration and enumerator disposal fail.
-

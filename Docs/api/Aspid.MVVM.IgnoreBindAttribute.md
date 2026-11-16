@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class IgnoreBindAttribute {#Aspid_MVVM_IgnoreBindAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Excludes the field or property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class from the generated binding code.
 
@@ -20,8 +20,8 @@ public sealed class IgnoreBindAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [IgnoreBindAttribute](Aspid.MVVM.IgnoreBindAttribute.md)
 
 
@@ -33,5 +33,3 @@ public sealed class IgnoreBindAttribute : Attribute
 [IgnoreBind]
 [SerializeField] private MonoBinder[] _previewBinders;
 ```
-
-

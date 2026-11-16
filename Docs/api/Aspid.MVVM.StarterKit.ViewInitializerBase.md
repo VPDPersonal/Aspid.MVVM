@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewInitializerBase {#Aspid_MVVM_StarterKit_ViewInitializerBase}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Abstract base [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) that resolves a set of views and initializes them with a ViewModel.
 
@@ -19,16 +19,16 @@ public abstract class ViewInitializerBase : MonoBehaviour
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
 [ViewInitializerBase](Aspid.MVVM.StarterKit.ViewInitializerBase.md)
 
 #### Derived
 
-[ViewInitializer](Aspid.MVVM.StarterKit.ViewInitializer.md), 
+[ViewInitializer](Aspid.MVVM.StarterKit.ViewInitializer.md),
 [ViewInitializerManual](Aspid.MVVM.StarterKit.ViewInitializerManual.md)
 
 
@@ -158,4 +158,3 @@ The resolved instance, or <a href="https://learn.microsoft.com/dotnet/csharp/lan
 `T`
 
 The resolved type.
-

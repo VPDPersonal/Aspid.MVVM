@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Struct ConverterFallback\<T\> {#Aspid_MVVM_StarterKit_ConverterFallback_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 What a converter does with a value it cannot convert, and what it returns instead.
 
@@ -20,7 +20,7 @@ public struct ConverterFallback<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The type the converter returns.
 
@@ -123,4 +123,3 @@ Returned instead of a value that will not convert.
  [ConverterFallback](Aspid.MVVM.StarterKit.ConverterFallback-1.md)\<T\>
 
 The fallback.
-

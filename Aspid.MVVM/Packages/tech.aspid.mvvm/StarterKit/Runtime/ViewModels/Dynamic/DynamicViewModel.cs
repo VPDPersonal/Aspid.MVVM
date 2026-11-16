@@ -1,3 +1,4 @@
+#nullable enable
 #if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
 #define ASPID_MVVM_PROFILER
 #endif
@@ -68,6 +69,48 @@ namespace Aspid.MVVM.StarterKit
             BindMode mode = BindMode.OneWay)
         {
             var property = new DynamicProperty<T>(id, value, mode);
+            Add(property);
+            return property;
+        }
+
+        /// <summary>
+        /// Adds a property with typed and boxed enum binding channels.
+        /// </summary>
+        /// <typeparam name="T">The property's enum type.</typeparam>
+        /// <param name="id">The identifier used by binders.</param>
+        /// <param name="value">The initial value.</param>
+        /// <param name="mode">The binding mode. OneWayToSource exposes a TwoWay member.</param>
+        /// <returns>The property handle used to read, update, or observe the value.</returns>
+        /// <exception cref="ArgumentException">The ID is blank or duplicated, or the mode is None.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The mode is undefined.</exception>
+        public IDynamicProperty<T> AddEnum<T>(
+            string id,
+            T value = default,
+            BindMode mode = BindMode.OneWay)
+            where T : struct, Enum
+        {
+            var property = new DynamicEnumProperty<T>(id, value, mode);
+            Add(property);
+            return property;
+        }
+
+        /// <summary>
+        /// Adds a property with typed and boxed struct binding channels.
+        /// </summary>
+        /// <typeparam name="T">The property's struct type.</typeparam>
+        /// <param name="id">The identifier used by binders.</param>
+        /// <param name="value">The initial value.</param>
+        /// <param name="mode">The binding mode. OneWayToSource exposes a TwoWay member.</param>
+        /// <returns>The property handle used to read, update, or observe the value.</returns>
+        /// <exception cref="ArgumentException">The ID is blank or duplicated, or the mode is None.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The mode is undefined.</exception>
+        public IDynamicProperty<T> AddStruct<T>(
+            string id,
+            T value = default,
+            BindMode mode = BindMode.OneWay)
+            where T : struct
+        {
+            var property = new DynamicStructProperty<T>(id, value, mode);
             Add(property);
             return property;
         }

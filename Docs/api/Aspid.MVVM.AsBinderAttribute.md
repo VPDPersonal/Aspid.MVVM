@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class AsBinderAttribute {#Aspid_MVVM_AsBinderAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Wraps a field or readable property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder, passing the member as its first constructor argument.
 
@@ -20,8 +20,8 @@ public sealed class AsBinderAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [AsBinderAttribute](Aspid.MVVM.AsBinderAttribute.md)
 
 
@@ -94,4 +94,3 @@ public readonly Type Type
 #### Remarks
 
 Exists only when <code>UNITY_EDITOR</code> or <code>DEBUG</code> is defined.
-

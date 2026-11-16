@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ToCultureStringExtensions {#Aspid_MVVM_StarterKit_ToCultureStringExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Provides extension methods for [`CultureInfoMode`](Aspid.MVVM.StarterKit.CultureInfoMode.md).
 
@@ -19,7 +19,7 @@ public static class ToCultureStringExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [ToCultureStringExtensions](Aspid.MVVM.StarterKit.ToCultureStringExtensions.md)
 
 
@@ -195,4 +195,3 @@ The culture to write it in.
  [string](https://learn.microsoft.com/dotnet/api/system.string)
 
 The number as text.
-

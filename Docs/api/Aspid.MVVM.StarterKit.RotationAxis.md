@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum RotationAxis {#Aspid_MVVM_StarterKit_RotationAxis}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which axis a rotation converter turns around.
 
@@ -20,27 +20,24 @@ public enum RotationAxis
 
 ## Fields
 
-`X = 0` 
+`X = 0`
 
 The X axis.
 
 
 
-`Y = 1` 
+`Y = 1`
 
 The Y axis.
 
 
 
-`Z = 2` 
+`Z = 2`
 
 The Z axis, the one a 2D UI element spins on.
 
 
 
-`Custom = 3` 
+`Custom = 3`
 
 An arbitrary axis the converter carries itself.
-
-
-

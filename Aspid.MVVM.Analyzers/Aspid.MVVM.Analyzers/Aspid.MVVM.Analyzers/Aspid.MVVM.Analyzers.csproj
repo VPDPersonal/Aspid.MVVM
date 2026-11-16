@@ -26,4 +26,7 @@
       <AdditionalFiles Remove="AnalyzerReleases.Unshipped.md" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Include="../../../Generators.Shared/BindablePropertyNames.cs" Link="Shared/BindablePropertyNames.cs" />
+    </ItemGroup>
 </Project>

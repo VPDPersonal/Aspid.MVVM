@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class BindModeAttribute {#Aspid_MVVM_BindModeAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Limits the binding modes that the Inspector offers for a [`BindMode`](Aspid.MVVM.BindMode.md) field.
 
@@ -23,9 +23,9 @@ public sealed class BindModeAttribute : PropertyAttribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
-PropertyAttribute ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
+PropertyAttribute ←
 [BindModeAttribute](Aspid.MVVM.BindModeAttribute.md)
 
 
@@ -130,4 +130,3 @@ public BindMode[] Modes { get; }
 #### Property Value
 
  [BindMode](Aspid.MVVM.BindMode.md)\[\]
-

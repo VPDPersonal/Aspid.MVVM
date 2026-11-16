@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum ColorChannels {#Aspid_MVVM_StarterKit_ColorChannels}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Channels of a [`Color`](https://docs.unity3d.com/ScriptReference/Color.html) a binder or converter writes.
 
@@ -24,45 +24,42 @@ public enum ColorChannels
 
 ## Fields
 
-`None = 0` 
+`None = 0`
 
 No channel.
 
 
 
-`R = 1` 
+`R = 1`
 
 The red channel.
 
 
 
-`G = 2` 
+`G = 2`
 
 The green channel.
 
 
 
-`B = 4` 
+`B = 4`
 
 The blue channel.
 
 
 
-`A = 8` 
+`A = 8`
 
 The alpha channel.
 
 
 
-`Rgb = 7` 
+`Rgb = 7`
 
 The three color channels, leaving the alpha alone.
 
 
 
-`All = 15` 
+`All = 15`
 
 Every channel.
-
-
-

@@ -9,10 +9,11 @@ namespace Aspid.MVVM.StarterKit
     /// A typed, observable property that can be added to a <see cref="DynamicViewModel"/>.
     /// </summary>
     /// <typeparam name="T">The property's value type.</typeparam>
-    public sealed class DynamicProperty<T> : IDynamicProperty<T>
+    public class DynamicProperty<T> : IDynamicProperty<T>
     {
         private T? _value;
         private readonly IBinderAdder _bindableMember;
+        private readonly Action<T?> _publishValue;
 
         /// <inheritdoc/>
         public string Id { get; }
@@ -34,6 +35,13 @@ namespace Aspid.MVVM.StarterKit
             string id,
             T? value = default,
             BindMode mode = BindMode.OneWay)
+            : this(id, value, mode, CreateMember) { }
+
+        private protected DynamicProperty(
+            string id,
+            T? value,
+            BindMode mode,
+            Func<BindMode, T?, Action<T?>, (IBinderAdder Member, Action<T?> Publish)> createMember)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("A dynamic property ID cannot be null, empty, or whitespace.", nameof(id));
@@ -44,13 +52,7 @@ namespace Aspid.MVVM.StarterKit
             Id = id;
             Mode = mode;
             _value = value;
-            _bindableMember = mode switch
-            {
-                BindMode.OneTime => new OneTimeBindableMember<T>(value),
-                BindMode.OneWay => new OneWayBindableMember<T>(value),
-                BindMode.TwoWay or BindMode.OneWayToSource => new TwoWayBindableMember<T>(value, SetValue),
-                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, "Unsupported binding mode.")
-            };
+            (_bindableMember, _publishValue) = createMember(mode, value, SetValue);
         }
 
         /// <inheritdoc/>
@@ -98,22 +100,33 @@ namespace Aspid.MVVM.StarterKit
             if (EqualityComparer<T?>.Default.Equals(_value, value)) return;
             _value = value;
 
-            switch (_bindableMember)
-            {
-                case OneTimeBindableMember<T> oneTime:
-                    oneTime.Value = value;
-                    break;
-
-                case OneWayBindableMember<T> oneWay:
-                    oneWay.Value = value;
-                    break;
-
-                case TwoWayBindableMember<T> twoWay:
-                    twoWay.Value = value;
-                    break;
-            }
+            _publishValue(value);
 
             ValueChanged?.Invoke(value);
+        }
+
+        private static (IBinderAdder Member, Action<T?> Publish) CreateMember(
+            BindMode mode,
+            T? value,
+            Action<T?> setter)
+        {
+            switch (mode)
+            {
+                case BindMode.OneTime:
+                    var oneTime = new OneTimeBindableMember<T>(value);
+                    return (oneTime, next => oneTime.Value = next);
+
+                case BindMode.OneWay:
+                    var oneWay = new OneWayBindableMember<T>(value);
+                    return (oneWay, next => oneWay.Value = next);
+
+                case BindMode.TwoWay:
+                case BindMode.OneWayToSource:
+                    var twoWay = new TwoWayBindableMember<T>(value, setter);
+                    return (twoWay, next => twoWay.Value = next);
+
+                default: throw new ArgumentOutOfRangeException(nameof(mode), mode, "Unsupported binding mode.");
+            }
         }
     }
 }

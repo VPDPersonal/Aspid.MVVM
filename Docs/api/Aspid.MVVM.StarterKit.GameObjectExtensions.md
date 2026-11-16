@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class GameObjectExtensions {#Aspid_MVVM_StarterKit_GameObjectExtensions}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Extension methods for [`GameObject`](https://docs.unity3d.com/ScriptReference/GameObject.html) used by the game object binders.
 
@@ -19,7 +19,7 @@ public static class GameObjectExtensions
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [GameObjectExtensions](Aspid.MVVM.StarterKit.GameObjectExtensions.md)
 
 
@@ -47,4 +47,3 @@ The layer index, 0 to 31.
 `binder` [IBinder](Aspid.MVVM.IBinder.md)
 
 The binder writing the layer; named in the diagnostic.
-

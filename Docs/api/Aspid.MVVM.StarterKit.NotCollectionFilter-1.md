@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class NotCollectionFilter\<T\> {#Aspid_MVVM_StarterKit_NotCollectionFilter_1}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ICollectionFilter<T>`](Aspid.MVVM.StarterKit.ICollectionFilter-1.md) that passes an element only when the nested filter rejects it.
 An empty slot passes everything.
@@ -22,13 +22,13 @@ public class NotCollectionFilter<T> : ICollectionFilter<T>
 
 #### Type Parameters
 
-`T` 
+`T`
 
 The element type being filtered.
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [NotCollectionFilter\<T\>](Aspid.MVVM.StarterKit.NotCollectionFilter-1.md)
 
 #### Implements
@@ -82,4 +82,3 @@ The element to test.
 #### Returns
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-

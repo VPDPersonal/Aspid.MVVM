@@ -8,12 +8,10 @@ pagination_next: null
 ---
 # Class ShowDesignViewModelAttribute {#Aspid_MVVM_ShowDesignViewModelAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Specifies which ViewModel types are available as design-time ViewModels for a View in the Unity Editor.
-Apply this attribute to a [`MonoView`](Aspid.MVVM.MonoView.md) or [`ScriptableView`](Aspid.MVVM.ScriptableView.md) class to restrict
-or extend the list of types shown in the design ViewModel selector.
+Configures the design ViewModel selector of a [`MonoView`](Aspid.MVVM.MonoView.md) in the Editor.
 
 ```csharp
 [Conditional("UNITY_EDITOR")]
@@ -23,17 +21,26 @@ public sealed class ShowDesignViewModelAttribute : Attribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [ShowDesignViewModelAttribute](Aspid.MVVM.ShowDesignViewModelAttribute.md)
 
+
+
+## Examples
+
+
+```csharp
+[ShowDesignViewModel(typeof(PlayerViewModel), strictType: true)]
+public partial class PlayerView : MonoView { }
+```
 
 
 ## Constructors
 
 ### ShowDesignViewModelAttribute\(\) {#Aspid_MVVM_ShowDesignViewModelAttribute__ctor}
 
-Initializes the attribute allowing any [`IViewModel`](Aspid.MVVM.IViewModel.md) implementation
+Creates the attribute allowing any [`IViewModel`](Aspid.MVVM.IViewModel.md) implementation
 to be used as a design ViewModel.
 
 ```csharp
@@ -42,7 +49,7 @@ public ShowDesignViewModelAttribute()
 
 ### ShowDesignViewModelAttribute\(params Type\[\]\) {#Aspid_MVVM_ShowDesignViewModelAttribute__ctor_System_Type___}
 
-Initializes the attribute with multiple allowed ViewModel types.
+Creates the attribute with multiple allowed ViewModel types.
 [`IViewModel`](Aspid.MVVM.IViewModel.md) is appended automatically if none of the provided types implement it.
 
 ```csharp
@@ -55,9 +62,19 @@ public ShowDesignViewModelAttribute(params Type[] types)
 
 The ViewModel types to include in the design ViewModel selector.
 
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">types</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+A filter type is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
 ### ShowDesignViewModelAttribute\(Type, bool\) {#Aspid_MVVM_ShowDesignViewModelAttribute__ctor_System_Type_System_Boolean_}
 
-Initializes the attribute with a single ViewModel type.
+Creates the attribute with a single ViewModel type.
 
 ```csharp
 public ShowDesignViewModelAttribute(Type type, bool strictType = false)
@@ -71,22 +88,23 @@ The ViewModel type to show in the design ViewModel selector.
 
 `strictType` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, only the exact <code class="paramref">type</code> is shown.
-The type must implement [`IViewModel`](Aspid.MVVM.IViewModel.md); otherwise an [`ArgumentException`](https://learn.microsoft.com/dotnet/api/system.argumentexception) is thrown.
+When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, selects the concrete type and locks the selector.
 
 #### Exceptions
 
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">type</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-Thrown when <code class="paramref">strictType</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> and <code class="paramref">type</code>
-does not implement [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Strict mode is requested for a type that is abstract, open generic or does not implement [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
 ## Fields
 
 ### StrictType {#Aspid_MVVM_ShowDesignViewModelAttribute_StrictType}
 
-Indicates whether the type filter is strict.
-When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, only the exact specified type is shown, and it must implement [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Whether the selector is locked to the supplied concrete ViewModel type.
 
 ```csharp
 public readonly bool StrictType
@@ -99,8 +117,7 @@ public readonly bool StrictType
 ### Types {#Aspid_MVVM_ShowDesignViewModelAttribute_Types}
 
 The ViewModel types available for selection in the design ViewModel dropdown.
-Always includes [`IViewModel`](Aspid.MVVM.IViewModel.md) unless [`ShowDesignViewModelAttribute.StrictType`](Aspid.MVVM.ShowDesignViewModelAttribute.md#Aspid_MVVM_ShowDesignViewModelAttribute_StrictType) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>
-and the provided type already implements it.
+Includes [`IViewModel`](Aspid.MVVM.IViewModel.md) when none of the supplied types implements that interface.
 
 ```csharp
 public readonly Type[] Types
@@ -109,4 +126,3 @@ public readonly Type[] Types
 #### Field Value
 
  [Type](https://learn.microsoft.com/dotnet/api/system.type)\[\]
-

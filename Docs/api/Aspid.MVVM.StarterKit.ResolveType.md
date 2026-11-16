@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum ResolveType {#Aspid_MVVM_StarterKit_ResolveType}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Where an [`InitializeComponent<T>`](Aspid.MVVM.StarterKit.InitializeComponent-1.md) takes its instance from.
 
@@ -20,27 +20,24 @@ public enum ResolveType
 
 ## Fields
 
-`Component = 0` 
+`Component = 0`
 
 A [`Component`](https://docs.unity3d.com/ScriptReference/Component.html) reference.
 
 
 
-`Reference = 1` 
+`Reference = 1`
 
 A serialized plain C# instance.
 
 
 
-`ScriptableObject = 2` 
+`ScriptableObject = 2`
 
 A [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) reference.
 
 
 
-`Di = 3` 
+`Di = 3`
 
 Resolved from the DI container by type name.
-
-
-

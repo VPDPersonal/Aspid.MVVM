@@ -67,3 +67,18 @@ public sealed class StopwatchBootstrap : MonoBehaviour
 Поэтому `DynamicViewModel` — инструмент для действительно динамических данных, а не замена `[ViewModel]` ради экономии одного класса.
 
 Подробнее — в [Dynamic ViewModel](../../../docusaurus-plugin-content-docs/current/10-dynamic-viewmodel.md).
+
+## Каналы enum и struct
+
+Используйте `AddEnum<T>` для binder с каналом `System.Enum`, а `AddStruct<T>` для канала `System.ValueType`.
+Эти методы также поддерживают точный тип значения и any-каналы. Generic members создаются напрямую, без runtime reflection.
+
+```csharp
+var state = viewModel.AddEnum("State", BindMode.OneWay, BindMode.TwoWay);
+var position = viewModel.AddStruct("Position", Vector3.zero);
+state.Value = BindMode.OneTime;
+```
+
+`Add<T>` сохраняет прежний typed/any-контракт. Все методы принимают OneTime, OneWay, TwoWay и OneWayToSource;
+OneWayToSource, как и раньше, предоставляет TwoWay-capable member. Фактическое направление определяет режим binder.
+Для создания свойства отдельно от ViewModel доступны `DynamicEnumProperty<T>` и `DynamicStructProperty<T>`.

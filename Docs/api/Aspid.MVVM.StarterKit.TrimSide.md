@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum TrimSide {#Aspid_MVVM_StarterKit_TrimSide}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 Which ends [`TrimStringConverter`](Aspid.MVVM.StarterKit.TrimStringConverter.md) trims.
 
@@ -20,21 +20,18 @@ public enum TrimSide
 
 ## Fields
 
-`Both = 0` 
+`Both = 0`
 
 Both ends.
 
 
 
-`Start = 1` 
+`Start = 1`
 
 The start only.
 
 
 
-`End = 2` 
+`End = 2`
 
 The end only.
-
-
-

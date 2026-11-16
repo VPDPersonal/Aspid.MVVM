@@ -19,7 +19,12 @@ const unityDir = path.resolve(siteDir, '../Aspid.MVVM');
 const outDir = path.join(siteDir, 'docfx', 'projects');
 
 /** Assemblies that get an API reference page tree. */
-const ASSEMBLIES = ['Aspid.MVVM', 'Aspid.MVVM.Unity', 'Aspid.MVVM.StarterKit'];
+const SOURCE_FOLDERS = {
+  'Aspid.MVVM': 'Source',
+  'Aspid.MVVM.Unity': 'Unity/Runtime',
+  'Aspid.MVVM.StarterKit': 'StarterKit/Runtime',
+};
+const ASSEMBLIES = Object.keys(SOURCE_FOLDERS);
 
 function attr(xml, tag, name) {
   return [...xml.matchAll(new RegExp(`<${tag}\\s+${name}="([^"]*)"`, 'g'))].map((m) => m[1]);
@@ -40,6 +45,12 @@ for (const assembly of ASSEMBLIES) {
   const xml = fs.readFileSync(path.join(unityDir, `${assembly}.csproj`), 'utf8');
 
   const compile = attr(xml, 'Compile', 'Include').map((file) => path.join(unityDir, file));
+  const sourceRoot = path.join(unityDir, 'Packages/tech.aspid.mvvm', SOURCE_FOLDERS[assembly]);
+  const compileSet = new Set(compile.map(file => path.resolve(file)));
+  const missing = fs.readdirSync(sourceRoot, { recursive: true })
+    .filter(file => file.endsWith('.cs') && !compileSet.has(path.join(sourceRoot, file)));
+  if (missing.length) throw new Error(`${assembly}.csproj omits sources; regenerate Unity project files: ${missing.join(', ')}`);
+
   const references = hintPaths(xml).map((hint) => (path.isAbsolute(hint) ? hint : path.join(unityDir, hint)));
   const projectRefs = attr(xml, 'ProjectReference', 'Include').map((file) => path.basename(file, '.csproj'));
   // Source generators complete the partial types ([ViewModel], [View], binders); without them the code does not compile.
@@ -70,6 +81,8 @@ for (const assembly of ASSEMBLIES) {
     <AllowUnsafeBlocks>${unsafeBlocks}</AllowUnsafeBlocks>
     <DefineConstants>${defines}</DefineConstants>
     <EnableDefaultItems>false</EnableDefaultItems>
+    <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
+    <DeterministicSourcePaths>false</DeterministicSourcePaths>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591;CS1573;CS8632</NoWarn>
     <DisableImplicitFrameworkReferences>false</DisableImplicitFrameworkReferences>

@@ -8,10 +8,10 @@ pagination_next: null
 ---
 # Class ScriptableView {#Aspid_MVVM_ScriptableView}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.Unity.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Represents a base class for views in a Unity context derived from [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
+[`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) for views with generated binding lifecycle methods.
 
 ```csharp
 public abstract class ScriptableView : ScriptableObject, IView
@@ -19,9 +19,9 @@ public abstract class ScriptableView : ScriptableObject, IView
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-ScriptableObject ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+ScriptableObject ←
 [ScriptableView](Aspid.MVVM.ScriptableView.md)
 
 #### Implements
@@ -32,8 +32,10 @@ ScriptableObject ←
 #### Extension Methods
 
 [ViewExtensions.DeinitializeView\<ScriptableView\>\(ScriptableView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DeinitializeView__1___0_),
-[MonoViewExtensions.DestroyView\(IView?\)](Aspid.MVVM.MonoViewExtensions.md#Aspid_MVVM_MonoViewExtensions_DestroyView_Aspid_MVVM_IView_), 
-[MonoViewExtensions.DestroyViewAndGameObject\(IView?\)](Aspid.MVVM.MonoViewExtensions.md#Aspid_MVVM_MonoViewExtensions_DestroyViewAndGameObject_Aspid_MVVM_IView_), 
+[MonoViewExtensions.DestroyView\<ScriptableView\>\(ScriptableView?\)](Aspid.MVVM.MonoViewExtensions.md#Aspid_MVVM_MonoViewExtensions_DestroyView__1___0_),
+[MonoViewExtensions.DestroyView\(IView?\)](Aspid.MVVM.MonoViewExtensions.md#Aspid_MVVM_MonoViewExtensions_DestroyView_Aspid_MVVM_IView_),
+[MonoViewExtensions.DestroyViewAndGameObject\<ScriptableView\>\(ScriptableView?\)](Aspid.MVVM.MonoViewExtensions.md#Aspid_MVVM_MonoViewExtensions_DestroyViewAndGameObject__1___0_),
+[MonoViewExtensions.DestroyViewAndGameObject\(IView?\)](Aspid.MVVM.MonoViewExtensions.md#Aspid_MVVM_MonoViewExtensions_DestroyViewAndGameObject_Aspid_MVVM_IView_),
 [ViewExtensions.DisposeView\(IView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DisposeView_Aspid_MVVM_IView_),
 [ViewExtensions.Reinitialize\(IView, IViewModel?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_Reinitialize_Aspid_MVVM_IView_Aspid_MVVM_IViewModel_)
 
@@ -114,4 +116,3 @@ protected virtual void InitializeInternal(IViewModel viewModel)
 #### Parameters
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
-

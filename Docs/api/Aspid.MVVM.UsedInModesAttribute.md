@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class UsedInModesAttribute {#Aspid_MVVM_UsedInModesAttribute}
 
-Namespace: [Aspid.MVVM](Aspid.MVVM.md)  
-Assembly: Aspid.MVVM.dll  
+Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
+Assembly: Aspid.MVVM.dll <br/>
 
 Disables the field in the Inspector while the binder that holds it has a mode outside [`UsedInModesAttribute.Modes`](Aspid.MVVM.UsedInModesAttribute.md#Aspid_MVVM_UsedInModesAttribute_Modes).
 
@@ -22,9 +22,9 @@ public sealed class UsedInModesAttribute : PropertyAttribute
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ← 
-PropertyAttribute ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+[Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
+PropertyAttribute ←
 [UsedInModesAttribute](Aspid.MVVM.UsedInModesAttribute.md)
 
 
@@ -82,4 +82,3 @@ public IReadOnlyList<BindMode> Modes { get; }
 #### Property Value
 
  [IReadOnlyList](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1)\<[BindMode](Aspid.MVVM.BindMode.md)\>
-

@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Enum RoundMode {#Aspid_MVVM_StarterKit_RoundMode}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 How [`RoundNumberConverter`](Aspid.MVVM.StarterKit.RoundNumberConverter.md) drops the fraction.
 
@@ -20,27 +20,24 @@ public enum RoundMode
 
 ## Fields
 
-`Round = 0` 
+`Round = 0`
 
 To the nearest; the converter decides where an exact half goes.
 
 
 
-`Floor = 1` 
+`Floor = 1`
 
 Toward negative infinity.
 
 
 
-`Ceil = 2` 
+`Ceil = 2`
 
 Toward positive infinity.
 
 
 
-`Truncate = 3` 
+`Truncate = 3`
 
 Toward zero.
-
-
-

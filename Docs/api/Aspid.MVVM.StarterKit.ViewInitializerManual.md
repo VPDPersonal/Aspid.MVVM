@@ -8,8 +8,8 @@ pagination_next: null
 ---
 # Class ViewInitializerManual {#Aspid_MVVM_StarterKit_ViewInitializerManual}
 
-Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md)  
-Assembly: Aspid.MVVM.StarterKit.dll  
+Namespace: [Aspid.MVVM.StarterKit](Aspid.MVVM.StarterKit.md) <br/>
+Assembly: Aspid.MVVM.StarterKit.dll <br/>
 
 [`ViewInitializerBase`](Aspid.MVVM.StarterKit.ViewInitializerBase.md) that takes its ViewModel from an explicit [`ViewInitializerManual.Initialize`](Aspid.MVVM.StarterKit.ViewInitializerManual.md#Aspid_MVVM_StarterKit_ViewInitializerManual_Initialize_Aspid_MVVM_IViewModel_) call.
 
@@ -21,12 +21,12 @@ public sealed class ViewInitializerManual : ViewInitializerBase
 
 #### Inheritance
 
-[object](https://learn.microsoft.com/dotnet/api/system.object) ← 
-Object ← 
-Component ← 
-Behaviour ← 
-MonoBehaviour ← 
-[ViewInitializerBase](Aspid.MVVM.StarterKit.ViewInitializerBase.md) ← 
+[object](https://learn.microsoft.com/dotnet/api/system.object) ←
+Object ←
+Component ←
+Behaviour ←
+MonoBehaviour ←
+[ViewInitializerBase](Aspid.MVVM.StarterKit.ViewInitializerBase.md) ←
 [ViewInitializerManual](Aspid.MVVM.StarterKit.ViewInitializerManual.md)
 
 
@@ -88,4 +88,3 @@ Thrown when <code class="paramref">viewModel</code> is <a href="https://learn.mi
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
 The views are already initialized or initialization is in progress.
-

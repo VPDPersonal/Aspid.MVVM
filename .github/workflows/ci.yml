@@ -474,7 +474,7 @@ jobs:
           for profile in minimal ai animation audio particlesystem video physics physics2d ui uielements imgui ugui counter without-fasttools collections all; do
             project="ci-dependency-$profile"
             node scripts/asp-make-dependency-profile.mjs "$project" "$profile"
-            "$GAMECI" build --docker --engine=unity "$project" --engineVersion="$UNITY_VERSION" \
+            "$GAMECI" build --engine=unity "$project" --engineVersion="$UNITY_VERSION" \
               --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
               --buildName=Smoke --buildsPath="dependency-builds/$profile" \
               --customParameters="-nographics -disableaudio" --skipActivation=true
@@ -484,7 +484,7 @@ jobs:
           done
           for profile in without-fasttools minimal all; do
             node scripts/asp-make-dependency-profile.mjs ci-dependency-all "$profile" --reuse
-            "$GAMECI" build --docker --engine=unity ci-dependency-all --engineVersion="$UNITY_VERSION" \
+            "$GAMECI" build --engine=unity ci-dependency-all --engineVersion="$UNITY_VERSION" \
               --targetPlatform=StandaloneLinux64 --buildMethod=AspDependencyProfile.Build \
               --buildName=Smoke --buildsPath="dependency-builds/transition-$profile" \
               --customParameters="-nographics -disableaudio" --skipActivation=true

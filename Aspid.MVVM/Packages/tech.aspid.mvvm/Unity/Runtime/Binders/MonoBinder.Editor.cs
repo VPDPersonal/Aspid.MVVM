@@ -141,6 +141,7 @@ namespace Aspid.MVVM
             }
         }
 
+        /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IRebindableBinder.Rebind()
         {

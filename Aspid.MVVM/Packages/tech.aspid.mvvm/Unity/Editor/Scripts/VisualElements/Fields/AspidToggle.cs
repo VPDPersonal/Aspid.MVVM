@@ -9,12 +9,12 @@ using Aspid.FastTools.UIElements;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// A toggle drawn as a label with a switch, used where Unity's own toggle would not match the row layout.
+    /// <see cref="VisualElement"/> combining a label and toggle switch.
     /// </summary>
     public class AspidToggle : VisualElement
     {
         /// <summary>
-        /// Raised when the value changes, except when it is set without notification.
+        /// Occurs when the value changes through a notifying update.
         /// </summary>
         public event Action<bool>? OnValueChanged;
         
@@ -67,7 +67,7 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Gets or sets the tooltip, applying it to the parts a pointer can actually rest on.
+        /// Gets or sets the tooltip for the switch and its label.
         /// </summary>
         public new string tooltip
         {
@@ -80,16 +80,16 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates an unlabelled toggle that starts off.
+        /// Creates an unlabeled toggle that starts off.
         /// </summary>
         public AspidToggle()
             : this(label: string.Empty) { }
         
         /// <summary>
-        /// Creates a labelled toggle.
+        /// Creates a labeled toggle.
         /// </summary>
-        /// <param name="label">The text shown beside the switch.</param>
-        /// <param name="initialValue">The value to start with.</param>
+        /// <param name="label">The switch label.</param>
+        /// <param name="initialValue">When <see langword="true"/>, starts with the switch on.</param>
         public AspidToggle(string label, bool initialValue = false)
         {
             style.alignItems = Align.Center;
@@ -138,11 +138,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Sets the value without raising <see cref="OnValueChanged"/>.
         /// </summary>
-        /// <param name="newValue">The value to set.</param>
-        /// <remarks>
-        /// For writing a value the toggle itself did not cause — reflecting the serialized state, for instance,
-        /// where a notification would be read back as an edit.
-        /// </remarks>
+        /// <param name="newValue">When <see langword="true"/>, turns the switch on.</param>
         public void SetValueWithoutNotify(bool newValue)
         {
             if (_value == newValue) return;

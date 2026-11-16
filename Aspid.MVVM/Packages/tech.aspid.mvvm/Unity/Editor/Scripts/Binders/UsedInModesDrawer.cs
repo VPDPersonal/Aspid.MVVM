@@ -7,14 +7,6 @@ using System.Collections;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// <see cref="PropertyDrawer"/> for <see cref="UsedInModesAttribute"/>: draws the field as
-    /// usual, disabled while the hosting binder is bound in a mode the field is not used under.
-    /// </summary>
-    /// <remarks>
-    /// The field keeps its own drawer — this one only wraps it in a disabled scope, so it composes
-    /// with types that draw themselves.
-    /// </remarks>
     [CustomPropertyDrawer(typeof(UsedInModesAttribute))]
     internal sealed class UsedInModesDrawer : PropertyDrawer
     {
@@ -48,14 +40,6 @@ namespace Aspid.MVVM
             return modes.All(mode => mode != binder.Mode);
         }
 
-        /// <summary>
-        /// Finds the nearest <see cref="IBinder"/> above the drawn property, or
-        /// <see langword="null"/> when the property is hosted outside a binder.
-        /// </summary>
-        /// <remarks>
-        /// Owners are walked from the serialized object inward, so a binder nested in another
-        /// binder wins over the one holding it.
-        /// </remarks>
         private static IBinder FindHostBinder(SerializedProperty property)
         {
             object current = property.serializedObject.targetObject;

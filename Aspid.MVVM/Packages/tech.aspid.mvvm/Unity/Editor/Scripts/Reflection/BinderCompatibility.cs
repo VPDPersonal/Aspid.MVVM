@@ -5,18 +5,18 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Provides Inspector checks for the channels required by a binding mode.
+    /// Provides utility methods for binder channel compatibility.
     /// </summary>
     public static class BinderCompatibility
     {
         /// <summary>
-        /// Determines whether the binder supplies every channel used by the member.
+        /// Checks whether the binder supports every channel required by a member.
         /// </summary>
         /// <param name="binder">The binder to inspect.</param>
-        /// <param name="valueType">The member's value type.</param>
+        /// <param name="valueType">The bound value type; <see langword="null"/> requires untyped binder channels.</param>
         /// <param name="memberMode">The binding mode exposed by the member.</param>
-        /// <param name="boxedChannels">When true, value-type members expose their Enum or ValueType channel.</param>
-        /// <returns>True if every required channel is supported; otherwise, false.</returns>
+        /// <param name="boxedChannels">When <see langword="true"/>, also accepts <see cref="System.Enum"/> or <see cref="System.ValueType"/> channels for value types.</param>
+        /// <returns><see langword="true"/> if all required channels are supported; otherwise, <see langword="false"/>.</returns>
         public static bool Matches(
             IBinder binder,
             Type? valueType,

@@ -45,10 +45,6 @@ The second command parameter type.
 [RelayCommandExtensions.GetSelfOrEmpty\<T1, T2\>\(IRelayCommand\<T1?, T2?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__2_Aspid_MVVM_IRelayCommand___0___1__),
 [RelayCommandExtensions.GetSelfOrEmptyExecution\<T1, T2\>\(IRelayCommand\<T1?, T2?\>?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmptyExecution__2_Aspid_MVVM_IRelayCommand___0___1__)
 
-## Remarks
-
-Exceptions from delegates and event handlers propagate to the caller.
-
 ## Constructors
 
 ### RelayCommand\(Action\<T1?, T2?\>, Func\<T1?, T2?, bool\>?\) {#Aspid_MVVM_RelayCommand_2__ctor_System_Action__0__1__System_Func__0__1_System_Boolean__}
@@ -125,7 +121,7 @@ The second command parameter.
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-The predicate result; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when no predicate was supplied.
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the predicate allows execution or is absent; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ### Execute\(T1?, T2?\) {#Aspid_MVVM_RelayCommand_2_Execute__0__1_}
 

@@ -32,10 +32,6 @@ public sealed class RelayCommand : IRelayCommand
 [RelayCommandExtensions.GetSelfOrEmpty\(IRelayCommand?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty_Aspid_MVVM_IRelayCommand_),
 [RelayCommandExtensions.GetSelfOrEmptyExecution\(IRelayCommand?\)](Aspid.MVVM.RelayCommandExtensions.md#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmptyExecution_Aspid_MVVM_IRelayCommand_)
 
-## Remarks
-
-Exceptions from delegates and event handlers propagate to the caller.
-
 ## Constructors
 
 ### RelayCommand\(Action, Func\<bool\>?\) {#Aspid_MVVM_RelayCommand__ctor_System_Action_System_Func_System_Boolean__}
@@ -102,7 +98,7 @@ public bool CanExecute()
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-The predicate result; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when no predicate was supplied.
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the predicate allows execution or is absent; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
 
 ### Execute\(\) {#Aspid_MVVM_RelayCommand_Execute}
 

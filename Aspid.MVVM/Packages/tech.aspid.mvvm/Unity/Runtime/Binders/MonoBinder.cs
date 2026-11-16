@@ -57,27 +57,29 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the binding mode a freshly added binder starts in. The default is <see cref="BindMode.OneWay"/>.
-        /// Override in binders whose <c>[BindModeOverride]</c> excludes it.
+        /// Gets the mode for a freshly added binder; <see cref="BindMode.OneWay"/> by default.
         /// </summary>
+        /// <remarks>
+        /// Override when <see cref="BindModeOverrideAttribute"/> excludes the default mode.
+        /// </remarks>
         protected virtual BindMode DefaultMode => BindMode.OneWay;
 
         private bool IsAlive => !_isDestroyed && this;
 
         /// <summary>
-        /// Called by Unity when the component is added or reset in the Editor. Applies <see cref="DefaultMode"/>.
+        /// Called when Unity adds or resets the component to apply <see cref="DefaultMode"/>.
         /// </summary>
         /// <remarks>
-        /// When overriding, always call <c>base.Reset()</c>.
+        /// Overrides must call <c>base.Reset()</c>.
         /// </remarks>
         protected virtual void Reset() =>
             _mode = DefaultMode;
 
         /// <summary>
-        /// Called by Unity when the component is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+        /// Called when Unity destroys the component to release its binding.
         /// </summary>
         /// <remarks>
-        /// When overriding, always call <c>base.OnDestroy()</c>.
+        /// Overrides must call <c>base.OnDestroy()</c>.
         /// </remarks>
         protected virtual void OnDestroy()
         {

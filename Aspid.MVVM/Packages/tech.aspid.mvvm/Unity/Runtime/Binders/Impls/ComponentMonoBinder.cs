@@ -50,10 +50,10 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Called by Unity in the Editor when a serialized value changes. Fills the empty component field outside Play mode.
+        /// Called when Unity validates serialized data to fill an empty target field outside Play Mode.
         /// </summary>
         /// <remarks>
-        /// When overriding, always call <c>base.OnValidate()</c>.
+        /// Overrides must call <c>base.OnValidate()</c>.
         /// </remarks>
         protected virtual void OnValidate()
         {

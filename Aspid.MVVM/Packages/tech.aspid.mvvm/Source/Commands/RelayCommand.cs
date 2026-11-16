@@ -10,7 +10,6 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IRelayCommand"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <remarks>Exceptions from delegates and event handlers propagate to the caller.</remarks>
     public sealed class RelayCommand : IRelayCommand
     {
         private static RelayCommand? _empty;
@@ -57,7 +56,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Determines whether the command can execute by calling its predicate.
         /// </summary>
-        /// <returns>The predicate result; <see langword="true"/> when no predicate was supplied.</returns>
+        /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute()
         {
 #if ASPID_MVVM_PROFILER
@@ -97,7 +96,6 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IRelayCommand{T}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <remarks>Exceptions from delegates and event handlers propagate to the caller.</remarks>
     /// <typeparam name="T">The command parameter type.</typeparam>
     public class RelayCommand<T> : IRelayCommand<T>
     {
@@ -146,7 +144,7 @@ namespace Aspid.MVVM
         /// Determines whether the command can execute by calling its predicate.
         /// </summary>
         /// <param name="param">The command parameter.</param>
-        /// <returns>The predicate result; <see langword="true"/> when no predicate was supplied.</returns>
+        /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T? param)
         {
 #if ASPID_MVVM_PROFILER
@@ -187,7 +185,6 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IRelayCommand{T1, T2}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <remarks>Exceptions from delegates and event handlers propagate to the caller.</remarks>
     /// <typeparam name="T1">The first command parameter type.</typeparam>
     /// <typeparam name="T2">The second command parameter type.</typeparam>
     public class RelayCommand<T1, T2> : IRelayCommand<T1, T2>
@@ -238,7 +235,7 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>
-        /// <returns>The predicate result; <see langword="true"/> when no predicate was supplied.</returns>
+        /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2)
         {
 #if ASPID_MVVM_PROFILER
@@ -280,7 +277,6 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IRelayCommand{T1, T2, T3}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <remarks>Exceptions from delegates and event handlers propagate to the caller.</remarks>
     /// <typeparam name="T1">The first command parameter type.</typeparam>
     /// <typeparam name="T2">The second command parameter type.</typeparam>
     /// <typeparam name="T3">The third command parameter type.</typeparam>
@@ -333,7 +329,7 @@ namespace Aspid.MVVM
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>
         /// <param name="param3">The third command parameter.</param>
-        /// <returns>The predicate result; <see langword="true"/> when no predicate was supplied.</returns>
+        /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3)
         {
 #if ASPID_MVVM_PROFILER
@@ -376,7 +372,6 @@ namespace Aspid.MVVM
     /// <summary>
     /// <see cref="IRelayCommand{T1, T2, T3, T4}"/> that runs a delegate, optionally gated by a predicate.
     /// </summary>
-    /// <remarks>Exceptions from delegates and event handlers propagate to the caller.</remarks>
     /// <typeparam name="T1">The first command parameter type.</typeparam>
     /// <typeparam name="T2">The second command parameter type.</typeparam>
     /// <typeparam name="T3">The third command parameter type.</typeparam>
@@ -431,7 +426,7 @@ namespace Aspid.MVVM
         /// <param name="param2">The second command parameter.</param>
         /// <param name="param3">The third command parameter.</param>
         /// <param name="param4">The fourth command parameter.</param>
-        /// <returns>The predicate result; <see langword="true"/> when no predicate was supplied.</returns>
+        /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute(T1? param1, T2? param2, T3? param3, T4? param4)
         {
 #if ASPID_MVVM_PROFILER

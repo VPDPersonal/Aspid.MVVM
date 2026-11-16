@@ -8,14 +8,24 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Metadata for an <see cref="IViewModel"/> type, aggregating all of its <see cref="BindablePropertyMeta"/> entries
-    /// discovered through reflection.
+    /// Reflected bindable member metadata for a ViewModel type.
     /// </summary>
     public class ViewModelMeta
     {
+        /// <summary>
+        /// The inspected ViewModel type.
+        /// </summary>
         public readonly Type Type;
+        /// <summary>
+        /// The bindable members, including inherited members.
+        /// </summary>
         public readonly IReadOnlyList<BindablePropertyMeta> BindableProperties;
         
+        /// <summary>
+        /// Collects binding metadata for a type.
+        /// </summary>
+        /// <param name="type">The type implementing <see cref="IViewModel"/>.</param>
+        /// <exception cref="ArgumentException"><paramref name="type"/> does not implement <see cref="IViewModel"/>.</exception>
         public ViewModelMeta(Type type)
         {
             Type = type;

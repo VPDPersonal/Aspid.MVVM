@@ -140,7 +140,7 @@ protected virtual void InitializeInternal(IViewModel viewModel)
 
 ### Instantiate\<T\>\(T, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_Aspid_MVVM_IViewModel_}
 
-Creates an instance of the View and initializes it with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones and initializes the view.
 
 ```csharp
 public static T Instantiate<T>(T original, IViewModel viewModel) where T : Object, IView
@@ -150,23 +150,23 @@ public static T Instantiate<T>(T original, IViewModel viewModel) where T : Objec
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The ViewModel for initialization.
+The ViewModel to bind.
 
 #### Returns
 
  T
 
-The created instance of the View.
+The initialized clone.
 
 #### Type Parameters
 
 `T`
 
-The type of the View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -181,7 +181,7 @@ Cleanup failures during rollback do not replace the initialization exception. Th
 
 ### Instantiate\<T\>\(T, Transform, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Creates an instance of the View with the specified parent and initializes it with the given [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones and initializes the view.
 
 ```csharp
 public static T Instantiate<T>(T original, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -191,7 +191,7 @@ public static T Instantiate<T>(T original, Transform parent, IViewModel viewMode
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `parent` Transform
 
@@ -199,19 +199,19 @@ The parent for the clone; <a href="https://learn.microsoft.com/dotnet/csharp/lan
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The ViewModel for initialization.
+The ViewModel to bind.
 
 #### Returns
 
  T
 
-The created instance of the View.
+The initialized clone.
 
 #### Type Parameters
 
 `T`
 
-The type of the View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -226,7 +226,7 @@ Cleanup failures during rollback do not replace the initialization exception. Th
 
 ### Instantiate\<T\>\(T, Transform, bool, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Transform_System_Boolean_Aspid_MVVM_IViewModel_}
 
-Creates an instance of the View with the specified parent and initializes it with the given [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones and initializes the view.
 
 ```csharp
 public static T Instantiate<T>(T original, Transform parent, bool worldPositionStays, IViewModel viewModel) where T : Object, IView
@@ -236,7 +236,7 @@ public static T Instantiate<T>(T original, Transform parent, bool worldPositionS
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `parent` Transform
 
@@ -248,19 +248,19 @@ When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/built
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The ViewModel for initialization.
+The ViewModel to bind.
 
 #### Returns
 
  T
 
-The created instance of the View.
+The initialized clone.
 
 #### Type Parameters
 
 `T`
 
-The type of the View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -275,7 +275,7 @@ Cleanup failures during rollback do not replace the initialization exception. Th
 
 ### Instantiate\<T\>\(T, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Creates an instance of the View with the specified position and rotation, and initializes it with the given [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones and initializes the view.
 
 ```csharp
 public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -285,7 +285,7 @@ public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `position` Vector3
 
@@ -297,19 +297,19 @@ The rotation for the new View instance.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The ViewModel for initialization.
+The ViewModel to bind.
 
 #### Returns
 
  T
 
-The created instance of the View.
+The initialized clone.
 
 #### Type Parameters
 
 `T`
 
-The type of the View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -324,7 +324,7 @@ Cleanup failures during rollback do not replace the initialization exception. Th
 
 ### Instantiate\<T\>\(T, Vector3, Quaternion, Transform, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Creates an instance of the View with the specified position, rotation, and parent, and initializes it with the given [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones and initializes the view.
 
 ```csharp
 public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -334,7 +334,7 @@ public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `position` Vector3
 
@@ -350,19 +350,19 @@ The parent for the clone; <a href="https://learn.microsoft.com/dotnet/csharp/lan
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The ViewModel for initialization.
+The ViewModel to bind.
 
 #### Returns
 
  T
 
-The created instance of the View.
+The initialized clone.
 
 #### Type Parameters
 
 `T`
 
-The type of the View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -377,7 +377,7 @@ Cleanup failures during rollback do not replace the initialization exception. Th
 
 ### InstantiateAsync\<T\>\(T, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates an instance of the View and initializes it with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, IViewModel viewModel) where T : Object, IView
@@ -387,7 +387,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, IView
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -397,13 +397,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instance.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -420,8 +420,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, Transform, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates an instance of the View with the specified parent
-and initializes it with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -431,11 +430,11 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Trans
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `parent` Transform
 
-The parent object for the new View instance.
+The parent of the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -445,13 +444,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instance.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -468,8 +467,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates an instance of the View with specified position and rotation,
-and initializes it with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -479,7 +477,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Vecto
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `position` Vector3
 
@@ -497,13 +495,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instance.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -520,8 +518,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, Transform, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_UnityEngine_Transform_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates an instance of the View with specified parent, position, and rotation,
-and initializes it with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Transform parent, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -531,11 +528,11 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Trans
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `parent` Transform
 
-The parent object for the new View instance.
+The parent of the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `position` Vector3
 
@@ -553,13 +550,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instance.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -576,7 +573,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates multiple instances of the View and initializes them with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, IViewModel viewModel) where T : Object, IView
@@ -586,7 +583,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -600,13 +597,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -623,8 +620,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, Transform, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates multiple instances of the View with the specified parent
-and initializes them with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -634,7 +630,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -642,7 +638,7 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent object for the new View instances.
+The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -652,13 +648,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -675,8 +671,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates multiple instances of the View with specified position and rotation,
-and initializes them with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -686,7 +681,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -708,13 +703,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -731,8 +726,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_}
 
-Asynchronously creates multiple View instances with specified positions and rotations,
-and initializes them with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel) where T : Object, IView
@@ -742,7 +736,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -764,13 +758,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -787,8 +781,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, Transform, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Asynchronously creates multiple instances of the View with specified parent, position, and rotation,
-and initializes them with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -798,7 +791,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -806,7 +799,7 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent object for the new View instances.
+The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `position` Vector3
 
@@ -824,13 +817,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -847,8 +840,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, Transform, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_}
 
-Asynchronously creates multiple View instances with the specified parent
-and initializes them with the specified [`IViewModel`](Aspid.MVVM.IViewModel.md).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel) where T : Object, IView
@@ -858,7 +850,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object to be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -866,7 +858,7 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent object for the new View instances.
+The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `positions` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Vector3\>
 
@@ -884,13 +876,13 @@ The shared ViewModel used to initialize every created view.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating the View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View, which must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -907,8 +899,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, Transform, Vector3, Quaternion, IViewModel, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_System_Threading_CancellationToken_}
 
-Asynchronously creates multiple instances of View with the specified parent, position, and rotation,
-and initializes them with the given [`IViewModel`](Aspid.MVVM.IViewModel.md). Supports cancellation via [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, Vector3 position, Quaternion rotation, IViewModel viewModel, CancellationToken cancellationToken) where T : Object, IView
@@ -918,7 +909,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object that will be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -926,7 +917,7 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent object for the new View instances.
+The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `position` Vector3
 
@@ -948,13 +939,13 @@ The cancellation token for stopping the creation process.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View that must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 
@@ -971,8 +962,7 @@ Rollback preserves the initialization exception and does not dispose the ViewMod
 
 ### InstantiateAsync\<T\>\(T, int, Transform, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_System_Threading_CancellationToken_}
 
-Asynchronously creates multiple instances of View with the specified parent, positions, and rotations,
-and initializes them with the given [`IViewModel`](Aspid.MVVM.IViewModel.md). Supports cancellation via [`CancellationToken`](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken).
+Clones views asynchronously and initializes them on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel, CancellationToken cancellationToken) where T : Object, IView
@@ -982,7 +972,7 @@ public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int c
 
 `original` T
 
-The original View object that will be instantiated.
+The view to clone.
 
 `count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
 
@@ -990,7 +980,7 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent object for the new View instances.
+The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `positions` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Vector3\>
 
@@ -1012,13 +1002,13 @@ The cancellation token for stopping the creation process.
 
  AsyncInstantiateOperation\<T\>
 
-An operation representing the asynchronous process of creating View instances.
+The Unity cloning operation.
 
 #### Type Parameters
 
 `T`
 
-The type of View that must inherit from [`Object`](https://docs.unity3d.com/ScriptReference/Object.html) and implement [`IView`](Aspid.MVVM.IView.md).
+The Unity view type.
 
 #### Remarks
 

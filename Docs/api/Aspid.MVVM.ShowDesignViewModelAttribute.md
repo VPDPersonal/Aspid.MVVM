@@ -49,8 +49,7 @@ public ShowDesignViewModelAttribute()
 
 ### ShowDesignViewModelAttribute\(params Type\[\]\) {#Aspid_MVVM_ShowDesignViewModelAttribute__ctor_System_Type___}
 
-Creates the attribute with multiple allowed ViewModel types.
-[`IViewModel`](Aspid.MVVM.IViewModel.md) is appended automatically if none of the provided types implement it.
+Creates a selector filtered by the supplied ViewModel types.
 
 ```csharp
 public ShowDesignViewModelAttribute(params Type[] types)
@@ -60,7 +59,7 @@ public ShowDesignViewModelAttribute(params Type[] types)
 
 `types` [Type](https://learn.microsoft.com/dotnet/api/system.type)\[\]
 
-The ViewModel types to include in the design ViewModel selector.
+The allowed types; adds [`IViewModel`](Aspid.MVVM.IViewModel.md) if none implements it.
 
 #### Exceptions
 
@@ -70,7 +69,7 @@ The ViewModel types to include in the design ViewModel selector.
 
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-A filter type is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+An element of <code class="paramref">types</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### ShowDesignViewModelAttribute\(Type, bool\) {#Aspid_MVVM_ShowDesignViewModelAttribute__ctor_System_Type_System_Boolean_}
 
@@ -116,8 +115,7 @@ public readonly bool StrictType
 
 ### Types {#Aspid_MVVM_ShowDesignViewModelAttribute_Types}
 
-The ViewModel types available for selection in the design ViewModel dropdown.
-Includes [`IViewModel`](Aspid.MVVM.IViewModel.md) when none of the supplied types implements that interface.
+The selectable ViewModel types, including [`IViewModel`](Aspid.MVVM.IViewModel.md) when none implements it.
 
 ```csharp
 public readonly Type[] Types

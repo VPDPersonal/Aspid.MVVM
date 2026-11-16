@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Serializable [`IBinder`](Aspid.MVVM.IBinder.md) that tracks its binding state and calls lifecycle hooks around binding.
+[`IBinder`](Aspid.MVVM.IBinder.md) with a serialized mode and binding lifecycle hooks.
 
 ```csharp
 [Serializable]
@@ -105,7 +105,7 @@ The binding mode.
 
  [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
 
-The mode is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
+<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
 
 ## Properties
 

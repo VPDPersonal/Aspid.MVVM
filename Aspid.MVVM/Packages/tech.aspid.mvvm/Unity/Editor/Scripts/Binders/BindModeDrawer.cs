@@ -10,10 +10,6 @@ using Aspid.FastTools.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Custom Unity property drawer for <see cref="BindMode"/> and <see cref="BindModeAttribute"/> fields.
-    /// Renders an inline dropdown populated with the modes permitted by any <see cref="BindModeOverrideAttribute"/> on the owning class.
-    /// </summary>
     [CustomPropertyDrawer(typeof(BindMode))]
     [CustomPropertyDrawer(typeof(BindModeAttribute))]
     internal sealed class BindModeDrawer : PropertyDrawer
@@ -63,15 +59,6 @@ namespace Aspid.MVVM
             return popup;
         }
         
-        /// <summary>
-        /// Resolves the owning instance and its <see cref="BindModeOverrideAttribute"/>, re-resolving whenever the
-        /// drawer is handed a different instance.
-        /// </summary>
-        /// <remarks>
-        /// Unity reuses one drawer instance for every element of a list and for every object in a multi-selection, so a
-        /// cache that only remembers "already looked" hands the second binder the first one's allowed modes — and the
-        /// dropdown then offers modes the class forbids. The cache is keyed on the instance instead.
-        /// </remarks>
         private void InitializeOverrideAttribute(SerializedProperty property)
         {
             var instance = property.GetDeclaringInstance();
@@ -121,16 +108,6 @@ namespace Aspid.MVVM
                 : BindModes.Create(provider.Modes);
         }
 
-        /// <summary>
-        /// Returns the index of the property's current mode among the allowed ones, correcting a value the class does
-        /// not allow.
-        /// </summary>
-        /// <remarks>
-        /// The correction is deferred to the next editor tick rather than applied here. Writing serialized data from
-        /// inside a drawer mutates the object while Unity is laying it out — which loses the change on a repaint,
-        /// marks a scene dirty from a redraw alone, and cannot be undone. The dropdown shows the first allowed mode in
-        /// the meantime, which is what the deferred write is about to store.
-        /// </remarks>
         private static int GetSelectedIndex(SerializedProperty property, BindModes availableModes)
         {
             var currentMode = (BindMode)property.intValue;
@@ -159,14 +136,6 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Stores the chosen mode and rebinds the owner when it can be rebound.
-        /// </summary>
-        /// <remarks>
-        /// The write comes first and happens unconditionally. It used to sit behind the <see cref="IRebindableBinder"/>
-        /// check, so choosing a mode on anything else — a serializable binder inside a View, a plain
-        /// <see cref="BindModeAttribute"/> field — did nothing at all and the dropdown snapped back on the next repaint.
-        /// </remarks>
         private void SetPropertyValue(SerializedProperty property, BindModes availableModes, int selectedIndex)
         {
             if (selectedIndex < 0 || selectedIndex >= availableModes.Modes.Length) return;

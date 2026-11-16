@@ -160,6 +160,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Changed
 
+- Shortened XML documentation across `Source` and `Unity`, documented missing public Editor contracts, and removed XML comments from internal implementation details.
+
 - `DestroyView()` now destroys ScriptableObject views as well as components. View and ViewModel helpers share Unity object destruction while retaining their existing return values and null handling.
 
 - Unity ViewModel disposal releases resources without destroying objects. Override `OnDispose()` instead of `Dispose()`; cleanup runs once and also runs on Unity destruction. `DestroyViewModel()` supports ScriptableObject ViewModels, and `DestroyViewModelAndGameObject()` additionally removes the owning GameObject.

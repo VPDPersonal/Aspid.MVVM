@@ -11,11 +11,20 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// <see cref="VisualElement"/> for initializing and invoking a relay command in the Inspector.
+    /// </summary>
     public class RelayCommandField : VisualElement
     {
         private const string StyleSheetPath = "Styles/Fields/aspid-relay-command";
         private const BindingFlags BindingAttr = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
         
+        /// <summary>
+        /// Creates controls for a command field and its arguments.
+        /// </summary>
+        /// <param name="label">The field label.</param>
+        /// <param name="target">The object containing the command.</param>
+        /// <param name="fieldInfo">The command backing field.</param>
         public RelayCommandField(string label, object target, FieldInfo fieldInfo)
         {
             styleSheets.Add(styleSheet: Resources.Load<StyleSheet>(StyleSheetPath));

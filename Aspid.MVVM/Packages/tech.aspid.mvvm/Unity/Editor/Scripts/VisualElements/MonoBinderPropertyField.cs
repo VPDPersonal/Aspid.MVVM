@@ -11,8 +11,7 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// The Inspector row for one binder field on a view: the property itself, plus the drop target that accepts
-    /// a binder dragged onto it.
+    /// <see cref="VisualElement"/> for a View binder slot that accepts dragged binders.
     /// </summary>
     public class MonoBinderPropertyField : VisualElement
     {
@@ -24,19 +23,40 @@ namespace Aspid.MVVM
         private readonly MonoBinderHighlightGradient _highlightGradient;
 
         /// <summary>
-        /// The view field this row edits.
+        /// Gets the serialized View field edited by this row.
         /// </summary>
         public SerializedProperty Property { get; }
         
+        /// <summary>
+        /// Creates a binder slot row accepting both binding directions.
+        /// </summary>
+        /// <param name="property">The binder slot property.</param>
+        /// <param name="binderId">The slot binding identifier.</param>
+        /// <param name="assemblyQualifiedName">The bound value type name; <see langword="null"/> requires untyped binder channels.</param>
         public MonoBinderPropertyField(
             SerializedProperty property, 
             string binderId,
             string? assemblyQualifiedName)
             : this(property, label: string.Empty, binderId, assemblyQualifiedName) { }
 
+        /// <summary>
+        /// Creates a binder slot row accepting both binding directions.
+        /// </summary>
+        /// <param name="property">The binder slot property.</param>
+        /// <param name="label">The row label; blank uses the property display name.</param>
+        /// <param name="binderId">The slot binding identifier.</param>
+        /// <param name="assemblyQualifiedName">The bound value type name; <see langword="null"/> requires untyped binder channels.</param>
         public MonoBinderPropertyField(SerializedProperty property, string label, string binderId, string? assemblyQualifiedName)
             : this(property, label, binderId, assemblyQualifiedName, BindMode.TwoWay) { }
 
+        /// <summary>
+        /// Creates a binder slot row with the specified binding mode.
+        /// </summary>
+        /// <param name="property">The binder slot property.</param>
+        /// <param name="label">The row label; blank uses the property display name.</param>
+        /// <param name="binderId">The slot binding identifier.</param>
+        /// <param name="assemblyQualifiedName">The bound value type name; <see langword="null"/> requires untyped binder channels.</param>
+        /// <param name="memberMode">The binding mode exposed by the ViewModel member.</param>
         public MonoBinderPropertyField(SerializedProperty property, string label, string binderId, string? assemblyQualifiedName, BindMode memberMode)
         {
             styleSheets.Add(_styleSheet);
@@ -78,17 +98,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Flashes the row in the given colour, to show which field a dropped binder landed in.
+        /// Flashes the row to identify a drop target.
         /// </summary>
-        /// <param name="color">The colour to flash.</param>
+        /// <param name="color">The highlight color.</param>
         public void AnimateHighlight(Color color) =>
             _highlightGradient.AnimateHighlight(color);
         
         /// <summary>
-        /// Reports how well the given binder matches this field.
+        /// Rates the binder by its supported value type, binding mode and previous identifier.
         /// </summary>
         /// <param name="binder">The binder being dragged.</param>
-        /// <returns>The quality of the match; see <see cref="CompatibleBinderWithField"/>.</returns>
+        /// <returns>The compatibility rating.</returns>
         public CompatibleBinderWithField IsCompatibleBinderWithField(IMonoBinderValidatable binder)
         {
             var previousId = binder.PreviousId.Id ?? string.Empty;

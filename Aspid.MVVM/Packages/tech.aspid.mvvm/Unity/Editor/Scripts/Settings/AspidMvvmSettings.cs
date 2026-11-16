@@ -8,10 +8,13 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Static helper class for managing Aspid MVVM settings through scripting define symbols.
+    /// Provides utility methods for Aspid MVVM scripting define settings.
     /// </summary>
     public static class AspidMvvmSettings
     {
+        /// <summary>
+        /// The version shown by the Editor tools.
+        /// </summary>
         public const string Version = "1.1.0";
         
         private const string ProfilerDefine = "ASPID_MVVM_UNITY_PROFILER_DISABLED";
@@ -19,8 +22,7 @@ namespace Aspid.MVVM
         private const string CheckForEditorDefine = "ASPID_MVVM_EDITOR_DISABLED";
 
         /// <summary>
-        /// Gets or sets whether the profiler is enabled.
-        /// When enabled, profiler markers are available for performance monitoring.
+        /// Gets or sets a value indicating whether MVVM profiler markers are enabled.
         /// </summary>
         public static bool IsEnabledProfiler
         {
@@ -36,8 +38,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets or sets whether binder logging is enabled.
-        /// When enabled, detailed logs for binder operations are available.
+        /// Gets or sets a value indicating whether Editor binder logs are enabled.
         /// </summary>
         public static bool IsEnabledBinderLog
         {
@@ -53,8 +54,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets or sets whether editor checks are enabled.
-        /// When enabled, additional validation checks run in the Editor.
+        /// Gets or sets a value indicating whether Editor binding checks are enabled.
         /// </summary>
         public static bool IsEnabledCheckForEditor
         {

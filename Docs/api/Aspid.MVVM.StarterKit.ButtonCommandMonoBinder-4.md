@@ -185,7 +185,7 @@ Also called after a failed installation; tolerate partially initialized resource
 
 ### OnValidate\(\) {#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_4_OnValidate}
 
-Called by Unity in the Editor when a serialized value changes. Fills the empty component field outside Play mode.
+Called when Unity validates serialized data to fill an empty target field outside Play Mode.
 
 ```csharp
 protected override void OnValidate()
@@ -193,7 +193,7 @@ protected override void OnValidate()
 
 #### Remarks
 
-When overriding, always call <code>base.OnValidate()</code>.
+Overrides must call <code>base.OnValidate()</code>.
 
 ### SetValue\(IRelayCommand\<T1, T2, T3, T4\>\) {#Aspid_MVVM_StarterKit_ButtonCommandMonoBinder_4_SetValue_Aspid_MVVM_IRelayCommand__0__1__2__3__}
 

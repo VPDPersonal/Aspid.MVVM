@@ -233,13 +233,6 @@ namespace Aspid.MVVM
             }
         }
         
-        /// <summary>
-        /// Parses a search query to extract name and type filter.
-        /// Supports formats like:
-        /// - "t: string" or "T: string" or "t:string" or "T:string"
-        /// - "name t: string" or "t: string name"
-        /// - "hero.points t: int"
-        /// </summary>
         private static void ParseSearchQuery(string query, out string nameQuery, out string typeFilter)
         {
             nameQuery = string.Empty;

@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Contains the bindable member and the owner acquiring a binder.
+    /// Binding request containing a bindable member and its owner.
     /// </summary>
     public readonly struct BindContext
     {

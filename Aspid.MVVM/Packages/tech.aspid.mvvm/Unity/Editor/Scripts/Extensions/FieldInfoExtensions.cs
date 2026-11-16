@@ -6,11 +6,17 @@ using System.Reflection;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor extension methods for <see cref="System.Reflection.FieldInfo"/> that support
-    /// typed value assignment and array retrieval for serialized fields.
+    /// Provides extension methods for <see cref="FieldInfo"/>.
     /// </summary>
     public static class FieldInfoExtensions
     {
+        /// <summary>
+        /// Assigns an array converted to the field type, or its first element for a scalar field.
+        /// </summary>
+        /// <typeparam name="T">The input value type.</typeparam>
+        /// <param name="field">The field to write.</param>
+        /// <param name="obj">The object containing the field.</param>
+        /// <param name="value">The values to assign; <see langword="null"/> or empty clears the field.</param>
         public static void SetValueFromCastValue<T>(this FieldInfo field, object obj, params T?[]? value)
         {
             if (value is null || value.Length is 0)
@@ -28,6 +34,13 @@ namespace Aspid.MVVM
             field.SetValue(obj, isArray ? typedArray : typedArray.GetValue(0));
         }
 
+        /// <summary>
+        /// Reads a scalar or array field as an array.
+        /// </summary>
+        /// <typeparam name="T">The expected element type.</typeparam>
+        /// <param name="field">The field to read.</param>
+        /// <param name="obj">The object containing the field.</param>
+        /// <returns>The matching values; an empty array for a missing or incompatible value.</returns>
         public static T?[] GetValueAsArray<T>(this FieldInfo field, object obj)
         {
             T?[]? values;

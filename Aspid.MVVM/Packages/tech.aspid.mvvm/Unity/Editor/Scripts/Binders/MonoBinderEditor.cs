@@ -9,11 +9,6 @@ using UnityEngine.UIElements;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Custom Unity Editor for <see cref="MonoBinder"/> components.
-    /// Builds a UIElements-based inspector with ID and View dropdown selectors.
-    /// Can be extended by derived editors for specialized binder types.
-    /// </summary>
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBinder), editorForChildClasses: true)]
     internal class MonoBinderEditor : Editor

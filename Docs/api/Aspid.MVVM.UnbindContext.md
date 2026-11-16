@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Identifies the owner releasing a binder.
+Cleanup request identifying the owner releasing a binder.
 
 ```csharp
 public readonly struct UnbindContext

@@ -12,12 +12,16 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor utility that validates and synchronizes the assignment of <see cref="IMonoBinderValidatable"/>
-    /// binders between a view's required binder slots, adding or removing binder references as the inspector changes.
+    /// Provides utility methods for synchronizing View slots and component binder assignments.
     /// </summary>
     public static class ViewAndMonoBinderSyncValidator
     {
         #region Validate Methods
+        /// <summary>
+        /// Synchronizes binder slots with assigned components in the View hierarchy.
+        /// </summary>
+        /// <typeparam name="TView">The component View type.</typeparam>
+        /// <param name="view">The View to validate.</param>
         public static void ValidateView<TView>(TView view)
             where TView : Component, IView
         {
@@ -58,6 +62,12 @@ namespace Aspid.MVVM
             }
         }
 
+        /// <summary>
+        /// Reconciles component assignments after the View binder slots change.
+        /// </summary>
+        /// <param name="view">The View to validate.</param>
+        /// <param name="oldBinders">The assignments before the edit.</param>
+        /// <param name="newBinders">The assignments after the edit.</param>
         public static void ValidateViewChanges(IView view, ValidatableBindersById oldBinders, ValidatableBindersById newBinders)
         {
             var changedBinders = ChangedBinders.GetChangedBinders(oldBinders, newBinders);
@@ -177,6 +187,11 @@ namespace Aspid.MVVM
         #endregion
         
         #region SetBinderIfNotExistInView Methods
+        /// <summary>
+        /// Adds the binder to its View slot, replacing an occupied scalar slot.
+        /// </summary>
+        /// <param name="binder">The binder with an assigned View and identifier.</param>
+        /// <exception cref="NullReferenceException">The binder has no identifier, no live View or no matching View field.</exception>
         public static void SetBinderIfNotExistInView(IMonoBinderValidatable binder)
         {
             // If ID is not set, we cannot delete this binder
@@ -192,6 +207,13 @@ namespace Aspid.MVVM
             SetBinderIfNotExistInView(binder, binder.View, binder.Id);
         }
         
+        /// <summary>
+        /// Adds the binder to its View slot, replacing an occupied scalar slot.
+        /// </summary>
+        /// <param name="binder">The binder to synchronize.</param>
+        /// <param name="view">The View containing the slot.</param>
+        /// <param name="id">The slot binding identifier.</param>
+        /// <exception cref="NullReferenceException">No View field matches <paramref name="id"/>.</exception>
         public static void SetBinderIfNotExistInView(IMonoBinderValidatable binder, IView view, string id)
         {
             var field = view.GetRequireBinderFieldById(id);
@@ -230,6 +252,11 @@ namespace Aspid.MVVM
         #endregion
         
         #region RemoveBinderIfExistInView Methods
+        /// <summary>
+        /// Removes the binder from its View slot if present.
+        /// </summary>
+        /// <param name="binder">The binder with an assigned View and identifier.</param>
+        /// <exception cref="NullReferenceException">The binder has no identifier, no live View or no matching View field.</exception>
         public static void RemoveBinderIfExistInView(IMonoBinderValidatable binder)
         {
             // If ID is not set, we cannot delete this binder
@@ -245,6 +272,13 @@ namespace Aspid.MVVM
             RemoveBinderIfExistInView(binder, binder.View, binder.Id);
         }
         
+        /// <summary>
+        /// Removes the binder from its View slot if present.
+        /// </summary>
+        /// <param name="binder">The binder to synchronize.</param>
+        /// <param name="view">The View containing the slot.</param>
+        /// <param name="id">The slot binding identifier.</param>
+        /// <exception cref="NullReferenceException">No View field matches <paramref name="id"/>.</exception>
         public static void RemoveBinderIfExistInView(IMonoBinderValidatable binder, IView view, string id)
         {
             var field = view.GetRequireBinderFieldById(id);
@@ -286,6 +320,12 @@ namespace Aspid.MVVM
             EditorSceneManager.MarkSceneDirty(viewComponent.gameObject.scene);
         }
 
+        /// <summary>
+        /// Checks whether a binder is on the View GameObject or a descendant.
+        /// </summary>
+        /// <param name="view">The View defining the hierarchy scope.</param>
+        /// <param name="binder">The binder to locate.</param>
+        /// <returns><see langword="true"/> if both objects are components and the binder is in scope; otherwise, <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsBinderInViewScope(this IView view, IBinder binder)
         {

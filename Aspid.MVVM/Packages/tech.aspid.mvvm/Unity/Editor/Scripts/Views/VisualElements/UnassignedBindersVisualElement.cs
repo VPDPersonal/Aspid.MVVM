@@ -16,12 +16,6 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Refactor
-    /// <summary>
-    /// UIElements visual element that displays a warning listing any <see cref="MonoBinder"/> slots
-    /// in a <see cref="MonoView"/> that have not been assigned.
-    /// </summary>
-    /// <typeparam name="TMonoView">The concrete <see cref="MonoView"/> type being inspected.</typeparam>
-    /// <typeparam name="TEditor">The corresponding <see cref="MonoViewEditor{TMonoView,TEditor}"/> type.</typeparam>
     internal sealed class UnassignedBindersVisualElement<TMonoView, TEditor> : VisualElement
         where TMonoView : MonoView
         where TEditor : MonoViewEditor<TMonoView, TEditor>

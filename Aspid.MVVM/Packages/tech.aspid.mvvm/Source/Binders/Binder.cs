@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Serializable <see cref="IBinder"/> that tracks its binding state and calls lifecycle hooks around binding.
+    /// <see cref="IBinder"/> with a serialized mode and binding lifecycle hooks.
     /// </summary>
     /// <remarks>
     /// A derived class implements <see cref="IBinder{T}"/>, <see cref="IReverseBinder{T}"/> or both to exchange values.
@@ -41,7 +41,7 @@ namespace Aspid.MVVM
         /// Creates a binder with the given binding mode.
         /// </summary>
         /// <param name="mode">The binding mode.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The mode is <see cref="BindMode.None"/> or undefined.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="mode"/> is <see cref="BindMode.None"/> or undefined.</exception>
         protected Binder(BindMode mode = BindMode.OneWay)
         {
             mode.EnsureValid();

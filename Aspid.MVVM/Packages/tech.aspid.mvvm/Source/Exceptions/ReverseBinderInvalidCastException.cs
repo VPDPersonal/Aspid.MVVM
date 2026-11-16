@@ -39,7 +39,7 @@ namespace Aspid.MVVM
         /// Creates an exception for a binder that implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
         /// <typeparamref name="TBoxed"/> and <see cref="IAnyReverseBinder"/>.
         /// </summary>
-        /// <typeparam name="TBoxed">The boxed form of <c>T</c>.</typeparam>
+        /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>.</typeparam>
         /// <param name="binder">The binder that failed the check.</param>
         /// <returns>The exception to throw at the call site.</returns>
         public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)

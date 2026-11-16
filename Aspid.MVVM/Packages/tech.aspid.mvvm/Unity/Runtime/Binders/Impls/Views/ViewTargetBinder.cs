@@ -20,7 +20,7 @@ namespace Aspid.MVVM
         /// <param name="target">The view to bind.</param>
         /// <param name="mode">The binding mode. Must be <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</param>
         /// <exception cref="System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">The mode is <see cref="BindMode.None"/> or undefined.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="mode"/> is <see cref="BindMode.None"/> or undefined.</exception>
         /// <exception cref="System.InvalidOperationException"><paramref name="mode"/> is not <see cref="BindMode.OneWay"/> or <see cref="BindMode.OneTime"/>.</exception>
         protected ViewTargetBinder(
             TView target,

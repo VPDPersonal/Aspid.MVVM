@@ -8,33 +8,32 @@ using Aspid.FastTools.Editors;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// The binder's <c>View</c> field as the Inspector works with it: the serialized reference, and the copy
-    /// kept so a view that has been removed can still be named.
+    /// Serialized binder View reference and its previous reference and label.
     /// </summary>
     public class MonoBinderViewProperty
     {
         /// <summary>
-        /// The serialized view reference itself.
+        /// Gets the serialized View reference.
         /// </summary>
         public SerializedProperty ValueProperty { get; private set; }
         
         /// <summary>
-        /// The serialized record of the last view that was set.
+        /// Gets the serialized previous View record.
         /// </summary>
         public SerializedProperty PreviousProperty { get; private set; }
         
         /// <summary>
-        /// The view reference inside that record.
+        /// Gets the View reference within the previous record.
         /// </summary>
         public SerializedProperty PreviousValueProperty { get; private set; }
         
         /// <summary>
-        /// The label of that view, kept because the reference alone cannot be named once it is gone.
+        /// Gets the View label within the previous record.
         /// </summary>
         public SerializedProperty PreviousNameProperty { get; private set; }
 
         /// <summary>
-        /// Gets or sets the bound view. Setting it also records the view and its label as the previous ones.
+        /// Gets or sets the View, also replacing the recorded reference and label.
         /// </summary>
         public IView? Value
         {
@@ -57,7 +56,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the last view that was set, which may itself have been destroyed since.
+        /// Gets the last recorded View; <see langword="null"/> when absent or destroyed.
         /// </summary>
         public IView? PreviousValue
         {
@@ -66,7 +65,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the label of the last view that was set. Survives the view's destruction, which is the point.
+        /// Gets the recorded View label, retained after destruction.
         /// </summary>
         public string PreviousName
         {
@@ -75,9 +74,9 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Finds the view properties on the given binder.
+        /// Creates a wrapper for a binder View and its previous assignment.
         /// </summary>
-        /// <param name="serializedObject">The serialized binder whose view is edited.</param>
+        /// <param name="serializedObject">The serialized binder.</param>
         public MonoBinderViewProperty(SerializedObject serializedObject)
         {
             ValueProperty = serializedObject.FindProperty("__view");
@@ -88,7 +87,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Clears the view reference if it no longer points at a live view.
+        /// Clears the View unless it is on the binder GameObject or an ancestor.
         /// </summary>
         public void Validate()
         {

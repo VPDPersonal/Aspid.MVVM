@@ -68,7 +68,7 @@ The identifier that replaces the generated one.
 
 ### Id {#Aspid_MVVM_BindIdAttribute_Id}
 
-Gets the identifier.
+The binding identifier.
 
 ```csharp
 public readonly string Id

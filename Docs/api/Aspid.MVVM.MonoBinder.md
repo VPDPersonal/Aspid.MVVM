@@ -117,8 +117,7 @@ public virtual bool CanBind { get; }
 
 ### DefaultMode {#Aspid_MVVM_MonoBinder_DefaultMode}
 
-Gets the binding mode a freshly added binder starts in. The default is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
-Override in binders whose <code>[BindModeOverride]</code> excludes it.
+Gets the mode for a freshly added binder; [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) by default.
 
 ```csharp
 protected virtual BindMode DefaultMode { get; }
@@ -127,6 +126,10 @@ protected virtual BindMode DefaultMode { get; }
 #### Property Value
 
  [BindMode](Aspid.MVVM.BindMode.md)
+
+#### Remarks
+
+Override when [`BindModeOverrideAttribute`](Aspid.MVVM.BindModeOverrideAttribute.md) excludes the default mode.
 
 ### IsBound {#Aspid_MVVM_MonoBinder_IsBound}
 
@@ -248,7 +251,7 @@ Exceptions do not roll back the binding. This hook may unbind and bind again; fi
 
 ### OnDestroy\(\) {#Aspid_MVVM_MonoBinder_OnDestroy}
 
-Called by Unity when the component is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+Called when Unity destroys the component to release its binding.
 
 ```csharp
 protected virtual void OnDestroy()
@@ -256,7 +259,7 @@ protected virtual void OnDestroy()
 
 #### Remarks
 
-When overriding, always call <code>base.OnDestroy()</code>.
+Overrides must call <code>base.OnDestroy()</code>.
 
 ### OnDetach\(\) {#Aspid_MVVM_MonoBinder_OnDetach}
 
@@ -296,7 +299,7 @@ This hook may bind again; finish resource changes before invoking external code.
 
 ### Reset\(\) {#Aspid_MVVM_MonoBinder_Reset}
 
-Called by Unity when the component is added or reset in the Editor. Applies [`MonoBinder.DefaultMode`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_DefaultMode).
+Called when Unity adds or resets the component to apply [`MonoBinder.DefaultMode`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_DefaultMode).
 
 ```csharp
 protected virtual void Reset()
@@ -304,7 +307,7 @@ protected virtual void Reset()
 
 #### Remarks
 
-When overriding, always call <code>base.Reset()</code>.
+Overrides must call <code>base.Reset()</code>.
 
 ### Unbind\(in UnbindContext\) {#Aspid_MVVM_MonoBinder_Unbind_Aspid_MVVM_UnbindContext__}
 

@@ -199,7 +199,7 @@ The PR leaves draft by a ready request in chat, or the user clicks ready in GitH
 Either one is the user's permission for this loop, the merge at its end included.
 Check the second case in the timeline: a `ready_for_review` event by the user.
 
-Defaults. The repo's review rules for the bot must ask for this format:
+Defaults. The repo's review rules for the bot (for example `.github/claude-review.md`) must ask for this format:
 
 - Verdict: a line `Verdict: <N> blocking, <M> minor` in the bot comment or in the body of the bot review.
   The action can put its own header above it, so match `^Verdict: \d+ blocking, \d+ minor$` on any line.

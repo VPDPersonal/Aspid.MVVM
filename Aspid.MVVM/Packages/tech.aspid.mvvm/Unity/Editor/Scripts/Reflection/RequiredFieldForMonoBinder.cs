@@ -11,23 +11,41 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Represents a reflected field on a view object that is marked with <see cref="RequireBinderAttribute"/>,
-    /// carrying its binding ID, required binder types, and any child nested binder fields.
-    /// Used by the editor to validate that binder slots are correctly populated.
+    /// <see cref="FieldInfo"/> wrapper with binding requirements and nested binder fields.
     /// </summary>
     public sealed partial class RequiredFieldForMonoBinder : FieldInfo
     {
+        /// <summary>
+        /// The binding identifier, prefixed by parent identifiers for nested fields.
+        /// </summary>
         public readonly string Id;
+        /// <summary>
+        /// The object containing the reflected field.
+        /// </summary>
         public readonly object FieldContainerObj;
+        /// <summary>
+        /// The runtime type of the field container.
+        /// </summary>
         public readonly Type FieldContainerObjType;
+        /// <summary>
+        /// The nested required binder fields.
+        /// </summary>
         public readonly IReadOnlyCollection<RequiredFieldForMonoBinder> Children;
 
         private bool? _isValidation;
         private readonly FieldInfo _field;
         private readonly IReadOnlyCollection<Type> _requiredTypes;
         
+        /// <summary>
+        /// Gets the accepted value types; an empty collection permits any value type.
+        /// </summary>
         public IReadOnlyCollection<Type> RequiredTypes => _requiredTypes;
 
+        /// <summary>
+        /// Creates a field wrapper and resolves its binding requirements.
+        /// </summary>
+        /// <param name="fieldContainerObj">The object containing the field.</param>
+        /// <param name="field">The reflected field.</param>
         public RequiredFieldForMonoBinder(object fieldContainerObj, FieldInfo field)
             : this(fieldContainerObj, field, null) { }
 
@@ -147,6 +165,11 @@ namespace Aspid.MVVM
             }
         }
         
+        /// <summary>
+        /// Checks whether a binder supports an accepted value type.
+        /// </summary>
+        /// <param name="binder">The binder to inspect.</param>
+        /// <returns><see langword="true"/> if any required type matches or no types are required; otherwise, <see langword="false"/>.</returns>
         public bool IsBinderMatchRequiredType(IBinder binder)
         {
             if (_requiredTypes.Count is 0) return true;
@@ -154,9 +177,18 @@ namespace Aspid.MVVM
             return _requiredTypes.Any(type => BinderCompatibility.Matches(binder, type));
         }
 
+        /// <summary>
+        /// Determines whether this field directly holds validatable binders.
+        /// </summary>
+        /// <returns><see langword="true"/> if the field holds binders rather than a nested container; otherwise, <see langword="false"/>.</returns>
         public bool IsValidation() =>
             IsValidation(this);
         
+        /// <summary>
+        /// Determines whether a field directly holds validatable binders.
+        /// </summary>
+        /// <param name="field">The field wrapper to inspect.</param>
+        /// <returns><see langword="true"/> if the field holds binders rather than a nested container; otherwise, <see langword="false"/>.</returns>
         public static bool IsValidation(RequiredFieldForMonoBinder field) =>
             field._isValidation ??= IsValidation(field._field);
 
@@ -175,14 +207,10 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Determines whether the given field is a required binder field eligible for validation.
-        /// A field qualifies if it is serializable, either public or marked with <c>[SerializeField]</c>,
-        /// explicitly decorated with <c>[RequireBinder]</c>, or its type is assignable to one of:
-        /// <c>IMonoBinderValidatable</c>, <c>IMonoBinderValidatable[]</c>,
-        /// <c>List&lt;IMonoBinderValidatable&gt;</c>, or <c>List&lt;IMonoBinderValidatable[]&gt;</c>.
+        /// Determines whether a serialized field requires binder validation.
         /// </summary>
-        /// <param name="field">The field to inspect, or <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the field requires a binder to be assigned; otherwise, <see langword="false"/>.</returns>
+        /// <param name="field">The field to inspect; <see langword="null"/> never qualifies.</param>
+        /// <returns><see langword="true"/> if the field has binding requirements or holds validatable binders; otherwise, <see langword="false"/>.</returns>
         public static bool IsRequireBinderField(FieldInfo? field)
         {
             if (field is null) return false;

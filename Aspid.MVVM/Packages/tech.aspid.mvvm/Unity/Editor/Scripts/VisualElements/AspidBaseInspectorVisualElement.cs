@@ -14,8 +14,17 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    /// <summary>
+    /// <see cref="VisualElement"/> for serialized fields arranged in header groups.
+    /// </summary>
     public sealed class AspidBaseInspectorVisualElement : VisualElement
     {
+        /// <summary>
+        /// Creates a grouped Inspector for serialized fields.
+        /// </summary>
+        /// <param name="serializedObject">The object to inspect.</param>
+        /// <param name="title">The section title; <see langword="null"/> for none.</param>
+        /// <param name="propertiesExcluding">The property names to skip; <see langword="null"/> skips none.</param>
         public AspidBaseInspectorVisualElement(
             SerializedObject serializedObject,
             string? title,

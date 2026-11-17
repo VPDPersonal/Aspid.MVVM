@@ -62,7 +62,7 @@ MonoBehaviour ←
 
 ### OnDestroy\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsEnumMonoBinder_OnDestroy}
 
-Called by Unity when the component is destroyed. Unbinds so the ViewModel drops its reference to this binder.
+Called when Unity destroys the component to release its binding.
 
 ```csharp
 protected override void OnDestroy()
@@ -70,7 +70,7 @@ protected override void OnDestroy()
 
 #### Remarks
 
-When overriding, always call <code>base.OnDestroy()</code>.
+Overrides must call <code>base.OnDestroy()</code>.
 
 ### OnDetach\(\) {#Aspid_MVVM_StarterKit_RendererMaterialsEnumMonoBinder_OnDetach}
 

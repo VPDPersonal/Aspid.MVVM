@@ -230,8 +230,7 @@ The fourth command parameter type.
 
 ### CreateCommandOrEmpty\(Action?, Func\<bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmpty_System_Action_System_Func_System_Boolean__}
 
-Creates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand CreateCommandOrEmpty(this Action? execute, Func<bool>? canExecute = null)
@@ -255,8 +254,7 @@ The new command; [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_Re
 
 ### CreateCommandOrEmpty\<T\>\(Action\<T?\>?, Func\<T?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmpty__1_System_Action___0__System_Func___0_System_Boolean__}
 
-Creates a [`RelayCommand<T>`](Aspid.MVVM.RelayCommand-1.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T>.Empty`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_Empty) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T>`](Aspid.MVVM.RelayCommand-1.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T?> CreateCommandOrEmpty<T>(this Action<T?>? execute, Func<T?, bool>? canExecute = null)
@@ -286,8 +284,7 @@ The command parameter type.
 
 ### CreateCommandOrEmpty\<T1, T2\>\(Action\<T1?, T2?\>?, Func\<T1?, T2?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmpty__2_System_Action___0___1__System_Func___0___1_System_Boolean__}
 
-Creates a [`RelayCommand<T1, T2>`](Aspid.MVVM.RelayCommand-2.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T1, T2>.Empty`](Aspid.MVVM.RelayCommand-2.md#Aspid_MVVM_RelayCommand_2_Empty) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T1, T2>`](Aspid.MVVM.RelayCommand-2.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T1?, T2?> CreateCommandOrEmpty<T1, T2>(this Action<T1?, T2?>? execute, Func<T1?, T2?, bool>? canExecute = null)
@@ -321,8 +318,7 @@ The second command parameter type.
 
 ### CreateCommandOrEmpty\<T1, T2, T3\>\(Action\<T1?, T2?, T3?\>?, Func\<T1?, T2?, T3?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmpty__3_System_Action___0___1___2__System_Func___0___1___2_System_Boolean__}
 
-Creates a [`RelayCommand<T1, T2, T3>`](Aspid.MVVM.RelayCommand-3.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T1, T2, T3>.Empty`](Aspid.MVVM.RelayCommand-3.md#Aspid_MVVM_RelayCommand_3_Empty) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T1, T2, T3>`](Aspid.MVVM.RelayCommand-3.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T1?, T2?, T3?> CreateCommandOrEmpty<T1, T2, T3>(this Action<T1?, T2?, T3?>? execute, Func<T1?, T2?, T3?, bool>? canExecute = null)
@@ -360,8 +356,7 @@ The third command parameter type.
 
 ### CreateCommandOrEmpty\<T1, T2, T3, T4\>\(Action\<T1?, T2?, T3?, T4?\>?, Func\<T1?, T2?, T3?, T4?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmpty__4_System_Action___0___1___2___3__System_Func___0___1___2___3_System_Boolean__}
 
-Creates a [`RelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.RelayCommand-4.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T1, T2, T3, T4>.Empty`](Aspid.MVVM.RelayCommand-4.md#Aspid_MVVM_RelayCommand_4_Empty) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.RelayCommand-4.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T1?, T2?, T3?, T4?> CreateCommandOrEmpty<T1, T2, T3, T4>(this Action<T1?, T2?, T3?, T4?>? execute, Func<T1?, T2?, T3?, T4?, bool>? canExecute = null)
@@ -403,8 +398,7 @@ The fourth command parameter type.
 
 ### CreateCommandOrEmptyExecution\(Action?, Func\<bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmptyExecution_System_Action_System_Func_System_Boolean__}
 
-Creates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand CreateCommandOrEmptyExecution(this Action? execute, Func<bool>? canExecute = null)
@@ -428,8 +422,7 @@ The new command; [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspi
 
 ### CreateCommandOrEmptyExecution\<T\>\(Action\<T?\>?, Func\<T?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmptyExecution__1_System_Action___0__System_Func___0_System_Boolean__}
 
-Creates a [`RelayCommand<T>`](Aspid.MVVM.RelayCommand-1.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T>.EmptyExecution`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_EmptyExecution) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T>`](Aspid.MVVM.RelayCommand-1.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T?> CreateCommandOrEmptyExecution<T>(this Action<T?>? execute, Func<T?, bool>? canExecute = null)
@@ -459,8 +452,7 @@ The command parameter type.
 
 ### CreateCommandOrEmptyExecution\<T1, T2\>\(Action\<T1?, T2?\>?, Func\<T1?, T2?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmptyExecution__2_System_Action___0___1__System_Func___0___1_System_Boolean__}
 
-Creates a [`RelayCommand<T1, T2>`](Aspid.MVVM.RelayCommand-2.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T1, T2>.EmptyExecution`](Aspid.MVVM.RelayCommand-2.md#Aspid_MVVM_RelayCommand_2_EmptyExecution) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T1, T2>`](Aspid.MVVM.RelayCommand-2.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T1?, T2?> CreateCommandOrEmptyExecution<T1, T2>(this Action<T1?, T2?>? execute, Func<T1?, T2?, bool>? canExecute = null)
@@ -494,8 +486,7 @@ The second command parameter type.
 
 ### CreateCommandOrEmptyExecution\<T1, T2, T3\>\(Action\<T1?, T2?, T3?\>?, Func\<T1?, T2?, T3?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmptyExecution__3_System_Action___0___1___2__System_Func___0___1___2_System_Boolean__}
 
-Creates a [`RelayCommand<T1, T2, T3>`](Aspid.MVVM.RelayCommand-3.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T1, T2, T3>.EmptyExecution`](Aspid.MVVM.RelayCommand-3.md#Aspid_MVVM_RelayCommand_3_EmptyExecution) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T1, T2, T3>`](Aspid.MVVM.RelayCommand-3.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T1?, T2?, T3?> CreateCommandOrEmptyExecution<T1, T2, T3>(this Action<T1?, T2?, T3?>? execute, Func<T1?, T2?, T3?, bool>? canExecute = null)
@@ -533,8 +524,7 @@ The third command parameter type.
 
 ### CreateCommandOrEmptyExecution\<T1, T2, T3, T4\>\(Action\<T1?, T2?, T3?, T4?\>?, Func\<T1?, T2?, T3?, T4?, bool\>?\) {#Aspid_MVVM_RelayCommandExtensions_CreateCommandOrEmptyExecution__4_System_Action___0___1___2___3__System_Func___0___1___2___3_System_Boolean__}
 
-Creates a [`RelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.RelayCommand-4.md) that runs <code class="paramref">execute</code>, or returns
-[`RelayCommand<T1, T2, T3, T4>.EmptyExecution`](Aspid.MVVM.RelayCommand-4.md#Aspid_MVVM_RelayCommand_4_EmptyExecution) when it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+Creates a [`RelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.RelayCommand-4.md) that runs <code class="paramref">execute</code>.
 
 ```csharp
 public static RelayCommand<T1?, T2?, T3?, T4?> CreateCommandOrEmptyExecution<T1, T2, T3, T4>(this Action<T1?, T2?, T3?, T4?>? execute, Func<T1?, T2?, T3?, T4?, bool>? canExecute = null)

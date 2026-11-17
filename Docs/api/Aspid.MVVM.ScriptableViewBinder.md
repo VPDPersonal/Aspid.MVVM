@@ -80,7 +80,7 @@ The binding mode. Must be [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindM
 
  [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
 
-The mode is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
+<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
 
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 

@@ -11,23 +11,37 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// A styled property field visual element used in the Aspid MVVM inspector UI.
-    /// Extends <see cref="PropertyField"/> with the <c>Styles/Aspid-MVVM-AspidPropertyField</c> style sheet and class.
+    /// <see cref="PropertyField"/> styled for Aspid MVVM Inspectors.
     /// </summary>
     public class AspidPropertyField : PropertyField
     {
+        /// <summary>
+        /// The style class applied to the field.
+        /// </summary>
         public const string StyleClass = "aspid-property-field";
         private const string ImguiFoldoutStyleClass = "aspid-property-field-imgui-foldout";
+        /// <summary>
+        /// The shared property field style sheet.
+        /// </summary>
         public static readonly StyleSheet StyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-AspidPropertyField");
 
         private SerializedProperty? _property;
 
+        /// <summary>
+        /// Creates a styled field using the property display name.
+        /// </summary>
+        /// <param name="property">The property to edit.</param>
         public AspidPropertyField(SerializedProperty property)
             : base(property)
         {
             Initialize(property);
         }
 
+        /// <summary>
+        /// Creates a styled field with a custom label.
+        /// </summary>
+        /// <param name="property">The property to edit.</param>
+        /// <param name="label">The field label.</param>
         public AspidPropertyField(SerializedProperty property, string label)
             : base(property, label)
         {

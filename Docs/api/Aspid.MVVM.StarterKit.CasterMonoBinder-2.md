@@ -117,7 +117,7 @@ The default converter.
 
 ### Reset\(\) {#Aspid_MVVM_StarterKit_CasterMonoBinder_2_Reset}
 
-Called by Unity when the component is added or reset in the Editor. Applies [`MonoBinder.DefaultMode`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_DefaultMode).
+Called when Unity adds or resets the component to apply [`MonoBinder.DefaultMode`](Aspid.MVVM.MonoBinder.md#Aspid_MVVM_MonoBinder_DefaultMode).
 
 ```csharp
 protected override void Reset()
@@ -125,7 +125,7 @@ protected override void Reset()
 
 #### Remarks
 
-When overriding, always call <code>base.Reset()</code>.
+Overrides must call <code>base.Reset()</code>.
 
 ### SetValue\(TFrom\) {#Aspid_MVVM_StarterKit_CasterMonoBinder_2_SetValue__0_}
 

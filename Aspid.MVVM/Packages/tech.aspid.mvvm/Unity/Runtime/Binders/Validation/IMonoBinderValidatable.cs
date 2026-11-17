@@ -4,7 +4,7 @@
 namespace Aspid.MVVM.Validation
 {
     /// <summary>
-    /// Defines editor-side validation of a <see cref="MonoBinder"/>: the View and field ID it is wired to, with their last known values.
+    /// <see cref="IBinder"/> with Editor validation of its View, field identifier and previous assignments.
     /// </summary>
     public interface IMonoBinderValidatable : IBinder
     {

@@ -5,15 +5,28 @@ using System.Reflection;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Metadata describing a single binder field or property on an <see cref="IView"/> type,
-    /// including its resolved <see cref="IBinder"/> type, binding ID, and member name.
+    /// Binding metadata for a View member.
     /// </summary>
     public class BinderPropertyMeta
     {
+        /// <summary>
+        /// The binder type, or the declared collection type.
+        /// </summary>
         public readonly Type Type;
+        /// <summary>
+        /// The binding identifier.
+        /// </summary>
         public readonly string Id;
+        /// <summary>
+        /// The declared member name.
+        /// </summary>
         public readonly string Name;
         
+        /// <summary>
+        /// Creates binding metadata for a View member.
+        /// </summary>
+        /// <param name="memberInfo">The member to inspect.</param>
+        /// <exception cref="ArgumentException"><paramref name="memberInfo"/> is not a binder member.</exception>
         public BinderPropertyMeta(MemberInfo memberInfo)
         {
             if (!IsBinderProperty(memberInfo))
@@ -37,6 +50,11 @@ namespace Aspid.MVVM
             Id = bindIdAttribute is not null ? bindIdAttribute.Id : BinderIdUtility.FromFieldName(memberInfo.Name);
         }
 
+        /// <summary>
+        /// Determines whether a member declares or wraps a binder.
+        /// </summary>
+        /// <param name="memberInfo">The member to inspect.</param>
+        /// <returns><see langword="true"/> if the member supports binding and is not ignored; otherwise, <see langword="false"/>.</returns>
         public static bool IsBinderProperty(MemberInfo memberInfo)
         {
             if (memberInfo is MethodInfo) return false;

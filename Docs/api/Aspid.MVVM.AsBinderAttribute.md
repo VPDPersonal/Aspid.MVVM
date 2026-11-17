@@ -81,7 +81,7 @@ of the View.
 
 ### Type {#Aspid_MVVM_AsBinderAttribute_Type}
 
-Gets the binder type.
+The binder type.
 
 ```csharp
 public readonly Type Type

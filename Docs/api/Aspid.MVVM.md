@@ -62,7 +62,7 @@ Replaces the [`BindModeAttribute`](Aspid.MVVM.BindModeAttribute.md) limits of ev
 
  [Binder](Aspid.MVVM.Binder.md)
 
-Serializable [`IBinder`](Aspid.MVVM.IBinder.md) that tracks its binding state and calls lifecycle hooks around binding.
+[`IBinder`](Aspid.MVVM.IBinder.md) with a serialized mode and binding lifecycle hooks.
 
  [BinderExtensions](Aspid.MVVM.BinderExtensions.md)
 
@@ -322,7 +322,7 @@ and deinitializes it on unbind.
 
  [BindContext](Aspid.MVVM.BindContext.md)
 
-Contains the bindable member and the owner acquiring a binder.
+Binding request containing a bindable member and its owner.
 
  [FindBindableMemberParameters](Aspid.MVVM.FindBindableMemberParameters.md)
 
@@ -334,7 +334,7 @@ Represents the result of [`IViewModel.FindBindableMember`](Aspid.MVVM.IViewModel
 
  [UnbindContext](Aspid.MVVM.UnbindContext.md)
 
-Identifies the owner releasing a binder.
+Cleanup request identifying the owner releasing a binder.
 
 ### Interfaces
 

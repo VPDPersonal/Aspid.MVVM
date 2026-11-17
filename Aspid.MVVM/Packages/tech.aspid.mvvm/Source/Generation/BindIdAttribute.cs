@@ -29,7 +29,7 @@ namespace Aspid.MVVM
     {
 #if UNITY_EDITOR || DEBUG
         /// <summary>
-        /// Gets the identifier.
+        /// The binding identifier.
         /// </summary>
         /// <remarks>
         /// Exists only when <c>UNITY_EDITOR</c> or <c>DEBUG</c> is defined.

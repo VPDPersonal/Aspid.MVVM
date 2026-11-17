@@ -87,7 +87,7 @@ When overriding, always call <code>base.OnEnable()</code>.
 
 ### OnValidate\(\) {#Aspid_MVVM_StarterKit_TextLocalizationEntrySwitcherMonoBinder_OnValidate}
 
-Called by Unity in the Editor when a serialized value changes. Fills the empty component field outside Play mode.
+Called when Unity validates serialized data to fill an empty target field outside Play Mode.
 
 ```csharp
 protected override void OnValidate()
@@ -95,7 +95,7 @@ protected override void OnValidate()
 
 #### Remarks
 
-When overriding, always call <code>base.OnValidate()</code>.
+Overrides must call <code>base.OnValidate()</code>.
 
 ### SetValue\(string\) {#Aspid_MVVM_StarterKit_TextLocalizationEntrySwitcherMonoBinder_SetValue_System_String_}
 

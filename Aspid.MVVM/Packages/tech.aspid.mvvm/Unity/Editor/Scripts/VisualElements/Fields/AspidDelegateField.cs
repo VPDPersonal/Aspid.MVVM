@@ -10,13 +10,8 @@ using Object = UnityEngine.Object;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// A read-only foldout listing what a delegate is subscribed to: one row per handler, naming its target and
-    /// method.
+    /// <see cref="Foldout"/> listing delegate targets and methods.
     /// </summary>
-    /// <remarks>
-    /// For inspecting a binding that is already established. A delegate has no Inspector drawer of its own, so
-    /// without this the field shows nothing at all.
-    /// </remarks>
     public sealed class AspidDelegateField : Foldout
     {
         private const string StyleSheetPath = "Styles/Fields/aspid-delegate";

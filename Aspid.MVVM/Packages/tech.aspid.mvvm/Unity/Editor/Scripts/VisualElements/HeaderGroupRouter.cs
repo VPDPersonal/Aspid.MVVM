@@ -11,9 +11,7 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Routes inspector elements into named foldout groups based on
-    /// <see cref="HeaderGroupAttribute"/>, <see cref="HeaderGroupStartAttribute"/>
-    /// and <see cref="HeaderGroupEndAttribute"/>.
+    /// Inspector element router that applies foldout ranges and per-member groups.
     /// </summary>
     public sealed class HeaderGroupRouter
     {
@@ -26,12 +24,22 @@ namespace Aspid.MVVM
         private string? _currentRange;
         private readonly Dictionary<string, GroupEntry> _groups = new();
 
+        /// <summary>
+        /// Creates a router for an Inspector container.
+        /// </summary>
+        /// <param name="rootContainer">The container receiving groups and ungrouped elements.</param>
+        /// <param name="targetType">The type used to scope persisted foldout state; <see langword="null"/> uses a shared fallback key.</param>
         public HeaderGroupRouter(VisualElement rootContainer, Type? targetType = null)
         {
             _rootContainer = rootContainer;
             _viewTypeName = targetType?.FullName ?? "Unknown";
         }
 
+        /// <summary>
+        /// Adds an element using the member layout and current foldout range.
+        /// </summary>
+        /// <param name="element">The element to add.</param>
+        /// <param name="fieldInfo">The field supplying group attributes; <see langword="null"/> keeps the current range.</param>
         public void Add(VisualElement element, FieldInfo? fieldInfo)
         {
             var (range, group) = ResolveGroups(fieldInfo, _currentRange);
@@ -39,6 +47,11 @@ namespace Aspid.MVVM
             Add(element, group);
         }
 
+        /// <summary>
+        /// Adds an element using the member layout and current foldout range.
+        /// </summary>
+        /// <param name="element">The element to add.</param>
+        /// <param name="meta">The member layout metadata; <see langword="null"/> keeps the current range.</param>
         public void Add(VisualElement element, BindablePropertyMeta? meta)
         {
             var (range, group) = ResolveGroups(meta, _currentRange);
@@ -46,6 +59,12 @@ namespace Aspid.MVVM
             Add(element, group, unityHeader: meta?.Header);
         }
 
+        /// <summary>
+        /// Adds an element to an explicit foldout or the root container.
+        /// </summary>
+        /// <param name="element">The element to add.</param>
+        /// <param name="groupName">The foldout title; <see langword="null"/> or blank uses the root.</param>
+        /// <param name="unityHeader">The plain header placed before the element; <see langword="null"/> for none.</param>
         public void Add(VisualElement element, string? groupName, string? unityHeader = null)
         {
             if (string.IsNullOrWhiteSpace(groupName))

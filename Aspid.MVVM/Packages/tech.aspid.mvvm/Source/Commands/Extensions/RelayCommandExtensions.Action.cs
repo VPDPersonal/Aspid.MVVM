@@ -76,8 +76,7 @@ namespace Aspid.MVVM
             new(execute, canExecute);
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand.Empty"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <param name="execute">The action to run, or <see langword="null"/>.</param>
         /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
@@ -89,8 +88,7 @@ namespace Aspid.MVVM
             : RelayCommand.Empty;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand.EmptyExecution"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <param name="execute">The action to run, or <see langword="null"/>.</param>
         /// <param name="canExecute">The predicate that allows execution; <see langword="null"/> to always allow it.</param>
@@ -102,8 +100,7 @@ namespace Aspid.MVVM
             : RelayCommand.EmptyExecution;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T}.Empty"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T">The command parameter type.</typeparam>
         /// <param name="execute">The action to run, or <see langword="null"/>.</param>
@@ -116,8 +113,7 @@ namespace Aspid.MVVM
             : RelayCommand<T?>.Empty;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T}.EmptyExecution"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T">The command parameter type.</typeparam>
         /// <param name="execute">The action to run, or <see langword="null"/>.</param>
@@ -130,8 +126,7 @@ namespace Aspid.MVVM
             : RelayCommand<T?>.EmptyExecution;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T1, T2}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T1, T2}.Empty"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T1, T2}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T1">The first command parameter type.</typeparam>
         /// <typeparam name="T2">The second command parameter type.</typeparam>
@@ -145,8 +140,7 @@ namespace Aspid.MVVM
             : RelayCommand<T1?, T2?>.Empty;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T1, T2}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T1, T2}.EmptyExecution"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T1, T2}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T1">The first command parameter type.</typeparam>
         /// <typeparam name="T2">The second command parameter type.</typeparam>
@@ -160,8 +154,7 @@ namespace Aspid.MVVM
             : RelayCommand<T1?, T2?>.EmptyExecution;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T1, T2, T3}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T1, T2, T3}.Empty"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T1, T2, T3}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T1">The first command parameter type.</typeparam>
         /// <typeparam name="T2">The second command parameter type.</typeparam>
@@ -176,8 +169,7 @@ namespace Aspid.MVVM
             : RelayCommand<T1?, T2?, T3?>.Empty;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T1, T2, T3}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T1, T2, T3}.EmptyExecution"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T1, T2, T3}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T1">The first command parameter type.</typeparam>
         /// <typeparam name="T2">The second command parameter type.</typeparam>
@@ -192,8 +184,7 @@ namespace Aspid.MVVM
             : RelayCommand<T1?, T2?, T3?>.EmptyExecution;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T1, T2, T3, T4}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T1, T2, T3, T4}.Empty"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T1, T2, T3, T4}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T1">The first command parameter type.</typeparam>
         /// <typeparam name="T2">The second command parameter type.</typeparam>
@@ -209,8 +200,7 @@ namespace Aspid.MVVM
             : RelayCommand<T1?, T2?, T3?, T4?>.Empty;
 
         /// <summary>
-        /// Creates a <see cref="RelayCommand{T1, T2, T3, T4}"/> that runs <paramref name="execute"/>, or returns
-        /// <see cref="RelayCommand{T1, T2, T3, T4}.EmptyExecution"/> when it is <see langword="null"/>.
+        /// Creates a <see cref="RelayCommand{T1, T2, T3, T4}"/> that runs <paramref name="execute"/>.
         /// </summary>
         /// <typeparam name="T1">The first command parameter type.</typeparam>
         /// <typeparam name="T2">The second command parameter type.</typeparam>

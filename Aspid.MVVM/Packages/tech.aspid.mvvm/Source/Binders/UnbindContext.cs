@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Identifies the owner releasing a binder.
+    /// Cleanup request identifying the owner releasing a binder.
     /// </summary>
     public readonly struct UnbindContext
     {

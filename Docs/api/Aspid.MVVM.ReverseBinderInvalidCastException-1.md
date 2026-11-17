@@ -89,4 +89,4 @@ The exception to throw at the call site.
 
 `TBoxed`
 
-The boxed form of <code>T</code>.
+The boxed form of <code class="typeparamref">T</code>.

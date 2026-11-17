@@ -22,7 +22,7 @@ The last non-empty View of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md), kept with
 
  [IMonoBinderValidatable](Aspid.MVVM.Validation.IMonoBinderValidatable.md)
 
-Defines editor-side validation of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md): the View and field ID it is wired to, with their last known values.
+[`IBinder`](Aspid.MVVM.IBinder.md) with Editor validation of its View, field identifier and previous assignments.
 
 ### Enums
 

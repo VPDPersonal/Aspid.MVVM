@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Contains the bindable member and the owner acquiring a binder.
+Binding request containing a bindable member and its owner.
 
 ```csharp
 public readonly struct BindContext

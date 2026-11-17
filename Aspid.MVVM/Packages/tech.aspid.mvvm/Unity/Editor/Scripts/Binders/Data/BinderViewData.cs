@@ -20,9 +20,9 @@ namespace Aspid.MVVM
         public readonly string Name;
 
         /// <summary>
-        /// Initializes a new entry for the given view and computes its label.
+        /// Creates a dropdown entry with the View label.
         /// </summary>
-        /// <param name="view">The view this entry stands for.</param>
+        /// <param name="view">The View represented by the entry.</param>
         public BinderViewData(IView view)
         {
             View = view;
@@ -30,18 +30,12 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Builds the label for a view: its object name, its type, and an index when the object carries more
-        /// than one view of that type.
+        /// Formats a View label with its object name, type and duplicate index.
         /// </summary>
-        /// <param name="view">The view to label, or <see langword="null"/>.</param>
-        /// <returns>The label, or an empty string when <paramref name="view"/> is null or destroyed.</returns>
-        /// <exception cref="System.InvalidCastException">
-        /// Thrown when <paramref name="view"/> is a component that does not implement <see cref="IView"/>.
-        /// </exception>
-        /// <exception cref="System.InvalidOperationException">
-        /// Thrown when the view cannot be found among the components of its own GameObject, which means it was
-        /// removed between the lookup and this call.
-        /// </exception>
+        /// <param name="view">The View component; <see langword="null"/> for an empty label.</param>
+        /// <returns>The label; an empty string when <paramref name="view"/> is <see langword="null"/> or destroyed.</returns>
+        /// <exception cref="System.InvalidCastException"><paramref name="view"/> does not implement <see cref="IView"/>.</exception>
+        /// <exception cref="System.InvalidOperationException"><paramref name="view"/> is absent from its GameObject components.</exception>
         public static string GetViewName(Component? view)
         {
             if (!view) return string.Empty;

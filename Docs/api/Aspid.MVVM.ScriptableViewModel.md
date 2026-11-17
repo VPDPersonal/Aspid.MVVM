@@ -122,7 +122,7 @@ protected virtual void OnDispose()
 
 #### Remarks
 
-Cleanup exceptions propagate to the caller; subsequent disposal attempts do not retry cleanup.
+Cleanup exceptions propagate; cleanup is not retried.
 
 ### OnValidate\(\) {#Aspid_MVVM_ScriptableViewModel_OnValidate}
 

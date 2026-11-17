@@ -39,7 +39,8 @@ public sealed class HeaderGroupStartAttribute : Attribute
 
 ## Remarks
 
-The range ends before HeaderGroupEnd or is replaced by another HeaderGroupStart. HeaderGroup affects only its own member.
+The range ends before [`HeaderGroupEndAttribute`](Aspid.MVVM.HeaderGroupEndAttribute.md) or another [`HeaderGroupStartAttribute`](Aspid.MVVM.HeaderGroupStartAttribute.md).
+[`HeaderGroupAttribute`](Aspid.MVVM.HeaderGroupAttribute.md) affects only its own member.
 Attribute applications are omitted unless <code>DEBUG</code> or <code>UNITY_EDITOR</code> is defined.
 
 ## Constructors

@@ -8,7 +8,8 @@ namespace Aspid.MVVM
     /// Starts a foldout range at the decorated member.
     /// </summary>
     /// <remarks>
-    /// The range ends before HeaderGroupEnd or is replaced by another HeaderGroupStart. HeaderGroup affects only its own member.
+    /// The range ends before <see cref="HeaderGroupEndAttribute"/> or another <see cref="HeaderGroupStartAttribute"/>.
+    /// <see cref="HeaderGroupAttribute"/> affects only its own member.
     /// Attribute applications are omitted unless <c>DEBUG</c> or <c>UNITY_EDITOR</c> is defined.
     /// </remarks>
     /// <example>

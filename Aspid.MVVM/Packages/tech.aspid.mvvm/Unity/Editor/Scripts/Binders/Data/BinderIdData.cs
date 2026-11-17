@@ -12,9 +12,9 @@ namespace Aspid.MVVM
         public readonly string Id;
         
         /// <summary>
-        /// Initializes a new entry for the field with the given id.
+        /// Creates a dropdown entry for a binding identifier.
         /// </summary>
-        /// <param name="id">The id of the view field.</param>
+        /// <param name="id">The View field identifier.</param>
         public BinderIdData(string id)
         {
             Id = id;

@@ -55,7 +55,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Called on the first disposal attempt. Override to release owned resources and subscriptions.
         /// </summary>
-        /// <remarks>Cleanup exceptions propagate to the caller; subsequent disposal attempts do not retry cleanup.</remarks>
+        /// <remarks>Cleanup exceptions propagate; cleanup is not retried.</remarks>
         protected virtual void OnDispose() { }
     }
 }

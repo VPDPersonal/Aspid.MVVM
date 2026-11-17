@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.Validation](Aspid.MVVM.Validation.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Defines editor-side validation of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md): the View and field ID it is wired to, with their last known values.
+[`IBinder`](Aspid.MVVM.IBinder.md) with Editor validation of its View, field identifier and previous assignments.
 
 ```csharp
 public interface IMonoBinderValidatable : IBinder

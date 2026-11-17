@@ -13,10 +13,6 @@ using Aspid.FastTools.UIElements.Editors.Internal;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// UIElements visual element that renders the inspector UI for a <see cref="MonoBinder"/>,
-    /// including header, ID selector, View selector, and logs.
-    /// </summary>
     internal class MonoBinderVisualElement : VisualElement
     {
         private static readonly StyleSheet _idSelectorStyleSheet = Resources.Load<StyleSheet>("Styles/Aspid-MVVM-MonoBinder");
@@ -62,10 +58,6 @@ namespace Aspid.MVVM
             ? StatusStyle.Type.Success
             : StatusStyle.Type.Error;
 
-        /// <summary>
-        /// Optional subtext rendered under the main header label.
-        /// Returning <see langword="null"/> keeps the header single-line (default).
-        /// </summary>
         protected virtual string ScriptSubtext => null;
 
         public MonoBinderVisualElement(MonoBinderEditor editor)

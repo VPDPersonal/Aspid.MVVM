@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor utility methods for resolving available binder IDs and parent views for a given <see cref="MonoBinder"/> component.
+    /// Provides utility methods for binder View and identifier choices.
     /// </summary>
     public static class BinderEditorUtilities
     {
@@ -32,15 +32,12 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Collects the ids of the fields on <paramref name="view"/> that this binder could fill.
+        /// Collects identifiers of View fields that accept the binder, including array element slots.
         /// </summary>
         /// <typeparam name="T">The binder component type.</typeparam>
-        /// <param name="binder">The binder to match against the view's fields.</param>
-        /// <param name="view">The view whose fields are examined.</param>
-        /// <returns>The matching ids; empty when the view has no field this binder fits.</returns>
-        /// <remarks>
-        /// An array field matches when the binder fits its element type, since the binder would be added to it.
-        /// </remarks>
+        /// <param name="binder">The binder to match.</param>
+        /// <param name="view">The View whose fields are inspected.</param>
+        /// <returns>The matching identifiers; an empty list when none match.</returns>
         public static List<BinderIdData> GetIds<T>(T binder, IView view)
             where T : Component, IBinder
         {

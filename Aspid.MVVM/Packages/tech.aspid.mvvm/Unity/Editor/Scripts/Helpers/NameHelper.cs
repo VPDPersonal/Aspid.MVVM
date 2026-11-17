@@ -8,13 +8,17 @@ using System.Runtime.CompilerServices;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor helper for deriving generated property names from field names,
-    /// and for resolving auto-property backing fields via reflection.
+    /// Provides utility methods for generated property and backing field names.
     /// </summary>
     public static class NameHelper
     {
         private const BindingFlags BackingFieldBindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
         
+        /// <summary>
+        /// Derives the generated property name from a field name.
+        /// </summary>
+        /// <param name="field">The field to inspect.</param>
+        /// <returns>The capitalized name without its field prefix.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetGeneratedPropertyName(this FieldInfo field)
             => GetGeneratedPropertyName(field.Name);
@@ -34,6 +38,11 @@ namespace Aspid.MVVM
             return fieldName;
         }
 
+        /// <summary>
+        /// Removes the naming prefix from a field name.
+        /// </summary>
+        /// <param name="field">The field to inspect.</param>
+        /// <returns>The field name without its prefix.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string RemovePrefix(this FieldInfo field) =>
             field.Name.RemovePrefix();
@@ -42,10 +51,20 @@ namespace Aspid.MVVM
         private static string RemovePrefix(this string fieldName) =>
             fieldName.Remove(0, GetPrefixCount(fieldName));
         
+        /// <summary>
+        /// Returns the length of a field name prefix.
+        /// </summary>
+        /// <param name="field">The field to inspect.</param>
+        /// <returns>Two for <c>__</c> or <c>m_</c>, one for <c>_</c>; otherwise, zero.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetPrefixCount(this FieldInfo field)
             => GetPrefixCount(field.Name);
         
+        /// <summary>
+        /// Returns the length of a field name prefix.
+        /// </summary>
+        /// <param name="name">The field name.</param>
+        /// <returns>Two for <c>__</c> or <c>m_</c>, one for <c>_</c>; otherwise, zero.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetPrefixCount(this string name)
         {
@@ -54,13 +73,12 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Tries to find a backing field name for a property.
-        /// Checks for auto-property backing field and common naming conventions.
+        /// Finds a backing field by compiler naming or common field prefixes.
         /// </summary>
-        /// <param name="property">The property to find a backing field for.</param>
-        /// <param name="declaringType">The type that declares the property.</param>
-        /// <param name="backingFieldName">The name of the backing field if found.</param>
-        /// <returns>True if the backing field was found, false otherwise.</returns>
+        /// <param name="property">The property to inspect.</param>
+        /// <param name="declaringType">The type to search, including its base types.</param>
+        /// <param name="backingFieldName">The matching field name; <see langword="null"/> when none is found.</param>
+        /// <returns><see langword="true"/> if a matching field is found; otherwise, <see langword="false"/>.</returns>
         public static bool TryGetBackingFieldName(PropertyInfo property, Type declaringType, out string backingFieldName)
         {
             backingFieldName = null;
@@ -103,11 +121,11 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Checks if a property is an auto-property (has compiler-generated backing field).
+        /// Determines whether a compiler-named backing field exists.
         /// </summary>
-        /// <param name="property">The property to check.</param>
-        /// <param name="declaringType">The type that declares the property.</param>
-        /// <returns>True if the property is an auto-property, false otherwise.</returns>
+        /// <param name="property">The property to inspect.</param>
+        /// <param name="declaringType">The type to search, including its base types.</param>
+        /// <returns><see langword="true"/> if the backing field exists; otherwise, <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsAutoProperty(PropertyInfo property, Type declaringType)
         {
@@ -120,10 +138,10 @@ namespace Aspid.MVVM
         }
         
         /// <summary>
-        /// Gets the auto-property backing field name.
+        /// Returns the compiler-generated backing field name.
         /// </summary>
         /// <param name="propertyName">The property name.</param>
-        /// <returns>The backing field name in format &lt;PropertyName&gt;k__BackingField.</returns>
+        /// <returns>The name in the form <c>&lt;PropertyName&gt;k__BackingField</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetAutoPropertyBackingFieldName(string propertyName) =>
             $"<{propertyName}>k__BackingField";

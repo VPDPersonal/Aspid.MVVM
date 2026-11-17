@@ -9,11 +9,15 @@ using System.Collections.Generic;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Editor extension methods for <see cref="System.Type"/> providing display name formatting,
-    /// explicit interface resolution, and recursive member enumeration across base class hierarchies.
+    /// Provides extension methods for type names and serialized member types.
     /// </summary>
     public static class TypeExtensions
     {
+        /// <summary>
+        /// Formats a qualified type name with readable generic arguments.
+        /// </summary>
+        /// <param name="type">The type to format.</param>
+        /// <returns>The formatted type name.</returns>
         public static string GetTypeDisplayName(this Type type)
         {
             if (!type.IsGenericType)
@@ -37,9 +41,19 @@ namespace Aspid.MVVM
             return $"{prefix}<{string.Join(", ", genericArguments)}>";
         }
         
+        /// <summary>
+        /// Returns the member type after unwrapping arrays and lists.
+        /// </summary>
+        /// <param name="field">The member to inspect.</param>
+        /// <returns>The innermost element type, or the scalar member type.</returns>
         public static Type GetUnitySerializableType(this FieldInfo field) =>
             GetUnitySerializableType(field.FieldType, field.Name);
 
+        /// <summary>
+        /// Returns the member type after unwrapping arrays and lists.
+        /// </summary>
+        /// <param name="propertyInfo">The member to inspect.</param>
+        /// <returns>The innermost element type, or the scalar member type.</returns>
         public static Type GetUnitySerializableType(this PropertyInfo propertyInfo) =>
             GetUnitySerializableType(propertyInfo.PropertyType, propertyInfo.Name);
         
@@ -51,13 +65,6 @@ namespace Aspid.MVVM
             .Where(field => field.IsPublic || field.IsDefined(typeof(SerializeField)) || field.IsDefined(typeof(SerializeReference)))
             .ToDictionary(field => field.Name);
 
-        /// <summary>
-        /// Returns the members of the type and of its base classes, ordered from the topmost base class down to the type.
-        /// </summary>
-        /// <param name="type">The type whose members are collected.</param>
-        /// <param name="bindingFlags">The binding flags used to filter members. <see cref="BindingFlags.DeclaredOnly"/> is always added.</param>
-        /// <param name="stopAt">The base type at which the walk stops, excluded; <c>null</c> walks up to the root type.</param>
-        /// <returns>The members in declaration order, as the Unity Inspector shows them.</returns>
         internal static IReadOnlyList<MemberInfo> GetMembersInfosIncludingBaseClasses(this Type type, BindingFlags bindingFlags, Type? stopAt = null)
         {
             var currentType = type;

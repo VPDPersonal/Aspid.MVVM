@@ -5,10 +5,6 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Immutable data structure carrying the selected index and available choices for a dropdown field
-    /// in the <see cref="MonoBinderVisualElement"/> inspector.
-    /// </summary>
     internal readonly struct BinderDropdownData
     {
         private const int NoneValueIndex = 0;

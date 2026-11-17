@@ -9,7 +9,7 @@ namespace Aspid.MVVM
     public partial class MonoView
     {
         /// <summary>
-        /// Asynchronously creates an instance of the View and initializes it with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -17,10 +17,10 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, IViewModel viewModel)
             where T : Object, IView
@@ -35,8 +35,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates an instance of the View with the specified parent
-        /// and initializes it with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -44,11 +43,11 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
-        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
+        /// <param name="parent">The parent of the clone; <see langword="null"/> for the scene root.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -66,8 +65,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates an instance of the View with specified position and rotation,
-        /// and initializes it with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -75,12 +73,12 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="position">The position for the new View instance.</param>
         /// <param name="rotation">The rotation for the new View instance.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -99,8 +97,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates an instance of the View with specified parent, position, and rotation,
-        /// and initializes it with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -108,13 +105,13 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
-        /// <param name="parent">The parent object for the new View instance.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
+        /// <param name="parent">The parent of the clone; <see langword="null"/> for the scene root.</param>
         /// <param name="position">The position for the new View instance.</param>
         /// <param name="rotation">The rotation for the new View instance.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instance.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -134,7 +131,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple instances of the View and initializes them with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -142,11 +139,11 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, IViewModel viewModel)
             where T : Object, IView
@@ -161,8 +158,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple instances of the View with the specified parent
-        /// and initializes them with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -170,12 +166,12 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
-        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="parent">The parent of the clones; <see langword="null"/> for the scene root.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -194,8 +190,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple instances of the View with specified position and rotation,
-        /// and initializes them with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -203,13 +198,13 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
         /// <param name="position">The position for the new View instances.</param>
         /// <param name="rotation">The rotation for the new View instances.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -229,8 +224,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple View instances with specified positions and rotations,
-        /// and initializes them with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -238,13 +232,13 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
         /// <param name="positions">A span of positions for the new View instances.</param>
         /// <param name="rotations">A span of rotations for the new View instances.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -264,8 +258,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple instances of the View with specified parent, position, and rotation,
-        /// and initializes them with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -273,14 +266,14 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
-        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="parent">The parent of the clones; <see langword="null"/> for the scene root.</param>
         /// <param name="position">The position for the new View instances.</param>
         /// <param name="rotation">The rotation for the new View instances.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -301,8 +294,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple View instances with the specified parent
-        /// and initializes them with the specified <see cref="IViewModel"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -310,14 +302,14 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View, which must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object to be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
-        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="parent">The parent of the clones; <see langword="null"/> for the scene root.</param>
         /// <param name="positions">A span of positions for the new View instances.</param>
         /// <param name="rotations">A span of rotations for the new View instances.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
-        /// <returns>An operation representing the asynchronous process of creating the View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -338,8 +330,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple instances of View with the specified parent, position, and rotation,
-        /// and initializes them with the given <see cref="IViewModel"/>. Supports cancellation via <see cref="CancellationToken"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -347,15 +338,15 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View that must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object that will be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
-        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="parent">The parent of the clones; <see langword="null"/> for the scene root.</param>
         /// <param name="position">The position for the new View instances.</param>
         /// <param name="rotation">The rotation for the new View instances.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
         /// <param name="cancellationToken">The cancellation token for stopping the creation process.</param>
-        /// <returns>An operation representing the asynchronous process of creating View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,
@@ -377,8 +368,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Asynchronously creates multiple instances of View with the specified parent, positions, and rotations,
-        /// and initializes them with the given <see cref="IViewModel"/>. Supports cancellation via <see cref="CancellationToken"/>.
+        /// Clones views asynchronously and initializes them on completion.
         /// </summary>
         /// <remarks>
         /// Call on the main thread. The returned Unity operation represents object creation, not initialization success.
@@ -386,15 +376,15 @@ namespace Aspid.MVVM
         /// Failures escape that callback after all clones are rolled back.
         /// Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
         /// </remarks>
-        /// <typeparam name="T">The type of View that must inherit from <see cref="Object"/> and implement <see cref="IView"/>.</typeparam>
-        /// <param name="original">The original View object that will be instantiated.</param>
+        /// <typeparam name="T">The Unity view type.</typeparam>
+        /// <param name="original">The view to clone.</param>
         /// <param name="count">The number of instances to create.</param>
-        /// <param name="parent">The parent object for the new View instances.</param>
+        /// <param name="parent">The parent of the clones; <see langword="null"/> for the scene root.</param>
         /// <param name="positions">A span of positions for the new View instances.</param>
         /// <param name="rotations">A span of rotations for the new View instances.</param>
         /// <param name="viewModel">The shared ViewModel used to initialize every created view.</param>
         /// <param name="cancellationToken">The cancellation token for stopping the creation process.</param>
-        /// <returns>An operation representing the asynchronous process of creating View instances.</returns>
+        /// <returns>The Unity cloning operation.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
         public static AsyncInstantiateOperation<T> InstantiateAsync<T>(
             T original,

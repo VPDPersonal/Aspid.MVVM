@@ -7,18 +7,15 @@ namespace Aspid.MVVM
 {
     // TODO Aspid.MVVM Unity – Replace array with ImmutableArray
     /// <summary>
-    /// A dictionary mapping binder IDs to their corresponding <see cref="IMonoBinderValidatable"/> slot arrays,
-    /// built from a view's required binder fields.
+    /// <see cref="Dictionary{TKey, TValue}"/> of binder slots keyed by binding identifier.
     /// </summary>
     public sealed class ValidatableBindersById : Dictionary<string, IMonoBinderValidatable?[]>
     {
         /// <summary>
-        /// Retrieves all `IMonoBinderValidatable` binders from a view and associates them with the field names they are assigned to.
+        /// Collects the validatable binder slots from a View.
         /// </summary>
-        /// <param name="view">The view object containing the binders.</param>
-        /// <returns>
-        /// A dictionary where the key is the field name and the value is an array of `IMonoBinderValidatable` associated with that field.
-        /// </returns>
+        /// <param name="view">The View containing the slots.</param>
+        /// <returns>The slots grouped by binding identifier.</returns>
         public static ValidatableBindersById GetValidatableBindersById(IView view)
         {
             var fields = view.GetRequireBinderFields();

@@ -19,8 +19,7 @@ namespace Aspid.MVVM
     public sealed class ShowDesignViewModelAttribute : Attribute
     {
         /// <summary>
-        /// The ViewModel types available for selection in the design ViewModel dropdown.
-        /// Includes <see cref="IViewModel"/> when none of the supplied types implements that interface.
+        /// The selectable ViewModel types, including <see cref="IViewModel"/> when none implements it.
         /// </summary>
         public readonly Type[] Types;
 
@@ -39,12 +38,11 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates the attribute with multiple allowed ViewModel types.
-        /// <see cref="IViewModel"/> is appended automatically if none of the provided types implement it.
+        /// Creates a selector filtered by the supplied ViewModel types.
         /// </summary>
-        /// <param name="types">The ViewModel types to include in the design ViewModel selector.</param>
+        /// <param name="types">The allowed types; adds <see cref="IViewModel"/> if none implements it.</param>
         /// <exception cref="ArgumentNullException"><paramref name="types"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">A filter type is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">An element of <paramref name="types"/> is <see langword="null"/>.</exception>
         public ShowDesignViewModelAttribute(params Type[] types)
         {
             if (types is null)

@@ -7,24 +7,49 @@ using System.Reflection;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Metadata describing a single bindable property on an <see cref="IViewModel"/> type,
-    /// including its resolved type, binding ID, generated property name, supported <see cref="BindMode"/>,
-    /// and inspector layout hints (Unity <see cref="UnityEngine.HeaderAttribute"/> rendered as a
-    /// plain header, plus the MVVM-specific <see cref="HeaderGroupAttribute"/>,
-    /// <see cref="HeaderGroupStartAttribute"/>, and <see cref="HeaderGroupEndAttribute"/> that drive
-    /// collapsible foldout grouping in the inspector).
+    /// Binding and Inspector layout metadata for a ViewModel member.
     /// </summary>
     public class BindablePropertyMeta
     {
+        /// <summary>
+        /// The bound value type; <see langword="null"/> when it cannot be resolved.
+        /// </summary>
         public readonly Type Type;
+        /// <summary>
+        /// The binding identifier.
+        /// </summary>
         public readonly string Id;
+        /// <summary>
+        /// The property name, including the generated command suffix.
+        /// </summary>
         public readonly string Name;
+        /// <summary>
+        /// The resolved binding mode.
+        /// </summary>
         public readonly BindMode Mode;
+        /// <summary>
+        /// The plain Inspector header; <see langword="null"/> when absent.
+        /// </summary>
         public readonly string Header;
+        /// <summary>
+        /// The foldout title for this member; <see langword="null"/> when absent.
+        /// </summary>
         public readonly string HeaderGroup;
+        /// <summary>
+        /// The foldout range title; <see langword="null"/> when no range starts here.
+        /// </summary>
         public readonly string HeaderGroupStart;
+        /// <summary>
+        /// Indicates whether this member ends the preceding foldout range.
+        /// </summary>
         public readonly bool HeaderGroupEnd;
 
+        /// <summary>
+        /// Creates binding metadata for a ViewModel member.
+        /// </summary>
+        /// <param name="memberContainerType">The ViewModel type containing the member.</param>
+        /// <param name="memberInfo">The member to inspect.</param>
+        /// <exception cref="ArgumentException"><paramref name="memberInfo"/> is not a supported bindable member.</exception>
         public BindablePropertyMeta(Type memberContainerType, MemberInfo memberInfo)
         {
             if (!IsBindableProperty(memberContainerType, memberInfo))
@@ -87,6 +112,12 @@ namespace Aspid.MVVM
             }
         }
         
+        /// <summary>
+        /// Determines whether a member participates in ViewModel binding.
+        /// </summary>
+        /// <param name="memberContainerType">The ViewModel type containing the member.</param>
+        /// <param name="memberInfo">The member to inspect.</param>
+        /// <returns><see langword="true"/> if the member exposes a supported binding or relay command; otherwise, <see langword="false"/>.</returns>
         public static bool IsBindableProperty(Type memberContainerType, MemberInfo memberInfo)
         {
             if (memberInfo.IsDefined(typeof(IgnoreBindAttribute))) return false;

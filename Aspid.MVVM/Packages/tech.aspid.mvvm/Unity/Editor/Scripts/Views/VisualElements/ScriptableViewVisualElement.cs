@@ -4,9 +4,6 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// UIElements visual element for the <see cref="ScriptableView"/> inspector.
-    /// </summary>
     internal class ScriptableViewVisualElement : ViewVisualElement<ScriptableView, ScriptableViewEditor>
     {
         public ScriptableViewVisualElement(ScriptableViewEditor editor) : base(editor) { }

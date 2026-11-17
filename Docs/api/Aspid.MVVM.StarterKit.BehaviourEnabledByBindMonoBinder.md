@@ -65,8 +65,7 @@ The bound value is ignored; only the presence of a binding matters.
 
 ### DefaultMode {#Aspid_MVVM_StarterKit_BehaviourEnabledByBindMonoBinder_DefaultMode}
 
-Gets the binding mode a freshly added binder starts in. The default is [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
-Override in binders whose <code>[BindModeOverride]</code> excludes it.
+Gets the mode for a freshly added binder; [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) by default.
 
 ```csharp
 protected override BindMode DefaultMode { get; }
@@ -75,6 +74,10 @@ protected override BindMode DefaultMode { get; }
 #### Property Value
 
  [BindMode](Aspid.MVVM.BindMode.md)
+
+#### Remarks
+
+Override when [`BindModeOverrideAttribute`](Aspid.MVVM.BindModeOverrideAttribute.md) excludes the default mode.
 
 ## Methods
 

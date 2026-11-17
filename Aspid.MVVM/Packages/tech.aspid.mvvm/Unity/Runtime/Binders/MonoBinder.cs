@@ -4,6 +4,7 @@
 
 using System;
 using UnityEngine;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -12,7 +13,7 @@ namespace Aspid.MVVM
     /// <see cref="MonoBehaviour"/> binder that manages binding to and unbinding from an <see cref="IViewModel"/>.
     /// </summary>
     /// <remarks>Derived classes implement <see cref="IBinder{T}"/> to define what is bound.</remarks>
-    // ReSharper disable once RedundantExtendsListEntry
+    [SuppressMessage(category: "ReSharper", checkId: "RedundantExtendsListEntry")]
     public abstract partial class MonoBinder : MonoBehaviour, IBinder
     {
         [Tooltip("Direction of data flow between the View and the ViewModel.")]

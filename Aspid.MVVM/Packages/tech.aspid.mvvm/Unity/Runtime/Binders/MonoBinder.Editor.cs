@@ -4,12 +4,13 @@ using System;
 using UnityEngine;
 using System.ComponentModel;
 using Aspid.MVVM.Validation;
+using System.Diagnostics.CodeAnalysis;
 using Component = UnityEngine.Component;
 
-// ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    [SuppressMessage(category: "ReSharper", checkId: "InconsistentNaming")]
     public abstract partial class MonoBinder : IMonoBinderValidatable, IRebindableBinder
     {
         [Tooltip("The View this binder belongs to.")]

@@ -14,6 +14,8 @@ Assembly: Aspid.MVVM.Unity.dll <br/>
 [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) binder that manages binding to and unbinding from an [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
 ```csharp
+[SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public abstract class MonoBinder : MonoBehaviour, IMonoBinderValidatable, IBinder
 ```
 

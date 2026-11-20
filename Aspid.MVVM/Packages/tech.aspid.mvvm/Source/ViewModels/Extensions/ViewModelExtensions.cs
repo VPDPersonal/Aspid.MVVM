@@ -1,7 +1,7 @@
 using System;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -151,7 +151,7 @@ namespace Aspid.MVVM
         /// <param name="views">The Views to initialize. Skips a null collection and missing or destroyed Views.</param>
         public static void InitializeViewsSafely(this IViewModel? viewModel, IEnumerable<IView?>? views)
         {
-            if (views.IsMissing() || viewModel.IsMissing()) return;
+            if (views is null || viewModel.IsMissing()) return;
 
             try
             {
@@ -252,20 +252,21 @@ namespace Aspid.MVVM
             }
         }
 
-        private static void ValidateInitializationArguments(IViewModel? viewModel, object? target, string targetName)
+        private static void ValidateInitializationArguments(IViewModel? viewModel, object? view, string viewName)
         {
+            var missingTarget = view.IsMissing();
             var missingViewModel = viewModel.IsMissing();
-            var missingTarget = target.IsMissing();
 
             if (missingViewModel && missingTarget)
+            {
                 throw new AggregateException(
-                    new ArgumentNullException(nameof(viewModel)),
-                    new ArgumentNullException(targetName));
+                    new ArgumentNullException(nameof(viewModel)), new ArgumentNullException(viewName));
+            };
 
             if (missingViewModel)
                 throw new ArgumentNullException(nameof(viewModel));
             if (missingTarget)
-                throw new ArgumentNullException(targetName);
+                throw new ArgumentNullException(viewName);
         }
     }
 }

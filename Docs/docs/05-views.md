@@ -261,7 +261,9 @@ Generated Views ignore repeated `Deinitialize()` calls during cleanup and reject
 
 The binder set is fixed between `Initialize` and `Deinitialize`: fields, cached binder properties and collection contents must retain the same instances. The generator releases them directly through `UnbindContext(this)`, without an additional binding list. Property and `[AsBinder]` wrapper caches remain. Cleanup ignores a different owner; rebinding for the same View continues that View's ownership. Dynamically replacing the binder set is unsupported.
 
-`Reinitialize`, `DeinitializeView` and both `DisposeView` overloads require a non-null View and throw `ArgumentNullException` otherwise. Use `view?.DisposeView()` when the View is optional. A null return means the View had no ViewModel. The generic helpers require reference types. Passing null as the replacement ViewModel to `Reinitialize` only deinitializes the View. ViewModel disposal remains the caller's responsibility. If initialization through `Reinitialize` fails, a generated View stays detached and does not restore the old ViewModel.
+`Reinitialize`, `DeinitializeView` and both `DisposeView` overloads require a non-null View and throw `ArgumentNullException` otherwise. These methods also reject destroyed Unity objects. A null return means the View had no ViewModel. `DisposeView<T>` requires a reference type. Passing null as the replacement ViewModel to `Reinitialize` only deinitializes the View. ViewModel disposal remains the caller's responsibility. If initialization through `Reinitialize` fails, a generated View stays detached and does not restore the old ViewModel.
+
+`ReinitializeSafely`, `DeinitializeViewSafely` and `DisposeViewSafely` skip null Views and destroyed Unity objects. They log exceptions to the Unity Console. The methods return the previous ViewModel on success and null when it was absent, the View was skipped, or the operation failed.
 
 ---
 
@@ -343,7 +345,9 @@ viewModel?.InitializeViews(views);
 
 `InitializeViews` accepts arrays, `List<T>` where `T : IView`, and `IEnumerable<IView>` (including read-only collections and lazy sequences). Arrays and lists of concrete View types are supported. Passing an existing array or list avoids enumerator allocations; the `params` call creates an array.
 
-With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects a null ViewModel, null collection, or null View. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
+`InitializeViewSafely` and `InitializeViewsSafely` skip missing or destroyed ViewModels and Views. The batch method logs an individual View's exception and moves to the next View. An enumeration exception is logged and ends the batch.
+
+With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects null and destroyed Unity objects. If both arguments are invalid, it reports both in an `AggregateException`. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
 
 ### Through ViewInitializer (Inspector)
 

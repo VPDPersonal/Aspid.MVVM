@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using Aspid.MVVM.StarterKit;
 using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -70,6 +73,26 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
+        public void StrictInitializationReportsBothMissingArguments()
+        {
+            IViewModel model = null;
+            AssertMissingArguments(() => model.InitializeView(null), "view");
+            AssertMissingArguments(() => model.InitializeViews((IView[])null), "views");
+            AssertMissingArguments(() => model.InitializeViews((List<IView>)null), "views");
+            AssertMissingArguments(() => model.InitializeViews((IEnumerable<IView>)null), "views");
+
+            void AssertMissingArguments(TestDelegate call, string targetName)
+            {
+                var exception = Assert.Throws<AggregateException>(call);
+                Assert.That(exception.InnerExceptions, Has.Count.EqualTo(2));
+                Assert.That(exception.InnerExceptions[0], Is.TypeOf<ArgumentNullException>());
+                Assert.That(exception.InnerExceptions[1], Is.TypeOf<ArgumentNullException>());
+                Assert.That(((ArgumentNullException)exception.InnerExceptions[0]).ParamName, Is.EqualTo("viewModel"));
+                Assert.That(((ArgumentNullException)exception.InnerExceptions[1]).ParamName, Is.EqualTo(targetName));
+            }
+        }
+
+        [Test]
         public void NullTargetsAreRejectedAndEmptyCollectionsAreAccepted()
         {
             var model = new EmptyViewModel();
@@ -112,6 +135,47 @@ namespace Aspid.MVVM.Tests
                 Assert.That(exception, Is.SameAs(failure));
             Assert.That(first.ViewModel, Is.SameAs(model));
             Assert.That(last.Calls, Is.Zero);
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void SafeBatchSkipsMissingViewsAndContinuesAfterFailure(int kind)
+        {
+            var model = new EmptyViewModel();
+            var destroyed = ScriptableObject.CreateInstance<StubScriptableView>();
+            Object.DestroyImmediate(destroyed);
+            var broken = new RecordingView { Failure = new InvalidOperationException("safe initialization") };
+            var last = new RecordingView();
+            var views = new IView[] { destroyed, null, broken, last };
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe initialization");
+
+            switch (kind)
+            {
+                case 0: model.InitializeViewsSafely(views); break;
+                case 1: model.InitializeViewsSafely(new List<IView>(views)); break;
+                case 2: model.InitializeViewsSafely(Enumerate(views)); break;
+            }
+
+            Assert.That(destroyed.ViewModel, Is.Null);
+            Assert.That(broken.Calls, Is.EqualTo(1));
+            Assert.That(last.ViewModel, Is.SameAs(model));
+        }
+
+        [Test]
+        public void SafeBatchLogsEnumerationFailure()
+        {
+            var model = new EmptyViewModel();
+            var view = new RecordingView();
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe enumeration");
+            model.InitializeViewsSafely(EnumerateWithFailure(view));
+            Assert.That(view.ViewModel, Is.SameAs(model));
+        }
+
+        private static IEnumerable<IView> EnumerateWithFailure(IView view)
+        {
+            yield return view;
+            throw new InvalidOperationException("safe enumeration");
         }
 
         private static IView ThrowOnEvaluation() =>

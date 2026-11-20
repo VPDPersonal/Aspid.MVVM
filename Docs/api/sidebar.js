@@ -138,18 +138,8 @@ export default { api: [
           },
           {
             "type": "doc",
-            "id": "Aspid.MVVM.MonoViewExtensions",
-            "label": "MonoViewExtensions"
-          },
-          {
-            "type": "doc",
             "id": "Aspid.MVVM.MonoViewModel",
             "label": "MonoViewModel"
-          },
-          {
-            "type": "doc",
-            "id": "Aspid.MVVM.MonoViewModelExtensions",
-            "label": "MonoViewModelExtensions"
           },
           {
             "type": "doc",

@@ -165,6 +165,9 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `DestroyView()` now destroys ScriptableObject views as well as components. View and ViewModel helpers share Unity object destruction while retaining their existing return values and null handling.
 
 - Unity ViewModel disposal releases resources without destroying objects. Override `OnDispose()` instead of `Dispose()`; cleanup runs once and also runs on Unity destruction. `DestroyViewModel()` supports ScriptableObject ViewModels, and `DestroyViewModelAndGameObject()` additionally removes the owning GameObject.
+- The `Destroy*Safely` extensions log View and ViewModel cleanup failures and still attempt Unity destruction. `DestroyViewModelAndGameObject` returns `void`.
+- `DestroyViewModel` and `DestroyViewModelAndGameObject` skip null ViewModels.
+- ViewModel destruction extensions moved from `MonoViewModelExtensions` to `ViewModelExtensions` in the core assembly.
 
 - Editor ViewModel validation reuses its deduplication buffer and static notification delegates, and defers nested dispatch to the next update.
 - **Breaking:** `IBinder.Bind` and `Unbind` take `in BindContext` and `in UnbindContext`. Owners are reference-identified objects, allowing Views and composite binders; foreign cleanup is ignored. Safe helpers require an owner, debug rebind preserves it, and lifecycle guards prevent reattachment during cleanup. Generated Views bind and release a fixed binder set directly, without tracking lists.
@@ -277,17 +280,20 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - View initializers reject cleanup and repeated initialization during initialization without losing the acquired views or the original ViewModel; rollback remains available. `MonoView` aggregates cleanup failures across all serialized binder groups.
 
 - `DestroyViewAndGameObject` also destroys ScriptableObject views, including when cleanup fails; single-instance rollback reuses this cleanup path.
+- View destruction extensions moved from `MonoViewExtensions` to `ViewExtensions` in the core assembly.
 
 - View factories roll back failed clones and async batches; view destruction continues after cleanup failures. Header groups now agree between generated fields and the Inspector. Property context menus honor custom paths, and strict design ViewModels require concrete types.
 
 - Editor ViewModel validation discards pending requests at mode exit and retains new requests until mode entry, including when Domain Reload is disabled.
-- View lifecycle extensions consistently throw `ArgumentNullException` for a null receiver, matching `DisposeViewModel`; use `?.` for optional Views. A null replacement ViewModel still deinitializes the View.
+- `Reinitialize`, `DeinitializeView`, and `DisposeView` throw `ArgumentNullException` for a null receiver. These methods also reject destroyed Unity objects. Call `DeinitializeView()` without an explicit type argument. A null replacement ViewModel still deinitializes the View.
+- `ReinitializeSafely`, `DeinitializeViewSafely`, and `DisposeViewSafely` skip null Views and destroyed Unity objects. They log exceptions and return null when skipped or failed.
 
 - Generated Views handle repeated cleanup safely and reject conflicting lifecycle operations. Direct cleanup covers every declared binder, including declared nested bindings established by callbacks.
 - `[AsBinder]` reports invalid types and constructors instead of silently skipping them; generated arguments preserve escaping, numeric types and culture-independent literals. `[View]` rejects structs and reports invalid class declarations. Generic View lifecycle helpers require reference types.
 
 - ViewModel configuration now reports generator diagnostics for invalid modes, accessor visibility, `BindAlso` targets, command signatures and unresolved `CanExecute`; unsupported bindings emit a warning. Editor metadata respects explicit and inferred modes, and `AccessAttribute` retains its constructor values.
-- Built-in ViewModel lookups reject invalid/default queries; both `DisposeViewModel` overloads consistently reject null.
+- Built-in ViewModel lookups reject invalid/default queries; both `DisposeViewModel` overloads reject null and destroyed Unity objects. Strict View initialization reports two invalid arguments in an `AggregateException`.
+- `InitializeViewSafely`, `InitializeViewsSafely`, and `DisposeViewModelSafely` skip missing or destroyed Unity objects and log exceptions. A batch continues after an individual View fails.
 
 - Parameter-bound command adapters forward `CanExecuteChanged` while observed, release their source subscription after the last listener, and delegate execution without a duplicate predicate check. Strict adapter factories reject a null source immediately; empty commands always carry a no-op action.
 

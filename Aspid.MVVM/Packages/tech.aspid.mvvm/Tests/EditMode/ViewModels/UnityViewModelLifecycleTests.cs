@@ -18,6 +18,29 @@ namespace Aspid.MVVM.Tests
         private bool _previousOptionsEnabled;
         private EnterPlayModeOptions _previousOptions;
 
+        [Test]
+        public void LifecycleExtensionsHandleDestroyedViewModel()
+        {
+            var model = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
+            var view = ScriptableObject.CreateInstance<StubScriptableView>();
+            try
+            {
+                UnityEngine.Object.DestroyImmediate(model);
+
+                Assert.That(Assert.Throws<ArgumentNullException>(() => model.InitializeView(view)).ParamName, Is.EqualTo("viewModel"));
+                Assert.That(Assert.Throws<ArgumentNullException>(() => model.DisposeViewModel()).ParamName, Is.EqualTo("viewModel"));
+                Assert.That(Assert.Throws<ArgumentNullException>(() => ((IViewModel)model).DisposeViewModel()).ParamName, Is.EqualTo("viewModel"));
+                model.InitializeViewSafely(view);
+                model.InitializeViewsSafely(view);
+
+                Assert.That(view.ViewModel, Is.Null);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(view);
+            }
+        }
+
         [UnityTearDown]
         public IEnumerator RestorePlayModeSettings()
         {
@@ -72,12 +95,9 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void NullArgumentsAreRejectedByBothOverloads()
+        public void ComponentDestructionSkipsNull()
         {
-            Assert.That(Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModel<MonoProbe>(null)).ParamName, Is.EqualTo("viewModel"));
-            Assert.That(Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModel((IViewModel)null)).ParamName, Is.EqualTo("viewModel"));
+            Assert.That(ViewModelExtensions.DestroyViewModel((IViewModel)null), Is.Null);
         }
 
         [Test]
@@ -117,6 +137,40 @@ namespace Aspid.MVVM.Tests
             Assert.That(actual, Is.SameAs(failure));
             Assert.That(model == null, Is.True);
             Assert.That(owner != null, Is.True);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ManagedDestructionLogsDisposalFailures(bool wholeObject)
+        {
+            var model = new ManagedProbe { Failure = new InvalidOperationException("Managed disposal failed.") };
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: Managed disposal failed.");
+
+            if (wholeObject)
+                model.DestroyViewModelAndGameObjectSafely();
+            else
+                Assert.That(model.DestroyViewModelSafely(), Is.Null);
+
+            Assert.That(model.Disposed, Is.True);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SafeDestructionStillDestroysUnityViewModelAfterFailure(bool wholeObject)
+        {
+            var model = Spawn<DisposableProbe>();
+            var owner = model.gameObject;
+            model.Cleanup = () => throw new InvalidOperationException("Unity disposal failed.");
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: Unity disposal failed.");
+
+            if (wholeObject)
+                model.DestroyViewModelAndGameObjectSafely();
+            else
+                Assert.That(model.DestroyViewModelSafely(), Is.Null);
+
+            Assert.That(model == null, Is.True);
+            Assert.That(owner == null, Is.EqualTo(wholeObject));
+            Assert.That(model.DisposeCalls, Is.EqualTo(1));
         }
 
         [TestCase(false)]
@@ -371,13 +425,17 @@ namespace Aspid.MVVM.Tests
             var owner = model.gameObject;
             var failure = new InvalidOperationException("Cleanup failed.");
             if (failCleanup) model.Cleanup = () => throw failure;
-            GameObject Destroy() => throughInterface
-                ? ((IViewModel)model).DestroyViewModelAndGameObject()
-                : model.DestroyViewModelAndGameObject();
+            void Destroy()
+            {
+                if (throughInterface)
+                    ((IViewModel)model).DestroyViewModelAndGameObject();
+                else
+                    model.DestroyViewModelAndGameObject();
+            }
             if (failCleanup)
                 Assert.That(Assert.Throws<InvalidOperationException>(() => Destroy()), Is.SameAs(failure));
             else
-                Assert.That(Destroy(), Is.Null);
+                Assert.DoesNotThrow(Destroy);
             Assert.That(owner == null, Is.True);
             Assert.That(model == null, Is.True);
             Assert.That(model.DisposeCalls, Is.EqualTo(1));
@@ -396,16 +454,28 @@ namespace Aspid.MVVM.Tests
             var model = Track(ScriptableObject.CreateInstance<DisposableScriptableProbe>());
             var failure = new InvalidOperationException("Cleanup failed.");
             if (failCleanup) model.Cleanup = () => throw failure;
-            GameObject Destroy() => wholeObject
-                ? throughInterface ? ((IViewModel)model).DestroyViewModelAndGameObject() : model.DestroyViewModelAndGameObject()
-                : throughInterface ? ((IViewModel)model).DestroyViewModel() : model.DestroyViewModel();
+            void Destroy()
+            {
+                if (wholeObject)
+                {
+                    if (throughInterface)
+                        ((IViewModel)model).DestroyViewModelAndGameObject();
+                    else
+                        model.DestroyViewModelAndGameObject();
+                }
+                else
+                {
+                    var result = throughInterface ? ((IViewModel)model).DestroyViewModel() : model.DestroyViewModel();
+                    Assert.That(result, Is.Null);
+                }
+            }
             if (failCleanup)
                 Assert.That(Assert.Throws<InvalidOperationException>(() => Destroy()), Is.SameAs(failure));
             else
-                Assert.That(Destroy(), Is.Null);
+                Assert.DoesNotThrow(Destroy);
             Assert.That(model == null, Is.True);
             Assert.That(model.DisposeCalls, Is.EqualTo(1));
-            Assert.That(Destroy(), Is.Null);
+            Assert.DoesNotThrow(Destroy);
         }
 
         [Test]
@@ -435,14 +505,11 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void WholeObjectHelperRejectsNullAndDisposesManagedModels()
+        public void WholeObjectHelperSkipsNullAndDisposesManagedModels()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModelAndGameObject<MonoProbe>(null));
-            Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModelAndGameObject((IViewModel)null));
+            Assert.DoesNotThrow(() => ViewModelExtensions.DestroyViewModelAndGameObject(null));
             var model = new ManagedProbe();
-            Assert.That(((IViewModel)model).DestroyViewModelAndGameObject(), Is.Null);
+            ((IViewModel)model).DestroyViewModelAndGameObject();
             Assert.That(model.Disposed, Is.True);
         }
 
@@ -541,8 +608,14 @@ namespace Aspid.MVVM.Tests
         {
             public bool Disposed { get; private set; }
 
-            public void Dispose() =>
+            public Exception Failure { get; set; }
+
+            public void Dispose()
+            {
                 Disposed = true;
+                if (Failure is not null)
+                    throw Failure;
+            }
 
             public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters) =>
                 default;

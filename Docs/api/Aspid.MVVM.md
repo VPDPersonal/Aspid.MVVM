@@ -114,25 +114,17 @@ Concrete [`MonoViewBinder<T>`](Aspid.MVVM.MonoViewBinder-1.md) for [`MonoView`](
 
 [`ViewTargetBinder<T>`](Aspid.MVVM.ViewTargetBinder-1.md) restricted to [`Component`](https://docs.unity3d.com/ScriptReference/Component.html)-based views.
 
- [MonoViewExtensions](Aspid.MVVM.MonoViewExtensions.md)
-
-Provides extension methods for [`IView`](Aspid.MVVM.IView.md).
-
  [MonoViewModel](Aspid.MVVM.MonoViewModel.md)
 
 [`MonoBehaviour`](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) for ViewModels that refresh bindings after Inspector changes.
 
- [MonoViewModelExtensions](Aspid.MVVM.MonoViewModelExtensions.md)
+ [MonoViewMonoBinder\<TView\>](Aspid.MVVM.MonoViewMonoBinder-1.md)
 
-Provides extension methods for [`IViewModel`](Aspid.MVVM.IViewModel.md).
+[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [MonoViewMonoBinder](Aspid.MVVM.MonoViewMonoBinder.md)
 
 Concrete [`MonoViewMonoBinder<T>`](Aspid.MVVM.MonoViewMonoBinder-1.md) for [`MonoView`](Aspid.MVVM.MonoView.md).
-
- [MonoViewMonoBinder\<TView\>](Aspid.MVVM.MonoViewMonoBinder-1.md)
-
-[`ComponentMonoBinder<T>`](Aspid.MVVM.ComponentMonoBinder-1.md) that initializes the target view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
 
  [OneTimeBindAttribute](Aspid.MVVM.OneTimeBindAttribute.md)
 
@@ -188,34 +180,34 @@ Generates a [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) bindable member 
 
 Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`Enum`](https://learn.microsoft.com/dotnet/api/system.enum).
 
- [OneWayToSourceStructBindableMember\<T\>](Aspid.MVVM.OneWayToSourceStructBindableMember-1.md)
-
-Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
-
  [OneWayToSourceStructBindableMember\<T, TBoxed\>](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md)
 
 [`IReadOnlyBindableMember<T>`](Aspid.MVVM.IReadOnlyBindableMember-1.md) that passes values from its reverse binders to a setter, unboxing them from an
 [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of <code class="typeparamref">TBoxed</code>.
 
+ [OneWayToSourceStructBindableMember\<T\>](Aspid.MVVM.OneWayToSourceStructBindableMember-1.md)
+
+Concrete [`OneWayToSourceStructBindableMember<T1, T2>`](Aspid.MVVM.OneWayToSourceStructBindableMember-2.md) that fixes <code>TBoxed</code> to [`ValueType`](https://learn.microsoft.com/dotnet/api/system.valuetype).
+
  [RelayCommand](Aspid.MVVM.RelayCommand.md)
 
 [`IRelayCommand`](Aspid.MVVM.IRelayCommand.md) that runs a delegate, optionally gated by a predicate.
 
- [RelayCommand\<T\>](Aspid.MVVM.RelayCommand-1.md)
+ [RelayCommand\<T1, T2, T3, T4\>](Aspid.MVVM.RelayCommand-4.md)
 
-[`IRelayCommand<T>`](Aspid.MVVM.IRelayCommand-1.md) that runs a delegate, optionally gated by a predicate.
-
- [RelayCommand\<T1, T2\>](Aspid.MVVM.RelayCommand-2.md)
-
-[`IRelayCommand<T1, T2>`](Aspid.MVVM.IRelayCommand-2.md) that runs a delegate, optionally gated by a predicate.
+[`IRelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.IRelayCommand-4.md) that runs a delegate, optionally gated by a predicate.
 
  [RelayCommand\<T1, T2, T3\>](Aspid.MVVM.RelayCommand-3.md)
 
 [`IRelayCommand<T1, T2, T3>`](Aspid.MVVM.IRelayCommand-3.md) that runs a delegate, optionally gated by a predicate.
 
- [RelayCommand\<T1, T2, T3, T4\>](Aspid.MVVM.RelayCommand-4.md)
+ [RelayCommand\<T1, T2\>](Aspid.MVVM.RelayCommand-2.md)
 
-[`IRelayCommand<T1, T2, T3, T4>`](Aspid.MVVM.IRelayCommand-4.md) that runs a delegate, optionally gated by a predicate.
+[`IRelayCommand<T1, T2>`](Aspid.MVVM.IRelayCommand-2.md) that runs a delegate, optionally gated by a predicate.
+
+ [RelayCommand\<T\>](Aspid.MVVM.RelayCommand-1.md)
+
+[`IRelayCommand<T>`](Aspid.MVVM.IRelayCommand-1.md) that runs a delegate, optionally gated by a predicate.
 
  [RelayCommandAttribute](Aspid.MVVM.RelayCommandAttribute.md)
 
@@ -238,25 +230,25 @@ Associates a serialized binder field with a binding identifier and accepted valu
 
 [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) for views with generated binding lifecycle methods.
 
- [ScriptableViewBinder](Aspid.MVVM.ScriptableViewBinder.md)
-
-Concrete [`ScriptableViewBinder<T>`](Aspid.MVVM.ScriptableViewBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
-
  [ScriptableViewBinder\<TView\>](Aspid.MVVM.ScriptableViewBinder-1.md)
 
 [`ViewTargetBinder<T>`](Aspid.MVVM.ViewTargetBinder-1.md) restricted to [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html)-based views.
+
+ [ScriptableViewBinder](Aspid.MVVM.ScriptableViewBinder.md)
+
+Concrete [`ScriptableViewBinder<T>`](Aspid.MVVM.ScriptableViewBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
 
  [ScriptableViewModel](Aspid.MVVM.ScriptableViewModel.md)
 
 [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) for ViewModels that refresh bindings after Inspector changes.
 
- [ScriptableViewMonoBinder](Aspid.MVVM.ScriptableViewMonoBinder.md)
-
-Concrete [`ScriptableViewMonoBinder<T>`](Aspid.MVVM.ScriptableViewMonoBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
-
  [ScriptableViewMonoBinder\<TView\>](Aspid.MVVM.ScriptableViewMonoBinder-1.md)
 
 [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that initializes a serialized [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) view with the bound [`IViewModel`](Aspid.MVVM.IViewModel.md).
+
+ [ScriptableViewMonoBinder](Aspid.MVVM.ScriptableViewMonoBinder.md)
+
+Concrete [`ScriptableViewMonoBinder<T>`](Aspid.MVVM.ScriptableViewMonoBinder-1.md) for [`ScriptableView`](Aspid.MVVM.ScriptableView.md).
 
  [ShowDesignViewModelAttribute](Aspid.MVVM.ShowDesignViewModelAttribute.md)
 
@@ -350,13 +342,13 @@ Cleanup request identifying the owner releasing a binder.
 
 [`IReadOnlyBindableMember<T>`](Aspid.MVVM.IReadOnlyBindableMember-1.md) whose value can also be set.
 
- [IBinder\<T\>](Aspid.MVVM.IBinder-1.md)
-
-[`IBinder`](Aspid.MVVM.IBinder.md) that receives values of <code class="typeparamref">T</code> from the ViewModel.
-
  [IBinder](Aspid.MVVM.IBinder.md)
 
 Defines a binder that attaches to a bindable member of a ViewModel.
+
+ [IBinder\<T\>](Aspid.MVVM.IBinder-1.md)
+
+[`IBinder`](Aspid.MVVM.IBinder.md) that receives values of <code class="typeparamref">T</code> from the ViewModel.
 
  [IBinderAdder](Aspid.MVVM.IBinderAdder.md)
 
@@ -378,10 +370,6 @@ Defines the side of a bindable member that detaches binders.
 
 Defines a command with four parameters.
 
- [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
-
-Defines a command with one parameter.
-
  [IRelayCommand\<T1, T2, T3\>](Aspid.MVVM.IRelayCommand-3.md)
 
 Defines a command with three parameters.
@@ -389,6 +377,10 @@ Defines a command with three parameters.
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
 Defines a command without parameters.
+
+ [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
+
+Defines a command with one parameter.
 
  [IRelayCommand\<T1, T2\>](Aspid.MVVM.IRelayCommand-2.md)
 

@@ -281,7 +281,8 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - View factories roll back failed clones and async batches; view destruction continues after cleanup failures. Header groups now agree between generated fields and the Inspector. Property context menus honor custom paths, and strict design ViewModels require concrete types.
 
 - Editor ViewModel validation discards pending requests at mode exit and retains new requests until mode entry, including when Domain Reload is disabled.
-- View lifecycle extensions consistently throw `ArgumentNullException` for a null receiver, matching `DisposeViewModel`; use `?.` for optional Views. A null replacement ViewModel still deinitializes the View.
+- `Reinitialize`, `DeinitializeView`, and `DisposeView` throw `ArgumentNullException` for a null receiver. A null replacement ViewModel still deinitializes the View.
+- `ReinitializeSafely`, `DeinitializeViewSafely`, and `DisposeViewSafely` skip null Views and log exceptions to the Unity Console, returning null when skipped or failed.
 
 - Generated Views handle repeated cleanup safely and reject conflicting lifecycle operations. Direct cleanup covers every declared binder, including declared nested bindings established by callbacks.
 - `[AsBinder]` reports invalid types and constructors instead of silently skipping them; generated arguments preserve escaping, numeric types and culture-independent literals. `[View]` rejects structs and reports invalid class declarations. Generic View lifecycle helpers require reference types.

@@ -1,8 +1,11 @@
+#nullable enable
+
 #if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
 #define ASPID_MVVM_PROFILER
 #endif
 
 using System;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -15,7 +18,7 @@ namespace Aspid.MVVM
 #if ASPID_MVVM_PROFILER
         private static readonly Unity.Profiling.ProfilerMarker _disposeViewMarker = new(name: "DisposeView");
 #endif
-        
+
         /// <summary>
         /// Deinitializes <paramref name="view"/> and initializes it with <paramref name="newViewModel"/>.
         /// </summary>
@@ -38,7 +41,26 @@ namespace Aspid.MVVM
 
             return oldViewModel;
         }
-        
+
+        /// <summary>
+        /// Deinitializes the View and initializes it with <paramref name="newViewModel"/>, logging any exception.
+        /// </summary>
+        /// <param name="view">The View to reinitialize, or <see langword="null"/> to skip.</param>
+        /// <param name="newViewModel">The replacement ViewModel, or <see langword="null"/> to only deinitialize.</param>
+        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
+        public static IViewModel? ReinitializeSafely(this IView? view, IViewModel? newViewModel)
+        {
+            try
+            {
+                return view?.Reinitialize(newViewModel);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Deinitializes <paramref name="view"/>.
         /// </summary>
@@ -51,13 +73,33 @@ namespace Aspid.MVVM
         {
             if (view is null)
                 throw new ArgumentNullException(nameof(view));
-            
+
             var viewModel = view.ViewModel;
             view.Deinitialize();
-            
+
             return viewModel;
         }
-        
+
+        /// <summary>
+        /// Deinitializes the View, logging any exception.
+        /// </summary>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="view">The View to deinitialize, or <see langword="null"/> to skip.</param>
+        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
+        public static IViewModel? DeinitializeViewSafely<T>(this T? view)
+            where T : class, IView
+        {
+            try
+            {
+                return view?.DeinitializeView();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Disposes <paramref name="view"/>.
         /// </summary>
@@ -82,7 +124,27 @@ namespace Aspid.MVVM
                 return viewModel;
             }
         }
-        
+
+        /// <summary>
+        /// Disposes the View, logging any exception.
+        /// </summary>
+        /// <typeparam name="T">The disposable View type.</typeparam>
+        /// <param name="view">The View to dispose, or <see langword="null"/> to skip.</param>
+        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
+        public static IViewModel? DisposeViewSafely<T>(this T? view)
+            where T : class, IView, IDisposable
+        {
+            try
+            {
+                return view?.DisposeView();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Disposes <paramref name="view"/> if it implements <see cref="IDisposable"/>; otherwise, deinitializes it.
         /// </summary>
@@ -111,6 +173,24 @@ namespace Aspid.MVVM
                 }
 
                 return viewModel;
+            }
+        }
+
+        /// <summary>
+        /// Disposes a disposable View or deinitializes it otherwise, logging any exception.
+        /// </summary>
+        /// <param name="view">The View to clean up, or <see langword="null"/> to skip.</param>
+        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
+        public static IViewModel? DisposeViewSafely(this IView? view)
+        {
+            try
+            {
+                return view?.DisposeView();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                return null;
             }
         }
 

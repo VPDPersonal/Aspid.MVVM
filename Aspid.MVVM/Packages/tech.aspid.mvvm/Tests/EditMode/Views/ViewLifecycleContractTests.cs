@@ -237,6 +237,77 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
+        public void SafeLifecycleHelpersSkipNullViews()
+        {
+            IView missing = null;
+            DisposableCallbackView missingDisposable = null;
+
+            Assert.That(missing.ReinitializeSafely(new DisposableLookupModel()), Is.Null);
+            Assert.That(missing.DeinitializeViewSafely(), Is.Null);
+            Assert.That(missing.DisposeViewSafely(), Is.Null);
+            Assert.That(missingDisposable.DisposeViewSafely(), Is.Null);
+        }
+
+        [Test]
+        public void ReinitializeSafelyLogsInitializationFailure()
+        {
+            var view = new CallbackTestView();
+            view.Initialize(new DisposableLookupModel());
+            view.Initializing = () => throw new InvalidOperationException("safe initialization");
+
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe initialization");
+            Assert.That(view.ReinitializeSafely(new DisposableLookupModel()), Is.Null);
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
+        [Test]
+        public void SafeDeinitializationLogsFailureAndStopsReinitialization()
+        {
+            var model = new DisposableLookupModel();
+            var view = new CallbackTestView();
+            view.Deinitialized = () => throw new InvalidOperationException("safe deinitialization");
+
+            view.Initialize(model);
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe deinitialization");
+            Assert.That(view.ReinitializeSafely(new DisposableLookupModel()), Is.Null);
+            Assert.That(view.ViewModel, Is.Null);
+
+            view.Initialize(model);
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe deinitialization");
+            Assert.That(view.DeinitializeViewSafely(), Is.Null);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DisposeViewSafelyLogsFailureAndInvokesDisposeOnce(bool typed)
+        {
+            var view = new DisposableCallbackView();
+            view.Initialize(new DisposableLookupModel());
+            view.Deinitialized = () => throw new InvalidOperationException("safe disposal");
+
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe disposal");
+            Assert.That(typed ? view.DisposeViewSafely() : ((IView)view).DisposeViewSafely(), Is.Null);
+            Assert.That(view.DisposeCalls, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void SafeLifecycleHelpersReturnThePreviousModelOnSuccess()
+        {
+            var view = new CallbackTestView();
+            var previous = new DisposableLookupModel();
+            var replacement = new DisposableLookupModel();
+            view.Initialize(previous);
+
+            Assert.That(view.ReinitializeSafely(replacement), Is.SameAs(previous));
+            Assert.That(view.DeinitializeViewSafely(), Is.SameAs(replacement));
+            Assert.That(view.ViewModel, Is.Null);
+
+            view.Initialize(previous);
+            Assert.That(((IView)view).DisposeViewSafely(), Is.SameAs(previous));
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
+        [Test]
         public void ViewsWithoutAModelReturnNull()
         {
             var view = new CallbackTestView();

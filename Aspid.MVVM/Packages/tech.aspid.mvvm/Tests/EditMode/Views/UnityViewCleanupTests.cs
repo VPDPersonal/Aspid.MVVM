@@ -24,11 +24,13 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void DisposeViewOverloadsRejectDestroyedUnityViews()
+        public void StrictLifecycleHelpersRejectDestroyedUnityViews()
         {
             var view = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
             Object.DestroyImmediate(view);
 
+            Assert.That(Assert.Throws<ArgumentNullException>(() => view.Reinitialize(null)).ParamName, Is.EqualTo("view"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => view.DeinitializeView()).ParamName, Is.EqualTo("view"));
             Assert.That(Assert.Throws<ArgumentNullException>(() => view.DisposeView()).ParamName, Is.EqualTo("view"));
             Assert.That(Assert.Throws<ArgumentNullException>(() => ((IView)view).DisposeView()).ParamName, Is.EqualTo("view"));
             Assert.That(view.DisposeCalls, Is.Zero);

@@ -5,8 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Debug = UnityEngine.Debug;
-using Object = UnityEngine.Object;
+using UnityEngine;
+using static Aspid.MVVM.UnityObjectHelper;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -45,9 +45,8 @@ namespace Aspid.MVVM
         /// <param name="view">The View to initialize. Skips a missing or destroyed View.</param>
         public static void InitializeViewSafely(this IViewModel? viewModel, IView? view)
         {
-            if (viewModel is null || IsDestroyed(viewModel)) return;
-
-            InitializeViewSafelyCore(viewModel, view);
+            if (IsMissing(viewModel)) return;
+            InitializeViewSafelyInternal(viewModel, view);
         }
 
         /// <summary>
@@ -76,6 +75,19 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
+        /// Initializes the Views in order, logging failures and continuing with the next View.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel to bind. Skips a missing or destroyed ViewModel.</param>
+        /// <param name="views">The Views to initialize. Skips a null collection and missing or destroyed Views.</param>
+        public static void InitializeViewsSafely(this IViewModel? viewModel, params IView?[]? views)
+        {
+            if (views is null || IsMissing(viewModel)) return;
+
+            foreach (var view in views)
+                InitializeViewSafelyInternal(viewModel, view);
+        }
+
+        /// <summary>
         /// Initializes each View with <paramref name="viewModel"/> in collection order.
         /// </summary>
         /// <remarks>Stops at the first exception; previously initialized Views remain initialized.</remarks>
@@ -99,6 +111,28 @@ namespace Aspid.MVVM
                     throw new ArgumentNullException(nameof(view));
 
                 view.Initialize(viewModel);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the Views in order, logging failures and continuing with the next View.
+        /// </summary>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="viewModel">The ViewModel to bind. Skips a missing or destroyed ViewModel.</param>
+        /// <param name="views">The Views to initialize. Skips a null collection and missing or destroyed Views.</param>
+        public static void InitializeViewsSafely<T>(this IViewModel? viewModel, List<T>? views)
+            where T : IView?
+        {
+            if (views is null || IsMissing(viewModel)) return;
+
+            try
+            {
+                foreach (var view in views)
+                    InitializeViewSafelyInternal(viewModel, view);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
             }
         }
 
@@ -130,29 +164,23 @@ namespace Aspid.MVVM
         /// <summary>
         /// Initializes the Views in order, logging failures and continuing with the next View.
         /// </summary>
-        /// <param name="viewModel">The ViewModel to bind. Skips a missing or destroyed ViewModel.</param>
-        /// <param name="views">The Views to initialize. Skips a null collection and missing or destroyed Views.</param>
-        public static void InitializeViewsSafely(this IViewModel? viewModel, params IView?[]? views) =>
-            InitializeViewsSafelyCore(viewModel, views);
-
-        /// <summary>
-        /// Initializes the Views in order, logging failures and continuing with the next View.
-        /// </summary>
-        /// <typeparam name="T">The View type.</typeparam>
-        /// <param name="viewModel">The ViewModel to bind. Skips a missing or destroyed ViewModel.</param>
-        /// <param name="views">The Views to initialize. Skips a null collection and missing or destroyed Views.</param>
-        public static void InitializeViewsSafely<T>(this IViewModel? viewModel, List<T>? views)
-            where T : IView? =>
-            InitializeViewsSafelyCore(viewModel, views);
-
-        /// <summary>
-        /// Initializes the Views in order, logging failures and continuing with the next View.
-        /// </summary>
         /// <remarks>An enumeration failure is logged and ends the batch.</remarks>
         /// <param name="viewModel">The ViewModel to bind. Skips a missing or destroyed ViewModel.</param>
         /// <param name="views">The Views to initialize. Skips a null collection and missing or destroyed Views.</param>
-        public static void InitializeViewsSafely(this IViewModel? viewModel, IEnumerable<IView?>? views) =>
-            InitializeViewsSafelyCore(viewModel, views);
+        public static void InitializeViewsSafely(this IViewModel? viewModel, IEnumerable<IView?>? views)
+        {
+            if (views is null || IsMissing(viewModel)) return;
+
+            try
+            {
+                foreach (var view in views)
+                    InitializeViewSafelyInternal(viewModel, view);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
+        }
 
         /// <summary>
         /// Disposes <paramref name="viewModel"/>.
@@ -172,6 +200,26 @@ namespace Aspid.MVVM
 #endif
             {
                 viewModel.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Disposes the ViewModel and logs any exception.
+        /// </summary>
+        /// <typeparam name="T">The disposable ViewModel type.</typeparam>
+        /// <param name="viewModel">The ViewModel to dispose. Skips <see langword="null"/> and destroyed Unity objects.</param>
+        public static void DisposeViewModelSafely<T>(this T? viewModel)
+            where T : class, IViewModel, IDisposable
+        {
+            if (IsMissing(viewModel)) return;
+
+            try
+            {
+                viewModel.DisposeViewModel();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
             }
         }
 
@@ -196,32 +244,12 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Disposes the ViewModel and logs any exception.
-        /// </summary>
-        /// <typeparam name="T">The disposable ViewModel type.</typeparam>
-        /// <param name="viewModel">The ViewModel to dispose. Skips <see langword="null"/> and destroyed Unity objects.</param>
-        public static void DisposeViewModelSafely<T>(this T? viewModel)
-            where T : class, IViewModel, IDisposable
-        {
-            if (viewModel is null || IsDestroyed(viewModel)) return;
-
-            try
-            {
-                viewModel.DisposeViewModel();
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception);
-            }
-        }
-
-        /// <summary>
         /// Disposes a disposable ViewModel and logs any exception.
         /// </summary>
         /// <param name="viewModel">The ViewModel to dispose. Skips <see langword="null"/> and destroyed Unity objects.</param>
         public static void DisposeViewModelSafely(this IViewModel? viewModel)
         {
-            if (viewModel is null || IsDestroyed(viewModel)) return;
+            if (IsMissing(viewModel)) return;
 
             try
             {
@@ -233,26 +261,10 @@ namespace Aspid.MVVM
             }
         }
 
-        private static void InitializeViewsSafelyCore<T>(IViewModel? viewModel, IEnumerable<T>? views)
+        private static void InitializeViewSafelyInternal<T>(IViewModel viewModel, T view)
             where T : IView?
         {
-            if (views is null || viewModel is null || IsDestroyed(viewModel)) return;
-
-            try
-            {
-                foreach (var view in views)
-                    InitializeViewSafelyCore(viewModel, view);
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception);
-            }
-        }
-
-        private static void InitializeViewSafelyCore<T>(IViewModel viewModel, T view)
-            where T : IView?
-        {
-            if (view is null || view is Object unityObject && !unityObject) return;
+            if (IsMissing(view)) return;
 
             try
             {
@@ -263,9 +275,6 @@ namespace Aspid.MVVM
                 Debug.LogException(exception);
             }
         }
-
-        private static bool IsDestroyed(IViewModel viewModel) =>
-            viewModel is Object unityObject && !unityObject;
 
 #if ASPID_MVVM_PROFILER
         private static class Markers<T>

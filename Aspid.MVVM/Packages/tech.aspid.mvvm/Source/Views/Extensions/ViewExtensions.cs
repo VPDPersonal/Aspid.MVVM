@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using static Aspid.MVVM.UnityObjectHelper;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -19,12 +17,14 @@ namespace Aspid.MVVM
         /// Does not dispose either ViewModel. If initialization fails, recovery follows the View implementation's contract.
         /// </remarks>
         /// <param name="view">The view to operate on.</param>
-        /// <param name="newViewModel">The ViewModel to initialize the view with; <see langword="null"/> leaves it deinitialized.</param>
+        /// <param name="newViewModel">The ViewModel to initialize the view with; A missing or destroyed ViewModel leaves it deinitialized.</param>
         /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
+        /// </exception>
         public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel)
         {
-            return view is null
+            return IsMissing(view)
                 ? throw new ArgumentNullException(nameof(view))
                 : view.ReinitializeInternal(newViewModel);
         }
@@ -33,7 +33,7 @@ namespace Aspid.MVVM
         /// Deinitializes the View and initializes it with <paramref name="newViewModel"/>, logging any exception.
         /// </summary>
         /// <param name="view">The View to reinitialize. Skips <see langword="null"/> and destroyed Unity objects.</param>
-        /// <param name="newViewModel">The replacement ViewModel, or <see langword="null"/> to only deinitialize.</param>
+        /// <param name="newViewModel">The replacement ViewModel, A missing or destroyed ViewModel only deinitializes the View.</param>
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? ReinitializeSafely(this IView? view, IViewModel? newViewModel)
         {
@@ -55,10 +55,12 @@ namespace Aspid.MVVM
         /// </summary>
         /// <param name="view">The view to operate on.</param>
         /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
+        /// </exception>
         public static IViewModel? DeinitializeView(this IView view)
         {
-            return view is null
+            return IsMissing(view)
                 ? throw new ArgumentNullException(nameof(view))
                 : view.DeinitializeViewInternal();
         }
@@ -163,7 +165,7 @@ namespace Aspid.MVVM
         {
             var oldViewModel = view.DeinitializeViewInternal();
 
-            if (newViewModel is not null)
+            if (!IsMissing(newViewModel))
                 view.Initialize(newViewModel);
 
             return oldViewModel;
@@ -197,9 +199,5 @@ namespace Aspid.MVVM
 
             return viewModel;
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsMissing([NotNullWhen(returnValue: false)] IView? view) =>
-            view is null || view is Object unityObject && unityObject == null;
     }
 }

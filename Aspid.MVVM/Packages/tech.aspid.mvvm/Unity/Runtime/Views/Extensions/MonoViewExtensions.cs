@@ -91,7 +91,7 @@ namespace Aspid.MVVM
 
             try
             {
-                UnityObjectDestruction.Destroy(target);
+                UnityObjectHelper.Destroy(target);
             }
             catch (Exception exception)
             {

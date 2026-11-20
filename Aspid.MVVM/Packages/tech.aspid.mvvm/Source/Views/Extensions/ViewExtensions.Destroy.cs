@@ -6,10 +6,7 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Provides extension methods for <see cref="IView"/>.
-    /// </summary>
-    public static class MonoViewExtensions
+    public static partial class ViewExtensions
     {
         /// <summary>
         /// Disposes or deinitializes the view and destroys its Unity object while preserving any GameObject.
@@ -72,7 +69,7 @@ namespace Aspid.MVVM
             if (view is not Object target)
                 return view?.DisposeView();
 
-            if (!target) return null;
+            if (target == null) return null;
 
             if (destroyGameObject && target is Component component)
                 target = component.gameObject;

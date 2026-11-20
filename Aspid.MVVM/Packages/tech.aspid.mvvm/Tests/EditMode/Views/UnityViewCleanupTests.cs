@@ -165,7 +165,7 @@ namespace Aspid.MVVM.Tests
             IView missing = null;
             Assert.That(missing.DestroyView(), Is.Null);
             Assert.That(missing.DestroyViewAndGameObject(), Is.Null);
-            Assert.That(MonoViewExtensions.DestroyView<DisposableScriptableProbe>(null), Is.Null);
+            Assert.That(ViewExtensions.DestroyView<DisposableScriptableProbe>(null), Is.Null);
             var model = new Model();
             var view = new ManagedView();
             view.Initialize(model);

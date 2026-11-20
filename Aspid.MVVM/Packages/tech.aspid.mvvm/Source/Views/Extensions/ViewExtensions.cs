@@ -7,7 +7,7 @@ namespace Aspid.MVVM
     /// <summary>
     /// Provides extension methods for <see cref="IView"/>.
     /// </summary>
-    public static class ViewExtensions
+    public static partial class ViewExtensions
     {
         /// <summary>
         /// Deinitializes <paramref name="view"/> and initializes it with <paramref name="newViewModel"/>.

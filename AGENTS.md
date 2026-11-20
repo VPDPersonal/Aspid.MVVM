@@ -29,12 +29,10 @@ Projects/Aspid.MVVM/
 │       │   └── Samples~/              # Path 01–06 (Counter, Greeter, BindModes, Stats, TodoList, CustomBinder) + features (VirtualizedList, DynamicViewModel, DiIntegration, ExampleScripts); scenes and code only, the tutorials live in Docs/tutorials/
 │       └── tech.aspid.fasttools/      # Aspid.FastTools (embedded local UPM package)
 ├── Aspid.MVVM.Generators/             # Roslyn source generator
-│   ├── Aspid.MVVM.Generators/         # Generator implementation
-│   └── Aspid.MVVM.Generators.Tests/   # Generator unit tests
+│   └── Aspid.MVVM.Generators/         # Core and Unity generator projects and their test projects
 ├── Aspid.MVVM.Analyzers/              # Roslyn code analyzer
 │   ├── Aspid.MVVM.Analyzers/          # Analyzer implementation
 │   └── Aspid.MVVM.Analyzers.Tests/    # Analyzer unit tests
-├── Aspid.MVVM.Unity.Generators/       # Unity-specific generators
 ├── Docs/                              # Docusaurus site (GitHub Pages): docs/, tutorials/ (one README.md per sample), migration/ (one guide per version), i18n/ru/ translations; the package holds no docs or media
 └── README.md
 ```

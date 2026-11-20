@@ -26,5 +26,5 @@ and the paths, and checks the CHANGELOG rule. Keep to the rest by hand.
   - `status: blocked` when the PR waits for another PR or for the owner.
 - `.github/workflows/pr-ready-labels.yml` sets `status: needs-review` and `status: work-in-progress` on ready and
   draft; do not pass them.
-- A change in `Aspid.MVVM.Generators/`, `Aspid.MVVM.Analyzers/` or `Aspid.MVVM.Unity.Generators/` goes in the same PR
+- A change in `Aspid.MVVM.Generators/` or `Aspid.MVVM.Analyzers/` goes in the same PR
   as the DLL that `scripts/build-roslyn-dlls.sh` rebuilds from it.

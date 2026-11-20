@@ -50,7 +50,7 @@ The ViewModel type.
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a destroyed Unity object.
 
 ### DisposeViewModel\(IViewModel\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_}
 
@@ -70,7 +70,41 @@ The ViewModel to dispose.
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a destroyed Unity object.
+
+### DisposeViewModelSafely\<T\>\(T?\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModelSafely__1___0_}
+
+Disposes the ViewModel and logs any exception.
+
+```csharp
+public static void DisposeViewModelSafely<T>(this T? viewModel) where T : class, IViewModel, IDisposable
+```
+
+#### Parameters
+
+`viewModel` T?
+
+The ViewModel to dispose. Skips <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> and destroyed Unity objects.
+
+#### Type Parameters
+
+`T`
+
+The disposable ViewModel type.
+
+### DisposeViewModelSafely\(IViewModel?\) {#Aspid_MVVM_ViewModelExtensions_DisposeViewModelSafely_Aspid_MVVM_IViewModel_}
+
+Disposes a disposable ViewModel and logs any exception.
+
+```csharp
+public static void DisposeViewModelSafely(this IViewModel? viewModel)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to dispose. Skips null and destroyed Unity objects.
 
 ### InitializeView\(IViewModel, IView\) {#Aspid_MVVM_ViewModelExtensions_InitializeView_Aspid_MVVM_IViewModel_Aspid_MVVM_IView_}
 
@@ -94,7 +128,29 @@ The View to initialize.
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> or <code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> or <code class="paramref">view</code> is null or destroyed.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Both arguments are null or destroyed.
+
+### InitializeViewSafely\(IViewModel?, IView?\) {#Aspid_MVVM_ViewModelExtensions_InitializeViewSafely_Aspid_MVVM_IViewModel_Aspid_MVVM_IView_}
+
+Initializes the View and logs any exception.
+
+```csharp
+public static void InitializeViewSafely(this IViewModel? viewModel, IView? view)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to bind. Skips a missing or destroyed ViewModel.
+
+`view` [IView](Aspid.MVVM.IView.md)?
+
+The View to initialize. Skips a missing or destroyed View.
 
 ### InitializeViews\(IViewModel, params IView\[\]\) {#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_Aspid_MVVM_IView___}
 
@@ -122,7 +178,11 @@ Stops at the first exception; previously initialized Views remain initialized.
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code>, <code class="paramref">views</code>, or an element is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The ViewModel, collection, or a View is null or destroyed.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Both arguments are null or destroyed.
 
 ### InitializeViews\<T\>\(IViewModel, List\<T\>\) {#Aspid_MVVM_ViewModelExtensions_InitializeViews__1_Aspid_MVVM_IViewModel_System_Collections_Generic_List___0__}
 
@@ -156,7 +216,11 @@ Stops at the first exception; previously initialized Views remain initialized.
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code>, <code class="paramref">views</code>, or an element is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The ViewModel, collection, or a View is null or destroyed.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Both arguments are null or destroyed.
 
 ### InitializeViews\(IViewModel, IEnumerable\<IView\>\) {#Aspid_MVVM_ViewModelExtensions_InitializeViews_Aspid_MVVM_IViewModel_System_Collections_Generic_IEnumerable_Aspid_MVVM_IView__}
 
@@ -184,4 +248,72 @@ Stops at the first exception; previously initialized Views remain initialized.
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code>, <code class="paramref">views</code>, or an element is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+The ViewModel, collection, or a View is null or destroyed.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Both arguments are null or destroyed.
+
+### InitializeViewsSafely\(IViewModel?, params IView?\[\]?\) {#Aspid_MVVM_ViewModelExtensions_InitializeViewsSafely_Aspid_MVVM_IViewModel_Aspid_MVVM_IView___}
+
+Initializes the Views in order, logging failures and continuing with the next View.
+
+```csharp
+public static void InitializeViewsSafely(this IViewModel? viewModel, params IView?[]? views)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to bind. Skips a missing or destroyed ViewModel.
+
+`views` [IView](Aspid.MVVM.IView.md)?\[\]?
+
+The Views to initialize. Skips a null collection and missing or destroyed Views.
+
+### InitializeViewsSafely\<T\>\(IViewModel?, List\<T\>?\) {#Aspid_MVVM_ViewModelExtensions_InitializeViewsSafely__1_Aspid_MVVM_IViewModel_System_Collections_Generic_List___0__}
+
+Initializes the Views in order, logging failures and continuing with the next View.
+
+```csharp
+public static void InitializeViewsSafely<T>(this IViewModel? viewModel, List<T>? views) where T : IView?
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to bind. Skips a missing or destroyed ViewModel.
+
+`views` [List](https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1)\<T\>?
+
+The Views to initialize. Skips a null collection and missing or destroyed Views.
+
+#### Type Parameters
+
+`T`
+
+The View type.
+
+### InitializeViewsSafely\(IViewModel?, IEnumerable\<IView?\>?\) {#Aspid_MVVM_ViewModelExtensions_InitializeViewsSafely_Aspid_MVVM_IViewModel_System_Collections_Generic_IEnumerable_Aspid_MVVM_IView__}
+
+Initializes the Views in order, logging failures and continuing with the next View.
+
+```csharp
+public static void InitializeViewsSafely(this IViewModel? viewModel, IEnumerable<IView?>? views)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to bind. Skips a missing or destroyed ViewModel.
+
+`views` [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1)\<[IView](Aspid.MVVM.IView.md)?\>?
+
+The Views to initialize. Skips a null collection and missing or destroyed Views.
+
+#### Remarks
+
+An enumeration failure is logged and ends the batch.

@@ -161,3 +161,111 @@ The associated GameObject if still alive after the call; otherwise, <a href="htt
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
 <code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+### DestroyViewModelAndGameObjectSafely\<T\>\(T?\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObjectSafely__1___0_}
+
+Disposes and destroys the Unity ViewModel and its GameObject, logging failures.
+
+```csharp
+public static GameObject? DestroyViewModelAndGameObjectSafely<T>(this T? viewModel) where T : Object, IViewModel
+```
+
+#### Parameters
+
+`viewModel` T?
+
+The ViewModel to destroy. Skips null and destroyed Unity objects.
+
+#### Returns
+
+ GameObject?
+
+The surviving GameObject on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
+
+#### Type Parameters
+
+`T`
+
+The Unity ViewModel object.
+
+#### Remarks
+
+Call on the main thread. Destruction is attempted even if disposal fails.
+
+### DestroyViewModelAndGameObjectSafely\(IViewModel?\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObjectSafely_Aspid_MVVM_IViewModel_}
+
+Disposes the ViewModel if supported, destroys its GameObject or Unity object if present, and logs failures.
+
+```csharp
+public static GameObject? DestroyViewModelAndGameObjectSafely(this IViewModel? viewModel)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to destroy. Skips null and destroyed Unity objects.
+
+#### Returns
+
+ GameObject?
+
+The surviving GameObject on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
+
+#### Remarks
+
+Call on the main thread for Unity objects. Destruction is attempted even if disposal fails.
+
+### DestroyViewModelSafely\<T\>\(T?\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelSafely__1___0_}
+
+Disposes and destroys the Unity ViewModel, preserving its GameObject and logging failures.
+
+```csharp
+public static GameObject? DestroyViewModelSafely<T>(this T? viewModel) where T : Object, IViewModel
+```
+
+#### Parameters
+
+`viewModel` T?
+
+The ViewModel to destroy. Skips null and destroyed Unity objects.
+
+#### Returns
+
+ GameObject?
+
+The surviving GameObject on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
+
+#### Type Parameters
+
+`T`
+
+The Unity ViewModel object.
+
+#### Remarks
+
+Call on the main thread. Destruction is attempted even if disposal fails.
+
+### DestroyViewModelSafely\(IViewModel?\) {#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelSafely_Aspid_MVVM_IViewModel_}
+
+Disposes the ViewModel if supported, destroys its Unity object if present, and logs failures.
+
+```csharp
+public static GameObject? DestroyViewModelSafely(this IViewModel? viewModel)
+```
+
+#### Parameters
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The ViewModel to destroy. Skips null and destroyed Unity objects.
+
+#### Returns
+
+ GameObject?
+
+The surviving GameObject on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
+
+#### Remarks
+
+Call on the main thread for Unity objects. Destruction is attempted even if disposal fails.

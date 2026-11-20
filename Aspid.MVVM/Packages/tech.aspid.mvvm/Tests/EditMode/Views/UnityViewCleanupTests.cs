@@ -23,6 +23,17 @@ namespace Aspid.MVVM.Tests
             Assert.That(view.DisposeCalls, Is.Zero);
         }
 
+        [Test]
+        public void DisposeViewOverloadsRejectDestroyedUnityViews()
+        {
+            var view = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
+            Object.DestroyImmediate(view);
+
+            Assert.That(Assert.Throws<ArgumentNullException>(() => view.DisposeView()).ParamName, Is.EqualTo("view"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => ((IView)view).DisposeView()).ParamName, Is.EqualTo("view"));
+            Assert.That(view.DisposeCalls, Is.Zero);
+        }
+
         [TestCase(false, false)]
         [TestCase(false, true)]
         [TestCase(true, false)]

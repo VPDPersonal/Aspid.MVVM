@@ -1,10 +1,10 @@
-#nullable enable
-
 #if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
 #define ASPID_MVVM_PROFILER
 #endif
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -32,15 +32,9 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
         public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel)
         {
-            if (view is null)
-                throw new ArgumentNullException(nameof(view));
-
-            var oldViewModel = view.DeinitializeView();
-
-            if (newViewModel is not null)
-                view.Initialize(newViewModel);
-
-            return oldViewModel;
+            return view is null
+                ? throw new ArgumentNullException(nameof(view))
+                : view.ReinitializeInternal(newViewModel);
         }
 
         /// <summary>
@@ -51,11 +45,11 @@ namespace Aspid.MVVM
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? ReinitializeSafely(this IView? view, IViewModel? newViewModel)
         {
-            if (view is null || IsDestroyed(view)) return null;
+            if (IsMissing(view)) return null;
 
             try
             {
-                return view.Reinitialize(newViewModel);
+                return view.ReinitializeInternal(newViewModel);
             }
             catch (Exception exception)
             {
@@ -67,36 +61,28 @@ namespace Aspid.MVVM
         /// <summary>
         /// Deinitializes <paramref name="view"/>.
         /// </summary>
-        /// <typeparam name="T">The view type.</typeparam>
         /// <param name="view">The view to operate on.</param>
         /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
-        public static IViewModel? DeinitializeView<T>(this T view)
-            where T : class, IView
+        public static IViewModel? DeinitializeView(this IView view)
         {
-            if (view is null)
-                throw new ArgumentNullException(nameof(view));
-
-            var viewModel = view.ViewModel;
-            view.Deinitialize();
-
-            return viewModel;
+            return view is null
+                ? throw new ArgumentNullException(nameof(view))
+                : view.DeinitializeViewInternal();
         }
 
         /// <summary>
         /// Deinitializes the View, logging any exception.
         /// </summary>
-        /// <typeparam name="T">The View type.</typeparam>
         /// <param name="view">The View to deinitialize. Skips <see langword="null"/> and destroyed Unity objects.</param>
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
-        public static IViewModel? DeinitializeViewSafely<T>(this T? view)
-            where T : class, IView
+        public static IViewModel? DeinitializeViewSafely(this IView? view)
         {
-            if (view is null || IsDestroyed(view)) return null;
+            if (IsMissing(view)) return null;
 
             try
             {
-                return view.DeinitializeView();
+                return view.DeinitializeViewInternal();
             }
             catch (Exception exception)
             {
@@ -112,22 +98,15 @@ namespace Aspid.MVVM
         /// <typeparam name="T">The view type.</typeparam>
         /// <param name="view">The view to operate on.</param>
         /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
+        /// </exception>
         public static IViewModel? DisposeView<T>(this T view)
             where T : class, IView, IDisposable
         {
-            if (view is null)
-                throw new ArgumentNullException(nameof(view));
-
-#if ASPID_MVVM_PROFILER
-            using (Markers<T>.DisposeViewMarker.Auto())
-#endif
-            {
-                var viewModel = view.ViewModel;
-                view.Dispose();
-
-                return viewModel;
-            }
+            return IsMissing(view)
+                ? throw new ArgumentNullException(nameof(view))
+                : view.DisposeViewInternal();
         }
 
         /// <summary>
@@ -139,11 +118,11 @@ namespace Aspid.MVVM
         public static IViewModel? DisposeViewSafely<T>(this T? view)
             where T : class, IView, IDisposable
         {
-            if (view is null || IsDestroyed(view)) return null;
+            if (IsMissing(view)) return null;
 
             try
             {
-                return view.DisposeView();
+                return view.DisposeViewInternal();
             }
             catch (Exception exception)
             {
@@ -158,12 +137,56 @@ namespace Aspid.MVVM
         /// <remarks>Does not dispose the returned ViewModel.</remarks>
         /// <param name="view">The view to operate on.</param>
         /// <returns>The ViewModel the view had; <see langword="null"/> when it had none.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="view"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
+        /// </exception>
         public static IViewModel? DisposeView(this IView view)
         {
-            if (view is null)
-                throw new ArgumentNullException(nameof(view));
+            return IsMissing(view)
+                ? throw new ArgumentNullException(nameof(view))
+                : view.DisposeViewInternal();
+        }
 
+        /// <summary>
+        /// Disposes a disposable View or deinitializes it otherwise, logging any exception.
+        /// </summary>
+        /// <param name="view">The View to clean up. Skips <see langword="null"/> and destroyed Unity objects.</param>
+        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
+        public static IViewModel? DisposeViewSafely(this IView? view)
+        {
+            if (IsMissing(view)) return null;
+
+            try
+            {
+                return view.DisposeViewInternal();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                return null;
+            }
+        }
+
+        private static IViewModel? ReinitializeInternal(this IView view, IViewModel? newViewModel)
+        {
+            var oldViewModel = view.DeinitializeViewInternal();
+
+            if (newViewModel is not null)
+                view.Initialize(newViewModel);
+
+            return oldViewModel;
+        }
+
+        private static IViewModel? DeinitializeViewInternal(this IView view)
+        {
+            var viewModel = view.ViewModel;
+            view.Deinitialize();
+
+            return viewModel;
+        }
+
+        private static IViewModel? DisposeViewInternal(this IView view)
+        {
 #if ASPID_MVVM_PROFILER
             using (_disposeViewMarker.Auto())
 #endif
@@ -183,35 +206,22 @@ namespace Aspid.MVVM
             }
         }
 
-        /// <summary>
-        /// Disposes a disposable View or deinitializes it otherwise, logging any exception.
-        /// </summary>
-        /// <param name="view">The View to clean up. Skips <see langword="null"/> and destroyed Unity objects.</param>
-        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
-        public static IViewModel? DisposeViewSafely(this IView? view)
-        {
-            if (view is null || IsDestroyed(view)) return null;
-
-            try
-            {
-                return view.DisposeView();
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception);
-                return null;
-            }
-        }
-
-        private static bool IsDestroyed(IView view) =>
-            view is Object unityObject && !unityObject;
-
-#if ASPID_MVVM_PROFILER
-        private static class Markers<T>
+        private static IViewModel? DisposeViewInternal<T>(this T view)
             where T : class, IView, IDisposable
         {
-            public static readonly Unity.Profiling.ProfilerMarker DisposeViewMarker = new(name: $"DisposeView<{typeof(T)}>");
-        }
+#if ASPID_MVVM_PROFILER
+            using (_disposeViewMarker.Auto())
 #endif
+            {
+                var viewModel = view.ViewModel;
+                view.Dispose();
+
+                return viewModel;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsMissing([NotNullWhen(returnValue: false)] IView? view) =>
+            view is null || view is Object unityObject && unityObject == null;
     }
 }

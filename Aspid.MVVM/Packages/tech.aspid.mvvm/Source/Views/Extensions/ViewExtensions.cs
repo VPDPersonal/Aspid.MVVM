@@ -1,7 +1,3 @@
-#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
-#define ASPID_MVVM_PROFILER
-#endif
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -16,10 +12,6 @@ namespace Aspid.MVVM
     /// </summary>
     public static class ViewExtensions
     {
-#if ASPID_MVVM_PROFILER
-        private static readonly Unity.Profiling.ProfilerMarker _disposeViewMarker = new(name: "DisposeView");
-#endif
-
         /// <summary>
         /// Deinitializes <paramref name="view"/> and initializes it with <paramref name="newViewModel"/>.
         /// </summary>
@@ -187,37 +179,23 @@ namespace Aspid.MVVM
 
         private static IViewModel? DisposeViewInternal(this IView view)
         {
-#if ASPID_MVVM_PROFILER
-            using (_disposeViewMarker.Auto())
-#endif
-            {
-                var viewModel = view.ViewModel;
+            var viewModel = view.ViewModel;
 
-                if (view is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                }
-                else
-                {
-                    view.Deinitialize();
-                }
+            if (view is IDisposable disposable)
+                disposable.Dispose();
+            else
+                view.Deinitialize();
 
-                return viewModel;
-            }
+            return viewModel;
         }
 
         private static IViewModel? DisposeViewInternal<T>(this T view)
             where T : class, IView, IDisposable
         {
-#if ASPID_MVVM_PROFILER
-            using (_disposeViewMarker.Auto())
-#endif
-            {
-                var viewModel = view.ViewModel;
-                view.Dispose();
+            var viewModel = view.ViewModel;
+            view.Dispose();
 
-                return viewModel;
-            }
+            return viewModel;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

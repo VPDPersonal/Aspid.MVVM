@@ -72,38 +72,6 @@ The View to deinitialize. Skips <a href="https://learn.microsoft.com/dotnet/csha
 
 The previous ViewModel on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
 
-### DestroyView\<T\>\(T?\) {#Aspid_MVVM_ViewExtensions_DestroyView__1___0_}
-
-Disposes or deinitializes the view and destroys its Unity object while preserving any GameObject.
-
-```csharp
-public static IViewModel? DestroyView<T>(this T? view) where T : Object, IView
-```
-
-#### Parameters
-
-`view` T?
-
-The view to destroy; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to do nothing.
-
-#### Returns
-
- [IViewModel](Aspid.MVVM.IViewModel.md)?
-
-The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent or the Unity object was already destroyed.
-
-#### Type Parameters
-
-`T`
-
-The Unity view object.
-
-#### Remarks
-
-Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
-Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
-Does not dispose the returned ViewModel.
-
 ### DestroyView\(IView?\) {#Aspid_MVVM_ViewExtensions_DestroyView_Aspid_MVVM_IView_}
 
 Disposes or deinitializes the view and destroys its Unity object while preserving any GameObject.
@@ -127,40 +95,8 @@ The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/langu
 #### Remarks
 
 Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
-Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
-Does not dispose the returned ViewModel. Managed views are only disposed or deinitialized.
-
-### DestroyViewAndGameObject\<T\>\(T?\) {#Aspid_MVVM_ViewExtensions_DestroyViewAndGameObject__1___0_}
-
-Disposes or deinitializes the view and destroys its GameObject or the Unity object itself.
-
-```csharp
-public static IViewModel? DestroyViewAndGameObject<T>(this T? view) where T : Object, IView
-```
-
-#### Parameters
-
-`view` T?
-
-The view to destroy; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to do nothing.
-
-#### Returns
-
- [IViewModel](Aspid.MVVM.IViewModel.md)?
-
-The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent or the Unity object was already destroyed.
-
-#### Type Parameters
-
-`T`
-
-The Unity view object.
-
-#### Remarks
-
-Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
-Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
-Does not dispose the returned ViewModel.
+Destruction is attempted even if cleanup fails. Cleanup failures propagate to the caller.
+Does not dispose the returned ViewModel. Managed views are disposed or deinitialized.
 
 ### DestroyViewAndGameObject\(IView?\) {#Aspid_MVVM_ViewExtensions_DestroyViewAndGameObject_Aspid_MVVM_IView_}
 
@@ -185,8 +121,56 @@ The previous ViewModel; <a href="https://learn.microsoft.com/dotnet/csharp/langu
 #### Remarks
 
 Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
-Destruction is attempted even if cleanup fails; cleanup exceptions propagate to the caller.
-Does not dispose the returned ViewModel. Managed views are only disposed or deinitialized.
+Destruction is attempted even if cleanup fails. Cleanup failures propagate to the caller.
+Does not dispose the returned ViewModel. Managed views are disposed or deinitialized.
+
+### DestroyViewAndGameObjectSafely\(IView?\) {#Aspid_MVVM_ViewExtensions_DestroyViewAndGameObjectSafely_Aspid_MVVM_IView_}
+
+Cleans up and destroys the View, including its GameObject when applicable, and logs failures.
+
+```csharp
+public static IViewModel? DestroyViewAndGameObjectSafely(this IView? view)
+```
+
+#### Parameters
+
+`view` [IView](Aspid.MVVM.IView.md)?
+
+The View to destroy. Skips null and destroyed Unity objects.
+
+#### Returns
+
+ [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The previous ViewModel on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
+
+#### Remarks
+
+Call on the main thread for Unity objects. Destruction is attempted even if cleanup fails.
+
+### DestroyViewSafely\(IView?\) {#Aspid_MVVM_ViewExtensions_DestroyViewSafely_Aspid_MVVM_IView_}
+
+Cleans up and destroys the View, preserving its GameObject when applicable, and logs failures.
+
+```csharp
+public static IViewModel? DestroyViewSafely(this IView? view)
+```
+
+#### Parameters
+
+`view` [IView](Aspid.MVVM.IView.md)?
+
+The View to destroy. Skips null and destroyed Unity objects.
+
+#### Returns
+
+ [IViewModel](Aspid.MVVM.IViewModel.md)?
+
+The previous ViewModel on success, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if absent, skipped, or failed.
+
+#### Remarks
+
+Call on the main thread for Unity objects. Destruction is attempted even if cleanup fails.
 
 ### DisposeView\<T\>\(T\) {#Aspid_MVVM_ViewExtensions_DisposeView__1___0_}
 

@@ -81,7 +81,7 @@ namespace Aspid.MVVM.Tests
             if (failCleanup)
                 Assert.Throws<InvalidOperationException>(() => model.DestroyViewModelAndGameObject());
             else
-                Assert.That(model.DestroyViewModelAndGameObject(), Is.SameAs(owner));
+                model.DestroyViewModelAndGameObject();
             Assert.That(owner != null, Is.True);
             yield return null;
             Assert.That(owner == null, Is.True);
@@ -94,7 +94,7 @@ namespace Aspid.MVVM.Tests
             var model = ScriptableObject.CreateInstance<ScriptableProbe>();
             try
             {
-                Assert.That(model.DestroyViewModelAndGameObject(), Is.Null);
+                model.DestroyViewModelAndGameObject();
                 Assert.That(model != null, Is.True);
                 yield return null;
                 Assert.That(model == null, Is.True);

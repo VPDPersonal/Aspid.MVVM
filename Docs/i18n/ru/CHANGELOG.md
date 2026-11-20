@@ -165,7 +165,7 @@
 - `DestroyView()` теперь уничтожает и ScriptableObject-представления. View и ViewModel используют общий метод уничтожения Unity-объектов, сохраняя прежние возвращаемые значения и обработку null.
 
 - Очистка Unity ViewModel освобождает ресурсы без уничтожения объектов. Вместо `Dispose()` переопределяется `OnDispose()`; очистка выполняется однократно, в том числе при уничтожении через Unity. `DestroyViewModel()` поддерживает ScriptableObject, а `DestroyViewModelAndGameObject()` дополнительно удаляет GameObject компонента.
-- `DestroyViewModelSafely` и `DestroyViewModelAndGameObjectSafely` пропускают null и уничтоженные ViewModel. Они логируют ошибки и пытаются уничтожить объект даже при ошибке очистки.
+- Методы `Destroy*Safely` логируют ошибки очистки View и ViewModel и всё равно пытаются уничтожить Unity-объект. `DestroyViewModelAndGameObject` возвращает `void`.
 - `DestroyViewModel` и `DestroyViewModelAndGameObject` пропускают null ViewModel.
 - Методы уничтожения ViewModel перенесены из `MonoViewModelExtensions` в `ViewModelExtensions` в сборке ядра.
 

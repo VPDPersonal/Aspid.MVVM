@@ -165,7 +165,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `DestroyView()` now destroys ScriptableObject views as well as components. View and ViewModel helpers share Unity object destruction while retaining their existing return values and null handling.
 
 - Unity ViewModel disposal releases resources without destroying objects. Override `OnDispose()` instead of `Dispose()`; cleanup runs once and also runs on Unity destruction. `DestroyViewModel()` supports ScriptableObject ViewModels, and `DestroyViewModelAndGameObject()` additionally removes the owning GameObject.
-- `DestroyViewModelSafely` and `DestroyViewModelAndGameObjectSafely` skip null and destroyed ViewModels. They log failures and still attempt destruction after disposal fails.
+- The `Destroy*Safely` extensions log View and ViewModel cleanup failures and still attempt Unity destruction. `DestroyViewModelAndGameObject` returns `void`.
 - `DestroyViewModel` and `DestroyViewModelAndGameObject` skip null ViewModels.
 - ViewModel destruction extensions moved from `MonoViewModelExtensions` to `ViewModelExtensions` in the core assembly.
 

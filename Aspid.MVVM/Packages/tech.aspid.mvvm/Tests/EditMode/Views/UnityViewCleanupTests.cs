@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
 namespace Aspid.MVVM.Tests
@@ -61,6 +62,22 @@ namespace Aspid.MVVM.Tests
             Assert.That(failure, Is.SameAs(view.Failure));
             Assert.That(view == null, Is.True);
             Assert.That(owner == null, Is.EqualTo(entireObject));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SafeDestructionStillDestroysUnityViewAfterFailure(bool wholeObject)
+        {
+            var view = Spawn<Probe>();
+            var owner = view.gameObject;
+            view.Failure = new InvalidOperationException("Safe view cleanup failed.");
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: Safe view cleanup failed.");
+
+            var result = wholeObject ? view.DestroyViewAndGameObjectSafely() : view.DestroyViewSafely();
+
+            Assert.That(result, Is.Null);
+            Assert.That(view == null, Is.True);
+            Assert.That(owner == null, Is.EqualTo(wholeObject));
         }
 
         [Test]
@@ -165,7 +182,7 @@ namespace Aspid.MVVM.Tests
             IView missing = null;
             Assert.That(missing.DestroyView(), Is.Null);
             Assert.That(missing.DestroyViewAndGameObject(), Is.Null);
-            Assert.That(ViewExtensions.DestroyView<DisposableScriptableProbe>(null), Is.Null);
+            Assert.That(ViewExtensions.DestroyView(null), Is.Null);
             var model = new Model();
             var view = new ManagedView();
             view.Initialize(model);

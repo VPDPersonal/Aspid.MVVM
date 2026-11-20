@@ -13,18 +13,18 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PACKAGE="$ROOT/Aspid.MVVM/Packages/tech.aspid.mvvm"
 
-# <solution folder> <destination folder in the package>
+# <project directory>:<destination folder in the package>
 DLLS=(
-  "Aspid.MVVM.Generators:."
-  "Aspid.MVVM.Analyzers:."
-  "Aspid.MVVM.Unity.Generators:Unity"
+  "Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators:."
+  "Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers:."
+  "Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Unity.Generators:Unity"
 )
 
 cd "$ROOT"
 for entry in "${DLLS[@]}"; do
-  name="${entry%%:*}"
+  project="${entry%%:*}"
+  name="${project##*/}"
   destination="$PACKAGE/${entry#*:}"
-  project="$name/$name/$name"
   if [ ! -f "$project/$name.csproj" ]; then
     echo "error: $project/$name.csproj not found" >&2
     exit 1

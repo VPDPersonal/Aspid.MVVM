@@ -45,7 +45,6 @@ jobs:
             // The sources of the Roslyn DLLs.
             const ROSLYN_SOURCES = {
               'Aspid.MVVM.Generators': 'area: generator',
-              'Aspid.MVVM.Unity.Generators': 'area: generator',
               'Aspid.MVVM.Analyzers': 'area: analyzer',
             };
             const AREAS = [

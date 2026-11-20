@@ -142,6 +142,39 @@ namespace Aspid.MVVM.Tests
             Assert.That(owner != null, Is.True);
         }
 
+        [TestCase(false, false, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, true, true)]
+        [TestCase(true, false, true)]
+        [TestCase(true, true, true)]
+        public void SafeDestructionCompletesCleanupAndLogsFailures(bool wholeObject, bool throughInterface, bool failCleanup)
+        {
+            var model = Spawn<DisposableProbe>();
+            var owner = model.gameObject;
+            if (failCleanup)
+            {
+                model.Cleanup = () => throw new InvalidOperationException("Safe destruction failed.");
+                LogAssert.Expect(LogType.Exception, "InvalidOperationException: Safe destruction failed.");
+            }
+
+            var result = DestroySafely(model);
+
+            Assert.That(result, Is.SameAs(wholeObject || failCleanup ? null : owner));
+            Assert.That(owner == null, Is.EqualTo(wholeObject));
+            Assert.That(model == null, Is.True);
+            Assert.That(DestroySafely(model), Is.Null);
+            Assert.That(DestroySafely(null), Is.Null);
+            Assert.That(model.DisposeCalls, Is.EqualTo(1));
+
+            GameObject DestroySafely(DisposableProbe target) => (wholeObject, throughInterface) switch
+            {
+                (true, true) => ((IViewModel)target).DestroyViewModelAndGameObjectSafely(),
+                (true, false) => target.DestroyViewModelAndGameObjectSafely(),
+                (false, true) => ((IViewModel)target).DestroyViewModelSafely(),
+                _ => target.DestroyViewModelSafely()
+            };
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public void DisposalMayDestroyTheGameObject(bool throughInterface)

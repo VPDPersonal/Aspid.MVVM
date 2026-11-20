@@ -347,7 +347,7 @@ viewModel?.InitializeViews(views);
 
 `InitializeViewSafely` and `InitializeViewsSafely` skip missing or destroyed ViewModels and Views. The batch method logs an individual View's exception and moves to the next View. An enumeration exception is logged and ends the batch.
 
-With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects a null ViewModel, null collection, or null View. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
+With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects null and destroyed Unity objects. If both arguments are invalid, it reports both in an `AggregateException`. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
 
 ### Through ViewInitializer (Inspector)
 

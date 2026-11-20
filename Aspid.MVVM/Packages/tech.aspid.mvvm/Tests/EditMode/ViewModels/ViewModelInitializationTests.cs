@@ -73,6 +73,26 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
+        public void StrictInitializationReportsBothMissingArguments()
+        {
+            IViewModel model = null;
+            AssertMissingArguments(() => model.InitializeView(null), "view");
+            AssertMissingArguments(() => model.InitializeViews((IView[])null), "views");
+            AssertMissingArguments(() => model.InitializeViews((List<IView>)null), "views");
+            AssertMissingArguments(() => model.InitializeViews((IEnumerable<IView>)null), "views");
+
+            void AssertMissingArguments(TestDelegate call, string targetName)
+            {
+                var exception = Assert.Throws<AggregateException>(call);
+                Assert.That(exception.InnerExceptions, Has.Count.EqualTo(2));
+                Assert.That(exception.InnerExceptions[0], Is.TypeOf<ArgumentNullException>());
+                Assert.That(exception.InnerExceptions[1], Is.TypeOf<ArgumentNullException>());
+                Assert.That(((ArgumentNullException)exception.InnerExceptions[0]).ParamName, Is.EqualTo("viewModel"));
+                Assert.That(((ArgumentNullException)exception.InnerExceptions[1]).ParamName, Is.EqualTo(targetName));
+            }
+        }
+
+        [Test]
         public void NullTargetsAreRejectedAndEmptyCollectionsAreAccepted()
         {
             var model = new EmptyViewModel();

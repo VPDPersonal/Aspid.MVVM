@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static Aspid.MVVM.UnityObjectHelper;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -22,12 +21,9 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException">
         /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
         /// </exception>
-        public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel)
-        {
-            return IsMissing(view)
-                ? throw new ArgumentNullException(nameof(view))
-                : view.ReinitializeInternal(newViewModel);
-        }
+        public static IViewModel? Reinitialize(this IView view, IViewModel? newViewModel) => view.IsMissing()
+            ? throw new ArgumentNullException(nameof(view))
+            : view.ReinitializeInternal(newViewModel);
 
         /// <summary>
         /// Deinitializes the View and initializes it with <paramref name="newViewModel"/>, logging any exception.
@@ -37,7 +33,7 @@ namespace Aspid.MVVM
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? ReinitializeSafely(this IView? view, IViewModel? newViewModel)
         {
-            if (IsMissing(view)) return null;
+            if (view.IsMissing()) return null;
 
             try
             {
@@ -58,12 +54,9 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException">
         /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
         /// </exception>
-        public static IViewModel? DeinitializeView(this IView view)
-        {
-            return IsMissing(view)
-                ? throw new ArgumentNullException(nameof(view))
-                : view.DeinitializeViewInternal();
-        }
+        public static IViewModel? DeinitializeView(this IView view) => view.IsMissing()
+            ? throw new ArgumentNullException(nameof(view))
+            : view.DeinitializeViewInternal();
 
         /// <summary>
         /// Deinitializes the View, logging any exception.
@@ -72,7 +65,7 @@ namespace Aspid.MVVM
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? DeinitializeViewSafely(this IView? view)
         {
-            if (IsMissing(view)) return null;
+            if (view.IsMissing()) return null;
 
             try
             {
@@ -98,7 +91,7 @@ namespace Aspid.MVVM
         public static IViewModel? DisposeView<T>(this T view)
             where T : class, IView, IDisposable
         {
-            return IsMissing(view)
+            return view.IsMissing()
                 ? throw new ArgumentNullException(nameof(view))
                 : view.DisposeViewInternal();
         }
@@ -112,7 +105,7 @@ namespace Aspid.MVVM
         public static IViewModel? DisposeViewSafely<T>(this T? view)
             where T : class, IView, IDisposable
         {
-            if (IsMissing(view)) return null;
+            if (view.IsMissing()) return null;
 
             try
             {
@@ -134,12 +127,9 @@ namespace Aspid.MVVM
         /// <exception cref="ArgumentNullException">
         /// <paramref name="view"/> is <see langword="null"/> or a destroyed Unity object.
         /// </exception>
-        public static IViewModel? DisposeView(this IView view)
-        {
-            return IsMissing(view)
-                ? throw new ArgumentNullException(nameof(view))
-                : view.DisposeViewInternal();
-        }
+        public static IViewModel? DisposeView(this IView view) => view.IsMissing()
+            ? throw new ArgumentNullException(nameof(view))
+            : view.DisposeViewInternal();
 
         /// <summary>
         /// Disposes a disposable View or deinitializes it otherwise, logging any exception.
@@ -148,7 +138,7 @@ namespace Aspid.MVVM
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? DisposeViewSafely(this IView? view)
         {
-            if (IsMissing(view)) return null;
+            if (view.IsMissing()) return null;
 
             try
             {
@@ -165,7 +155,7 @@ namespace Aspid.MVVM
         {
             var oldViewModel = view.DeinitializeViewInternal();
 
-            if (!IsMissing(newViewModel))
+            if (!newViewModel.IsMissing())
                 view.Initialize(newViewModel);
 
             return oldViewModel;
@@ -185,8 +175,7 @@ namespace Aspid.MVVM
 
             if (view is IDisposable disposable)
                 disposable.Dispose();
-            else
-                view.Deinitialize();
+            else view.Deinitialize();
 
             return viewModel;
         }

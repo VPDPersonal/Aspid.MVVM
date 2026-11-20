@@ -19,7 +19,7 @@ namespace Aspid.MVVM.Tests
         private EnterPlayModeOptions _previousOptions;
 
         [Test]
-        public void SafeInitializationSkipsDestroyedViewModel()
+        public void LifecycleExtensionsHandleDestroyedViewModel()
         {
             var model = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
             var view = ScriptableObject.CreateInstance<StubScriptableView>();
@@ -27,6 +27,9 @@ namespace Aspid.MVVM.Tests
             {
                 UnityEngine.Object.DestroyImmediate(model);
 
+                Assert.That(Assert.Throws<ArgumentNullException>(() => model.InitializeView(view)).ParamName, Is.EqualTo("viewModel"));
+                Assert.That(Assert.Throws<ArgumentNullException>(() => model.DisposeViewModel()).ParamName, Is.EqualTo("viewModel"));
+                Assert.That(Assert.Throws<ArgumentNullException>(() => ((IViewModel)model).DisposeViewModel()).ParamName, Is.EqualTo("viewModel"));
                 model.InitializeViewSafely(view);
                 model.InitializeViewsSafely(view);
 

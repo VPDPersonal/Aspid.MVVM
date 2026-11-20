@@ -201,6 +201,7 @@ jobs:
             Aspid.MVVM.Analyzers
             Aspid.MVVM.Unity.Generators
             Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands
+            Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Binders/Generation
       # The changes step of the roslyn-dlls job.
       - *changes
 

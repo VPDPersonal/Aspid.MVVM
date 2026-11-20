@@ -42,11 +42,6 @@ jobs:
               'project', 'site', 'api', 'changelog', 'release', 'ci', 'github', 'skills', 'claude', 'deps',
             ];
             const PKG = 'Aspid.MVVM/Packages/tech.aspid.mvvm/';
-            // The sources of the Roslyn DLLs.
-            const ROSLYN_SOURCES = {
-              'Aspid.MVVM.Generators': 'area: generator',
-              'Aspid.MVVM.Analyzers': 'area: analyzer',
-            };
             const AREAS = [
               'area: runtime', 'area: editor', 'area: samples', 'area: docs', 'area: ci', 'area: generator',
               'area: analyzer', 'area: claude',
@@ -61,7 +56,10 @@ jobs:
                 if (/Generators\.dll(\.meta)?$/.test(path)) areas.push('area: generator');
                 if (/Analyzers\.dll(\.meta)?$/.test(path)) areas.push('area: analyzer');
               }
-              if (ROSLYN_SOURCES[file.split('/')[0]]) areas.push(ROSLYN_SOURCES[file.split('/')[0]]);
+              if (file.startsWith('Aspid.MVVM.Generators/')) {
+                const analyzer = file.startsWith('Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers/') || file.startsWith('Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers.Tests/');
+                areas.push(analyzer ? 'area: analyzer' : 'area: generator');
+              }
               if (file.startsWith('Docs/') || /^[^/]+\.md$/.test(file)) areas.push('area: docs');
               if (/^(\.github|scripts)\//.test(file) || ['global.json', 'Directory.Build.props'].includes(file))
                 areas.push('area: ci');

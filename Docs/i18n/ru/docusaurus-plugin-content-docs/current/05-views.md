@@ -263,7 +263,7 @@ public partial class LifecycleView : MonoView
 
 `Reinitialize`, `DeinitializeView` и обе перегрузки `DisposeView` требуют ненулевую View и иначе выбрасывают `ArgumentNullException`. Для необязательной View используйте `view?.DisposeView()`. Возвращаемый null означает отсутствие прежней ViewModel. Обобщённые методы требуют ссылочный тип. Null в качестве новой ViewModel для `Reinitialize` только деинициализирует View. Освобождение ViewModel остаётся ответственностью вызывающего кода. Если инициализация через `Reinitialize` завершается ошибкой, сгенерированная View остаётся отвязанной и не восстанавливает прежнюю ViewModel.
 
-`ReinitializeSafely`, `DeinitializeViewSafely` и `DisposeViewSafely` пропускают null View и записывают исключения в консоль Unity. При успехе они возвращают прежнюю ViewModel. Если ViewModel отсутствовала, вызов пропущен или произошла ошибка, методы возвращают null.
+`ReinitializeSafely`, `DeinitializeViewSafely` и `DisposeViewSafely` пропускают null View и уничтоженные Unity-объекты. Исключения попадают в консоль Unity. При успехе методы возвращают прежнюю ViewModel. Если ViewModel отсутствовала, вызов пропущен или произошла ошибка, методы возвращают null.
 
 ---
 

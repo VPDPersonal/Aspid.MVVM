@@ -7,6 +7,22 @@ namespace Aspid.MVVM.Tests
 {
     internal sealed class UnityViewCleanupTests : SceneFixture
     {
+        [Test]
+        public void SafeLifecycleHelpersSkipDestroyedUnityViews()
+        {
+            var view = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
+            var model = new Model();
+            view.Initialize(model);
+            Object.DestroyImmediate(view);
+
+            Assert.That(((IView)view).ReinitializeSafely(new Model()), Is.Null);
+            Assert.That(view.DeinitializeViewSafely(), Is.Null);
+            Assert.That(view.DisposeViewSafely(), Is.Null);
+            Assert.That(((IView)view).DisposeViewSafely(), Is.Null);
+            Assert.That(view.ViewModel, Is.SameAs(model));
+            Assert.That(view.DisposeCalls, Is.Zero);
+        }
+
         [TestCase(false, false)]
         [TestCase(false, true)]
         [TestCase(true, false)]

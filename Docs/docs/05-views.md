@@ -263,7 +263,7 @@ The binder set is fixed between `Initialize` and `Deinitialize`: fields, cached 
 
 `Reinitialize`, `DeinitializeView` and both `DisposeView` overloads require a non-null View and throw `ArgumentNullException` otherwise. Use `view?.DisposeView()` when the View is optional. A null return means the View had no ViewModel. The generic helpers require reference types. Passing null as the replacement ViewModel to `Reinitialize` only deinitializes the View. ViewModel disposal remains the caller's responsibility. If initialization through `Reinitialize` fails, a generated View stays detached and does not restore the old ViewModel.
 
-`ReinitializeSafely`, `DeinitializeViewSafely` and `DisposeViewSafely` skip null Views and log exceptions to the Unity Console. They return the previous ViewModel on success and null when it was absent, the View was skipped, or the operation failed.
+`ReinitializeSafely`, `DeinitializeViewSafely` and `DisposeViewSafely` skip null Views and destroyed Unity objects. They log exceptions to the Unity Console. The methods return the previous ViewModel on success and null when it was absent, the View was skipped, or the operation failed.
 
 ---
 

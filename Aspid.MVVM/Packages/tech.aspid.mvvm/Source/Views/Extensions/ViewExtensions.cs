@@ -6,6 +6,7 @@
 
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -45,14 +46,16 @@ namespace Aspid.MVVM
         /// <summary>
         /// Deinitializes the View and initializes it with <paramref name="newViewModel"/>, logging any exception.
         /// </summary>
-        /// <param name="view">The View to reinitialize, or <see langword="null"/> to skip.</param>
+        /// <param name="view">The View to reinitialize. Skips <see langword="null"/> and destroyed Unity objects.</param>
         /// <param name="newViewModel">The replacement ViewModel, or <see langword="null"/> to only deinitialize.</param>
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? ReinitializeSafely(this IView? view, IViewModel? newViewModel)
         {
+            if (view is null || IsDestroyed(view)) return null;
+
             try
             {
-                return view?.Reinitialize(newViewModel);
+                return view.Reinitialize(newViewModel);
             }
             catch (Exception exception)
             {
@@ -84,14 +87,16 @@ namespace Aspid.MVVM
         /// Deinitializes the View, logging any exception.
         /// </summary>
         /// <typeparam name="T">The View type.</typeparam>
-        /// <param name="view">The View to deinitialize, or <see langword="null"/> to skip.</param>
+        /// <param name="view">The View to deinitialize. Skips <see langword="null"/> and destroyed Unity objects.</param>
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? DeinitializeViewSafely<T>(this T? view)
             where T : class, IView
         {
+            if (view is null || IsDestroyed(view)) return null;
+
             try
             {
-                return view?.DeinitializeView();
+                return view.DeinitializeView();
             }
             catch (Exception exception)
             {
@@ -129,14 +134,16 @@ namespace Aspid.MVVM
         /// Disposes the View, logging any exception.
         /// </summary>
         /// <typeparam name="T">The disposable View type.</typeparam>
-        /// <param name="view">The View to dispose, or <see langword="null"/> to skip.</param>
+        /// <param name="view">The View to dispose. Skips <see langword="null"/> and destroyed Unity objects.</param>
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? DisposeViewSafely<T>(this T? view)
             where T : class, IView, IDisposable
         {
+            if (view is null || IsDestroyed(view)) return null;
+
             try
             {
-                return view?.DisposeView();
+                return view.DisposeView();
             }
             catch (Exception exception)
             {
@@ -179,13 +186,15 @@ namespace Aspid.MVVM
         /// <summary>
         /// Disposes a disposable View or deinitializes it otherwise, logging any exception.
         /// </summary>
-        /// <param name="view">The View to clean up, or <see langword="null"/> to skip.</param>
+        /// <param name="view">The View to clean up. Skips <see langword="null"/> and destroyed Unity objects.</param>
         /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
         public static IViewModel? DisposeViewSafely(this IView? view)
         {
+            if (view is null || IsDestroyed(view)) return null;
+
             try
             {
-                return view?.DisposeView();
+                return view.DisposeView();
             }
             catch (Exception exception)
             {
@@ -193,6 +202,9 @@ namespace Aspid.MVVM
                 return null;
             }
         }
+
+        private static bool IsDestroyed(IView view) =>
+            view is Object unityObject && !unityObject;
 
 #if ASPID_MVVM_PROFILER
         private static class Markers<T>

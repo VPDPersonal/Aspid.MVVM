@@ -1200,7 +1200,7 @@
     "Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Views/RequireBinderAttribute.cs": "05bc842968b5439eb886843b3df25b9d4deeb9d394589afcd080e0f4c67cbeee",
     "Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Views/ScriptableView.cs": "dd1f4199033735826d9cf54655465524227c271590380de6de60434655428dc8",
     "Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Views/ShowDesignViewModelAttribute.cs": "16d09a74b550f8fc5e15e555adc37245dfb086ff2155b19d6cd71c5f8860cd76",
-    "Directory.Build.props": "051b7b45062685ebd3acafbfbbf4658430e588d27b19d735f9bf6adafed8fc9f",
+    "Directory.Build.props": "6be6ffb90b1ff13071930b3dd8b0e6031618cf8f828b66ce1b7f886ae74a12c5",
     "Docs/docfx/docfx.json": "77f004994c0092f07c136dd7b13cbb5cc4e17866148faa52ebacca3a11da47d9",
     "Docs/scripts/api-freshness.mjs": "b6f49c50f404d45a1f9e6cce3cf50f8fbed945e0cadb6451dbf22aa8d30031f0",
     "Docs/scripts/docfx-postprocess.mjs": "9dcf469542457f497e2d33db5b1d70196be194509d6dbc36d1069f89f3e09ee2",

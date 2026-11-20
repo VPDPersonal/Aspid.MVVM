@@ -44,7 +44,7 @@
 - **Bindable-свойства** — `[Bind]` на свойствах, а не только на полях.
 - **`NotifyCanExecuteChangedAll()`** — обновляет каждую команду с `CanExecute`, включая члены типа `IRelayCommand`.
 - **Автогенерируемые поля биндеров** — слот `MonoBinder[]` для каждого bindable-члена `IView<TViewModel>`, не объявленного во View; отключается `[View(AutoBinderFields = false)]`.
-- **`[GenerateSerializableBinder]`** — сериализуемый близнец `MonoBinder` генерируется; вручную пишется только MonoBehaviour-половина.
+- **`[GenerateSerializableBinder]`** — сериализуемый близнец `MonoBinder` генерируется; вручную пишется только MonoBehaviour-половина. Пользовательские биндеры теперь могут использовать атрибут из `Aspid.MVVM` без ссылки на StarterKit.
 - `ValueViewModel` — ViewModel вокруг одного значения.
 - `RelayCommand.EmptyExecution` и `GetSelfOrEmptyExecution()` — пустая команда для `null`-слота.
 - В качестве design ViewModel можно выбрать интерфейс.

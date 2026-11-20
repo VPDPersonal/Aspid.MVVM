@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="../../../Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Binders/Generation/GenerateSerializableBinderAttribute.cs" LogicalName="GenerateSerializableBinderAttribute.cs" />
         <ProjectReference Include="..\Aspid.MVVM.Unity.Generators\Aspid.MVVM.Unity.Generators.csproj"/>
     </ItemGroup>
 

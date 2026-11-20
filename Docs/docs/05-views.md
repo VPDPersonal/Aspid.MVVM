@@ -345,6 +345,8 @@ viewModel?.InitializeViews(views);
 
 `InitializeViews` accepts arrays, `List<T>` where `T : IView`, and `IEnumerable<IView>` (including read-only collections and lazy sequences). Arrays and lists of concrete View types are supported. Passing an existing array or list avoids enumerator allocations; the `params` call creates an array.
 
+`InitializeViewSafely` and `InitializeViewsSafely` skip missing or destroyed ViewModels and Views. The batch method logs an individual View's exception and moves to the next View. An enumeration exception is logged and ends the batch.
+
 With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects a null ViewModel, null collection, or null View. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
 
 ### Through ViewInitializer (Inspector)

@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Aspid.MVVM.StarterKit;
 using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -91,6 +93,21 @@ namespace Aspid.MVVM.Tests
             Assert.That(Assert.Catch(() => typed.DisposeViewModel()), Is.SameAs(typed.Failure));
             Assert.That(Assert.Catch(() => ((IViewModel)typed).DisposeViewModel()), Is.SameAs(typed.Failure));
             Assert.DoesNotThrow(() => ((IViewModel)new EmptyViewModel()).DisposeViewModel());
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SafeDisposalLogsExceptions(bool typed)
+        {
+            var model = new DisposableModel { Failure = new InvalidOperationException("safe disposal") };
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe disposal");
+
+            if (typed)
+                model.DisposeViewModelSafely();
+            else
+                ((IViewModel)model).DisposeViewModelSafely();
+
+            Assert.That(model.Calls, Is.EqualTo(1));
         }
 
         [TestCase(Access.Private)]

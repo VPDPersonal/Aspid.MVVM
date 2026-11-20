@@ -18,6 +18,26 @@ namespace Aspid.MVVM.Tests
         private bool _previousOptionsEnabled;
         private EnterPlayModeOptions _previousOptions;
 
+        [Test]
+        public void SafeInitializationSkipsDestroyedViewModel()
+        {
+            var model = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
+            var view = ScriptableObject.CreateInstance<StubScriptableView>();
+            try
+            {
+                UnityEngine.Object.DestroyImmediate(model);
+
+                model.InitializeViewSafely(view);
+                model.InitializeViewsSafely(view);
+
+                Assert.That(view.ViewModel, Is.Null);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(view);
+            }
+        }
+
         [UnityTearDown]
         public IEnumerator RestorePlayModeSettings()
         {

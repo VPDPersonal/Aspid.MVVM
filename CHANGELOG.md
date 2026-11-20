@@ -289,6 +289,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 - ViewModel configuration now reports generator diagnostics for invalid modes, accessor visibility, `BindAlso` targets, command signatures and unresolved `CanExecute`; unsupported bindings emit a warning. Editor metadata respects explicit and inferred modes, and `AccessAttribute` retains its constructor values.
 - Built-in ViewModel lookups reject invalid/default queries; both `DisposeViewModel` overloads consistently reject null.
+- `InitializeViewSafely`, `InitializeViewsSafely`, and `DisposeViewModelSafely` skip missing or destroyed Unity objects and log exceptions. A batch continues after an individual View fails.
 
 - Parameter-bound command adapters forward `CanExecuteChanged` while observed, release their source subscription after the last listener, and delegate execution without a duplicate predicate check. Strict adapter factories reject a null source immediately; empty commands always carry a no-op action.
 

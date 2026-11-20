@@ -82,6 +82,10 @@ before calling the marked method.
 [`MonoBinder`](Aspid.MVVM.MonoBinder.md) that targets a <code class="typeparamref">TComponent</code>, taken from the
 serialized field or found on the same GameObject.
 
+ [GenerateSerializableBinderAttribute](Aspid.MVVM.GenerateSerializableBinderAttribute.md)
+
+Generates a serializable binder from the annotated [`MonoBinder`](Aspid.MVVM.MonoBinder.md) class.
+
  [HeaderGroupAttribute](Aspid.MVVM.HeaderGroupAttribute.md)
 
 Groups the decorated member under the supplied foldout title.
@@ -366,6 +370,10 @@ Defines the side of a bindable member that detaches binders.
 
 [`IBinderAdder`](Aspid.MVVM.IBinderAdder.md) that exposes its current value.
 
+ [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
+
+Defines a command without parameters.
+
  [IRelayCommand\<T1, T2, T3, T4\>](Aspid.MVVM.IRelayCommand-4.md)
 
 Defines a command with four parameters.
@@ -374,17 +382,13 @@ Defines a command with four parameters.
 
 Defines a command with three parameters.
 
- [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
+ [IRelayCommand\<T1, T2\>](Aspid.MVVM.IRelayCommand-2.md)
 
-Defines a command without parameters.
+Defines a command with two parameters.
 
  [IRelayCommand\<T\>](Aspid.MVVM.IRelayCommand-1.md)
 
 Defines a command with one parameter.
-
- [IRelayCommand\<T1, T2\>](Aspid.MVVM.IRelayCommand-2.md)
-
-Defines a command with two parameters.
 
  [IReverseBinder\<T\>](Aspid.MVVM.IReverseBinder-1.md)
 

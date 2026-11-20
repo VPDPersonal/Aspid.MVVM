@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Aspid.MVVM.Generators.Generators.SerializableBinders;
+namespace Aspid.MVVM.Unity.Generators.SerializableBinders;
 
 /// <summary>
 /// Emits the serializable half of a binder family from the MonoBehaviour half that carries

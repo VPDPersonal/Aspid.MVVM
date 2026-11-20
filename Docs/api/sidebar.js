@@ -98,6 +98,11 @@ export default { api: [
           },
           {
             "type": "doc",
+            "id": "Aspid.MVVM.GenerateSerializableBinderAttribute",
+            "label": "GenerateSerializableBinderAttribute"
+          },
+          {
+            "type": "doc",
             "id": "Aspid.MVVM.HeaderGroupAttribute",
             "label": "HeaderGroupAttribute"
           },
@@ -2526,11 +2531,6 @@ export default { api: [
             "label": "Core",
             "collapsed": true,
             "items": [
-              {
-                "type": "doc",
-                "id": "Aspid.MVVM.StarterKit.GenerateSerializableBinderAttribute",
-                "label": "GenerateSerializableBinderAttribute"
-              },
               {
                 "type": "doc",
                 "id": "Aspid.MVVM.StarterKit.NotifyMode",

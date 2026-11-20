@@ -1,10 +1,11 @@
+using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Aspid.MVVM.Generators.Generators.SerializableBinders;
+using Aspid.MVVM.Unity.Generators.SerializableBinders;
 using Xunit;
 
-namespace MVVMGenerators.Tests;
+namespace Aspid.MVVM.Unity.Generators.Tests;
 
 /// <summary>
 /// Tests for the generator behind <c>[GenerateSerializableBinder]</c>.
@@ -16,11 +17,60 @@ namespace MVVMGenerators.Tests;
 /// </remarks>
 public sealed class SerializableBinderGeneratorTests
 {
-    internal const string Framework = """
+    [Fact]
+    public void CustomComponentBinderCompilesWithoutStarterKit()
+    {
+        const string declaration = """
+            using Aspid.MVVM;
+            using UnityEngine;
+
+            namespace Game.Lighting
+            {
+                [GenerateSerializableBinder]
+                public class LightIntensityMonoBinder : ComponentMonoBinder<Light>
+                {
+                    public void SetIntensity(float value) => CachedComponent.intensity = value;
+                }
+            }
+            """;
+        const string bases = """
+            namespace UnityEngine { public class Light { public float intensity; } }
+            namespace Aspid.MVVM
+            {
+                public abstract class ComponentMonoBinder<T> { protected T CachedComponent { get; } }
+                public abstract class TargetBinder<T>
+                {
+                    protected T Target { get; }
+                    protected TargetBinder() { }
+                    protected TargetBinder(T target) => Target = target;
+                }
+            }
+            """;
+
+        using var attribute = new StreamReader(typeof(SerializableBinderGeneratorTests).Assembly
+            .GetManifestResourceStream("GenerateSerializableBinderAttribute.cs")!);
+        var runtime = CSharpCompilation.Create("Aspid.MVVM.Unity",
+            new[] { CSharpSyntaxTree.ParseText(attribute.ReadToEnd(), Options), CSharpSyntaxTree.ParseText(bases, Options) },
+            new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        var result = RunResult(declaration, out var compilation, framework: "", runtime.ToMetadataReference());
+
+        Assert.Empty(result.Diagnostics);
+        var twin = compilation.GetTypeByMetadataName("Game.Lighting.LightIntensityBinder");
+        Assert.Equal("Aspid.MVVM.TargetBinder<UnityEngine.Light>", twin?.BaseType?.ToDisplayString());
+        using var output = new MemoryStream();
+        var emit = compilation.Emit(output);
+        Assert.True(emit.Success, string.Join("\n", emit.Diagnostics));
+    }
+
+    private const string Framework = """
         using System;
 
         namespace Aspid.MVVM
         {
+            [AttributeUsage(AttributeTargets.Class)]
+            public sealed class GenerateSerializableBinderAttribute : Attribute { }
+
             public enum BindMode { None, OneTime, OneWay, OneWayToSource, TwoWay }
 
             [AttributeUsage(AttributeTargets.Class, Inherited = false)]
@@ -46,9 +96,6 @@ public sealed class SerializableBinderGeneratorTests
 
         namespace Aspid.MVVM.StarterKit
         {
-            [AttributeUsage(AttributeTargets.Class)]
-            public sealed class GenerateSerializableBinderAttribute : Attribute { }
-
             public interface IConverter<TFrom, TTo> { }
 
             [Aspid.MVVM.BindModeOverride(Aspid.MVVM.BindMode.OneWay, Aspid.MVVM.BindMode.OneTime, Aspid.MVVM.BindMode.OneWayToSource)]
@@ -435,25 +482,131 @@ public sealed class SerializableBinderGeneratorTests
         }
         """;
 
+    private const string Mono = "[Aspid.MVVM.GenerateSerializableBinder] public class ProbeMonoBinder : Aspid.MVVM.StarterKit.ComponentFloatMonoBinder<UnityEngine.Camera> { }";
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("namespace Outer { namespace Inner {", "}}")]
+    [InlineData("namespace Outer.Inner;", "")]
+    [InlineData("public partial class Host {", "}")]
+    [InlineData("public partial class Host<T> where T : class, new() {", "}")]
+    [InlineData("namespace @event { public partial class @class<@struct> where @struct : class {", "}}")]
+    public void SerializableBindersCompileInOriginalScope(string prefix, string suffix)
+    {
+        Compile(
+            "using Aspid.MVVM; using Aspid.MVVM.StarterKit; " + prefix + Mono + suffix);
+    }
+
+    [Fact]
+    public void SerializableBindersPreserveNamespaceScopedAliasesAndGenericConstraints()
+    {
+        Compile("""
+            namespace Outer
+            {
+                using Aspid.MVVM;
+                using Aspid.MVVM.StarterKit;
+                using CameraAlias = UnityEngine.Camera;
+                namespace Inner
+                {
+                    [GenerateSerializableBinder]
+                    public class ProbeMonoBinder<T> : ComponentFloatMonoBinder<CameraAlias> where T : class, new()
+                    {
+                        public T Create() => new T();
+                    }
+                }
+            }
+            """);
+    }
+
+    [Fact]
+    public void PrivateSerializableTwinsKeepConstraintsOnPrivateTypes()
+    {
+        Compile("""
+            using Aspid.MVVM;
+            using Aspid.MVVM.StarterKit;
+            partial class Host
+            {
+                private class Payload { }
+                [GenerateSerializableBinder]
+                private class ProbeMonoBinder<T> : ComponentFloatMonoBinder<UnityEngine.Camera> where T : Payload { }
+            }
+            """);
+    }
+
+    [Fact]
+    public void SerializableBinderHintNamesIncludeNamespaceContainerAndArity()
+    {
+        Compile(
+            "using Aspid.MVVM; using Aspid.MVVM.StarterKit; namespace A { " + Mono + Mono.Replace("class ProbeMonoBinder", "class ProbeMonoBinder<T>") + " } namespace B { " + Mono + " }");
+    }
+
+    [Fact]
+    public void ExistingNestedTwinPreventsGenerationInTheSameScope()
+    {
+        var result = RunResult(
+            "partial class Host { " + Mono + " public class ProbeBinder { } }", out _, SerializableFramework);
+        Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Id == "ASPIDSB003");
+        Assert.Empty(result.Results.SelectMany(generator => generator.GeneratedSources));
+    }
+
+    [Fact]
+    public void EscapedSerializableNameRecognizesAnExistingTwin()
+    {
+        var result = RunResult(
+            "partial class Host { " + Mono.Replace("class ProbeMonoBinder", "class @ProbeMonoBinder") + " public class ProbeBinder { } }", out _, SerializableFramework);
+        Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Id == "ASPIDSB003");
+        Assert.Empty(result.Results.SelectMany(generator => generator.GeneratedSources));
+    }
+
+
+    [Fact]
+    public void NonPartialContainerProducesADiagnostic()
+    {
+        var result = RunResult("class Host { " + Mono + " }", out _, SerializableFramework);
+        Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Id == "ASPIDGEN001");
+        Assert.Empty(result.Results.SelectMany(item => item.GeneratedSources));
+    }
+
+    private static void Compile(string declaration)
+    {
+        var result = RunResult(declaration, out var compilation, SerializableFramework);
+        Assert.Empty(result.Diagnostics);
+        using var output = new MemoryStream();
+        var emit = compilation.Emit(output);
+        Assert.True(emit.Success, string.Join("\n", emit.Diagnostics));
+    }
+
+    private static readonly string SerializableFramework = Framework
+        .Replace("protected T Target;\n        protected TargetFloatBinder", "protected T Target;\n        protected TargetFloatBinder() { }\n        protected TargetFloatBinder") + """
+        namespace Aspid.MVVM
+        {
+            public static class BindModeExtensions { public static void EnsureNot(this BindMode mode, BindMode forbidden) { } }
+        }
+        """;
+
     private static string Run(string declaration) =>
         string.Concat(RunResult(declaration).Results.SelectMany(result => result.GeneratedSources)
             .Select(source => source.SourceText.ToString()));
 
-    private static GeneratorDriverRunResult RunResult(string declaration)
+    private static GeneratorDriverRunResult RunResult(string declaration) =>
+        RunResult(declaration, out _);
+
+    private static GeneratorDriverRunResult RunResult(string declaration, out Compilation output, string framework = Framework, params MetadataReference[] references)
     {
         var compilation = CSharpCompilation.Create(
             assemblyName: "Probe.Serializable",
             syntaxTrees: new[]
             {
-                CSharpSyntaxTree.ParseText(Framework, Options),
+                CSharpSyntaxTree.ParseText(framework, Options),
                 CSharpSyntaxTree.ParseText(declaration, Options),
             },
-            references: new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
+            references: references.Prepend(MetadataReference.CreateFromFile(typeof(object).Assembly.Location)),
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         var result = CSharpGeneratorDriver
             .Create(new SerializableBinderGenerator())
-            .RunGenerators(compilation)
+            .WithUpdatedParseOptions(Options)
+            .RunGeneratorsAndUpdateCompilation(compilation, out output, out _)
             .GetRunResult();
         Assert.All(result.Results, generator => Assert.Null(generator.Exception));
         return result;

@@ -44,7 +44,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - **Bindable properties** — `[Bind]` on properties, not only fields.
 - **`NotifyCanExecuteChangedAll()`** — refreshes every command with a `CanExecute`, including `IRelayCommand`-typed members.
 - **Auto-emitted binder fields** — a `MonoBinder[]` slot for every bindable member of `IView<TViewModel>` not declared on the View; opt out with `[View(AutoBinderFields = false)]`.
-- **`[GenerateSerializableBinder]`** — the serializable twin of a `MonoBinder` is generated; only the MonoBehaviour half is hand-written.
+- **`[GenerateSerializableBinder]`** — the serializable twin of a `MonoBinder` is generated; only the MonoBehaviour half is hand-written. Custom binders can now use the attribute from `Aspid.MVVM` without referencing StarterKit.
 - `ValueViewModel` — a ViewModel around a single value.
 - `RelayCommand.EmptyExecution` and `GetSelfOrEmptyExecution()` — a no-op command for a `null` slot.
 - An interface can be picked as a design ViewModel.

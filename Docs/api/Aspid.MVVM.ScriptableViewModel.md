@@ -32,14 +32,14 @@ ScriptableObject ←
 
 #### Extension Methods
 
-[MonoViewModelExtensions.DestroyViewModel\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel__1___0_),
-[MonoViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_),
-[MonoViewModelExtensions.DestroyViewModelAndGameObject\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject__1___0_),
-[MonoViewModelExtensions.DestroyViewModelAndGameObject\(IViewModel\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObject_Aspid_MVVM_IViewModel_),
-[MonoViewModelExtensions.DestroyViewModelAndGameObjectSafely\<ScriptableViewModel\>\(ScriptableViewModel?\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObjectSafely__1___0_),
-[MonoViewModelExtensions.DestroyViewModelAndGameObjectSafely\(IViewModel?\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelAndGameObjectSafely_Aspid_MVVM_IViewModel_),
-[MonoViewModelExtensions.DestroyViewModelSafely\<ScriptableViewModel\>\(ScriptableViewModel?\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelSafely__1___0_),
-[MonoViewModelExtensions.DestroyViewModelSafely\(IViewModel?\)](Aspid.MVVM.MonoViewModelExtensions.md#Aspid_MVVM_MonoViewModelExtensions_DestroyViewModelSafely_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DestroyViewModel\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModel__1___0_),
+[ViewModelExtensions.DestroyViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModel_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DestroyViewModelAndGameObject\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModelAndGameObject__1___0_),
+[ViewModelExtensions.DestroyViewModelAndGameObject\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModelAndGameObject_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DestroyViewModelAndGameObjectSafely\<ScriptableViewModel\>\(ScriptableViewModel?\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModelAndGameObjectSafely__1___0_),
+[ViewModelExtensions.DestroyViewModelAndGameObjectSafely\(IViewModel?\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModelAndGameObjectSafely_Aspid_MVVM_IViewModel_),
+[ViewModelExtensions.DestroyViewModelSafely\<ScriptableViewModel\>\(ScriptableViewModel?\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModelSafely__1___0_),
+[ViewModelExtensions.DestroyViewModelSafely\(IViewModel?\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DestroyViewModelSafely_Aspid_MVVM_IViewModel_),
 [ViewModelExtensions.DisposeViewModel\<ScriptableViewModel\>\(ScriptableViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel__1___0_),
 [ViewModelExtensions.DisposeViewModel\(IViewModel\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModel_Aspid_MVVM_IViewModel_),
 [ViewModelExtensions.DisposeViewModelSafely\<ScriptableViewModel\>\(ScriptableViewModel?\)](Aspid.MVVM.ViewModelExtensions.md#Aspid_MVVM_ViewModelExtensions_DisposeViewModelSafely__1___0_),

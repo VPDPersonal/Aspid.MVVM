@@ -143,11 +143,6 @@ export default { api: [
           },
           {
             "type": "doc",
-            "id": "Aspid.MVVM.MonoViewModelExtensions",
-            "label": "MonoViewModelExtensions"
-          },
-          {
-            "type": "doc",
             "id": "Aspid.MVVM.MonoViewMonoBinder",
             "label": "MonoViewMonoBinder"
           },

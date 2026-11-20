@@ -16,10 +16,9 @@ namespace Aspid.MVVM
         /// <para>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller.</para>
         /// </remarks>
         /// <typeparam name="T">The Unity ViewModel object.</typeparam>
-        /// <param name="viewModel">The ViewModel to dispose and destroy.</param>
+        /// <param name="viewModel">The ViewModel to destroy. Skips null and destroyed Unity objects.</param>
         /// <returns>The associated GameObject if still alive after the call; otherwise, <see langword="null"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
-        public static GameObject? DestroyViewModel<T>(this T viewModel)
+        public static GameObject? DestroyViewModel<T>(this T? viewModel)
             where T : Object, IViewModel =>
             DestroyViewModelInternal(viewModel, destroyGameObject: false);
 
@@ -30,10 +29,9 @@ namespace Aspid.MVVM
         /// <para>Call on the main thread for Unity objects; destruction is deferred in Play Mode and immediate in Edit Mode.</para>
         /// <para>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller. Managed ViewModels are only disposed.</para>
         /// </remarks>
-        /// <param name="viewModel">The ViewModel to dispose and destroy.</param>
+        /// <param name="viewModel">The ViewModel to destroy. Skips null and destroyed Unity objects.</param>
         /// <returns>The associated GameObject if still alive after the call; otherwise, <see langword="null"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
-        public static GameObject? DestroyViewModel(this IViewModel viewModel) =>
+        public static GameObject? DestroyViewModel(this IViewModel? viewModel) =>
             DestroyViewModelInternal(viewModel, destroyGameObject: false);
 
         /// <summary>
@@ -44,10 +42,9 @@ namespace Aspid.MVVM
         /// <para>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller.</para>
         /// </remarks>
         /// <typeparam name="T">The Unity ViewModel object.</typeparam>
-        /// <param name="viewModel">The ViewModel to dispose and destroy.</param>
+        /// <param name="viewModel">The ViewModel to destroy. Skips null and destroyed Unity objects.</param>
         /// <returns>The associated GameObject if still alive after the call; otherwise, <see langword="null"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
-        public static GameObject? DestroyViewModelAndGameObject<T>(this T viewModel)
+        public static GameObject? DestroyViewModelAndGameObject<T>(this T? viewModel)
             where T : Object, IViewModel =>
             DestroyViewModelInternal(viewModel, destroyGameObject: true);
 
@@ -58,10 +55,9 @@ namespace Aspid.MVVM
         /// <para>Call on the main thread for Unity objects; destruction is deferred in Play Mode and immediate in Edit Mode.</para>
         /// <para>Destruction is attempted even if disposal throws; cleanup exceptions propagate to the caller. Managed ViewModels are only disposed.</para>
         /// </remarks>
-        /// <param name="viewModel">The ViewModel to dispose and destroy.</param>
+        /// <param name="viewModel">The ViewModel to destroy. Skips null and destroyed Unity objects.</param>
         /// <returns>The associated GameObject if still alive after the call; otherwise, <see langword="null"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="viewModel"/> is <see langword="null"/>.</exception>
-        public static GameObject? DestroyViewModelAndGameObject(this IViewModel viewModel) =>
+        public static GameObject? DestroyViewModelAndGameObject(this IViewModel? viewModel) =>
             DestroyViewModelInternal(viewModel, destroyGameObject: true);
 
         /// <summary>
@@ -106,8 +102,6 @@ namespace Aspid.MVVM
 
         private static GameObject? DestroyViewModelSafelyInternal(IViewModel? viewModel, bool destroyGameObject)
         {
-            if (viewModel is null) return null;
-
             try
             {
                 return DestroyViewModelInternal(viewModel, destroyGameObject);
@@ -119,14 +113,11 @@ namespace Aspid.MVVM
             }
         }
 
-        private static GameObject? DestroyViewModelInternal(IViewModel viewModel, bool destroyGameObject)
+        private static GameObject? DestroyViewModelInternal(IViewModel? viewModel, bool destroyGameObject)
         {
-            if (viewModel is null)
-                throw new ArgumentNullException(nameof(viewModel));
-
             if (viewModel is not Object target)
             {
-                viewModel.DisposeViewModel();
+                viewModel?.DisposeViewModel();
                 return null;
             }
 

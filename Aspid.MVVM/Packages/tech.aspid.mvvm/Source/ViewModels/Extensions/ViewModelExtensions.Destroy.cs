@@ -6,10 +6,7 @@ using Object = UnityEngine.Object;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-    /// <summary>
-    /// Provides extension methods for <see cref="IViewModel"/>.
-    /// </summary>
-    public static class MonoViewModelExtensions
+    public static partial class ViewModelExtensions
     {
         /// <summary>
         /// Disposes the ViewModel if supported and destroys its Unity object while preserving any GameObject.

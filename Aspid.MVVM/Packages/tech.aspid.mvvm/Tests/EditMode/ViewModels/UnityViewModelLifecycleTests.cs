@@ -98,9 +98,9 @@ namespace Aspid.MVVM.Tests
         public void NullArgumentsAreRejectedByBothOverloads()
         {
             Assert.That(Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModel<MonoProbe>(null)).ParamName, Is.EqualTo("viewModel"));
+                ViewModelExtensions.DestroyViewModel<MonoProbe>(null)).ParamName, Is.EqualTo("viewModel"));
             Assert.That(Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModel((IViewModel)null)).ParamName, Is.EqualTo("viewModel"));
+                ViewModelExtensions.DestroyViewModel((IViewModel)null)).ParamName, Is.EqualTo("viewModel"));
         }
 
         [Test]
@@ -494,9 +494,9 @@ namespace Aspid.MVVM.Tests
         public void WholeObjectHelperRejectsNullAndDisposesManagedModels()
         {
             Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModelAndGameObject<MonoProbe>(null));
+                ViewModelExtensions.DestroyViewModelAndGameObject<MonoProbe>(null));
             Assert.Throws<ArgumentNullException>(() =>
-                MonoViewModelExtensions.DestroyViewModelAndGameObject((IViewModel)null));
+                ViewModelExtensions.DestroyViewModelAndGameObject((IViewModel)null));
             var model = new ManagedProbe();
             Assert.That(((IViewModel)model).DestroyViewModelAndGameObject(), Is.Null);
             Assert.That(model.Disposed, Is.True);

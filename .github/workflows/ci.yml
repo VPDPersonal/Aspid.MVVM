@@ -118,7 +118,6 @@ jobs:
             scripts
             Aspid.MVVM.Generators
             Generators.Shared
-            Aspid.MVVM.Analyzers
             Aspid.MVVM/Packages/tech.aspid.mvvm
       # Skips the rest when nothing the job reads changed: the folders of its sparse checkout, global.json,
       # Directory.Build.props and this workflow. The base is the one of the Unity
@@ -185,7 +184,7 @@ jobs:
           - name: Generators
             path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators.Tests
           - name: Analyzers
-            path: Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.Tests
+            path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers.Tests
           - name: Unity generators
             path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Unity.Generators.Tests
     steps:
@@ -197,7 +196,6 @@ jobs:
           sparse-checkout: |
             Aspid.MVVM.Generators
             Generators.Shared
-            Aspid.MVVM.Analyzers
             Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands
             Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Binders/Generation
       # The changes step of the roslyn-dlls job.

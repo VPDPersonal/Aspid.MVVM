@@ -21,7 +21,7 @@ Desktop.ini
 .claude/settings.local.json
 .claude/worktrees/
 
-# .NET build output of the Roslyn solutions (Aspid.MVVM.Generators, Aspid.MVVM.Analyzers)
+# .NET build output of the Roslyn projects
 [Bb]in/
 [Oo]bj/
 [Tt]est[Rr]esults/

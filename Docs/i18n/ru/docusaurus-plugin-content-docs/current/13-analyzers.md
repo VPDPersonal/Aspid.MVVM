@@ -60,7 +60,7 @@ Aspid.MVVM включает два набора анализаторов:
 ## Установка
 
 Анализаторы поставляются вместе с пакетом Aspid.MVVM как `Aspid.MVVM.Analyzers.dll` — больше ничего ставить не нужно.
-Их исходники лежат в папке `Aspid.MVVM.Analyzers/` репозитория.
+Их исходники лежат в папке `Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers/` репозитория.
 
 ---
 

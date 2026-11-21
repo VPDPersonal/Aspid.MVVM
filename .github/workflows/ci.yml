@@ -117,7 +117,6 @@ jobs:
           sparse-checkout: |
             scripts
             Aspid.MVVM.Roslyn
-            Generators.Shared
             Aspid.MVVM/Packages/tech.aspid.mvvm
       # Skips the rest when nothing the job reads changed: the folders of its sparse checkout, global.json,
       # Directory.Build.props and this workflow. The base is the one of the Unity
@@ -195,7 +194,6 @@ jobs:
           filter: blob:none
           sparse-checkout: |
             Aspid.MVVM.Roslyn
-            Generators.Shared
             Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands
             Aspid.MVVM/Packages/tech.aspid.mvvm/Unity/Runtime/Binders/Generation
       # The changes step of the roslyn-dlls job.

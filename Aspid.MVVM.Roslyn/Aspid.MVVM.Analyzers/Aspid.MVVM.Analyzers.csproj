@@ -27,6 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="../../Generators.Shared/BindablePropertyNames.cs" Link="Shared/BindablePropertyNames.cs" />
+        <Compile Include="../Shared/BindablePropertyNames.cs" Link="Shared/BindablePropertyNames.cs" />
     </ItemGroup>
 </Project>

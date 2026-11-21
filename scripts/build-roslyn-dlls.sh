@@ -15,9 +15,9 @@ PACKAGE="$ROOT/Aspid.MVVM/Packages/tech.aspid.mvvm"
 
 # <project directory>:<destination folder in the package>
 DLLS=(
-  "Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators:."
-  "Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers:."
-  "Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Unity.Generators:Unity"
+  "Aspid.MVVM.Roslyn/Aspid.MVVM.Generators:."
+  "Aspid.MVVM.Roslyn/Aspid.MVVM.Analyzers:."
+  "Aspid.MVVM.Roslyn/Aspid.MVVM.Unity.Generators:Unity"
 )
 
 cd "$ROOT"

@@ -60,7 +60,7 @@ Most diagnostics come with an automatic fix:
 ## Installation
 
 The analyzers ship with the Aspid.MVVM package as `Aspid.MVVM.Analyzers.dll`; there is nothing else to install. Their
-source is in the `Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers/` folder of the repository.
+source is in the `Aspid.MVVM.Roslyn/Aspid.MVVM.Analyzers/` folder of the repository.
 
 ---
 

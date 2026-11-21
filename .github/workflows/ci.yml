@@ -182,11 +182,11 @@ jobs:
       matrix:
         include:
           - name: Generators
-            path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Generators.Tests
+            path: Aspid.MVVM.Roslyn/Aspid.MVVM.Generators.Tests
           - name: Analyzers
-            path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers.Tests
+            path: Aspid.MVVM.Roslyn/Aspid.MVVM.Analyzers.Tests
           - name: Unity generators
-            path: Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Unity.Generators.Tests
+            path: Aspid.MVVM.Roslyn/Aspid.MVVM.Unity.Generators.Tests
     steps:
       # Only what the solutions read.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

@@ -30,8 +30,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="../../../Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands/RelayCommand.cs" LogicalName="Aspid.Tests.RelayCommand.cs" />
-        <EmbeddedResource Include="../../../Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands/IRelayCommand.cs" LogicalName="Aspid.Tests.IRelayCommand.cs" />
+        <EmbeddedResource Include="../../Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands/RelayCommand.cs" LogicalName="Aspid.Tests.RelayCommand.cs" />
+        <EmbeddedResource Include="../../Aspid.MVVM/Packages/tech.aspid.mvvm/Source/Commands/IRelayCommand.cs" LogicalName="Aspid.Tests.IRelayCommand.cs" />
     </ItemGroup>
 
 </Project>

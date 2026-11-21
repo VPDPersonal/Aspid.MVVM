@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Shared/">
+    <File Path="Shared/AspidTypeDeclaration.cs" />
+    <File Path="Shared/BindablePropertyNames.cs" />
+  </Folder>
   <Project Path="Aspid.MVVM.Analyzers.Tests/Aspid.MVVM.Analyzers.Tests.csproj" />
   <Project Path="Aspid.MVVM.Analyzers/Aspid.MVVM.Analyzers.csproj" />
   <Project Path="Aspid.MVVM.Generators.Tests/Aspid.MVVM.Generators.Tests.csproj" />

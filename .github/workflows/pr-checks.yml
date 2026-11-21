@@ -56,8 +56,8 @@ jobs:
                 if (/Generators\.dll(\.meta)?$/.test(path)) areas.push('area: generator');
                 if (/Analyzers\.dll(\.meta)?$/.test(path)) areas.push('area: analyzer');
               }
-              if (file.startsWith('Aspid.MVVM.Generators/')) {
-                const analyzer = file.startsWith('Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers/') || file.startsWith('Aspid.MVVM.Generators/Aspid.MVVM.Generators/Aspid.MVVM.Analyzers.Tests/');
+              if (file.startsWith('Aspid.MVVM.Roslyn/')) {
+                const analyzer = file.startsWith('Aspid.MVVM.Roslyn/Aspid.MVVM.Analyzers/') || file.startsWith('Aspid.MVVM.Roslyn/Aspid.MVVM.Analyzers.Tests/');
                 areas.push(analyzer ? 'area: analyzer' : 'area: generator');
               }
               if (file.startsWith('Docs/') || /^[^/]+\.md$/.test(file)) areas.push('area: docs');

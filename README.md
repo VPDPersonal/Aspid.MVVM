@@ -14,7 +14,7 @@ teams to scale projects without descending into chaos.
 
 ---
 
-### \[[Documentation](https://vpdpersonal.github.io/Aspid.MVVM/)\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)\] \[[Donate](#donate)\] \[[Get Started](#get-started)\]
+### \[[Documentation](https://vpdpersonal.github.io/Aspid.MVVM/)\] \[[Unity Assets Store](https://assetstore.unity.com/packages/slug/298463)\] \[[Support](#support-the-project)\] \[[Get Started](#get-started)\]
 
 ---
 
@@ -166,11 +166,11 @@ $\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$ works on all Unity-supported platfo
 
 ---
 
-# Donate
-This project is developed on a voluntary basis. If you find it useful, you can support its development financially. This helps allocate more time to improving and maintaining $\color{#6aba7d}\large{\textbf{Aspid.MVVM}}$.
+## Support the project
 
-You can donate via the following platforms:
-* \[[Unity Asset Store](https://assetstore.unity.com/packages/slug/298463)\]
+I develop Aspid.MVVM in my spare time. Your support helps me maintain the package and its documentation.
+
+<p><a href="https://ko-fi.com/vpdaspid"><picture><source media="(max-width: 640px)" srcset="https://vpdpersonal.github.io/VPDPersonal/support/kofi-button.svg#stacked" width="100%" height="48" /><img src="https://vpdpersonal.github.io/VPDPersonal/support/kofi-button.svg" alt="Tip on Ko-fi" width="50%" height="48"></picture></a><a href="https://assetstore.unity.com/packages/slug/298463"><picture><source media="(max-width: 640px)" srcset="https://vpdpersonal.github.io/VPDPersonal/support/unity-asset-store-button.svg#stacked" width="100%" height="48" /><img src="https://vpdpersonal.github.io/VPDPersonal/support/unity-asset-store-button.svg" alt="Buy on the Unity Asset Store" width="50%" height="48"></picture></a></p>
 
 ---
 

@@ -27,11 +27,8 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand _command;
         private IRelayCommand<bool> _boolCommand;
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        private void OnValidate()
         {
-            base.OnValidate();
-
             if (_command is not null) OnCanExecuteChanged(_command);
             else if (_boolCommand is not null) OnCanExecuteChanged(_boolCommand);
         }
@@ -114,10 +111,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -206,10 +204,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -315,10 +314,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -442,10 +442,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 

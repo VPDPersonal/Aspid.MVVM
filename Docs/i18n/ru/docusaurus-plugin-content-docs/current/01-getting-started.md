@@ -153,7 +153,7 @@ public sealed class Bootstrap : MonoBehaviour
 
     private void OnDestroy()
     {
-        _counterView.DeinitializeView()?.DisposeViewModel();
+        _counterView.DeinitializeViewSafely()?.DisposeViewModel();
     }
 }
 ```

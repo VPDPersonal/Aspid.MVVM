@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-#nullable enable
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -45,7 +44,7 @@ namespace Aspid.MVVM
                 for (var i = 0; i < count && pending.TryDequeue(out var request); i++)
                 {
                     if (!ReferenceEquals(pending, Volatile.Read(ref _pending))) break;
-                    if (!request.Target || !_notified.Add(request.Target)) continue;
+                    if (request.Target == null || !_notified.Add(request.Target)) continue;
 
                     try
                     {
@@ -70,6 +69,7 @@ namespace Aspid.MVVM
             {
                 case PlayModeStateChange.ExitingEditMode or PlayModeStateChange.ExitingPlayMode:
                     _isTransitioning = true;
+
                     Interlocked.Exchange(
                         location1: ref _pending,
                         value: new ConcurrentQueue<(Object Target, Action<Object> Notify)>());

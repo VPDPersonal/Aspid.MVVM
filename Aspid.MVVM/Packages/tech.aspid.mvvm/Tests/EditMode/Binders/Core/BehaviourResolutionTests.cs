@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.UI;
 using NUnit.Framework;
 using Aspid.MVVM.StarterKit;
@@ -20,7 +21,10 @@ namespace Aspid.MVVM.Tests
         {
             var binder = Spawn().AddComponent<BehaviourEnabledMonoBinder>();
 
-            Assert.IsFalse(binder.CanBind, "The binder chose itself as the target");
+            var context = new BindContext(new OneWayBindableMember<bool>(false), this);
+
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(context));
+            Assert.That(binder.enabled, Is.True);
         }
 
         [Test]

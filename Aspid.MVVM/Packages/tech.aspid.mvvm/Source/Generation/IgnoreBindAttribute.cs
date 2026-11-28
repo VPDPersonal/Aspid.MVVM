@@ -12,6 +12,6 @@ namespace Aspid.MVVM
     /// [SerializeField] private MonoBinder[] _previewBinders;
     /// </code>
     /// </example>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    [AttributeUsage(validOn: AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class IgnoreBindAttribute : Attribute { }
 }

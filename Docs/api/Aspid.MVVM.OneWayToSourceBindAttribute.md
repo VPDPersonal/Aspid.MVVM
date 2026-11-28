@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Generates a [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
+Binds the marked field or property in [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) using [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public sealed class OneWayToSourceBindAttribute : BaseBindAttribute

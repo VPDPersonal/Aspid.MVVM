@@ -4,18 +4,18 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Generates a bindable member for the field or property of a <see cref="ViewModelAttribute">[ViewModel]</see> class, and a property for a field.
+    /// Makes a field or property bindable in a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Without a mode, a mutable field binds <see cref="BindMode.TwoWay"/> and a <see langword="readonly"/> field
-    /// <see cref="BindMode.OneTime"/>; a property binds <see cref="BindMode.OneWay"/> when it is get-only,
-    /// <see cref="BindMode.OneWayToSource"/> when it is set-only and <see cref="BindMode.TwoWay"/> otherwise.
+    /// Fields get a generated property. Mutable fields default to <see cref="BindMode.TwoWay"/>,
+    /// and <see langword="readonly"/> fields use <see cref="BindMode.OneTime"/>.
+    /// Properties default to <see cref="BindMode.OneWay"/> for a getter, <see cref="BindMode.OneWayToSource"/>
+    /// for a setter, or <see cref="BindMode.TwoWay"/> for both.
     /// </para>
     /// <para>
-    /// A mode the member cannot support skips the member with a generator warning: a <see langword="readonly"/> field takes only
-    /// <see cref="BindMode.OneTime"/>, a get-only property <see cref="BindMode.OneTime"/> or <see cref="BindMode.OneWay"/>, and
-    /// a set-only property <see cref="BindMode.OneWayToSource"/>.
+    /// The generator warns and skips members with an incompatible mode. A get-only property also supports
+    /// <see cref="BindMode.OneTime"/>.
     /// </para>
     /// </remarks>
     /// <example>

@@ -22,21 +22,6 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
 {
     private const string AttributeName = "GenerateSerializableBinder";
 
-    /// <summary>
-    /// The serializable base a MonoBehaviour base maps to when dropping <c>Mono</c> from its name does not name it.
-    /// </summary>
-    /// <remarks>
-    /// Only the component families need an entry: they bind a property of a component the MonoBehaviour finds on its
-    /// own, and the serializable half is handed that component as its target instead.
-    /// </remarks>
-    private static readonly Dictionary<string, string> Bases = new()
-    {
-        ["ComponentMonoBinder"] = "TargetBinder",
-        ["ComponentIntMonoBinder"] = "TargetIntBinder",
-        ["ComponentFloatMonoBinder"] = "TargetFloatBinder",
-        ["ComponentObjectMonoBinder"] = "TargetObjectBinder",
-    };
-
     /// <summary>Attributes that describe the Inspector and belong to the MonoBehaviour half alone.</summary>
     private static readonly HashSet<string> MonoOnlyAttributes = new()
     {
@@ -121,7 +106,44 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         {
             var (compilation, classes) = pair;
 
-            foreach (var declaration in classes)
+            var byAbstract = classes.ToLookup(declaration => compilation.GetSemanticModel(declaration.SyntaxTree)
+                .GetDeclaredSymbol(declaration)?.IsAbstract == true);
+            var pending = byAbstract[true].ToList();
+
+            // Add generated bases to the semantic model before resolving derived constructor signatures.
+            while (pending.Count > 0)
+            {
+                var trees = new List<SyntaxTree>();
+                var deferred = new List<(ClassDeclarationSyntax Declaration, Diagnostic Diagnostic)>();
+
+                foreach (var declaration in pending)
+                {
+                    var emitted = Build(compilation, declaration, out var diagnostic, out var identity);
+                    if (diagnostic?.Id == NoTargetBase.Id)
+                    {
+                        deferred.Add((declaration, diagnostic));
+                        continue;
+                    }
+
+                    if (diagnostic is not null) production.ReportDiagnostic(diagnostic);
+                    if (emitted is null) continue;
+
+                    var path = $"{identity}.SerializableBinder.g.cs";
+                    production.AddSource(path, emitted);
+                    trees.Add(CSharpSyntaxTree.ParseText(emitted, (CSharpParseOptions)declaration.SyntaxTree.Options, path));
+                }
+
+                if (trees.Count == 0)
+                {
+                    foreach (var item in deferred) production.ReportDiagnostic(item.Diagnostic);
+                    break;
+                }
+
+                compilation = compilation.AddSyntaxTrees(trees);
+                pending = deferred.Select(item => item.Declaration).ToList();
+            }
+
+            foreach (var declaration in byAbstract[false])
             {
                 var emitted = Build(compilation, declaration, out var diagnostic, out var identity);
                 if (diagnostic is not null) production.ReportDiagnostic(diagnostic);
@@ -149,13 +171,12 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         var monoName = declaration.Identifier.ValueText;
         identity = monoName;
 
-        if (!monoName.EndsWith("MonoBinder"))
+        if (!monoName.EndsWith("MonoBinder", System.StringComparison.Ordinal)
+            || SerializableName(monoName) is not { } name)
         {
             diagnostic = Diagnostic.Create(NameNotMono, declaration.Identifier.GetLocation(), monoName);
             return null;
         }
-
-        var name = monoName.Substring(0, monoName.Length - "MonoBinder".Length) + "Binder";
 
         var model = compilation.GetSemanticModel(declaration.SyntaxTree);
         if (model.GetDeclaredSymbol(declaration) is not { } symbol) return null;
@@ -164,7 +185,15 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         diagnostic = AspidTypeDeclaration.ValidateContainers(symbol);
         if (diagnostic is not null) return null;
 
-        if (symbol.BaseType is not { } monoBase || TargetBaseName(monoBase) is not { } targetBaseName)
+        var attribute = symbol.GetAttributes()
+            .FirstOrDefault(candidate => candidate.AttributeClass?.Name == AttributeName + "Attribute");
+        var targetParameter = symbol.IsAbstract
+            && symbol is { Name: "ComponentIntMonoBinder" or "ComponentFloatMonoBinder", Arity: 1 }
+                or { Name: "ComponentMonoBinder" or "ComponentObjectMonoBinder" or "SwitcherMonoBinder", Arity: 2 }
+            && symbol.ContainingNamespace.ToDisplayString() == "Aspid.MVVM.StarterKit"
+            ? symbol.TypeParameters[0]
+            : null;
+        if (symbol.BaseType is not { } monoBase || SerializableName(monoBase.Name) is not { } targetBaseName)
         {
             diagnostic = Diagnostic.Create(UnknownBase, declaration.Identifier.GetLocation(),
                 monoName, symbol.BaseType?.Name ?? "?");
@@ -182,7 +211,7 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
             return null;
         }
 
-        var arguments = monoBase.TypeArguments.Select(Display).ToArray();
+        var arguments = monoBase.TypeArguments.Select(argument => Display(argument, targetParameter)).ToArray();
         var found = Resolve(compilation, monoBase, targetBaseName, ns);
         var targetBase = found is null || arguments.Length is 0 ? found : found.Construct(monoBase.TypeArguments.ToArray());
 
@@ -216,23 +245,25 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
             ? "sealed "
             : string.Empty;
 
-        var guard = Guard(symbol, out diagnostic);
+        var guard = symbol.IsAbstract ? null : Guard(symbol, out diagnostic);
         if (diagnostic is not null) return null;
 
+        var preserveRequiredBaseParameters = attribute?.NamedArguments.Any(argument =>
+            argument.Key is "PreserveRequiredBaseParameters" && argument.Value.Value is true) == true;
+
         return Emit(scope, name, inherited, monoBase.Name, targetBaseName, targetBase, declaration,
-            guard, usings, sealedModifier, conditions);
+            guard, usings, sealedModifier, conditions, preserveRequiredBaseParameters, model, targetParameter);
     }
 
-    /// <summary>
-    /// Names the serializable base of a MonoBehaviour one: the pair is spelled the same but for <c>Mono</c>, unless
-    /// the family is listed as an exception.
-    /// </summary>
-    private static string? TargetBaseName(INamedTypeSymbol monoBase)
+    private static string? SerializableName(string monoName)
     {
-        if (Bases.TryGetValue(monoBase.Name, out var mapped)) return mapped;
+        var index = monoName.LastIndexOf("Mono", System.StringComparison.Ordinal);
+        if (index < 0) return null;
 
-        var index = monoBase.Name.IndexOf("Mono", System.StringComparison.Ordinal);
-        return index < 0 ? null : monoBase.Name.Remove(index, "Mono".Length);
+        var name = monoName.Remove(index, "Mono".Length);
+        return monoName.StartsWith("Component", System.StringComparison.Ordinal)
+            ? "Target" + name.Substring("Component".Length)
+            : name;
     }
 
     /// <summary>
@@ -257,9 +288,19 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         return null;
     }
 
-    private static string Display(ITypeSymbol type) =>
-        type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
-            .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.UseSpecialTypes));
+    private static string Display(
+        ITypeSymbol type, ITypeParameterSymbol? targetParameter = null, bool includeNullability = false)
+    {
+        var options = SymbolDisplayMiscellaneousOptions.UseSpecialTypes;
+        if (includeNullability)
+            options |= SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier;
+
+        var format = SymbolDisplayFormat.FullyQualifiedFormat.WithMiscellaneousOptions(options);
+        return targetParameter is null
+            ? type.ToDisplayString(format)
+            : string.Concat(type.ToDisplayParts(format).Select(part =>
+                SymbolEqualityComparer.Default.Equals(part.Symbol, targetParameter) ? "TTarget" : part.ToString()));
+    }
 
     private static string? Guard(INamedTypeSymbol symbol, out Diagnostic? diagnostic)
     {
@@ -325,21 +366,189 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         string? guard,
         string[] usings,
         string sealedModifier,
-        string[] conditions)
+        string[] conditions,
+        bool preserveRequiredBaseParameters,
+        SemanticModel model,
+        ITypeParameterSymbol? targetParameter)
     {
         var builder = new StringBuilder();
 
+        WriteOpening(builder, scope, declaration, usings, conditions);
+
+        foreach (var line in Documentation(declaration, monoBaseName, targetBaseName))
+        {
+            var documentation = targetParameter is not null && line.StartsWith($"/// <typeparam name=\"{targetParameter.Name}\">", System.StringComparison.Ordinal)
+                ? "/// <typeparam name=\"TTarget\">The type of the target object that exposes the bound property.</typeparam>"
+                : targetParameter is null ? line : line.Replace(targetParameter.Name, "TTarget");
+            builder.AppendLine($"    {documentation}");
+        }
+
+        builder.AppendLine("    [global::System.Serializable]");
+        var frameworkBase = scope.Symbol.IsAbstract
+            && scope.Symbol.ContainingNamespace.ToDisplayString() == "Aspid.MVVM.StarterKit";
+        var isPropertyBase = frameworkBase
+            && scope.Symbol is { Name: "MonoBinder", Arity: 1 } or { Name: "ComponentMonoBinder", Arity: 2 };
+        var isSwitcherBase = frameworkBase && scope.Symbol.Name is "SwitcherMonoBinder";
+        var valueParameter = isPropertyBase || isSwitcherBase ? scope.Symbol.TypeParameters.Last() : null;
+        if (isPropertyBase)
+        {
+            var mode = declaration.AttributeLists.SelectMany(list => list.Attributes)
+                .FirstOrDefault(attribute => Simple(attribute.Name.ToString()) is "BindModeOverride");
+            if (mode is not null)
+                builder.AppendLine($"    [{mode}]");
+        }
+
+        var accessibility = scope.Symbol.ContainingType is null
+            ? "public"
+            : scope.Symbol.DeclaredAccessibility switch
+            {
+                Accessibility.Private => "private",
+                Accessibility.Protected => "protected",
+                Accessibility.Internal => "internal",
+                Accessibility.ProtectedAndInternal => "private protected",
+                Accessibility.ProtectedOrInternal => "protected internal",
+                _ => "public"
+            };
+        var isAbstract = scope.Symbol.IsAbstract;
+        var modifier = isAbstract ? "abstract " : sealedModifier;
+        var header = targetParameter is null
+            ? AspidTypeDeclaration.Header(scope.Symbol, new[] { inherited }, name, isPartial: false)
+            : TargetHeader(scope.Symbol, declaration, name, inherited, targetParameter);
+        builder.AppendLine($"    {accessibility} {modifier}{header}");
+        builder.AppendLine("    {");
+
+        var members = Members(declaration)
+            .Select(member => isAbstract
+                ? AdaptAbstractMember(member, model, targetParameter, valueParameter, targetBase)
+                : member)
+            .ToList();
+        var fields = members.Where(member => member is FieldDeclarationSyntax).ToList();
+        var rest = members.Where(member => member is not FieldDeclarationSyntax).ToList();
+
+        var hasTarget = HasTarget(targetBase);
+        var hasUnityTarget = hasTarget && targetParameter is null;
+
+        if (isAbstract)
+            builder.AppendLine("#nullable enable annotations");
+
+        foreach (var field in fields)
+        {
+            builder.AppendLine(Render(field, hasUnityTarget));
+            builder.AppendLine();
+        }
+
+        var options = fields.OfType<FieldDeclarationSyntax>().Where(Serialized).ToList();
+        builder.AppendLine(Deserialization(name, sealedModifier.Length > 0));
+        var constructor = Constructor(
+            name, targetBase, options, isSwitcherBase ? "mode.EnsureForwardOnly();" : guard, hasTarget,
+            preserveRequiredBaseParameters, isAbstract, targetParameter, isPropertyBase, isSwitcherBase);
+
+        if (constructor.Length > 0)
+        {
+            builder.AppendLine();
+            builder.AppendLine(constructor);
+        }
+
+        foreach (var member in rest)
+        {
+            builder.AppendLine();
+            builder.AppendLine(Render(member, hasUnityTarget).TrimStart('\n', '\r'));
+        }
+
+        builder.AppendLine("    }");
+        WriteClosing(builder, scope, declaration, conditions);
+
+        return builder.ToString();
+    }
+
+    private static string TargetHeader(
+        INamedTypeSymbol source, ClassDeclarationSyntax declaration, string name, string inherited,
+        ITypeParameterSymbol targetParameter)
+    {
+        var parameters = source.TypeParameters.Select(parameter => parameter.Ordinal == targetParameter.Ordinal
+            ? "TTarget"
+            : AspidTypeDeclaration.Escape(parameter.Name));
+        var constraints = declaration.ConstraintClauses
+            .Where(clause => clause.Name.Identifier.ValueText != targetParameter.Name);
+        return $"class {name}<{string.Join(", ", parameters)}> : {inherited}"
+            + string.Concat(constraints.Select(clause => $" {clause}"));
+    }
+
+    private static MemberDeclarationSyntax AdaptAbstractMember(
+        MemberDeclarationSyntax member, SemanticModel model, ITypeParameterSymbol? targetParameter,
+        ITypeParameterSymbol? valueParameter, INamedTypeSymbol targetBase)
+    {
+        var rewritten = member;
+        if (targetParameter is not null || valueParameter is not null)
+        {
+            var comparer = SymbolEqualityComparer.Default;
+            var identifiers = member.DescendantNodes().OfType<IdentifierNameSyntax>()
+                .Select(node => (Node: node, Symbol: model.GetSymbolInfo(node).Symbol))
+                .Where(item => item.Symbol is not null
+                    && (comparer.Equals(item.Symbol, targetParameter) || comparer.Equals(item.Symbol, valueParameter)))
+                .ToDictionary(item => item.Node, item => comparer.Equals(item.Symbol, targetParameter));
+            rewritten = member.ReplaceNodes(identifiers.Keys, (original, replacement) => identifiers[original]
+                ? replacement.WithIdentifier(SyntaxFactory.Identifier("TTarget").WithTriviaFrom(replacement.Identifier))
+                : AsNullable(replacement));
+        }
+
+        if (valueParameter is not null)
+            return AdaptValueMember(rewritten);
+
+        if (member is not MethodDeclarationSyntax original || rewritten is not MethodDeclarationSyntax method
+            || model.GetDeclaredSymbol(original) is not IMethodSymbol { OverriddenMethod: { } overridden })
+            return rewritten;
+
+        var inherited = targetBase.GetMembers(overridden.Name).OfType<IMethodSymbol>()
+            .FirstOrDefault(candidate => candidate.Arity == overridden.Arity
+                && candidate.Parameters.Select(parameter => parameter.Type)
+                    .SequenceEqual(overridden.Parameters.Select(parameter => parameter.Type), SymbolEqualityComparer.Default));
+        if (inherited is null) return method;
+
+        var parameters = method.ParameterList.Parameters.Select((parameter, index) =>
+            parameter.Type is { } type
+                && !inherited.Parameters[index].Type.IsValueType
+                && inherited.Parameters[index].NullableAnnotation == NullableAnnotation.Annotated
+                ? parameter.WithType(AsNullable(type))
+                : parameter);
+        var list = SyntaxFactory.SeparatedList(parameters, method.ParameterList.Parameters.GetSeparators());
+        method = method.WithParameterList(method.ParameterList.WithParameters(list));
+        return !inherited.ReturnType.IsValueType && inherited.ReturnNullableAnnotation == NullableAnnotation.Annotated
+            ? method.WithReturnType(AsNullable(method.ReturnType))
+            : method;
+    }
+
+    private static MemberDeclarationSyntax AdaptValueMember(MemberDeclarationSyntax member) => member switch
+    {
+        FieldDeclarationSyntax field => field.WithDeclaration(
+            field.Declaration.WithType(AsNullable(field.Declaration.Type))),
+        EventFieldDeclarationSyntax field => field.WithDeclaration(
+            field.Declaration.WithType(AsNullable(field.Declaration.Type))),
+        MethodDeclarationSyntax method when method.Identifier.ValueText is "RaiseValueChanged" or "SetValue" => method
+            .WithAttributeLists(default)
+            .WithLeadingTrivia(method.GetLeadingTrivia()),
+        _ => member,
+    };
+
+    private static TypeSyntax AsNullable(TypeSyntax type) => type is NullableTypeSyntax
+        ? type
+        : SyntaxFactory.NullableType(type.WithoutTrailingTrivia()).WithTriviaFrom(type);
+
+    private static void WriteOpening(
+        StringBuilder builder,
+        AspidTypeDeclaration scope,
+        ClassDeclarationSyntax declaration,
+        string[] usings,
+        string[] conditions)
+    {
         builder.AppendLine("// <auto-generated/>");
 
-        // Половина, из которой всё взято, может стоять под условной компиляцией; выпущенная стоит под той же.
         foreach (var condition in conditions) builder.AppendLine($"#if {condition}");
 
-        // Тело переносится дословно из половины, которая под nullable-контекстом не стоит: включить его здесь
-        // значило бы объявить ненулевым каждый тип, который она не помечала, и разойтись с сигнатурами базы.
+        // MonoBehaviour member signatures are copied with oblivious reference types.
         builder.AppendLine("#nullable disable");
         builder.AppendLine();
 
-        // Тело переносится дословно, поэтому ему нужны те же using, что и половине, из которой оно взято.
         foreach (var directive in usings) builder.AppendLine(directive);
         if (usings.Length > 0) builder.AppendLine();
         var namespaceDeclarations = declaration.Ancestors().OfType<BaseNamespaceDeclarationSyntax>().Reverse().ToArray();
@@ -354,55 +563,18 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
             builder.AppendLine(AspidTypeDeclaration.Header(container));
             builder.AppendLine("{");
         }
+    }
 
-        foreach (var line in Documentation(declaration, monoBaseName, targetBaseName)) builder.AppendLine($"    {line}");
-
-        builder.AppendLine("    [global::System.Serializable]");
-        var accessibility = scope.Symbol.ContainingType is null
-            ? "public"
-            : scope.Symbol.DeclaredAccessibility switch
-            {
-                Accessibility.Private => "private",
-                Accessibility.Protected => "protected",
-                Accessibility.Internal => "internal",
-                Accessibility.ProtectedAndInternal => "private protected",
-                Accessibility.ProtectedOrInternal => "protected internal",
-                _ => "public"
-            };
-        builder.AppendLine($"    {accessibility} {sealedModifier}" +
-            AspidTypeDeclaration.Header(scope.Symbol, new[] { inherited }, name, isPartial: false));
-        builder.AppendLine("    {");
-
-        var members = Members(declaration).ToList();
-        var fields = members.Where(member => member is FieldDeclarationSyntax).ToList();
-        var rest = members.Where(member => member is not FieldDeclarationSyntax).ToList();
-
-        var hasTarget = HasTarget(targetBase);
-
-        foreach (var field in fields)
-        {
-            builder.AppendLine(Render(field, hasTarget));
-            builder.AppendLine();
-        }
-
-        var options = fields.OfType<FieldDeclarationSyntax>().Where(Serialized).ToList();
-        builder.AppendLine(Deserialization(name, sealedModifier.Length > 0));
-        builder.AppendLine();
-        builder.AppendLine(Constructor(name, targetBase, options, guard, hasTarget));
-
-        foreach (var member in rest)
-        {
-            builder.AppendLine();
-            builder.AppendLine(Render(member, hasTarget).TrimStart('\n', '\r'));
-        }
-
-        builder.AppendLine("    }");
+    private static void WriteClosing(
+        StringBuilder builder,
+        AspidTypeDeclaration scope,
+        ClassDeclarationSyntax declaration,
+        string[] conditions)
+    {
         foreach (var _ in scope.Containers) builder.AppendLine("}");
-        foreach (var _ in namespaceDeclarations) builder.AppendLine("}");
+        foreach (var _ in declaration.Ancestors().OfType<BaseNamespaceDeclarationSyntax>()) builder.AppendLine("}");
 
         foreach (var _ in conditions) builder.AppendLine("#endif");
-
-        return builder.ToString();
     }
 
     /// <summary>
@@ -465,53 +637,75 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Mirrors the serializable base's own constructor, inserting this binder's serialized options right after the
-    /// target so the shape matches what the family's hand-written halves take.
+    /// Mirrors the serializable base constructor and inserts this binder's serialized options.
     /// </summary>
     private static string Constructor(
-        string name, INamedTypeSymbol targetBase, List<FieldDeclarationSyntax> fields, string? guard, bool hasTarget)
+        string name,
+        INamedTypeSymbol targetBase,
+        List<FieldDeclarationSyntax> fields,
+        string? guard,
+        bool hasTarget,
+        bool preserveRequiredBaseParameters,
+        bool isAbstract,
+        ITypeParameterSymbol? targetParameter,
+        bool requireOptions,
+        bool isSwitcherBase)
     {
         var baseConstructor = targetBase.Constructors
             .Where(candidate => candidate.DeclaredAccessibility is not Accessibility.Private)
             .OrderByDescending(candidate => candidate.Parameters.Length)
             .FirstOrDefault();
 
-        if (baseConstructor is null) return string.Empty;
+        if (baseConstructor is null || (baseConstructor.Parameters.Length == 0 && fields.Count == 0))
+            return string.Empty;
 
         var options = fields
-            .SelectMany(field => field.Declaration.Variables
-                .Select(variable => (
-                    Type: field.Declaration.Type.ToString(),
-                    Field: variable.Identifier.Text,
-                    Default: variable.Initializer?.Value.ToString())))
+            .SelectMany(field => field.Declaration.Variables.Select(variable =>
+            {
+                var preset = isSwitcherBase && variable.Identifier.ValueText is "_trueValue" or "_falseValue";
+                var type = preset && field.Declaration.Type is NullableTypeSyntax nullable
+                    ? nullable.ElementType
+                    : field.Declaration.Type;
+                return (Type: type.ToString(), Field: variable.Identifier.Text,
+                    Default: variable.Initializer?.Value.ToString(), Required: requireOptions || preset);
+            }))
             .ToList();
 
+        preserveRequiredBaseParameters |= isAbstract;
         var taken = new HashSet<string>(options.Select(option => Parameter(option.Field)));
         var parameters = new List<(string Text, string? Default)>();
         var arguments = new List<string>();
 
-        // Опции встают сразу за целью; у базы, которая цели не имеет, вставать не за что, и они идут первыми.
-        if (!hasTarget) parameters.AddRange(options.Select(Option));
-
-        for (var i = 0; i < baseConstructor.Parameters.Length; i++)
+        var optionsAfter = hasTarget ? 0 : -1;
+        if (preserveRequiredBaseParameters)
         {
-            var parameter = baseConstructor.Parameters[i];
+            foreach (var parameter in baseConstructor.Parameters)
+            {
+                if (!parameter.IsOptional && (parameter.Ordinal is 0 || !taken.Contains(parameter.Name)))
+                    optionsAfter = parameter.Ordinal;
+            }
+        }
 
-            // Цель обязательна: биндеру без неё некуда писать, и подставлять ей значение по умолчанию нечем.
-            // У баз, которые цели не имеют, первый параметр — обычный, и это правило к нему не относится.
-            var fallback = i is 0 && hasTarget ? null : Default(parameter);
+        if (optionsAfter < 0)
+            parameters.AddRange(options.Select(Option));
+
+        foreach (var parameter in baseConstructor.Parameters)
+        {
+            var requiredTarget = hasTarget && parameter.Ordinal is 0;
+            var requiredBaseParameter = preserveRequiredBaseParameters && !parameter.IsOptional;
+            var fallback = requiredTarget || requiredBaseParameter ? null : Default(parameter);
 
             // Опция, названная как параметр базы, вытесняет его: база получает пустое значение, а поле — параметр.
-            if (i is not 0 && taken.Contains(parameter.Name)) arguments.Add("default");
+            if (parameter.Ordinal is not 0 && taken.Contains(parameter.Name)) arguments.Add("default");
             else
             {
-                parameters.Add(($"{Display(parameter.Type)} {parameter.Name}", fallback));
+                var type = Display(parameter.Type, targetParameter, includeNullability: isAbstract);
+                parameters.Add(($"{type} {parameter.Name}", fallback));
                 arguments.Add(parameter.Name);
             }
 
-            if (i is not 0 || !hasTarget) continue;
-
-            parameters.AddRange(options.Select(Option));
+            if (parameter.Ordinal == optionsAfter)
+                parameters.AddRange(options.Select(Option));
         }
 
         // Значение по умолчанию держится только там, где оно есть у всех параметров правее.
@@ -523,14 +717,16 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
         }
 
         var builder = new StringBuilder();
-        builder.AppendLine("        /// <inheritdoc/>");
-        builder.AppendLine($"        public {name}(");
+        WriteConstructorDocumentation(builder, hasTarget, requireOptions, isSwitcherBase);
+        var access = isAbstract ? "protected" : "public";
+        builder.AppendLine($"        {access} {name}(");
         builder.AppendLine(string.Join(",\n", parameters
             .Select(parameter => $"            {parameter.Text}{parameter.Default}")) + ")");
         builder.AppendLine($"            : base({string.Join(", ", arguments)})");
         builder.AppendLine("        {");
 
-        if (guard is not null) builder.AppendLine($"            {guard}");
+        if (guard is not null && parameters.Any(parameter => parameter.Text.EndsWith(" mode")))
+            builder.AppendLine($"            {guard}");
         foreach (var option in options)
         {
             var fallback = option.Default is not null && !Constant(option.Default) ? $" ?? {option.Default}" : string.Empty;
@@ -539,6 +735,45 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
 
         builder.Append("        }");
         return builder.ToString();
+    }
+
+    private static void WriteConstructorDocumentation(
+        StringBuilder builder, bool hasTarget, bool isPropertyBase, bool isSwitcherBase)
+    {
+        if (!isPropertyBase && !isSwitcherBase)
+        {
+            builder.AppendLine("        /// <inheritdoc/>");
+            return;
+        }
+
+        var summary = isSwitcherBase
+            ? "Creates a binder that selects between two preset values."
+            : "Creates a binder with an optional converter and binding mode.";
+        builder.AppendLine($"        /// <summary>{summary}</summary>");
+        if (hasTarget)
+            builder.AppendLine("        /// <param name=\"target\">The target object to bind.</param>");
+
+        if (isSwitcherBase)
+        {
+            builder.AppendLine("        /// <param name=\"trueValue\">The value applied when the bound value is <see langword=\"true\"/>.</param>");
+            builder.AppendLine("        /// <param name=\"falseValue\">The value applied when the bound value is <see langword=\"false\"/>.</param>");
+            builder.AppendLine("        /// <param name=\"converter\">The converter used to transform the chosen value, or <see langword=\"null\"/> to use it unchanged.</param>");
+            builder.AppendLine("        /// <param name=\"mode\">The binding mode. Must be <see cref=\"BindMode.OneWay\"/> or <see cref=\"BindMode.OneTime\"/>.</param>");
+        }
+        else
+        {
+            builder.AppendLine("        /// <param name=\"converter\">");
+            builder.AppendLine("        /// The converter used to transform the bound value, or <see langword=\"null\"/> to use it unchanged.");
+            builder.AppendLine("        /// Runs in reverse only if it implements <see cref=\"ITwoWayConverter{TFrom, TTo}\"/>.");
+            builder.AppendLine("        /// </param>");
+            builder.AppendLine("        /// <param name=\"mode\">The binding mode.</param>");
+        }
+
+        if (hasTarget)
+            builder.AppendLine("        /// <exception cref=\"System.ArgumentNullException\"><paramref name=\"target\"/> is <see langword=\"null\"/>.</exception>");
+
+        if (isSwitcherBase)
+            builder.AppendLine("        /// <exception cref=\"System.InvalidOperationException\">The mode is neither <see cref=\"BindMode.OneWay\"/> nor <see cref=\"BindMode.OneTime\"/>.</exception>");
     }
 
     private static string? Default(IParameterSymbol parameter)
@@ -585,8 +820,11 @@ public sealed class SerializableBinderGenerator : IIncrementalGenerator
     /// Renders one Inspector option as a constructor parameter. Its default has to be a compile-time constant, so an
     /// initialiser that is computed stays in the body and the parameter offers <see langword="null"/> instead.
     /// </summary>
-    private static (string Text, string? Default) Option((string Type, string Field, string? Default) option)
+    private static (string Text, string? Default) Option(
+        (string Type, string Field, string? Default, bool Required) option)
     {
+        if (option.Required) return ($"{option.Type} {Parameter(option.Field)}", null);
+
         var constant = option.Default is null || Constant(option.Default);
         var value = option.Default is null ? $"default({option.Type})" : constant ? option.Default : "null";
         return ($"{option.Type} {Parameter(option.Field)}", $" = {value}");

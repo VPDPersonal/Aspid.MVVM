@@ -22,8 +22,8 @@ namespace Aspid.MVVM.Samples.Stats
 
         private void OnDestroy()
         {
-            _editView.DeinitializeView()?.DisposeViewModel();
-            _committedView.DeinitializeView()?.DisposeViewModel();
+            _editView.DeinitializeViewSafely()?.DisposeViewModel();
+            _committedView.DeinitializeViewSafely()?.DisposeViewModel();
         }
     }
 }

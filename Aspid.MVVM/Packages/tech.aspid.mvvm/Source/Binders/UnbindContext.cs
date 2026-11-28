@@ -24,8 +24,12 @@ namespace Aspid.MVVM
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
         }
 
+        /// <summary>
+        /// Verifies that the context has an owner.
+        /// </summary>
+        /// <exception cref="ArgumentException"><see cref="Owner"/> is <see langword="null"/>.</exception>
         [SuppressMessage(category: "ReSharper", checkId: "NotResolvedInText")]
-        internal void EnsureValid()
+        public void EnsureValid()
         {
             if (Owner is null)
                 throw new ArgumentException("An unbinding context requires an owner.", paramName: "context");

@@ -1,3 +1,7 @@
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
+#endif
+
 using System;
 using UnityEngine;
 
@@ -15,9 +19,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Called when Unity validates serialized data. Override to validate additional fields.
         /// </summary>
-        /// <remarks>
-        /// Call the base implementation to queue binding notifications for the next Editor update on the main thread.
-        /// </remarks>
+        /// <remarks>Call the base implementation to queue binding notifications on the Editor's main thread.</remarks>
         protected virtual void OnValidate()
         {
 #if UNITY_EDITOR
@@ -26,6 +28,7 @@ namespace Aspid.MVVM
                 notify: static target => ((ScriptableViewModel)target).NotifyAll());
 #endif
         }
+
         /// <summary>
         /// Called when Unity destroys the object to release its resources.
         /// </summary>
@@ -36,22 +39,23 @@ namespace Aspid.MVVM
         /// <summary>
         /// Releases owned resources once without destroying the Unity object.
         /// </summary>
-        /// <remarks>
-        /// Repeated and reentrant calls do nothing, including after a cleanup failure.
-        /// Override <see cref="OnDispose"/> to release resources.
-        /// </remarks>
+        /// <remarks>Cleanup is attempted once, even if <see cref="OnDispose"/> throws.</remarks>
         public void Dispose()
         {
-            if (_isDisposed) return;
-            _isDisposed = true;
-
-            OnDispose();
+#if ASPID_MVVM_PROFILER
+            using (this.Marker());
+#endif
+            {
+                if (_isDisposed) return;
+                _isDisposed = true;
+                
+                OnDispose();
+            }
         }
 
         /// <summary>
-        /// Called on the first disposal attempt. Override to release owned resources and subscriptions.
+        /// Called on the first disposal attempt. Override to release owned resources.
         /// </summary>
-        /// <remarks>Cleanup exceptions propagate; cleanup is not retried.</remarks>
         protected virtual void OnDispose() { }
     }
 }

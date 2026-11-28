@@ -261,9 +261,9 @@ public partial class LifecycleView : MonoView
 
 Состав биндеров фиксирован между `Initialize` и `Deinitialize`: ссылки в полях, кешированные binder-свойства и содержимое коллекций должны сохранять те же экземпляры. Генератор освобождает их напрямую через `UnbindContext(this)`, без отдельного списка привязок. Кеши свойств и обёрток `[AsBinder]` сохраняются. При очистке чужой владелец игнорируется; повторная привязка той же View считается продолжением её владения. Динамическая замена состава не поддерживается.
 
-`Reinitialize`, `DeinitializeView` и обе перегрузки `DisposeView` требуют ненулевую View и иначе выбрасывают `ArgumentNullException`. Эти методы также отклоняют уничтоженные Unity-объекты. Возвращаемый null означает отсутствие прежней ViewModel. `DisposeView<T>` требует ссылочный тип. Null в качестве новой ViewModel для `Reinitialize` только деинициализирует View. Освобождение ViewModel остаётся ответственностью вызывающего кода. Если инициализация через `Reinitialize` завершается ошибкой, сгенерированная View остаётся отвязанной и не восстанавливает прежнюю ViewModel.
+`DeinitializeView`, `Reinitialize` и обе перегрузки `DisposeView` требуют ненулевую View и иначе выбрасывают `ArgumentNullException`. Эти методы также отклоняют уничтоженные Unity-объекты. Возвращаемый null означает отсутствие прежней ViewModel. `DisposeView<T>` требует ссылочный тип. Null в качестве новой ViewModel для `Reinitialize` только деинициализирует View. Освобождение ViewModel остаётся ответственностью вызывающего кода. Если инициализация через `Reinitialize` завершается ошибкой, сгенерированная View остаётся отвязанной и не восстанавливает прежнюю ViewModel.
 
-`ReinitializeSafely`, `DeinitializeViewSafely` и `DisposeViewSafely` пропускают null View и уничтоженные Unity-объекты. Исключения попадают в консоль Unity. При успехе методы возвращают прежнюю ViewModel. Если ViewModel отсутствовала, вызов пропущен или произошла ошибка, методы возвращают null.
+Методы жизненного цикла View с суффиксом `Safely` пропускают null и уничтоженные View. Исключение от существующей View получает вызывающий код. `InitializeSafely` также пропускает null и уничтоженные ViewModel. `ReinitializeSafely`, `DeinitializeViewSafely`, `DisposeViewSafely` и методы уничтожения возвращают прежнюю ViewModel или null, если её не было либо View была пропущена.
 
 ---
 
@@ -330,7 +330,7 @@ var view = MonoView.Instantiate(prefab, viewModel, parentTransform);
 _view.Initialize(viewModel);
 
 // Деинициализация с освобождением ViewModel
-_view.DeinitializeView()?.DisposeViewModel();
+_view.DeinitializeViewSafely()?.DisposeViewModel();
 ```
 
 ### Со стороны ViewModel
@@ -343,11 +343,25 @@ viewModel?.InitializeViews(viewA, viewB);
 viewModel?.InitializeViews(views);
 ```
 
-`InitializeViews` принимает массивы, `List<T>` с ограничением `T : IView` и `IEnumerable<IView>` (включая коллекции только для чтения и ленивые последовательности). Поддерживаются массивы и списки конкретных типов View. Передача готового массива или списка не выделяет enumerator; вызов через `params` создаёт массив.
+`InitializeViews` и `ReinitializeViews` принимают массив, `Span<T>`, `ReadOnlySpan<T>`, `List<T>` или `IEnumerable<T>`, где `T : IView`. В `InitializeViews` несколько View можно передать отдельными аргументами через `params`.
 
-`InitializeViewSafely` и `InitializeViewsSafely` пропускают отсутствующие и уничтоженные ViewModel и View. Если отдельная View выбрасывает исключение, метод пишет его в лог и переходит к следующей View. Ошибка перебора коллекции попадает в лог и завершает пакетный вызов.
+`InitializeViewSafely` и `InitializeViewsSafely` пропускают отсутствующие и уничтоженные ViewModel и View. Исключение из View или при переборе коллекции прерывает вызов и передаётся вызывающему коду.
 
-При `?.` null-ViewModel пропускает вызов и вычисление аргументов. Прямой вызов отклоняет null и уничтоженные Unity-объекты. Если оба аргумента недопустимы, он сообщает об обоих через `AggregateException`. Коллекции обрабатываются по порядку до первого исключения; уже инициализированные View сохраняют своё состояние. Каждый вызов передаётся в `IView.Initialize`, сохраняя правила жизненного цикла View.
+`replacement.ReinitializeView(view)` отвязывает предыдущую ViewModel, привязывает новую и возвращает предыдущую. Если вызвать метод с отсутствующей или уничтоженной заменой, View останется без привязки.
+
+При `?.` вызов и вычисление аргументов пропускаются, если ViewModel равна `null`. При прямом вызове `InitializeView` и `InitializeViews` передают модель в `IView.Initialize`. Коллекция обрабатывается до первой ошибки. Если сама коллекция равна `null`, возникает `ArgumentNullException`. Элемент `null` вызывает `NullReferenceException`.
+
+### Из коллекции View
+
+```csharp
+views.InitializeViews(viewModel);
+views.ReinitializeViews(replacement);
+views.DeinitializeViewsSafely();
+```
+
+Расширения принимают `IEnumerable<IView>`, в том числе массивы и списки конкретных типов View. `DisposeViews` вызывает `Dispose` у View с `IDisposable` и деинициализирует остальные. `DestroyViews` сохраняет GameObject, а `DestroyViewsAndGameObjects` уничтожает и GameObject каждого компонента View. Вызывайте методы уничтожения в главном потоке Unity.
+
+Методы обрабатывают View по порядку. Инициализация и повторная инициализация останавливаются при первой ошибке. Варианты `Safely` пропускают отсутствующие и уничтоженные View. При групповой очистке `DeinitializeViewsSafely`, `DisposeViews`, `DisposeViewsSafely`, `DestroyViewsSafely` и `DestroyViewsAndGameObjectsSafely` продолжают обработку после ошибки отдельной View. После обхода вызывающий код получает исходное исключение или `AggregateException` с несколькими ошибками в порядке их возникновения, включая ошибки обхода и освобождения перечислителя. Пакетные методы возвращают `void`. За освобождение ViewModel отвечает вызывающий код.
 
 ### Через ViewInitializer (Inspector)
 

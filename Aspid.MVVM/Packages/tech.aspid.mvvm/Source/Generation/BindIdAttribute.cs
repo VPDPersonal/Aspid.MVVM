@@ -6,11 +6,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Sets the identifier that pairs a ViewModel member with the View binders of the same identifier.
+    /// Sets the identifier used to match a View binder to a ViewModel member.
     /// </summary>
     /// <remarks>
-    /// Without it, the identifier is the member name without its prefix, capitalized, with a <c>Command</c> suffix for a
-    /// <see cref="RelayCommandAttribute">[RelayCommand]</see> method; the attribute value replaces all of it.
+    /// The generator uses the default identifier when the supplied name is blank. The default strips the member prefix,
+    /// capitalizes the name and adds <c>Command</c> for <see cref="RelayCommandAttribute">[RelayCommand]</see> methods.
     /// </remarks>
     /// <example>
     /// <code>

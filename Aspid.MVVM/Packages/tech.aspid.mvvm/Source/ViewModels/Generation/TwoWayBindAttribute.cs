@@ -2,7 +2,7 @@
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Generates a <see cref="BindMode.TwoWay"/> bindable member for the field or property of a <see cref="ViewModelAttribute">[ViewModel]</see> class.
+    /// Binds the marked field or property in <see cref="ViewModelAttribute">[ViewModel]</see> using <see cref="BindMode.TwoWay"/>.
     /// </summary>
     /// <remarks>
     /// Ignored on a <see langword="readonly"/> field and a get-only or set-only property.

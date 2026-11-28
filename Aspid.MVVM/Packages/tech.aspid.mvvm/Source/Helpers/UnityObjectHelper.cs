@@ -8,14 +8,14 @@ namespace Aspid.MVVM
 {
     internal static class UnityObjectHelper
     {
-        internal static void Destroy(Object target)
+        internal static void Destroy(Object? target)
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
                 if (target != null)
                     Object.DestroyImmediate(target);
-
+                
                 return;
             }
 #endif

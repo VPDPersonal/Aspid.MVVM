@@ -18,6 +18,9 @@ namespace Aspid.MVVM.Tests
             Assert.Throws<ArgumentNullException>(() => new AddBinderContextMenuByTypeAttribute(null));
             Assert.Throws<ArgumentNullException>(() => new RequireBinderAttribute((Type[])null));
             Assert.Throws<ArgumentException>(() => new RequireBinderAttribute(new Type[] { null }));
+            var openParameter = typeof(GenericModel<>).GetGenericArguments()[0];
+            Assert.That(Assert.Throws<ArgumentException>(() => new RequireBinderAttribute(openParameter)).ParamName,
+                Is.EqualTo("type"));
             Assert.Throws<ArgumentNullException>(() => new RequireBinderAttribute((string[])null));
             Assert.Throws<ArgumentNullException>(() => new ShowDesignViewModelAttribute((Type)null));
             Assert.Throws<ArgumentNullException>(() => new ShowDesignViewModelAttribute((Type[])null));

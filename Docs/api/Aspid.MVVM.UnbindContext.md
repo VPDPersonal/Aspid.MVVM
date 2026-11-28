@@ -54,3 +54,20 @@ public object Owner { get; }
 #### Property Value
 
  [object](https://learn.microsoft.com/dotnet/api/system.object)
+
+## Methods
+
+### EnsureValid\(\) {#Aspid_MVVM_UnbindContext_EnsureValid}
+
+Verifies that the context has an owner.
+
+```csharp
+[SuppressMessage("ReSharper", "NotResolvedInText")]
+public void EnsureValid()
+```
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+[`UnbindContext.Owner`](Aspid.MVVM.UnbindContext.md#Aspid_MVVM_UnbindContext_Owner) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.

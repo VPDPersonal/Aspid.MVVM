@@ -17,7 +17,7 @@ namespace Aspid.MVVM
     public sealed class OneTimeBindableMember<T> : IReadOnlyValueBindableMember<T>
     {
         /// <summary>
-        /// Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
+        /// Gets or sets the value sent to each binder when it attaches.
         /// </summary>
         public T? Value { get; set; }
 
@@ -31,13 +31,13 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the binding mode of the member; always <see cref="BindMode.OneTime"/>.
+        /// Gets the fixed mode <see cref="BindMode.OneTime"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneTime;
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// The mode of <paramref name="binder"/> is not <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>.
+        /// The binder mode does not send values to the View.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// <paramref name="binder"/> implements neither <see cref="IBinder{T}"/> nor <see cref="IAnyBinder"/>.

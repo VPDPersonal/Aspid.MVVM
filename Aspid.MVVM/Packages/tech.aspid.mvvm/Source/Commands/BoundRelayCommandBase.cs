@@ -1,3 +1,7 @@
+#if ENABLE_PROFILER && !ASPID_MVVM_UNITY_PROFILER_DISABLED
+#define ASPID_MVVM_PROFILER
+#endif
+
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -74,8 +78,15 @@ namespace Aspid.MVVM
 
         public abstract bool CanExecute();
 
-        public void NotifyCanExecuteChanged() =>
-            _canExecuteChanged?.Invoke(this);
+        public void NotifyCanExecuteChanged()
+        {
+#if ASPID_MVVM_PROFILER
+            using (this.Marker())
+#endif
+            {
+                _canExecuteChanged?.Invoke(this);
+            }
+        }
 
         protected abstract void SubscribeToSource();
 

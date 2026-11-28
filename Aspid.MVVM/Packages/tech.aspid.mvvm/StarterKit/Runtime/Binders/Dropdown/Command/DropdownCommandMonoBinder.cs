@@ -27,11 +27,8 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand<int> _intCommand;
         private IRelayCommand<long> _longCommand;
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        private void OnValidate()
         {
-            base.OnValidate();
-
             if (_intCommand is not null) OnCanExecuteChanged(_intCommand);
             else if (_longCommand is not null) OnCanExecuteChanged(_longCommand);
         }
@@ -119,10 +116,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -235,10 +233,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -369,10 +368,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 

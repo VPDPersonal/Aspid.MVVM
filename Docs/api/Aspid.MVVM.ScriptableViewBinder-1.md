@@ -21,7 +21,7 @@ public class ScriptableViewBinder<TView> : ViewTargetBinder<TView>, IBinder<IVie
 
 `TView`
 
-The type of [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that implements [`IView`](Aspid.MVVM.IView.md).
+The ScriptableObject view type.
 
 #### Inheritance
 
@@ -39,8 +39,7 @@ The type of [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/Script
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<ScriptableViewBinder\<TView\>\>\(ScriptableViewBinder\<TView\>?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
-[BinderExtensions.BindSafely\<ScriptableViewBinder\<TView\>\>\(ScriptableViewBinder\<TView\>?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
+[BinderExtensions.BindSafely\(IBinder?, in BindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_BindContext__),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
@@ -55,13 +54,13 @@ The type of [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/Script
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
-[BinderExtensions.UnbindSafely\<ScriptableViewBinder\<TView\>\>\(ScriptableViewBinder\<TView\>?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
+[BinderExtensions.UnbindSafely\(IBinder?, in UnbindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_UnbindContext__)
 
 ## Constructors
 
 ### ScriptableViewBinder\(TView, BindMode\) {#Aspid_MVVM_ScriptableViewBinder_1__ctor__0_Aspid_MVVM_BindMode_}
 
-Creates a binder for the target view.
+Creates a forward-only view binder.
 
 ```csharp
 public ScriptableViewBinder(TView target, BindMode mode = BindMode.OneWay)
@@ -79,14 +78,14 @@ The binding mode. Must be [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindM
 
 #### Exceptions
 
- [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
-
-<code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
-
  [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
 
 <code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
 
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
-<code class="paramref">mode</code> is not [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) or [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+<code class="paramref">mode</code> includes reverse binding.

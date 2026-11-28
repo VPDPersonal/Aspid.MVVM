@@ -35,8 +35,7 @@ public class AudioMixerSnapshotBinder : Binder, IBinder<int>, IBinder<string?>, 
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<AudioMixerSnapshotBinder\>\(AudioMixerSnapshotBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
-[BinderExtensions.BindSafely\<AudioMixerSnapshotBinder\>\(AudioMixerSnapshotBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
+[BinderExtensions.BindSafely\(IBinder?, in BindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_BindContext__),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
@@ -51,7 +50,7 @@ public class AudioMixerSnapshotBinder : Binder, IBinder<int>, IBinder<string?>, 
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
-[BinderExtensions.UnbindSafely\<AudioMixerSnapshotBinder\>\(AudioMixerSnapshotBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
+[BinderExtensions.UnbindSafely\(IBinder?, in UnbindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_UnbindContext__)
 
 ## Remarks
 
@@ -97,8 +96,7 @@ The binding mode.
 
 ### CanBind {#Aspid_MVVM_StarterKit_AudioMixerSnapshotBinder_CanBind}
 
-Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md) attaches the binder; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> unless
-overridden.
+Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md) should attempt to attach the binder.
 
 ```csharp
 public override bool CanBind { get; }
@@ -107,6 +105,11 @@ public override bool CanBind { get; }
 #### Property Value
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+
+#### Remarks
+
+Return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> for an intentional skip. Validate required configuration in [`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding).
+The default is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
 
 ## Methods
 

@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Offers the decorated component in serialized property menus matching the property's value type.
+Adds an Inspector context menu entry to serialized properties matching a value type.
 
 ```csharp
 [Conditional("UNITY_EDITOR")]
@@ -27,18 +27,9 @@ public sealed class AddBinderContextMenuByTypeAttribute : Attribute
 
 
 
-## Examples
-
-
-```csharp
-[AddBinderContextMenuByType(typeof(float))]
-public sealed class FloatBinder : MonoBinder { }
-```
-
-
 ## Remarks
 
-Multiple applications support different value types. Applications are Editor-only.
+Selecting the entry adds the decorated binder to the inspected component's GameObject.
 
 ## Constructors
 

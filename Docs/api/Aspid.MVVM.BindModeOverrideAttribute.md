@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Replaces the [`BindModeAttribute`](Aspid.MVVM.BindModeAttribute.md) limits of every [`BindMode`](Aspid.MVVM.BindMode.md) field of the class and its subclasses in the Inspector.
+Overrides the [`BindModeAttribute`](Aspid.MVVM.BindModeAttribute.md) restrictions for the class and its subclasses.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -41,12 +41,12 @@ public class FillAmountBinder : MonoBinder { }
 ## Remarks
 
 <p>
-The allowed modes are [`BindModeOverrideAttribute.Modes`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_Modes) plus the groups that [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) and [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) add; with none of
-them, or with [`BindModeOverrideAttribute.IsAll`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsAll), every mode except [`BindMode.None`](Aspid.MVVM.BindMode.md) is allowed.
+Combine [`BindModeOverrideAttribute.Modes`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_Modes), [`BindModeOverrideAttribute.IsOne`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsOne) and [`BindModeOverrideAttribute.IsTwo`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsTwo) to select modes.
+With no selection or with [`BindModeOverrideAttribute.IsAll`](Aspid.MVVM.BindModeOverrideAttribute.md#Aspid_MVVM_BindModeOverrideAttribute_IsAll), all valid modes are available.
 </p>
 <p>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</p>
 <p>The serializable binder generator applies the same restrictions to the generated constructor.</p>
-<p>A subclass with its own [`BindModeOverrideAttribute`](Aspid.MVVM.BindModeOverrideAttribute.md) uses that one instead.</p>
+<p>The nearest override in the class hierarchy takes precedence.</p>
 
 ## Constructors
 

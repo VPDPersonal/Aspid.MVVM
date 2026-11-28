@@ -90,11 +90,11 @@ public sealed class Bootstrap : MonoBehaviour
         _counterView.Initialize(new CounterViewModel());
 
     private void OnDestroy() =>
-        _counterView.DeinitializeView()?.DisposeViewModel();
+        _counterView.DeinitializeViewSafely()?.DisposeViewModel();
 }
 ```
 
-`DeinitializeView()` unbinds the binders and returns the ViewModel. `DisposeViewModel()` calls `Dispose()` when the ViewModel implements `IDisposable`. Counter does not need it, but the pair is the habit to keep.
+`DeinitializeViewSafely()` unbinds the binders and returns the ViewModel. `DisposeViewModel()` calls `Dispose()` when the ViewModel implements `IDisposable`. Counter does not need it, but the pair is the habit to keep.
 
 The second scene has no `Bootstrap` at all: `ViewInitializer` holds a serialized `CounterViewModel` and initializes the View itself.
 

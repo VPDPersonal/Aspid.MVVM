@@ -42,7 +42,7 @@ namespace Aspid.MVVM
         /// <summary>
         /// Creates a member that passes reported values to <paramref name="setValue"/>.
         /// </summary>
-        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
+        /// <param name="setValue">Writes values reported by the View to the ViewModel.</param>
         /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
         protected OneWayToSourceStructBindableMember(Action<T> setValue)
         {
@@ -50,13 +50,13 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the binding mode of the member; always <see cref="BindMode.OneWayToSource"/>.
+        /// Gets the fixed mode <see cref="BindMode.OneWayToSource"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWayToSource;
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// The mode of <paramref name="binder"/> is neither <see cref="BindMode.TwoWay"/> nor <see cref="BindMode.OneWayToSource"/>.
+        /// The binder mode does not send values to the ViewModel.
         /// </exception>
         /// <exception cref="ReverseBinderInvalidCastException{T}">
         /// <paramref name="binder"/> implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
@@ -151,28 +151,18 @@ namespace Aspid.MVVM
 
         private void OnBoxedValueChanged(TBoxed? value)
         {
-#if ASPID_MVVM_PROFILER
-            using (this.Marker())
-#endif
-            {
-                if (value is null)
-                    throw new ArgumentNullException(nameof(value));
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
 
-                OnValueChanged((T)value);
-            }
+            OnValueChanged((T)value);
         }
 
         private void OnObjectValueChanged(object value)
         {
-#if ASPID_MVVM_PROFILER
-            using (this.Marker())
-#endif
-            {
-                if (value is not T specificValue)
-                    throw new ArgumentException("Value must be of type " + typeof(T).FullName);
+            if (value is not T specificValue)
+                throw new ArgumentException("Value must be of type " + typeof(T).FullName);
 
-                OnValueChanged(specificValue);
-            }
+            OnValueChanged(specificValue);
         }
     }
 }

@@ -1,10 +1,8 @@
 using System;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
 using Aspid.MVVM.StarterKit;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -124,43 +122,38 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void BinderFailureDoesNotPreventTheGeneratedViewFromInitializing()
+        public void BinderFailureRollsBackGeneratedViewAndAllowsRetry()
         {
             var model = new RecoveryModel();
             var view = new RecoveryView();
             view.Second.Fail = true;
-            ExpectBindingFailure();
 
-            Assert.DoesNotThrow(() => view.Initialize(model));
-            Assert.That(view.ViewModel, Is.SameAs(model));
-            Assert.That(view.First.IsBound, Is.True);
-            Assert.That(view.Second.IsBound, Is.False);
+            Assert.Throws<InvalidOperationException>(() => view.Initialize(model));
+
+            Assert.That(view.ViewModel, Is.Null);
+            Assert.That(view.First.IsBound || view.Second.IsBound, Is.False);
             var calls = view.First.Calls;
             model.Member.Value = 2;
-            Assert.That(view.First.Calls, Is.EqualTo(calls + 1));
-            view.Deinitialize();
-            calls = view.First.Calls;
-            model.Member.Value = 3;
             Assert.That(view.First.Calls, Is.EqualTo(calls));
+
             view.Second.Fail = false;
             view.Initialize(model);
-            Assert.That(view.Second.IsBound, Is.True);
+            Assert.That(view.First.IsBound && view.Second.IsBound, Is.True);
             view.Deinitialize();
         }
 
         [Test]
-        public void IsolatedBindingFailuresPreserveAnotherOwnersBinder()
+        public void InitializationRollbackPreservesAnotherOwnersBinder()
         {
             var model = new RecoveryModel();
             var external = new OneWayStructBindableMember<int>(9);
             var view = new RecoveryView();
             view.First.Bind(new BindContext(external, view.First));
-            view.Second.Fail = true;
-            ExpectBindingFailure();
-            ExpectBindingFailure();
-            Assert.DoesNotThrow(() => view.Initialize(model));
+
+            Assert.Throws<InvalidOperationException>(() => view.Initialize(model));
+
+            Assert.That(view.ViewModel, Is.Null);
             Assert.That(view.First.IsBound, Is.True);
-            view.Deinitialize();
             var calls = view.First.Calls;
             external.Value = 10;
             Assert.That(view.First.Calls, Is.EqualTo(calls + 1));
@@ -179,20 +172,16 @@ namespace Aspid.MVVM.Tests
             IView view = collection
                 ? new FixedArrayBindingView { Value = new IBinder[] { failed, healthy } }
                 : new FixedScalarBindingView { Value = failed, Nested = healthy };
-            ExpectBindingFailure();
-            view.Initialize(new FixedBindingModel(member));
-            Assert.That(failed.IsBound, Is.False);
+
+            Assert.Throws<InvalidOperationException>(() => view.Initialize(new FixedBindingModel(member)));
+
+            Assert.That(view.ViewModel, Is.Null);
+            Assert.That(failed.IsBound || healthy.IsBound, Is.False);
             failed.FailAttach = false;
             failed.Bind(new BindContext(new OneWayStructBindableMember<int>(2), failed));
             view.Deinitialize();
-            Assert.That(healthy.IsBound, Is.False);
             Assert.That(failed.IsBound, Is.True);
             failed.Unbind(new UnbindContext(failed));
-        }
-
-        private static void ExpectBindingFailure()
-        {
-            LogAssert.Expect(LogType.Exception, new Regex(@"\[BindSafely\].*InvalidOperationException"));
         }
 
         [Test]

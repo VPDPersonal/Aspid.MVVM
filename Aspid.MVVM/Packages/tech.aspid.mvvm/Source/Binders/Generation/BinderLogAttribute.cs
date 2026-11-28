@@ -5,17 +5,14 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Generates an explicit <see cref="IBinder{T}.SetValue(T)"/> implementation that records each value in an Inspector log
-    /// before calling the marked method.
+    /// Records incoming values in the Inspector before calling the marked <c>SetValue</c> method.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Mark a <c>SetValue</c> method with one parameter that implicitly implements <see cref="IBinder{T}"/>, or
-    /// <see cref="IAnyBinder"/> when it is generic, in a <see langword="partial"/> type.
+    /// The method must implicitly implement <see cref="IBinder{T}"/> or <see cref="IAnyBinder"/> in a <see langword="partial"/> type.
     /// </para>
     /// <para>
-    /// The log records values while its Inspector toggle is on, in the Editor only; <c>ASPID_MVVM_BINDER_LOG_DISABLED</c>
-    /// removes it.
+    /// Recording runs only in the Editor while enabled in the Inspector. Define <c>ASPID_MVVM_BINDER_LOG_DISABLED</c> to omit the log.
     /// </para>
     /// </remarks>
     /// <example>

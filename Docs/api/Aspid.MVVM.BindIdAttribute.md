@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Sets the identifier that pairs a ViewModel member with the View binders of the same identifier.
+Sets the identifier used to match a View binder to a ViewModel member.
 
 ```csharp
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
@@ -45,8 +45,8 @@ private int _hp;
 
 ## Remarks
 
-Without it, the identifier is the member name without its prefix, capitalized, with a <code>Command</code> suffix for a
-[`[RelayCommand]`](Aspid.MVVM.RelayCommandAttribute.md) method; the attribute value replaces all of it.
+The generator uses the default identifier when the supplied name is blank. The default strips the member prefix,
+capitalizes the name and adds <code>Command</code> for [`[RelayCommand]`](Aspid.MVVM.RelayCommandAttribute.md) methods.
 
 ## Constructors
 

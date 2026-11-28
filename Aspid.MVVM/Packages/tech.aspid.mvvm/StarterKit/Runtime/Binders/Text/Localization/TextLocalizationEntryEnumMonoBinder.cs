@@ -26,10 +26,11 @@ namespace Aspid.MVVM.StarterKit
         protected sealed override void SetValue(string value) =>
             _stringReference.TableEntryReference = value;
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the localized text.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             _stringReference?.RefreshString();
         }
 

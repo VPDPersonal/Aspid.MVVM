@@ -122,7 +122,7 @@ public sealed class Bootstrap : MonoBehaviour
 
     private void OnDestroy()
     {
-        _greeterView.DeinitializeView()?.DisposeViewModel();
+        _greeterView.DeinitializeViewSafely()?.DisposeViewModel();
     }
 }
 ```

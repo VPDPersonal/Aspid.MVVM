@@ -403,6 +403,11 @@ export default { api: [
             "type": "doc",
             "id": "Aspid.MVVM.UnbindContext",
             "label": "UnbindContext"
+          },
+          {
+            "type": "doc",
+            "id": "Aspid.MVVM.VersionStamp",
+            "label": "VersionStamp"
           }
         ]
       },

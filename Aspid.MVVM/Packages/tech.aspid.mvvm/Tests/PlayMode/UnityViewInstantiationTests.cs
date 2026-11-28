@@ -15,7 +15,7 @@ namespace Aspid.MVVM.Tests
         {
             var original = Spawn<Probe>();
             var model = new Model();
-            for (var overload = 0; overload < 12; overload++)
+            for (var overload = 0; overload < 15; overload++)
             {
                 Probe.InitializeCalls = 0;
                 Probe.FailAt = 0;
@@ -30,6 +30,39 @@ namespace Aspid.MVVM.Tests
                 }
                 yield return null;
             }
+        }
+
+        [Test]
+        public void EveryAsyncOverloadRejectsADestroyedModelBeforeCloning()
+        {
+            var original = Spawn<Probe>();
+            var model = ScriptableObject.CreateInstance<ScriptableModel>();
+            Destroy(model);
+
+            for (var overload = 0; overload < 15; overload++)
+            {
+                var error = Assert.Throws<ArgumentNullException>(() => Create(overload, original, model));
+                Assert.That(error.ParamName, Is.EqualTo("viewModel"));
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator ModelDestroyedDuringInitializationRollsBackAllClones()
+        {
+            var original = Spawn<Probe>();
+            var model = Track(ScriptableObject.CreateInstance<ScriptableModel>());
+            Probe.InitializeCalls = 0;
+            Probe.DeinitializeCalls = 0;
+            Probe.FailAt = 0;
+            LogAssert.Expect(LogType.Exception, new Regex("ArgumentNullException:.*"));
+            var operation = MonoView.InstantiateAsync(original, 3, model);
+            yield return operation;
+            yield return null;
+
+            Assert.That(Probe.InitializeCalls, Is.EqualTo(1));
+            Assert.That(Probe.DeinitializeCalls, Is.EqualTo(3));
+            foreach (var clone in operation.Result)
+                Assert.That(clone == null, Is.True);
         }
 
         [UnityTest]
@@ -79,6 +112,23 @@ namespace Aspid.MVVM.Tests
             yield return operation;
             yield return null;
             Assert.That(Probe.InitializeCalls, Is.Zero);
+        }
+
+        [UnityTest]
+        public IEnumerator CancellationDuringInitializationRollsBackTheBatch()
+        {
+            using var cancellation = new CancellationTokenSource();
+            var original = Spawn<Probe>();
+            var model = new Model { OnInitialize = cancellation.Cancel };
+            Probe.InitializeCalls = 0;
+            Probe.FailAt = 0;
+            var operation = MonoView.InstantiateAsync(original, 3, model, default, cancellation.Token);
+            yield return operation;
+            yield return null;
+            Assert.That(Probe.InitializeCalls, Is.EqualTo(1));
+            foreach (var clone in operation.Result)
+                Assert.That(clone == null, Is.True);
+            Assert.That(model.Disposed, Is.False);
         }
 
         [UnityTest]
@@ -167,7 +217,10 @@ namespace Aspid.MVVM.Tests
                 8 => MonoView.InstantiateAsync(original, 3, null, Vector3.zero, Quaternion.identity, model),
                 9 => MonoView.InstantiateAsync(original, 3, null, positions, rotations, model),
                 10 => MonoView.InstantiateAsync(original, 3, null, Vector3.zero, Quaternion.identity, model, default),
-                _ => MonoView.InstantiateAsync(original, 3, null, positions, rotations, model, default)
+                11 => MonoView.InstantiateAsync(original, 3, null, positions, rotations, model, default),
+                12 => MonoView.InstantiateAsync(original, 3, model, default),
+                13 => MonoView.InstantiateAsync(original, 3, Vector3.zero, Quaternion.identity, model, default),
+                _ => MonoView.InstantiateAsync(original, 3, positions, rotations, model, default)
             };
         }
 
@@ -182,6 +235,10 @@ namespace Aspid.MVVM.Tests
             public void Initialize(IViewModel viewModel)
             {
                 ViewModel = viewModel;
+                if (viewModel is ScriptableModel scriptable)
+                    UnityEngine.Object.DestroyImmediate(scriptable);
+                else
+                    ((Model)viewModel).OnInitialize?.Invoke();
                 if (++InitializeCalls == FailAt)
                     throw new InvalidOperationException("Initialization failed.");
             }
@@ -200,9 +257,12 @@ namespace Aspid.MVVM.Tests
             }
         }
 
+        private sealed class ScriptableModel : ScriptableViewModel { }
+
         private sealed class Model : IViewModel, IDisposable
         {
             public bool Disposed;
+            public Action OnInitialize;
             public FindBindableMemberResult FindBindableMember(in FindBindableMemberParameters parameters) => default;
             public void Dispose() => Disposed = true;
         }

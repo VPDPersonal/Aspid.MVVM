@@ -111,7 +111,9 @@ Every ready-made StarterKit binder inherits `MonoBinder`.
 
 Runtime `AddComponent` uses the binder's `DefaultMode` without requiring Editor `Reset`. Configure `binder.Mode` before binding; the setter rejects changes during binding, cleanup and while bound. Authored serialized modes are preserved.
 
-`Binder.Bind` and `MonoBinder.Bind` throw `InvalidOperationException` on repeated or reentrant binding, preserving an existing binding. Every `BindSafely` / `UnbindSafely` overload logs binder exceptions without rethrowing, including single binders. Generated Views continue initializing after an individual binder fails; errors in View lifecycle hooks still trigger rollback.
+`Binder.Bind` and `MonoBinder.Bind` throw `InvalidOperationException` on repeated or reentrant binding, preserving an existing binding.
+
+The `Safely` overloads skip null collections, null binders and destroyed Unity binders. They propagate failures to the caller. `BindSafely` stops at the first failure and leaves earlier bindings in place. Collection `UnbindSafely` attempts the remaining binders before rethrowing the original exception or throwing an `AggregateException` for multiple failures. A binder failure triggers rollback during generated View initialization.
 
 The lifecycle has four exclusive states: `Unbound`, `Binding`, `Bound` and `Unbinding`. Installation follows `OnBinding → Adder.Add → OnAttach → Bound → OnBound`. `OnAttach` acquires reverse subscriptions after the first ViewModel value, while `IsBound == false`. `OnBound` notifies that the binding is ready and sends the initial `OneWayToSource` value, with `IsBound == true`.
 
@@ -126,23 +128,26 @@ binder.Bind(new BindContext(member, owner));
 binder.Unbind(new UnbindContext(owner));
 ```
 
-`BindSafely` takes `in BindContext` for a resolved member. Lookup overloads take `FindBindableMemberResult` and `owner`, creating a context only after a successful lookup. `UnbindSafely` takes `in UnbindContext`; diagnostics use its owner. Subclasses can use the protected `Owner` property. A new `Bind` and changes to `Mode` are allowed only in `Unbound`. Owner cleanup from `OnBinding`, the initial `SetValue` or `OnAttach` is rejected before installation finishes. `OnBound` may unbind and bind again, and `OnUnbound` may immediately call `Bind`. A completion hook must finish its resource changes before invoking external code. Debug Rebind preserves the owner; destroying a `MonoBinder` automatically releases its subscriptions.
+`BindSafely` takes `in BindContext` for a resolved member. After `FindBindableMember`, call `BindSafely` only when `result.Adder` contains a member. `UnbindSafely` takes `in UnbindContext`. Subclasses can use the protected `Owner` property. A new `Bind` and changes to `Mode` are allowed only in `Unbound`. Owner cleanup from `OnBinding`, the initial `SetValue` or `OnAttach` is rejected before installation finishes. `OnBound` may unbind and bind again, and `OnUnbound` may immediately call `Bind`. A completion hook must finish its resource changes before invoking external code. Debug Rebind preserves the owner; destroying a `MonoBinder` automatically releases its subscriptions.
 
 Reuse one context for the whole collection:
 
 ```csharp
 var context = new BindContext(member, owner);
-binders.BindSafely(in context, memberName: "_values");
+binders.BindSafely(in context);
 
 var unbindContext = new UnbindContext(this);
-binders.UnbindSafely(in unbindContext, memberName: "_values");
+binders.UnbindSafely(in unbindContext);
 ```
 
-Generated Views call `IBinder.Unbind(in context)` directly for a scalar binder and `BinderExtensions.Unbind(collection, in context)` for collections. A scalar `Unbind` extension is not needed. Cleanup skips null references, processes remaining binders after failures and then rethrows the original failure or an `AggregateException` for multiple failures. No binding list is retained.
+Generated Views call `IBinder.Unbind(in context)` directly for a scalar binder and `BinderExtensions.Unbind(collection, in context)` for collections. A scalar `Unbind` extension is not needed. Strict collection overloads throw `ArgumentNullException` for a null collection. A null entry fails with `NullReferenceException`. `Bind` stops immediately, and `Unbind` collects the failure and continues cleanup.
 
 Cleanup errors are collected across `Binder` / `MonoBinder`, collections, `MonoView` groups, generated Views and initializers. One failure retains its instance and stack trace; multiple failures are reported in an `AggregateException`. Use `exception.Flatten().InnerExceptions` for nested aggregates. The error list is created only for the second failure, so aggregation adds no allocations on the successful path. Failed `Bind` installation and View initialization preserve the original failure over rollback failures.
 
-For `BindSafely(IEnumerable<T>)` and `UnbindSafely(IEnumerable<T>)`, enumeration and enumerator disposal failures also propagate: a single failure keeps its instance and stack trace; simultaneous traversal and disposal failures form an `AggregateException`. Binder failures remain separate log entries and do not join that aggregate. Earlier successful operations are not rolled back. An unsuccessful member lookup does not enumerate the collection.
+For `IEnumerable<T>`, traversal failures can leave some binders unprocessed.
+`BindSafely` uses `foreach`, so an exception from `Dispose()` takes precedence over a binding or traversal failure.
+`UnbindSafely` collects both failures in an `AggregateException`.
+An unsuccessful member lookup skips enumeration.
 
 ---
 

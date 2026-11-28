@@ -168,7 +168,7 @@ public static class GenericInitializeView
                 if (bindableMembers.TryGetValue(info.Id.SourceValue, out var bindableMember))
                     code.AppendLine(
                         $"AspidBinderExtensions.BindSafely({info.FieldName}, " +
-                        $"new global::Aspid.MVVM.BindContext(viewModel.{bindableMember.Bindable.PropertyName}, this), {info.Id.Value});");
+                        $"new global::Aspid.MVVM.BindContext(viewModel.{bindableMember.Bindable.PropertyName}, this));");
             }
         }
         else

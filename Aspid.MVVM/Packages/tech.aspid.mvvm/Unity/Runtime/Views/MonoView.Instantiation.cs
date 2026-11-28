@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using UnityEngine;
 using System.Threading;
@@ -24,7 +23,7 @@ namespace Aspid.MVVM
             }
         }
 
-        private static void InitializeOnCompletion<T>(
+        private static AsyncInstantiateOperation<T> InitializeOnCompletion<T>(
             AsyncInstantiateOperation<T> operation,
             IViewModel viewModel,
             CancellationToken cancellationToken = default)
@@ -33,23 +32,22 @@ namespace Aspid.MVVM
             operation.completed += _ =>
             {
                 var views = operation.Result;
-
                 if (views is null || views.Length is 0) return;
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    RollbackInstances(views);
-                    return;
-                }
-
+                
                 try
                 {
                     foreach (var view in views)
                     {
-                        if (!view)
-                            throw new InvalidOperationException("An instantiated view was destroyed before initialization.");
+                        if (cancellationToken.IsCancellationRequested) break;
 
+                        if (view == null)
+                            throw new InvalidOperationException("An instantiated view was destroyed before initialization.");
+                        
                         view.Initialize(viewModel);
                     }
+
+                    if (cancellationToken.IsCancellationRequested)
+                        RollbackInstances(views);
                 }
                 catch
                 {
@@ -57,6 +55,8 @@ namespace Aspid.MVVM
                     throw;
                 }
             };
+
+            return operation;
         }
 
         private static void RollbackInstance<T>(T view)
@@ -64,11 +64,11 @@ namespace Aspid.MVVM
         {
             try
             {
-                view.DestroyViewAndGameObject();
+                view.DestroyViewAndGameObjectSafely();
             }
-            catch
+            catch (Exception exception)
             {
-                // Preserve the initialization failure and continue rolling back the group.
+                Debug.LogException(exception);
             }
         }
 

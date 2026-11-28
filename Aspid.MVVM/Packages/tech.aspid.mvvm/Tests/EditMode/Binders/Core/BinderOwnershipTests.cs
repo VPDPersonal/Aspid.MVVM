@@ -49,17 +49,24 @@ namespace Aspid.MVVM.Tests
 
         [TestCase(false)]
         [TestCase(true)]
-        public void InstallationFailureSurvivesMultipleRollbackFailures(bool mono)
+        public void BindingAndRollbackFailuresAreReportedInOrder(bool mono)
         {
             var binder = Create(mono);
             var installation = new Exception("installation");
             binder.State.Attaching = () => throw installation;
-            binder.State.Cleaning = () => throw new Exception("before cleanup");
-            binder.State.Cleaned = () => throw new Exception("detach");
-            binder.State.Unbound = () => throw new Exception("notification");
+            var detach = new Exception("detach");
+            var notification = new Exception("notification");
+            binder.State.Cleaned = () => throw detach;
+            binder.State.Unbound = () => throw notification;
 
-            Assert.That(Assert.Catch(() => binder.Bind(
-                new BindContext(new OneWayStructBindableMember<int>(1), this))), Is.SameAs(installation));
+            var failure = Assert.Throws<AggregateException>(() => binder.Bind(
+                new BindContext(new OneWayStructBindableMember<int>(1), this)));
+
+            Assert.That(failure.InnerExceptions, Has.Count.EqualTo(2));
+            Assert.That(failure.InnerExceptions[0], Is.SameAs(installation));
+            Assert.That(failure.InnerExceptions[1], Is.TypeOf<AggregateException>());
+            var rollback = (AggregateException)failure.InnerExceptions[1];
+            Assert.That(rollback.InnerExceptions, Is.EqualTo(new[] { detach, notification }));
             Assert.That(binder.IsBound, Is.False);
             Assert.That(binder.CurrentOwner, Is.Null);
             Assert.That(binder.State.Cleanups, Is.EqualTo(1));
@@ -109,6 +116,38 @@ namespace Aspid.MVVM.Tests
             binder.Bind(new BindContext(new OneWayStructBindableMember<int>(1), this));
             binder.Unbind(new UnbindContext(this));
             Assert.That(binder.IsBound, Is.False);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void OnlyTheCurrentBindingReportsToSourceAfterOnBound(bool mono)
+        {
+            IProbe binder;
+            if (mono)
+            {
+                var component = Spawn<OwnedMonoBinder>();
+                component.Mode = BindMode.OneWayToSource;
+                binder = component;
+            }
+            else
+            {
+                binder = new OwnedBinder(BindMode.OneWayToSource);
+            }
+
+            var received = new System.Collections.Generic.List<int>();
+            var original = new OneWayToSourceStructBindableMember<int>(_ => Assert.Fail("The old binding sent a value."));
+            var next = new OneWayToSourceStructBindableMember<int>(received.Add);
+            binder.State.Bound = () =>
+            {
+                binder.Unbind(new UnbindContext(this));
+                binder.State.Bound = () => binder.State.Value = 42;
+                binder.Bind(new BindContext(next, this));
+            };
+
+            binder.Bind(new BindContext(original, this));
+
+            Assert.That(received, Is.EqualTo(new[] { 42 }));
+            binder.Unbind(new UnbindContext(this));
         }
 
         [TestCase(false)]
@@ -616,9 +655,12 @@ namespace Aspid.MVVM.Tests
             }
         }
 
-        private sealed class OwnedBinder : Binder, IBinder<int>, IProbe
+        private sealed class OwnedBinder : Binder, IBinder<int>, IReverseBinder<int>, IProbe
         {
             public ProbeState State { get; } = new();
+            public OwnedBinder(BindMode mode = BindMode.OneWay)
+                : base(mode) { }
+            public event Action<int> ValueChanged;
             public object CurrentOwner =>
                 Owner;
             public override bool CanBind =>
@@ -631,6 +673,8 @@ namespace Aspid.MVVM.Tests
                 State.Attaching?.Invoke();
             protected override void OnBound() =>
                 State.Bound?.Invoke();
+            protected override void OnBoundToSource() =>
+                ValueChanged?.Invoke(State.Value);
             protected override void OnUnbinding() =>
                 State.Cleaning?.Invoke();
             protected override void OnDetach() =>
@@ -639,9 +683,10 @@ namespace Aspid.MVVM.Tests
                 State.Unbound?.Invoke();
         }
 
-        private sealed class OwnedMonoBinder : MonoBinder, IBinder<int>, IProbe
+        private sealed class OwnedMonoBinder : MonoBinder, IBinder<int>, IReverseBinder<int>, IProbe
         {
             public ProbeState State { get; } = new();
+            public event Action<int> ValueChanged;
             public object CurrentOwner =>
                 Owner;
             public override bool CanBind =>
@@ -654,6 +699,8 @@ namespace Aspid.MVVM.Tests
                 State.Attaching?.Invoke();
             protected override void OnBound() =>
                 State.Bound?.Invoke();
+            protected override void OnBoundToSource() =>
+                ValueChanged?.Invoke(State.Value);
             protected override void OnUnbinding() =>
                 State.Cleaning?.Invoke();
             protected override void OnDetach() =>

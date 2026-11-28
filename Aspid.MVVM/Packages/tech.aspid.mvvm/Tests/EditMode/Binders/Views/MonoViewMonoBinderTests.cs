@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using UnityEditor;
 using NUnit.Framework;
 
@@ -14,51 +13,124 @@ namespace Aspid.MVVM.Tests
     [TestFixture]
     public sealed class MonoViewMonoBinderTests : SceneFixture
     {
-        [Test]
-        public void RealMonoViewPreservesFailuresFromEveryBinderGroup()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void DeinitializeIdentifiesEveryFailingField(bool multipleFailures)
         {
             var view = Spawn<MonoView>();
             var first = Spawn<FailingCleanupMonoBinder>();
             var second = Spawn<FailingCleanupMonoBinder>();
-            first.Failure = new Exception("first group");
-            second.Failure = new Exception("second group");
-            var groupType = typeof(MonoView).GetNestedType("Binders", BindingFlags.NonPublic);
-            var groups = Array.CreateInstance(groupType, 2);
-            var binders = new[] { first, second };
-            for (var i = 0; i < binders.Length; i++)
+            var third = Spawn<FailingCleanupMonoBinder>();
+            first.Failure = new Exception("first failure");
+            if (multipleFailures)
             {
-                var group = Activator.CreateInstance(groupType, nonPublic: true);
-                groupType.GetField("_name", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(group, "Value");
-                groupType.GetField("_monoBinders", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .SetValue(group, new MonoBinder[] { binders[i] });
-                groups.SetValue(group, i);
+                second.Failure = new Exception("second failure");
+                third.Failure = new Exception("third failure");
             }
-            typeof(MonoView).GetField("_bindersList", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(view, groups);
+
+            using var serialized = new SerializedObject(view);
+            var groups = serialized.FindProperty("_bindersList");
+            groups.arraySize = 2;
+            SetGroup(groups.GetArrayElementAtIndex(0), "Value", null, first, second);
+            SetGroup(groups.GetArrayElementAtIndex(1), "Other", third);
+            serialized.ApplyModifiedPropertiesWithoutUndo();
             view.Initialize(new FixedBindingModel(new OneTimeStructBindableMember<int>(1)));
+            Assert.That(third.IsBound, Is.True);
 
-            var aggregate = Assert.Throws<AggregateException>(view.Deinitialize);
+            if (multipleFailures)
+            {
+                var aggregate = Assert.Throws<AggregateException>(view.Deinitialize);
+                Assert.That(aggregate.InnerExceptions.Count, Is.EqualTo(2));
+                var valueFailure = aggregate.InnerExceptions[0];
+                Assert.That(valueFailure.Message, Is.EqualTo("Failed to unbind field 'Value'."));
+                Assert.That(valueFailure.InnerException, Is.TypeOf<AggregateException>());
+                Assert.That(((AggregateException)valueFailure.InnerException).InnerExceptions,
+                    Is.EqualTo(new[] { first.Failure, second.Failure }));
+                Assert.That(aggregate.InnerExceptions[1].Message, Is.EqualTo("Failed to unbind field 'Other'."));
+                Assert.That(aggregate.InnerExceptions[1].InnerException, Is.SameAs(third.Failure));
+            }
+            else
+            {
+                var failure = Assert.Throws<InvalidOperationException>(view.Deinitialize);
+                Assert.That(failure.Message, Is.EqualTo("Failed to unbind field 'Value'."));
+                Assert.That(failure.InnerException, Is.SameAs(first.Failure));
+            }
 
-            Assert.That(aggregate.Flatten().InnerExceptions, Is.EquivalentTo(new[] { first.Failure, second.Failure }));
-            Assert.That(first.IsBound || second.IsBound, Is.False);
+            Assert.That(first.IsBound || second.IsBound || third.IsBound, Is.False);
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
+        private static void SetGroup(SerializedProperty group, string name, params MonoBinder[] binders)
+        {
+            group.FindPropertyRelative("_name").stringValue = name;
+            var slots = group.FindPropertyRelative("_monoBinders");
+            slots.arraySize = binders.Length;
+            for (var i = 0; i < binders.Length; i++)
+                slots.GetArrayElementAtIndex(i).objectReferenceValue = binders[i];
+        }
+
+        [Test]
+        public void InitializeIdentifiesTheFailingField()
+        {
+            var view = Spawn<MonoView>();
+            var binder = Spawn<FailingCleanupMonoBinder>();
+            binder.BindingFailure = new Exception("binding failed");
+            using var serialized = new SerializedObject(view);
+            var groups = serialized.FindProperty("_bindersList");
+            groups.arraySize = 1;
+            SetGroup(groups.GetArrayElementAtIndex(0), "Health", binder);
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+
+            var failure = Assert.Throws<InvalidOperationException>(() => view.Initialize(new FixedBindingModel()));
+
+            Assert.That(failure.Message, Is.EqualTo("Failed to bind field 'Health'."));
+            Assert.That(failure.InnerException, Is.SameAs(binder.BindingFailure));
             Assert.That(view.ViewModel, Is.Null);
         }
 
         [Test]
-        public void CanBind_WithoutTheViewOnTheGameObject_IsFalse()
+        public void DeinitializingSkipsABinderDestroyedBeforeActivation()
         {
-            var binder = Spawn<StubViewMonoBinder>();
+            var view = Spawn<MonoView>();
+            var inactive = Spawn();
+            inactive.SetActive(false);
+            var binder = inactive.AddComponent<ProbeMonoBinder>();
+            using var serialized = new SerializedObject(view);
+            var groups = serialized.FindProperty("_bindersList");
+            groups.arraySize = 1;
+            var group = groups.GetArrayElementAtIndex(0);
+            group.FindPropertyRelative("_name").stringValue = "Value";
+            var binders = group.FindPropertyRelative("_monoBinders");
+            binders.arraySize = 1;
+            binders.GetArrayElementAtIndex(0).objectReferenceValue = binder;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
 
-            Assert.IsFalse(binder.CanBind, "The binder agreed to bind without a view on its GameObject");
+            view.Initialize(new FixedBindingModel(new OneWayBindableMember<bool>(true)));
+            Destroy(binder);
+            Assert.That(binder.IsBound, Is.True);
+
+            view.Deinitialize();
+
+            Assert.That(binder.Calls, Does.Not.Contain("OnDetach"));
+            Assert.That(view.ViewModel, Is.Null);
+            binder.Unbind(new UnbindContext(view));
         }
 
         [Test]
-        public void CanBind_WithTheViewOnTheGameObject_IsTrue()
+        public void Bind_WithoutAView_ThrowsAndCanRetry()
         {
-            var gameObject = Spawn();
-            gameObject.AddComponent<StubView>();
-            var binder = gameObject.AddComponent<StubViewMonoBinder>();
+            var binder = Spawn<StubViewMonoBinder>();
+            var model = new StubViewModel();
+            var context = new BindContext(new OneWayBindableMember<IViewModel>(model), this);
 
-            Assert.IsTrue(binder.CanBind, "The binder refused to bind with a view present on the same GameObject");
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(context));
+            Assert.That(binder.IsBound, Is.False);
+
+            var view = binder.gameObject.AddComponent<StubView>();
+            binder.Bind(context);
+
+            Assert.That(view.ViewModel, Is.SameAs(model));
+            binder.Unbind(new UnbindContext(this));
         }
 
         [Test]
@@ -120,11 +192,21 @@ namespace Aspid.MVVM.Tests
         private sealed class FailingCleanupMonoBinder : MonoBinder, IBinder<int>
         {
             public Exception Failure;
+            public Exception BindingFailure;
+
+            protected override void OnBinding()
+            {
+                if (BindingFailure is not null)
+                    throw BindingFailure;
+            }
 
             public void SetValue(int value) { }
 
-            protected override void OnUnbinding() =>
-                throw Failure;
+            protected override void OnUnbinding()
+            {
+                if (Failure is not null)
+                    throw Failure;
+            }
         }
 
         private static void SetMode(MonoBinder binder, BindMode mode)

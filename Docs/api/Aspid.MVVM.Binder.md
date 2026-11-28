@@ -29,8 +29,8 @@ public abstract class Binder : IBinder
 [AnyToStringCasterBinder](Aspid.MVVM.StarterKit.AnyToStringCasterBinder.md),
 [AudioMixerSnapshotBinder](Aspid.MVVM.StarterKit.AudioMixerSnapshotBinder.md),
 [Binder\<TProperty\>](Aspid.MVVM.StarterKit.Binder-1.md),
-[CasterBinder\<TFrom, TTo\>](Aspid.MVVM.StarterKit.CasterBinder-2.md),
 [CasterBinder\<TTarget, TFrom, TTo\>](Aspid.MVVM.StarterKit.CasterBinder-3.md),
+[CasterBinder\<TFrom, TTo\>](Aspid.MVVM.StarterKit.CasterBinder-2.md),
 [CollectionBinder\<T\>](Aspid.MVVM.StarterKit.CollectionBinder-1.md),
 [DebugLogBinder](Aspid.MVVM.StarterKit.DebugLogBinder.md),
 [DelegateOneWayBinder\<T\>](Aspid.MVVM.StarterKit.DelegateOneWayBinder-1.md),
@@ -55,8 +55,7 @@ public abstract class Binder : IBinder
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<Binder\>\(Binder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
-[BinderExtensions.BindSafely\<Binder\>\(Binder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
+[BinderExtensions.BindSafely\(IBinder?, in BindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_BindContext__),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
@@ -71,11 +70,11 @@ public abstract class Binder : IBinder
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
-[BinderExtensions.UnbindSafely\<Binder\>\(Binder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
+[BinderExtensions.UnbindSafely\(IBinder?, in UnbindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_UnbindContext__)
 
 ## Remarks
 
-A derived class implements [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) or both to exchange values.
+Implement [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) to receive values, [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) to report them, or both.
 
 ## Constructors
 
@@ -109,10 +108,25 @@ The binding mode.
 
 ## Properties
 
+### BindingVersion {#Aspid_MVVM_Binder_BindingVersion}
+
+Gets a read-only reference to the stamp that changes when binding or unbinding starts.
+
+```csharp
+protected ref readonly VersionStamp BindingVersion { get; }
+```
+
+#### Property Value
+
+ [VersionStamp](Aspid.MVVM.VersionStamp.md)
+
+#### Remarks
+
+Copy the stamp before calling user code and compare it with the current stamp afterward.
+
 ### CanBind {#Aspid_MVVM_Binder_CanBind}
 
-Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md) attaches the binder; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> unless
-overridden.
+Gets a value indicating whether [`Binder.Bind`](Aspid.MVVM.Binder.md) should attempt to attach the binder.
 
 ```csharp
 public virtual bool CanBind { get; }
@@ -121,6 +135,11 @@ public virtual bool CanBind { get; }
 #### Property Value
 
  [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+
+#### Remarks
+
+Return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> for an intentional skip. Validate required configuration in [`Binder.OnBinding`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBinding).
+The default is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.
 
 ### IsBound {#Aspid_MVVM_Binder_IsBound}
 
@@ -182,7 +201,7 @@ The bindable member and the owner acquiring the binding.
 #### Remarks
 
 Does nothing when [`Binder.CanBind`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_CanBind) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>. Installation failures roll back;
-exceptions from [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) propagate without rolling back the completed binding.
+exceptions from [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) or [`Binder.OnBoundToSource`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBoundToSource) propagate without rolling back the completed binding.
 
 #### Exceptions
 
@@ -193,6 +212,10 @@ exceptions from [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBoun
  [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
 
 The binder is already bound or a lifecycle operation is in progress.
+
+ [AggregateException](https://learn.microsoft.com/dotnet/api/system.aggregateexception)
+
+Binding and rollback both fail. The binding exception is first.
 
 ### OnAttach\(\) {#Aspid_MVVM_Binder_OnAttach}
 
@@ -229,6 +252,15 @@ protected virtual void OnBound()
 #### Remarks
 
 Exceptions do not roll back the binding. This hook may unbind and bind again; finish resource changes before invoking external code.
+
+### OnBoundToSource\(\) {#Aspid_MVVM_Binder_OnBoundToSource}
+
+Called after [`Binder.OnBound`](Aspid.MVVM.Binder.md#Aspid_MVVM_Binder_OnBound) if the same [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) binding is still active.
+Override to send the initial value to the ViewModel.
+
+```csharp
+protected virtual void OnBoundToSource()
+```
 
 ### OnDetach\(\) {#Aspid_MVVM_Binder_OnDetach}
 

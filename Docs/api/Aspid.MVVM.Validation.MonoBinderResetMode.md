@@ -22,7 +22,7 @@ public enum MonoBinderResetMode
 
 `Soft = 0`
 
-Clears the current value; the previous one is kept.
+Clears the current value and keeps the previous one.
 
 
 

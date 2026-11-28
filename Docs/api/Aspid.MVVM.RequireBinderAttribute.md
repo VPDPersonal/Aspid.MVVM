@@ -11,13 +11,12 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Associates a serialized binder field with a binding identifier and accepted value types for Inspector validation.
+Configures the binding ID and accepted value types for Inspector validation of a serialized binder field.
 
 ```csharp
 [Conditional("DEBUG")]
 [Conditional("UNITY_EDITOR")]
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public sealed class RequireBinderAttribute : Attribute
 ```
 
@@ -30,12 +29,6 @@ public sealed class RequireBinderAttribute : Attribute
 
 
 ## Examples
-
-
-```csharp
-[RequireBinder(typeof(int), Id = "Health")]
-[UnityEngine.SerializeField] private MonoBinder[] _health;
-```
 
 
 ```csharp
@@ -70,7 +63,7 @@ public RequireBinderAttribute(Type type)
 
 `type` [Type](https://learn.microsoft.com/dotnet/api/system.type)
 
-The bound value type that assigned binders must support.
+The bound value type to accept.
 
 #### Exceptions
 
@@ -80,7 +73,7 @@ The bound value type that assigned binders must support.
 
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-A type is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or has no assembly-qualified name.
+<code class="paramref">type</code> has no assembly-qualified name.
 
 ### RequireBinderAttribute\(params Type\[\]\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_Type___}
 
@@ -94,7 +87,7 @@ public RequireBinderAttribute(params Type[] types)
 
 `types` [Type](https://learn.microsoft.com/dotnet/api/system.type)\[\]
 
-The bound value types that assigned binders must support.
+The bound value types to accept. Each binder must support at least one.
 
 #### Exceptions
 
@@ -104,11 +97,11 @@ The bound value types that assigned binders must support.
 
  [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
 
-A type is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or has no assembly-qualified name.
+An element of <code class="paramref">types</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or has no assembly-qualified name.
 
 ### RequireBinderAttribute\(string\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_String_}
 
-Creates the attribute with a single assembly-qualified type name.
+Creates the attribute with one value type name or a member supplying it.
 
 ```csharp
 public RequireBinderAttribute(string assemblyQualifiedName)
@@ -128,7 +121,7 @@ The assembly-qualified value type name or the name of a string field or property
 
 ### RequireBinderAttribute\(params string\[\]\) {#Aspid_MVVM_RequireBinderAttribute__ctor_System_String___}
 
-Creates the attribute with multiple assembly-qualified type names.
+Creates the attribute with value type names or members supplying them.
 
 ```csharp
 public RequireBinderAttribute(params string[] assemblyQualifiedNames)
@@ -150,8 +143,8 @@ The value type names or names of string fields or properties containing them.
 
 ### AssemblyQualifiedNames {#Aspid_MVVM_RequireBinderAttribute_AssemblyQualifiedNames}
 
-Gets the accepted value type names or names of string fields or properties containing those names.
-<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the attribute is used without specifying types.
+Gets the accepted type names or the names of string members that supply them.
+The parameterless constructor leaves this property <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ```csharp
 public string[]? AssemblyQualifiedNames { get; }
@@ -163,8 +156,8 @@ public string[]? AssemblyQualifiedNames { get; }
 
 ### Id {#Aspid_MVVM_RequireBinderAttribute_Id}
 
-Gets or sets the binding identifier or the name of a string field or property containing it.
-When absent or blank, the identifier is derived from the decorated field name.
+Gets or sets the binding ID or the name of a string member containing it.
+A blank value derives the ID from the decorated field name.
 
 ```csharp
 public string? Id { get; set; }

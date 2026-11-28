@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.Validation
 {
     /// <summary>
-    /// The last non-empty ID of a <see cref="MonoBinder"/>, kept to detect a renamed View field.
+    /// Record of a <see cref="MonoBinder"/> field ID for detecting renames.
     /// </summary>
     [Serializable]
     public struct MonoBinderPreviousId
@@ -17,7 +17,7 @@ namespace Aspid.MVVM.Validation
         /// <summary>
         /// Creates a record of the supplied ID.
         /// </summary>
-        /// <param name="id">The ID to keep; <see langword="null"/> for none.</param>
+        /// <param name="id">The ID to keep, or <see langword="null"/> for none.</param>
         public MonoBinderPreviousId(string? id)
         {
             _id = id;

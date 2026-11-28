@@ -23,3 +23,20 @@ public sealed class GenerateSerializableBinderAttribute : Attribute
 [object](https://learn.microsoft.com/dotnet/api/system.object) ←
 [Attribute](https://learn.microsoft.com/dotnet/api/system.attribute) ←
 [GenerateSerializableBinderAttribute](Aspid.MVVM.GenerateSerializableBinderAttribute.md)
+
+
+
+## Properties
+
+### PreserveRequiredBaseParameters {#Aspid_MVVM_GenerateSerializableBinderAttribute_PreserveRequiredBaseParameters}
+
+Gets or sets a value indicating whether required base constructor parameters precede serialized options and stay required.
+
+```csharp
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+public bool PreserveRequiredBaseParameters { get; set; }
+```
+
+#### Property Value
+
+ [bool](https://learn.microsoft.com/dotnet/api/system.boolean)

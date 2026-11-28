@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-[`InvalidCastException`](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) thrown when a binder lacks the interface a bindable member receives values through.
+[`InvalidCastException`](https://learn.microsoft.com/dotnet/api/system.invalidcastexception) for a binder that cannot report the bound value type to the ViewModel.
 
 ```csharp
 public sealed class ReverseBinderInvalidCastException<T> : InvalidCastException, ISerializable
@@ -66,8 +66,7 @@ The exception to throw at the call site.
 
 ### Struct\<TBoxed\>\(IBinder\) {#Aspid_MVVM_ReverseBinderInvalidCastException_1_Struct__1_Aspid_MVVM_IBinder_}
 
-Creates an exception for a binder that implements none of [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md), [`IReverseBinder<T>`](Aspid.MVVM.IReverseBinder-1.md) of
-<code class="typeparamref">TBoxed</code> and [`IAnyReverseBinder`](Aspid.MVVM.IAnyReverseBinder.md).
+Creates an exception describing the typed, boxed and untyped interfaces accepted for this value.
 
 ```csharp
 public static ReverseBinderInvalidCastException<T> Struct<TBoxed>(IBinder binder)

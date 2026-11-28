@@ -42,7 +42,7 @@ namespace Aspid.MVVM
         public event Action<IRelayCommand<T>>? CanExecuteChanged;
 
         /// <summary>
-        /// Determines whether the command can execute with the supplied parameters.
+        /// Determines whether the command can execute with the supplied arguments.
         /// </summary>
         /// <param name="param">The command parameter.</param>
         /// <returns><see langword="true"/> if execution is allowed; otherwise, <see langword="false"/>.</returns>
@@ -73,7 +73,7 @@ namespace Aspid.MVVM
         public event Action<IRelayCommand<T1, T2>>? CanExecuteChanged;
 
         /// <summary>
-        /// Determines whether the command can execute with the supplied parameters.
+        /// Determines whether the command can execute with the supplied arguments.
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>
@@ -107,7 +107,7 @@ namespace Aspid.MVVM
         public event Action<IRelayCommand<T1, T2, T3>>? CanExecuteChanged;
 
         /// <summary>
-        /// Determines whether the command can execute with the supplied parameters.
+        /// Determines whether the command can execute with the supplied arguments.
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>
@@ -144,7 +144,7 @@ namespace Aspid.MVVM
         public event Action<IRelayCommand<T1, T2, T3, T4>>? CanExecuteChanged;
 
         /// <summary>
-        /// Determines whether the command can execute with the supplied parameters.
+        /// Determines whether the command can execute with the supplied arguments.
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>

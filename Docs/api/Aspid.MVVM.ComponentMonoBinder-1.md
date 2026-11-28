@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-[`MonoBinder`](Aspid.MVVM.MonoBinder.md) that targets a <code class="typeparamref">TComponent</code>, taken from the
-serialized field or found on the same GameObject.
+[`MonoBinder`](Aspid.MVVM.MonoBinder.md) with an assigned target component or a fallback on the same GameObject.
 
 ```csharp
 public abstract class ComponentMonoBinder<TComponent> : MonoBinder, IMonoBinderValidatable, IBinder where TComponent : Component
@@ -22,7 +21,7 @@ public abstract class ComponentMonoBinder<TComponent> : MonoBinder, IMonoBinderV
 
 `TComponent`
 
-The type of [`Component`](https://docs.unity3d.com/ScriptReference/Component.html) this binder targets.
+The target [`Component`](https://docs.unity3d.com/ScriptReference/Component.html) type.
 
 #### Inheritance
 
@@ -42,8 +41,7 @@ MonoBehaviour ←
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<ComponentMonoBinder\<TComponent\>\>\(ComponentMonoBinder\<TComponent\>?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
-[BinderExtensions.BindSafely\<ComponentMonoBinder\<TComponent\>\>\(ComponentMonoBinder\<TComponent\>?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
+[BinderExtensions.BindSafely\(IBinder?, in BindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_BindContext__),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
@@ -58,13 +56,13 @@ MonoBehaviour ←
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
-[BinderExtensions.UnbindSafely\<ComponentMonoBinder\<TComponent\>\>\(ComponentMonoBinder\<TComponent\>?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
+[BinderExtensions.UnbindSafely\(IBinder?, in UnbindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_UnbindContext__)
 
 ## Properties
 
 ### CachedComponent {#Aspid_MVVM_ComponentMonoBinder_1_CachedComponent}
 
-Gets the target component: the serialized one if assigned, otherwise the result of [`ComponentMonoBinder<T>.ResolveComponent`](Aspid.MVVM.ComponentMonoBinder-1.md#Aspid_MVVM_ComponentMonoBinder_1_ResolveComponent), cached.
+Gets the cached target component. Uses [`ComponentMonoBinder<T>.ResolveComponent`](Aspid.MVVM.ComponentMonoBinder-1.md#Aspid_MVVM_ComponentMonoBinder_1_ResolveComponent) if no component is assigned.
 
 ```csharp
 protected TComponent CachedComponent { get; }
@@ -76,38 +74,43 @@ protected TComponent CachedComponent { get; }
 
 #### Remarks
 
-A missing or destroyed cached component is resolved again when [`ComponentMonoBinder<T>.CanBind`](Aspid.MVVM.ComponentMonoBinder-1.md#Aspid_MVVM_ComponentMonoBinder_1_CanBind) is checked.
-
-### CanBind {#Aspid_MVVM_ComponentMonoBinder_1_CanBind}
-
-Gets a value indicating whether binding is allowed: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> when no target component can be found.
-
-```csharp
-public override bool CanBind { get; }
-```
-
-#### Property Value
-
- [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
+Binding resolves the target again if the cached component is missing or destroyed.
 
 ## Methods
 
-### OnValidate\(\) {#Aspid_MVVM_ComponentMonoBinder_1_OnValidate}
+### OnBinding\(\) {#Aspid_MVVM_ComponentMonoBinder_1_OnBinding}
 
-Called when Unity validates serialized data to fill an empty target field outside Play Mode.
+Called before attachment to resolve the required target component.
 
 ```csharp
-protected virtual void OnValidate()
+protected override void OnBinding()
 ```
 
 #### Remarks
 
-Overrides must call <code>base.OnValidate()</code>.
+Overrides must call the base implementation before acquiring resources.
+
+#### Exceptions
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+No live target component can be resolved.
+
+### Reset\(\) {#Aspid_MVVM_ComponentMonoBinder_1_Reset}
+
+Called when Unity adds or resets the binder in the Editor to find its default target.
+
+```csharp
+protected override void Reset()
+```
+
+#### Remarks
+
+Overrides must call the base implementation.
 
 ### ResolveComponent\(\) {#Aspid_MVVM_ComponentMonoBinder_1_ResolveComponent}
 
-Called when the serialized field is empty to find the target component. Override when the plain
-[`GetComponent%60<T>`](https://docs.unity3d.com/ScriptReference/Component-GetComponent%60.html) is ambiguous, such as for a base type like [`Behaviour`](https://docs.unity3d.com/ScriptReference/Behaviour.html).
+Called to resolve the default target. Override when [`GetComponent%60<T>`](https://docs.unity3d.com/ScriptReference/Component-GetComponent%60.html) is ambiguous.
 
 ```csharp
 protected virtual TComponent ResolveComponent()
@@ -117,4 +120,4 @@ protected virtual TComponent ResolveComponent()
 
  TComponent
 
-The component to target.
+The target component or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if none is found.

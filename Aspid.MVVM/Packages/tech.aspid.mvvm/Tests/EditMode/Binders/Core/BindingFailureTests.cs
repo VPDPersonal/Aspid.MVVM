@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 
 // ReSharper disable once CheckNamespace
@@ -128,6 +129,68 @@ namespace Aspid.MVVM.Tests
             Assert.That(any.Listeners, Is.Zero);
         }
 
+        [TestCase(false, BindMode.TwoWay)]
+        [TestCase(true, BindMode.TwoWay)]
+        [TestCase(false, BindMode.OneWayToSource)]
+        [TestCase(true, BindMode.OneWayToSource)]
+        public void ReverseSubscriptionAndRollbackFailuresAreReportedInOrder(bool useStructMember, BindMode mode)
+        {
+            var member = CreateTwoWayMember(useStructMember);
+            var subscription = new InvalidOperationException("subscribe");
+            var rollback = new InvalidOperationException("unsubscribe");
+            var binder = new FailureBinder<int>(mode);
+            binder.OnStage = stage =>
+            {
+                if (stage == "event")
+                    throw subscription;
+
+                if (stage == "removeEvent")
+                    throw rollback;
+            };
+
+            var failure = Assert.Throws<AggregateException>(() => binder.Bind(new BindContext(member, binder)));
+            Assert.That(failure.InnerExceptions, Is.EqualTo(new[] { subscription, rollback }));
+            Assert.That(binder.IsBound, Is.False);
+            Assert.That(binder.Listeners, Is.Zero);
+            var calls = binder.Calls;
+            member.Value = 2;
+            Assert.That(binder.Calls, Is.EqualTo(calls));
+
+            binder.OnStage = null;
+            binder.Bind(new BindContext(member, binder));
+            Assert.That(binder.Listeners, Is.EqualTo(1));
+            binder.Unbind(new UnbindContext(binder));
+            Assert.That(binder.Listeners, Is.Zero);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IncompatibleSourceOnlyBinderReportsOneTypeError(bool useStructMember)
+        {
+            var member = CreateTwoWayMember(useStructMember);
+            var binder = WithSerializedMode(new ForwardBinder<int>(), BindMode.OneWayToSource);
+
+            Assert.Throws<ReverseBinderInvalidCastException<int>>(() => binder.Bind(new BindContext(member, binder)));
+            Assert.That(binder.IsBound, Is.False);
+            Assert.That(binder.Calls, Is.Zero);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FailedInitialPushKeepsAnExistingListener(bool useStructMember)
+        {
+            var member = CreateTwoWayMember(useStructMember);
+            var binder = new FailureBinder<int> { Stage = "value" };
+            member.Changed += binder.SetValue;
+
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(new BindContext(member, binder)));
+            binder.Stage = null;
+            var calls = binder.Calls;
+            member.Value = 2;
+            Assert.That(binder.Calls, Is.EqualTo(calls + 1));
+            Assert.That(binder.Listeners, Is.Zero);
+        }
+
         [Test]
         public void SourceOnlyMembersUndoThrowingEventAccessors()
         {
@@ -164,15 +227,22 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void CleanupFailuresDoNotReplaceTheOriginalBindingFailure()
+        public void FailedBindingReportsTheOriginalFailureAndBothRollbackFailures()
         {
             var binder = new FailureBinder<int> { Stage = "attach", FailCleanup = true };
-            Assert.That(Assert.Throws<InvalidOperationException>(() => binder.Bind(new BindContext(new TwoWayStructBindableMember<int>(1, _ => { }), binder))).Message,
-                Is.EqualTo("attach"));
+            var context = new BindContext(new TwoWayStructBindableMember<int>(1, _ => { }), binder);
+            var failure = Assert.Throws<AggregateException>(() => binder.Bind(in context));
+            var errors = failure.Flatten().InnerExceptions;
+            Assert.That(errors, Has.All.TypeOf<InvalidOperationException>());
+            Assert.That(errors.Select(error => error.Message), Is.EqualTo(new[] { "attach", "unbinding", "unbound" }));
             Assert.That(binder.IsBound, Is.False);
             Assert.That(binder.Resource, Is.False);
             Assert.That(binder.Listeners, Is.Zero);
         }
+
+        private static IBindableMember<int> CreateTwoWayMember(bool useStructMember) => useStructMember
+            ? new TwoWayStructBindableMember<int>(1, _ => { })
+            : new TwoWayBindableMember<int>(1, _ => { });
 
         private static T WithSerializedMode<T>(T binder, BindMode mode)
             where T : Binder
@@ -245,6 +315,7 @@ namespace Aspid.MVVM.Tests
                 remove
                 {
                     _changed -= value;
+                    Fail("removeEvent");
                 }
             }
 

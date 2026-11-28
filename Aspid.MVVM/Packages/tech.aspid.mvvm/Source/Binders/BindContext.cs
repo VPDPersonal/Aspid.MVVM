@@ -31,8 +31,12 @@ namespace Aspid.MVVM
             Adder = adder ?? throw new ArgumentNullException(nameof(adder));
         }
 
+        /// <summary>
+        /// Verifies that the context has a bindable member and an owner.
+        /// </summary>
+        /// <exception cref="ArgumentException"><see cref="Adder"/> or <see cref="Owner"/> is <see langword="null"/>.</exception>
         [SuppressMessage(category: "ReSharper", checkId: "NotResolvedInText")]
-        internal void EnsureValid()
+        public void EnsureValid()
         {
             if (Adder is null || Owner is null)
                 throw new ArgumentException("A binding context requires a member and an owner.", paramName: "context");

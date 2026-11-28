@@ -4,11 +4,11 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Generates a <see cref="RelayCommand"/> property, named after the method with a <c>Command</c> suffix, for the method of
-    /// a <see cref="ViewModelAttribute">[ViewModel]</see> class.
+    /// Generates a relay command for the marked method of a <see cref="ViewModelAttribute">[ViewModel]</see> class.
     /// </summary>
     /// <remarks>
-    /// The method is non-generic, returns <see langword="void"/> and takes up to four value parameters.
+    /// The generated property uses the method name with a <c>Command</c> suffix. The method must be non-generic,
+    /// return <see langword="void"/> and take up to four value parameters.
     /// </remarks>
     /// <example>
     /// <code>
@@ -26,8 +26,8 @@ namespace Aspid.MVVM
     public sealed class RelayCommandAttribute : Attribute
     {
         /// <summary>
-        /// The name of a <see cref="bool"/> field, readable property or compatible method accessible from the class that allows execution; <see langword="null"/> to
-        /// always allow it.
+        /// The name of a boolean field, readable property or predicate method that allows execution.
+        /// The default, <see langword="null"/>, always allows execution.
         /// </summary>
         /// <remarks>
         /// Method overload resolution, generic type inference and constraints follow C# delegate conversion rules; an invalid predicate reports generator error <c>ASPIDVM004</c>.

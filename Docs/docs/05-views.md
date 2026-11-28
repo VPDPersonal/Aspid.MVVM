@@ -261,9 +261,9 @@ Generated Views ignore repeated `Deinitialize()` calls during cleanup and reject
 
 The binder set is fixed between `Initialize` and `Deinitialize`: fields, cached binder properties and collection contents must retain the same instances. The generator releases them directly through `UnbindContext(this)`, without an additional binding list. Property and `[AsBinder]` wrapper caches remain. Cleanup ignores a different owner; rebinding for the same View continues that View's ownership. Dynamically replacing the binder set is unsupported.
 
-`Reinitialize`, `DeinitializeView` and both `DisposeView` overloads require a non-null View and throw `ArgumentNullException` otherwise. These methods also reject destroyed Unity objects. A null return means the View had no ViewModel. `DisposeView<T>` requires a reference type. Passing null as the replacement ViewModel to `Reinitialize` only deinitializes the View. ViewModel disposal remains the caller's responsibility. If initialization through `Reinitialize` fails, a generated View stays detached and does not restore the old ViewModel.
+`DeinitializeView`, `Reinitialize`, and both `DisposeView` overloads require a non-null View and throw `ArgumentNullException` otherwise. These methods also reject destroyed Unity objects. A null return means the View had no ViewModel. `DisposeView<T>` requires a reference type. Passing null as the replacement ViewModel to `Reinitialize` only deinitializes the View. ViewModel disposal remains the caller's responsibility. If initialization through `Reinitialize` fails, a generated View stays detached and does not restore the old ViewModel.
 
-`ReinitializeSafely`, `DeinitializeViewSafely` and `DisposeViewSafely` skip null Views and destroyed Unity objects. They log exceptions to the Unity Console. The methods return the previous ViewModel on success and null when it was absent, the View was skipped, or the operation failed.
+View lifecycle methods with the `Safely` suffix skip null and destroyed Views. Exceptions from a live View propagate to the caller. `InitializeSafely` also skips null and destroyed ViewModels. `ReinitializeSafely`, `DeinitializeViewSafely`, `DisposeViewSafely` and the destruction helpers return the previous ViewModel, or null if it was absent or the View was skipped.
 
 ---
 
@@ -330,7 +330,7 @@ var view = MonoView.Instantiate(prefab, viewModel, parentTransform);
 _view.Initialize(viewModel);
 
 // Deinitialize and dispose the ViewModel
-_view.DeinitializeView()?.DisposeViewModel();
+_view.DeinitializeViewSafely()?.DisposeViewModel();
 ```
 
 ### From the ViewModel
@@ -343,11 +343,25 @@ viewModel?.InitializeViews(viewA, viewB);
 viewModel?.InitializeViews(views);
 ```
 
-`InitializeViews` accepts arrays, `List<T>` where `T : IView`, and `IEnumerable<IView>` (including read-only collections and lazy sequences). Arrays and lists of concrete View types are supported. Passing an existing array or list avoids enumerator allocations; the `params` call creates an array.
+`InitializeViews` and `ReinitializeViews` accept arrays, `Span<T>`, `ReadOnlySpan<T>`, `List<T>`, and `IEnumerable<T>` where `T : IView`. You can also pass individual Views to `InitializeViews` with `params`.
 
-`InitializeViewSafely` and `InitializeViewsSafely` skip missing or destroyed ViewModels and Views. The batch method logs an individual View's exception and moves to the next View. An enumeration exception is logged and ends the batch.
+`InitializeViewSafely` and `InitializeViewsSafely` skip missing or destroyed ViewModels and Views. A View or enumeration failure stops initialization and propagates to the caller.
 
-With `?.`, a null ViewModel skips the call and argument evaluation. A direct call rejects null and destroyed Unity objects. If both arguments are invalid, it reports both in an `AggregateException`. Collections are processed in order and stop at the first exception; previously initialized Views remain initialized. Each call delegates to `IView.Initialize`, preserving the View's lifecycle rules.
+`replacement.ReinitializeView(view)` detaches and returns the previous ViewModel and binds the replacement. Calling it with a missing or destroyed replacement leaves the View unbound.
+
+With `?.`, a null ViewModel skips the call and argument evaluation. Direct calls to `InitializeView` and `InitializeViews` pass the model to `IView.Initialize`. Batch initialization stops at the first failure. A null collection throws `ArgumentNullException`, and a null View throws `NullReferenceException`.
+
+### From a collection of Views
+
+```csharp
+views.InitializeViews(viewModel);
+views.ReinitializeViews(replacement);
+views.DeinitializeViewsSafely();
+```
+
+The extensions accept `IEnumerable<IView>`, including arrays and lists of concrete View types. Use `DisposeViews` to dispose disposable Views and deinitialize the others. `DestroyViews` preserves the GameObjects, while `DestroyViewsAndGameObjects` also destroys the GameObject of each component View. Call the destruction methods on the Unity main thread.
+
+Views are processed in order. Initialization and reinitialization stop at the first failure. The `Safely` variants skip missing and destroyed Views. During cleanup, `DeinitializeViewsSafely`, `DisposeViews`, `DisposeViewsSafely`, `DestroyViewsSafely` and `DestroyViewsAndGameObjectsSafely` continue after an individual View fails. After traversal, the caller receives the original exception or an `AggregateException` containing multiple failures in order, including traversal and enumerator disposal failures. Batch methods return `void` and leave ViewModel disposal to the caller.
 
 ### Through ViewInitializer (Inspector)
 

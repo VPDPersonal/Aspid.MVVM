@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Aspid.MVVM.StarterKit;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -97,17 +96,69 @@ namespace Aspid.MVVM.Tests
 
         [TestCase(false)]
         [TestCase(true)]
-        public void SafeDisposalLogsExceptions(bool typed)
+        public void SafeDisposalPropagatesExceptions(bool typed)
         {
             var model = new DisposableModel { Failure = new InvalidOperationException("safe disposal") };
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe disposal");
+            var failure = Assert.Throws<InvalidOperationException>(() =>
+            {
+                if (typed)
+                    model.DisposeViewModelSafely();
+                else
+                    ((IViewModel)model).DisposeViewModelSafely();
+            });
 
-            if (typed)
-                model.DisposeViewModelSafely();
-            else
-                ((IViewModel)model).DisposeViewModelSafely();
-
+            Assert.That(failure, Is.SameAs(model.Failure));
             Assert.That(model.Calls, Is.EqualTo(1));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void BatchDisposalCollectsFailuresAndProcessesRemainingModels(bool safely)
+        {
+            var first = new DisposableModel { Failure = new InvalidOperationException("first") };
+            var second = new DisposableModel { Failure = new InvalidOperationException("second") };
+            var last = new DisposableModel();
+            var models = new IViewModel[] { first, null, second, last };
+
+            var failure = Assert.Throws<AggregateException>(() =>
+            {
+                if (safely)
+                    models.AsSpan().DisposeViewModelsSafely();
+                else
+                    ((ReadOnlySpan<IViewModel>)models).DisposeViewModels();
+            });
+
+            Assert.That(failure.InnerExceptions, Has.Count.EqualTo(safely ? 2 : 3));
+            Assert.That(failure.InnerExceptions[0], Is.SameAs(first.Failure));
+            if (!safely)
+                Assert.That(failure.InnerExceptions[1], Is.TypeOf<ArgumentNullException>());
+            Assert.That(failure.InnerExceptions.Last(), Is.SameAs(second.Failure));
+            Assert.That(last.Calls, Is.EqualTo(1));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void BatchCleanupRetainsModelAndEnumerationFailures(bool destroy)
+        {
+            var model = new DisposableModel { Failure = new InvalidOperationException("dispose") };
+            var traversal = new InvalidOperationException("enumerate");
+
+            var failure = Assert.Throws<AggregateException>(() =>
+            {
+                if (destroy)
+                    Enumerate().DestroyViewModelsAndGameObjectsSafely();
+                else
+                    Enumerate().DisposeViewModels();
+            });
+
+            Assert.That(failure.InnerExceptions, Is.EqualTo(new[] { model.Failure, traversal }));
+            Assert.That(model.Calls, Is.EqualTo(1));
+
+            IEnumerable<DisposableModel> Enumerate()
+            {
+                yield return model;
+                throw traversal;
+            }
         }
 
         [TestCase(Access.Private)]

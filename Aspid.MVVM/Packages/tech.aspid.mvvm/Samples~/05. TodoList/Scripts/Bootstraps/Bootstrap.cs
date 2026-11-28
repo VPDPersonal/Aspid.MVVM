@@ -28,6 +28,6 @@ namespace Aspid.MVVM.Samples.TodoList
         }
 
         private void OnDestroy() => 
-            _todoStorageView.DeinitializeView()?.DisposeViewModel();
+            _todoStorageView.DeinitializeViewSafely()?.DisposeViewModel();
     }
 }

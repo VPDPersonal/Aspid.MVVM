@@ -4,7 +4,7 @@ using System;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// <see cref="InvalidCastException"/> thrown when a binder lacks the interface a bindable member receives values through.
+    /// <see cref="InvalidCastException"/> for a binder that cannot report the bound value type to the ViewModel.
     /// </summary>
     /// <remarks>
     /// The message names the binder type and, for a live component, its GameObject path.
@@ -36,8 +36,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates an exception for a binder that implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
-        /// <typeparamref name="TBoxed"/> and <see cref="IAnyReverseBinder"/>.
+        /// Creates an exception describing the typed, boxed and untyped interfaces accepted for this value.
         /// </summary>
         /// <typeparam name="TBoxed">The boxed form of <typeparamref name="T"/>.</typeparam>
         /// <param name="binder">The binder that failed the check.</param>

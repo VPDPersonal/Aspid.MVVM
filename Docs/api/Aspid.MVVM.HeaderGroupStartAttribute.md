@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Starts a foldout range at the decorated member.
+Starts an Inspector foldout range at the decorated member.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -34,20 +34,21 @@ public sealed class HeaderGroupStartAttribute : Attribute
 ```csharp
 [HeaderGroupStart("Stats")]
 [Bind] private int _health;
+[Bind] private int _stamina;
+[HeaderGroupEnd]
+[Bind] private string _playerName;
 ```
 
 
 ## Remarks
 
-The range ends before [`HeaderGroupEndAttribute`](Aspid.MVVM.HeaderGroupEndAttribute.md) or another [`HeaderGroupStartAttribute`](Aspid.MVVM.HeaderGroupStartAttribute.md).
-[`HeaderGroupAttribute`](Aspid.MVVM.HeaderGroupAttribute.md) affects only its own member.
-Attribute applications are omitted unless <code>DEBUG</code> or <code>UNITY_EDITOR</code> is defined.
+The range ends before the next [`HeaderGroupEndAttribute`](Aspid.MVVM.HeaderGroupEndAttribute.md) or [`HeaderGroupStartAttribute`](Aspid.MVVM.HeaderGroupStartAttribute.md) with a title.
 
 ## Constructors
 
 ### HeaderGroupStartAttribute\(string\) {#Aspid_MVVM_HeaderGroupStartAttribute__ctor_System_String_}
 
-Creates a grouping attribute with the supplied title.
+Creates a foldout range with the given title.
 
 ```csharp
 public HeaderGroupStartAttribute(string title)
@@ -57,7 +58,7 @@ public HeaderGroupStartAttribute(string title)
 
 `title` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
-The foldout title; blank titles are ignored.
+The foldout title. Blank titles are ignored.
 
 ## Properties
 

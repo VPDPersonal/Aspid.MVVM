@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Provides extension methods for creating relay commands and for replacing a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> command with an empty one.
+Provides extension methods for creating relay commands, binding arguments and supplying empty commands.
 
 ```csharp
 public static class RelayCommandExtensions
@@ -1110,7 +1110,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty).
+<code class="paramref">command</code>, or [`RelayCommand.Empty`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_Empty) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### GetSelfOrEmpty\<T\>\(IRelayCommand\<T?\>?\) {#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmpty__1_Aspid_MVVM_IRelayCommand___0__}
 
@@ -1130,7 +1130,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-1.md)\<T?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T>.Empty`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_Empty).
+<code class="paramref">command</code>, or [`RelayCommand<T>.Empty`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_Empty) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1156,7 +1156,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-2.md)\<T1?, T2?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T1, T2>.Empty`](Aspid.MVVM.RelayCommand-2.md#Aspid_MVVM_RelayCommand_2_Empty).
+<code class="paramref">command</code>, or [`RelayCommand<T1, T2>.Empty`](Aspid.MVVM.RelayCommand-2.md#Aspid_MVVM_RelayCommand_2_Empty) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1186,7 +1186,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-3.md)\<T1?, T2?, T3?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T1, T2, T3>.Empty`](Aspid.MVVM.RelayCommand-3.md#Aspid_MVVM_RelayCommand_3_Empty).
+<code class="paramref">command</code>, or [`RelayCommand<T1, T2, T3>.Empty`](Aspid.MVVM.RelayCommand-3.md#Aspid_MVVM_RelayCommand_3_Empty) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1220,7 +1220,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-4.md)\<T1?, T2?, T3?, T4?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T1, T2, T3, T4>.Empty`](Aspid.MVVM.RelayCommand-4.md#Aspid_MVVM_RelayCommand_4_Empty).
+<code class="paramref">command</code>, or [`RelayCommand<T1, T2, T3, T4>.Empty`](Aspid.MVVM.RelayCommand-4.md#Aspid_MVVM_RelayCommand_4_Empty) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1258,7 +1258,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand.md)
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution).
+<code class="paramref">command</code>, or [`RelayCommand.EmptyExecution`](Aspid.MVVM.RelayCommand.md#Aspid_MVVM_RelayCommand_EmptyExecution) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### GetSelfOrEmptyExecution\<T\>\(IRelayCommand\<T?\>?\) {#Aspid_MVVM_RelayCommandExtensions_GetSelfOrEmptyExecution__1_Aspid_MVVM_IRelayCommand___0__}
 
@@ -1278,7 +1278,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-1.md)\<T?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T>.EmptyExecution`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_EmptyExecution).
+<code class="paramref">command</code>, or [`RelayCommand<T>.EmptyExecution`](Aspid.MVVM.RelayCommand-1.md#Aspid_MVVM_RelayCommand_1_EmptyExecution) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1304,7 +1304,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-2.md)\<T1?, T2?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T1, T2>.EmptyExecution`](Aspid.MVVM.RelayCommand-2.md#Aspid_MVVM_RelayCommand_2_EmptyExecution).
+<code class="paramref">command</code>, or [`RelayCommand<T1, T2>.EmptyExecution`](Aspid.MVVM.RelayCommand-2.md#Aspid_MVVM_RelayCommand_2_EmptyExecution) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1334,7 +1334,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-3.md)\<T1?, T2?, T3?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T1, T2, T3>.EmptyExecution`](Aspid.MVVM.RelayCommand-3.md#Aspid_MVVM_RelayCommand_3_EmptyExecution).
+<code class="paramref">command</code>, or [`RelayCommand<T1, T2, T3>.EmptyExecution`](Aspid.MVVM.RelayCommand-3.md#Aspid_MVVM_RelayCommand_3_EmptyExecution) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 
@@ -1368,7 +1368,7 @@ The command, or <a href="https://learn.microsoft.com/dotnet/csharp/language-refe
 
  [IRelayCommand](Aspid.MVVM.IRelayCommand-4.md)\<T1?, T2?, T3?, T4?\>
 
-<code class="paramref">command</code> if it is not <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>; otherwise, [`RelayCommand<T1, T2, T3, T4>.EmptyExecution`](Aspid.MVVM.RelayCommand-4.md#Aspid_MVVM_RelayCommand_4_EmptyExecution).
+<code class="paramref">command</code>, or [`RelayCommand<T1, T2, T3, T4>.EmptyExecution`](Aspid.MVVM.RelayCommand-4.md#Aspid_MVVM_RelayCommand_4_EmptyExecution) if it is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 #### Type Parameters
 

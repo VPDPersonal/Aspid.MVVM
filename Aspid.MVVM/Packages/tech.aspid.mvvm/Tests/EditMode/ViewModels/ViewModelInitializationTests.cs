@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Aspid.MVVM.StarterKit;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
@@ -27,6 +26,8 @@ namespace Aspid.MVVM.Tests
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
         public void CollectionsInitializeViewsInOrder(int kind)
         {
             var model = new EmptyViewModel();
@@ -40,6 +41,8 @@ namespace Aspid.MVVM.Tests
                 case 2: model.InitializeViews(Enumerate(first, second)); break;
                 case 3: model.InitializeViews(new List<RecordingView> { first, second }); break;
                 case 4: model.InitializeViews(first, second); break;
+                case 5: model.InitializeViews(new[] { first, second }.AsSpan()); break;
+                case 6: model.InitializeViews((ReadOnlySpan<RecordingView>)new[] { first, second }); break;
             }
 
             Assert.That(order, Is.EqualTo(new IView[] { first, second }));
@@ -63,40 +66,23 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void DirectCallsRejectNullModelEvenForEmptyCollections()
+        public void DirectCallsPassTheModelThroughToTheView()
         {
             IViewModel model = null;
-            Assert.Throws<ArgumentNullException>(() => model.InitializeView(new RecordingView()));
-            Assert.Throws<ArgumentNullException>(() => model.InitializeViews(Array.Empty<IView>()));
-            Assert.Throws<ArgumentNullException>(() => model.InitializeViews(new List<IView>()));
-            Assert.Throws<ArgumentNullException>(() => model.InitializeViews(Enumerate()));
-        }
+            var view = new RecordingView();
+            model.InitializeView(view);
+            model.InitializeViews(Enumerate(view));
+            model.InitializeViews(Array.Empty<IView>());
 
-        [Test]
-        public void StrictInitializationReportsBothMissingArguments()
-        {
-            IViewModel model = null;
-            AssertMissingArguments(() => model.InitializeView(null), "view");
-            AssertMissingArguments(() => model.InitializeViews((IView[])null), "views");
-            AssertMissingArguments(() => model.InitializeViews((List<IView>)null), "views");
-            AssertMissingArguments(() => model.InitializeViews((IEnumerable<IView>)null), "views");
-
-            void AssertMissingArguments(TestDelegate call, string targetName)
-            {
-                var exception = Assert.Throws<AggregateException>(call);
-                Assert.That(exception.InnerExceptions, Has.Count.EqualTo(2));
-                Assert.That(exception.InnerExceptions[0], Is.TypeOf<ArgumentNullException>());
-                Assert.That(exception.InnerExceptions[1], Is.TypeOf<ArgumentNullException>());
-                Assert.That(((ArgumentNullException)exception.InnerExceptions[0]).ParamName, Is.EqualTo("viewModel"));
-                Assert.That(((ArgumentNullException)exception.InnerExceptions[1]).ParamName, Is.EqualTo(targetName));
-            }
+            Assert.That(view.Calls, Is.EqualTo(2));
+            Assert.That(view.ViewModel, Is.Null);
         }
 
         [Test]
         public void NullTargetsAreRejectedAndEmptyCollectionsAreAccepted()
         {
             var model = new EmptyViewModel();
-            Assert.Throws<ArgumentNullException>(() => model.InitializeView(null));
+            Assert.Throws<NullReferenceException>(() => model.InitializeView(null));
             Assert.Throws<ArgumentNullException>(() => model.InitializeViews((IView[])null));
             Assert.Throws<ArgumentNullException>(() => model.InitializeViews((List<IView>)null));
             Assert.Throws<ArgumentNullException>(() => model.InitializeViews((IEnumerable<IView>)null));
@@ -130,7 +116,7 @@ namespace Aspid.MVVM.Tests
             });
 
             if (nullElement)
-                Assert.That(exception, Is.TypeOf<ArgumentNullException>());
+                Assert.That(exception, Is.TypeOf<NullReferenceException>());
             else
                 Assert.That(exception, Is.SameAs(failure));
             Assert.That(first.ViewModel, Is.SameAs(model));
@@ -140,36 +126,56 @@ namespace Aspid.MVVM.Tests
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
-        public void SafeBatchSkipsMissingViewsAndContinuesAfterFailure(int kind)
+        public void SafeBatchSkipsMissingViewsAndStopsAtFailure(int kind)
         {
             var model = new EmptyViewModel();
             var destroyed = ScriptableObject.CreateInstance<StubScriptableView>();
             Object.DestroyImmediate(destroyed);
             var broken = new RecordingView { Failure = new InvalidOperationException("safe initialization") };
             var last = new RecordingView();
-            var views = new IView[] { destroyed, null, broken, last };
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe initialization");
-
-            switch (kind)
+            var first = new RecordingView();
+            var views = new IView[] { destroyed, null, first, broken, last };
+            var exception = Assert.Throws<InvalidOperationException>(() =>
             {
-                case 0: model.InitializeViewsSafely(views); break;
-                case 1: model.InitializeViewsSafely(new List<IView>(views)); break;
-                case 2: model.InitializeViewsSafely(Enumerate(views)); break;
-            }
+                switch (kind)
+                {
+                    case 0: model.InitializeViewsSafely(views); break;
+                    case 1: model.InitializeViewsSafely(new List<IView>(views)); break;
+                    case 2: model.InitializeViewsSafely(Enumerate(views)); break;
+                }
+            });
 
+            Assert.That(exception, Is.SameAs(broken.Failure));
+            Assert.That(first.ViewModel, Is.SameAs(model));
             Assert.That(destroyed.ViewModel, Is.Null);
             Assert.That(broken.Calls, Is.EqualTo(1));
-            Assert.That(last.ViewModel, Is.SameAs(model));
+            Assert.That(last.Calls, Is.Zero);
         }
 
         [Test]
-        public void SafeBatchLogsEnumerationFailure()
+        public void SafeBatchPropagatesEnumerationFailure()
         {
             var model = new EmptyViewModel();
             var view = new RecordingView();
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe enumeration");
-            model.InitializeViewsSafely(EnumerateWithFailure(view));
+            var failure = Assert.Throws<InvalidOperationException>(() => model.InitializeViewsSafely(EnumerateWithFailure(view)));
+            Assert.That(failure.Message, Is.EqualTo("safe enumeration"));
             Assert.That(view.ViewModel, Is.SameAs(model));
+        }
+
+        [Test]
+        public void ReinitializationReturnsThePreviousModelAndAcceptsAMissingReplacement()
+        {
+            var first = new EmptyViewModel();
+            var replacement = new EmptyViewModel();
+            var view = new RecordingView();
+            first.InitializeView(view);
+
+            Assert.That(replacement.ReinitializeView(view), Is.SameAs(first));
+            Assert.That(view.ViewModel, Is.SameAs(replacement));
+
+            IViewModel missing = null;
+            missing.ReinitializeViewsSafely(new IView[] { null, view }.AsSpan());
+            Assert.That(view.ViewModel, Is.Null);
         }
 
         private static IEnumerable<IView> EnumerateWithFailure(IView view)

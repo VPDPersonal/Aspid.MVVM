@@ -1,75 +1,270 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    [SuppressMessage(category: "ReSharper", checkId: "NullableWarningSuppressionIsUsed")]
     public static partial class ViewExtensions
     {
         /// <summary>
-        /// Disposes or deinitializes the view and destroys its Unity object while preserving any GameObject.
+        /// Cleans up the View and destroys its Unity object, if any, preserving the owning GameObject.
         /// </summary>
         /// <remarks>
-        /// Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
-        /// Destruction is attempted even if cleanup fails. Cleanup failures propagate to the caller.
-        /// Does not dispose the returned ViewModel. Managed views are disposed or deinitialized.
+        /// Call on the main thread for Unity objects. Destruction is attempted even if cleanup fails.
+        /// It is immediate in Edit Mode and deferred in Play Mode.
         /// </remarks>
-        /// <param name="view">The view to destroy; <see langword="null"/> to do nothing.</param>
-        /// <returns>The previous ViewModel; <see langword="null"/> if absent or the Unity object was already destroyed.</returns>
-        public static IViewModel? DestroyView(this IView? view) =>
-            DestroyViewInternal(view, destroyGameObject: false);
+        /// <param name="view">The View to destroy.</param>
+        /// <returns>The previous ViewModel, or <see langword="null"/> if the View had none.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="view"/> is <see langword="null"/> or destroyed.
+        /// </exception>
+        /// <exception cref="AggregateException">Cleanup and destruction both fail.</exception>
+        public static IViewModel? DestroyView(this IView view) => view.IsMissing()
+            ? throw new ArgumentNullException(nameof(view))
+            : DestroyViewInternal(view, destroyGameObject: false);
 
         /// <summary>
-        /// Disposes or deinitializes the view and destroys its GameObject or the Unity object itself.
+        /// Cleans up the View and destroys its GameObject for components or the object itself for other Unity objects.
         /// </summary>
         /// <remarks>
-        /// Call on the main thread; destruction is immediate in Edit Mode and deferred in Play Mode.
-        /// Destruction is attempted even if cleanup fails. Cleanup failures propagate to the caller.
-        /// Does not dispose the returned ViewModel. Managed views are disposed or deinitialized.
+        /// Call on the main thread for Unity objects. Destruction is attempted even if cleanup fails.
+        /// It is immediate in Edit Mode and deferred in Play Mode.
         /// </remarks>
-        /// <param name="view">The view to destroy; <see langword="null"/> to do nothing.</param>
-        /// <returns>The previous ViewModel; <see langword="null"/> if absent or the Unity object was already destroyed.</returns>
-        public static IViewModel? DestroyViewAndGameObject(this IView? view) =>
-            DestroyViewInternal(view, destroyGameObject: true);
+        /// <param name="view">The View to destroy.</param>
+        /// <returns>The previous ViewModel, or <see langword="null"/> if the View had none.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="view"/> is <see langword="null"/> or destroyed.
+        /// </exception>
+        /// <exception cref="AggregateException">Cleanup and destruction both fail.</exception>
+        public static IViewModel? DestroyViewAndGameObject(this IView view) => view.IsMissing()
+            ? throw new ArgumentNullException(nameof(view))
+            : DestroyViewInternal(view, destroyGameObject: true);
 
         /// <summary>
-        /// Cleans up and destroys the View, preserving its GameObject when applicable, and logs failures.
+        /// Calls <see cref="DestroyView(IView)"/> on each View and rethrows failures after cleanup.
         /// </summary>
-        /// <remarks>Call on the main thread for Unity objects. Destruction is attempted even if cleanup fails.</remarks>
-        /// <param name="view">The View to destroy. Skips null and destroyed Unity objects.</param>
-        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
-        public static IViewModel? DestroyViewSafely(this IView? view) =>
-            DestroyViewSafelyInternal(view, destroyGameObject: false);
-
-        /// <summary>
-        /// Cleans up and destroys the View, including its GameObject when applicable, and logs failures.
-        /// </summary>
-        /// <remarks>Call on the main thread for Unity objects. Destruction is attempted even if cleanup fails.</remarks>
-        /// <param name="view">The View to destroy. Skips null and destroyed Unity objects.</param>
-        /// <returns>The previous ViewModel on success, or <see langword="null"/> if absent, skipped, or failed.</returns>
-        public static IViewModel? DestroyViewAndGameObjectSafely(this IView? view) =>
-            DestroyViewSafelyInternal(view, destroyGameObject: true);
-
-        private static IViewModel? DestroyViewSafelyInternal(IView? view, bool destroyGameObject)
+        /// <remarks>Call on the main thread for Unity objects.</remarks>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="views">The Views to destroy.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="views"/> is <see langword="null"/>, or the only failure is a missing or destroyed View.
+        /// </exception>
+        /// <exception cref="AggregateException">Multiple failures occur during cleanup, destruction, or enumeration.</exception>
+        public static void DestroyViews<T>(this T[] views)
+            where T : IView
         {
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            var failures = new CleanupExceptions();
+
+            foreach (var view in views)
+                DestroyViewInternal(view, destroyGameObject: false, ref failures);
+
+            failures.ThrowIfAny();
+        }
+
+        /// <summary>
+        /// Calls <see cref="DestroyViewAndGameObject(IView)"/> on each View and rethrows failures after cleanup.
+        /// </summary>
+        /// <remarks>Call on the main thread for Unity objects.</remarks>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="views">The Views to destroy.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="views"/> is <see langword="null"/>, or the only failure is a missing or destroyed View.
+        /// </exception>
+        /// <exception cref="AggregateException">Multiple failures occur during cleanup, destruction, or enumeration.</exception>
+        public static void DestroyViewsAndGameObjects<T>(this T[] views)
+            where T : IView
+        {
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            var failures = new CleanupExceptions();
+
+            foreach (var view in views)
+                DestroyViewInternal(view, destroyGameObject: true, ref failures);
+
+            failures.ThrowIfAny();
+        }
+
+        /// <summary>
+        /// Calls <see cref="DestroyView(IView)"/> on each View and rethrows failures after cleanup.
+        /// </summary>
+        /// <remarks>Call on the main thread for Unity objects.</remarks>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="views">The Views to destroy.</param>
+        /// <exception cref="ArgumentNullException">The only failure is a missing or destroyed View.</exception>
+        /// <exception cref="AggregateException">Multiple failures occur during cleanup, destruction, or enumeration.</exception>
+        public static void DestroyViews<T>(this Span<T> views)
+            where T : IView
+        {
+            var failures = new CleanupExceptions();
+
+            foreach (var view in views)
+                DestroyViewInternal(view, destroyGameObject: false, ref failures);
+
+            failures.ThrowIfAny();
+        }
+
+        /// <summary>
+        /// Calls <see cref="DestroyViewAndGameObject(IView)"/> on each View and rethrows failures after cleanup.
+        /// </summary>
+        /// <remarks>Call on the main thread for Unity objects.</remarks>
+        /// <typeparam name="T">The View type.</typeparam>
+        /// <param name="views">The Views to destroy.</param>
+        /// <exception cref="ArgumentNullException">The only failure is a missing or destroyed View.</exception>
+        /// <exception cref="AggregateException">Multiple failures occur during cleanup, destruction, or enumeration.</exception>
+        public static void DestroyViewsAndGameObjects<T>(this Span<T> views)
+            where T : IView
+        {
+            var failures = new CleanupExceptions();
+
+            foreach (var view in views)
+                DestroyViewInternal(view, destroyGameObject: true, ref failures);
+
+            failures.ThrowIfAny();
+        }
+
+        /// <inheritdoc cref="DestroyViews{T}(Span{T})"/>
+        public static void DestroyViews<T>(this ReadOnlySpan<T> views)
+            where T : IView
+        {
+            var failures = new CleanupExceptions();
+
+            foreach (var view in views)
+                DestroyViewInternal(view, destroyGameObject: false, ref failures);
+
+            failures.ThrowIfAny();
+        }
+
+        /// <inheritdoc cref="DestroyViewsAndGameObjects{T}(Span{T})"/>
+        public static void DestroyViewsAndGameObjects<T>(this ReadOnlySpan<T> views)
+            where T : IView
+        {
+            var failures = new CleanupExceptions();
+
+            foreach (var view in views)
+                DestroyViewInternal(view, destroyGameObject: true, ref failures);
+
+            failures.ThrowIfAny();
+        }
+
+        /// <inheritdoc cref="DestroyViews{T}(T[])"/>
+        public static void DestroyViews<T>(this List<T> views)
+            where T : IView
+        {
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            DestroyViewsInternal(views, destroyGameObject: false);
+        }
+
+        /// <inheritdoc cref="DestroyViewsAndGameObjects{T}(T[])"/>
+        public static void DestroyViewsAndGameObjects<T>(this List<T> views)
+            where T : IView
+        {
+            if (views is null)
+                throw new ArgumentNullException(nameof(views));
+
+            DestroyViewsInternal(views, destroyGameObject: true);
+        }
+
+        /// <inheritdoc cref="DestroyViews{T}(T[])"/>
+        public static void DestroyViews<T>(this IEnumerable<T> views)
+            where T : IView
+        {
+            switch (views)
+            {
+                case null: throw new ArgumentNullException(nameof(views));
+                case T[] array: array.DestroyViews(); return;
+                case List<T> list: list.DestroyViews(); return;
+            }
+
+            DestroyViewsInternal(views, destroyGameObject: false);
+        }
+
+        /// <inheritdoc cref="DestroyViewsAndGameObjects{T}(T[])"/>
+        public static void DestroyViewsAndGameObjects<T>(this IEnumerable<T> views)
+            where T : IView
+        {
+            switch (views)
+            {
+                case null: throw new ArgumentNullException(nameof(views));
+                case T[] array: array.DestroyViewsAndGameObjects(); return;
+                case List<T> list: list.DestroyViewsAndGameObjects(); return;
+            }
+
+            DestroyViewsInternal(views, destroyGameObject: true);
+        }
+
+        private static void DestroyViewsInternal<T>(List<T> views, bool destroyGameObject)
+            where T : IView
+        {
+            var failures = new CleanupExceptions();
+
             try
             {
-                return DestroyViewInternal(view, destroyGameObject);
+                foreach (var view in views)
+                    DestroyViewInternal(view, destroyGameObject, ref failures);
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
-                return null;
+                failures.Add(exception);
+            }
+
+            failures.ThrowIfAny();
+        }
+
+        private static void DestroyViewsInternal<T>(IEnumerable<T> views, bool destroyGameObject)
+            where T : IView
+        {
+            var failures = new CleanupExceptions();
+
+            try
+            {
+                using var enumerator = views.GetEnumerator();
+
+                try
+                {
+                    while (enumerator.MoveNext())
+                        DestroyViewInternal(enumerator.Current!, destroyGameObject, ref failures);
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
+            }
+
+            failures.ThrowIfAny();
+        }
+
+        private static void DestroyViewInternal(IView view, bool destroyGameObject, ref CleanupExceptions failures)
+        {
+            try
+            {
+                if (destroyGameObject) 
+                    view.DestroyViewAndGameObject();
+                else view.DestroyView();
+            }
+            catch (Exception exception)
+            {
+                failures.Add(exception);
             }
         }
 
-        private static IViewModel? DestroyViewInternal(IView? view, bool destroyGameObject)
+        private static IViewModel? DestroyViewInternal(IView view, bool destroyGameObject)
         {
             if (view is not Object target)
-                return view?.DisposeView();
-
-            if (target == null) return null;
+                return view.DisposeViewInternal();
 
             if (destroyGameObject && target is Component component)
                 target = component.gameObject;
@@ -79,7 +274,7 @@ namespace Aspid.MVVM
 
             try
             {
-                viewModel = view.DisposeView();
+                viewModel = view.DisposeViewInternal();
             }
             catch (Exception exception)
             {

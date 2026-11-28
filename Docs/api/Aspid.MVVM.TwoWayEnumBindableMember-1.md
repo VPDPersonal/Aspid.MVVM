@@ -57,7 +57,7 @@ The initial value.
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>
 
-The callback that writes a value reported by a reverse binder to the ViewModel.
+Writes values reported by the View to the ViewModel.
 
 #### Exceptions
 

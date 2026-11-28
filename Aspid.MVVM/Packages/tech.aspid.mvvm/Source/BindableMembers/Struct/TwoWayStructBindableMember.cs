@@ -44,7 +44,7 @@ namespace Aspid.MVVM
         /// Creates a member holding <paramref name="value"/> that passes reported values to <paramref name="setValue"/>.
         /// </summary>
         /// <param name="value">The initial value.</param>
-        /// <param name="setValue">The callback that writes a value reported by a reverse binder to the ViewModel.</param>
+        /// <param name="setValue">Writes values reported by the View to the ViewModel.</param>
         /// <exception cref="ArgumentNullException"><paramref name="setValue"/> is <see langword="null"/>.</exception>
         protected TwoWayStructBindableMember(
             T value,
@@ -55,7 +55,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
+        /// Gets or sets the value and raises <see cref="Changed"/> on every assignment.
         /// </summary>
         public T Value
         {
@@ -74,7 +74,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the binding mode of the member; always <see cref="BindMode.TwoWay"/>.
+        /// Gets the fixed mode <see cref="BindMode.TwoWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.TwoWay;
 
@@ -83,15 +83,14 @@ namespace Aspid.MVVM
         /// The mode of <paramref name="binder"/> is <see cref="BindMode.None"/> or undefined.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
-        /// The mode reaches the View (<see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>)
-        /// and <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
+        /// The mode reaches the View and <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of
         /// <typeparamref name="TBoxed"/> and <see cref="IAnyBinder"/>.
         /// </exception>
         /// <exception cref="ReverseBinderInvalidCastException{T}">
-        /// The mode reaches the ViewModel (<see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneWayToSource"/>)
-        /// and <paramref name="binder"/> implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
+        /// The mode reaches the ViewModel and <paramref name="binder"/> implements none of <see cref="IReverseBinder{T}"/>, <see cref="IReverseBinder{T}"/> of
         /// <typeparamref name="TBoxed"/> and <see cref="IAnyReverseBinder"/>.
         /// </exception>
+        /// <exception cref="AggregateException">Reverse subscription and rollback both fail, in that order.</exception>
         IBinderRemover? IBinderAdder.Add(IBinder binder)
         {
 #if ASPID_MVVM_PROFILER
@@ -99,64 +98,49 @@ namespace Aspid.MVVM
 #endif
             {
                 var mode = binder.Mode;
-                try
+
+                switch (mode)
                 {
-                    switch (mode)
-                    {
-                        case BindMode.OneWay:
-                            OneWay();
-                            break;
+                    case BindMode.OneWay:
+                        OneWay();
+                        break;
 
-                        case BindMode.TwoWay:
-                            if (binder is not IBinder<T> and not IBinder<TBoxed> and not IAnyBinder)
-                                throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
+                    case BindMode.TwoWay:
+                        if (binder is not IBinder<T> and not IBinder<TBoxed> and not IAnyBinder)
+                            throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
 
-                            if (binder is not IReverseBinder<T> and not IReverseBinder<TBoxed> and not IAnyReverseBinder)
-                                throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
+                        if (binder is not IReverseBinder<T> and not IReverseBinder<TBoxed> and not IAnyReverseBinder)
+                            throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
 
-                            OneWay();
-                            OneWayToSource();
-                            break;
+                        OneWay();
+                        SubscribeToSource(mode);
+                        break;
 
-                        case BindMode.OneTime:
-                            switch (binder)
-                            {
-                                case IBinder<T> specificBinder:
-                                    specificBinder.SetValue(_value);
-                                    break;
+                    case BindMode.OneTime:
+                        switch (binder)
+                        {
+                            case IBinder<T> specificBinder:
+                                specificBinder.SetValue(_value);
+                                break;
 
-                                case IBinder<TBoxed> structBinder:
-                                    structBinder.SetValue(_value);
-                                    break;
+                            case IBinder<TBoxed> structBinder:
+                                structBinder.SetValue(_value);
+                                break;
 
-                                case IAnyBinder anyBinder:
-                                    anyBinder.SetValue(_value);
-                                    break;
+                            case IAnyBinder anyBinder:
+                                anyBinder.SetValue(_value);
+                                break;
 
-                                default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
-                            }
-                            return null;
+                            default: throw BinderInvalidCastException.Struct<T, TBoxed>(binder);
+                        }
+                        return null;
 
-                        case BindMode.OneWayToSource:
-                            OneWayToSource();
-                            break;
+                    case BindMode.OneWayToSource:
+                        SubscribeToSource(mode);
+                        break;
 
-                        case BindMode.None:
-                        default: throw new InvalidOperationException("Mode can't be None.");
-                    }
-                }
-                catch
-                {
-                    try
-                    {
-                        ((IBinderRemover)this).Remove(binder);
-                    }
-                    catch
-                    {
-                        // Do not replace the original exception with a cleanup failure.
-                    }
-
-                    throw;
+                    case BindMode.None:
+                    default: throw new InvalidOperationException("Unsupported binding mode.");
                 }
             }
 
@@ -185,24 +169,40 @@ namespace Aspid.MVVM
                 }
             }
 
-            void OneWayToSource()
+            void SubscribeToSource(BindMode mode)
             {
-                switch (binder)
+                try
                 {
-                    case IReverseBinder<T> reverseBinder:
-                        reverseBinder.ValueChanged += OnValueChanged;
-                        break;
+                    switch (binder)
+                    {
+                        case IReverseBinder<T> reverseBinder:
+                            reverseBinder.ValueChanged += OnValueChanged;
+                            return;
 
-                    case IReverseBinder<TBoxed> structReverseBinder:
-                        structReverseBinder.ValueChanged += OnBoxedValueChanged;
-                        break;
+                        case IReverseBinder<TBoxed> structReverseBinder:
+                            structReverseBinder.ValueChanged += OnBoxedValueChanged;
+                            return;
 
-                    case IAnyReverseBinder anyReverseBinder:
-                        anyReverseBinder.ValueChanged += OnObjectValueChanged;
-                        break;
-
-                    default: throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
+                        case IAnyReverseBinder anyReverseBinder:
+                            anyReverseBinder.ValueChanged += OnObjectValueChanged;
+                            return;
+                    }
                 }
+                catch (Exception subscriptionException)
+                {
+                    try
+                    {
+                        Remove(binder, mode);
+                    }
+                    catch (Exception rollbackException)
+                    {
+                        throw new AggregateException(subscriptionException, rollbackException);
+                    }
+
+                    throw;
+                }
+
+                throw ReverseBinderInvalidCastException<T>.Struct<TBoxed>(binder);
             }
         }
 
@@ -218,13 +218,16 @@ namespace Aspid.MVVM
         /// The mode reaches the ViewModel and <paramref name="binder"/> implements none of <see cref="IReverseBinder{T}"/>,
         /// <see cref="IReverseBinder{T}"/> of <typeparamref name="TBoxed"/> and <see cref="IAnyReverseBinder"/>.
         /// </exception>
-        void IBinderRemover.Remove(IBinder binder)
+        void IBinderRemover.Remove(IBinder binder) =>
+            Remove(binder, binder.Mode);
+
+        private void Remove(IBinder binder, BindMode mode)
         {
 #if ASPID_MVVM_PROFILER
             using (this.Marker())
 #endif
             {
-                switch (binder.Mode)
+                switch (mode)
                 {
                     case BindMode.OneTime: return;
 
@@ -306,28 +309,18 @@ namespace Aspid.MVVM
 
         private void OnBoxedValueChanged(TBoxed? value)
         {
-#if ASPID_MVVM_PROFILER
-            using (this.Marker())
-#endif
-            {
-                if (value is null)
-                    throw new ArgumentNullException(nameof(value));
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
 
-                OnValueChanged((T)value);
-            }
+            OnValueChanged((T)value);
         }
 
         private void OnObjectValueChanged(object value)
         {
-#if ASPID_MVVM_PROFILER
-            using (this.Marker())
-#endif
-            {
-                if (value is not T specificValue)
-                    throw new ArgumentException("Value must be of type " + typeof(T).FullName);
+            if (value is not T specificValue)
+                throw new ArgumentException("Value must be of type " + typeof(T).FullName);
 
-                OnValueChanged(specificValue);
-            }
+            OnValueChanged(specificValue);
         }
     }
 }

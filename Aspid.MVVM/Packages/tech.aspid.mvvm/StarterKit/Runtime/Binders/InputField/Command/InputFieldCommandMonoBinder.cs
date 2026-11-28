@@ -29,15 +29,8 @@ namespace Aspid.MVVM.StarterKit
         private IRelayCommand _command;
         private IRelayCommand<string> _stringCommand;
 
-        /// <summary>
-        /// Re-subscribes to the selected event after an Inspector change in Play mode.
-        /// </summary>
-        /// <remarks>
-        /// Runs only while bound, so the listener is never stacked or left behind.
-        /// </remarks>
-        protected override void OnValidate()
+        private void OnValidate()
         {
-            base.OnValidate();
             if (!Application.isPlaying || !IsBound) return;
 
             CachedComponent.RemoveListenerFromAll(OnValueChanged);
@@ -134,9 +127,8 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>
         /// Runs only while bound, so the listener is never stacked or left behind.
         /// </remarks>
-        protected override void OnValidate()
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -235,9 +227,8 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>
         /// Runs only while bound, so the listener is never stacked or left behind.
         /// </remarks>
-        protected override void OnValidate()
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -354,9 +345,8 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>
         /// Runs only while bound, so the listener is never stacked or left behind.
         /// </remarks>
-        protected override void OnValidate()
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 

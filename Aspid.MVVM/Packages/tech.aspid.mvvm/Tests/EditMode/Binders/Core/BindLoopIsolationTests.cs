@@ -1,42 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
-using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
 {
     /// <summary>
-    /// Tests that safe binding reports failures and isolates each binder.
+    /// Tests failure propagation and cleanup in null-tolerant binder operations.
     /// </summary>
     [TestFixture]
     public sealed class BindLoopIsolationTests : SceneFixture
     {
         [Test]
-        public void UninitializedContextIsLoggedBeforeCallingACustomBinder()
+        public void ScalarSafelyDelegatesContextValidationToTheBinder()
         {
             var binder = new SpyBinder();
-            LogAssert.Expect(LogType.Exception, new Regex(@"\[BindSafely\].*ArgumentException"));
+            binder.BindSafely(default(BindContext));
+            Assert.That(binder.IsBound, Is.True);
 
-            Assert.DoesNotThrow(() => binder.BindSafely(default(BindContext), "_single"));
-
+            binder.UnbindSafely(default(UnbindContext));
             Assert.That(binder.IsBound, Is.False);
             LogAssert.NoUnexpectedReceived();
         }
 
-        [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
-        public void UnbindSafely_LogsAnUninitializedContextBeforeCallingACustomBinder(int shape)
+        public void UnbindSafely_RejectsAnUninitializedContextBeforeCallingACustomBinder(int shape)
         {
             var binder = new SpyBinder { IsBound = true };
-            LogAssert.Expect(LogType.Exception, new Regex(@"\[UnbindSafely\].*ArgumentException"));
-
-            Assert.DoesNotThrow(() => UnbindShape(new[] { binder }, default, shape));
+            Assert.Throws<ArgumentException>(() => UnbindShape(new[] { binder }, default, shape));
 
             Assert.That(binder.IsBound, Is.True);
             LogAssert.NoUnexpectedReceived();
@@ -115,147 +109,73 @@ namespace Aspid.MVVM.Tests
 
         [TestCase(false)]
         [TestCase(true)]
-        public void BindSafely_ForOneBinder_ReportsTheFailureWithContext(bool lookup)
+        public void ScalarSafelyPropagatesTheBinderFailure(bool unbind)
         {
-            var binder = new SpyBinder { ThrowOnBind = true };
+            var binder = new SpyBinder { ThrowOnBind = true, ThrowOnUnbind = true };
             var member = new OneWayBindableMember<string>(null);
-            LogAssert.Expect(LogType.Exception,
-                new Regex(@"\[Object\] \[BindSafely\] Binder '_single'.*InvalidOperationException"));
+            TestDelegate operation = unbind
+                ? () => binder.UnbindSafely(new UnbindContext(this))
+                : () => binder.BindSafely(new BindContext(member, this));
 
-            Assert.DoesNotThrow(() =>
-            {
-                if (lookup)
-                    binder.BindSafely(new FindBindableMemberResult(member), new object(), "_single");
-                else
-                    binder.BindSafely(new BindContext(member, new object()), "_single");
-            });
-            Assert.That(binder.IsBound, Is.False);
+            var failure = Assert.Throws<InvalidOperationException>(operation);
+
+            Assert.That(failure.StackTrace, Does.Contain(unbind ? "SpyBinder.Unbind" : "SpyBinder.Bind"));
+            LogAssert.NoUnexpectedReceived();
         }
 
         [Test]
-        public void UnbindSafely_ForOneBinder_ReportsTheFailureWithContext()
+        public void BindSafelySkipsNullAndStopsOnFailure([Values(0, 1, 2, 3, 4)] int shape)
         {
-            var binder = new SpyBinder { IsBound = true, ThrowOnUnbind = true };
-            LogAssert.Expect(LogType.Exception,
-                new Regex(@"\[Object\] \[UnbindSafely\] Binder '_single'.*InvalidOperationException"));
+            var first = new SpyBinder();
+            var later = new SpyBinder();
+            var broken = new SpyBinder { ThrowOnBind = true };
+            var binders = new IBinder[] { null, first, broken, later };
+            var context = new BindContext(new OneWayBindableMember<string>(null), this);
 
-            Assert.DoesNotThrow(() => binder.UnbindSafely(new UnbindContext(new object()), "_single"));
-        }
-
-        [TestCase(0, false)]
-        [TestCase(0, true)]
-        [TestCase(1, false)]
-        [TestCase(1, true)]
-        [TestCase(2, false)]
-        [TestCase(2, true)]
-        public void BindSafely_ReportsMissingAndFailingEntriesAndBindsTheRest(int collection, bool lookup)
-        {
-            var survivor = new SpyBinder();
-            var binders = new IBinder[] { null, new SpyBinder { ThrowOnBind = true }, survivor };
-            var member = new OneWayBindableMember<string>(null);
-            ExpectMissingLog("BindSafely");
-            ExpectFailureLog("BindSafely");
-
-            switch (collection)
+            Assert.Throws<InvalidOperationException>(() =>
             {
-                case 0:
-                    if (lookup)
-                        binders.BindSafely(new FindBindableMemberResult(member), owner: this, memberName: "_binders");
-                    else
-                        binders.BindSafely(new BindContext(member, this), memberName: "_binders");
-                    break;
-                case 1:
-                    var list = new List<IBinder>(binders);
-                    if (lookup)
-                        list.BindSafely(new FindBindableMemberResult(member), owner: this, memberName: "_binders");
-                    else
-                        list.BindSafely(new BindContext(member, this), memberName: "_binders");
-                    break;
-                default:
-                    IEnumerable<IBinder> sequence = binders;
-                    if (lookup)
-                        sequence.BindSafely(new FindBindableMemberResult(member), owner: this, memberName: "_binders");
-                    else
-                        sequence.BindSafely(new BindContext(member, this), memberName: "_binders");
-                    break;
-            }
+                switch (shape)
+                {
+                    case 0: binders.BindSafely(in context); break;
+                    case 1: new List<IBinder>(binders).BindSafely(in context); break;
+                    case 2: new FailingBinderEnumerable(binders).BindSafely(in context); break;
+                    case 3: binders.AsSpan().BindSafely(in context); break;
+                    case 4: new ReadOnlySpan<IBinder>(binders).BindSafely(in context); break;
+                }
+            });
 
-            Assert.That(survivor.IsBound, Is.True);
+            Assert.That(first.IsBound, Is.True);
+            Assert.That(later.IsBound, Is.False);
+            LogAssert.NoUnexpectedReceived();
         }
 
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        public void UnbindSafely_ReportsMissingAndFailingEntriesAndUnbindsTheRest(int collection)
+        [Test]
+        public void UnbindSafelySkipsNullAndRethrowsAfterCleaningUp([Values(0, 1, 2, 3, 4)] int shape)
         {
             var survivor = new SpyBinder { IsBound = true };
-            var binders = new IBinder[] { null, new SpyBinder { ThrowOnUnbind = true }, survivor };
-            ExpectMissingLog("UnbindSafely");
-            ExpectFailureLog("UnbindSafely");
+            var broken = new SpyBinder { ThrowOnUnbind = true };
+            var binders = new IBinder[] { null, broken, survivor };
+            var context = new UnbindContext(this);
 
-            switch (collection)
+            var failure = Assert.Throws<InvalidOperationException>(() =>
             {
-                case 0:
-                    binders.UnbindSafely(new UnbindContext(this), memberName: "_binders");
-                    break;
-                case 1:
-                    new List<IBinder>(binders).UnbindSafely(new UnbindContext(this), memberName: "_binders");
-                    break;
-                default:
-                    ((IEnumerable<IBinder>)binders).UnbindSafely(new UnbindContext(this), memberName: "_binders");
-                    break;
-            }
+                switch (shape)
+                {
+                    case 0: binders.UnbindSafely(in context); break;
+                    case 1: new List<IBinder>(binders).UnbindSafely(in context); break;
+                    case 2: new FailingBinderEnumerable(binders).UnbindSafely(in context); break;
+                    case 3: binders.AsSpan().UnbindSafely(in context); break;
+                    case 4: new ReadOnlySpan<IBinder>(binders).UnbindSafely(in context); break;
+                }
+            });
 
+            Assert.That(failure.StackTrace, Does.Contain("SpyBinder.Unbind"));
             Assert.That(survivor.IsBound, Is.False);
-        }
-
-        [TestCase(false, 0)]
-        [TestCase(true, 0)]
-        [TestCase(false, 1)]
-        [TestCase(true, 1)]
-        [TestCase(false, 2)]
-        [TestCase(true, 2)]
-        [TestCase(false, 3)]
-        [TestCase(true, 3)]
-        public void FailureLogPreservesTheOriginalExceptionAndUsesOnlyLiveUnityOwners(bool unbind, int ownerKind)
-        {
-            object owner = this;
-            if (ownerKind is 1 or 2)
-                owner = Spawn("DiagnosticOwner");
-            else if (ownerKind is 3)
-                owner = Track(ScriptableObject.CreateInstance<DiagnosticOwner>());
-            if (ownerKind is 2)
-                Destroy((Object)owner);
-
-            var originalHandler = Debug.unityLogger.logHandler;
-            var handler = new CapturingLogHandler(originalHandler);
-            Debug.unityLogger.logHandler = handler;
-            RestoreOnTearDown(() => Debug.unityLogger.logHandler = originalHandler);
-            var binder = new SpyBinder { ThrowOnBind = true, ThrowOnUnbind = true };
-            ExpectFailureLog(unbind ? "UnbindSafely" : "BindSafely");
-
-            if (unbind)
-                binder.UnbindSafely(new UnbindContext(owner), "_single");
-            else
-                binder.BindSafely(new BindContext(new OneWayBindableMember<string>(null), owner), "_single");
-
-            Assert.That(handler.Exception, Is.TypeOf<InvalidOperationException>());
-            Assert.That(handler.Exception.StackTrace,
-                Does.Contain(unbind ? "SpyBinder.Unbind" : "SpyBinder.Bind"));
-            Assert.That(handler.Message, Does.Contain(handler.Exception.ToString()));
-            Assert.That(handler.Message, Does.Contain("'_single'"));
-            if (ownerKind is 1 or 3)
-                Assert.That(handler.Context, Is.SameAs(owner));
-            else
-                Assert.That(handler.Context, Is.Null);
-            if (ownerKind is 2)
-                Assert.That(handler.Message, Does.Contain("destroyed Unity object"));
-            if (ownerKind is 3)
-                Assert.That(handler.Message, Does.Contain("Object '").And.Not.Contain("GameObject '"));
+            LogAssert.NoUnexpectedReceived();
         }
 
         [Test]
-        public void NullInputsAndUnsuccessfulLookupsProduceNoLogs()
+        public void NullInputsProduceNoLogs()
         {
             IBinder missing = null;
             IBinder[] missingArray = null;
@@ -265,13 +185,6 @@ namespace Aspid.MVVM.Tests
             missingArray.BindSafely(new BindContext(member, this));
             missingArray.UnbindSafely(new UnbindContext(this));
 
-            var binder = new SpyBinder { ThrowOnBind = true };
-            var result = new FindBindableMemberResult();
-            binder.BindSafely(result, this);
-            new[] { binder }.BindSafely(result, this);
-            new List<SpyBinder> { binder }.BindSafely(result, this);
-            ((IEnumerable<SpyBinder>)new[] { binder }).BindSafely(result, this);
-            Assert.That(binder.IsBound, Is.False);
             LogAssert.NoUnexpectedReceived();
         }
 
@@ -280,193 +193,158 @@ namespace Aspid.MVVM.Tests
         public void EnumerationFailuresPropagateAfterProcessingEarlierEntries(bool unbind)
         {
             var binder = new SpyBinder { IsBound = unbind };
-            var exception = Assert.Throws<InvalidOperationException>(() =>
-            {
-                if (unbind)
-                    Enumerate().UnbindSafely(new UnbindContext(this));
-                else
-                    Enumerate().BindSafely(new BindContext(new OneWayBindableMember<string>(null), this));
-            });
-            Assert.That(exception.Message, Is.EqualTo("enumeration"));
+            var failure = new InvalidOperationException("enumeration");
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => RunSafely(Enumerate(), unbind)), Is.SameAs(failure));
+
             Assert.That(binder.IsBound, Is.EqualTo(!unbind));
             LogAssert.NoUnexpectedReceived();
 
             IEnumerable<IBinder> Enumerate()
             {
                 yield return binder;
-                throw new InvalidOperationException("enumeration");
+                throw failure;
             }
         }
 
-        [TestCase(false, false)]
-        [TestCase(false, true)]
-        [TestCase(true, false)]
-        [TestCase(true, true)]
-        public void BindSafely_PreservesEnumerationAndDisposalFailures(bool lookup, bool current)
+        [Test]
+        public void Safely_HandlesSimultaneousEnumerationAndDisposalFailures(
+            [Values] bool unbind,
+            [Values] bool failReadingCurrent,
+            [Values(0, 1, 2)] int shape)
         {
-            var first = new SpyBinder();
-            var second = new SpyBinder();
+            var first = new SpyBinder { IsBound = unbind };
+            var second = new SpyBinder { IsBound = unbind };
             var enumeration = new Exception("enumeration");
             var disposal = new Exception("disposal");
-            var source = new FailingBinderEnumerable(first, second)
+            var source = CreateFailingSource(shape, first, second);
+            source.MoveNextFailure = failReadingCurrent ? null : enumeration;
+            source.CurrentFailure = failReadingCurrent ? enumeration : null;
+            source.CurrentFailureIndex = 1;
+            source.DisposalFailure = disposal;
+
+            if (unbind)
             {
-                MoveNextFailure = current ? null : enumeration,
-                CurrentFailure = current ? enumeration : null,
-                CurrentFailureIndex = 1,
-                DisposalFailure = disposal
-            };
+                var aggregate = Assert.Throws<AggregateException>(() => RunSafely(source, unbind, shape));
+                Assert.That(aggregate.InnerExceptions, Is.EqualTo(new[] { enumeration, disposal }));
+            }
+            else
+            {
+                Assert.That(Assert.Throws<Exception>(() => RunSafely(source, unbind, shape)), Is.SameAs(disposal));
+            }
 
-            var aggregate = Assert.Throws<AggregateException>(() => BindSource(source, lookup));
-
-            Assert.That(aggregate.InnerExceptions, Is.EqualTo(new[] { enumeration, disposal }));
-            Assert.That(first.IsBound, Is.True);
-            Assert.That(second.IsBound, Is.EqualTo(!current));
+            Assert.That(first.IsBound, Is.EqualTo(!unbind));
+            Assert.That(second.IsBound, Is.EqualTo(failReadingCurrent ? unbind : !unbind));
             Assert.That(source.DisposeCalls, Is.EqualTo(1));
-            LogAssert.NoUnexpectedReceived();
-        }
-
-        [TestCase(false, 0)]
-        [TestCase(false, 1)]
-        [TestCase(false, 2)]
-        [TestCase(false, 3)]
-        [TestCase(true, 0)]
-        [TestCase(true, 1)]
-        [TestCase(true, 2)]
-        [TestCase(true, 3)]
-        public void BindSafely_PreservesASingleEnumeratorFailure(bool lookup, int stage)
-        {
-            var failure = new Exception("single");
-            var source = new FailingBinderEnumerable(new SpyBinder())
-            {
-                AcquisitionFailure = stage is 0 ? failure : null,
-                MoveNextFailure = stage is 1 ? failure : null,
-                CurrentFailure = stage is 2 ? failure : null,
-                DisposalFailure = stage is 3 ? failure : null
-            };
-
-            Assert.That(Assert.Catch(() => BindSource(source, lookup)), Is.SameAs(failure));
-            Assert.That(failure.StackTrace, Does.Contain(nameof(ThrowEnumerationFailure)));
-            Assert.That(source.DisposeCalls, Is.EqualTo(stage is 0 ? 0 : 1));
-            LogAssert.NoUnexpectedReceived();
-        }
-
-        [TestCase(false)]
-        [TestCase(true)]
-        public void BindSafely_LogsBinderFailuresSeparatelyFromEnumeratorFailures(bool lookup)
-        {
-            var survivor = new SpyBinder();
-            var enumeration = new Exception("enumeration");
-            var disposal = new Exception("disposal");
-            var source = new FailingBinderEnumerable(null, new SpyBinder { ThrowOnBind = true }, survivor)
-            {
-                MoveNextFailure = enumeration,
-                DisposalFailure = disposal
-            };
-            ExpectMissingLog("BindSafely");
-            LogAssert.Expect(LogType.Exception,
-                new Regex(@"\[BindSafely\] Binder at index 1 '_binders'.*InvalidOperationException"));
-
-            var aggregate = Assert.Throws<AggregateException>(() => BindSource(source, lookup));
-
-            Assert.That(aggregate.InnerExceptions, Is.EqualTo(new[] { enumeration, disposal }));
-            Assert.That(survivor.IsBound, Is.True);
-            Assert.That(source.DisposeCalls, Is.EqualTo(1));
-            LogAssert.NoUnexpectedReceived();
-        }
-
-        [TestCase(false)]
-        [TestCase(true)]
-        public void UnbindSafely_PreservesEnumerationAndDisposalFailures(bool current)
-        {
-            var first = new SpyBinder { IsBound = true };
-            var second = new SpyBinder { IsBound = true };
-            var enumeration = new Exception("enumeration");
-            var disposal = new Exception("disposal");
-            var source = new FailingBinderEnumerable(first, second)
-            {
-                MoveNextFailure = current ? null : enumeration,
-                CurrentFailure = current ? enumeration : null,
-                CurrentFailureIndex = 1,
-                DisposalFailure = disposal
-            };
-
-            var aggregate = Assert.Throws<AggregateException>(() => source.UnbindSafely(new UnbindContext(this)));
-
-            Assert.That(aggregate.InnerExceptions, Is.EqualTo(new[] { enumeration, disposal }));
-            Assert.That(first.IsBound, Is.False);
-            Assert.That(second.IsBound, Is.EqualTo(current));
-            Assert.That(source.DisposeCalls, Is.EqualTo(1));
-            LogAssert.NoUnexpectedReceived();
-        }
-
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        public void UnbindSafely_PreservesASingleEnumeratorFailure(int stage)
-        {
-            var failure = new Exception("single");
-            var source = new FailingBinderEnumerable(new SpyBinder { IsBound = true })
-            {
-                AcquisitionFailure = stage is 0 ? failure : null,
-                MoveNextFailure = stage is 1 ? failure : null,
-                CurrentFailure = stage is 2 ? failure : null,
-                DisposalFailure = stage is 3 ? failure : null
-            };
-
-            Assert.That(Assert.Catch(() => source.UnbindSafely(new UnbindContext(this))), Is.SameAs(failure));
-            Assert.That(failure.StackTrace, Does.Contain(nameof(ThrowEnumerationFailure)));
-            Assert.That(source.DisposeCalls, Is.EqualTo(stage is 0 ? 0 : 1));
             LogAssert.NoUnexpectedReceived();
         }
 
         [Test]
-        public void UnbindSafely_LogsBinderFailuresSeparatelyFromEnumeratorFailures()
+        public void Safely_RethrowsTheOriginalEnumeratorFailure(
+            [Values] bool unbind,
+            [Values(0, 1, 2, 3)] int stage,
+            [Values(0, 1, 2)] int shape)
         {
-            var survivor = new SpyBinder { IsBound = true };
-            var enumeration = new Exception("enumeration");
-            var disposal = new Exception("disposal");
-            var source = new FailingBinderEnumerable(null, new SpyBinder { ThrowOnUnbind = true }, survivor)
+            var failure = new Exception("single");
+            var binder = new SpyBinder { IsBound = unbind };
+            var source = CreateFailingSource(shape, binder);
+            source.AcquisitionFailure = stage is 0 ? failure : null;
+            source.MoveNextFailure = stage is 1 ? failure : null;
+            source.CurrentFailure = stage is 2 ? failure : null;
+            source.DisposalFailure = stage is 3 ? failure : null;
+            var index = stage is 1 or 3 ? 1 : 0;
+            Assert.That(Assert.Throws<Exception>(() => RunSafely(source, unbind, shape)), Is.SameAs(failure));
+
+            Assert.That(failure.StackTrace, Does.Contain(nameof(ThrowEnumerationFailure)));
+            Assert.That(binder.IsBound, Is.EqualTo(index == 1 ? !unbind : unbind));
+            Assert.That(source.GetEnumeratorCalls, Is.EqualTo(1));
+            Assert.That(source.DisposeCalls, Is.EqualTo(stage is 0 ? 0 : 1));
+            LogAssert.NoUnexpectedReceived();
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Safely_HandlesSimultaneousBinderAndDisposalFailures(bool unbind)
+        {
+            var survivor = new SpyBinder { IsBound = unbind };
+            var first = new SpyBinder { ThrowOnBind = true, ThrowOnUnbind = true };
+            var second = new SpyBinder { ThrowOnUnbind = true };
+            var source = new FailingBinderEnumerable(null, first, second, survivor)
             {
-                MoveNextFailure = enumeration,
-                DisposalFailure = disposal
+                MoveNextFailure = new Exception("enumeration"),
+                DisposalFailure = new Exception("disposal")
             };
-            ExpectMissingLog("UnbindSafely");
-            LogAssert.Expect(LogType.Exception,
-                new Regex(@"\[UnbindSafely\] Binder at index 1 '_binders'.*InvalidOperationException"));
 
-            var aggregate = Assert.Throws<AggregateException>(() =>
-                source.UnbindSafely(new UnbindContext(this), "_binders"));
+            if (unbind)
+            {
+                var aggregate = Assert.Throws<AggregateException>(() => RunSafely(source, unbind));
+                Assert.That(aggregate.InnerExceptions, Has.Count.EqualTo(4));
+                Assert.That(aggregate.InnerExceptions[0], Is.TypeOf<InvalidOperationException>());
+                Assert.That(aggregate.InnerExceptions[1], Is.TypeOf<InvalidOperationException>());
+                Assert.That(aggregate.InnerExceptions[2], Is.SameAs(source.MoveNextFailure));
+                Assert.That(aggregate.InnerExceptions[3], Is.SameAs(source.DisposalFailure));
+            }
+            else
+            {
+                Assert.That(Assert.Throws<Exception>(() => RunSafely(source, unbind)), Is.SameAs(source.DisposalFailure));
+            }
 
-            Assert.That(aggregate.InnerExceptions, Is.EqualTo(new[] { enumeration, disposal }));
             Assert.That(survivor.IsBound, Is.False);
             Assert.That(source.DisposeCalls, Is.EqualTo(1));
             LogAssert.NoUnexpectedReceived();
         }
 
-        [Test]
-        public void AnUnsuccessfulLookupDoesNotAcquireTheEnumerator()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void InvalidCollectionContextThrowsBeforeEnumeration(bool unbind)
         {
-            var source = new FailingBinderEnumerable(new SpyBinder())
-            {
-                AcquisitionFailure = new Exception("unexpected enumeration")
-            };
+            var source = new FailingBinderEnumerable();
 
-            Assert.DoesNotThrow(() => source.BindSafely(default(FindBindableMemberResult), this));
+            if (unbind)
+                Assert.Throws<ArgumentException>(() => source.UnbindSafely(default(UnbindContext)));
+            else
+                Assert.Throws<ArgumentException>(() => source.BindSafely(default(BindContext)));
 
             Assert.That(source.GetEnumeratorCalls, Is.Zero);
-            Assert.That(source.DisposeCalls, Is.Zero);
             LogAssert.NoUnexpectedReceived();
         }
 
-        private void BindSource(IEnumerable<IBinder> source, bool lookup)
+        [Test]
+        public void GeneratedViewSkipsUnresolvedBinders()
         {
-            var member = new OneTimeStructBindableMember<int>(1);
-            if (lookup)
-                source.BindSafely(new FindBindableMemberResult(member), this, "_binders");
-            else
-                source.BindSafely(new BindContext(member, this), "_binders");
+            var binder = new SpyBinder { ThrowOnBind = true };
+            var view = new FixedArrayBindingView { Value = new IBinder[] { binder }, Nested = binder };
+
+            view.Initialize(new StubViewModel());
+
+            Assert.That(view.ViewModel, Is.Not.Null);
+            Assert.That(binder.IsBound, Is.False);
+            LogAssert.NoUnexpectedReceived();
+            view.Deinitialize();
         }
+
+        private void RunSafely(IEnumerable<IBinder> source, bool unbind, int shape = 0)
+        {
+            if (unbind)
+            {
+                var context = new UnbindContext(this);
+                if (shape is 1)
+                    ((IReadOnlyCollection<IBinder>)source).UnbindSafely(in context);
+                else
+                    source.UnbindSafely(in context);
+
+                return;
+            }
+
+            var bindContext = new BindContext(new OneTimeStructBindableMember<int>(1), this);
+            if (shape is 1)
+                ((IReadOnlyCollection<IBinder>)source).BindSafely(in bindContext);
+            else
+                source.BindSafely(in bindContext);
+        }
+
+        private static FailingBinderEnumerable CreateFailingSource(int shape, params IBinder[] binders) =>
+            shape is 0 ? new FailingBinderEnumerable(binders) : new FailingBinderCollection(binders);
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
         private static void ThrowEnumerationFailure(Exception failure) =>
@@ -494,17 +372,7 @@ namespace Aspid.MVVM.Tests
             }
         }
 
-        private static void ExpectFailureLog(string operation) =>
-            LogAssert.Expect(LogType.Exception, new Regex($@"\[{operation}\].*InvalidOperationException"));
-
-        private static void ExpectMissingLog(string operation)
-        {
-#if DEBUG
-            LogAssert.Expect(LogType.Error, new Regex($@"\[{operation}\].*index 0.*_binders.*null or destroyed"));
-#endif
-        }
-
-        private sealed class FailingBinderEnumerable : IEnumerable<IBinder>, IEnumerator<IBinder>
+        private class FailingBinderEnumerable : IEnumerable<IBinder>, IEnumerator<IBinder>
         {
             private readonly IBinder[] _binders;
             private int _index = -1;
@@ -566,6 +434,16 @@ namespace Aspid.MVVM.Tests
             }
         }
 
+        private sealed class FailingBinderCollection : FailingBinderEnumerable, IReadOnlyCollection<IBinder>
+        {
+            public int Count { get; }
+
+            public FailingBinderCollection(IBinder[] binders) : base(binders)
+            {
+                Count = binders.Length;
+            }
+        }
+
         private sealed class ContextProbeBinder : Binder, IBinder<int>
         {
             public int Value;
@@ -575,40 +453,6 @@ namespace Aspid.MVVM.Tests
 
             public void SetValue(int value) =>
                 Value = value;
-        }
-
-        private sealed class DiagnosticOwner : ScriptableObject { }
-
-        private sealed class CapturingLogHandler : ILogHandler
-        {
-            private readonly ILogHandler _original;
-            public Exception Exception;
-            public Object Context;
-            public string Message;
-
-            public CapturingLogHandler(ILogHandler original)
-            {
-                _original = original;
-            }
-
-            public void LogException(Exception exception, Object context)
-            {
-                Exception = exception;
-                Context = context;
-                _original.LogException(exception, context);
-            }
-
-            public void LogFormat(LogType logType, Object context, string format, params object[] args)
-            {
-                if (logType is LogType.Exception)
-                {
-                    Exception = (Exception)args[1];
-                    Context = context;
-                    Message = string.Format(format, args);
-                }
-
-                _original.LogFormat(logType, context, format, args);
-            }
         }
     }
 }

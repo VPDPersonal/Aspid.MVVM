@@ -15,7 +15,7 @@ namespace Aspid.MVVM.Tests
             var disposal = new Exception("dispose enumerator");
             var binder = new CallbackTestBinder { Unbound = () => throw cleanup };
             binder.Bind(new BindContext(new OneTimeStructBindableMember<int>(1), this));
-            var source = new FaultingEnumerable(binder, enumeration, disposal);
+            IReadOnlyCollection<IBinder> source = new FaultingCollection(binder, enumeration, disposal);
 
             var aggregate = Assert.Throws<AggregateException>(() => source.Unbind(new UnbindContext(this)));
 
@@ -77,7 +77,11 @@ namespace Aspid.MVVM.Tests
             });
 
             Assert.That(failure, Is.TypeOf<AggregateException>());
-            Assert.That(((AggregateException)failure).InnerExceptions, Is.EqualTo(new[] { firstFailure, secondFailure }));
+            var failures = ((AggregateException)failure).InnerExceptions;
+            Assert.That(failures, Has.Count.EqualTo(3));
+            Assert.That(failures[0], Is.SameAs(firstFailure));
+            Assert.That(failures[1], Is.TypeOf<NullReferenceException>());
+            Assert.That(failures[2], Is.SameAs(secondFailure));
             Assert.That(first.IsBound || second.IsBound || healthy.IsBound, Is.False);
             Assert.That(foreign.IsBound, Is.True);
             foreign.Unbind(new UnbindContext(foreign));
@@ -97,7 +101,7 @@ namespace Aspid.MVVM.Tests
             var failure = new InvalidOperationException("single");
             var binder = new CallbackTestBinder { Unbound = () => throw failure };
             binder.Bind(new BindContext(new OneTimeStructBindableMember<int>(1), this));
-            IBinder[] binders = { null, binder };
+            IBinder[] binders = { binder };
             var context = new UnbindContext(this);
             var thrown = Assert.Catch(() =>
             {
@@ -130,14 +134,75 @@ namespace Aspid.MVVM.Tests
                 throw enumerationFailure;
             }
         }
-        private sealed class FaultingEnumerable : IEnumerable<IBinder>, IEnumerator<IBinder>
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ListMutationRetainsEarlierCleanupFailure(bool asEnumerable)
+        {
+            var failure = new Exception("cleanup");
+            var binders = new List<IBinder>();
+            var binder = new CallbackTestBinder
+            {
+                Unbound = () =>
+                {
+                    binders.Clear();
+                    throw failure;
+                }
+            };
+            binders.Add(binder);
+            binder.Bind(new BindContext(new OneTimeStructBindableMember<int>(1), this));
+            var context = new UnbindContext(this);
+            TestDelegate cleanup = asEnumerable
+                ? () => ((IEnumerable<IBinder>)binders).Unbind(in context)
+                : () => binders.Unbind(in context);
+
+            var aggregate = Assert.Throws<AggregateException>(cleanup);
+
+            Assert.That(aggregate.InnerExceptions, Has.Count.EqualTo(2));
+            Assert.That(aggregate.InnerExceptions[0], Is.SameAs(failure));
+            Assert.That(aggregate.InnerExceptions[1], Is.TypeOf<InvalidOperationException>());
+            Assert.That(binder.IsBound, Is.False);
+        }
+
+        [Test]
+        public void InvalidContextThrowsBeforeTraversingTheCollection([Values(0, 1, 2, 3, 4)] int shape)
+        {
+            var binder = new SpyBinder { IsBound = true };
+            IBinder[] binders = { binder, new SpyBinder { IsBound = true } };
+            var enteredEnumeration = false;
+
+            var failure = Assert.Throws<ArgumentException>(() =>
+            {
+                switch (shape)
+                {
+                    case 0: binders.Unbind(default); break;
+                    case 1: new List<IBinder>(binders).Unbind(default); break;
+                    case 2: binders.AsSpan().Unbind(default); break;
+                    case 3: new ReadOnlySpan<IBinder>(binders).Unbind(default); break;
+                    case 4: Enumerate().Unbind(default); break;
+                }
+            });
+
+            Assert.That(failure.ParamName, Is.EqualTo("context"));
+            Assert.That(binder.IsBound, Is.True);
+            Assert.That(enteredEnumeration, Is.False);
+
+            IEnumerable<IBinder> Enumerate()
+            {
+                enteredEnumeration = true;
+                foreach (var entry in binders)
+                    yield return entry;
+            }
+        }
+
+        private sealed class FaultingCollection : IReadOnlyCollection<IBinder>, IEnumerator<IBinder>
         {
             private readonly IBinder _binder;
             private readonly Exception _moveNextFailure;
             private readonly Exception _disposeFailure;
             private bool _yielded;
 
-            public FaultingEnumerable(
+            public FaultingCollection(
                 IBinder binder,
                 Exception moveNextFailure,
                 Exception disposeFailure)
@@ -149,6 +214,8 @@ namespace Aspid.MVVM.Tests
 
             public IBinder Current =>
                 _binder;
+
+            public int Count => 1;
 
             object System.Collections.IEnumerator.Current =>
                 Current;

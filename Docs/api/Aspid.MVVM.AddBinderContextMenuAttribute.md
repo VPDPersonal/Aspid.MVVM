@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Offers the decorated component in a target component menu and in the menus of its named serialized properties.
+Adds an Inspector context menu entry to the named serialized properties of a component.
 
 ```csharp
 [Conditional("UNITY_EDITOR")]
@@ -38,13 +38,13 @@ public sealed class EnabledBinder : MonoBinder { }
 
 ## Remarks
 
-Adds the component to the same GameObject without populating its fields. Applications are Editor-only.
+Selecting the entry adds the decorated binder to the inspected component's GameObject.
 
 ## Constructors
 
 ### AddBinderContextMenuAttribute\(Type, params string\[\]\) {#Aspid_MVVM_AddBinderContextMenuAttribute__ctor_System_Type_System_String___}
 
-Creates an entry restricted to the supplied component type and property names.
+Creates an entry matched by component type and property name.
 
 ```csharp
 public AddBinderContextMenuAttribute(Type type, params string[] serializePropertyNames)
@@ -58,19 +58,19 @@ The target component type.
 
 `serializePropertyNames` [string](https://learn.microsoft.com/dotnet/api/system.string)\[\]
 
-The serialized property leaf names; an empty array offers only the component menu entry.
+The serialized property leaf names. An empty array matches no properties.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-An argument is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">type</code> or <code class="paramref">serializePropertyNames</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
 ### Path {#Aspid_MVVM_AddBinderContextMenuAttribute_Path}
 
-Gets or sets the complete menu entry path; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> uses the generated path.
+Gets or sets the full menu path. A blank path uses the generated path.
 
 ```csharp
 public string? Path { get; set; }
@@ -94,7 +94,7 @@ public string[] SerializePropertyNames { get; }
 
 ### SubPath {#Aspid_MVVM_AddBinderContextMenuAttribute_SubPath}
 
-Gets or sets the group below the generated menu root; ignored when [`AddBinderContextMenuAttribute.Path`](Aspid.MVVM.AddBinderContextMenuAttribute.md#Aspid_MVVM_AddBinderContextMenuAttribute_Path) is specified.
+Gets or sets the submenu under <code>Add Binder</code>. A nonblank [`AddBinderContextMenuAttribute.Path`](Aspid.MVVM.AddBinderContextMenuAttribute.md#Aspid_MVVM_AddBinderContextMenuAttribute_Path) takes precedence.
 
 ```csharp
 public string? SubPath { get; set; }

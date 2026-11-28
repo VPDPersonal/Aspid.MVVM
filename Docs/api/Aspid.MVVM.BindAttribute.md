@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Generates a bindable member for the field or property of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class, and a property for a field.
+Makes a field or property bindable in a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
 public sealed class BindAttribute : BaseBindAttribute
@@ -42,14 +42,14 @@ public sealed class BindAttribute : BaseBindAttribute
 ## Remarks
 
 <p>
-Without a mode, a mutable field binds [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) and a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field
-[`BindMode.OneTime`](Aspid.MVVM.BindMode.md); a property binds [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) when it is get-only,
-[`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md) when it is set-only and [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) otherwise.
+Fields get a generated property. Mutable fields default to [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md),
+and <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> fields use [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Properties default to [`BindMode.OneWay`](Aspid.MVVM.BindMode.md) for a getter, [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md)
+for a setter, or [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md) for both.
 </p>
 <p>
-A mode the member cannot support skips the member with a generator warning: a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/readonly">readonly</a> field takes only
-[`BindMode.OneTime`](Aspid.MVVM.BindMode.md), a get-only property [`BindMode.OneTime`](Aspid.MVVM.BindMode.md) or [`BindMode.OneWay`](Aspid.MVVM.BindMode.md), and
-a set-only property [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+The generator warns and skips members with an incompatible mode. A get-only property also supports
+[`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 </p>
 
 ## Constructors

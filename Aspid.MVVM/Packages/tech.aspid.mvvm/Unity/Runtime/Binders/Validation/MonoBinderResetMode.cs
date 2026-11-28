@@ -7,7 +7,7 @@ namespace Aspid.MVVM.Validation
     public enum MonoBinderResetMode
     {
         /// <summary>
-        /// Clears the current value; the previous one is kept.
+        /// Clears the current value and keeps the previous one.
         /// </summary>
         Soft,
 

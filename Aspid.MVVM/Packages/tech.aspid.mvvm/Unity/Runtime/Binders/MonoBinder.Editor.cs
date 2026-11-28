@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using System.ComponentModel;
 using Aspid.MVVM.Validation;
+using UnityEditor.SceneManagement;
 using System.Diagnostics.CodeAnalysis;
 using Component = UnityEngine.Component;
 
@@ -38,7 +39,9 @@ namespace Aspid.MVVM
 
         /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        IView IMonoBinderValidatable.View => __view as IView;
+        IView IMonoBinderValidatable.View => __view != null
+            ? __view as IView 
+            : null;
 
         /// <inheritdoc/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -62,14 +65,9 @@ namespace Aspid.MVVM
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         void IMonoBinderValidatable.SetView(IView view)
         {
-            if (view is null)
-            {
+            if (view.IsMissing())
                 ((IMonoBinderValidatable)this).ResetView();
-            }
-            else
-            {
-                SetViewInternal(view);
-            }
+            else SetViewInternal(view);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -78,11 +76,12 @@ namespace Aspid.MVVM
             if (!IsAlive) return;
 
             var componentView = view as Component;
-            if (__view == componentView) return;
+            if (ReferenceEquals(__view, componentView)) return;
 
-            __previousView = componentView
-                ? new MonoBinderPreviousView(componentView)
-                : new MonoBinderPreviousView(__view);
+            if (componentView != null)
+                __previousView = new MonoBinderPreviousView(componentView);
+            else if (__view  != null)
+                __previousView = new MonoBinderPreviousView(__view);
 
             __view = componentView;
             SaveBinderDataInEditor();
@@ -174,7 +173,10 @@ namespace Aspid.MVVM
             if (!IsAlive) return;
 
             UnityEditor.EditorUtility.SetDirty(target: this);
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            
+            var scene = gameObject.scene;
+            if (scene.IsValid())
+                EditorSceneManager.MarkSceneDirty(scene);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

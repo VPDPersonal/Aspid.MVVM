@@ -6,16 +6,16 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Replaces the <see cref="BindModeAttribute"/> limits of every <see cref="BindMode"/> field of the class and its subclasses in the Inspector.
+    /// Overrides the <see cref="BindModeAttribute"/> restrictions for the class and its subclasses.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The allowed modes are <see cref="Modes"/> plus the groups that <see cref="IsOne"/> and <see cref="IsTwo"/> add; with none of
-    /// them, or with <see cref="IsAll"/>, every mode except <see cref="BindMode.None"/> is allowed.
+    /// Combine <see cref="Modes"/>, <see cref="IsOne"/> and <see cref="IsTwo"/> to select modes.
+    /// With no selection or with <see cref="IsAll"/>, all valid modes are available.
     /// </para>
     /// <para>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</para>
     /// <para>The serializable binder generator applies the same restrictions to the generated constructor.</para>
-    /// <para>A subclass with its own <see cref="BindModeOverrideAttribute"/> uses that one instead.</para>
+    /// <para>The nearest override in the class hierarchy takes precedence.</para>
     /// </remarks>
     /// <example>
     /// <code>

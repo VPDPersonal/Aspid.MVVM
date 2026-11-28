@@ -12,13 +12,23 @@ public static class BindSafelyExtensions
 
     public static CodeWriter AppendBindSafely(this CodeWriter code, BinderMember member, string? bindableMemberName = null)
     {
-        var parameters = $"new({member.Id})";
         var name = member is CachedBinderMember cachedMember
             ? cachedMember.CachedName
             : member.Name;
 
-        return code.AppendLine(bindableMemberName is not null
-            ? $"AspidBinderExtensions.BindSafely({name}, new global::Aspid.MVVM.BindContext(viewModel.{bindableMemberName}, this), {member.Id});"
-            : $"AspidBinderExtensions.BindSafely({name}, viewModel.FindBindableMember({parameters}), this, {member.Id});");
+        return bindableMemberName is not null
+            ? code.AppendLine($"AspidBinderExtensions.BindSafely({name}, new global::Aspid.MVVM.BindContext(viewModel.{bindableMemberName}, this));")
+            : code.AppendLookupBinding(name, member.Id);
+    }
+
+    public static CodeWriter AppendLookupBinding(this CodeWriter code, string binder, string id)
+    {
+        var adder = $"__{binder}Adder";
+        return code.BeginBlock()
+            .AppendLine($"if (viewModel.FindBindableMember(new({id})).Adder is {{ }} {adder})")
+            .BeginBlock()
+            .AppendLine($"AspidBinderExtensions.BindSafely({binder}, new global::Aspid.MVVM.BindContext({adder}, this));")
+            .EndBlock()
+            .EndBlock();
     }
 }

@@ -12,6 +12,6 @@ namespace Aspid.MVVM.Samples.Counter
             _counterView.Initialize(new CounterViewModel());
 
         private void OnDestroy() =>
-            _counterView.DeinitializeView()?.DisposeViewModel();
+            _counterView.DeinitializeViewSafely()?.DisposeViewModel();
     }
 }

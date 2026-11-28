@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Aspid.FastTools.Types;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
@@ -10,20 +10,9 @@ namespace Aspid.MVVM
     /// </summary>
     [View]
     [AddComponentMenu("Aspid/MVVM/Views/Mono View")]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public partial class MonoView : MonoBehaviour, IDisposable
     {
-#if UNITY_EDITOR
-        [Tooltip("The type filters for the design ViewModel selector.")]
-        [SerializeField] private string[] _designViewModelAssemblyQualifiedNames =
-        {
-            typeof(IViewModel).AssemblyQualifiedName,
-        };
-
-        [Tooltip("The ViewModel type used to configure bindings in the Inspector.")]
-        [TypeSelector(nameof(_designViewModelAssemblyQualifiedNames))]
-        [SerializeField] private string _designViewModel;
-#endif
-
         [RequireBinder(Id = "DesignViewModel")]
         [Tooltip("The binder groups associated with ViewModel members.")]
         [SerializeField] private Binders[] _bindersList = Array.Empty<Binders>();
@@ -37,34 +26,29 @@ namespace Aspid.MVVM
 
         partial void OnInitializingInternal(IViewModel viewModel)
         {
+            if (_bindersList is null) return;
+
             foreach (var binders in _bindersList)
-                binders.Bind(viewModel, owner: this);
+                binders?.Bind(viewModel, owner: this);
         }
 
         partial void OnDeinitializingInternal()
         {
+            if (_bindersList is null) return;
+
             var failures = new CleanupExceptions();
             var context = new UnbindContext(owner: this);
 
             foreach (var binders in _bindersList)
-            {
-                try
-                {
-                    binders.Unbind(in context);
-                }
-                catch (Exception exception)
-                {
-                    failures.Add(exception);
-                }
-            }
+                binders?.Unbind(in context, ref failures);
 
             failures.ThrowIfAny();
         }
 
         /// <summary>
-        /// Deinitializes the view without destroying its component, GameObject or ViewModel.
+        /// Deinitializes the view and releases its bindings without destroying any Unity objects.
         /// </summary>
-        /// <remarks>Overrides must call the base implementation to release bindings.</remarks>
+        /// <remarks>Overrides must call the base implementation.</remarks>
         public virtual void Dispose() =>
             Deinitialize();
 
@@ -81,16 +65,34 @@ namespace Aspid.MVVM
 #if UNITY_EDITOR
             [RequireBinder(nameof(_assemblyQualifiedName), Id = nameof(_name))]
 #endif
-            [Tooltip("The components bound to the ViewModel member.")]
+            [Tooltip("The components bound to the ViewModel member. Empty slots are skipped.")]
             [SerializeField] private MonoBinder[] _monoBinders;
-
-            public void Unbind(in UnbindContext context) =>
-                _monoBinders.Unbind(in context);
 
             public void Bind(IViewModel viewModel, MonoView owner)
             {
-                var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_name));
-                _monoBinders.BindSafely(result, owner, _name);
+                try
+                {
+                    var result = viewModel.FindBindableMember(new FindBindableMemberParameters(_name));
+                    if (result.Adder is null) return;
+
+                    _monoBinders.BindSafely(new BindContext(result.Adder, owner));
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to bind field '{_name}'.", exception);
+                }
+            }
+
+            public void Unbind(in UnbindContext context, ref CleanupExceptions failures)
+            {
+                try
+                {
+                    _monoBinders.UnbindSafely(in context);
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(new InvalidOperationException($"Failed to unbind field '{_name}'.", exception));
+                }
             }
         }
     }

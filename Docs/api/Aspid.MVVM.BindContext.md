@@ -70,3 +70,20 @@ public object Owner { get; }
 #### Property Value
 
  [object](https://learn.microsoft.com/dotnet/api/system.object)
+
+## Methods
+
+### EnsureValid\(\) {#Aspid_MVVM_BindContext_EnsureValid}
+
+Verifies that the context has a bindable member and an owner.
+
+```csharp
+[SuppressMessage("ReSharper", "NotResolvedInText")]
+public void EnsureValid()
+```
+
+#### Exceptions
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+[`BindContext.Adder`](Aspid.MVVM.BindContext.md#Aspid_MVVM_BindContext_Adder) or [`BindContext.Owner`](Aspid.MVVM.BindContext.md#Aspid_MVVM_BindContext_Owner) is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.

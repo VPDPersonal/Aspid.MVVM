@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.Validation](Aspid.MVVM.Validation.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-The last non-empty View of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md), kept with its name to detect a lost reference.
+Record of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md) view and its name for detecting a lost reference.
 
 ```csharp
 [Serializable]
@@ -34,7 +34,7 @@ public MonoBinderPreviousView(Component? view)
 
 `view` Component?
 
-The View to keep; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> records an empty name.
+The view to record, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to record an empty name.
 
 ## Properties
 
@@ -52,7 +52,7 @@ public string? Name { get; }
 
 ### View {#Aspid_MVVM_Validation_MonoBinderPreviousView_View}
 
-Gets the recorded View, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none; the recorded object may have been destroyed.
+Gets the recorded view, which may have been destroyed, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when unassigned.
 
 ```csharp
 public Component? View { get; }

@@ -76,7 +76,8 @@ namespace Aspid.MVVM.StarterKit
                     }
                     finally
                     {
-                        item.DestroyViewAndGameObject();
+                        if (item)
+                            item.DestroyViewAndGameObject();
                     }
                 }, context);
                 throw new InvalidOperationException(context + ". Emergency View cleanup completed.", exception);

@@ -65,7 +65,7 @@ The initial value.
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>
 
-The callback that writes a value reported by a reverse binder to the ViewModel.
+Writes values reported by the View to the ViewModel.
 
 #### Exceptions
 
@@ -77,7 +77,7 @@ The callback that writes a value reported by a reverse binder to the ViewModel.
 
 ### Mode {#Aspid_MVVM_TwoWayStructBindableMember_2_Mode}
 
-Gets the binding mode of the member; always [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md).
+Gets the fixed mode [`BindMode.TwoWay`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -89,7 +89,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_TwoWayStructBindableMember_2_Value}
 
-Gets or sets the current value; setting it raises [`TwoWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Changed) even for an equal value.
+Gets or sets the value and raises [`TwoWayStructBindableMember<T1, T2>.Changed`](Aspid.MVVM.TwoWayStructBindableMember-2.md#Aspid_MVVM_TwoWayStructBindableMember_2_Changed) on every assignment.
 
 ```csharp
 public T Value { get; set; }

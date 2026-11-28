@@ -79,7 +79,7 @@ The execution predicate; <a href="https://learn.microsoft.com/dotnet/csharp/lang
 
 ### Empty {#Aspid_MVVM_RelayCommand_3_Empty}
 
-Gets a shared command that does nothing and always returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> from [`RelayCommand<T1, T2, T3>.CanExecute`](Aspid.MVVM.RelayCommand-3.md).
+Gets a shared disabled command.
 
 ```csharp
 public static RelayCommand<T1, T2, T3> Empty { get; }
@@ -91,7 +91,7 @@ public static RelayCommand<T1, T2, T3> Empty { get; }
 
 ### EmptyExecution {#Aspid_MVVM_RelayCommand_3_EmptyExecution}
 
-Gets a shared command that does nothing and always returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> from [`RelayCommand<T1, T2, T3>.CanExecute`](Aspid.MVVM.RelayCommand-3.md).
+Gets a shared command that allows execution and does nothing.
 
 ```csharp
 public static RelayCommand<T1, T2, T3> EmptyExecution { get; }
@@ -105,7 +105,7 @@ public static RelayCommand<T1, T2, T3> EmptyExecution { get; }
 
 ### CanExecute\(T1?, T2?, T3?\) {#Aspid_MVVM_RelayCommand_3_CanExecute__0__1__2_}
 
-Determines whether the command can execute by calling its predicate.
+Evaluates the execution predicate, if present.
 
 ```csharp
 public bool CanExecute(T1? param1, T2? param2, T3? param3)

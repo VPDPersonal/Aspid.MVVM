@@ -5,15 +5,9 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Offers the decorated component in serialized property menus matching the property's value type.
+    /// Adds an Inspector context menu entry to serialized properties matching a value type.
     /// </summary>
-    /// <remarks>Multiple applications support different value types. Applications are Editor-only.</remarks>
-    /// <example>
-    /// <code>
-    /// [AddBinderContextMenuByType(typeof(float))]
-    /// public sealed class FloatBinder : MonoBinder { }
-    /// </code>
-    /// </example>
+    /// <remarks>Selecting the entry adds the decorated binder to the inspected component's GameObject.</remarks>
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Class, AllowMultiple = true)]
     public sealed class AddBinderContextMenuByTypeAttribute : Attribute

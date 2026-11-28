@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Aspid.MVVM.Validation
 {
     /// <summary>
-    /// The last non-empty View of a <see cref="MonoBinder"/>, kept with its name to detect a lost reference.
+    /// Record of a <see cref="MonoBinder"/> view and its name for detecting a lost reference.
     /// </summary>
     [Serializable]
     public struct MonoBinderPreviousView
@@ -20,7 +20,7 @@ namespace Aspid.MVVM.Validation
         /// <summary>
         /// Creates a record of the supplied View and its current name.
         /// </summary>
-        /// <param name="view">The View to keep; <see langword="null"/> records an empty name.</param>
+        /// <param name="view">The view to record, or <see langword="null"/> to record an empty name.</param>
         public MonoBinderPreviousView(Component? view)
         {
             _view = view;
@@ -33,7 +33,7 @@ namespace Aspid.MVVM.Validation
         public string? Name => _name;
 
         /// <summary>
-        /// Gets the recorded View, or <see langword="null"/> for none; the recorded object may have been destroyed.
+        /// Gets the recorded view, which may have been destroyed, or <see langword="null"/> when unassigned.
         /// </summary>
         public Component? View => _view;
     }

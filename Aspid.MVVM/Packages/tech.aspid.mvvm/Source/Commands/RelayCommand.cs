@@ -44,17 +44,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="false"/> from <see cref="CanExecute()"/>.
+        /// Gets a shared disabled command.
         /// </summary>
         public static RelayCommand Empty => _empty ??= new RelayCommand(canExecute: false);
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="true"/> from <see cref="CanExecute()"/>.
+        /// Gets a shared command that allows execution and does nothing.
         /// </summary>
         public static RelayCommand EmptyExecution => _emptyExecution ??= new RelayCommand(canExecute: true);
 
         /// <summary>
-        /// Determines whether the command can execute by calling its predicate.
+        /// Evaluates the execution predicate, if present.
         /// </summary>
         /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
         public bool CanExecute()
@@ -131,17 +131,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="false"/> from <see cref="CanExecute(T)"/>.
+        /// Gets a shared disabled command.
         /// </summary>
         public static RelayCommand<T> Empty => _empty ??= new RelayCommand<T>(canExecute: false);
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="true"/> from <see cref="CanExecute(T)"/>.
+        /// Gets a shared command that allows execution and does nothing.
         /// </summary>
         public static RelayCommand<T> EmptyExecution => _emptyExecution ??= new RelayCommand<T>(canExecute: true);
 
         /// <summary>
-        /// Determines whether the command can execute by calling its predicate.
+        /// Evaluates the execution predicate, if present.
         /// </summary>
         /// <param name="param">The command parameter.</param>
         /// <returns><see langword="true"/> if the predicate allows execution or is absent; otherwise, <see langword="false"/>.</returns>
@@ -221,17 +221,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="false"/> from <see cref="CanExecute(T1, T2)"/>.
+        /// Gets a shared disabled command.
         /// </summary>
         public static RelayCommand<T1, T2> Empty => _empty ??= new RelayCommand<T1, T2>(canExecute: false);
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="true"/> from <see cref="CanExecute(T1, T2)"/>.
+        /// Gets a shared command that allows execution and does nothing.
         /// </summary>
         public static RelayCommand<T1, T2> EmptyExecution => _emptyExecution ??= new RelayCommand<T1, T2>(canExecute: true);
 
         /// <summary>
-        /// Determines whether the command can execute by calling its predicate.
+        /// Evaluates the execution predicate, if present.
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>
@@ -314,17 +314,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="false"/> from <see cref="CanExecute(T1, T2, T3)"/>.
+        /// Gets a shared disabled command.
         /// </summary>
         public static RelayCommand<T1, T2, T3> Empty => _empty ??= new RelayCommand<T1, T2, T3>(canExecute: false);
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="true"/> from <see cref="CanExecute(T1, T2, T3)"/>.
+        /// Gets a shared command that allows execution and does nothing.
         /// </summary>
         public static RelayCommand<T1, T2, T3> EmptyExecution => _emptyExecution ??= new RelayCommand<T1, T2, T3>(canExecute: true);
 
         /// <summary>
-        /// Determines whether the command can execute by calling its predicate.
+        /// Evaluates the execution predicate, if present.
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>
@@ -410,17 +410,17 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="false"/> from <see cref="CanExecute(T1, T2, T3, T4)"/>.
+        /// Gets a shared disabled command.
         /// </summary>
         public static RelayCommand<T1, T2, T3, T4> Empty => _empty ??= new RelayCommand<T1, T2, T3, T4>(canExecute: false);
 
         /// <summary>
-        /// Gets a shared command that does nothing and always returns <see langword="true"/> from <see cref="CanExecute(T1, T2, T3, T4)"/>.
+        /// Gets a shared command that allows execution and does nothing.
         /// </summary>
         public static RelayCommand<T1, T2, T3, T4> EmptyExecution => _emptyExecution ??= new RelayCommand<T1, T2, T3, T4>(canExecute: true);
 
         /// <summary>
-        /// Determines whether the command can execute by calling its predicate.
+        /// Evaluates the execution predicate, if present.
         /// </summary>
         /// <param name="param1">The first command parameter.</param>
         /// <param name="param2">The second command parameter.</param>

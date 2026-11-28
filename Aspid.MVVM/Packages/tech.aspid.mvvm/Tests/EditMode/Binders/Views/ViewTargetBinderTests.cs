@@ -42,6 +42,39 @@ namespace Aspid.MVVM.Tests
             Assert.Throws<ArgumentNullException>(() => new MonoViewBinder<StubView>(null, BindMode.OneWay));
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Bind_WithoutALiveTarget_ThrowsAndCompletesRollback(bool destroyTarget)
+        {
+            var binder = new TargetProbe();
+            if (destroyTarget)
+            {
+                var view = Spawn<StubView>();
+                binder = new TargetProbe(view);
+                Destroy(view);
+            }
+
+            var context = new BindContext(new OneWayBindableMember<IViewModel>(new StubViewModel()), this);
+
+            IBinder binding = binder;
+            Assert.Throws<InvalidOperationException>(() => binding.Bind(context));
+            Assert.That(binder.IsBound, Is.False);
+            Assert.That(binder.Detached, Is.True);
+        }
+
+        [Test]
+        public void Bind_WithDestroyedView_ReportsTheTargetError()
+        {
+            var view = Spawn<StubView>();
+            var binder = new MonoViewBinder<StubView>(view);
+            Destroy(view);
+
+            var context = new BindContext(new OneWayBindableMember<IViewModel>(new StubViewModel()), this);
+
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(context));
+            Assert.That(binder.IsBound, Is.False);
+        }
+
         [Test]
         public void SetValue_WithAViewModel_InitializesTheView()
         {
@@ -79,6 +112,20 @@ namespace Aspid.MVVM.Tests
             binder.Unbind(new UnbindContext(binder));
 
             Assert.IsNull(view.ViewModel, "Unbind did not deinitialize the view");
+        }
+
+        private sealed class TargetProbe : TargetBinder<StubView>, IBinder<IViewModel>
+        {
+            public bool Detached { get; private set; }
+
+            public TargetProbe() { }
+
+            public TargetProbe(StubView target) : base(target) { }
+
+            public void SetValue(IViewModel value) { }
+
+            protected override void OnDetach() =>
+                Detached = true;
         }
     }
 }

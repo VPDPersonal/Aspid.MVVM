@@ -15,6 +15,7 @@ Assembly: Aspid.MVVM.Unity.dll <br/>
 
 ```csharp
 [AddComponentMenu("Aspid/MVVM/Views/Mono View")]
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class MonoView : MonoBehaviour, IDisposable, IView
 ```
 
@@ -41,14 +42,15 @@ MonoBehaviour ←
 
 [ViewExtensions.DeinitializeView\(IView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DeinitializeView_Aspid_MVVM_IView_),
 [ViewExtensions.DeinitializeViewSafely\(IView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DeinitializeViewSafely_Aspid_MVVM_IView_),
-[ViewExtensions.DestroyView\(IView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DestroyView_Aspid_MVVM_IView_),
-[ViewExtensions.DestroyViewAndGameObject\(IView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DestroyViewAndGameObject_Aspid_MVVM_IView_),
+[ViewExtensions.DestroyView\(IView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DestroyView_Aspid_MVVM_IView_),
+[ViewExtensions.DestroyViewAndGameObject\(IView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DestroyViewAndGameObject_Aspid_MVVM_IView_),
 [ViewExtensions.DestroyViewAndGameObjectSafely\(IView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DestroyViewAndGameObjectSafely_Aspid_MVVM_IView_),
 [ViewExtensions.DestroyViewSafely\(IView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DestroyViewSafely_Aspid_MVVM_IView_),
 [ViewExtensions.DisposeView\<MonoView\>\(MonoView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DisposeView__1___0_),
 [ViewExtensions.DisposeView\(IView\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DisposeView_Aspid_MVVM_IView_),
 [ViewExtensions.DisposeViewSafely\<MonoView\>\(MonoView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DisposeViewSafely__1___0_),
 [ViewExtensions.DisposeViewSafely\(IView?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_DisposeViewSafely_Aspid_MVVM_IView_),
+[ViewExtensions.InitializeSafely\(IView?, IViewModel?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_InitializeSafely_Aspid_MVVM_IView_Aspid_MVVM_IViewModel_),
 [ViewExtensions.Reinitialize\(IView, IViewModel?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_Reinitialize_Aspid_MVVM_IView_Aspid_MVVM_IViewModel_),
 [ViewExtensions.ReinitializeSafely\(IView?, IViewModel?\)](Aspid.MVVM.ViewExtensions.md#Aspid_MVVM_ViewExtensions_ReinitializeSafely_Aspid_MVVM_IView_Aspid_MVVM_IViewModel_)
 
@@ -56,7 +58,7 @@ MonoBehaviour ←
 
 ### ViewModel {#Aspid_MVVM_MonoView_ViewModel}
 
-Gets the ViewModel the view is initialized with; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when it is not initialized.
+Gets the bound ViewModel, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> before initialization and after deinitialization.
 
 ```csharp
 public IViewModel ViewModel { get; protected set; }
@@ -98,7 +100,7 @@ protected virtual void DeinitializeInternal()
 
 ### Dispose\(\) {#Aspid_MVVM_MonoView_Dispose}
 
-Deinitializes the view without destroying its component, GameObject or ViewModel.
+Deinitializes the view and releases its bindings without destroying any Unity objects.
 
 ```csharp
 public virtual void Dispose()
@@ -106,11 +108,11 @@ public virtual void Dispose()
 
 #### Remarks
 
-Overrides must call the base implementation to release bindings.
+Overrides must call the base implementation.
 
 ### Initialize\(IViewModel\) {#Aspid_MVVM_MonoView_Initialize_Aspid_MVVM_IViewModel_}
 
-Initializes the view with <code class="paramref">viewModel</code>, binding its binders to the ViewModel's members.
+Binds the View to the members of <code class="paramref">viewModel</code>.
 
 ```csharp
 public void Initialize(IViewModel viewModel)
@@ -174,18 +176,21 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. Failed initialization destroys the clone, including its GameObject for components.
-Cleanup failures during rollback do not replace the initialization exception. The ViewModel is not disposed.
+Failed initialization destroys the clone without disposing its ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### Instantiate\<T\>\(T, Transform, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Clones and initializes the view.
+Clones and initializes the view using its local transform under the parent.
 
 ```csharp
 public static T Instantiate<T>(T original, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -199,7 +204,7 @@ The view to clone.
 
 `parent` Transform
 
-The parent for the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> creates it at the root.
+The parent for the clone, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -219,14 +224,17 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. Failed initialization destroys the clone, including its GameObject for components.
-Cleanup failures during rollback do not replace the initialization exception. The ViewModel is not disposed.
+Failed initialization destroys the clone without disposing its ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### Instantiate\<T\>\(T, Transform, bool, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Transform_System_Boolean_Aspid_MVVM_IViewModel_}
 
@@ -244,11 +252,11 @@ The view to clone.
 
 `parent` Transform
 
-The parent for the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> creates it at the root.
+The parent for the clone, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `worldPositionStays` [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
 
-When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, retains the original world position.
+When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, keeps the original world position and rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -268,14 +276,17 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. Failed initialization destroys the clone, including its GameObject for components.
-Cleanup failures during rollback do not replace the initialization exception. The ViewModel is not disposed.
+Failed initialization destroys the clone without disposing its ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### Instantiate\<T\>\(T, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
@@ -293,11 +304,11 @@ The view to clone.
 
 `position` Vector3
 
-The position for the new View instance.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instance.
+The world-space rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -317,14 +328,17 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. Failed initialization destroys the clone, including its GameObject for components.
-Cleanup failures during rollback do not replace the initialization exception. The ViewModel is not disposed.
+Failed initialization destroys the clone without disposing its ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
 
 ### Instantiate\<T\>\(T, Vector3, Quaternion, Transform, IViewModel\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
@@ -342,15 +356,15 @@ The view to clone.
 
 `position` Vector3
 
-The position for the new View instance.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instance.
+The world-space rotation.
 
 `parent` Transform
 
-The parent for the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> creates it at the root.
+The parent for the clone, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
@@ -370,18 +384,125 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. Failed initialization destroys the clone, including its GameObject for components.
-Cleanup failures during rollback do not replace the initialization exception. The ViewModel is not disposed.
+Failed initialization destroys the clone without disposing its ViewModel.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, or it is a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) and <code class="paramref">parent</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+### Instantiate\<T\>\(T, IViewModel, InstantiateParameters\) {#Aspid_MVVM_MonoView_Instantiate__1___0_Aspid_MVVM_IViewModel_UnityEngine_InstantiateParameters_}
+
+Clones and initializes the view.
+
+```csharp
+public static T Instantiate<T>(T original, IViewModel viewModel, InstantiateParameters parameters) where T : Object, IView
+```
+
+#### Parameters
+
+`original` T
+
+The view to clone.
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel to bind.
+
+`parameters` InstantiateParameters
+
+The Unity cloning options.
+
+#### Returns
+
+ T
+
+The initialized clone.
+
+#### Type Parameters
+
+`T`
+
+The Unity view type.
+
+#### Remarks
+
+Failed initialization destroys the clone without disposing its ViewModel.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
+### Instantiate\<T\>\(T, Vector3, Quaternion, IViewModel, InstantiateParameters\) {#Aspid_MVVM_MonoView_Instantiate__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_UnityEngine_InstantiateParameters_}
+
+Clones and initializes the view.
+
+```csharp
+public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation, IViewModel viewModel, InstantiateParameters parameters) where T : Object, IView
+```
+
+#### Parameters
+
+`original` T
+
+The view to clone.
+
+`position` Vector3
+
+The position in the configured coordinate space.
+
+`rotation` Quaternion
+
+The rotation in the configured coordinate space.
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel to bind.
+
+`parameters` InstantiateParameters
+
+The Unity cloning options.
+
+#### Returns
+
+ T
+
+The initialized clone.
+
+#### Type Parameters
+
+`T`
+
+The Unity view type.
+
+#### Remarks
+
+Failed initialization destroys the clone without disposing its ViewModel.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ### InstantiateAsync\<T\>\(T, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes it on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, IViewModel viewModel) where T : Object, IView
@@ -395,7 +516,7 @@ The view to clone.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel to bind.
 
 #### Returns
 
@@ -411,20 +532,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
 
 ### InstantiateAsync\<T\>\(T, Transform, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes it on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -438,11 +561,11 @@ The view to clone.
 
 `parent` Transform
 
-The parent of the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clone, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel to bind.
 
 #### Returns
 
@@ -458,20 +581,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
 
 ### InstantiateAsync\<T\>\(T, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes it on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -485,15 +610,15 @@ The view to clone.
 
 `position` Vector3
 
-The position for the new View instance.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instance.
+The world-space rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel to bind.
 
 #### Returns
 
@@ -509,20 +634,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
 
 ### InstantiateAsync\<T\>\(T, Transform, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_UnityEngine_Transform_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes it on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, Transform parent, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -536,19 +663,19 @@ The view to clone.
 
 `parent` Transform
 
-The parent of the clone; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clone, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `position` Vector3
 
-The position for the new View instance.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instance.
+The world-space rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel to bind.
 
 #### Returns
 
@@ -564,20 +691,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html).
 
 ### InstantiateAsync\<T\>\(T, int, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, IViewModel viewModel) where T : Object, IView
@@ -595,7 +724,7 @@ The number of instances to create.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 #### Returns
 
@@ -611,20 +740,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, Transform, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, IViewModel viewModel) where T : Object, IView
@@ -642,11 +773,11 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clones, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 #### Returns
 
@@ -662,20 +793,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -693,15 +826,15 @@ The number of instances to create.
 
 `position` Vector3
 
-The position for the new View instances.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instances.
+The world-space rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 #### Returns
 
@@ -717,20 +850,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel) where T : Object, IView
@@ -748,15 +883,15 @@ The number of instances to create.
 
 `positions` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Vector3\>
 
-A span of positions for the new View instances.
+World-space positions, repeated when shorter than <code class="paramref">count</code>.
 
 `rotations` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Quaternion\>
 
-A span of rotations for the new View instances.
+World-space rotations, repeated when shorter than <code class="paramref">count</code>.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 #### Returns
 
@@ -772,20 +907,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, Transform, Vector3, Quaternion, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, Vector3 position, Quaternion rotation, IViewModel viewModel) where T : Object, IView
@@ -803,19 +940,19 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clones, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `position` Vector3
 
-The position for the new View instances.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instances.
+The world-space rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 #### Returns
 
@@ -831,20 +968,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, Transform, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel) where T : Object, IView
@@ -862,19 +1001,19 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clones, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `positions` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Vector3\>
 
-A span of positions for the new View instances.
+World-space positions, repeated when shorter than <code class="paramref">count</code>.
 
 `rotations` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Quaternion\>
 
-A span of rotations for the new View instances.
+World-space rotations, repeated when shorter than <code class="paramref">count</code>.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 #### Returns
 
@@ -890,20 +1029,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, Transform, Vector3, Quaternion, IViewModel, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_System_Threading_CancellationToken_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, Vector3 position, Quaternion rotation, IViewModel viewModel, CancellationToken cancellationToken) where T : Object, IView
@@ -921,23 +1062,23 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clones, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `position` Vector3
 
-The position for the new View instances.
+The world-space position.
 
 `rotation` Quaternion
 
-The rotation for the new View instances.
+The world-space rotation.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 `cancellationToken` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)
 
-The cancellation token for stopping the creation process.
+The token that cancels cloning or destroys clones if initialization is canceled.
 
 #### Returns
 
@@ -953,20 +1094,22 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### InstantiateAsync\<T\>\(T, int, Transform, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Transform_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_System_Threading_CancellationToken_}
 
-Clones views asynchronously and initializes them on completion.
+Clones a view asynchronously and initializes each clone on completion.
 
 ```csharp
 public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Transform parent, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel, CancellationToken cancellationToken) where T : Object, IView
@@ -984,23 +1127,23 @@ The number of instances to create.
 
 `parent` Transform
 
-The parent of the clones; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
+The parent of the clones, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for the scene root.
 
 `positions` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Vector3\>
 
-A span of positions for the new View instances.
+World-space positions, repeated when shorter than <code class="paramref">count</code>.
 
 `rotations` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Quaternion\>
 
-A span of rotations for the new View instances.
+World-space rotations, repeated when shorter than <code class="paramref">count</code>.
 
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
 
-The shared ViewModel used to initialize every created view.
+The ViewModel shared by all clones.
 
 `cancellationToken` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)
 
-The cancellation token for stopping the creation process.
+The token that cancels cloning or destroys clones if initialization is canceled.
 
 #### Returns
 
@@ -1016,16 +1159,205 @@ The Unity view type.
 
 #### Remarks
 
-Call on the main thread. The returned Unity operation represents object creation, not initialization success.
-Initialization runs in the completion callback, which may run after the operation becomes done.
-Failures escape that callback after all clones are rolled back.
-Rollback preserves the initialization exception and does not dispose the ViewModel. Canceled empty results are ignored.
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
 
 #### Exceptions
 
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
-<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
+
+### InstantiateAsync\<T\>\(T, int, IViewModel, InstantiateParameters, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_Aspid_MVVM_IViewModel_UnityEngine_InstantiateParameters_System_Threading_CancellationToken_}
+
+Clones a view asynchronously and initializes each clone on completion.
+
+```csharp
+public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, IViewModel viewModel, InstantiateParameters parameters, CancellationToken cancellationToken = default) where T : Object, IView
+```
+
+#### Parameters
+
+`original` T
+
+The view to clone.
+
+`count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The number of instances to create.
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel shared by all clones.
+
+`parameters` InstantiateParameters
+
+The Unity cloning options.
+
+`cancellationToken` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)
+
+The token that cancels cloning or destroys clones if initialization is canceled.
+
+#### Returns
+
+ AsyncInstantiateOperation\<T\>
+
+The Unity cloning operation.
+
+#### Type Parameters
+
+`T`
+
+The Unity view type.
+
+#### Remarks
+
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
+
+### InstantiateAsync\<T\>\(T, int, Vector3, Quaternion, IViewModel, InstantiateParameters, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_UnityEngine_Vector3_UnityEngine_Quaternion_Aspid_MVVM_IViewModel_UnityEngine_InstantiateParameters_System_Threading_CancellationToken_}
+
+Clones a view asynchronously and initializes each clone on completion.
+
+```csharp
+public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, Vector3 position, Quaternion rotation, IViewModel viewModel, InstantiateParameters parameters, CancellationToken cancellationToken = default) where T : Object, IView
+```
+
+#### Parameters
+
+`original` T
+
+The view to clone.
+
+`count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The number of instances to create.
+
+`position` Vector3
+
+The position in the configured coordinate space.
+
+`rotation` Quaternion
+
+The rotation in the configured coordinate space.
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel shared by all clones.
+
+`parameters` InstantiateParameters
+
+The Unity cloning options.
+
+`cancellationToken` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)
+
+The token that cancels cloning or destroys clones if initialization is canceled.
+
+#### Returns
+
+ AsyncInstantiateOperation\<T\>
+
+The Unity cloning operation.
+
+#### Type Parameters
+
+`T`
+
+The Unity view type.
+
+#### Remarks
+
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
+
+### InstantiateAsync\<T\>\(T, int, ReadOnlySpan\<Vector3\>, ReadOnlySpan\<Quaternion\>, IViewModel, InstantiateParameters, CancellationToken\) {#Aspid_MVVM_MonoView_InstantiateAsync__1___0_System_Int32_System_ReadOnlySpan_UnityEngine_Vector3__System_ReadOnlySpan_UnityEngine_Quaternion__Aspid_MVVM_IViewModel_UnityEngine_InstantiateParameters_System_Threading_CancellationToken_}
+
+Clones a view asynchronously and initializes each clone on completion.
+
+```csharp
+public static AsyncInstantiateOperation<T> InstantiateAsync<T>(T original, int count, ReadOnlySpan<Vector3> positions, ReadOnlySpan<Quaternion> rotations, IViewModel viewModel, InstantiateParameters parameters, CancellationToken cancellationToken = default) where T : Object, IView
+```
+
+#### Parameters
+
+`original` T
+
+The view to clone.
+
+`count` [int](https://learn.microsoft.com/dotnet/api/system.int32)
+
+The number of instances to create.
+
+`positions` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Vector3\>
+
+Positions, repeated when shorter than <code class="paramref">count</code>.
+
+`rotations` [ReadOnlySpan](https://learn.microsoft.com/dotnet/api/system.readonlyspan-1)\<Quaternion\>
+
+Rotations, repeated when shorter than <code class="paramref">count</code>.
+
+`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+
+The ViewModel shared by all clones.
+
+`parameters` InstantiateParameters
+
+The Unity cloning options.
+
+`cancellationToken` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)
+
+The token that cancels cloning or destroys clones if initialization is canceled.
+
+#### Returns
+
+ AsyncInstantiateOperation\<T\>
+
+The Unity cloning operation.
+
+#### Type Parameters
+
+`T`
+
+The Unity view type.
+
+#### Remarks
+
+If initialization fails or the ViewModel is destroyed before initialization, the completion callback
+destroys all clones and rethrows the exception.
+
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">viewModel</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or destroyed.
+
+ [ArgumentException](https://learn.microsoft.com/dotnet/api/system.argumentexception)
+
+<code class="paramref">original</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or a [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html), or <code class="paramref">count</code> is less than one.
 
 ### OnDestroy\(\) {#Aspid_MVVM_MonoView_OnDestroy}
 

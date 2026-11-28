@@ -62,7 +62,7 @@ The initial value.
 
 ### Mode {#Aspid_MVVM_OneWayBindableMember_1_Mode}
 
-Gets the binding mode of the member; always [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
+Gets the fixed mode [`BindMode.OneWay`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -74,7 +74,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneWayBindableMember_1_Value}
 
-Gets or sets the current value; setting it raises [`OneWayBindableMember<T>.Changed`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Changed) even for an equal value.
+Gets or sets the value and raises [`OneWayBindableMember<T>.Changed`](Aspid.MVVM.OneWayBindableMember-1.md#Aspid_MVVM_OneWayBindableMember_1_Changed) on every assignment.
 
 ```csharp
 public T? Value { get; set; }

@@ -1,9 +1,9 @@
+using System;
 using UnityEngine.UI;
 using UnityEngine;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using Aspid.MVVM.StarterKit;
-using System.Text.RegularExpressions;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -26,7 +26,9 @@ namespace Aspid.MVVM.Tests
 
             Destroy(button);
 
-            Assert.IsFalse(binder.CanBind, "The binder agreed to bind to a destroyed button");
+            var context = new BindContext(new OneWayBindableMember<IRelayCommand>(null), binder);
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(in context));
+            Assert.IsFalse(binder.IsBound);
         }
 
         [Test]
@@ -35,22 +37,22 @@ namespace Aspid.MVVM.Tests
             var button = Spawn("Button").AddComponent<Button>();
             var binder = new ButtonCommandBinder(button);
 
-            Assert.IsTrue(binder.CanBind, "The binder refused to bind to a live button");
+            binder.Bind(new BindContext(new OneWayBindableMember<IRelayCommand>(null), binder));
+            Assert.IsTrue(binder.IsBound);
+            binder.Unbind(new UnbindContext(binder));
         }
 
-        /// <summary>
-        /// The guard now lives in <c>TargetBinder</c> itself, so a binder that never carried its own
-        /// <c>CanBind</c> override — most of them — is covered as well.
-        /// </summary>
         [Test]
-        public void ATargetBinderWithoutItsOwnOverride_IsAlsoGuarded()
+        public void SliderValueBinder_RejectsADestroyedSliderBeforeAttachment()
         {
             var slider = Spawn("Slider").AddComponent<Slider>();
             var binder = new SliderValueBinder(slider);
 
             Destroy(slider);
 
-            Assert.IsFalse(binder.CanBind, "An unguarded binder family still accepts a destroyed target");
+            var context = new BindContext(new OneWayStructBindableMember<float>(0.5f), binder);
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(in context));
+            Assert.IsFalse(binder.IsBound);
         }
 
         [Test]
@@ -61,13 +63,12 @@ namespace Aspid.MVVM.Tests
             var member = new OneWayBindableMember<string>("Bound");
 
             Assert.DoesNotThrow(() => binder.BindSafely(new BindContext(member, this)));
-            Assert.DoesNotThrow(() => binder.BindSafely(new FindBindableMemberResult(member), this));
             Assert.DoesNotThrow(() => binder.UnbindSafely(new UnbindContext(this)));
             LogAssert.NoUnexpectedReceived();
         }
 
         [Test]
-        public void BindSafely_WithADestroyedBinderInTheArray_SkipsItAndBindsTheRest()
+        public void SafeBinding_SilentlySkipsADestroyedBinderInTheArray()
         {
             var doomed = Spawn("Doomed").AddComponent<TextMonoBinder>();
 
@@ -80,10 +81,12 @@ namespace Aspid.MVVM.Tests
 
             var member = new OneWayBindableMember<string>("Bound");
 
-            LogAssert.Expect(LogType.Error, new Regex(@"Binder at index 0 '_binders' is null or destroyed"));
-            binders.BindSafely(new BindContext(member, this), memberName: "_binders");
+            binders.BindSafely(new BindContext(member, this));
+            Assert.That(survivor.IsBound, Is.True);
 
-            Assert.IsTrue(survivor.IsBound, "The live binder was not bound because of its destroyed neighbour");
+            binders.UnbindSafely(new UnbindContext(this));
+            Assert.That(survivor.IsBound, Is.False);
+            LogAssert.NoUnexpectedReceived();
         }
     }
 }

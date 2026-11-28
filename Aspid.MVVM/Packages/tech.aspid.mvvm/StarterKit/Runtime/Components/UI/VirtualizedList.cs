@@ -637,7 +637,8 @@ namespace Aspid.MVVM.StarterKit
                 }
 
                 _destroyPending = false;
-                View.DestroyViewAndGameObject();
+                if (View)
+                    View.DestroyViewAndGameObject();
             }
 
             private Vector3 GetPosition(int index) =>

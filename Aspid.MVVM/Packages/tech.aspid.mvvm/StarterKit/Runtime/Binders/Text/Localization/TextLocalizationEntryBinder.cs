@@ -64,8 +64,11 @@ namespace Aspid.MVVM.StarterKit
         /// <remarks>
         /// When overriding, always call <c>base.OnBinding()</c>.
         /// </remarks>
-        protected override void OnBinding() =>
+        protected override void OnBinding()
+        {
+            base.OnBinding();
             _stringReference.Subscribe(_formatArguments, UpdateString);
+        }
 
         /// <summary>
         /// Unsubscribes from <see cref="LocalizedString.StringChanged"/>.

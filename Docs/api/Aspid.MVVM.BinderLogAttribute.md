@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Generates an explicit [`IBinder<T>.SetValue`](Aspid.MVVM.IBinder-1.md#Aspid_MVVM_IBinder_1_SetValue__0_) implementation that records each value in an Inspector log
-before calling the marked method.
+Records incoming values in the Inspector before calling the marked <code>SetValue</code> method.
 
 ```csharp
 [Conditional("UNITY_EDITOR")]
@@ -40,10 +39,8 @@ public void SetValue(string value) => _text.text = value;
 ## Remarks
 
 <p>
-Mark a <code>SetValue</code> method with one parameter that implicitly implements [`IBinder<T>`](Aspid.MVVM.IBinder-1.md), or
-[`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) when it is generic, in a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/partial-method">partial</a> type.
+The method must implicitly implement [`IBinder<T>`](Aspid.MVVM.IBinder-1.md) or [`IAnyBinder`](Aspid.MVVM.IAnyBinder.md) in a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/partial-method">partial</a> type.
 </p>
 <p>
-The log records values while its Inspector toggle is on, in the Editor only; <code>ASPID_MVVM_BINDER_LOG_DISABLED</code>
-removes it.
+Recording runs only in the Editor while enabled in the Inspector. Define <code>ASPID_MVVM_BINDER_LOG_DISABLED</code> to omit the log.
 </p>

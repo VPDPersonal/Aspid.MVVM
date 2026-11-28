@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Wraps a field or readable property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder, passing the member as its first constructor argument.
+Wraps a field or readable property of a [`[View]`](Aspid.MVVM.ViewAttribute.md) class in a binder.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
@@ -43,7 +43,7 @@ public sealed class AsBinderAttribute : Attribute
 
 ## Remarks
 
-For an array, creates one binder per element; invalid types or constructor arguments produce generator errors.
+The member is the first constructor argument. An array creates one binder per element.
 
 ## Constructors
 

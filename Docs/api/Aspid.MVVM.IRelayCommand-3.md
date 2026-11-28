@@ -43,7 +43,7 @@ The third command parameter type.
 
 ### CanExecute\(T1?, T2?, T3?\) {#Aspid_MVVM_IRelayCommand_3_CanExecute__0__1__2_}
 
-Determines whether the command can execute with the supplied parameters.
+Determines whether the command can execute with the supplied arguments.
 
 ```csharp
 bool CanExecute(T1? param1, T2? param2, T3? param3)

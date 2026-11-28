@@ -12,11 +12,11 @@ pagination_next: null
 
  [MonoBinderPreviousId](Aspid.MVVM.Validation.MonoBinderPreviousId.md)
 
-The last non-empty ID of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md), kept to detect a renamed View field.
+Record of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md) field ID for detecting renames.
 
  [MonoBinderPreviousView](Aspid.MVVM.Validation.MonoBinderPreviousView.md)
 
-The last non-empty View of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md), kept with its name to detect a lost reference.
+Record of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md) view and its name for detecting a lost reference.
 
 ### Interfaces
 

@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM.Validation](Aspid.MVVM.Validation.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-The last non-empty ID of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md), kept to detect a renamed View field.
+Record of a [`MonoBinder`](Aspid.MVVM.MonoBinder.md) field ID for detecting renames.
 
 ```csharp
 [Serializable]
@@ -34,7 +34,7 @@ public MonoBinderPreviousId(string? id)
 
 `id` [string](https://learn.microsoft.com/dotnet/api/system.string)?
 
-The ID to keep; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
+The ID to keep, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> for none.
 
 ## Properties
 

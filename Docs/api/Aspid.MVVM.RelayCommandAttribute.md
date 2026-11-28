@@ -11,8 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.dll <br/>
 
-Generates a [`RelayCommand`](Aspid.MVVM.RelayCommand.md) property, named after the method with a <code>Command</code> suffix, for the method of
-a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
+Generates a relay command for the marked method of a [`[ViewModel]`](Aspid.MVVM.ViewModelAttribute.md) class.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Method, Inherited = false)]
@@ -46,14 +45,15 @@ private bool CanBuy(int count) => count <= _stock;
 
 ## Remarks
 
-The method is non-generic, returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/void">void</a> and takes up to four value parameters.
+The generated property uses the method name with a <code>Command</code> suffix. The method must be non-generic,
+return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/void">void</a> and take up to four value parameters.
 
 ## Fields
 
 ### CanExecute {#Aspid_MVVM_RelayCommandAttribute_CanExecute}
 
-The name of a [`Boolean`](https://learn.microsoft.com/dotnet/api/system.boolean) field, readable property or compatible method accessible from the class that allows execution; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to
-always allow it.
+The name of a boolean field, readable property or predicate method that allows execution.
+The default, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, always allows execution.
 
 ```csharp
 public string? CanExecute

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -16,7 +17,9 @@ namespace Aspid.MVVM.Tests
             view.Initialize(model);
             Object.DestroyImmediate(view);
 
-            Assert.That(((IView)view).ReinitializeSafely(new Model()), Is.Null);
+            var replacement = new Model();
+            view.InitializeSafely(replacement);
+            Assert.That(((IView)view).ReinitializeSafely(replacement), Is.Null);
             Assert.That(view.DeinitializeViewSafely(), Is.Null);
             Assert.That(view.DisposeViewSafely(), Is.Null);
             Assert.That(((IView)view).DisposeViewSafely(), Is.Null);
@@ -30,8 +33,8 @@ namespace Aspid.MVVM.Tests
             var view = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
             Object.DestroyImmediate(view);
 
-            Assert.That(Assert.Throws<ArgumentNullException>(() => view.Reinitialize(null)).ParamName, Is.EqualTo("view"));
             Assert.That(Assert.Throws<ArgumentNullException>(() => view.DeinitializeView()).ParamName, Is.EqualTo("view"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => view.Reinitialize(null)).ParamName, Is.EqualTo("view"));
             Assert.That(Assert.Throws<ArgumentNullException>(() => view.DisposeView()).ParamName, Is.EqualTo("view"));
             Assert.That(Assert.Throws<ArgumentNullException>(() => ((IView)view).DisposeView()).ParamName, Is.EqualTo("view"));
             Assert.That(view.DisposeCalls, Is.Zero);
@@ -71,13 +74,99 @@ namespace Aspid.MVVM.Tests
             var view = Spawn<Probe>();
             var owner = view.gameObject;
             view.Failure = new InvalidOperationException("Safe view cleanup failed.");
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: Safe view cleanup failed.");
+            var failure = Assert.Throws<InvalidOperationException>(() =>
+            {
+                if (wholeObject) view.DestroyViewAndGameObjectSafely();
+                else view.DestroyViewSafely();
+            });
 
-            var result = wholeObject ? view.DestroyViewAndGameObjectSafely() : view.DestroyViewSafely();
-
-            Assert.That(result, Is.Null);
+            Assert.That(failure, Is.SameAs(view.Failure));
             Assert.That(view == null, Is.True);
             Assert.That(owner == null, Is.EqualTo(wholeObject));
+        }
+
+        [Test]
+        public void DestroyViewsRejectsNullCollections()
+        {
+            IView[] array = null;
+            List<IView> list = null;
+            IEnumerable<IView> sequence = null;
+
+            Assert.That(Assert.Throws<ArgumentNullException>(() => array.DestroyViews()).ParamName, Is.EqualTo("views"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => list.DestroyViews()).ParamName, Is.EqualTo("views"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => sequence.DestroyViews()).ParamName, Is.EqualTo("views"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => array.DestroyViewsAndGameObjects()).ParamName, Is.EqualTo("views"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => list.DestroyViewsAndGameObjects()).ParamName, Is.EqualTo("views"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => sequence.DestroyViewsAndGameObjects()).ParamName, Is.EqualTo("views"));
+        }
+
+        [TestCase(false, false)]
+        [TestCase(false, true)]
+        [TestCase(true, false)]
+        [TestCase(true, true)]
+        public void DestroyViewsContinuesAfterMissingView(bool destroyGameObjects, bool destroyed)
+        {
+            var first = Spawn<Probe>();
+            var last = Spawn<Probe>();
+            IView missing = null;
+            if (destroyed)
+            {
+                var view = Spawn<Probe>();
+                Object.DestroyImmediate(view);
+                missing = view;
+            }
+
+            var views = new[] { first, missing, last };
+            var failure = Assert.Throws<ArgumentNullException>(() =>
+            {
+                if (destroyGameObjects)
+                    views.DestroyViewsAndGameObjects();
+                else views.DestroyViews();
+            });
+
+            Assert.That(failure.ParamName, Is.EqualTo("view"));
+            Assert.That(first == null, Is.True);
+            Assert.That(last == null, Is.True);
+        }
+
+        [Test]
+        public void DestroyViewsSafelyPreservesGameObjectsAndSkipsMissingViews()
+        {
+            var first = Spawn<Probe>();
+            var last = Spawn<Probe>();
+            var firstOwner = first.gameObject;
+            var lastOwner = last.gameObject;
+            var destroyed = Spawn<Probe>();
+            Object.DestroyImmediate(destroyed);
+            var views = new[] { first, null, destroyed, last };
+
+            views.DestroyViewsSafely();
+
+            Assert.That(first == null && last == null, Is.True);
+            Assert.That(firstOwner != null && lastOwner != null, Is.True);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DestroyViewsAndGameObjectsContinuesAfterCleanupFails(bool safely)
+        {
+            var first = Spawn<Probe>();
+            var last = Spawn<Probe>();
+            var firstOwner = first.gameObject;
+            var lastOwner = last.gameObject;
+            first.Failure = new InvalidOperationException("Batch cleanup failed.");
+            var views = new[] { first, last };
+
+            var failure = Assert.Throws<InvalidOperationException>(() =>
+            {
+                if (safely)
+                    views.DestroyViewsAndGameObjectsSafely();
+                else
+                    views.DestroyViewsAndGameObjects();
+            });
+            Assert.That(failure, Is.SameAs(first.Failure));
+
+            Assert.That(firstOwner == null && lastOwner == null, Is.True);
         }
 
         [Test]
@@ -97,6 +186,8 @@ namespace Aspid.MVVM.Tests
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
         public void FailedInitializationDestroysTheWholeClone(int overload)
         {
             var original = Spawn<Probe>();
@@ -114,12 +205,41 @@ namespace Aspid.MVVM.Tests
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
         public void NullModelIsRejectedBeforeCloning(int overload)
         {
             var original = Spawn<Probe>();
             Probe.LastInitialized = null;
             Assert.Throws<ArgumentNullException>(() => Create(overload, original, null));
             Assert.That(Probe.LastInitialized, Is.Null);
+        }
+
+        [Test]
+        public void DestroyedModelIsRejectedBeforeCloning([NUnit.Framework.Range(0, 6)] int overload)
+        {
+            var original = Spawn<Probe>();
+            var model = ScriptableObject.CreateInstance<ScriptableModel>();
+            Object.DestroyImmediate(model);
+            Probe.LastInitialized = null;
+
+            var error = Assert.Throws<ArgumentNullException>(() => Create(overload, original, model));
+
+            Assert.That(error.ParamName, Is.EqualTo("viewModel"));
+            Assert.That(Probe.LastInitialized, Is.Null);
+        }
+
+        [Test]
+        public void DestroyingAScriptableViewReleasesItsModel()
+        {
+            var view = Track(ScriptableObject.CreateInstance<EmptyScriptableView>());
+            var model = new Model();
+            view.Initialize(model);
+
+            Object.DestroyImmediate(view);
+
+            Assert.That(view.ViewModel, Is.Null);
+            Assert.That(model.Disposed, Is.False);
         }
 
         [Test]
@@ -146,7 +266,7 @@ namespace Aspid.MVVM.Tests
         [TestCase(true, false, true)]
         [TestCase(true, true, false)]
         [TestCase(true, true, true)]
-        public void ScriptableViewsAreDestroyedEvenWhenCleanupFails(bool wholeObject, bool throughInterface, bool failCleanup)
+        public void DestroyViewDestroysScriptableViewsEvenWhenCleanupFails(bool wholeObject, bool throughInterface, bool failCleanup)
         {
             var view = ScriptableObject.CreateInstance<DisposableScriptableProbe>();
             var model = new Model();
@@ -167,7 +287,8 @@ namespace Aspid.MVVM.Tests
                 Assert.That(view == null, Is.True);
                 Assert.That(view.DisposeCalls, Is.EqualTo(1));
                 Assert.That(model.Disposed, Is.False);
-                Assert.That(Destroy(), Is.Null);
+                Assert.That(Assert.Throws<ArgumentNullException>(() => Destroy()).ParamName, Is.EqualTo("view"));
+                Assert.That(wholeObject ? view.DestroyViewAndGameObjectSafely() : view.DestroyViewSafely(), Is.Null);
                 Assert.That(view.DisposeCalls, Is.EqualTo(1));
             }
             finally
@@ -177,12 +298,18 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
-        public void NullAndManagedViewsDoNotRequireUnityObjects()
+        public void DestroyViewRejectsNullAndSafelySkipsIt()
         {
             IView missing = null;
-            Assert.That(missing.DestroyView(), Is.Null);
-            Assert.That(missing.DestroyViewAndGameObject(), Is.Null);
-            Assert.That(ViewExtensions.DestroyView(null), Is.Null);
+            Assert.That(Assert.Throws<ArgumentNullException>(() => missing.DestroyView()).ParamName, Is.EqualTo("view"));
+            Assert.That(Assert.Throws<ArgumentNullException>(() => missing.DestroyViewAndGameObject()).ParamName, Is.EqualTo("view"));
+            Assert.That(missing.DestroyViewSafely(), Is.Null);
+            Assert.That(missing.DestroyViewAndGameObjectSafely(), Is.Null);
+        }
+
+        [Test]
+        public void DestroyViewCleansUpManagedViews()
+        {
             var model = new Model();
             var view = new ManagedView();
             view.Initialize(model);
@@ -202,6 +329,7 @@ namespace Aspid.MVVM.Tests
             FailingScriptableProbe.InitializationFailure = failure;
             try
             {
+                LogAssert.Expect(LogType.Exception, "InvalidOperationException: Cleanup failed.");
                 Assert.That(Assert.Throws<InvalidOperationException>(() =>
                     MonoView.Instantiate(original, new Model())), Is.SameAs(failure));
                 Assert.That(FailingScriptableProbe.Last == null, Is.True);
@@ -212,6 +340,8 @@ namespace Aspid.MVVM.Tests
                 Object.DestroyImmediate(original);
             }
         }
+
+        private sealed class ScriptableModel : ScriptableViewModel { }
 
         private sealed class ManagedView : IView
         {
@@ -267,7 +397,9 @@ namespace Aspid.MVVM.Tests
             1 => MonoView.Instantiate(original, null, model),
             2 => MonoView.Instantiate(original, null, true, model),
             3 => MonoView.Instantiate(original, Vector3.zero, Quaternion.identity, model),
-            _ => MonoView.Instantiate(original, Vector3.zero, Quaternion.identity, null, model)
+            4 => MonoView.Instantiate(original, Vector3.zero, Quaternion.identity, null, model),
+            5 => MonoView.Instantiate(original, model, default),
+            _ => MonoView.Instantiate(original, Vector3.zero, Quaternion.identity, model, default)
         };
 
         private sealed class Probe : MonoBehaviour, IView, IDisposable

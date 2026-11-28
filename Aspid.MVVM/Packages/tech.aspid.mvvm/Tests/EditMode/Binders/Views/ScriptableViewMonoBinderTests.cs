@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using NUnit.Framework;
@@ -7,25 +8,36 @@ namespace Aspid.MVVM.Tests
 {
     /// <summary>
     /// Tests <see cref="ScriptableViewMonoBinder{TView}"/> through <see cref="StubScriptableViewMonoBinder"/>:
-    /// the empty-view <c>CanBind</c> guard and view initialization on bind/unbind.
+    /// required view validation and view initialization on bind/unbind.
     /// </summary>
     [TestFixture]
     public sealed class ScriptableViewMonoBinderTests : SceneFixture
     {
-        [Test]
-        public void CanBind_WithNoViewAssigned_IsFalse()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Bind_WithoutALiveView_ThrowsAndCanRetry(bool destroyAssignedView)
         {
             var binder = Spawn<StubScriptableViewMonoBinder>();
+            SetMode(binder, BindMode.OneWay);
+            if (destroyAssignedView)
+            {
+                var assignedView = ScriptableObject.CreateInstance<StubScriptableView>();
+                AssignView(binder, assignedView);
+                Destroy(assignedView);
+            }
 
-            Assert.IsFalse(binder.CanBind, "The binder agreed to bind without an assigned view");
-        }
+            var model = new StubViewModel();
+            var context = new BindContext(new OneWayBindableMember<IViewModel>(model), this);
 
-        [Test]
-        public void CanBind_WithAViewAssigned_IsTrue()
-        {
-            var binder = AssignView(Spawn<StubScriptableViewMonoBinder>(), Track(ScriptableObject.CreateInstance<StubScriptableView>()));
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(context));
+            Assert.That(binder.IsBound, Is.False);
 
-            Assert.IsTrue(binder.CanBind, "The binder refused to bind with a view assigned");
+            var view = Track(ScriptableObject.CreateInstance<StubScriptableView>());
+            AssignView(binder, view);
+            binder.Bind(context);
+
+            Assert.That(view.ViewModel, Is.SameAs(model));
+            binder.Unbind(new UnbindContext(this));
         }
 
         [Test]

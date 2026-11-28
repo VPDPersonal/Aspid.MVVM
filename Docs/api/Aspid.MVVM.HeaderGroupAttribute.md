@@ -11,7 +11,7 @@ pagination_next: null
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
 Assembly: Aspid.MVVM.Unity.dll <br/>
 
-Groups the decorated member under the supplied foldout title.
+Places only the decorated member in a named Inspector foldout.
 
 ```csharp
 [Conditional("DEBUG")]
@@ -28,25 +28,15 @@ public sealed class HeaderGroupAttribute : Attribute
 
 
 
-## Examples
-
-
-```csharp
-[HeaderGroup("Stats")]
-[Bind] private int _health;
-```
-
-
 ## Remarks
 
-Affects only this member; subsequent members keep the current range. Equal titles share a foldout.
-Attribute applications are omitted unless <code>DEBUG</code> or <code>UNITY_EDITOR</code> is defined.
+Members with the same title share a foldout, including members in a foldout range.
 
 ## Constructors
 
 ### HeaderGroupAttribute\(string\) {#Aspid_MVVM_HeaderGroupAttribute__ctor_System_String_}
 
-Creates a grouping attribute with the supplied title.
+Creates a foldout group for one member.
 
 ```csharp
 public HeaderGroupAttribute(string title)
@@ -56,7 +46,7 @@ public HeaderGroupAttribute(string title)
 
 `title` [string](https://learn.microsoft.com/dotnet/api/system.string)
 
-The foldout title; blank titles are ignored.
+The foldout title. Blank titles are ignored.
 
 ## Properties
 

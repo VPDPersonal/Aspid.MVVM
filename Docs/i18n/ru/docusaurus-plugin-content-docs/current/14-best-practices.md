@@ -264,7 +264,7 @@ public partial class PlayerViewModel { ... }
 Destroy(viewGameObject);
 
 // ✅ Сначала деинициализация
-_view.DeinitializeView()?.DisposeViewModel();
+_view.DeinitializeViewSafely()?.DisposeViewModel();
 Destroy(viewGameObject);
 ```
 

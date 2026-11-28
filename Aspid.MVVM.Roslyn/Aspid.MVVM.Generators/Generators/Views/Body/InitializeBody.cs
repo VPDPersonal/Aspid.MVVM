@@ -303,9 +303,7 @@ public static class InitializeBody
 
         var virtualFields = VirtualBinderFields.Collect(data);
         foreach (var info in virtualFields.Values)
-            code.AppendLine(
-                $"AspidBinderExtensions.BindSafely({info.FieldName}, " +
-                $"viewModel.FindBindableMember(new({info.Id.Value})), this, {info.Id.Value});");
+            code.AppendLookupBinding(info.FieldName, info.Id.Value);
 
         return code.AppendLine()
             .AppendLine("OnInitializedInternal(viewModel);")

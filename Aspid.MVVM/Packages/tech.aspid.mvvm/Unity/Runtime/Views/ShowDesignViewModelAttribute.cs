@@ -6,14 +6,8 @@ using System.Diagnostics;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Configures the design ViewModel selector of a <see cref="MonoView"/> in the Editor.
+    /// Shows and configures the design ViewModel selector on a <see cref="MonoView"/> Inspector.
     /// </summary>
-    /// <example>
-    /// <code>
-    /// [ShowDesignViewModel(typeof(PlayerViewModel), strictType: true)]
-    /// public partial class PlayerView : MonoView { }
-    /// </code>
-    /// </example>
     [Conditional(conditionString: "UNITY_EDITOR")]
     [AttributeUsage(validOn: AttributeTargets.Class)]
     public sealed class ShowDesignViewModelAttribute : Attribute
@@ -29,8 +23,7 @@ namespace Aspid.MVVM
         public readonly bool StrictType;
 
         /// <summary>
-        /// Creates the attribute allowing any <see cref="IViewModel"/> implementation
-        /// to be used as a design ViewModel.
+        /// Creates an attribute that allows any <see cref="IViewModel"/> implementation.
         /// </summary>
         public ShowDesignViewModelAttribute()
         {
@@ -38,9 +31,9 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates a selector filtered by the supplied ViewModel types.
+        /// Creates an attribute with filters for selectable types.
         /// </summary>
-        /// <param name="types">The allowed types; adds <see cref="IViewModel"/> if none implements it.</param>
+        /// <param name="types">The type filters. Adds <see cref="IViewModel"/> if no filter is assignable to it.</param>
         /// <exception cref="ArgumentNullException"><paramref name="types"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">An element of <paramref name="types"/> is <see langword="null"/>.</exception>
         public ShowDesignViewModelAttribute(params Type[] types)
@@ -58,13 +51,13 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Creates the attribute with a single ViewModel type.
+        /// Creates an attribute with one type filter and an optional lock.
         /// </summary>
-        /// <param name="type">The ViewModel type to show in the design ViewModel selector.</param>
+        /// <param name="type">The type filter. Adds <see cref="IViewModel"/> if the filter is not assignable to it.</param>
         /// <param name="strictType">When <see langword="true"/>, selects the concrete type and locks the selector.</param>
         /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
-        /// Strict mode is requested for a type that is abstract, open generic or does not implement <see cref="IViewModel"/>.
+        /// <paramref name="strictType"/> is <see langword="true"/> and <paramref name="type"/> is not a concrete, closed <see cref="IViewModel"/> type.
         /// </exception>
         public ShowDesignViewModelAttribute(Type type, bool strictType = false)
         {

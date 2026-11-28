@@ -1,7 +1,6 @@
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
-
     internal class BoundRelayCommand<T> : BoundRelayCommandBase<IRelayCommand<T>>
     {
         private readonly T? _param;

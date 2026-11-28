@@ -13,10 +13,10 @@ namespace Aspid.MVVM
     /// <see cref="IBinder"/> with a serialized mode and binding lifecycle hooks.
     /// </summary>
     /// <remarks>
-    /// A derived class implements <see cref="IBinder{T}"/>, <see cref="IReverseBinder{T}"/> or both to exchange values.
+    /// Implement <see cref="IBinder{T}"/> to receive values, <see cref="IReverseBinder{T}"/> to report them, or both.
     /// </remarks>
     [Serializable]
-    [SuppressMessage(category: "ReSharper",checkId: "MemberInitializerValueIgnored")]
+    [SuppressMessage(category: "ReSharper", checkId: "MemberInitializerValueIgnored")]
     public abstract partial class Binder : IBinder
     {
         [Tooltip("The direction of data flow between the ViewModel and the View.")]
@@ -24,6 +24,7 @@ namespace Aspid.MVVM
         [SerializeField] private BindMode _mode = BindMode.TwoWay;
 
         private BinderState _state;
+        private VersionStamp _bindingVersion;
         private IBinderRemover? _binderRemover;
 
         /// <summary>
@@ -48,19 +49,28 @@ namespace Aspid.MVVM
             _mode = mode;
         }
 
-        /// <inheritdoc/>
-        public bool IsBound => _state is BinderState.Bound;
-
-        /// <summary>
-        /// Gets a value indicating whether <see cref="Bind(in BindContext)"/> attaches the binder; <see langword="true"/> unless
-        /// overridden.
-        /// </summary>
-        public virtual bool CanBind => true;
-
         /// <summary>
         /// Gets the binding mode set by the constructor or in the Inspector.
         /// </summary>
         public BindMode Mode => _mode;
+
+        /// <summary>
+        /// Gets a value indicating whether <see cref="Bind(in BindContext)"/> should attempt to attach the binder.
+        /// </summary>
+        /// <remarks>
+        /// Return <see langword="false"/> for an intentional skip. Validate required configuration in <see cref="OnBinding"/>.
+        /// The default is <see langword="true"/>.
+        /// </remarks>
+        public virtual bool CanBind => true;
+
+        /// <inheritdoc/>
+        public bool IsBound => _state is BinderState.Bound;
+
+        /// <summary>
+        /// Gets a read-only reference to the stamp that changes when binding or unbinding starts.
+        /// </summary>
+        /// <remarks>Copy the stamp before calling user code and compare it with the current stamp afterward.</remarks>
+        protected ref readonly VersionStamp BindingVersion => ref _bindingVersion;
 
         /// <summary>
         /// Attaches the binder through <paramref name="context"/>, calling <see cref="OnBinding"/> before and
@@ -68,11 +78,12 @@ namespace Aspid.MVVM
         /// </summary>
         /// <remarks>
         /// Does nothing when <see cref="CanBind"/> is <see langword="false"/>. Installation failures roll back;
-        /// exceptions from <see cref="OnBound"/> propagate without rolling back the completed binding.
+        /// exceptions from <see cref="OnBound"/> or <see cref="OnBoundToSource"/> propagate without rolling back the completed binding.
         /// </remarks>
         /// <param name="context">The bindable member and the owner acquiring the binding.</param>
         /// <exception cref="ArgumentException"><paramref name="context"/> is uninitialized.</exception>
         /// <exception cref="InvalidOperationException">The binder is already bound or a lifecycle operation is in progress.</exception>
+        /// <exception cref="AggregateException">Binding and rollback both fail. The binding exception is first.</exception>
         public void Bind(in BindContext context)
         {
 #if ASPID_MVVM_PROFILER
@@ -83,11 +94,10 @@ namespace Aspid.MVVM
                 if (_state is not BinderState.Unbound)
                     throw new InvalidOperationException("The binder is already bound or unavailable for binding.");
 
-                _state = BinderState.Binding;
-                
                 Owner = context.Owner;
-                var bindingStarted = false;
-
+                _state = BinderState.Binding;
+                _bindingVersion = _bindingVersion.Next();
+                
                 try
                 {
                     if (!CanBind)
@@ -95,8 +105,15 @@ namespace Aspid.MVVM
                         ResetBindingState();
                         return;
                     }
+                }
+                catch
+                {
+                    ResetBindingState();
+                    throw;
+                }
 
-                    bindingStarted = true;
+                try
+                {
                     OnBinding();
 
                     _binderRemover = context.Adder.Add(binder: this);
@@ -105,28 +122,25 @@ namespace Aspid.MVVM
                     OnBoundDebug(in context);
                     _state = BinderState.Bound;
                 }
-                catch
+                catch (Exception bindingException)
                 {
-                    if (bindingStarted)
+                    try
                     {
-                        try
-                        {
-                            UnbindInternal();
-                        }
-                        catch
-                        {
-                            // Do not replace the original exception with a cleanup failure.
-                        }
+                        UnbindInternal();
                     }
-                    else
+                    catch (Exception rollbackException)
                     {
-                        ResetBindingState();
+                        throw new AggregateException(bindingException, rollbackException);
                     }
 
                     throw;
                 }
 
+                var version = _bindingVersion;
                 OnBound();
+
+                if (version.Matches(_bindingVersion) && Mode is BindMode.OneWayToSource)
+                    OnBoundToSource();
             }
         }
 
@@ -153,6 +167,12 @@ namespace Aspid.MVVM
         protected virtual void OnBound() { }
 
         /// <summary>
+        /// Called after <see cref="OnBound"/> if the same <see cref="BindMode.OneWayToSource"/> binding is still active.
+        /// Override to send the initial value to the ViewModel.
+        /// </summary>
+        protected virtual void OnBoundToSource() { }
+
+        /// <summary>
         /// Detaches the binder when <paramref name="context"/> identifies its owner, calling the cleanup hooks.
         /// </summary>
         /// <remarks>
@@ -165,81 +185,79 @@ namespace Aspid.MVVM
         /// <exception cref="AggregateException">Multiple cleanup operations fail.</exception>
         public void Unbind(in UnbindContext context)
         {
-#if ASPID_MVVM_PROFILER
-            using (this.Marker())
-#endif
-            {
-                context.EnsureValid();
+            context.EnsureValid();
 
-                if (!ReferenceEquals(Owner, context.Owner)
-                    || _state is BinderState.Unbound or BinderState.Unbinding) return;
+            if (!ReferenceEquals(Owner, context.Owner)
+                || _state is BinderState.Unbound or BinderState.Unbinding)
+                return;
 
-                if (_state is BinderState.Binding)
-                    throw new InvalidOperationException("The binder cannot be released before attachment finishes.");
+            if (_state is BinderState.Binding)
+                throw new InvalidOperationException("The binder cannot be released before attachment finishes.");
 
-                UnbindInternal();
-            }
+            UnbindInternal();
         }
 
         private void UnbindInternal()
         {
-            if (_state is BinderState.Unbound or BinderState.Unbinding) return;
+#if ASPID_MVVM_PROFILER
+            using (this.Marker().WithName(nameof(Unbind)));
+#endif
+            {
+                _state = BinderState.Unbinding;
+                var failures = new CleanupExceptions();
+                _bindingVersion = _bindingVersion.Next();
 
-            _state = BinderState.Unbinding;
-            var failures = new CleanupExceptions();
+                try
+                {
+                    OnUnbinding();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
 
-            try
-            {
-                OnUnbinding();
-            }
-            catch (Exception exception)
-            {
-                failures.Add(exception);
-            }
+                try
+                {
+                    _binderRemover?.Remove(binder: this);
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
 
-            try
-            {
-                _binderRemover?.Remove(binder: this);
-            }
-            catch (Exception exception)
-            {
-                failures.Add(exception);
-            }
-            finally
-            {
                 _binderRemover = null;
-            }
 
-            try
-            {
-                OnDetach();
-            }
-            catch (Exception exception)
-            {
-                failures.Add(exception);
-            }
+                try
+                {
+                    OnDetach();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
 
-            try
-            {
-                OnUnboundDebug();
-            }
-            catch (Exception exception)
-            {
-                failures.Add(exception);
-            }
+                try
+                {
+                    OnUnboundDebug();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
 
-            ResetBindingState();
+                ResetBindingState();
 
-            try
-            {
-                OnUnbound();
-            }
-            catch (Exception exception)
-            {
-                failures.Add(exception);
-            }
+                try
+                {
+                    OnUnbound();
+                }
+                catch (Exception exception)
+                {
+                    failures.Add(exception);
+                }
 
-            failures.ThrowIfAny();
+                failures.ThrowIfAny();
+            }
         }
 
         /// <summary>

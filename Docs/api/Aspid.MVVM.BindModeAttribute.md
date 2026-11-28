@@ -48,8 +48,8 @@ PropertyAttribute ←
 ## Remarks
 
 <p>
-The allowed modes are [`BindModeAttribute.Modes`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_Modes) plus the groups that [`BindModeAttribute.IsOne`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsOne) and [`BindModeAttribute.IsTwo`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsTwo) add; with none of
-them, or with [`BindModeAttribute.IsAll`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsAll), every mode except [`BindMode.None`](Aspid.MVVM.BindMode.md) is allowed.
+Combine [`BindModeAttribute.Modes`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_Modes), [`BindModeAttribute.IsOne`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsOne) and [`BindModeAttribute.IsTwo`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsTwo) to select modes.
+With no selection or with [`BindModeAttribute.IsAll`](Aspid.MVVM.BindModeAttribute.md#Aspid_MVVM_BindModeAttribute_IsAll), all valid modes are available.
 </p>
 <p>The Inspector replaces a stored mode outside the allowed set with the first allowed one.</p>
 

@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Everything since `1.0.5`. Minimum Unity is now **`6000.0`**. Upgrade checklist: [migration guide](https://vpdpersonal.github.io/Aspid.MVVM/migration/1.1).
 A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` channel.
 
+### General binders
+
+- `TargetBinder<TTarget>` moved to the `Aspid.MVVM.Unity` assembly.
+- Derived binders can use `BindingVersion` to detect binding changes during callbacks.
+
 ### Audit completion
 
 - UI Toolkit sliders support all four numeric reverse channels. Rebuilt and late visual trees restore values and callbacks without rebinding the ViewModel.
@@ -40,6 +45,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 #### Core & generator
 
 - `IViewModel.InitializeView(view)` and `InitializeViews(views)` initialize Views from the ViewModel, including null-conditional calls and array, list, or enumerable inputs.
+- View collections support initialization, reinitialization, deinitialization, disposal, and destruction extensions, including `Safely` variants that continue after individual failures.
 
 - **Bindable properties** — `[Bind]` on properties, not only fields.
 - **`NotifyCanExecuteChangedAll()`** — refreshes every command with a `CanExecute`, including `IRelayCommand`-typed members.
@@ -62,7 +68,7 @@ A preview, `1.1.0-beta.1`, was published on 2026-06-06 to the `upm-preview` chan
 - `DebugLogBinder` / `DebugLogMonoBinder` — log a bound value; the message is compiled out of release builds.
 - `IAnyReverseBinder` — a reverse binder for any type; `null` reference values are forwarded, not thrown.
 - `CollectionBinder<T>` hooks `OnAdded`, `OnRemoved`, `OnReplaced`, `OnMoved` — granular change forwarding with clean unsubscribe on `Unbind` / `Dispose`.
-- `BindSafely` / `UnbindSafely` overloads with binding contexts and `memberName`; failures are reported with View, member and index.
+- `BindSafely` / `UnbindSafely` accept binding contexts.
 - `[HeaderGroup]`, `[HeaderGroupStart]` / `[HeaderGroupEnd]` — collapsible foldouts in the binder and ViewModel inspectors; stripped from player builds.
 - `Source/Compatibility/UnityAttributesShim.cs` — `[SerializeField]`, `[SerializeReference]`, `[Tooltip]` compile outside Unity without `#if` guards.
 
@@ -165,16 +171,19 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - `DestroyView()` now destroys ScriptableObject views as well as components. View and ViewModel helpers share Unity object destruction while retaining their existing return values and null handling.
 
 - Unity ViewModel disposal releases resources without destroying objects. Override `OnDispose()` instead of `Dispose()`; cleanup runs once and also runs on Unity destruction. `DestroyViewModel()` supports ScriptableObject ViewModels, and `DestroyViewModelAndGameObject()` additionally removes the owning GameObject.
-- The `Destroy*Safely` extensions log View and ViewModel cleanup failures and still attempt Unity destruction. `DestroyViewModelAndGameObject` returns `void`.
-- `DestroyViewModel` and `DestroyViewModelAndGameObject` skip null ViewModels.
+- The `Destroy*Safely` extensions skip missing and destroyed objects, attempt Unity destruction even after cleanup fails, and propagate failures.
+- `DestroyViewModel` and `DestroyViewModelAndGameObject` reject missing and destroyed models. Batch `DisposeViewModels`, `DestroyViewModels`, and `DestroyViewModelsAndGameObjects` process the remaining models and report failures after cleanup.
 - ViewModel destruction extensions moved from `MonoViewModelExtensions` to `ViewModelExtensions` in the core assembly.
 
 - Editor ViewModel validation reuses its deduplication buffer and static notification delegates, and defers nested dispatch to the next update.
 - **Breaking:** `IBinder.Bind` and `Unbind` take `in BindContext` and `in UnbindContext`. Owners are reference-identified objects, allowing Views and composite binders; foreign cleanup is ignored. Safe helpers require an owner, debug rebind preserves it, and lifecycle guards prevent reattachment during cleanup. Generated Views bind and release a fixed binder set directly, without tracking lists.
 - **Breaking:** Cleanup preserves a single original exception and reports multiple failures in `AggregateException` across binders, collections, Views and initializers. Error lists are allocated only after a second failure; failed binding and initialization keep their original exception.
-- **Breaking:** `BindSafely(IEnumerable<T>)` and `UnbindSafely(IEnumerable<T>)` preserve simultaneous enumeration and enumerator disposal failures in `AggregateException`. A single failure retains its instance and stack trace; binder failures remain separate log entries.
-- **Breaking:** Removed the scalar `BinderExtensions.Unbind` overload; generated Views call `IBinder.Unbind` directly. Collection `Unbind` overloads and `UnbindSafely` now share one source file.
-- **Breaking:** `BindSafely` overloads for resolved members take `in BindContext` instead of separate member and owner arguments; `UnbindSafely` takes `in UnbindContext` instead of an owner. Collections reuse the context for every binder; diagnostics use its owner. Generated typed Views use the same binding API.
+- **Breaking:** For `IEnumerable<T>`, traversal failures can leave some binders unprocessed.
+  `BindSafely` uses `foreach`, so an exception from `Dispose()` takes precedence over a binding or traversal failure.
+  `UnbindSafely` collects both failures in an `AggregateException`.
+- **Breaking:** Removed the scalar `BinderExtensions.Unbind` overload; generated Views call `IBinder.Unbind` directly.
+- **Breaking:** `BindSafely` overloads for resolved members take `in BindContext` instead of separate member and owner arguments; `UnbindSafely` takes `in UnbindContext` instead of an owner. Collections reuse the context for every binder.
+  Remove the `memberName` argument. Generated typed Views use the same binding API.
 - **Breaking:** `Binder` and `MonoBinder` use exclusive lifecycle states. Acquire subscriptions in `OnAttach` and release resources in `OnDetach`; `OnBound` / `OnUnbound` notify after state transitions and allow rebinding after release. Completion notification failures do not roll back an established binding.
 - **Breaking:** `IBinder` requires `IsBound`; `Binder` and `MonoBinder` already implement it. Ownership is checked by the binder; generated Views allocate no binding trackers or attempt records. Arrays and lists use indexed binding loops.
 
@@ -241,6 +250,12 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 
 ### Removed
 
+- Removed the `BindSafely` overloads taking `FindBindableMemberResult`. Create a `BindContext` from the resolved member after a successful lookup.
+
+- `ComponentMonoBinder<TComponent>.OnValidate`. Custom binders can declare their own Unity validation callback directly.
+
+- `ViewBinder.InitializeView` and `ViewBinder.DeinitializeView`. Subclasses can call `View.Initialize` and `View.Deinitialize` directly.
+
 - The `Documentation` folder and the sample `README` files — the guide and the tutorials are on the [docs site](https://vpdpersonal.github.io/Aspid.MVVM/); the package holds no docs or media.
 - `AddComponentContextMenuAttribute` — use `AddBinderContextMenuAttribute` / `AddBinderContextMenuByTypeAttribute` (`Path = "..."`).
 - `AddPropertyContextMenu` — property menus are handled by the Editor pipeline.
@@ -253,7 +268,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - The pre-Unity-6 compatibility gate: `using Converter = …` aliases, `ToConvertSpecific()` branches, `UNITY_6000_0_OR_NEWER` branches, `PhysicMaterial` fallbacks.
 - The vendored `com.unity.asset-store-tools` in the Editor project — it is not part of the package.
 - TMP Examples & Extras in the Editor project; TMP Essential Resources are back in the default `Assets/TextMesh Pro`.
-- `BindSafelyNullReferenceException`, `UnbindSafelyNullReferenceException` — never thrown in Unity: `BindSafely` / `UnbindSafely` skip a `null` binder and log it under `DEBUG`.
+- `BindSafelyNullReferenceException` and `UnbindSafelyNullReferenceException`, which Unity builds never threw.
 - `Aspid.MVVM.Generators.Sample` — debug the generator through `Aspid.MVVM.Generators.Tests`.
 - `OneTimeBindableMember<T>.Get`, `OneTimeStructBindableMember<T>.Get`, `OneTimeEnumBindableMember<T>.Get` and the `protected` `GetMarker` — create the member with its constructor, as the other bindable members.
 
@@ -285,15 +300,15 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - View factories roll back failed clones and async batches; view destruction continues after cleanup failures. Header groups now agree between generated fields and the Inspector. Property context menus honor custom paths, and strict design ViewModels require concrete types.
 
 - Editor ViewModel validation discards pending requests at mode exit and retains new requests until mode entry, including when Domain Reload is disabled.
-- `Reinitialize`, `DeinitializeView`, and `DisposeView` throw `ArgumentNullException` for a null receiver. These methods also reject destroyed Unity objects. Call `DeinitializeView()` without an explicit type argument. A null replacement ViewModel still deinitializes the View.
+- `Reinitialize` and `DisposeView` throw `ArgumentNullException` for a null receiver. These methods also reject destroyed Unity objects. A null replacement ViewModel still deinitializes the View.
 - `ReinitializeSafely`, `DeinitializeViewSafely`, and `DisposeViewSafely` skip null Views and destroyed Unity objects. They log exceptions and return null when skipped or failed.
 
 - Generated Views handle repeated cleanup safely and reject conflicting lifecycle operations. Direct cleanup covers every declared binder, including declared nested bindings established by callbacks.
 - `[AsBinder]` reports invalid types and constructors instead of silently skipping them; generated arguments preserve escaping, numeric types and culture-independent literals. `[View]` rejects structs and reports invalid class declarations. Generic View lifecycle helpers require reference types.
 
 - ViewModel configuration now reports generator diagnostics for invalid modes, accessor visibility, `BindAlso` targets, command signatures and unresolved `CanExecute`; unsupported bindings emit a warning. Editor metadata respects explicit and inferred modes, and `AccessAttribute` retains its constructor values.
-- Built-in ViewModel lookups reject invalid/default queries; both `DisposeViewModel` overloads reject null and destroyed Unity objects. Strict View initialization reports two invalid arguments in an `AggregateException`.
-- `InitializeViewSafely`, `InitializeViewsSafely`, and `DisposeViewModelSafely` skip missing or destroyed Unity objects and log exceptions. A batch continues after an individual View fails.
+- Built-in ViewModel lookups reject invalid/default queries; both `DisposeViewModel` overloads reject null and destroyed Unity objects. Initializing Views from a ViewModel uses the same argument handling and traversal as initializing them from a collection of Views.
+- `InitializeViewSafely`, `InitializeViewsSafely`, and `DisposeViewModelSafely` skip missing and destroyed objects and propagate exceptions. Initialization stops at the first failure. ViewModels also support reinitializing Views and passing `Span<T>` or `ReadOnlySpan<T>` to batch methods.
 
 - Parameter-bound command adapters forward `CanExecuteChanged` while observed, release their source subscription after the last listener, and delegate execution without a duplicate predicate check. Strict adapter factories reject a null source immediately; empty commands always carry a no-op action.
 
@@ -302,6 +317,18 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Runtime-created MonoBinders use their default binding mode without Editor `Reset`; authored serialized modes remain unchanged, and `Mode` can be configured from code while unbound.
 
 #### Core
+
+- `ComponentMonoBinder.Bind` reports an error when it cannot resolve a live target component. A later bind can retry after the component becomes available.
+
+- `TargetBinder.Bind` reports a missing or destroyed target before installing the binding.
+
+- `ScriptableViewMonoBinder.Bind` reports a missing or destroyed View as an invalid configuration.
+
+- ViewBinder discards an older ViewModel update when the view's deinitialization triggers a newer value or detachment.
+
+- Component binders fill their target field when added or reset in the Editor. Inspector validation leaves cleared targets empty.
+
+- `ViewBinder` throws `ArgumentNullException` when constructed with a null view.
 
 - Mode errors show the actual mode and allowed modes. `OneWay` / `OneTime` members reject undefined modes before emitting a value; generated binders honour `BindModeOverride.IsOne` / `IsTwo` and report invalid declarations as `ASPIDSB006`.
 - Reverse binder compatibility messages list `IAnyReverseBinder`, and exception messages skip the GameObject path of a destroyed component instead of masking the compatibility error.
@@ -313,7 +340,7 @@ Each family ships the serializable binder and the `MonoBinder`; most also ship `
 - Reverse binding re-applied the *forward* converter on the way back.
 - Numeric reverse channels converted out-of-range values through an undefined cast; they saturate now.
 - `SetValue(Vector3)` on a Vector3 binder picked the `Vector2` overload and dropped Z.
-- Every `BindSafely` / `UnbindSafely` overload logs each binder failure once with context and the original exception, safely handles destroyed diagnostic owners, and isolates the failure, including single binders; generated Views continue binding healthy members and discard ownership of failed attempts.
+- **Breaking:** The `Safely` overloads skip null collections, null binders and destroyed Unity binders. They propagate failures to the caller. `BindSafely` stops at the first failure and leaves earlier bindings in place. Collection `UnbindSafely` attempts the remaining binders before rethrowing the original exception or throwing an `AggregateException` for multiple failures. Generated Views roll back initialization after a binder failure.
 - A destroyed `MonoBinder` stayed subscribed — `OnDestroy` now unbinds.
 - A `MonoBinder` with no component to drive bound anyway and threw from a property setter; `CanBind` answers from the resolved component.
 - A `TargetBinder` whose serialized target was destroyed threw from `OnBound`; the check now uses Unity's own conversion.

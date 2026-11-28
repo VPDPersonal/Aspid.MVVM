@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NUnit.Framework;
 using Aspid.MVVM.StarterKit;
@@ -12,21 +13,20 @@ namespace Aspid.MVVM.Tests
     public sealed class MissingComponentTests : SceneFixture
     {
         [Test]
-        public void WithoutItsComponent_TheBinderRefusesToBind()
+        public void Bind_WithoutAComponent_ThrowsAndCanRetry()
         {
             var binder = Spawn().AddComponent<AudioSourceVolumeMonoBinder>();
+            var context = new BindContext(new OneWayBindableMember<float>(0.5f), this);
 
-            Assert.IsFalse(binder.CanBind, "The binder agreed to bind without its component");
-        }
+            Assert.Throws<InvalidOperationException>(() => binder.Bind(context));
+            Assert.That(binder.IsBound, Is.False);
 
-        [Test]
-        public void WithoutItsComponent_BindingDeliversNothingInsteadOfThrowing()
-        {
-            var binder = Spawn().AddComponent<AudioSourceVolumeMonoBinder>();
-            var member = new OneWayBindableMember<float>(0.5f);
+            var audioSource = binder.gameObject.AddComponent<AudioSource>();
+            binder.Bind(context);
 
-            Assert.DoesNotThrow(() => ((IBinder)binder).Bind(new BindContext(member, ((IBinder)binder))),
-                "Binding without a component still throws");
+            Assert.That(binder.IsBound, Is.True);
+            Assert.That(audioSource.volume, Is.EqualTo(0.5f));
+            binder.Unbind(new UnbindContext(this));
         }
 
         [Test]
@@ -35,8 +35,6 @@ namespace Aspid.MVVM.Tests
             var gameObject = Spawn();
             var audioSource = gameObject.AddComponent<AudioSource>();
             var binder = gameObject.AddComponent<AudioSourceVolumeMonoBinder>();
-
-            Assert.IsTrue(binder.CanBind, "The binder refused to bind with its component present");
 
             ((IBinder<float>)binder).SetValue(0.25f);
             Assert.AreEqual(0.25f, audioSource.volume, 0.001f, "The value did not reach the component");

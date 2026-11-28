@@ -1,8 +1,6 @@
 using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM.Tests
@@ -11,7 +9,7 @@ namespace Aspid.MVVM.Tests
     {
         [TestCase(false)]
         [TestCase(true)]
-        public void FailedOuterBindingPreservesDeclaredNestedBindings(bool collection)
+        public void FailedOuterBindingRollsBackDeclaredNestedBindings(bool collection)
         {
             var member = new OneWayStructBindableMember<int>(1);
             var nested = new CallbackTestBinder();
@@ -24,10 +22,11 @@ namespace Aspid.MVVM.Tests
                 nested.Bind(new BindContext(member, view));
                 throw new InvalidOperationException("outer");
             };
-            ExpectBindingFailure();
-            view.Initialize(new DisposableLookupModel());
-            Assert.That(outer.IsBound, Is.False);
-            Assert.That(nested.IsBound, Is.True);
+            var failure = Assert.Throws<InvalidOperationException>(() => view.Initialize(new DisposableLookupModel()));
+
+            Assert.That(failure.Message, Is.EqualTo("outer"));
+            Assert.That(view.ViewModel, Is.Null);
+            Assert.That(outer.IsBound || nested.IsBound, Is.False);
             outer.Attaching = null;
             outer.Bind(new BindContext(member, outer));
             view.Deinitialize();
@@ -38,16 +37,16 @@ namespace Aspid.MVVM.Tests
 
         [TestCase(false)]
         [TestCase(true)]
-        public void CompletionFailureRemainsOwnedUntilTheViewDeinitializes(bool collection)
+        public void InitializationRollbackReleasesBindingAfterCompletionFailure(bool collection)
         {
             var binder = new CallbackTestBinder { Bound = () => throw new InvalidOperationException("notification") };
             IView view = collection
                 ? new FixedArrayBindingView { Value = new IBinder[] { binder } }
                 : new FixedScalarBindingView { Value = binder };
-            ExpectBindingFailure();
-            view.Initialize(new FixedBindingModel());
-            Assert.That(binder.IsBound, Is.True);
-            view.Deinitialize();
+            var failure = Assert.Throws<InvalidOperationException>(() => view.Initialize(new FixedBindingModel()));
+
+            Assert.That(failure.Message, Is.EqualTo("notification"));
+            Assert.That(view.ViewModel, Is.Null);
             Assert.That(binder.IsBound, Is.False);
             Assert.That(binder.UnboundCalls, Is.EqualTo(1));
         }
@@ -228,12 +227,11 @@ namespace Aspid.MVVM.Tests
         {
             IView missing = null;
             DisposableCallbackView missingDisposable = null;
-            Assert.That(missing?.DeinitializeView(), Is.Null);
             Assert.That(missing?.Reinitialize(new DisposableLookupModel()), Is.Null);
             Assert.That(missing?.DisposeView(), Is.Null);
             Assert.That(missingDisposable?.DisposeView(), Is.Null);
-            Assert.That(missing.DestroyView(), Is.Null);
-            Assert.That(missing.DestroyViewAndGameObject(), Is.Null);
+            Assert.That(missing?.DestroyView(), Is.Null);
+            Assert.That(missing?.DestroyViewAndGameObject(), Is.Null);
         }
 
         [Test]
@@ -242,51 +240,74 @@ namespace Aspid.MVVM.Tests
             IView missing = null;
             DisposableCallbackView missingDisposable = null;
 
-            Assert.That(missing.ReinitializeSafely(new DisposableLookupModel()), Is.Null);
+            var model = new DisposableLookupModel();
+            missing.InitializeSafely(model);
+            Assert.That(missing.ReinitializeSafely(model), Is.Null);
             Assert.That(missing.DeinitializeViewSafely(), Is.Null);
             Assert.That(missing.DisposeViewSafely(), Is.Null);
             Assert.That(missingDisposable.DisposeViewSafely(), Is.Null);
         }
 
         [Test]
-        public void ReinitializeSafelyLogsInitializationFailure()
+        public void InitializeSafelyPropagatesFailureAndAllowsRetry()
+        {
+            var view = new CallbackTestView();
+            var model = new DisposableLookupModel();
+            var failure = new InvalidOperationException("safe initialization");
+            view.Initializing = () => throw failure;
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => view.InitializeSafely(model)), Is.SameAs(failure));
+            Assert.That(view.ViewModel, Is.Null);
+
+            view.Initializing = null;
+            view.InitializeSafely(model);
+            view.InitializeSafely(null);
+            Assert.That(view.ViewModel, Is.SameAs(model));
+        }
+
+        [Test]
+        public void ReinitializeSafelyPropagatesInitializationFailure()
         {
             var view = new CallbackTestView();
             view.Initialize(new DisposableLookupModel());
-            view.Initializing = () => throw new InvalidOperationException("safe initialization");
+            var failure = new InvalidOperationException("safe initialization");
+            view.Initializing = () => throw failure;
 
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe initialization");
-            Assert.That(view.ReinitializeSafely(new DisposableLookupModel()), Is.Null);
+            Assert.That(Assert.Throws<InvalidOperationException>(() => view.ReinitializeSafely(new DisposableLookupModel())), Is.SameAs(failure));
             Assert.That(view.ViewModel, Is.Null);
         }
 
         [Test]
-        public void SafeDeinitializationLogsFailureAndStopsReinitialization()
+        public void SafeDeinitializationPropagatesFailureAndStopsReinitialization()
         {
             var model = new DisposableLookupModel();
             var view = new CallbackTestView();
-            view.Deinitialized = () => throw new InvalidOperationException("safe deinitialization");
+            var failure = new InvalidOperationException("safe deinitialization");
+            view.Deinitialized = () => throw failure;
 
             view.Initialize(model);
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe deinitialization");
-            Assert.That(view.ReinitializeSafely(new DisposableLookupModel()), Is.Null);
+            Assert.That(Assert.Throws<InvalidOperationException>(() => view.ReinitializeSafely(new DisposableLookupModel())), Is.SameAs(failure));
             Assert.That(view.ViewModel, Is.Null);
 
             view.Initialize(model);
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe deinitialization");
-            Assert.That(view.DeinitializeViewSafely(), Is.Null);
+            Assert.That(Assert.Throws<InvalidOperationException>(() => view.DeinitializeViewSafely()), Is.SameAs(failure));
         }
 
         [TestCase(false)]
         [TestCase(true)]
-        public void DisposeViewSafelyLogsFailureAndInvokesDisposeOnce(bool typed)
+        public void DisposeViewSafelyPropagatesFailureAndInvokesDisposeOnce(bool typed)
         {
             var view = new DisposableCallbackView();
             view.Initialize(new DisposableLookupModel());
-            view.Deinitialized = () => throw new InvalidOperationException("safe disposal");
+            var failure = new InvalidOperationException("safe disposal");
+            view.Deinitialized = () => throw failure;
 
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: safe disposal");
-            Assert.That(typed ? view.DisposeViewSafely() : ((IView)view).DisposeViewSafely(), Is.Null);
+            var failureThrown = Assert.Throws<InvalidOperationException>(() =>
+            {
+                if (typed) view.DisposeViewSafely();
+                else ((IView)view).DisposeViewSafely();
+            });
+            Assert.That(failureThrown, Is.SameAs(failure));
             Assert.That(view.DisposeCalls, Is.EqualTo(1));
         }
 
@@ -308,10 +329,22 @@ namespace Aspid.MVVM.Tests
         }
 
         [Test]
+        public void DeinitializeViewReturnsThePreviousModel()
+        {
+            var view = new CallbackTestView();
+            var model = new DisposableLookupModel();
+            view.Initialize(model);
+
+            Assert.That(view.DeinitializeView(), Is.SameAs(model));
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
+        [Test]
         public void ViewsWithoutAModelReturnNull()
         {
             var view = new CallbackTestView();
             Assert.That(view.DeinitializeView(), Is.Null);
+            Assert.That(view.DeinitializeViewSafely(), Is.Null);
             Assert.That(view.Reinitialize(null), Is.Null);
             Assert.That(((IView)view).DisposeView(), Is.Null);
             Assert.That(new DisposableCallbackView().DisposeView(), Is.Null);
@@ -324,6 +357,279 @@ namespace Aspid.MVVM.Tests
             var model = new DisposableLookupModel();
             view.Initialize(model);
             Assert.That(view.Reinitialize(null), Is.SameAs(model));
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
+        [Test]
+        public void InitializeViewsStopsAtNullEntry()
+        {
+            var first = new CallbackTestView();
+            var last = new CallbackTestView();
+            var model = new DisposableLookupModel();
+            var views = new[] { first, null, last };
+
+            Assert.Throws<NullReferenceException>(() => views.InitializeViews(model));
+            Assert.That(first.ViewModel, Is.SameAs(model));
+            Assert.That(last.ViewModel, Is.Null);
+        }
+
+        [Test]
+        public void InitializeViewsSafelyStopsAtFirstViewFailure()
+        {
+            var model = new DisposableLookupModel();
+            var last = new CallbackTestView();
+            var failure = new InvalidOperationException("Initialization failed.");
+            Assert.That(Assert.Throws<InvalidOperationException>(() => Enumerate().InitializeViewsSafely(model)), Is.SameAs(failure));
+            Assert.That(last.ViewModel, Is.Null);
+
+            IEnumerable<IView> Enumerate()
+            {
+                yield return null;
+                yield return new CallbackTestView { Initializing = () => throw failure };
+                yield return last;
+            }
+        }
+
+        [Test]
+        public void ReinitializeViewsStopsAtFirstFailure()
+        {
+            var original = new DisposableLookupModel();
+            var replacement = new DisposableLookupModel();
+            var first = new CallbackTestView();
+            var failure = new InvalidOperationException("Reinitialization failed.");
+            var failing = new CallbackTestView();
+            var last = new CallbackTestView();
+            var views = new List<CallbackTestView> { first, failing, last };
+            views.InitializeViews(original);
+            failing.Initializing = () => throw failure;
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => views.ReinitializeViews(replacement)), Is.SameAs(failure));
+            Assert.That(first.ViewModel, Is.SameAs(replacement));
+            Assert.That(failing.ViewModel, Is.Null);
+            Assert.That(last.ViewModel, Is.SameAs(original));
+        }
+
+        [Test]
+        public void ReinitializeViewsSafelyStopsAtFirstViewFailure()
+        {
+            var original = new DisposableLookupModel();
+            var replacement = new DisposableLookupModel();
+            var failing = new CallbackTestView();
+            var last = new CallbackTestView();
+            var views = new[] { null, failing, last };
+            views.InitializeViewsSafely(original);
+            var failure = new InvalidOperationException("Safe reinitialization failed.");
+            failing.Initializing = () => throw failure;
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => views.ReinitializeViewsSafely(replacement)), Is.SameAs(failure));
+
+            Assert.That(failing.ViewModel, Is.Null);
+            Assert.That(last.ViewModel, Is.SameAs(original));
+        }
+
+        [Test]
+        public void ReinitializeViewsSafelyWithNullModelDeinitializesAndPropagatesEnumerationFailure()
+        {
+            var view = new CallbackTestView();
+            view.Initialize(new DisposableLookupModel());
+            var failure = new InvalidOperationException("Enumeration failed.");
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => Enumerate().ReinitializeViewsSafely(null)), Is.SameAs(failure));
+            Assert.That(view.ViewModel, Is.Null);
+
+            IEnumerable<IView> Enumerate()
+            {
+                yield return view;
+                throw failure;
+            }
+        }
+
+        [Test]
+        public void DeinitializeViewsContinuesAfterFailureAndRethrowsTheOriginalException()
+        {
+            var failure = new InvalidOperationException("first");
+            var first = new CallbackTestView { Deinitialized = () => throw failure };
+            var last = new CallbackTestView();
+            var views = new List<CallbackTestView> { first, last };
+            views.InitializeViews(new DisposableLookupModel());
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => views.DeinitializeViews()), Is.SameAs(failure));
+            Assert.That(last.ViewModel, Is.Null);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DeinitializeViewsPreservesCleanupFailureWhenListChanges(bool safely)
+        {
+            var failure = new InvalidOperationException("Cleanup failed.");
+            var first = new CallbackTestView { Deinitialized = () => throw failure };
+            var second = new CallbackTestView();
+            var views = new List<CallbackTestView> { first, second };
+            second.Deinitialized = views.Clear;
+            views.InitializeViews(new DisposableLookupModel());
+
+            var aggregate = Assert.Throws<AggregateException>(() =>
+            {
+                if (safely) views.DeinitializeViewsSafely();
+                else views.DeinitializeViews();
+            });
+
+            Assert.That(aggregate.InnerExceptions, Has.Count.EqualTo(2));
+            Assert.That(aggregate.InnerExceptions[0], Is.SameAs(failure));
+            Assert.That(aggregate.InnerExceptions[1], Is.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
+        public void DeinitializeViewsCollectsViewAndEnumerationFailuresInOrder()
+        {
+            var first = new InvalidOperationException("first");
+            var second = new InvalidOperationException("second");
+            var enumeration = new InvalidOperationException("enumeration");
+            var views = new[]
+            {
+                new CallbackTestView { Deinitialized = () => throw first },
+                new CallbackTestView { Deinitialized = () => throw second },
+                new CallbackTestView(),
+            };
+            views.InitializeViews(new DisposableLookupModel());
+
+            var aggregate = Assert.Throws<AggregateException>(() => EnumerateViews().DeinitializeViews());
+            Assert.That(aggregate.InnerExceptions, Is.EqualTo(new[] { first, second, enumeration }));
+            Assert.That(views[2].ViewModel, Is.Null);
+
+            IEnumerable<CallbackTestView> EnumerateViews()
+            {
+                foreach (var view in views)
+                    yield return view;
+
+                throw enumeration;
+            }
+        }
+
+        [Test]
+        public void DeinitializeViewsContinuesAfterNullEntry()
+        {
+            var last = new CallbackTestView();
+            last.Initialize(new DisposableLookupModel());
+            var views = new CallbackTestView[] { null, last };
+
+            Assert.Throws<NullReferenceException>(() => views.DeinitializeViews());
+            Assert.That(last.ViewModel, Is.Null);
+        }
+
+        [Test]
+        public void DeinitializeViewsSafelyContinuesAfterFailureAndRethrowsIt()
+        {
+            var failure = new InvalidOperationException("Cleanup failed.");
+            var failing = new CallbackTestView { Deinitialized = () => throw failure };
+            var last = new CallbackTestView();
+            var views = new[] { null, failing, last };
+            views.InitializeViewsSafely(new DisposableLookupModel());
+
+            Assert.That(Assert.Throws<InvalidOperationException>(() => views.DeinitializeViewsSafely()), Is.SameAs(failure));
+            Assert.That(last.ViewModel, Is.Null);
+        }
+
+        [Test]
+        public void DeinitializeViewsSafelyPropagatesEnumerationFailureAfterProcessingEarlierViews()
+        {
+            var view = new CallbackTestView();
+            view.Initialize(new DisposableLookupModel());
+
+            var failure = new InvalidOperationException("Enumeration failed.");
+            Assert.That(Assert.Throws<InvalidOperationException>(() => EnumerateViews().DeinitializeViewsSafely()), Is.SameAs(failure));
+
+            Assert.That(view.ViewModel, Is.Null);
+
+            IEnumerable<IView> EnumerateViews()
+            {
+                yield return view;
+                throw failure;
+            }
+        }
+
+        [Test]
+        public void DeinitializeViewsCollectsReadOnlyCollectionFailuresTogether()
+        {
+            var failure = new InvalidOperationException("Cleanup failed.");
+            var view = new CallbackTestView { Deinitialized = () => throw failure };
+            view.Initialize(new DisposableLookupModel());
+            IReadOnlyCollection<IView> views = new FailingViewCollection(view);
+
+            var aggregate = Assert.Throws<AggregateException>(() => views.DeinitializeViews());
+
+            Assert.That(aggregate.InnerExceptions, Has.Count.EqualTo(3));
+            Assert.That(aggregate.InnerExceptions[0], Is.SameAs(failure));
+            Assert.That(aggregate.InnerExceptions[1].Message, Is.EqualTo("Traversal failed."));
+            Assert.That(aggregate.InnerExceptions[2].Message, Is.EqualTo("Disposal failed."));
+            Assert.That(view.ViewModel, Is.Null);
+        }
+
+        [TestCase("array")]
+        [TestCase("span")]
+        [TestCase("read-only span")]
+        [TestCase("list")]
+        [TestCase("sequence")]
+        public void DisposeViewsCleansUpLaterViewsBeforeRethrowing(string collection)
+        {
+            var failure = new InvalidOperationException("Dispose failed.");
+            var first = new DisposableCallbackView { Deinitialized = () => throw failure };
+            var last = new DisposableCallbackView();
+            var plain = new CallbackTestView();
+            IView[] views = { first, last, plain };
+            views.InitializeViews(new DisposableLookupModel());
+
+            var thrown = Assert.Throws<InvalidOperationException>(() =>
+            {
+                switch (collection)
+                {
+                    case "array": views.DisposeViews(); break;
+                    case "span": views.AsSpan().DisposeViews(); break;
+                    case "read-only span": new ReadOnlySpan<IView>(views).DisposeViews(); break;
+                    case "list": new List<IView>(views).DisposeViews(); break;
+                    case "sequence": new List<IView>(views).AsReadOnly().DisposeViews(); break;
+                    default: throw new ArgumentOutOfRangeException(nameof(collection));
+                }
+            });
+
+            Assert.That(thrown, Is.SameAs(failure));
+            Assert.That(first.DisposeCalls, Is.EqualTo(1));
+            Assert.That(last.DisposeCalls, Is.EqualTo(1));
+            Assert.That(plain.DeinitializingCalls, Is.EqualTo(1));
+        }
+
+        [TestCase(nameof(ViewExtensions.DisposeViews))]
+        [TestCase(nameof(ViewExtensions.DeinitializeViewsSafely))]
+        [TestCase(nameof(ViewExtensions.DisposeViewsSafely))]
+        [TestCase(nameof(ViewExtensions.DestroyViews))]
+        [TestCase(nameof(ViewExtensions.DestroyViewsSafely))]
+        [TestCase(nameof(ViewExtensions.DestroyViewsAndGameObjects))]
+        [TestCase(nameof(ViewExtensions.DestroyViewsAndGameObjectsSafely))]
+        public void CleanupAggregatesViewTraversalAndDisposalFailuresInOrder(string method)
+        {
+            var view = new CallbackTestView();
+            view.Initialize(new DisposableLookupModel());
+            IReadOnlyCollection<IView> views = new FailingViewCollection(view);
+            var failure = new InvalidOperationException("Cleanup failed.");
+            view.Deinitialized = () => throw failure;
+            TestDelegate cleanup = method switch
+            {
+                nameof(ViewExtensions.DeinitializeViewsSafely) => () => views.DeinitializeViewsSafely(),
+                nameof(ViewExtensions.DisposeViews) => () => views.DisposeViews(),
+                nameof(ViewExtensions.DisposeViewsSafely) => () => views.DisposeViewsSafely(),
+                nameof(ViewExtensions.DestroyViews) => () => views.DestroyViews(),
+                nameof(ViewExtensions.DestroyViewsSafely) => () => views.DestroyViewsSafely(),
+                nameof(ViewExtensions.DestroyViewsAndGameObjects) => () => views.DestroyViewsAndGameObjects(),
+                nameof(ViewExtensions.DestroyViewsAndGameObjectsSafely) => () => views.DestroyViewsAndGameObjectsSafely(),
+                _ => throw new ArgumentOutOfRangeException(nameof(method)),
+            };
+
+            var aggregate = Assert.Throws<AggregateException>(cleanup);
+            Assert.That(aggregate.InnerExceptions, Has.Count.EqualTo(3));
+            Assert.That(aggregate.InnerExceptions[0], Is.SameAs(failure));
+            Assert.That(aggregate.InnerExceptions[1].Message, Is.EqualTo("Traversal failed."));
+            Assert.That(aggregate.InnerExceptions[2].Message, Is.EqualTo("Disposal failed."));
+
             Assert.That(view.ViewModel, Is.Null);
         }
 
@@ -351,8 +657,40 @@ namespace Aspid.MVVM.Tests
             Assert.That(binder.IsBound, Is.False);
         }
 
-        private static void ExpectBindingFailure() =>
-            LogAssert.Expect(LogType.Exception, new Regex(@"\[BindSafely\].*InvalidOperationException"));
+        private sealed class FailingViewCollection : IReadOnlyCollection<IView>, IEnumerator<IView>
+        {
+            private bool _visited;
+
+            public IView Current { get; }
+
+            public FailingViewCollection(IView view) =>
+                Current = view;
+
+            public int Count => 1;
+
+            object System.Collections.IEnumerator.Current => Current;
+
+            public IEnumerator<IView> GetEnumerator() =>
+                this;
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() =>
+                GetEnumerator();
+
+            public bool MoveNext()
+            {
+                if (_visited)
+                    throw new InvalidOperationException("Traversal failed.");
+
+                _visited = true;
+                return true;
+            }
+
+            public void Reset() =>
+                throw new NotSupportedException();
+
+            public void Dispose() =>
+                throw new InvalidOperationException("Disposal failed.");
+        }
     }
 
     internal sealed class CallbackTestBinder : Binder, IBinder<int>

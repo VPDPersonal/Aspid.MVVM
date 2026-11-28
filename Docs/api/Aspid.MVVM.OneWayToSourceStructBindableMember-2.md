@@ -56,7 +56,7 @@ protected OneWayToSourceStructBindableMember(Action<T> setValue)
 
 `setValue` [Action](https://learn.microsoft.com/dotnet/api/system.action-1)\<T\>
 
-The callback that writes a value reported by a reverse binder to the ViewModel.
+Writes values reported by the View to the ViewModel.
 
 #### Exceptions
 
@@ -68,7 +68,7 @@ The callback that writes a value reported by a reverse binder to the ViewModel.
 
 ### Mode {#Aspid_MVVM_OneWayToSourceStructBindableMember_2_Mode}
 
-Gets the binding mode of the member; always [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
+Gets the fixed mode [`BindMode.OneWayToSource`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }

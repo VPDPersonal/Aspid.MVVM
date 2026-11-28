@@ -79,7 +79,11 @@ namespace Aspid.MVVM.StarterKit
                 Rollback.Run(
                     primary: exception,
                     state: view,
-                    rollback: static item => item.DestroyViewAndGameObject(),
+                    rollback: static item =>
+                    {
+                        if (item)
+                            item.DestroyViewAndGameObject();
+                    },
                     context: "PrefabViewFactory rollback");
                 
                 throw;
@@ -90,8 +94,11 @@ namespace Aspid.MVVM.StarterKit
         /// Destroys the view together with its GameObject.
         /// </summary>
         /// <param name="view">The view to release.</param>
-        public virtual void Release(T view) =>
-            view.DestroyViewAndGameObject();
+        public virtual void Release(T view)
+        {
+            if (view)
+                view.DestroyViewAndGameObject();
+        }
 
         /// <summary>
         /// Places the view among its siblings and initializes it with <paramref name="viewModel"/> if one is given.

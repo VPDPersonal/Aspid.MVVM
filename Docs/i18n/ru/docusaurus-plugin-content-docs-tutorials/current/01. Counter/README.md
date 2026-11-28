@@ -113,12 +113,12 @@ public sealed class Bootstrap : MonoBehaviour
 
     private void OnDestroy()
     {
-        _counterView.DeinitializeView()?.DisposeViewModel();
+        _counterView.DeinitializeViewSafely()?.DisposeViewModel();
     }
 }
 ```
 
-`DeinitializeView()` отвязывает биндеры и возвращает ViewModel. `DisposeViewModel()` вызывает `Dispose()` если ViewModel реализует `IDisposable`. Для Counter это необязательно, но это хорошая привычка.
+`DeinitializeViewSafely()` отвязывает биндеры и возвращает ViewModel. `DisposeViewModel()` вызывает `Dispose()` если ViewModel реализует `IDisposable`. Для Counter это необязательно, но это хорошая привычка.
 
 ---
 

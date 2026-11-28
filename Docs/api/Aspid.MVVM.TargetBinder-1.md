@@ -9,9 +9,9 @@ pagination_next: null
 # Class TargetBinder\<TTarget\> {#Aspid_MVVM_TargetBinder_1}
 
 Namespace: [Aspid.MVVM](Aspid.MVVM.md) <br/>
-Assembly: Aspid.MVVM.dll <br/>
+Assembly: Aspid.MVVM.Unity.dll <br/>
 
-[`Binder`](Aspid.MVVM.Binder.md) that operates on a serialized <code class="typeparamref">TTarget</code>.
+[`Binder`](Aspid.MVVM.Binder.md) with a serialized target.
 
 ```csharp
 [Serializable]
@@ -22,7 +22,7 @@ public abstract class TargetBinder<TTarget> : Binder, IBinder
 
 `TTarget`
 
-The type of the object the binder operates on.
+The type of object to bind.
 
 #### Inheritance
 
@@ -37,8 +37,7 @@ The type of the object the binder operates on.
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<TargetBinder\<TTarget\>\>\(TargetBinder\<TTarget\>?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
-[BinderExtensions.BindSafely\<TargetBinder\<TTarget\>\>\(TargetBinder\<TTarget\>?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
+[BinderExtensions.BindSafely\(IBinder?, in BindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_BindContext__),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
@@ -53,13 +52,13 @@ The type of the object the binder operates on.
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
-[BinderExtensions.UnbindSafely\<TargetBinder\<TTarget\>\>\(TargetBinder\<TTarget\>?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
+[BinderExtensions.UnbindSafely\(IBinder?, in UnbindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_UnbindContext__)
 
 ## Constructors
 
 ### TargetBinder\(\) {#Aspid_MVVM_TargetBinder_1__ctor}
 
-Creates a binder without a target for Unity deserialization, which then restores the serialized fields.
+Creates a binder whose target is restored by Unity deserialization.
 
 ```csharp
 protected TargetBinder()
@@ -85,27 +84,19 @@ The binding mode.
 
 #### Exceptions
 
+ [ArgumentOutOfRangeException](https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception)
+
+<code class="paramref">mode</code> is [`BindMode.None`](Aspid.MVVM.BindMode.md) or undefined.
+
  [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
 
 <code class="paramref">target</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
 
 ## Properties
 
-### CanBind {#Aspid_MVVM_TargetBinder_1_CanBind}
-
-Gets a value indicating whether [`TargetBinder<T>.Target`](Aspid.MVVM.TargetBinder-1.md#Aspid_MVVM_TargetBinder_1_Target) is set and, for a Unity object, not destroyed.
-
-```csharp
-public override bool CanBind { get; }
-```
-
-#### Property Value
-
- [bool](https://learn.microsoft.com/dotnet/api/system.boolean)
-
 ### Target {#Aspid_MVVM_TargetBinder_1_Target}
 
-Gets the object the binder operates on.
+Gets the target assigned at construction or restored by Unity.
 
 ```csharp
 protected TTarget Target { get; }
@@ -114,3 +105,23 @@ protected TTarget Target { get; }
 #### Property Value
 
  TTarget
+
+## Methods
+
+### OnBinding\(\) {#Aspid_MVVM_TargetBinder_1_OnBinding}
+
+Called before attachment to validate the required target.
+
+```csharp
+protected override void OnBinding()
+```
+
+#### Remarks
+
+Overrides must call the base implementation before acquiring resources.
+
+#### Exceptions
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The target is missing or destroyed.

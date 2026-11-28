@@ -367,7 +367,17 @@ viewModel.NotifyAll();
 
 Use one bind attribute per member. Invalid modes, invalid `[Access]` values and empty or missing `[BindAlso]` targets produce errors `ASPIDVM001` to `ASPIDVM003`. A valid mode that the member cannot support is still skipped, with warning `ASPIDVM006`.
 
-`FindBindableMemberParameters` requires a non-null ID that is not empty or whitespace; a `default` query is invalid. It remains a `readonly ref struct`, so it cannot be boxed. Both `DisposeViewModel()` overloads reject null.
+`FindBindableMemberParameters` requires a non-null ID that is not empty or whitespace; a `default` query is invalid. It remains a `readonly ref struct`, so it cannot be boxed.
+
+---
+
+## ViewModel cleanup
+
+Both `DisposeViewModel()` overloads reject missing and destroyed models.
+
+`DisposeViewModels()` calls `Dispose()` on each model that implements `IDisposable`. On the Unity main thread, `DestroyViewModels()` also destroys each model's Unity object, while `DestroyViewModelsAndGameObjects()` destroys each component's GameObject. These methods accept arrays, `Span<T>`, `ReadOnlySpan<T>`, lists, and `IEnumerable<T>`.
+
+The `Safely` variants skip null and destroyed objects. Batch cleanup continues after an individual model fails. When cleanup finishes, it throws the original exception for one failure or an `AggregateException` for multiple failures.
 
 ---
 

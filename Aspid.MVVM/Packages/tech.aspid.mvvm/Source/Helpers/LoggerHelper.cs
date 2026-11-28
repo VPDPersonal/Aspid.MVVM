@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 // ReSharper disable once CheckNamespace
 namespace Aspid.MVVM
 {
+    [SuppressMessage(category: "ReSharper", checkId: "NullableWarningSuppressionIsUsed")]
     internal static class LoggerHelper
     {
         internal static string GetPathMessage(this string message) =>
@@ -26,8 +27,7 @@ namespace Aspid.MVVM
 
         internal static string GetInterfaceMessage(this string message) =>
             message.GetMessage("B8D7A3");
-
-        [SuppressMessage(category: "ReSharper", checkId: "NullableWarningSuppressionIsUsed")]
+        
         private static string GetTypeName(Type type)
         {
             if (type.IsGenericParameter)

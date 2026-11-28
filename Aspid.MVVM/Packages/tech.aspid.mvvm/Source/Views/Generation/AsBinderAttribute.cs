@@ -6,10 +6,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aspid.MVVM
 {
     /// <summary>
-    /// Wraps a field or readable property of a <see cref="ViewAttribute">[View]</see> class in a binder, passing the member as its first constructor argument.
+    /// Wraps a field or readable property of a <see cref="ViewAttribute">[View]</see> class in a binder.
     /// </summary>
     /// <remarks>
-    /// For an array, creates one binder per element; invalid types or constructor arguments produce generator errors.
+    /// The member is the first constructor argument. An array creates one binder per element.
     /// </remarks>
     /// <example>
     /// <code>

@@ -8,12 +8,12 @@ namespace Aspid.MVVM
     public interface IView
     {
         /// <summary>
-        /// Gets the ViewModel the view is initialized with; <see langword="null"/> when it is not initialized.
+        /// Gets the bound ViewModel, or <see langword="null"/> before initialization and after deinitialization.
         /// </summary>
         public IViewModel? ViewModel { get; }
         
         /// <summary>
-        /// Initializes the view with <paramref name="viewModel"/>, binding its binders to the ViewModel's members.
+        /// Binds the View to the members of <paramref name="viewModel"/>.
         /// </summary>
         /// <param name="viewModel">The ViewModel to bind.</param>
         public void Initialize(IViewModel viewModel);

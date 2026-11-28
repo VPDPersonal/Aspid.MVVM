@@ -33,8 +33,11 @@ namespace Aspid.MVVM.Samples.TodoList
             view.Initialize(viewModel);
             return;
 
-            void Close() =>
-                view.DestroyViewAndGameObject()?.DisposeViewModel();
+            void Close()
+            {
+                if (view)
+                    view.DestroyViewAndGameObject()?.DisposeViewModel();
+            }
         }
     }
 }

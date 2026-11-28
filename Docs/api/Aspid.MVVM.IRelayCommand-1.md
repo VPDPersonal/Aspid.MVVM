@@ -35,7 +35,7 @@ The command parameter type.
 
 ### CanExecute\(T?\) {#Aspid_MVVM_IRelayCommand_1_CanExecute__0_}
 
-Determines whether the command can execute with the supplied parameters.
+Determines whether the command can execute with the supplied arguments.
 
 ```csharp
 bool CanExecute(T? param)

@@ -32,8 +32,7 @@ public class ViewBinder : Binder, IBinder<IViewModel?>, IBinder
 
 #### Extension Methods
 
-[BinderExtensions.BindSafely\<ViewBinder\>\(ViewBinder?, in FindBindableMemberResult, object, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_FindBindableMemberResult__System_Object_System_String_),
-[BinderExtensions.BindSafely\<ViewBinder\>\(ViewBinder?, in BindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely__1___0_Aspid_MVVM_BindContext__System_String_),
+[BinderExtensions.BindSafely\(IBinder?, in BindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_BindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_BindContext__),
 [BinderLogger.Log\(IBinder, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_Log_Aspid_MVVM_IBinder_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, string, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_String_System_String_UnityEngine_Object_),
 [BinderLogger.LogError\(IBinder, Exception, string, Object?\)](Aspid.MVVM.StarterKit.BinderLogger.md#Aspid_MVVM_StarterKit_BinderLogger_LogError_Aspid_MVVM_IBinder_System_Exception_System_String_UnityEngine_Object_),
@@ -48,7 +47,7 @@ public class ViewBinder : Binder, IBinder<IViewModel?>, IBinder
 [BinderMath.RequireFinite\(IBinder, Rect, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_RequireFinite_Aspid_MVVM_IBinder_UnityEngine_Rect_UnityEngine_Object_),
 [BinderMath.SafeClamp\(IBinder, float, float, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp_Aspid_MVVM_IBinder_System_Single_System_Single_System_Single_UnityEngine_Object_),
 [BinderMath.SafeClamp01\(IBinder, float, Object?\)](Aspid.MVVM.StarterKit.BinderMath.md#Aspid_MVVM_StarterKit_BinderMath_SafeClamp01_Aspid_MVVM_IBinder_System_Single_UnityEngine_Object_),
-[BinderExtensions.UnbindSafely\<ViewBinder\>\(ViewBinder?, in UnbindContext, string?\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely__1___0_Aspid_MVVM_UnbindContext__System_String_)
+[BinderExtensions.UnbindSafely\(IBinder?, in UnbindContext\)](Aspid.MVVM.BinderExtensions.md#Aspid_MVVM_BinderExtensions_UnbindSafely_Aspid_MVVM_IBinder_Aspid_MVVM_UnbindContext__)
 
 ## Constructors
 
@@ -66,6 +65,12 @@ public ViewBinder(IView view)
 
 The view to bind.
 
+#### Exceptions
+
+ [ArgumentNullException](https://learn.microsoft.com/dotnet/api/system.argumentnullexception)
+
+<code class="paramref">view</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+
 ## Fields
 
 ### View {#Aspid_MVVM_ViewBinder_View}
@@ -82,31 +87,27 @@ protected readonly IView View
 
 ## Methods
 
-### DeinitializeView\(\) {#Aspid_MVVM_ViewBinder_DeinitializeView}
+### OnBinding\(\) {#Aspid_MVVM_ViewBinder_OnBinding}
 
-Deinitializes [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View).
-
-```csharp
-protected void DeinitializeView()
-```
-
-### InitializeView\(IViewModel\) {#Aspid_MVVM_ViewBinder_InitializeView_Aspid_MVVM_IViewModel_}
-
-Initializes [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View) with <code class="paramref">viewModel</code>.
+Called before attachment to validate the required view.
 
 ```csharp
-protected void InitializeView(IViewModel viewModel)
+protected override void OnBinding()
 ```
 
-#### Parameters
+#### Remarks
 
-`viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)
+Overrides must call <code>base.OnBinding()</code> before acquiring resources.
 
-The ViewModel to initialize the view with.
+#### Exceptions
+
+ [InvalidOperationException](https://learn.microsoft.com/dotnet/api/system.invalidoperationexception)
+
+The view is missing or destroyed.
 
 ### OnDetach\(\) {#Aspid_MVVM_ViewBinder_OnDetach}
 
-Called after the binder detaches to deinitialize [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View).
+Called after the binder detaches to deinitialize [`ViewBinder.View`](Aspid.MVVM.ViewBinder.md#Aspid_MVVM_ViewBinder_View) and cancel any pending value update.
 
 ```csharp
 protected override void OnDetach()
@@ -125,3 +126,7 @@ public void SetValue(IViewModel? viewModel)
 `viewModel` [IViewModel](Aspid.MVVM.IViewModel.md)?
 
 The ViewModel received from the bindable member; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> leaves the view deinitialized.
+
+#### Remarks
+
+A newer value or detachment during deinitialization cancels this update.

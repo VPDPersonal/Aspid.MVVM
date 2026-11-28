@@ -49,7 +49,7 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets or sets the current value; setting it raises <see cref="Changed"/> even for an equal value.
+        /// Gets or sets the value and raises <see cref="Changed"/> on every assignment.
         /// </summary>
         public T Value
         {
@@ -68,13 +68,13 @@ namespace Aspid.MVVM
         }
 
         /// <summary>
-        /// Gets the binding mode of the member; always <see cref="BindMode.OneWay"/>.
+        /// Gets the fixed mode <see cref="BindMode.OneWay"/>.
         /// </summary>
         public BindMode Mode => BindMode.OneWay;
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException">
-        /// The mode of <paramref name="binder"/> is not <see cref="BindMode.OneWay"/>, <see cref="BindMode.TwoWay"/> or <see cref="BindMode.OneTime"/>.
+        /// The binder mode does not send values to the View.
         /// </exception>
         /// <exception cref="BinderInvalidCastException">
         /// <paramref name="binder"/> implements none of <see cref="IBinder{T}"/>, <see cref="IBinder{T}"/> of

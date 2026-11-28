@@ -101,6 +101,8 @@ namespace Aspid.MVVM.StarterKit
         /// <inheritdoc/>
         protected override void OnBinding()
         {
+            base.OnBinding();
+
             unchecked { _generation++; }
             _hasPendingNormalization = false;
         }

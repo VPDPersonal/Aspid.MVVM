@@ -7,8 +7,7 @@ namespace Aspid.MVVM
     /// <see cref="IBinder"/> that reports untyped values from the View back to the ViewModel.
     /// </summary>
     /// <remarks>
-    /// The value type is checked only at runtime: the bindable member throws <see cref="ArgumentException"/> for a value
-    /// that is not of its type.
+    /// Built-in bindable members throw <see cref="ArgumentException"/> when a reported value has an incompatible type.
     /// </remarks>
     public interface IAnyReverseBinder : IBinder
     {

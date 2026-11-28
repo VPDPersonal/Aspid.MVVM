@@ -33,11 +33,8 @@ namespace Aspid.MVVM.StarterKit
         private BaseEventData _lastEvent;
         private EventTrigger.Entry _entry;
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        private void OnValidate()
         {
-            base.OnValidate();
-
             if (_command is not null) OnCanExecuteChanged(_command);
             else if (_dataCommand is not null) OnCanExecuteChanged(_dataCommand);
             else if (_typeCommand is not null) OnCanExecuteChanged(_typeCommand);
@@ -144,10 +141,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -279,10 +277,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 
@@ -431,10 +430,11 @@ namespace Aspid.MVVM.StarterKit
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnValidate()
+        /// <summary>
+        /// Called when Unity validates serialized data to refresh the command state.
+        /// </summary>
+        protected virtual void OnValidate()
         {
-            base.OnValidate();
             RefreshCanExecute();
         }
 

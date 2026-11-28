@@ -14,17 +14,17 @@ namespace Aspid.MVVM.Validation
         public bool IsAlive { get; }
 
         /// <summary>
-        /// Gets the View this binder belongs to, or <see langword="null"/>.
+        /// Gets the assigned component view, or <see langword="null"/> when missing or destroyed.
         /// </summary>
         public IView? View { get; }
 
         /// <summary>
-        /// Gets the last non-empty View.
+        /// Gets the last assigned view.
         /// </summary>
         public MonoBinderPreviousView PreviousView { get; }
 
         /// <summary>
-        /// Gets the ID of the View field this binder is bound through; an empty string when unassigned.
+        /// Gets the binder field ID. Returns an empty string when unassigned.
         /// </summary>
         public string Id { get; }
 
@@ -34,33 +34,33 @@ namespace Aspid.MVVM.Validation
         public MonoBinderPreviousId PreviousId { get; }
 
         /// <summary>
-        /// Sets <see cref="View"/>; <see langword="null"/> resets it.
+        /// Sets the view used for validation.
         /// </summary>
-        /// <param name="view">The View, or <see langword="null"/>.</param>
+        /// <param name="view">The component view to assign. A <see langword="null"/> or destroyed view clears the assignment and its history.</param>
         public void SetView(IView? view);
 
         /// <summary>
-        /// Sets <see cref="Id"/>; a blank value resets it.
+        /// Sets the binder field ID used for validation.
         /// </summary>
-        /// <param name="id">The ID, or <see langword="null"/>.</param>
+        /// <param name="id">The ID to assign, or a blank value to reset it.</param>
         public void SetId(string? id);
 
         /// <summary>
         /// Clears <see cref="View"/>.
         /// </summary>
-        /// <param name="mode">Whether <see cref="PreviousView"/> is cleared as well.</param>
+        /// <param name="mode">Use <see cref="MonoBinderResetMode.Hard"/> to also clear <see cref="PreviousView"/>.</param>
         public void ResetView(MonoBinderResetMode mode = MonoBinderResetMode.Hard);
 
         /// <summary>
         /// Clears <see cref="Id"/>.
         /// </summary>
-        /// <param name="mode">Whether <see cref="PreviousId"/> is cleared as well.</param>
+        /// <param name="mode">Use <see cref="MonoBinderResetMode.Hard"/> to also clear <see cref="PreviousId"/>.</param>
         public void ResetId(MonoBinderResetMode mode = MonoBinderResetMode.Hard);
 
         /// <summary>
         /// Clears both <see cref="Id"/> and <see cref="View"/>.
         /// </summary>
-        /// <param name="mode">Whether the previous values are cleared as well.</param>
+        /// <param name="mode">Use <see cref="MonoBinderResetMode.Hard"/> to also clear previous values.</param>
         public void Reset(MonoBinderResetMode mode = MonoBinderResetMode.Hard)
         {
             if (!IsAlive) return;

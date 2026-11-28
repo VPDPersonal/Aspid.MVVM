@@ -59,7 +59,7 @@ The value to push to the binder.
 
 ### Mode {#Aspid_MVVM_OneTimeBindableMember_1_Mode}
 
-Gets the binding mode of the member; always [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
+Gets the fixed mode [`BindMode.OneTime`](Aspid.MVVM.BindMode.md).
 
 ```csharp
 public BindMode Mode { get; }
@@ -71,7 +71,7 @@ public BindMode Mode { get; }
 
 ### Value {#Aspid_MVVM_OneTimeBindableMember_1_Value}
 
-Gets or sets the value pushed to the next binder; setting it does not update binders already bound.
+Gets or sets the value sent to each binder when it attaches.
 
 ```csharp
 public T? Value { get; set; }

@@ -100,7 +100,7 @@ public void Dispose() =>
 
 `Confirm` calls `_hero.Apply(...)`, the model raises `Changed`, which runs `Reset`, and `IsDraft` becomes `false`. The ViewModel does not duplicate "apply" logic. It asks the model.
 
-The subscription is why the ViewModel is `IDisposable`. `DeinitializeView()?.DisposeViewModel()` in `Bootstrap` unsubscribes it.
+The subscription is why the ViewModel is `IDisposable`. `DeinitializeViewSafely()?.DisposeViewModel()` in `Bootstrap` unsubscribes it.
 
 ## A binder for an enum parameter
 
